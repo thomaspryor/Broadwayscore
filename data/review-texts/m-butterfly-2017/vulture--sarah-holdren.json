@@ -31,5 +31,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240415040653/https://www.vulture.com/2017/10/theater-review-m-butterfly-chasing-its-own-reality.html",
   "contentTier": "complete",
   "wordCount": 1425,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So why do the results feel strangely uneven?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises both lead performances and acknowledges the play's continued relevance, but finds significant flaws in direction and production design that prevent the show from achieving its potential. The review expresses frustration with execution while recognizing the material's power. | Gemini: The review praises the performances but finds the play and production uneven and confusing, resulting in a mixed assessment. | Kimi: The critic praises the lead performances (particularly Jin Ha) and the relevance of the themes, but finds the production clunky, confusing, and emotionally distancing, with awkward staging that fails to fully realize the material's potential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:48:55.614Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

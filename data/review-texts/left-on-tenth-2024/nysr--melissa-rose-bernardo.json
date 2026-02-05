@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "She channeled her frustration with the communications company into a New York Times piece, which led to the discovery of the second great love of her life, Peter. The start of their story became the heart of her 2022 memoir, Left On Tenth, now adapted into a middling Broadway play starring Julianna Margulies and Peter Gallagher (presumably Meg Ryan and Tom Hanks weren’t available).",
-  "bwwScore": 5
+  "bwwScore": 5,
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ephron's experience is powerful and affecting, but some stories simply don't translate from the page to the stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with praise for Gallagher's casting and some performances, but criticizes pacing, tonal shifts, and Margulies' discomfort. The critic finds the source material compelling but questions the stage adaptation's effectiveness. | GPT-4o: The review describes the play as 'middling' and highlights significant issues with tonal shifts and adaptation challenges. The 3/5 star rating suggests a mixed reception. However, the text is truncated, and the final verdict may be missing, leading to low confidence. | Gemini: The review highlights both positive and negative aspects, praising the casting of Gallagher and the power of Ephron's story, but criticizing the tonal shifts and the play's overall effectiveness as a stage adaptation. The 3/5 star rating also indicates a mixed assessment. | Kimi: The 3/5 star review explicitly calls the play 'middling,' praising Peter Gallagher's casting and the wig design while criticizing the exposition-heavy structure, Julianna Margulies' uncomfortable direct-address delivery, and the unsuccessful tonal shift from romcom to hospital drama.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:38:26.380Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

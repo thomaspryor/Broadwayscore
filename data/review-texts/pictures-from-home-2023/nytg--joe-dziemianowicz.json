@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -43,5 +43,60 @@
     "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Bartlett Sher's assured direction, all three actors deftly capture the play's shifting tones.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Four-star review with consistent praise for performances, direction, and the playwright's work. Calls it a 'rich drama' with 'surprisingly touching' qualities and highlights strong acting from all leads. | GPT-4o: The review provides a positive assessment of the play, highlighting strong performances and direction. It describes the play as 'surprisingly touching' and praises the actors' ability to capture shifting tones, indicating a solid recommendation with some reservations. | Gemini: The review is positive, highlighting the rich drama and the actors' performances, but it also acknowledges the selective nature of the portrait and the potential for the artist's work to not always be in his parents' best interests. | Kimi: The four-star review offers consistent praise for the performances by all three leads and Bartlett Sher's direction, describing the play as a 'rich drama' and 'surprisingly touching,' though it notes the selective portrait omits some family members.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:34:35.457Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 79,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Victor Garber brings welcome gravitas to Noel Coward's 1939 comedy about a vain actor surrounded by adoring women and scheming men.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "tierReason": "Full review text",
   "previousUrl": "https://variety.com/2010/legit/reviews/present-laughter-1118014603/",
   "urlDiscoveredAt": "2026-02-04T17:00:13.987Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the production is too unevenly cast and paced to be more than mildly amusing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges many positive elements (Garber's performance, elegant production design, Coward's dialogue) but consistently points to significant flaws in supporting cast and pacing. The final verdict explicitly limits the show to being 'mildly amusing' due to uneven casting and pacing issues. | GPT-4o: The review acknowledges some strengths in the production, such as Victor Garber's performance and the elegant set design, but ultimately finds the casting and pacing issues prevent it from being fully engaging. | Gemini: The review praises Garber and the design elements but criticizes the supporting cast and pacing, leading to an overall mixed assessment. The final sentence explicitly states it's only 'mildly amusing'. | Kimi: While the critic praises Victor Garber's performance and the elegant production design, extensive criticism of the uneven supporting cast and pacing issues results in a limited recommendation that the show is only mildly amusing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:38:51.494Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

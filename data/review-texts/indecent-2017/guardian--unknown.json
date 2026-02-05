@@ -38,9 +38,10 @@
   "contentTier": "complete",
   "wordCount": 609,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T06:09:59.642Z",
+  "rejectedAt": "2026-02-05T02:18:05.197Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "openai: The review is about a production at the Vineyard Theatre, not the current Broadway run.; kimi: This review covers the Off-Broadway production at the Vineyard Theatre, not the subsequent Broadway transfer. The text explicitly mentions the Vineyard Theatre and notes the article is more than 9 years old, dating it to the 2016 Off-Broadway run rather than the 2017 Broadway production at the Cort Theatre.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "openai: The review is about a production of 'Indecent' at the Vineyard Theatre, which is an off-Broadway venue, not the current Broadway run.; kimi: The review explicitly states the show is at the Vineyard Theatre ('now at the Vineyard Theater'), which is an Off-Broadway venue. The text references the 2016 Off-Broadway premiere production, not the subsequent Broadway transfer to the Cort Theatre.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

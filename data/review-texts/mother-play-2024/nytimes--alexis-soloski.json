@@ -39,5 +39,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "Thirty or so years ago, Vogel told a reporter, “I like theater that makes me feel like it’s a healing.” That’s what “Mother Play” is, a balm that comes in cardboard boxes and packing tape. It honors the dead by making them alive again and nurtures the living by providing a place to put a daughter’s love and rage. Martha’s box is not Pandora’s. It’s just another way of organizing a life.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-On-Broadway-Starring-Jessica-Lange-Jim-Parsons-Celia-Keenan-Bolger-20240425"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-On-Broadway-Starring-Jessica-Lange-Jim-Parsons-Celia-Keenan-Bolger-20240425",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's what 'Mother Play' is, a balm that comes in cardboard boxes and packing tape.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt uses highly positive language ('balm', 'honors the dead', 'nurtures the living') and frames the play as emotionally healing theater. However, with only one curated excerpt available, confidence is low as this may not represent the full review's verdict. | GPT-4o: The excerpt describes the show as a 'balm' and highlights its emotional impact, suggesting a strong positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses the word \"healing\" and describes the play as a \"balm,\" suggesting a positive and comforting experience. Given the single excerpt, I am scoring on the higher end of positive. | Kimi: The excerpt uses warmly appreciative language ('balm,' 'healing,' 'honors,' 'nurtures') to describe the show as an emotionally resonant and nurturing experience, indicating a clear recommendation despite the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:03:31.844Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

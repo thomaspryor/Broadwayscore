@@ -36,5 +36,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "When Shanita (a warm, affable Adams) talks about why she takes pride in her job - saying, 'I'm building something that you can see come to life at the end. Got a motor in it and it's gonna take somebody somewhere' - it is moving and commands your respect. That is perhaps why Skeleton Crew hits more potently now than it did in 2016 for me. When society shut down in 2020, we all saw who the true essential workers are. They are not the CEOs or people who worked in glass high-rises. They are the people stocking grocery store shelves, delivering packages, making cars. And they are disproportionately people of color. Society has now caught up with Morisseau's play. In Skeleton Crew, Morisseau makes us see the line that divides the blue collar and white collar workers as what it really is, a man-made structure that must be dismantled, because it is that line that keeps all of us from realizing our true power.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SKELETON-CREW-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20220126"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SKELETON-CREW-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20220126",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It has only grown in power and potency since 2016.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review is filled with enthusiastic praise for the performances, particularly calling Rashad and Dirden's scene 'an acting masterclass,' and emphasizes the play's increased relevance and power. The critic finds it moving and commands respect for the characters, with no significant reservations mentioned. | GPT-4o: The review is filled with praise for the play's writing, direction, and performances, highlighting its increased impact and relevance. The critic emphasizes the play's power and the skillful portrayal of the working class, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising Morisseau's writing, the performances, and the play's relevance. The critic clearly recommends seeing it, highlighting its power and potency. | Kimi: The review offers unqualified praise for Morisseau's writing ('ingenious,' 'tautly crafted'), the direction, and the performances (particularly the 'acting masterclass' between Rashad and Dirden), while emphasizing the show's increased relevance and emotional impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:52:46.275Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

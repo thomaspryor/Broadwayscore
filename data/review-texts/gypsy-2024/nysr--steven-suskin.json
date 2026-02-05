@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Wolfe’s production captures the proper Gypsy flavor. No overwhelming Broadway-style scenery here; instead, we get sets by Santo Loquasto and costumes by Toni-Leslie James flavored with the faded dinginess of the final days of vaudeville. Jules Fisher and Peggy Eisenhauer, longtime collaborators of director Wolfe, provide the evocative lighting. Andy Einhorn is in the pit, leading a rousingly good 25-piece band through the ever-vibrant orchestrations by Sid Ramin and Robert Ginzler with updates, as required, from Daryl Waters of Shuffle Along. For those curious about such things, let us point out that the unfamiliar introduction to the song “Small World” (“Here I been, looking for a suitcase…”) is authentic: it was cut during the 1959 Philadelphia tryout, in conjunction with a scenery mishap. Not an overwhelmingly dynamic discovery, perhaps, but illustrative of how Styne and Sondheim took Rose and Herbie from dialogue to song. If there are minor lapses around the fringes of this production, no matter. First and foremost, this is Audra’s Gypsy. Audra is magnificent, everything’s coming up roses.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GYPSY-Opens-On-Broadway-Starring-Audra-McDonald-20241219"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GYPSY-Opens-On-Broadway-Starring-Audra-McDonald-20241219",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Audra is magnificent, everything's coming up roses.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The 4/5 star rating combined with effusive praise for McDonald's 'magnificent' and 'altogether thrilling' performance, plus the dismissal of 'minor lapses' as 'no matter,' clearly indicates a strong positive recommendation despite some reservations about supporting elements. | GPT-4o: The review praises Audra McDonald's performance and the production's ability to capture the essence of 'Gypsy'. Despite some minor criticisms, the overall tone is positive, aligning with the 4/5 star rating. The text is truncated, but the available content suggests a strong recommendation. | Gemini: Despite some reservations about the choreography and Louise's character, the review is overwhelmingly positive, praising Audra McDonald's performance as \"magnificent\" and calling the production \"altogether thrilling.\" | Kimi: 4/5 star review with enthusiastic praise for Audra McDonald's magnificent, thrilling performance as Rose. While criticizing the choreography and supporting actress as unconvincing, the critic explicitly dismisses these as minor lapses that don't matter compared to the lead's exceptional turn.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:04:17.696Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

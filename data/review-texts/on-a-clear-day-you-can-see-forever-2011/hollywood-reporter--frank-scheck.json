@@ -44,9 +44,10 @@
   "contentTier": "complete",
   "wordCount": 623,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T10:32:18.115Z",
+  "rejectedAt": "2026-02-05T03:21:57.451Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "openai: The review is about the Irish Rep's revival of 'On a Clear Day You Can See Forever,' not the current Broadway production.; kimi: This review covers an Off-Broadway production at Irish Repertory Theatre, not a Broadway production. The text describes it as an 'abridged, scaled-down' production on a 'tiny stage' with a 'pint-sized, six-piece band,' and explicitly identifies the venue as Irish Rep Theatre rather than a Broadway house.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "openai: The review is about the Irish Rep's revival of 'On a Clear Day You Can See Forever', not the current Broadway production.; kimi: This review covers the Off-Broadway revival at Irish Repertory Theatre (an Off-Broadway venue with scaled-down production values described as 'summer-stock'), not a current Broadway production. The text explicitly references the 'Irish Rep’s revival' and previous Broadway incarnations (1965 original, 2011 revival) as distinct from this staging.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

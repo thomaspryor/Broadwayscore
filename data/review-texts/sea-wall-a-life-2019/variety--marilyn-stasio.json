@@ -46,5 +46,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "But in the context of these monologues, a word like 'delight' must be taken with caution. There's pleasure to be had at the sound of pretty prose, and it's a joy to watch two fine actors perform in flawless character. But it might take a couple of stiff drinks to get the ashen taste of death out of your mouth.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Jake-Gyllenhaal-and-Tom-Sturridge-Star-In-SEA-WALLA-LIFE-See-What-The-Critics-Are-Saying-20190808"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Jake-Gyllenhaal-and-Tom-Sturridge-Star-In-SEA-WALLA-LIFE-See-What-The-Critics-Are-Saying-20190808",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The writing in these separate monologues is excellent, as are the solo performances by Tom Sturridge and Jake Gyllenhaal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for writing quality and performances ('excellent', 'devastating', 'flawless character'), with warnings about heavy subject matter being cautionary rather than negative recommendations. | GPT-4o: The review praises the writing and performances as excellent, indicating a strong recommendation. However, the somber subject matter and emotional weight suggest some reservations about the overall experience. | Gemini: The review praises the writing and performances of both actors, but notes the heavy subject matter and emotional toll. It is recommended, but with a warning. | Kimi: The critic praises the writing and both lead performances as 'excellent,' 'devastating,' and 'flawless,' offering a strong recommendation while cautioning audiences about the emotionally heavy subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:50:06.017Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

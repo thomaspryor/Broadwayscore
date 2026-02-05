@@ -22,5 +22,60 @@
   "playbillVerdictUrl": "http://nystagereview.com/2019/04/18/hillary-and-clinton-peering-inside-the-private-lives-of-a-power-couple/",
   "bwwExcerpt": "A remarkable performance by Laurie Metcalf and quite a sympathetic one by John Lithgow, two superb actors playing at the top of their exceptional games in the title roles, make this offbeat comedy a must-see for savvy viewers who cannot be bothered with the usual tourist crap on Broadway.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HILLARY-AND-CLINTON-Opens-On-Broadway--See-What-The-Critics-Think-20190418"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HILLARY-AND-CLINTON-Opens-On-Broadway--See-What-The-Critics-Think-20190418",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A remarkable performance by Laurie Metcalf and quite a sympathetic one by John Lithgow make this offbeat comedy a must-see for savvy viewers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with strong praise for performances and direction. Clear 'must-see' recommendation despite noting it's not for everyone. Consistent positive language throughout ('smart entertainment', 'remarkable performance', 'marvelous', 'smoothly staged'). | GPT-4o: The review praises the performances, writing, and direction, describing the play as a 'must-see' and giving it a 4/5 star rating, indicating a strong positive recommendation. | Gemini: The review gives 4/5 stars and calls the show a \"smart entertainment\" and \"must-see\". The critic praises the performances and direction, indicating a strong positive recommendation. | Kimi: The critic awards 4/5 stars and delivers strong praise for the lead performances as 'superb' and the production as a 'must-see,' though noting it may not appeal to viewers seeking conventional Broadway fare.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:08:44.877Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

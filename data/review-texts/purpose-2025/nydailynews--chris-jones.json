@@ -41,5 +41,59 @@
   "wordCount": 285,
   "bwwExcerpt": "In the end, ‘Purpose’ is a major new American play about what it’s like to be trapped by powerful parents whose public personas their children can easily see through, even as they are condemned to try and live up to their import. A thumping blend of tragic-proximate horror and schadenfreude, it’s riveting to watch.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Phylicia-Rashad-Directs-PURPOSE-By-Branden-Jacobs-Jenkins-On-Broadway-20250317"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Phylicia-Rashad-Directs-PURPOSE-By-Branden-Jacobs-Jenkins-On-Broadway-20250317",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Arenas, the longtime Steppenwolf ensemble member who is on fire from the moment she walks out on the stage",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for performances, particularly calling one 'breakout' and 'on fire', with appreciation for the direction and character development. Clear positive assessment despite heavy biographical context. | Gemini: The review highlights strong performances, particularly from Arenas and Hill, and praises the moving character of Naz. While not a rave, it leans towards a positive recommendation based on the acting and character development. | Kimi: The review consistently praises the direction, writing, and multiple performances (particularly Arenas and Hill) with enthusiastic language like 'on fire,' 'deeply empathetic,' and 'remarkably moving,' offering a strong recommendation without reservation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:42:13.603Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

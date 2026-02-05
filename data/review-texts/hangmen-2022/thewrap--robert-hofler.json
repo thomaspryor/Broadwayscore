@@ -44,5 +44,60 @@
   "tierReason": "Short text (72 words)",
   "bwwExcerpt": "In the Atlantic Theater production, some of the pub's hangers-on were played too broadly. A few of them seemed left over from McDonagh's 'Leenane' trilogy. That's not the case on Broadway. Owen Campbell, Jeremy Crutchley, Josh Goulding, Richard Hollis, John Horton and Ryan Pope complete the near-perfect ensemble under Dunster's direction. 'Hangmen' is this Broadway season's best play.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HANGMEN-By-Martin-McDonagh-Opens-on-Broadway-20220421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HANGMEN-By-Martin-McDonagh-Opens-on-Broadway-20220421",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hangmen is this Broadway season's best play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Clear superlative declaration calling it 'this Broadway season's best play' with praise for the 'near-perfect ensemble' indicates an unqualified rave recommendation. | GPT-4o: The review describes the Broadway production as having a 'near-perfect ensemble' and concludes with 'Hangmen' being the best play of the season, indicating a very strong recommendation. | Gemini: The critic explicitly states that 'Hangmen' is the best play of the Broadway season, indicating a rave review. The praise for the ensemble and direction further supports this classification. | Kimi: The reviewer explicitly declares the show the best play of the Broadway season and praises its 'near-perfect ensemble,' offering unqualified superlatives with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:05:13.564Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

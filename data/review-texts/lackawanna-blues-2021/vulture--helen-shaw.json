@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250722110839/https://www.vulture.com/2021/10/theater-review-ruben-santiago-hudsons-lackawanna-blues.html",
   "contentTier": "complete",
   "wordCount": 990,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In his superb solo show Lackawanna Blues, he acts as a conduit for dozens of ghosts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Consistent superlatives throughout ('superb', calls his description 'thick, solid and dense and lyrical'), praises every aspect from performance to staging, compares favorably to his previous acclaimed work, and presents it as a masterful theatrical achievement with deep emotional resonance. | GPT-4o: The review is filled with superlatives and vivid praise for Santiago-Hudson's performance and the production as a whole. The critic describes the show as 'superb' and highlights the emotional and artistic impact of the performance, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising Santiago-Hudson's performance and the overall impact of the show. The critic clearly prefers this theatrical version. | Kimi: The review offers consistent, high praise for Santiago-Hudson's solo performance and writing, describing the show as 'superb' and his characterization as filled with 'nuance' and 'explosive life,' with only a minor, immediately qualified caveat about broad playing. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:37:20.695Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 91,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

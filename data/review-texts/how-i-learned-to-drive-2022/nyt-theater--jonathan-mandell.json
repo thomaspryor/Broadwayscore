@@ -34,5 +34,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "Parker's reprised performance does the heavy lifting in a play that is rightly, and smartly, a memory play told from the woman's point of view. But it is the male character that offers the greater challenge. The playwright does what she can to establish Peck as a human being rather than a monster, but it is David Morse's memorable performance that makes the character credible. Indeed, his performance - gentle, earnest, likable, and thus all the more unsettling - is what I still remember from the production I saw at the Vineyard Theater in 1997. (Was that really 25 years ago?!)",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-I-LEARNED-TO-DRIVE-Opens-On-Broadway-20220419"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-I-LEARNED-TO-DRIVE-Opens-On-Broadway-20220419",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But at a time when the Republican members of the Senate Judiciary Committee were trying to paint a well-respected Supreme Court nominee as soft on child pornographers, I couldn't help imagining how they would react to 'How I Learned to Drive,' and am delighted it's finally on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the performances extensively, calling Morse's work 'memorable' and credible, and Parker's 'heavy lifting' effective. While expressing some uncertainty about the production's commercial appeal ('not sure how well this low-key production...will stand out'), the review concludes with delight that it's on Broadway, indicating a positive recommendation despite reservations about its flashiness compared to other shows. | GPT-4o: The review praises the performances, especially of Morse and Parker, and appreciates the play's craftsmanship and empathy. However, it expresses uncertainty about the production's impact amidst flashier shows, indicating some reservations. | Gemini: The review is mostly positive, highlighting the performances and the play's ability to draw the audience in. However, the critic expresses some reservations about how well the production will stand out amidst flashier shows, indicating a qualified recommendation. | Kimi: The review extensively praises the lead performances by Parker and Morse, calling them 'memorable' and crediting them with making the difficult material credible, while expressing delight that the show has reached Broadway despite noting its low-key nature.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:14:09.663Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

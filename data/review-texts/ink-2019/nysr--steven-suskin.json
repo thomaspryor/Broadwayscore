@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "The roaring lion against the timid lamb. The giant Goliath against defenseless David. The Fleet Street hierarchy against an Aussie sheep farmer. Everybody loves the underdog. James Graham, in his play Ink, spins a yarn for our times about a true underdog. A foul, grasping, immoral, and altogether despicable underdog. Against all odds, Graham gets us to vehemently root for this antihero-whose name is, yes, Rupert Murdoch-and vicariously share, from the edge of our seats, in his improbable early victory.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-INK-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20190424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-INK-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20190424",
+  "assignedScore": 85,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Against all odds, Graham gets us to vehemently root for this antihero and vicariously share, from the edge of our seats, in his improbable early victory.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: 5/5 stars with enthusiastic language about the playwright's achievement ('gets us to vehemently root', 'edge of our seats'). Single excerpt limits confidence but clear praise combined with perfect rating indicates strong positive. | GPT-4o: The excerpt describes the play as engaging and compelling, with the audience rooting for an unlikely protagonist. The original 5/5 stars rating suggests a highly positive review, supporting a Rave classification. | Gemini: The review excerpt describes how the play makes the audience root for the antihero, Rupert Murdoch, and share in his victory. Given the 5/5 rating and the positive tone, I am scoring this as positive, but with low confidence due to the limited excerpt. | Kimi: The critic's 5/5 star rating and praise for the playwright's ability to make audiences 'vehemently root' for a despicable character and watch from the 'edge of our seats' indicates strong enthusiasm, though the single excerpt limits confidence. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:19:33.567Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 87,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

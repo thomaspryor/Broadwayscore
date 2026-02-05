@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This Oklahoma! is a thrilling, unsettling, and ultimately triumphant reinvention that honors Rodgers and Hammerstein's masterpiece while giving it a much-needed 21st-century update.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -52,5 +52,60 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 1001,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Oklahoma! is a thrilling, unsettling, and ultimately triumphant reinvention that honors Rodgers and Hammerstein's masterpiece while giving it a much-needed 21st-century update.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses strong superlatives 'thrilling' and 'triumphant' with 'masterpiece' - clearly enthusiastic language. However, single excerpt limits full context assessment, so confidence is medium despite matching the 87 rating. | GPT-4o: The excerpt describes the production as 'thrilling' and 'triumphant,' indicating strong praise. The original rating of 87 supports a Rave classification. However, with only one excerpt, confidence is medium. | Gemini: The review uses strong positive language such as \"thrilling\", \"triumphant reinvention\", and \"masterpiece\", indicating a rave review. The critic's rating of 87 supports this classification. | Kimi: The critic's own rating of 87 and use of superlatives including 'triumphant' and 'masterpiece' indicate strong enthusiasm, though confidence is reduced due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:19:54.200Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 87,
+    "openaiScore": 87,
+    "geminiScore": 87,
+    "kimiScore": 87,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

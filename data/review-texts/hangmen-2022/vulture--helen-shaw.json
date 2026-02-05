@@ -36,5 +36,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "The nasty-twisty plot works best in the first half, when its goads are sharpest. McDonagh needs speed and an unbalanced audience to keep his pressures high, but the last third of his play wobbles woozily, like a coaster that's gone rolling off the bar. Some of this is the fault of director Matthew Dunster's production, though it looks absolutely gorgeous (Anna Fleischle designed both brown set and brown costumes) and sounds incredible (Ian Dickinson can be thanked for many of the jump-scare transitions). Casting is everything in a show so reliant on its two leads, and here, as was the case when it played downtown, the balance isn't right.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HANGMEN-By-Martin-McDonagh-Opens-on-Broadway-20220421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HANGMEN-By-Martin-McDonagh-Opens-on-Broadway-20220421",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The nasty-twisty plot works best in the first half, when its goads are sharpest.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises McDonagh's dialogue structure and Threlfall's performance, but criticizes Allen's casting, the production's wobbling third act, and notes the play doesn't always land its humor. Mixed verdict with no clear recommendation either way. | GPT-4o: The review acknowledges strengths in the plot and production design but criticizes the casting and the play's ability to maintain tension. The overall tone suggests a mixed reception with both positive and negative elements. | Gemini: The review acknowledges strengths in the writing and production design but criticizes the casting and pacing, leading to a mixed assessment. It's thought-provoking but not fully successful. | Kimi: While praising David Threlfall's performance and the gorgeous design, the critic finds Alfie Allen miscast and lacking the necessary menace, and notes the play's final third wobbles structurally, resulting in a genuinely mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:06:01.271Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 61,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

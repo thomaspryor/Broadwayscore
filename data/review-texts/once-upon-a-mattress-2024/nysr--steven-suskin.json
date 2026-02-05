@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "★★★★☆ Another Encores! musical comedy winner takes up residence on Broadway",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ONCE-UPON-A-MATTRESS-Returns-To-Broadway-20240812"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ONCE-UPON-A-MATTRESS-Returns-To-Broadway-20240812",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Another Encores! musical comedy winner takes up residence on Broadway",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with clear endorsement calling it a 'winner.' Single excerpt limits confidence, but the language is unambiguously positive. | GPT-4o: The 4/5 star rating and the phrase 'musical comedy winner' suggest a strong positive recommendation. However, the single excerpt warning indicates a low confidence level due to potential cherry-picking. | Gemini: The 4/5 star rating and the phrase \"musical comedy winner\" indicate a strong positive recommendation. | Kimi: The 4/5 star rating combined with explicit 'winner' designation indicates a strong positive recommendation for this Broadway transfer. As a single excerpt, confidence is lowered, but the language clearly falls in the upper range of Positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:23:44.194Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

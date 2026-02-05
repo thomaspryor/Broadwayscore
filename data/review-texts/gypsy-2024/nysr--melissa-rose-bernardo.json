@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Or does it? Since she’s not barreling through the tunes like a freight train, McDonald uses her phenomenal vocal range to tap into an intense reservoir of feeling. Her Rose isn’t the abominable woman we’ve seen in previous productions. Sure, she’s pushy, especially when it comes to her star-to-be daughter, June (Jordan Tyson, The Notebook’s Younger Allie), the singing-dancing-twirling headliner of the family’s home-grown vaudeville act. She’s oblivious, shockingly so, when she volunteers her mousy daughter, Louise (Joy Woods, The Notebook’s Middle Allie), for a striptease at a second-rate burlesque. She’s girlish, giggly, and demure with reluctant agent/would-be fourth husband Herbie (a flawless Danny Burstein). But ultimately, she’s more mama bear than monster. The climactic “Rose’s Turn,” where she’s at her most vulnerable, is full of highs and lows both musical and emotional; never has Merman’s comparison of the song to an aria been more apt.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonald uses her phenomenal vocal range to tap into an intense reservoir of feeling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for McDonald's 'knockout performance,' Wolfe's direction, Brown's choreography, and the production values. Despite one reservation about Woods' transformation, the overall assessment is very positive. | GPT-4o: The review praises Audra McDonald's performance and the production's elements, but notes some reservations about Woods' portrayal of Gypsy Rose Lee. The original 4/5 stars and overall positive tone suggest a solid recommendation with some minor critiques. | Gemini: The review is generally positive, highlighting McDonald's performance and the production's elements. However, it notes some reservations about Woods' portrayal of Gypsy Rose Lee, but the overall tone and 4/5 stars suggest a recommendation with caveats. | Kimi: The critic awards 4/5 stars and delivers enthusiastic praise for McDonald's 'knockout' performance, Wolfe's direction, and the production's Golden Age craftsmanship, though slightly tempered by criticism of Woods' second-act transformation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:03:42.820Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

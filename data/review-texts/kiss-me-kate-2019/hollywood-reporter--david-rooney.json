@@ -37,5 +37,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 1358,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this is an immensely pleasurable show even in a production that occasionally lacks spark.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite critiquing the leads' chemistry and some casting choices, the critic finds it 'immensely pleasurable' and says it's 'virtually impossible not to surrender to its boisterous charms.' The positive elements outweigh the reservations. Medium confidence due to truncated text warning. | GPT-4o: The review praises the production's entertainment value and performances, despite noting some casting and chemistry issues. The positive tone is clear, but the text is truncated, so the final verdict may be missing. | Gemini: Despite some reservations about the casting and changes made to the show, the critic ultimately finds it \"immensely pleasurable.\" The truncated text and mixed signals lower the confidence. | Kimi: The critic clearly recommends the show, calling it 'immensely pleasurable' and noting it's 'virtually impossible not to surrender to its boisterous charms,' despite reservations about some casting choices and a comparison to a superior 1999 revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:34:41.248Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 77,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

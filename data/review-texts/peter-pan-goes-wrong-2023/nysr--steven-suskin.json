@@ -22,5 +22,60 @@
   "showScoreExcerpt": "\"Film and television or sitting by the fireside with your loving family who are already inured to your jokes simply cannot be this much fun, black and blue bruises aside.\"\n\nRead more",
   "bwwExcerpt": "Is Peter Pan Goes Wrong quite as blisteringly sidesplitting as The Play That Goes Wrong? Well, no; it’s difficult or perhaps impossible to offer the surprises of that initial foray into the Mischief formula. But the frantic, manic, desperate humor is the same; you might start the affair sitting in your seat thinking “go ahead, just try to entertain me” as you watch pseudo-stagehands scurrying to apply last-minute fixes to the ramshackle scenery. But as with the earlier show, they quickly win you over. And do, for gosh sake, bring the kids.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PETER-PAN-GOES-WRONG-Opens-On-Broadway-20230421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PETER-PAN-GOES-WRONG-Opens-On-Broadway-20230421",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "they quickly win you over. And do, for gosh sake, bring the kids.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic praise throughout. Critic finds it more entertaining than big-budget competitors, praises the performances (especially Harris), and gives a clear recommendation to bring families. Despite minor reservations about it not quite matching their previous show, the overall tone is very positive. | GPT-4o: The review is largely positive, highlighting the show's humor and charm despite some reservations about its originality compared to previous productions. The 4/5 star rating aligns with a strong positive recommendation. | Gemini: The review is overwhelmingly positive, praising the show's humor and charm despite some reservations about it being as surprising as the troupe's previous work. The critic ultimately recommends seeing it, especially with kids, and the 4/5 star rating supports this classification. | Kimi: The critic awards 4/5 stars and delivers enthusiastic praise for the cast's comic performances and the show's good-natured, chaotic humor, urging readers to 'bring the kids.' While noting it doesn't quite match the surprise of the troupe's previous work, the verdict is clearly positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:32:15.874Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

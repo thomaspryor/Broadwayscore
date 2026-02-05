@@ -22,5 +22,60 @@
   "playbillVerdictUrl": "http://nystagereview.com/2019/12/05/jagged-little-pill-alanis-morissette-lavishly-broadway-ized/",
   "bwwExcerpt": "Paulus and Cherkaoui have the six principals on their toes throughout, each of whom is impressively committed to his or her role. While they nail every moment, there is one performance that threatens to dislodge the Broadhurst roof: Lauren Patten giving Morissette's 'You Oughta Know' all the sizzle that a Peter Luger steak used to have.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAGGED-LITTLE-PILL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191205"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAGGED-LITTLE-PILL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191205",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paulus and Cherkaoui have the six principals on their toes throughout, each of whom is impressively committed to his or her role.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic praise for direction and performances, particularly highlighting Lauren Patten's standout moment. Single excerpt limits full assessment but tone is clearly positive. | GPT-4o: The review excerpt praises the performances, particularly highlighting Lauren Patten's standout moment. The original 4/5 star rating suggests a strong positive verdict. Given the single excerpt and text quality warning, the score is placed towards the upper end of the Positive range. | Gemini: The review excerpt praises the commitment of the principal actors and highlights Lauren Patten's performance as particularly outstanding. Given the 4/5 star rating and the enthusiastic tone, I'm placing it in the positive bucket with a high score due to the single excerpt. | Kimi: The 4/5 star rating and enthusiastic praise for the cast's commitment and standout performance by Lauren Patten ('threatens to dislodge the Broadhurst roof') indicate a strong recommendation, though the single excerpt limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:23:35.197Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Neil Patrick Harris gives a phenomenal performance, bringing both the requisite rock-god charisma and the emotional vulnerability that makes Hedwig's journey so moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -63,5 +63,60 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 543,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Neil Patrick Harris gives a phenomenal performance, bringing both the requisite rock-god charisma and the emotional vulnerability that makes Hedwig's journey so moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for the lead performance ('phenomenal performance'). However, confidence is low as this is only one curated quote that may not represent the full review verdict. | GPT-4o: The excerpt praises Neil Patrick Harris's performance as 'phenomenal' and highlights the emotional impact of the show. Given the single excerpt warning, the score is placed in the upper range of Positive. | Gemini: The excerpt praises Neil Patrick Harris's performance as phenomenal, suggesting a strong positive sentiment. Given the single excerpt, the score is placed at the higher end of the positive range, but confidence is low due to the limited information. | Kimi: The excerpt offers unequivocal praise ('phenomenal') for the lead performance and describes the show as emotionally moving, indicating a strong positive verdict. However, as a single curated excerpt, confidence is reduced regarding the overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:07:24.685Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

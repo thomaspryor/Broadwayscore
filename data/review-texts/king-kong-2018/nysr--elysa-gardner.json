@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Thorne's record of intelligent, nuanced, morally complex work, which includes Harry Potter and the Cursed Child, suggest that his contributions may have been, like Kong, diminished by the forces of commerce. But that's just speculation, and frankly, few will attend this musical expecting the characters, human or otherwise, to be drawn with great sophistication. If technical wizardry is what you're after-and you can withstand watching a magnificent beast endure repeated, extravagant physical and ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Go-Bananas-For-KING-KONG-On-Broadway-20181108"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Go-Bananas-For-KING-KONG-On-Broadway-20181108",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "few will attend this musical expecting the characters, human or otherwise, to be drawn with great sophistication",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars indicates clear negativity. The excerpt criticizes lack of character sophistication and suggests commercial forces diminished the work, though text is truncated mid-sentence limiting confidence. | GPT-4o: The 2/5 star rating indicates a negative review. The excerpt suggests disappointment with the lack of sophistication in character development and implies that the technical aspects are the only highlight, which aligns with a negative verdict. | Gemini: The review excerpt, combined with the 2/5 star rating, suggests a negative assessment. The excerpt implies that the show's appeal is limited to technical aspects, with a caveat about the treatment of the central character. | Kimi: The 2/5 star rating and criticism of the writing quality ('diminished by commerce', lacking sophistication) place this in the Negative bucket, despite acknowledgment of technical spectacle. Confidence is low due to single truncated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:30:02.100Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

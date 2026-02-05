@@ -29,12 +29,12 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250426203940",
   "archiveOrgUrl": "http://web.archive.org/web/20250426203940/https://www.nytimes.com/2018/01/11/theater/review-john-lithgow-stories-by-heart-broadway.html?_r=0",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 301,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T10:49:25.106Z",
+  "rejectedAt": "2026-02-05T02:26:59.888Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text is truncated and ends with an error message about retrieving article content and enabling JavaScript, indicating this is incomplete web content rather than a full review.; openai: The text is interrupted by a technical error message, preventing a complete review analysis.",
+  "rejectionReasoning": "claude: The review text is truncated and ends with a technical error message about retrieving content and enabling JavaScript, indicating this is incomplete/corrupted text.; openai: The text is truncated and includes a technical error message, making it impossible to fully assess the review.",
   "promptVersion": "5.2.0"
 }

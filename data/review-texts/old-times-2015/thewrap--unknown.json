@@ -8,8 +8,7 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "bww-reviews",
-    "bww-roundup"
+    "bww-reviews"
   ],
   "fullText": "I haven’t had this much fun in the theater since Ivo van Hove set “A Streetcar Named Desire” (1999) in a bathtub at the New York Theatre Workshop.\n\nHaving fun isn’t what you typically expect from watching a Harold Pinter play, much less one of his more indecipherable works.\n\nWhat’s the opposite of deconstruction in the theater? I’m not sure.",
   "isFullReview": false,
@@ -44,5 +43,59 @@
   "tierReason": "Short text (60 words)",
   "bwwExcerpt": "What's the opposite of deconstruction in the theater? I'm not sure. But that's what director Douglas Hodge does with 'Old Times' in this Roundabout production...In Hodge's 'Old Times,' the actors aren't playing the subtext necessarily. They share a feverish imagination that doesn't have much to do with the text, but nonetheless illuminates it in quirky ways...Hodge and company emphasize that defiance...Owen, in his Broadway debut, gives us a Deeley who's not only soused from the get-go but fey in an attractively disheveled sort of way...For theatergoers who are tired of sitting through all those Pinter pauses, Hodge pushes his actors to speak rapid fire, often on top of each other; and when they do take a breath, it's much more than a pause. It's often a long, silent interlude in which they lounge around, smoke cigarettes, or strut as if readying themselves for the next barrage of words.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OLD-TIMES-Opens-on-Broadway-Updating-LIVE-20151006"
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I haven't had this much fun in the theater since Ivo van Hove set 'A Streetcar Named Desire' (1999) in a bathtub.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Opens with emphatic praise comparing this to a landmark production, celebrates the director's bold creative choices, and consistently praises the performances and approach throughout. | GPT-4o: The critic expresses an unusually high level of enjoyment and fun, especially for a Harold Pinter play, indicating a strong recommendation. The review praises the director's approach and the actors' performances, suggesting a highly positive experience. | Gemini: The review indicates enjoyment and finds the production illuminating, though it also acknowledges the play's challenging nature and the director's unconventional approach. The opening line suggests a positive experience, but the rest of the review implies some reservations. | Kimi: The critic expresses genuine enthusiasm and enjoyment, praising the director's innovative approach and the strong performances, particularly Owen's Broadway debut.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:21:30.527Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

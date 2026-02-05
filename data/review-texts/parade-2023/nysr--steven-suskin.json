@@ -20,5 +20,60 @@
   "wordCount": 0,
   "showScoreExcerpt": "“Not your typical musical theater fodder, which counted against its popularity 25 years ago. But now, perhaps, ’Parade’s’ time has come. At least, as presented here, with Platt not only selling tickets but giving a searing knockout of a performance.”\n\nRead more",
   "bwwExcerpt": "Ben Platt remains the raison d’être of the production; if the Broadway transfer was predicated on the hunch that the former Evan Hansen would prove a ticket-selling draw, the sales thus far seem to bear this out. Platt — in adult shoes, as it were — proves himself an adept musical theater (and dramatic) actor. Relative newcomer Micaela Diamond was the welcome surprise at City Center; the 23-year-old handily carried the difficult and somewhat treacherous role of Lucile Frank, the passive wife who — when hope is lost in the second act — grabs the narrative and, thanks to composer Brown, the stage. If Diamond was an instant success last November, the intervening months have given her time to add assurance to talent and bring out heretofore hidden facets of the role of Lucile. She is very good indeed. Brown, along with his co-orchestrator, the late Don Sebesky, well understand the massive power of two people singing out at the top of their lungs over crashing cymbals. Platt and Diamond do precisely this, in “This Is Not Over Yet,” and the power crackles throughout the house.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Parade is even stronger than it has ever been, better than the original production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with unqualified superlatives throughout: 'even stronger than it has ever been', 'masterful', 'searing knockout performance', 'power crackles throughout the house'. Critic predicts this will finally give Brown 'the artistic and commercial success he has well earned' - clear rave territory. | GPT-4o: The review is overwhelmingly positive, praising the production as stronger than previous versions and highlighting standout performances and production elements. The original 5/5 star rating suggests a top-tier recommendation, despite the truncated text warning. | Gemini: The critic states that the current production is \"even stronger than it has ever been\" and better than both the City Center and original productions, indicating a rave review. The 5/5 star rating further supports this classification. | Kimi: 5/5 stars with unqualified superlatives throughout; critic declares this production superior to both the original and the City Center revival, praising Platt's 'searing knockout' performance and Brown's 'masterful' score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:27:58.465Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

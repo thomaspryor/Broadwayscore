@@ -42,5 +42,60 @@
   "wordCount": 66,
   "tierReason": "Short text (66 words)",
   "bwwExcerpt": "Brown has the excuse that he's been given the task of writing music for people who can't sing, Bean being the one exception. Green, on the other hand, never comes close to writing lyrics that reflect Young's edgy humor even when that character is singing. At its heart, the musical \"Mr. Saturday Night\" is as sentimental as it is dishonest. Under the direction of John Rando, the show entertains only when the title character is being nasty. Reform him, as all his dull relat",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MR-SATURDAY-NIGHT-Opens-on-Broadway-Starring-Billy-Crystal-Updating-Live-20220427"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MR-SATURDAY-NIGHT-Opens-on-Broadway-Starring-Billy-Crystal-Updating-Live-20220427",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At its heart, the musical 'Mr. Saturday Night' is as sentimental as it is dishonest.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the show sentimental and dishonest, criticizes the writing and lyrics, and opens by saying they'd rather sit through a different show. Only entertains when the character is being nasty, suggesting fundamental flaws. | GPT-4o: The critic expresses a clear negative sentiment, comparing the show unfavorably to another and criticizing the music and lyrics. The tone suggests disappointment and lack of recommendation. | Gemini: The critic clearly dislikes the musical, calling it sentimental and dishonest. The review entertains only when the title character is being nasty. | Kimi: The critic delivers harsh judgments on the material ('dishonest,' 'sentimental') and direction, noting it 'entertains only when the title character is being nasty' while criticizing the music and lyrics. The text cuts off mid-sentence, preventing a definitive verdict, so confidence is set to low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:07:11.949Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

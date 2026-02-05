@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German sextet silenced by the Nazis, finally makes it to Broadway after decades of development.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -51,5 +51,60 @@
   "archiveOrgTimestamp": "20231114093149",
   "archiveOrgUrl": "http://web.archive.org/web/20231114093149/https://variety.com/2023/legit/reviews/harmony-review-barry-manilow-broadway-1235790164/",
   "wordCount": 450,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play runs way too long, and sacrifices story, emotional depth and connection for musical numbers that quickly begin to sound alike.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The review acknowledges beautiful voices and some good love songs, but criticizes the play as 'glitzy and superficial' with hackneyed characters, excessive length, and lack of emotional depth. No clear recommendation either way. | GPT-4o: The review criticizes the play for being superficial, lacking emotional depth, and having a repetitive musical structure. Despite some praise for the music and performances, the overall tone is negative, suggesting the play is not recommended. | Gemini: The review highlights both positive aspects (beautiful voices, some good love songs) and negative aspects (superficial, lacks emotional depth, runs too long). The overall tone is mixed, not strongly recommending or discouraging. | Kimi: While praising the vocal performances and some technical elements, the critic finds the show superficial, lacking in plot and emotional depth, and problematic in its handling of the Holocaust material, ultimately warning audiences about its traumatic content. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:06:41.840Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

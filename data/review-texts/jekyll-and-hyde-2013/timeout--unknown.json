@@ -48,5 +48,60 @@
   "wordCount": 389,
   "tierReason": "Missing proper ending or other signals",
   "bwwExcerpt": "Has any musical so essentially ridiculous been graced with a revival? Yet Wildhorn, the Stephen Sondheim of Bizarro World, continues to be produced despite a string of flops, and Jekyll & Hyde has accrued a following. So here it is again, in a form that will satisfy few. Director Jeff Calhoun and his cast struggle bravely and pitiably in the straitjacket...Accenting Jekyll & Hyde's best asset-Wildhorn's rousing melodies-and hitting the rest at off angles whenever possible, Calhoun and his crew excise much of the original production's most ostentatious terribleness, leaving mere very-badness in its place.",
-  "bwwScore": 2
+  "bwwScore": 2,
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "high",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Good people of New York, be warned: The execrable 1990s musical Jekyll & Hyde has returned to Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Despite the 1/5 rating and truncation warning, this is a complete devastating pan. Feldman calls it 'execrable,' warns audiences away, and describes it as essentially ridiculous with only 'very-badness' remaining after improvements. The final 'Godspeed' is clearly dismissive. | GPT-4o: The review is overwhelmingly negative, describing the musical as 'execrable' with 'infantile storytelling' and 'dunderheaded lyrics.' The critic's 1/5 rating supports a Pan classification. Despite the text being truncated, the provided excerpts and the tone suggest a strong negative verdict. | Gemini: The review is overwhelmingly negative, calling the show an \"execrable horror show\" with \"infantile storytelling\" and \"dunderheaded lyrics.\" The 1/5 star rating confirms this is a pan. | Kimi: The 1/5 rating and sustained criticism of the infantile storytelling, dunderheaded lyrics, and 'very-badness' of the production indicate a strong recommendation against seeing the show, despite acknowledging the cast's efforts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:24:46.927Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

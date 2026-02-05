@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Theatergoers streaming into the new musical Pretty Woman, at the Nederlander, are understandably likely to do so with visions of Julia Roberts in their mind's eye and the strains of the Roy Orbison pop hit-\"Pretty woman, walkin' down the street\"-in their mind's ear. While there are more than a few delights on display here, neither the visions of movie star magic nor the urge to hear that song are satisfactorily fulfilled. While a sizable portion of the audience is likely to enjoy the musicalized",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Fall-In-Love-with-PRETTY-WOMAN-20180816"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Fall-In-Love-with-PRETTY-WOMAN-20180816",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While there are more than a few delights on display here, neither the visions of movie star magic nor the urge to hear that song are satisfactorily fulfilled.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars suggests mixed reception. The excerpt acknowledges 'delights' but notes key expectations aren't fulfilled. Text appears cut off mid-sentence, limiting confidence in the full verdict. | GPT-4o: The excerpt suggests some positive elements ('more than a few delights') but ultimately indicates a lack of fulfillment. The original 3/5 star rating aligns with a mixed verdict. However, the single excerpt and text quality warning lower confidence. | Gemini: The review acknowledges some delights but suggests that key expectations related to the movie and song are not met, indicating a mixed reaction. The truncated text and single excerpt lower confidence. | Kimi: The 3/5 star rating and mixed signals—acknowledging 'delights' while emphasizing that major audience expectations go unfulfilled—place this in the Mixed bucket. The single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:41:07.110Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

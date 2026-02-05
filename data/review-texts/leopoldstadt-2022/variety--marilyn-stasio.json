@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -55,5 +55,60 @@
   "sourceMethod": "brightdata",
   "wordCount": 779,
   "tierReason": "Full review text",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stoppard reveals in a coda set in 1995 – and leaves us shattered.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review consistently praises performances ('gorgeous performance', 'harrowing performance'), direction ('mathematically precise'), and design elements. The critic is deeply moved by the emotional impact, calling scenes 'shaking' and the ending 'shattering', indicating strong recommendation despite the difficult subject matter. | GPT-4o: The review is filled with praise for the performances, direction, and emotional impact of the play. The critic describes being 'shaken' and 'shattered', indicating a strong emotional response and a highly positive recommendation. | Gemini: The review is positive, highlighting the play's personal nature, the performances, and the direction. The critic seems impressed by the production's ability to convey the family's story and the historical context. | Kimi: The review offers unreserved praise for performances, direction, and design, with specific acclaim for the emotional impact ('shaken,' 'shattered') and Stoppard's effective departure from his intellectual style, though it stops short of explicit 'masterpiece' superlatives.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:39:48.973Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

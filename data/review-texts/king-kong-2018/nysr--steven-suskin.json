@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "King Kong-the animated star of the new Broadway extravaganza, and when I say animated I don't mean \"full of life\"-is awesome. The sheer size and range of movement of this 20-foot-tall puppet (although puppet doesn't quite describe it) might well leave you agape, at least for 15 of the 130 minutes you'll spend at the Broadway Theatre. The rest of the affair could have you pining for Spider-Man: Turn off the Dark, where they at least kept the evening suspenseful by offering the constant threat of ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Go-Bananas-For-KING-KONG-On-Broadway-20181108"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Go-Bananas-For-KING-KONG-On-Broadway-20181108",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The sheer size and range of movement of this 20-foot-tall puppet might well leave you agape, at least for 15 of the 130 minutes you'll spend at the Broadway Theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars indicates negative territory. The excerpt praises Kong puppet for 15 minutes but dismisses the remaining 115 minutes, unfavorably comparing to Spider-Man. However, with only one truncated excerpt available, confidence is low. | GPT-4o: The excerpt highlights the impressive puppet but criticizes the rest of the show, suggesting it lacks engagement. The 2/5 stars rating supports a negative classification. | Gemini: The review praises the puppet but implies the rest of the show is not good, and the 2/5 star rating confirms a negative assessment. | Kimi: 2/5 star rating with praise limited solely to the puppet for only 15 minutes of the 130-minute runtime, while the remainder is unfavorably compared to the notoriously troubled 'Spider-Man: Turn off the Dark'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:32:42.088Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

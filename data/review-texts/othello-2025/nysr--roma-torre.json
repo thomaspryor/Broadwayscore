@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "The performances are all in sync, never an easy task in modern productions with shortened rehearsal periods featuring actors trained in different techniques and styles. But here they’re all speaking the speech uniformly. Mastering the Iambic pentameter rhythms is always a challenge, but the cast pulls it off quite consistently; and after a while, our modern ears found the Elizabethan language less and less foreign. It’s impossible to pick up everything they say, and the lines are often spoken too quickly to decipher the full meanings but the intentions always come through loud and clear.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OTHELLO-Starring-Denzel-Washington-and-Jake-Gyllenhaal-20250323"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OTHELLO-Starring-Denzel-Washington-and-Jake-Gyllenhaal-20250323",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Thanks to a bravura company, the telling is first class.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise throughout. Calls it a 'most praiseworthy production' and 'first class' telling, praises all lead performances as excellent/masterful, and finds the direction organic and authentic. | GPT-4o: The review praises the performances and production, noting the actors' mastery of Shakespearean language and the director's effective staging. The original 4/5 star rating suggests a positive verdict, though the text is truncated, so confidence is low. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the performances, direction, and relevance of the production. The critic's 4/5 star rating and the phrase \"a most praiseworthy production\" indicate a strong recommendation. | Kimi: The critic awards 4/5 stars and offers enthusiastic praise for the performances, particularly Gyllenhaal's 'revelation' and Washington's excellence, along with the direction, despite minor reservations about ticket prices and diction clarity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:25:31.226Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 78,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

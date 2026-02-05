@@ -36,5 +36,60 @@
   "tierReason": "Full review text",
   "showScoreExcerpt": "“Visually, the play is a deeply wondrous spectacle that teems with beauty and brutality. Narratively, the script does less to impress, as if written at times in magic marker, and supporting performances could use some shading.”\n\nRead more",
   "bwwExcerpt": "In the end, there’s no question that director Max Webster’s staging is a technical marvel that makes the most of its moving parts. Those include amazing puppetry; evocative scenic, lighting, and sound design; and transporting video and animation effects that conjure the ocean and the sky above. “My story will make you believe in God,” Pi insists. Whether or not that’s true, it’s impossible to doubt such powerful theatrical stagecraft.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The display's the thing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Four-star review with consistent praise for the visual spectacle and technical staging, calling it a 'technical marvel' and 'deeply wondrous spectacle.' Despite noting script weaknesses, the overall recommendation is positive based on the theatrical experience. | GPT-4o: The review praises the visual and technical aspects as a 'wondrous spectacle' and 'technical marvel,' but notes the script is less impressive. The overall tone is positive with some reservations about narrative depth. | Gemini: The review praises the visuals and stagecraft as a \"technical marvel\" but notes that the script is less impressive. The four-star rating and positive overall tone indicate a recommendation with reservations. | Kimi: The reviewer explicitly labels this a four-star review, offering high praise for the visual spectacle and lead performance while acknowledging weaknesses in the script and supporting cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:42:43.814Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

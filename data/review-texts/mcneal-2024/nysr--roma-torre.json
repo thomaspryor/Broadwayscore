@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Before I get into the merits of the play and Lincoln Center’s thrilling production, something else that’s very real is the extraordinary talents of its leading man. Making his Broadway debut, Robert Downey Jr., who most of us know only through his film work, is a great stage actor. As famed novelist Jacob McNeal, an egotistical, self-acknowledged asshole, he is a fascinating creature treading the line between obnoxious and seductive. You can’t take your eyes off him…and happily, he’s on stage for the entirety of Akhtar’s 90-minute drama.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Robert-Downey-Jr-More-Star-In-MCNEAL-on-Broadway-20240930"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Robert-Downey-Jr-More-Star-In-MCNEAL-on-Broadway-20240930",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Making his Broadway debut, Robert Downey Jr. is a great stage actor.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: 5/5 stars with enthusiastic praise for lead performance and production ('thrilling production', 'great stage actor', 'fascinating creature'). Single excerpt limits confidence but 5 stars strongly indicates upper Positive range. | GPT-4o: The excerpt describes the production as 'thrilling' and praises Robert Downey Jr.'s performance as 'great,' indicating a highly positive view. The original 5/5 stars rating supports a Rave classification. However, with only one excerpt available, confidence is low. | Gemini: The review excerpt is overwhelmingly positive, praising Robert Downey Jr.'s performance and the production as \"thrilling.\" The critic also mentions that you can't take your eyes off of him. Given the 5/5 star rating and the positive tone, a score in the upper end of the positive range is warranted. | Kimi: The excerpt offers enthusiastic praise for Downey Jr.'s performance and the production, supported by the critic's 5/5 star rating. Following the single-excerpt guidance to cap clearly positive excerpts at the upper end of the Positive bucket (80-84), assigned score 84 with low confidence due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:59:29.792Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

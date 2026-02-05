@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a Macbeth that strips away the pageantry and focuses on the psychological horror, with Cumming delivering a tour-de-force performance that holds the audience captive for 70 intermissionless minutes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,5 +19,60 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
   "textQuality": "truncated",
-  "unflaggedNote": "Previously flagged: Auto-flagged: published 186 days before show earliest date 2013-10-25"
+  "unflaggedNote": "Previously flagged: Auto-flagged: published 186 days before show earliest date 2013-10-25",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cumming delivering a tour-de-force performance that holds the audience captive for 70 intermissionless minutes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for Cumming's 'tour-de-force performance' and effective concept, though brief excerpt limits fuller assessment of critical verdict. | GPT-4o: The review praises the production for its focus and describes Cumming's performance as a 'tour-de-force', indicating a strong recommendation. | Gemini: The review praises Cumming's performance as a 'tour-de-force' and highlights the production's focus on psychological horror, indicating a positive recommendation. | Kimi: The critic employs superlative language ('tour-de-force', 'holds the audience captive') without reservation, praising both the psychological focus of the production and the lead performance as powerfully captivating. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:51:16.055Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

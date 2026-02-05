@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Transforming My Name Is Lucy Barton from page to stage in such engrossing manner is quite a feat on the part of the actor, as well as Strout, Munro, and Eyre. Linney gives an astounding performance, circling the truth (whatever that might be) with a supreme ambivalence. The overall effect, on that almost bare platform set within the stage of the Friedman, being that she-the actress and the character-is thoroughly, and nicely, compelling.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MY-NAME-IS-LUCY-BARTON-Starring-Laura-Linney-Opens-On-Broadway-20200115"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MY-NAME-IS-LUCY-BARTON-Starring-Laura-Linney-Opens-On-Broadway-20200115",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Linney gives an astounding performance, circling the truth with a supreme ambivalence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise throughout. Calls Linney 'altogether wonderful' and gives an 'astounding performance.' Describes the adaptation as 'quite a feat' and the overall effect as 'thoroughly, and nicely, compelling.' Strong positive language with no significant reservations. | GPT-4o: The review praises Linney's performance and the engrossing adaptation, aligning with the 4/5 star rating. However, the text is truncated, and the final verdict may be missing, leading to medium confidence. | Gemini: The review is overwhelmingly positive, praising Linney's performance and the engrossing adaptation. Although truncated, the language suggests a strong recommendation, supported by the 4/5 star rating. | Kimi: The 4/5 star rating and enthusiastic praise for Laura Linney's 'astounding' performance and the 'engrossing' adaptation place this firmly in the positive range, though the truncation warning necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:10:51.781Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -38,5 +38,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "It always comes back to Nanny, with her stiff back and neatly folded arms; Santiago-Hudson's rendering evokes a Cicely Tyson type, a strong Black matriarch not to be trifled with. His narrative performance is impressive for many reasons, but one of the most nuanced is the way Santiago-Hudson sees it all, as a child eavesdropping and peeking through doorways, with curious and affectionate eyes. He grounds us in the details, which brings not just these characters, but also a whole town to life: the way a woman pops her hips, the way a man coughs, even the particular tint of the Lackawanna snow. After all, people may think the blues are about heartbreak, but to get to heartbreak, you first have to pass through love.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LACKAWANNA-BLUES-Opens-on-Broadway-20211007"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LACKAWANNA-BLUES-Opens-on-Broadway-20211007",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It proves to be a winsome performer's master class in storytelling, despite a few flat notes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises Santiago-Hudson's performance as a 'master class in storytelling' and calls him a 'merciless charmer,' but notes specific weaknesses like pushing too hard on emotional notes and an awkward ending. Overall positive recommendation with clear reservations. | GPT-4o: The review praises Santiago-Hudson's performance and the production's vibrancy, despite noting some flat notes and emotional missteps. The overall tone is positive, but the text is truncated, so the final verdict may be missing. | Gemini: The review is mostly positive, praising Santiago-Hudson's performance and storytelling. However, the truncated text and some reservations (e.g., \"a few flat notes\", \"pushes too hard on the emotional notes\") suggest a score in the lower end of the positive range. Confidence is low due to truncation. | Kimi: While the review notes specific weaknesses in the emotional scenes and ending, it consistently praises Santiago-Hudson's virtuosic performance as 'delightful,' 'impressive,' and a 'master class,' with clear admiration for his storytelling craft and vocal prowess.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:36:29.542Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

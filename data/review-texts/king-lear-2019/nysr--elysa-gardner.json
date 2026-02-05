@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "That previous King Lear was staged at London's Old Vic in 2016, under the direction of Deborah Warner, renowned for her innovative interpretations of classic works, including her collaborations with another great actress from across the pond, Ireland's Fiona Shaw. Having missed that acclaimed staging, I can only speculate that Jackson was as magnificent as she is in this current incarnation-and as generous, for Gold's Lear is as much a showcase for excellent ensemble acting as it is a star vehic",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jackson delivers a devastating portrait of the king's struggle to restore clarity and retain dignity as madness encroaches.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with sustained praise for Jackson's 'devastating portrait' and 'excellent ensemble acting.' Despite noting some directorial touches as 'gratuitous,' the overall tone is enthusiastic recommendation, particularly for Jackson's performance which the critic calls 'magnificent' and 'a prize worth relishing.' | GPT-4o: The review praises Glenda Jackson's performance as magnificent and highlights strong ensemble acting, despite some minor criticisms of directorial choices. The 4/5 star rating supports a strong positive classification. | Gemini: The review is overwhelmingly positive, praising Jackson's performance and the ensemble acting. The 4/5 star rating and enthusiastic tone warrant a score in the high positive range. | Kimi: The 4/5 star rating and enthusiastic praise for Glenda Jackson's 'devastating' performance and the 'excellent ensemble acting' place this firmly in the Positive bucket, despite minor reservations about some 'gratuitous' directorial touches.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:34:06.536Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

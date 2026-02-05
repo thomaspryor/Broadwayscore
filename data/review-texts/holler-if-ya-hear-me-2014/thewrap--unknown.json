@@ -8,8 +8,7 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "bww-reviews",
-    "bww-roundup"
+    "bww-reviews"
   ],
   "fullText": "Frankly, I wouldn’t trust any veteran Broadway critic when it comes to a new musical that features the songs of Tupac Shakur. In this case, that musical is “Holler If Ya Hear Me,” which opened Thursday at the Palace Theater.\n\nAt the critics’ preview I attended, the show’s heartiest response came from the balcony and not those people seated in the orchestra of the Palace Theatre, which earlier this year housed a revival of “Annie” and before that, “Priscilla Queen of the Desert.”",
   "isFullReview": false,
@@ -45,5 +44,59 @@
   "tierReason": "Short text (83 words)",
   "bwwExcerpt": "As with the nearby 'Rocky,' the best thing about 'Holler' is the new seating configuration, which is startlingly effective in giving us a predatory hawk's eye view of the bleak street scene below. Otherwise, this show keeps falling prey to almost every cliché that has made the jukebox musical such a maligned genre in the theater. It's not just that Todd Kreidler's book can't match the power of Shakur's stark and bracing poetry. Kreidler keeps subverting those lyrics with a storyline that makes a contradictory mess of its principal characters. 'Holler' is not a travesty like the super-successful 'Mamma Mia!,' where only the first line of every Abba song refers to the action at hand and the rest of the lyrics go on their merry, aimless way. But all too often, Shakur's lyrics only comment on the emotional content of the characters' lives. As with most jukebox musicals, the lyrics rarely further the action. Which leaves Kreidler's book with way too much explaining to do.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOLLER-IF-YA-HEAR-ME-Opens-on-Broadway-Updating-LIVE-20140619"
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show keeps falling prey to almost every cliché that has made the jukebox musical such a maligned genre in the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear criticism of the book as contradictory and unable to match Shakur's poetry, with systematic problems typical of jukebox musicals. Single excerpt warning applied - could be more negative overall. | GPT-4o: The review criticizes the show for falling into clichés and having a weak book that undermines the lyrics, suggesting it does not recommend the show. However, it acknowledges some redeeming qualities, like the seating configuration. | Gemini: The review criticizes the show for falling prey to jukebox musical cliches and having a weak book that subverts the lyrics. While not a complete pan, it's clearly negative. | Kimi: While praising the innovative seating configuration, the critic heavily criticizes the book as a 'contradictory mess' that fails to match Shakur's poetry and falls prey to jukebox musical clichés, ultimately finding the show ineffective.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:10:29.912Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

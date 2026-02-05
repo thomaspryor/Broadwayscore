@@ -8,8 +8,7 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "bww-reviews",
-    "bww-roundup"
+    "bww-reviews"
   ],
   "fullText": "Get our top stories delivered straight to your inbox.\n\nSign Up\n \n \n \n \n By clicking \"Sign Up\" you agree to our\n \n Terms of Use\n \n and\n \n Privacy Policy\n \n .\n\nThere is, to date at least, no better-looking production on Broadway today. Mean Girls, the theatrical adaptation of the 2004 movie starring Lindsay Lohan, has swiped Spongebob Squarepants' brilliantly colored crown.\n\nThe visual centerpiece of the production is a panoply of projection screens—the brainchild of Finn Ross and...\n\nGot a tip? Send it to The Daily Beast here.",
   "isFullReview": false,
@@ -50,5 +49,59 @@
   "promptVersion": "5.2.0",
   "bwwExcerpt": "If you loved the movie, if you found it as 'fetch' as Plastics sub-lieutenant Gretchen Wieners (here played by Ashley Park) would wish, then you will also love this musical, directed and choreographed with characteristic verve and juiced-up passion by Casey Nicholaw. The book by Tina Fey still has all the sly, biting brilliance and precise observational humor of the original movie, which she also wrote.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-Think-MEAN-GIRLS-Was-Fetch-All-the-Reviews-Updating-Live-20180408"
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you loved the movie, then you will also love this musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear recommendation with praise for visuals, direction, and book, though qualified for movie fans specifically. The additional context confirms positive assessment of performances and creative elements. | GPT-4o: The review praises the production's visual appeal and the adaptation's fidelity to the original movie's humor, suggesting a strong recommendation for fans of the film. | Gemini: The review is positive, especially for fans of the movie. It praises the visuals, direction, choreography, and Tina Fey's writing, but it is somewhat conditional on liking the original movie. | Kimi: While the text is fragmented, the critic offers unqualified praise for the visual design ('no better-looking production on Broadway') and explicitly states fans of the movie 'will also love this musical,' citing strong direction and writing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:01:35.149Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

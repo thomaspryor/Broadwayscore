@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "On the one hand-perhaps the upper hand-Is This A House is effective in illuminating the process by which the sometimes reassuring, sometimes intimidating FBI agents elicited Winner's less-than-winning admissions. On the other hand, adhering strictly to the word-for-word declaration introduces several questions. Okay, it's word-for-word, but after a while, doesn't the actors so assiduously replicating every verbal hiccup begin to feel like a stunt? Doesn't this representation prompt a thought about what is the more efficacious manner of representing theatrical reality (no pun intended)?",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-IS-THIS-A-ROOM-Opens-On-Broadway-20211011"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-IS-THIS-A-ROOM-Opens-On-Broadway-20211011",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Is This A House is effective in illuminating the process by which the sometimes reassuring, sometimes intimidating FBI agents elicited Winner's less-than-winning admissions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: 4/5 stars indicates solid positive territory. The excerpt shows the critic finds the show 'effective' while raising thoughtful questions about the theatrical approach, suggesting appreciation with intellectual reservations. | GPT-4o: The excerpt presents a balanced view, acknowledging the effectiveness of the play in certain aspects while questioning its approach. The 4/5 star rating suggests a positive leaning, but the excerpt's mixed tone justifies a score at the upper end of the Mixed range. | Gemini: The review presents both positive and negative aspects of the play, without a clear recommendation. The critic acknowledges the effectiveness of illuminating the FBI process but questions the efficacy of the word-for-word replication. | Kimi: The 4/5 star rating places this firmly in Positive territory, indicating the critic's overall approval despite the excerpt's notable reservations about the word-for-word replication approach feeling occasionally like a 'stunt.' | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:20:05.836Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

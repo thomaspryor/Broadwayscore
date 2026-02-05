@@ -43,5 +43,60 @@
   "tierReason": "Short text (63 words)",
   "bwwExcerpt": "Bartlett Sher directs and he pushes each of these supporting players to overact to the extreme, while Downey Jr. delivers an oddly staccato performance. It’s as if he’s trying to distance himself from the character with his tick-filled delivery of the lines. However, as this 90-minute play progresses with its over-the-top performances from the supporting actors, Downey Jr. begins to emerge as the calm eye of the angry storm raging around his character. He wins our sympathy by default.",
   "bwwScore": 2,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Robert-Downey-Jr-More-Star-In-MCNEAL-on-Broadway-20240930"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Robert-Downey-Jr-More-Star-In-MCNEAL-on-Broadway-20240930",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bartlett Sher directs and he pushes each of these supporting players to overact to the extreme, while Downey Jr. delivers an oddly staccato performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds fundamental flaws with the direction and performances, comparing the experience to being completely misled by trusted journalism. While acknowledging Downey Jr. eventually emerges as sympathetic, the overall assessment is negative. | GPT-4o: The review criticizes the direction and performances, describing them as overacted and tick-filled. While Downey Jr. is noted to win sympathy, it's by default, indicating overall dissatisfaction with the production. | Gemini: The review describes overacting and a staccato performance, indicating a negative experience despite Downey Jr. eventually winning sympathy. | Kimi: The critic states the play 'gets it completely wrong' on its subject matter, criticizes the director for pushing actors to 'overact to the extreme,' and describes the lead performance as 'oddly staccato.' While noting Downey Jr. eventually wins sympathy by default, the overall assessment is unfavorable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:01:00.779Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

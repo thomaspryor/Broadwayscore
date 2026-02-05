@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Tracy Letts, well known in these parts for his Pulitzer Prize-winning August: Osage County and as a Tony Award-winning actor (in plays including the 2012 revival of Who's Afraid of Virginia Woolf?), is back at his keyboard, and the results are superb. While his past oeuvre has not been noted for laughs-this is the man who wrote Killer Joe and Bug, after all-time and tide have caught up with the playwright, who battles his own fifty-year mark with wild comic lances thrust at life's annoyances, only to have these darts more or less boomerang. The results are knowing, prickly, and altogether hilarious.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Tracy-Letts-LINDA-VISTA-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191010"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Tracy-Letts-LINDA-VISTA-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191010",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The results are superb.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: 5/5 stars with unqualified praise calling the results 'superb' and 'altogether hilarious.' Strong superlatives indicate top-tier recommendation. | GPT-4o: The excerpt praises the play as 'superb' and 'altogether hilarious,' suggesting a strong positive reception. The original 5/5 stars rating indicates a high level of enthusiasm, supporting a Rave classification. | Gemini: The review excerpt uses strong positive language like \"superb\" and \"altogether hilarious,\" indicating a positive recommendation. The 5/5 star rating further supports this classification. | Kimi: The critic awards 5/5 stars and describes the work as 'superb' and 'altogether hilarious', indicating enthusiastic approval. However, as this is a single curated excerpt, confidence is reduced per instructions. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:43:56.817Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

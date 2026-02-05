@@ -22,5 +22,59 @@
   "showScoreExcerpt": "“...’Shucked’ feels as light and airy as Scott Pask’s beautiful set design of a huge, multi-level wooden barn.”\n\nRead more",
   "bwwExcerpt": "Director Jack O’Brien orchestrates the proceedings with endless imagination and precise comic staging that accentuates the show’s strengths while downplaying its weaknesses. Thanks to the outstanding efforts of all concerned, Shucked feels as light and airy as Scott Pask’s beautiful set design of a huge, multi-level wooden barn.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SHUCKED-Opens-On-Broadway-The-Critics-Weigh-In-20230404"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SHUCKED-Opens-On-Broadway-The-Critics-Weigh-In-20230404",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "‘Shucked’ feels as light and airy as Scott Pask’s beautiful set design of a huge, multi-level wooden barn.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The 4/5 star rating indicates a positive review. The available excerpt praises the set design, suggesting a positive tone. However, due to the limited text, the confidence is low. | Gemini: The quote praises the set design and describes the show as \"light and airy\", suggesting a positive experience. The 4/5 star rating also indicates a positive recommendation, but the truncated text and limited information lower the confidence. | Kimi: The 4/5 star rating and appreciative description of the production design ('beautiful', 'light and airy') indicate a solid recommendation, though the excerpt-only format warrants low confidence in the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:51:56.511Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

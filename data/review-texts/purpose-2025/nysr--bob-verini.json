@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Time has passed Rev. Jasper by. Aged out of relevance, with the vigorous civil rights movement a thing of history, he sees his legacy in ashes, with one son a convicted felon and the other a divinity school dropout. This lion in winter retreats to the passions and pursuits of an earlier day, notably beekeeping (a dramatically interesting choice, as it turns out). Lennix is a marvel in this role, fires banked but still burning. Though he almost never raises his voice, we never question his authority, however disillusioned he’s become.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Phylicia-Rashad-Directs-PURPOSE-By-Branden-Jacobs-Jenkins-On-Broadway-20250317"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Phylicia-Rashad-Directs-PURPOSE-By-Branden-Jacobs-Jenkins-On-Broadway-20250317",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lennix is a marvel in this role, fires banked but still burning.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with strong praise for Lennix's performance ('marvel', 'never question his authority'), but single excerpt limits confidence in overall assessment. | GPT-4o: The excerpt praises Lennix's performance as 'a marvel' and highlights his authority and emotional depth. The 4/5 star rating suggests a positive review, and the excerpt's tone supports a strong recommendation. | Gemini: The review excerpt is overwhelmingly positive, praising Lennix's performance as a \"marvel.\" The 4/5 star rating also suggests a strong positive recommendation. | Kimi: The 4/5 star rating and strong praise for the lead performance ('marvel,' 'never question his authority') indicate a clear recommendation, though the single excerpt limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:42:44.871Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

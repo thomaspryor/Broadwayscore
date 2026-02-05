@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "The musical, which opened tonight at the Broadhurst Theatre, is, like the album, surpassingly excellent, if also slightly flawed. What makes it so good? It's the ideal exemplar of a certain sort of jukebox musical, one that hangs an artist's catalogue onto a fictional story, often to laughable result.(See: Everyone from the lovelorn Spring Breakers of Escape to Margaritaville to the wandering cowboy of Ring of Fire.) Here, in the hands of Oscar-winning screenwriter Diablo Cody, Jagged Little Pill fashions a story with characters that are actually compelling: A modern, seemingly all-American, upper-middle-class family, in which all the members have their own problems. A cynical theatergoer, weary of this kind of jukeboxer, might well find himself surprised to be emotionally engaged in the story.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAGGED-LITTLE-PILL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191205"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAGGED-LITTLE-PILL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191205",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is, like the album, surpassingly excellent, if also slightly flawed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with explicit praise calling it 'surpassingly excellent' and highlighting strong performances, direction, and book. While noting the show is overstuffed with issues, the critic finds it emotionally engaging and successful overall. | GPT-4o: The review praises the show's engaging story, strong performances, and effective use of Morissette's music, despite noting some overstuffed plot elements. The original 4/5 star rating supports a positive classification, but the truncated text and noted flaws reduce confidence. | Gemini: The review is mostly positive, highlighting the performances, direction, and book, but notes the plot is overstuffed and the ending too neat. The 4/5 star rating and \"surpassingly excellent\" indicate a positive leaning despite reservations. Confidence is low due to the truncated text. | Kimi: The critic awards 4/5 stars and describes the show as 'surpassingly excellent' with 'sensational performances' and compelling storytelling, though noting the plot is overstuffed with hot-button issues and wraps up too neatly. The enthusiastic praise for the cast, direction, and choreography outweighs these reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:24:03.757Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

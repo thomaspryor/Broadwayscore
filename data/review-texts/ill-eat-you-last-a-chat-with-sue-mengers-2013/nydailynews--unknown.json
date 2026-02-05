@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20211024000634/https://www.nydailynews.com/entertainment/music-arts/eat-chat-sue-mengers-theater-review-article-1.1326292",
   "contentTier": "complete",
   "wordCount": 486,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Midler is a riot simply sitting still and dishing the dirt.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls the show 'funny' and praises Midler's 'Rolex-precise comic timing' and fearless performance, clearly recommending it despite noting the material is 'vaporously thin.' | GPT-4o: The review praises Bette Midler's performance and comic timing, describing her as 'a riot' despite the show's 'vaporously thin' nature. The overall tone is positive, recommending the show primarily for Midler's engaging performance. | Gemini: The review is generally positive, highlighting Midler's performance and comic timing, but also notes the show is \"vaporously thin.\" This suggests a recommendation with reservations. | Kimi: While the critic criticizes the play itself as 'vaporously thin,' the review is dominated by praise for Midler's 'Rolex-precise comic timing' and 'fearless' performance, suggesting the star's presence makes it worthwhile despite the slight material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:17:28.530Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

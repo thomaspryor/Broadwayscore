@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Not to keep in suspense those begging to know how the transformation has turned out, here's the skinny: What's called, natch, Pretty Woman, at the Nederlander, is a solidly mediocre entertainment-its mediocrity making it look like much more in a season so far overloaded with barely speakable Broadway and off-Broadway competition.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Fall-In-Love-with-PRETTY-WOMAN-20180816"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Fall-In-Love-with-PRETTY-WOMAN-20180816",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What's called, natch, Pretty Woman, at the Nederlander, is a solidly mediocre entertainment—its mediocrity making it look like much more in a season so far overloaded with barely speakable Broadway and off-Broadway competition.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly calls it 'solidly mediocre entertainment' and gives it 3/5 stars. While acknowledging competent performances and production values, the overall assessment is neither enthusiastic recommendation nor discouragement - classic mixed territory. | GPT-4o: The review describes the show as 'solidly mediocre' and 'pretty fair enough,' indicating a mixed assessment. The 3/5 stars rating supports a mixed classification. However, the text is truncated, so the final verdict may be missing, leading to low confidence. | Gemini: The review calls the show \"solidly mediocre\" and says the songs are \"serviceable.\" While the performers are praised, the overall impression is lukewarm. The truncated text and 3/5 stars support a mixed score. | Kimi: The critic awards 3/5 stars and explicitly labels the show 'solidly mediocre' though 'pretty fair enough as these things go,' praising individual performances and design elements while finding the score serviceable but unremarkable and the adaptation lacking in dramatic stakes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:40:18.932Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

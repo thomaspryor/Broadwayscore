@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Being exposed to Horn’s masterful pun demonstration comes close to equaling the price of Shucked admission, but what about the rest of it? Slightly less of a recommendation – with a caveat: Jack O’Brien’s direction. For this production, which prides itself in being as corny as Cob County, O’Brien imbues the production with rat-a-tat style that not only knocks your socks off but blows your mind. The knocking and blowing are enhanced by Scott Pask’s set of a large, slatted barn with occasional corn rows sliding on. Japhy Weideman’s lighting and John Shivers’ sound help a bushel, too.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SHUCKED-Opens-On-Broadway-The-Critics-Weigh-In-20230404"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SHUCKED-Opens-On-Broadway-The-Critics-Weigh-In-20230404",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Being exposed to Horn's masterful pun demonstration comes close to equaling the price of Shucked admission",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with sustained praise for Horn's writing ('lifts it to the level of art'), O'Brien's direction ('knocks your socks off but blows your mind'), and design elements. Despite noting the songs are only 'serviceable' and plot predictable, the overall tone is appreciative and recommending, ending with an affectionate 'Aw, shucks!' | GPT-4o: The review praises the pun-filled script and direction, noting the production's style and set design. However, it also mentions some reservations about the music and overall impact, aligning with the 4/5 star rating. | Gemini: The review is mostly positive, praising the puns and direction, but the truncated ending and the phrase \"Slightly less of a recommendation – with a caveat\" suggest reservations. The 4/5 star rating also indicates a positive but not rave review. Confidence is low due to the truncated text. | Kimi: The critic awards 4/5 stars, praising the bookwriter's 'masterful' puns and the director's energetic style as worth the admission price, while offering reservations about the serviceable score and thin plot.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:51:10.881Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 76,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

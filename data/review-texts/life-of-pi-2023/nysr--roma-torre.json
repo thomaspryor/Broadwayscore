@@ -20,5 +20,60 @@
   "wordCount": 0,
   "showScoreExcerpt": "“ ‘Life of Pi’ does a phenomenal job of creating a sense of realism with extraordinary stagecraft...In light of Pi’s relentless pursuit of spirituality, the play prompts us to ponder our own beliefs, the nature of truth, morality, faith, and perhaps most resonantly, the incomparable power of live theater.”\n\nRead more",
   "bwwExcerpt": "The production will likely bring to mind two other ingenious displays of theatrical puppetry – Lion King and War Horse. Like them, Life of Pi does a phenomenal job of creating a sense of realism with extraordinary stagecraft. And while Life of Pi may not have the emotional punch of the other two shows, it succeeds in different ways. In light of Pi’s relentless pursuit of spirituality, the play prompts us to ponder our own beliefs, the nature of truth, morality, faith, and perhaps most resonantly, the incomparable power of live theater.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Life of Pi' does a phenomenal job of creating a sense of realism with extraordinary stagecraft.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with praise for 'phenomenal' stagecraft and meaningful thematic content. Despite limited excerpt, the star rating and consistently positive language indicate a strong recommendation. | GPT-4o: The review excerpt praises the stagecraft and thematic depth of the play, aligning with the 4/5 star rating, indicating a strong positive recommendation. However, due to the limited text, confidence is low. | Gemini: The review excerpt praises the stagecraft and realism, and the 4/5 star rating suggests a positive recommendation, but the truncated text limits confidence. | Kimi: The critic's 4/5 star rating and use of superlatives like 'phenomenal' and 'extraordinary' to describe the stagecraft, along with praise for the production's emotional resonance, indicate a strong recommendation despite the excerpted nature of the text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:41:58.961Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

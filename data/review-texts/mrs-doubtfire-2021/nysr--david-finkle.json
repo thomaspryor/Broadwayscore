@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "The tuner (using the term loosely) has two elements going for it: 1) its realistic view of one bittersweet consequence that families may face when divorce intervenes; and 2) the always remarkable Rob McClure pulling out multitudinous stops as the title character.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MRS-DOUBTFIRE-Opens-on-Broadway--Updating-Live-20211205"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MRS-DOUBTFIRE-Opens-on-Broadway--Updating-Live-20211205",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The tuner (using the term loosely) has two elements going for it",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with dismissive language ('using the term loosely') suggests negative verdict. Praises McClure's performance but implies only two redeeming elements in entire show. | GPT-4o: The original rating of 2/5 stars indicates a negative review. The excerpt highlights only two positive elements, suggesting limited praise amidst broader criticism. The term 'tuner (using the term loosely)' implies skepticism about the show's quality. | Gemini: The review acknowledges positive elements (realistic view, Rob McClure's performance) but the phrase \"using the term loosely\" suggests a negative overall assessment of the musical itself. Given the 2/5 star rating, this is likely a negative review, despite the praise for McClure. | Kimi: The 2/5 star rating and dismissive tone ('using the term loosely') indicate a negative verdict, with praise limited to only two elements including Rob McClure's performance, while the show itself is found lacking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:08:31.459Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Satter's staging ratchets up the tension slowly, subtly. Note how Garrick creeps behind Reality's shoulder, then inches closer and closer to her face. He throws around the word 'voluntary,' but could Reality simply have left? Everything about the situation-including the redactions in the transcript, which are punctuated by blistering sounds and stark lighting shifts-screams pressure; it's no wonder she eventually comes clean. (Side note: This is an argument for the lawyers, which she did not have. But the fact that her confession, which came before she was read her rights, was admissible is mind-boggling. If Briscoe and Logan had pulled this stunt with a perp on Law & Order, McCoy wouldn't have gotten the confession past any judge in New York.)",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "brief but gripping dramatization",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic gives 4/5 stars and uses positive language like 'gripping,' 'captivating,' and 'fascinating,' praising the performances and direction. However, the repeated emphasis on 'frustration' alongside fascination suggests some reservations about the material or experience. | GPT-4o: The review provides a positive assessment of the staging and performances, describing the production as gripping and fascinating. The original rating of 4/5 stars supports a positive classification, but the truncated nature of the text necessitates a cautious approach. | Gemini: The review expresses both fascination and frustration, but the overall tone is positive, highlighting the gripping nature of the dramatization and the importance of hearing Reality Winner's story. The 4/5 star rating also indicates a positive recommendation. | Kimi: The critic awards 4/5 stars and consistently praises the production as 'gripping' and 'captivating,' with strong commendations for Emily Davis's performance and Tina Satter's direction. While the text is flagged as truncated, the available content indicates a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:20:42.688Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

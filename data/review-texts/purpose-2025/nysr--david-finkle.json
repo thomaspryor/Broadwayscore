@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "The results afflict everyone, many if not most of them beginning or ending with Solomon’s iron grip over the family, with Aziza dragged into the fray. The patriarch resents both his sons: Naz turned his back on becoming the celebrated next-generation preacher; Junior went bad and is deemed unworthy of redemption. On it goes, for a while making sense of the family’s accumulating dysfunctions and crescendoing toward a delicately plotted finale. But Jacobs-Jenkins doesn’t know when to stop. He continues piling on nasty disturbances and ugly revelations so that he haphazardly risks audience resistance.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Phylicia-Rashad-Directs-PURPOSE-By-Branden-Jacobs-Jenkins-On-Broadway-20250317"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Phylicia-Rashad-Directs-PURPOSE-By-Branden-Jacobs-Jenkins-On-Broadway-20250317",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He continues piling on nasty disturbances and ugly revelations so that he haphazardly risks audience resistance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with mixed signals - acknowledges plot makes sense initially and builds to 'delicately plotted finale' but criticizes overextension and risks losing audience. Single excerpt limits full assessment. | GPT-4o: The excerpt suggests a mixed review with both positive and negative elements. It describes the play as initially making sense but criticizes it for overextending and risking audience resistance. The original 3/5 stars rating aligns with a mixed verdict. | Gemini: The review excerpt indicates a mixed assessment, praising the initial development but criticizing the excessive piling on of negative elements, leading to a risk of audience resistance. Given the single excerpt and the 3/5 star rating, a mixed score is appropriate. | Kimi: The 3/5 star rating and mixed critique—praising the 'delicately plotted finale' while criticizing the playwright for 'piling on' excess and risking 'audience resistance'—indicates an ambivalent assessment. The single excerpt limitation warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:43:35.352Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

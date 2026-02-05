@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Stoppard has written a deeply personal work that operates as both an act of remembrance and a reckoning with the moral complexity of survival.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -67,5 +67,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 773,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Speaking of mathematics, Hermann's sister, Eva (Caissie Levy), is married to Ludwig (Brandon Uranowitz), a math guy (a numbers theorist, to give him his due) who is scornful of applied mathematics and takes a worshipful attitude to his own field.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review consistently praises performances ('gorgeous performance', 'harrowing performance', 'whiplash wit') and Marber's 'almost mathematically precise direction.' The critic is clearly engaged and moved by the production, ending with 'leaves us shattered' - indicating strong emotional impact. No significant criticisms are offered. | GPT-4o: The review is filled with praise for the performances, direction, and emotional impact of the play. The critic describes being 'shaken' and 'shattered', indicating a strong emotional response and a high recommendation. | Gemini: The review is overwhelmingly positive, highlighting strong performances, precise direction, and a shattering conclusion. The critic is clearly moved by the play. | Kimi: The critic consistently praises the performances (particularly Aidem, Castelow, and Numrich), Marber's precise direction, and the design elements, while emphasizing the production's devastating emotional impact with phrases like 'left me shaken' and 'leaves us shattered,' offering no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:41:04.372Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

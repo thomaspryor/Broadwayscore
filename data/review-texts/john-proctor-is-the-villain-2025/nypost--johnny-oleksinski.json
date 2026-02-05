@@ -45,5 +45,60 @@
   "bwwExcerpt": "Belflower’s play says the opposite while mirroring Miller’s moral certitude about his own characters’ top-to-bottom guiltlessness. She casts zero doubt on the men being investigated. They absolutely did it.",
   "bwwScore": 6,
   "bwwThumb": "Meh",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JOHN-PROCTOR-IS-THE-VILLAIN-Opens-On-Broadway-20250414"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JOHN-PROCTOR-IS-THE-VILLAIN-Opens-On-Broadway-20250414",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While 'John Proctor' is a good time, it is not a powerful one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds the play 'often entertaining, mostly clever' and says 'I enjoyed myself,' but identifies significant flaws: it 'could have used another draft,' 'plateaus about halfway through,' and 'tidies up' serious issues inappropriately. The concluding verdict explicitly states it's 'a good time' but 'not a powerful one,' indicating qualified appreciation without strong recommendation. | GPT-4o: The review acknowledges the play's entertainment value and cleverness but criticizes its lack of depth and reliance on clichés. The critic enjoyed the experience but did not find it impactful, indicating a mixed reception. | Gemini: The review states that the play is \"often entertaining, mostly clever, frequently phony\" and that the critic \"enjoyed\" themselves, but ultimately finds it lacks power. This indicates a mixed reaction, leaning slightly positive. | Kimi: The critic finds the show entertaining and praises the cast and direction, but criticizes the script as 'frequently phony,' structurally flawed (plateaus halfway through), and ultimately lacking the power to match its ambitions, resulting in a lukewarm middle-ground assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:28:40.611Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

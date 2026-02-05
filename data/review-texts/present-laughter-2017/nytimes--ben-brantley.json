@@ -51,10 +51,10 @@
   ],
   "wordCount": 232,
   "tierReason": "Short text (232 words)",
-  "rejectedAt": "2026-02-04T06:09:57.959Z",
+  "rejectedAt": "2026-02-05T03:39:23.105Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The text is truncated and ends with an error message about retrieving content and enabling JavaScript - this is a technical error page, not a complete review.; openai: The text is incomplete and contains navigation instructions and error messages, indicating it is not a full review.",
+  "rejectionReasoning": "claude: The text is truncated with a technical error message about retrieving article content and enabling JavaScript, making it impossible to assess the critic's overall verdict.; openai: The text includes navigation instructions and a request to enable JavaScript, indicating it is not a complete review.",
   "promptVersion": "5.2.0",
   "bwwScore": 7
 }

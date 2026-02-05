@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "The three actors, repeating their Lincoln Center performances, couldn't be better. Hill and Smallwood expertly play off each in the manner of seasoned vaudevillians, while Ebert delivers a tour-de-force turn, infused with comic physicality and an undercurrent of danger, that keeps us on edge even as we're laughing.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a second viewing only confirms that it's the play we need right now",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with clear recommendation despite acknowledged flaws. The critic calls it 'the play we need right now' and praises it as 'challenging, provocative fare' while noting it 'packs a powerful punch' with excellent performances. | GPT-4o: The review acknowledges flaws such as aimlessness and forced dialogue but ultimately praises the play's powerful impact and strong performances. The original 4/5 star rating aligns with a positive recommendation despite reservations. | Gemini: Despite noting flaws like aimlessness and forced dialogue, the critic ultimately finds the play powerful and praises the staging and performances, giving it a 4/5 rating. | Kimi: The critic awards 4/5 stars and offers strong praise for the performances and staging, calling it 'the play we need right now,' though noting significant structural flaws and that the work is 'not fully successful as drama.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:29:12.084Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

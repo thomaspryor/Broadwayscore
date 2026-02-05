@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "To underline Crystal's powers the colorful Brown and Green have written \"Any Man But Me.\" Though more than vocally acceptable throughout. the show's star (no understudy listed) brings this eleven o'clock number off with expanding fortitude. He delivers it as if this final quarter of the musical is the one he's truly pleased to be headlining. Is it going too far to suggest Crystal might someday make a terrific Uncle Vanya? It would be unfair to suggest that Mr",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MR-SATURDAY-NIGHT-Opens-on-Broadway-Starring-Billy-Crystal-Updating-Live-20220427"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MR-SATURDAY-NIGHT-Opens-on-Broadway-Starring-Billy-Crystal-Updating-Live-20220427",
+  "assignedScore": 71,
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though more than vocally acceptable throughout. the show's star brings this eleven o'clock number off with expanding fortitude.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: 3/5 stars suggests mixed reception. The excerpt shows qualified praise for Crystal's performance ('more than vocally acceptable', 'expanding fortitude') but the truncated nature and single excerpt warning requires caution about the overall verdict. | GPT-4o: The review excerpt highlights a strong performance by the show's star, particularly in the final quarter, but the overall tone and the 3/5 star rating suggest a mixed review. The single excerpt and lack of full context lower confidence. | Gemini: The review excerpt focuses on a positive performance, but the truncated nature and lack of overall context make it difficult to assess the overall recommendation strength. The 3/5 star rating suggests a positive but not rave review. | Kimi: The 3/5 star rating and qualified praise ('more than vocally acceptable') for the star's eleven o'clock number suggest a lukewarm but genuine recommendation focused on the lead performance. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:06:13.244Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 68,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

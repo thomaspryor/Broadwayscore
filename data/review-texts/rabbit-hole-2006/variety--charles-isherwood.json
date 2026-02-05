@@ -60,9 +60,10 @@
   "sourceMethod": "brightdata",
   "wordCount": 808,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T11:00:33.533Z",
+  "rejectedAt": "2026-02-05T03:44:14.750Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "openai: The review is about the West Coast premiere production at the Geffen Playhouse, not the current Broadway run.; kimi: This review covers the West Coast premiere production at the Geffen Playhouse, not a Broadway production. While it references the earlier Broadway run starring Cynthia Nixon, the critique focuses on the regional production directed by Carolyn Cantor with Amy Ryan.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "openai: The review discusses the West Coast premiere production at the Geffen Playhouse, not the current Broadway run.; kimi: This review explicitly covers the West Coast premiere production at the Geffen Playhouse in Los Angeles, not a current Broadway production. The critic repeatedly contrasts this regional staging with the earlier Broadway production directed by Dan Sullivan and starring Cynthia Nixon, noting that the Geffen production is 'disappointingly undernourished' by comparison.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While it may lack some of the blazing intensity of Wilson's earlier work, 'Radio Golf' provides a satisfying capstone to the cycle, with sterling performances and direction that serves the material well.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "textWordCount": 938,
   "archivePath": "data/archives/reviews/radio-golf-2007/variety--david-rooney_2026-02-04.html",
@@ -55,5 +55,10 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 938,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T03:46:12.340Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a website navigation menu, ad content, and repeated promotional text about various entertainment topics, not a coherent theater review; openai: The text provided is a mix of unrelated content, including navigation menus, unrelated articles, and promotional material, with no discernible review of a Broadway show.; gemini: This is a roundup of various movies, TV shows, and music, not a review of a specific Broadway show.; kimi: The provided text is a corrupted scrape containing jumbled headlines and snippets from multiple unrelated Variety articles (including film reviews, album reviews, and potentially multiple different theater reviews), not a coherent review of a single Broadway show. The Aggregator Context references 'Radio Golf' by August Wilson, but the actual review text contains no mention of that play or its content.",
+  "promptVersion": "5.2.0"
 }

@@ -8,8 +8,7 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "bww-reviews",
-    "bww-roundup"
+    "bww-reviews"
   ],
   "fullText": "​ \n\n \n\n \n\n \n\n \n\nTV\n\nArticle\n\nIndecent: EW stage review\n\nBy\nMelissa Rose Bernardo\n\nPublished on May 17, 2016 12:00PM EDT\n\n \n\n \n\n \n\n Don’t worry if you’ve never heard of The God of Vengeance; Sholem Asch’s controversial play, originally written in Yiddish in 1906, had only a blink-and-you-missed-it Broadway run nearly 100 years ago that ended with the cast and producer being arrested for obscenity. Now, playwright Paula Vogel and director Rebecca Taichman are back with Vengeance — the story behind it, anyway — in their presentational play-within-a-play Indecent at Off Broadway’s Vineyard Theatre.\n\nSome audience members might bristle at the let’s-put-on-a-show trope. But stage manager Lemml (the ever-genial Richard Topol), our narrator/guide, is so genuine, the Klezmer music is so rousing, and Taichman’s trademark minimalist staging — what she does with a handful of ashes! — is so mesmerizing that it’s easy to take a trip back to Asch’s home in 1906 Warsaw. And when we first hear Asch (Max Gordon Moore) reading snippets of his dialogue, it’s clear what’s so captivating about his play: “You smell like grass in the meadows.” “Teach me. Take me.” “I can’t breathe.” It’s also clear why Asch is headed for trouble — those lines are spoken by two women, one of whom is a prostitute. (There’s also the small matter of a Torah that gets tossed to the ground in a moment of fury.) “You are pouring petrol on the flames of anti-Semitism,” the learned Perutz (Tom Nelis) tells the playwright. “Listen to me: About your manuscript? — BURN IT.”\n\nOf course, Asch does not set his work aflame. He takes it to Berlin, St. Petersburg, Bratislava, then New York City — where, once it’s translated into English, the trouble begins. (It’s also where, weirdly, Eugene O’Neill pops up as a character.) Along the way, thankfully, we’re afforded snippets of Asch’s play, including the much-ballyhooed “rain scene” between young lovers Rifkele (Katrina Lenk) and Manke (Adina Verson). In English, the scene is powerful and potent. In Yiddish, it’s simply breathtaking. B+",
   "isFullReview": true,
@@ -46,5 +45,58 @@
   "promptVersion": "5.2.0",
   "bwwExcerpt": "Vogel and co-creator Rebecca Taichman make the journey from there to the mid-20th century vividly theatrical and overtly political, suggesting other artists from that period - Bertolt Brecht, especially - while appealing to a world famished, once again, for tolerance and compassion...The larger focus of Indecent, and it couldn't be a timelier one, is the plight of the outsider or other, of anyone whose identity can be twisted into an easy target under tough circumstances...In our own troubled century, there's at least some encouragement to be found there. A-",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Paula-Vogels-INDECENT-Opens-on-Broadway-Updating-Live-20170418"
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's easy to take a trip back to Asch's home in 1906 Warsaw",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review gives a B+ grade and uses positive language like 'mesmerizing,' 'rousing,' 'breathtaking,' and 'powerful and potent.' Despite acknowledging some audience members might 'bristle' at the format, the critic finds the execution compelling. Confidence is medium due to truncated text, but the BWW excerpt confirms an A- assessment with strong positive language. | GPT-4o: The review praises the production's staging, music, and performances, with an overall positive tone. Despite being truncated, the provided excerpts and the B+ rating suggest a strong recommendation. | Gemini: The review is mostly positive, highlighting the staging, music, and snippets of Asch's play. The B+ grade suggests a recommendation, but the truncated text lowers confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:17:47.236Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

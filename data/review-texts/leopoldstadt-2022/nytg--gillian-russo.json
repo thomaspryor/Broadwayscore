@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,60 @@
   "sourceMethod": "playwright",
   "wordCount": 630,
   "tierReason": "Full review text",
-  "bwwScore": 10
+  "bwwScore": 10,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like Stoppard and the masterwork that is Leopoldstadt itself, they will be immortalized in history.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise calling it a 'masterwork' with superlatives like 'first-rate, epic, and urgent' and 'superb.' The critic finds it deeply moving, perfectly paced, and unforgettable, ending with a clear endorsement to 'Get tickets now.' | GPT-4o: The review is filled with superlatives and unqualified praise, describing the play as a 'masterwork' and highlighting its emotional impact and superb execution. The critic's language strongly suggests a must-see recommendation. | Gemini: The review is overwhelmingly positive, praising the writing, direction, performances, and overall impact of the play. The critic clearly recommends seeing it. | Kimi: The review offers unqualified praise throughout, calling the play a 'masterwork' and 'first-rate,' commending the direction, writing, and performances as 'endlessly captivating,' and explicitly urging readers to buy tickets with no reservations mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:38:58.766Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

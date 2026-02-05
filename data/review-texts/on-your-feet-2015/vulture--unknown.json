@@ -8,8 +8,7 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "bww-reviews",
-    "bww-roundup"
+    "bww-reviews"
   ],
   "fullText": "Things you buy through our links may earn Vox Media a commission.\n\nOn Your Feet!, at the Marquis Theatre. Photo: Matthew Murphy I’m no fan of jukebox musicals. If they’re the type that tell an invented tale, like Mamma Mia! or Rock of Ages, the book is generally rendered idiotic by the effort to accommodate the songs. If they’re instead pop biographies, like Jersey Boys and Beautiful, the problem is even worse because the songs, too, are denatured, by the effort to accommodate a preexisting storyline. Furthermore, the structure of musicals in the second category can only lead to a bathetic climax: In the final scenes, the protagonists (Frankie Valli, Carole King) become exactly who we already knew them to be. That’s more than ever the case with the new Gloria Estefan jukebox musical On Your Feet! because if you don’t arrive at the Marquis Theatre knowing the billboard headlines of her story (Cuban immigrant becomes American pop star, gets hit by a truck, eventually returns in triumph), why are you there? The only real issues for me in approaching a show like this are the fun of the tunes and the ingenuity of the distraction. To say that On Your Feet! is better than most of its ilk is therefore faint praise; it means you might have almost as good a time as you would if it were merely a concert.\n\nI don’t mean by this to belittle the life experiences of Estefan and her husband, Emilio. Theirs is a classic crossover success story in which talent and hard work overcome prejudice — a fact that the show’s book, by Alexander Dinelaris, underlines so vehemently it begins to pall.\n\nShow \n 0 Comments / 0 New\n \n Comment\n \n\n Theater Review: On Your Feet!\n\n \n \n \n \n\n \n \n \n \n \n\n \n \n\n \n \n \n\n \n Your product is saved! You’ll receive emails when your saved products go on sale. Manage preferences.\n \n \n\n \n \n\n \n \n\n Things you buy through our links may earn Vox Media a commission.",
   "isFullReview": true,
@@ -52,5 +51,59 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "I'm no fan of jukebox musicals. If they're the type that tell an invented tale, like Mamma Mia! or Rock of Ages, the book is generally rendered idiotic by the effort to accommodate the songs. If they're instead pop biographies, like Jersey Boys and Beautiful, the problem is even worse because the songs, too, are denatured, by the effort to accommodate a preexisting storyline. Furthermore, the structure of musicals in the second category can only lead to a bathetic climax: In the final scenes, the protagonists (Frankie Valli, Carole King) become exactly who we already knew them to be. That's more than ever the case with the new Gloria Estefan jukebox musical On Your Feet! because if you don't arrive at the Marquis Theatre knowing the billboard headlines of her story (Cuban immigrant becomes American pop star, gets hit by a truck, eventually returns in triumph) why are you there? The only real issues for me in approaching a show like this are the fun of the tunes and the ingenuity of the distraction. To say that On Your Feet! is better than most of its ilk is therefore faint praise; it means you might have almost as good a time as you would if it were merely a concert.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ON-YOUR-FEET-Opens-on-Broadway-Updating-LIVE-20151105"
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "To say that On Your Feet! is better than most of its ilk is therefore faint praise; it means you might have almost as good a time as you would if it were merely a concert.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the show is 'better than most of its ilk' but calls this 'faint praise' and compares it unfavorably to a concert experience. This is a qualified, lukewarm assessment that neither strongly recommends nor discourages attendance. | GPT-4o: The review acknowledges that the show is better than similar productions but offers only faint praise, suggesting it is not much more enjoyable than a concert. The tone is mixed, with some appreciation for the music but criticism of the book and structure. | Gemini: The review is lukewarm, stating it's better than most jukebox musicals but still not overwhelmingly positive. The critic focuses on the limitations of the genre rather than offering strong praise or condemnation. | Kimi: While acknowledging the show is 'better than most of its ilk,' the critic calls this 'faint praise' and suggests the theatrical elements add little value compared to a concert, criticizing the book as heavy-handed and the structure as inevitably bathetic.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:23:14.232Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -30,12 +30,12 @@
   "textIssues": [
     "Word count too low: 179 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 179,
   "tierReason": "Short text (179 words)",
-  "rejectedAt": "2026-02-04T06:16:37.596Z",
+  "rejectedAt": "2026-02-05T02:32:53.226Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "wrong_production",
-  "rejectionReasoning": "claude: This review is about the Melbourne production of King Kong, not a Broadway production. The text mentions 'Melbourne production' and appears to be reviewing a non-Broadway staging.; openai: The review discusses the Melbourne production of King Kong, not the current Broadway run.; gemini: This review discusses the Melbourne production of King Kong, not the Broadway production.; kimi: The text explicitly reviews the Melbourne production of King Kong (the 2013 world premiere), describing it as a 'world-first stage production' and focusing on the Melbourne run. This is not a review of the 2018 Broadway production.",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The text appears to be a corrupted mix of content - starts as a review of King Kong musical but ends with an unrelated sentence about a talk show wrapping after seven seasons, indicating this is garbled or incorrectly scraped content.; openai: The review discusses the Melbourne production of the King Kong musical, not the current Broadway run.; gemini: This review discusses the Melbourne production of King Kong, not the Broadway production.; kimi: The text explicitly states it is reviewing the 'Melbourne production' of King Kong, not the Broadway production.",
   "promptVersion": "5.2.0"
 }

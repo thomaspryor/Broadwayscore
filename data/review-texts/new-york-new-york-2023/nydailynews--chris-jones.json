@@ -40,5 +40,60 @@
   "wordCount": 997,
   "tierReason": "Full review text",
   "bwwExcerpt": "“New York, New York” could have used a clarifying tryout. Then again, some in its audience won’t worry so much about its thematic muddles: Beowulf Borritt’s set, as lit by Ken Billington, shows you sunsets peeking through the city’s vintage skyscrapers, bathing Manhattan’s avenues in warmth and hope. There is a lovely dance number involving rain in the city that showcases all that Stroman does so well. And there is a jazzy finale that puts Uzele up close to the audience as the jazzy music heats ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-NEW-YORK-NEW-YORK-Opens-On-Broadway-20230426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-NEW-YORK-NEW-YORK-Opens-On-Broadway-20230426",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Many visitors will buy a show that gives them so much of what they think of as part of a New York visit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic identifies significant structural problems (thematic inconsistency, weak central romance) but acknowledges the show's visual appeal and tourist-friendly elements. The tone is analytical rather than recommending, with both praise and substantial criticism. | GPT-4o: The review highlights both strengths and weaknesses, noting thematic muddles and lack of chemistry between leads, but also praises the set, dance numbers, and finale. The overall tone suggests a mixed reception with some redeeming qualities. | Gemini: The review points out thematic muddles and a lack of chemistry between the leads, but also acknowledges strengths like the set design, a dance number, and the jazzy finale. It's a mixed bag overall. | Kimi: The critic praises individual performances and design elements but criticizes the show's tonal inconsistency, lack of romantic chemistry between leads, and thematic confusion, noting it tries to be both gritty and tourist-friendly without successfully integrating the two approaches.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:13:08.266Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

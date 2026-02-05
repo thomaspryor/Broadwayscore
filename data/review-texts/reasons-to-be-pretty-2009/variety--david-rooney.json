@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "LaBute's dialogue crackles with authenticity, capturing the rhythms of blue-collar speech with an ear that's both accurate and theatrical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,5 +64,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 983,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But there's compassion and even tenderness running through this play that make it one of his best.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Critic consistently praises the play as 'one of LaBute's best' with 'taut, unexpectedly affecting drama,' highlights strong performances, and notes improvements from Off-Broadway version. Despite some minor criticisms about dialogue naturalism, the overall assessment is clearly positive and recommending. | GPT-4o: The review praises the play's depth, performances, and emotional impact, highlighting it as one of LaBute's best works. The positive tone and lack of significant reservations support a strong positive score. | Gemini: The review is overwhelmingly positive, highlighting the play's unexpected tenderness and the strong performances. The critic clearly recommends seeing it, calling it one of LaBute's best. | Kimi: The critic praises the production as 'one of his best' and highlights the 'unexpectedly affecting' drama with 'profoundly touching' performances, offering an enthusiastic recommendation with only minor reservations about the opening scene's dialogue.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:46:53.632Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

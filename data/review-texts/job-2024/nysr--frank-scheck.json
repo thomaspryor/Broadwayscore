@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "For all the effective stagecraft on display, however, Job (even the title, which many people will assume refers to the Old Testament book, is deliberately confusing) mainly smacks of gimmickry. It’s a psychological thriller that relies too heavily on cheap thrills.",
-  "bwwScore": 5
+  "bwwScore": 5,
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For all the effective stagecraft on display, however, Job mainly smacks of gimmickry.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with balanced assessment. Praises performances, dialogue, and staging effectiveness, but criticizes the plot twist as unconvincing and calls it gimmicky rather than substantive. The 'however' structure shows qualified disappointment despite acknowledging strengths. | GPT-4o: The review highlights both positive elements, such as effective stagecraft and riveting performances, and negative aspects, like reliance on gimmickry and an unconvincing climax. The original 3/5 stars suggests a mixed reception, and the truncated text warning lowers confidence in the final verdict. | Gemini: The review praises the performances and direction but criticizes the plot and overall impact, suggesting a mixed experience. The 3/5 star rating also indicates a middle-ground assessment. | Kimi: The 3/5 star rating and balanced critique place this in Mixed territory: while the critic praises the 'riveting performances' and 'sharp dialogue' and calls it 'reasonably compelling,' they heavily criticize the 'gimmickry,' 'cheap thrills,' and unearned plot twists. The truncated text warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:25:26.684Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -35,5 +35,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 736,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The wonder of this production is that so much of the joy and optimism of the original work still shines bright through the darkness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging the dark directorial vision, the critic consistently praises the performances, calls it 'a stroke of directorial invention,' and concludes by calling it 'an ambitious revival a winner.' | GPT-4o: The review praises the production's innovative and ambitious approach, highlighting its successful balance of light and dark elements. The critic appreciates the directorial vision and performances, indicating a strong recommendation. | Gemini: Despite noting the darkness and deviations from the original, the critic concludes that the revival is a \"winner\" and that the joy of the original still shines through. | Kimi: The critic praises the dark directorial vision, strong performances, and fresh interpretation, ultimately calling the production a 'winner' despite noting that the Dream Ballet runs too long.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:20:29.443Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

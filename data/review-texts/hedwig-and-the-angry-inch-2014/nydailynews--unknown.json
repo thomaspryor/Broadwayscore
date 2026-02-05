@@ -34,5 +34,60 @@
   "wordCount": 506,
   "tierReason": "Full review text",
   "bwwExcerpt": "Transformation is tricky, sometimes even painful. But Broadway's sensational 'Hedwig and the Angry Inch' starring a kick-ass Neil Patrick Harris is a reminder that change doesn't have to hurt. John Cameron Mitchell and Stephen Trask's raucous pop-rock musical -- a show with proudly ratty downtown roots and rabid fans -- survives and thrives uptown. Allegories are elastic, after all. And, yes, this frisky, unapologetically raunchy fable of love, loss, fury and freedom is flashier on the Great White Way thanks to director Michael Mayer's gleaming production...Lean and mean NPH throws himself into the role and against the walls with reckless flip-your-wig and in-your-face abandonment. And he summons the wounded spirit and sense of yearning to which everyone can relate. That carries us along and makes us care for this odd character.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway's sensational 'Hedwig and the Angry Inch' starring a kick-ass Neil Patrick Harris is a reminder that change doesn't have to hurt.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language throughout ('sensational,' 'kick-ass,' 'throbs,' 'fab,' 'dazzling') with enthusiasm for Harris's performance and the production's successful Broadway transfer. The critic notes improvements over the previous downtown version. | GPT-4o: The review is filled with superlatives and enthusiastic praise for the production, performances, and music. It describes the show as 'sensational' and highlights the successful transformation of the production to Broadway, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising Harris' performance, the score, and the overall production. The critic notes that the show \"survives and thrives uptown\" and that \"everything comes through loud but clear.\" | Kimi: The critic delivers unqualified praise for both the production and Neil Patrick Harris's performance, using words like 'sensational,' 'kick-ass,' and 'dazzling' while noting the show 'survives and thrives uptown' without any significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:08:03.711Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

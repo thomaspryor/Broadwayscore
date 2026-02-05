@@ -36,9 +36,10 @@
   "contentTier": "complete",
   "wordCount": 652,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T10:30:59.248Z",
+  "rejectedAt": "2026-02-05T03:09:45.985Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "openai: The review is about a production at the Bridge Theatre in London, not the current Broadway run.; kimi: The review explicitly states it covers the production at Bridge Theatre in London ('Bridge theatre, London'), not the current Broadway run.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "openai: The review is about a production at the Bridge Theatre in London, not the current Broadway run.; kimi: This review is explicitly of the London production at the Bridge Theatre (noted in the dateline as 'Bridge theatre, London'), not the Broadway production. The critic discusses the London staging, making it ineligible for scoring as a Broadway review.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

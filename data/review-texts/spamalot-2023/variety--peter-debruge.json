@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The revival feels fresh and invigorating, with director Josh Rhodes bringing new energy to Eric Idle's Tony-winning musical adaptation of 'Monty Python and the Holy Grail.'",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -41,5 +41,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251125123338/https://variety.com/2023/legit/reviews/spamalot-review-broadway-2023-1235792687/",
   "duplicateTextOf": "variety--naveen-kumar.json",
   "wordCount": 688,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result suggests insecurity about whether the show holds up when what we need is an argument that it does.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment throughout - criticizes lack of freshness, calls it 'frenzied regurgitation,' faults overdesign and excess over creativity. Acknowledges some strong performances but overall verdict is disappointment. | GPT-4o: The review criticizes the production for lacking originality and relying on spectacle rather than creativity. While some performers are praised, the overall tone is negative, indicating disappointment with the revival. | Gemini: The review is largely negative, criticizing the production for lacking freshness and ingenuity, and for being overdesigned. While some performers are praised, the overall verdict is that the show fails to reanimate the material effectively. | Kimi: While praising individual performers like Taran Killam and Ethan Slater, the critic condemns the revival as 'frenzied regurgitation' lacking fresh interpretation, with overdone staging that substitutes spectacle for creativity, concluding that 'that grail is not to be found here.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:53:40.017Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

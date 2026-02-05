@@ -8,8 +8,7 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "bww-reviews",
-    "bww-roundup"
+    "bww-reviews"
   ],
   "fullText": "ExpandAndy Karl is a delight as Phil Connors, the creepy TV weatherman played in the movie by Bill Murray. (Joan Marcus/©2016 Joan Marcus)\n\nIf a groundhog sees its shadow, there'll be six more weeks of winter. If you see \"Groundhog Day,\" there'll be 2 hours and 45 minutes of kinetic and sometimes witty but ultimately wearying antics. Fortunately, there's a silver lining: musical-comedy dreamboat Andy Karl, who puts his own irresistible stamp on the arrogant TV weatherman played in the 1993 film by Bill Murray.\n\nKarl is hunky, hilarious and huggable as nasty newsman Phil Connors, who gets trapped in a time loop in Punxsutawney, Pa. Karl banged up his knee on stage last week. He was set to perform on Monday for the show's opening at the August Wilson Theatre.\n\nOne wishes that Karl, who recently won an Olivier Award for the London run of the show (it also won that prize), had something really memorable to belt while he's at it. Big on frat-boy snark but short on melodies to sink your ears into, songs by Tim Minchin (\"Matilda\") strike the right tonal chords and are agreeable enough but don't lodge in your brain.\n\nAndy Karl, center, in plaid scarf and the cast of “Groundhog Day.” (Joan Marcus/©2016 Joan Marcus)\n\nThe plot, by the film's screenwriter, Danny Rubin, mirrors the movie. Phil weirdly wakes up every day on Feb. 2 in smalltown Pennsylvania. He indulges at first, then turns suicidal (toaster, meet bathtub), then sees the light and changes his misogynist ways. His colleague Rita (Barrett Doss, the Andie MacDowell stand-in) is key.\n\nBuilt-in repetition is a challenge. Director Matthew Warchus (\"Matilda,\" \"Boeing-Boeing\") tries to solve it by keeping things in motion. The show whirs, buzzes, blinks and throws in playful mirages and fast-paced, if finicky, special effects. The frolics lead to diminishing returns — and don't make up for the shortage of songs you'd love to hear again. And again. After all, deja vu is what this is all about. No one ever left a musical humming the electrocution illusion.",
   "isFullReview": true,
@@ -36,5 +35,59 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "If a groundhog sees its shadow, there'll be six more weeks of winter. If you see 'Groundhog Day,' there'll be 2 hours and 45 minutes of kinetic and sometimes witty but ultimately wearying antics. Fortunately, there's a silver lining: musical-comedy dreamboat Andy Karl, who puts his own irresistible stamp on the arrogant TV weatherman played in the 1993 film by Bill Murray. Karl is hunky, hilarious and huggable as nasty newsman Phil Connors, who gets trapped in a time loop in Punxsutawney, Pa. Karl banged up his knee on stage last week. He was set to perform on Monday for the show's opening at the August Wilson Theatre.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-There-Will-Be-Sun-GROUNDHOG-DAY-Opens-on-Broadway-20170417"
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you see 'Groundhog Day,' there'll be 2 hours and 45 minutes of kinetic and sometimes witty but ultimately wearying antics.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review praises Andy Karl's performance enthusiastically but finds the show itself 'wearying' with unmemorable songs and diminishing returns from the repetitive concept. | GPT-4o: The review praises Andy Karl's performance but criticizes the show for being 'ultimately wearying' and lacking memorable songs. The overall tone suggests a mixed experience with both positive and negative elements. | Gemini: The review praises Andy Karl's performance but finds the show itself wearying and lacking memorable songs. The overall tone is mixed, leaning slightly positive due to Karl's performance. | Kimi: While the critic showers praise on Andy Karl's performance ('irresistible,' 'hilarious'), the overall verdict is clearly negative, describing the show as 'ultimately wearying,' suffering from 'diminishing returns,' and lacking memorable songs. The 'silver lining' framing explicitly positions the star as the only redeeming feature of an otherwise tedious experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:02:59.916Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

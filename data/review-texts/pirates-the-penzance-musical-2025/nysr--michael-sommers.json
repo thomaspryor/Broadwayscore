@@ -19,5 +19,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Sporting mutton-chop whiskers in his dual role as Gilbert playing Major-General Stanley, David Hyde Pierce rattles through several patter numbers with perfect assurance and depicts the retired soldier with a befuddled dignity droll to behold. Robust and roguish as the Pirate King, Ramin Karimloo shows off his magnificent baritone and the gleaming chest from which it comes. Genial as Sullivan, Preston Truman Boyd amiably appears as the Sergeant of Police whose midnight gambols with the Stanley da",
   "bwwThumb": "Up",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PIRATES-THE-PENZANCE-MUSICAL-Opens-On-Broadway-Starring-Ramin-Karimloo-Jinkx-Monsoon-and-More-20250424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PIRATES-THE-PENZANCE-MUSICAL-Opens-On-Broadway-Starring-Ramin-Karimloo-Jinkx-Monsoon-and-More-20250424",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, it's fun to hear gags that are nearly 150 years old, like the silly 'orphan/often' exchange, still raise laughs today and it's great to see Roundabout introduce a Gilbert & Sullivan classic, more or less, to a fresh audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for performances, direction, and production values. The only significant criticism is that it's 'too much of a good thing' and could be shorter, but the overall recommendation is clear and enthusiastic. | GPT-4o: The review is largely positive, praising the production's entertainment value, performances, and staging. The critic notes it might be 'too much of a good thing,' but overall recommends it highly, aligning with the 4/5 star rating. | Gemini: The review is generally positive, highlighting the show's entertainment value and performances, but notes it might be slightly too long. The 4/5 star rating also indicates a positive but not rave review. | Kimi: The critic awards the production 4/5 stars and delivers consistent praise for the direction, performances, design, and choreography, describing it as 'swell,' 'buoyant,' and 'expertly staged.' While noting minor pacing quibbles ('too much of a good thing'), the overall verdict strongly recommends the show as a fun, lavish introduction to Gilbert & Sullivan for modern audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:35:42.007Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

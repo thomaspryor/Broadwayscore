@@ -24,5 +24,60 @@
   "playbillVerdictUrl": "https://nystagereview.com/2022/11/27/kpop-the-musical-about-the-korean-pop-music-phenomenon-doesnt-translate-well-to-broadway/",
   "bwwExcerpt": "The 2017 Off-Broadway incarnation of the new musical KPOP opened at a venue just a few blocks away from its current Broadway home at the Circle in the Square. But despite the short distance, much of the show’s impact has been lost along the way. The original production was immersive, with segments of the audience moving from one location to another to witness the aching workloads and personal conflicts of young Korean performers to achieve stardom under the guidance of an ambitious record label. That aspect has been necessarily and understandably lost in the show’s transition to a traditional Broadway theater, albeit the only one featuring in-the-round seating. Unfortunately, much of what made the earlier production interesting has been discarded as well, resulting in a more sanitized, less thematically interesting experience that mainly relies on the propulsive energy of its many musical numbers to fuel the evening. The end result provides a reasonably enjoyable facsimile of K-Pop music, but it’s certainly not the same KPOP.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-KPOP-Opens-on-Broadway-Updating-Live-20221127"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-KPOP-Opens-on-Broadway-Updating-Live-20221127",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The end result provides a reasonably enjoyable facsimile of K-Pop music, but it's certainly not the same KPOP.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with mixed assessment - acknowledges technical proficiency and entertainment value but criticizes loss of thematic depth and impact from original production. Neither strongly recommends nor discourages. | GPT-4o: The review acknowledges technical impressiveness and some enjoyable elements but criticizes the loss of impact and thematic interest compared to the original production. The 3/5 star rating suggests a mixed review, and the text is truncated, so the final verdict may be missing. | Gemini: The review acknowledges technical skill and enjoyable elements but ultimately finds the show lacking compared to the original Off-Broadway production and real K-pop acts. The 3/5 star rating and the truncated nature of the text contribute to a 'mixed' classification. | Kimi: The 3/5 star review praises the technical execution, costumes, and energetic performances but criticizes the loss of immersive elements from the Off-Broadway production, resulting in a 'sanitized' experience. The critic ultimately questions why audiences shouldn't see real K-pop instead, creating a mixed verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:35:35.174Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

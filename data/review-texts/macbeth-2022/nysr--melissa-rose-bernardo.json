@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Fair warning for anyone bothered by the sight of blood shooting across the stage: You might want to cover your eyes. This production certainly goes for the gore. A curious choice, considering the dramaturgical note in the program (it prepares the audience for 'minimal scenery,' 'no major scene changes,' and double- and triple-casting): 'This simplicity and flexibility, in which the play's language carries most of the narrative and expressive weight, enables a high level of imaginative participation.' Yet Gold-who previously helmed King Lear, Othello, and Hamlet-turns Duncan's stabbing, usually an offstage moment, into something out of Psycho, complete with horror-movie lighting and chilling sound effects.",
-  "bwwScore": 3
+  "bwwScore": 3,
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A curious choice, considering the dramaturgical note in the program.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars indicates negative reception. The excerpt critiques the director's choice to emphasize gore over the stated minimalist approach, suggesting disappointing execution. Single excerpt limits confidence. | GPT-4o: The critic's 2/5 star rating suggests a negative review. The excerpt criticizes the production's choice to emphasize gore, which contradicts the intended simplicity and imaginative participation. This indicates a negative assessment of the production's direction. | Gemini: The review excerpt focuses on a specific directorial choice (gore) and seems critical of it, especially given the program's note about imaginative participation. Given the 2/5 star rating, this seems to be a negative review. | Kimi: The original 2/5 star rating places this firmly in the Negative bucket. The excerpt criticizes the director's choice to emphasize graphic violence over the minimalism promised in the program notes, suggesting a production that misunderstands its own stated aims.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:54:28.966Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 42,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

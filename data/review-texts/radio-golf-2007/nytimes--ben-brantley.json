@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Wilson has created a fitting capstone to his extraordinary cycle with a play that brings his characters full circle while suggesting that the wheel of history keeps on turning.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -54,5 +54,59 @@
   "archiveOrgTimestamp": "20150510173640",
   "archiveOrgUrl": "http://web.archive.org/web/20150510173640/http://www.nytimes.com:80/2007/05/09/theater/reviews/09radio.html?",
   "wordCount": 886,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the final, and in dramatic terms the thinnest, work in his magnificent 10-play cycle",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Brantley acknowledges Wilson's stature and the production's energy while clearly identifying significant dramatic weaknesses. He calls it the 'thinnest' of Wilson's works and criticizes characters as 'more notable for what they signify than who they are,' indicating respectful disappointment rather than recommendation. | Gemini: The review acknowledges the play's energy and comedic elements but also points out its thinness and a sense of loss. It highlights the characters as more symbolic than fully realized, resulting in a mixed assessment. | Kimi: While criticizing the script as 'the thinnest' in Wilson's cycle and noting the central characters are a 'bland breed,' the review praises Kenny Leon's direction, David Gallo's set design, and the production's energy, treating it as a respectable if minor entry in the playwright's canon.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:45:19.059Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

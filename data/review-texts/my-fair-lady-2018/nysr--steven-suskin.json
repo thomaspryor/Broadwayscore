@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2018/04/19/my-fair-lady-lerner-loewe-bartlett-sher/",
   "bwwExcerpt": "Wouldn't it be loverly to have Lerner & Loewe's magical My Fair Lady back on Broadway? And wouldn't it be 'warm and tender' if it were a tasteful staging which captured the style and grace of the fabled original? Well, Bartlett Sher's new staging at the Vivian Beaumont is and does. The Lincoln Center Theater My Fair Lady is absobloominutely loverly, and you can quote me on that.",
-  "bwwScore": 10
+  "bwwScore": 10,
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Lincoln Center My Fair Lady is enhanced by the addition of Benanti, Burstein and the others, and the results are even more exquisite than before.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with superlative praise throughout. Critic calls it 'absobloominlutely loverly,' describes performances as extraordinary, and concludes the production is 'even more exquisite than before.' This is unqualified enthusiasm for a replacement cast that has elevated an already acclaimed production. | GPT-4o: The review is overwhelmingly positive, praising the performances, direction, and production quality. The critic's original rating of 5/5 stars and the language used suggest an enthusiastic recommendation. Despite the truncation warning, the available text strongly indicates a rave review. | Gemini: The critic raves about the new cast members and states that the production is even more exquisite than before. The original review was also very positive, and this review builds on that. | Kimi: 5/5 stars with unqualified praise for the replacement cast, declaring the production 'even more exquisite than before' and using superlatives like 'absobloominutely loverly' and 'hit' throughout.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:09:15.772Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

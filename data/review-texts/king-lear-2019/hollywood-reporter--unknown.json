@@ -51,5 +51,59 @@
   "rejectionReasoning": "openai: The review is about a Shakespeare in the Park production of King Lear, not a Broadway run.; kimi: This review covers a Shakespeare in the Park production at the Public Theater (Delacorte Theater), which is an Off-Broadway venue, not a Broadway production.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "It's often said that there's no greater grief than a parent's loss of a child, so it follows that there's no more devastating moment in King Lear than when the monarch's pitiless odyssey through familial betrayal, rage and madness, triggered by his own blind vanity, leaves him cradling the dead body of the one daughter whose love for him was pure. That goes double when the title character's tragic arc is explored, in Sam Gold's aggressively modern, gender-blind production, by the magnificent Gle",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Devoid of interpretive insight and lacking emotional immediacy, it comes across as a lot of sound and fury signifying nothing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the production fundamentally flawed despite strong supporting performances, calling it 'dutiful but uninspired' and criticizing the lead performances as ineffective and lacking depth. | GPT-4o: The review criticizes the production for lacking depth and emotional impact, despite some praise for individual performances. The overall tone is negative, focusing on the production's failure to engage and its uninspired nature. | Gemini: The review is largely negative, criticizing the direction, lead performances, and overall impact. Despite praising some supporting performances, the overall assessment is unfavorable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:33:39.247Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": null,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

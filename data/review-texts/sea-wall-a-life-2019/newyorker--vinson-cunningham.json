@@ -35,5 +35,59 @@
   "wordCount": 1342,
   "tierReason": "Full review text",
   "isMultiShowReview": true,
-  "multiShowReason": "Roundup article: 2 other shows mentioned 3+ times (a life, the audience)"
+  "multiShowReason": "Roundup article: 2 other shows mentioned 3+ times (a life, the audience)",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So much work for the wrong big finish.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic extensively criticizes 'Sea Wall/A Life' as manipulative 'tearful noodges' that work too hard for unearned emotional effects, comparing them to faulty Rube Goldberg machines. Despite acknowledging some good performances, the overall assessment is clearly negative with phrases like 'missing by inches that feel like miles' and questioning why one would 'take the trouble to go to the theatre just to watch Jake Gyllenhaal do a glorified audition.' | Gemini: The review expresses disappointment with both monologues, finding them contrived and emotionally unfulfilling. While acknowledging the actors' efforts, the critic ultimately finds the production lacking in depth and impact. | Kimi: While acknowledging the actors' technical skill, the critic finds the monologues manipulative 'contraptions' that miss their emotional target by miles, comparing the elaborate grief narratives to ineffective Rube Goldberg machines. The final assessment questions whether the production merits an audience's time and ticket price.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:49:16.874Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

@@ -40,5 +40,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20180112071235/https://www.timeout.com/newyork/theater/john-lithgow-stories-by-heart",
   "contentTier": "complete",
   "wordCount": 311,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is a pleasant way to stay put on a winter's night.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for Lithgow's performance and storytelling skill. While noting the material is 'quaint and slender,' the critic finds it likable and Lithgow's execution infectious. | GPT-4o: The review provides a 4/5 star rating, indicating a positive reception. The critic praises Lithgow's performance and the show's charm, despite noting it doesn't fully captivate. The positive tone and 4-star rating place it in the upper range of the Positive bucket. | Gemini: The review is generally positive, highlighting Lithgow's performance and the pleasantness of the experience, but acknowledges that it doesn't quite reach the level of being truly captivating. The 4/5 rating supports a positive classification. | Kimi: The critic gives the show 4/5 stars, praising Lithgow's masterly, infectious performance and warmth while noting the stories themselves are slender and lack the promised dramatic transport.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:27:52.921Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

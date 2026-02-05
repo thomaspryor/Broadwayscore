@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": "D",
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
     "Word count too low: 181 (min: 300)"
   ],
   "wordCount": 181,
-  "tierReason": "Short text (181 words)"
+  "tierReason": "Short text (181 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Everything onstage looks cold by contrast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic gives a D rating and compares the production unfavorably to Sultan's photography, finding it poorly composed and cold. However, with only one excerpt available, confidence is low as the full verdict may be more nuanced. | GPT-4o: The excerpt criticizes the production's visual impact, comparing it unfavorably to the subject's work. The original 'D' rating suggests a negative review. However, with only one excerpt, confidence is low. | Gemini: The excerpt compares the show unfavorably to the subject's work, stating that the production looks \"cold by contrast.\" Given the limited text, a negative classification is most appropriate. | Kimi: The critic assigned a D grade and specifically criticized the production's visual composition as inferior to the source material, describing the staging as cold and lacking the exquisite qualities of Sultan's original portraiture.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:33:41.691Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

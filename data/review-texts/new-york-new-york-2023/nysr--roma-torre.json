@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "It’s going to be hard avoiding unfavorable comparisons to such other works as On The Town and A Star Is Born. And I wish I had better news to spread here. There’s a line near the end of the show in which a character says “Don’t bet against New York.” Unfortunately, I can’t say the same thing about its musical namesake.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-NEW-YORK-NEW-YORK-Opens-On-Broadway-20230426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-NEW-YORK-NEW-YORK-Opens-On-Broadway-20230426",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, I can't say the same thing about its musical namesake.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with consistent criticism of the book, direction, and overall execution. While acknowledging individual performances and moments, the critic clearly does not recommend the show, ending with the definitive negative verdict about not betting on this musical. | GPT-4o: The review is largely critical, highlighting issues with the book, direction, and overall execution. Despite some praise for individual performances and moments, the overall tone is negative, aligning with the original 2/5 star rating. The truncated text warning suggests caution, but the existing content strongly indicates a negative verdict. | Gemini: The critic clearly states disappointment despite the stellar creative team, citing an overstuffed production and a weak book. The 2/5 star rating and the concluding statement reinforce a negative assessment, although the truncated text makes the confidence medium. | Kimi: Despite acknowledging some strong performances and the iconic finale, the critic gives the show 2/5 stars and consistently criticizes the overstuffed book, sloppy direction, and lack of emotional investment, concluding with a clear recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:14:02.945Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

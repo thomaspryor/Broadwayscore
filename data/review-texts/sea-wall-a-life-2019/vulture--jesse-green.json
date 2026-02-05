@@ -47,9 +47,10 @@
   "archiveOrgUrl": "http://web.archive.org/web/20191015233751/https://www.vulture.com/2019/02/theater-review-the-tasteful-goodness-of-sea-wall-and-a-life.html",
   "wordCount": 1413,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-03T11:15:09.759Z",
+  "rejectedAt": "2026-02-05T03:50:25.394Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "openai: The review is about 'Sea Wall/A Life' at the Public Theater, which is an off-Broadway production, not the current Broadway run.; kimi: The review explicitly covers the production at The Public Theater, an Off-Broadway venue ('now appearing back-to-back as halves of a single show at the Public'), not a Broadway theater.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "openai: The review is about 'Sea Wall/A Life' at the Public Theater, which is an off-Broadway production, not the current Broadway run.; kimi: This review is of the off-Broadway production at the Public Theater, not the Broadway run. The text explicitly mentions the show is at 'the Public' and 'Public Theater' multiple times.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

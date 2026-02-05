@@ -55,5 +55,59 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
   "rejectionReasoning": "openai: The review is about a filmed version of the stage production, not the current Broadway run.; kimi: This is a review of the filmed movie adaptation of the Broadway production, not a review of the live stage show itself. The critic explicitly evaluates the film direction ('as a film director, Friedman adds little'), cinematography ('too reliant on close-ups and frenetic cutting'), and gives it a PG-13 rating with a runtime—clearly treating it as a cinema release rather than a theater performance.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "another worthy addition to the Stephen Sondheim canon, which can always stand to be expanded",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the musical as 'great' and the production as 'good', calling it a 'worthy addition' to Sondheim's canon. While criticizing the film direction choices, the overall assessment is positive, recommending it for performances and the musical itself. | Gemini: The review is generally positive, highlighting the value of preserving the musical and praising specific performances. However, it also notes directorial shortcomings in the filmed version, leading to a score on the lower end of the 'Positive' bucket. | Kimi: The critic calls the Broadway production 'good' and the musical 'great,' praising the performances as a 'gift' and the project as 'precious and admirable,' while criticizing the film direction as merely 'OK' with distracting technical choices. The verdict clearly recommends the work despite reservations about the filming.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:02:19.751Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

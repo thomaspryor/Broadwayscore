@@ -39,5 +39,60 @@
   "wordCount": 376,
   "tierReason": "Missing proper ending or other signals",
   "bwwExcerpt": "In his Broadway debut, Franco shows a relaxed stage presence and real charisma, though his occasional explosions of anger or frustration seem to rely more on turning up the volume dial rather than digging for any deeper nuance...The real surprise in Anna D. Shapiro's finely staged production is Chris O'Dowd (Bridesmaids) as George's mentally challenged travel companion, Lenny. The gifted comedic actor brings a studied and skillful physicality to Lenny, a gentle giant with a stubbly shaved head who's not aware of his own strength even as he compulsively touches soft things -- a scrap of velvet, a puppy, a young woman's neck. O'Dowd's riveting performance is a study in underdeveloped impulse control: He frequently reaches out his hand with crooked fingers, then just as quickly withdraws. Though his native Irish accent occasional pokes through, O'Dowd makes Lenny sympathetic without ever stooping to caricature.",
-  "bwwScore": 7
+  "bwwScore": 7,
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "O'Dowd's riveting performance is a study in underdeveloped impulse control",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: A- rating with strong praise for O'Dowd's 'riveting performance' and 'finely staged production,' though notes Franco's limitations. Single excerpt warning applies - this appears curated to highlight positives, suggesting upper end of Positive range. | GPT-4o: The excerpt praises Chris O'Dowd's performance and the staging of the production, indicating a positive reception. The original A- rating suggests a strong recommendation, aligning with the positive bucket. | Gemini: The review highlights a 'finely staged production' and praises Chris O'Dowd's performance. While there's some criticism of Franco, the overall tone is positive, especially considering the 'A-' rating. | Kimi: The A- rating and praise for O'Dowd's 'riveting' turn and the 'finely staged' production indicate strong recommendation, though criticism of Franco's dramatic technique keeps it from unqualified rave status. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:16:00.684Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

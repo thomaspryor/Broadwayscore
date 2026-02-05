@@ -34,5 +34,60 @@
   "wordCount": 776,
   "tierReason": "Full review text",
   "bwwExcerpt": "How does one stage a traumatizing play that focuses on grooming, pedophilia, misogyny, and incest? In the case of Paula Vogel's Pulitzer Prize-winning play How I Learned to Drive, which just premiered on Broadway at the Samuel J. Friedman Theatre, Mark Brokaw has opted to direct the most painful moments with a 'folks say the wackiest things' shrug. That incongruously lighthearted approach magnifies How I Learned to Drive's horror without investing the words with greater meaning. And what words they are. Vogel has arranged the story of Li'l Bit (Mary-Louise Parker) as a set of non-chronological flashbacks that show the audience how she became a shiftless vagabond who only feels alive when she is driving full pedal to medal.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While that is a testament to its power, it is also a warning to all who have survived such abuse.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the production's power and Parker's performance but strongly criticizes Brokaw's directorial approach as inappropriate for the material, making it feel like a comedy when it shouldn't. The review warns trauma survivors away while recognizing the work's impact. | GPT-4o: The review acknowledges the play's power and impact but criticizes the comedic staging approach, which may trigger trauma. The mixed tone suggests appreciation for the writing and performances but reservations about the direction. | Gemini: The review acknowledges the play's power and thought-provoking nature, but criticizes the staging choices and warns about triggering content. It neither strongly recommends nor discourages seeing it. | Kimi: While praising Mary-Louise Parker's performance and the power of Vogel's text, the critic heavily criticizes the director's 'lighthearted' approach as incongruous and potentially harmful to trauma survivors, ending with a warning rather than a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:15:06.882Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
