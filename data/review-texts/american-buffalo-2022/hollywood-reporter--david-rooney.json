@@ -24,58 +24,7 @@
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or fragment, not a complete review with evaluative content or recommendation; openai: The text is a brief comment on performances without a clear evaluation of the overall production.",
   "promptVersion": "5.2.0",
   "textQuality": "partial",
-  "llmScore": {
-    "score": 74,
-    "confidence": "high",
-    "range": {
-      "low": 69,
-      "high": 79
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "The production benefits from Rockwell's magnetic presence and his easy chemistry with both Nivola and Hawke.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review highlights the positive aspects of the production, particularly Rockwell's performance and chemistry with co-stars, but notes a reservation about Hawke's performance. | Gemini: The review highlights the positive aspects of the production, specifically Rockwell's performance and chemistry with the other actors, but also notes that Hawke seems to be working harder than necessary, indicating a reservation. | Kimi: Single-sentence excerpt praises the lead's 'magnetic presence' and chemistry as clear benefits to the production, despite a minor reservation about one supporting performance working too hard.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:36:08.298Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 75,
-    "geminiScore": 72,
-    "kimiScore": 75,
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
-  }
+  "sources": [
+    "web-search"
+  ]
 }
