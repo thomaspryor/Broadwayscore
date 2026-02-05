@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "Teaching the young proves a treacherous business for both tutor and students in 'Seminar,' Theresa Rebeck's dark comedy about a literary lion and the young writers he eats for breakfast at his private seminars. Alan Rickman is heaven-sent as the sexy, sneering, snarling literary legend who condescends to tutor four aspiring novelists who have paid through the nose for the privilege of being abused. But these clever youngsters know how to play this intellectual contact sport, and even though everyone stops short of drawing blood, the civilized games they play are enormously entertaining.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Alan Rickman brings his trademark sardonic wit to the role of Leonard, a successful novelist who terrorizes aspiring writers in this comic drama by Theresa Rebeck.",
   "contentTier": "needs-rescrape",
@@ -23,5 +23,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a brief plot description or promotional blurb rather than an actual review with critical evaluation; openai: The text is a brief description of Alan Rickman's role and does not provide any evaluative content or overall assessment of the production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwScore": 8,
+  "sources": [
+    "web-search",
+    "bww-reviews"
+  ]
 }
