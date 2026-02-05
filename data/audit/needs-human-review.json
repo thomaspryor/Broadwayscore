@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-05T04:41:11.273Z",
-    "totalFlagged": 1,
+    "generatedAt": "2026-02-05T04:48:24.194Z",
+    "totalFlagged": 4,
     "reasons": {
-      "both-thumbs-disagree-with-llm": 1
+      "both-thumbs-disagree-with-llm": 4
     }
   },
   "reviews": [
+    {
+      "showId": "chess-2025",
+      "outletId": "variety",
+      "criticName": "Christian Lewis",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=71 (Up), both thumbs=Meh",
+      "llmScore": 71,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "flaggedAt": "2026-02-05T04:48:18.840Z"
+    },
     {
       "showId": "oedipus-2025",
       "outletId": "nytg",
@@ -18,7 +31,33 @@
       "llmConfidence": "medium",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-05T04:41:08.543Z"
+      "flaggedAt": "2026-02-05T04:48:21.522Z"
+    },
+    {
+      "showId": "stranger-things-2024",
+      "outletId": "nytg",
+      "criticName": "Kyle Turner",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=76 (Up), both thumbs=Meh",
+      "llmScore": 76,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "flaggedAt": "2026-02-05T04:48:22.747Z"
+    },
+    {
+      "showId": "stranger-things-2024",
+      "outletId": "washpost",
+      "criticName": "Naveen Kumar",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=61 (Flat), both thumbs=Down",
+      "llmScore": 61,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": "Down",
+      "flaggedAt": "2026-02-05T04:48:22.774Z"
     }
   ]
 }
