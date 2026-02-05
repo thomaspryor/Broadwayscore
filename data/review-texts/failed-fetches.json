@@ -7672,18 +7672,6 @@
     "timestamp": "2026-02-03T03:51:12.647Z"
   },
   {
-    "reviewId": "wicked-2003/timeout--david-cote.json",
-    "showId": "wicked-2003",
-    "outlet": "Time Out New York",
-    "critic": "David Cote",
-    "url": "http://www.timeout.com/newyork/theater/wicked-on-broadway-tickets-and-information",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 8681,
-    "timestamp": "2026-02-03T03:52:41.288Z"
-  },
-  {
     "reviewId": "wicked-2003/wsj--terry-teachout.json",
     "showId": "wicked-2003",
     "outlet": "The Wall Street Journal",
@@ -16418,5 +16406,65 @@
     "garbageReason": "Multiple shows mentioned (9): the wiz, home, purpose, sweeney todd, king lear...",
     "textLength": 10761,
     "timestamp": "2026-02-05T16:37:44.868Z"
+  },
+  {
+    "reviewId": "wicked-2003/timeout--david-cote.json",
+    "showId": "wicked-2003",
+    "outlet": "Time Out New York",
+    "critic": "David Cote",
+    "url": "http://www.timeout.com/newyork/theater/wicked-on-broadway-tickets-and-information",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (6): the wiz, appropriate, cats, pippin, godspell...",
+    "textLength": 1560,
+    "timestamp": "2026-02-05T16:37:57.275Z"
+  },
+  {
+    "reviewId": "wicked-2003/about-entertainment--chris-caggiano.json",
+    "showId": "wicked-2003",
+    "outlet": "about-entertainment",
+    "critic": "Chris Caggiano",
+    "url": "http://theater.about.com/od/reviewsandrecommendations/tp/Reviews-The-Book-of-Mormon-Matilda-and-Wicked.htm",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): the book of mormon, the wiz, home, english, kinky boots...",
+    "textLength": 4777,
+    "timestamp": "2026-02-05T16:40:12.291Z"
+  },
+  {
+    "reviewId": "wicked-2003/austincom--dani-dudek.json",
+    "showId": "wicked-2003",
+    "outlet": "Austin.com",
+    "critic": "Dani Dudek",
+    "url": "https://austin.com/wicked-the-musical-will-have-you-flying-high-in-austin/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (6): the wiz, home, girl from the north country, frozen, once...",
+    "textLength": 1177,
+    "timestamp": "2026-02-05T16:41:10.041Z"
+  },
+  {
+    "reviewId": "wicked-2003/av-club-jesse-hassenger--jesse-hassenger.json",
+    "showId": "wicked-2003",
+    "outlet": "AV Club (Jesse Hassenger)",
+    "critic": "Jesse Hassenger",
+    "url": "https://www.avclub.com/wicked-for-good-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): chess, giant, the wiz, home, smash...",
+    "textLength": 22255,
+    "timestamp": "2026-02-05T16:41:19.094Z"
+  },
+  {
+    "reviewId": "wicked-2003/awards-watch-sophia-ciminello--sophia-ciminello.json",
+    "showId": "wicked-2003",
+    "outlet": "Awards Watch (Sophia Ciminello)",
+    "critic": "Sophia Ciminello",
+    "url": "https://awardswatch.com/wicked-for-good-review-jon-m-chu-fails-to-cast-a-spell-with-bloated-fan-service-filled-finale-c/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): the wiz, home, purpose, company, all the way...",
+    "textLength": 12721,
+    "timestamp": "2026-02-05T16:41:27.288Z"
   }
 ]
