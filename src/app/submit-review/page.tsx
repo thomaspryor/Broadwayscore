@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import SubmitReviewForm from '@/components/SubmitReviewForm';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -10,8 +11,6 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/submit-review`,
   },
 };
-
-const GITHUB_ISSUE_URL = 'https://github.com/thomaspryor/Broadwayscore/issues/new?template=missing-review.yml';
 
 export default function SubmitReviewPage() {
   return (
@@ -32,20 +31,20 @@ export default function SubmitReviewPage() {
           {/* What We're Looking For */}
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span className="text-2xl">✓</span>
+              <span className="text-2xl">&#10003;</span>
               What We&apos;re Looking For
             </h2>
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-start gap-3">
-                <span className="text-green-600 font-bold mt-1">✓</span>
+                <span className="text-green-600 font-bold mt-1">&#10003;</span>
                 <span><strong>Professional critic reviews</strong> from established outlets (The New York Times, Variety, Vulture, TheaterMania, etc.)</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-green-600 font-bold mt-1">✓</span>
+                <span className="text-green-600 font-bold mt-1">&#10003;</span>
                 <span><strong>Broadway shows only</strong> (not Off-Broadway, touring, or regional productions)</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-green-600 font-bold mt-1">✓</span>
+                <span className="text-green-600 font-bold mt-1">&#10003;</span>
                 <span><strong>Original reviews</strong> (not aggregator pages, roundups, or listicles)</span>
               </li>
             </ul>
@@ -54,17 +53,17 @@ export default function SubmitReviewPage() {
           {/* What Happens Next */}
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span className="text-2xl">⚡</span>
+              <span className="text-2xl">&#9889;</span>
               What Happens Next
             </h2>
             <ol className="space-y-3 text-gray-700">
               <li className="flex items-start gap-3">
                 <span className="bg-purple-100 text-purple-700 font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
-                <span>You submit the review URL using our GitHub form (no account required)</span>
+                <span>You submit the review URL using the form below</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="bg-purple-100 text-purple-700 font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
-                <span>Our automated system validates the submission within minutes using AI</span>
+                <span>Our automated system validates the submission using AI</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="bg-purple-100 text-purple-700 font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
@@ -72,28 +71,13 @@ export default function SubmitReviewPage() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="bg-purple-100 text-purple-700 font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">4</span>
-                <span>You&apos;ll see updates on the submission status (optional: subscribe to notifications)</span>
+                <span>The show&apos;s score is recalculated with the new review included</span>
               </li>
             </ol>
           </section>
 
-          {/* CTA Button */}
-          <div className="text-center">
-            <a
-              href={GITHUB_ISSUE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl"
-            >
-              <span>Submit a Review</span>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </a>
-            <p className="text-sm text-gray-500 mt-3">
-              Opens GitHub form (no account required)
-            </p>
-          </div>
+          {/* Review Submission Form */}
+          <SubmitReviewForm />
         </div>
 
         {/* FAQ Section */}
@@ -105,15 +89,6 @@ export default function SubmitReviewPage() {
           <div className="space-y-6">
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">
-                Do I need a GitHub account?
-              </h3>
-              <p className="text-gray-700">
-                No! GitHub allows anyone to create issues. You can submit anonymously or sign in to track your submission.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
                 What if the review is paywalled?
               </h3>
               <p className="text-gray-700">
@@ -123,10 +98,10 @@ export default function SubmitReviewPage() {
 
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">
-                How long does validation take?
+                How do I know if a review is already in your database?
               </h3>
               <p className="text-gray-700">
-                Usually within minutes. Our AI system checks if the review is valid and hasn&apos;t already been added. You&apos;ll see the result as a comment on your submission.
+                Check the show&apos;s page on Broadway Scorecard. Each scored review is listed with its source. If you don&apos;t see it, submit it!
               </p>
             </div>
 
@@ -135,7 +110,7 @@ export default function SubmitReviewPage() {
                 What if my submission is rejected?
               </h3>
               <p className="text-gray-700">
-                You&apos;ll receive an explanation. Common reasons include: review is already in our database, show is not a Broadway production, or the source is not a recognized outlet.
+                Common reasons include: the review is already in our database, the show is not a Broadway production, or the source is not a recognized professional outlet.
               </p>
             </div>
 
@@ -144,7 +119,7 @@ export default function SubmitReviewPage() {
                 Can I submit multiple reviews at once?
               </h3>
               <p className="text-gray-700">
-                Please submit one review per form. You can submit multiple forms if you have several reviews to add.
+                Please submit one review per form. You can submit multiple times if you have several reviews to add.
               </p>
             </div>
           </div>
