@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "What makes Beg memorable is the sheer overwhelming talent of the cast. Even if no one character has enough time or space in the script to fill in the contours of a full personality beyond a few fast details - baritone Otis Williams liked his suits electric blue; Falsetto king Eddie Kendricks got the nickname Corn because he... loved cornbread! - they can still bring every sweet harmony and cross-step.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes Beg memorable is the sheer overwhelming talent of the cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the cast's 'sheer overwhelming talent' but notes script limitations. Single excerpt warning applies - this could be cherry-picked praise from a mixed review, so scoring conservatively in lower Positive range. | GPT-4o: The excerpt praises the cast's talent, making the show memorable despite script limitations. However, the single excerpt and lack of full context suggest a mild positive sentiment. | Gemini: The review excerpt focuses on the talent of the cast, suggesting a positive experience overall, but the reservations about character development indicate it's not a rave. Given that it's a single excerpt, confidence is low. | Kimi: The excerpt offers strong praise for the cast's 'overwhelming talent' and performance skills, which the critic identifies as what makes the show memorable. However, significant criticism of the script's shallow character development ('no one character has enough time or space... to fill in the contours of a full personality') tempers the enthusiasm, placing this in the lower Positive range. Single-excerpt format limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:10:48.333Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

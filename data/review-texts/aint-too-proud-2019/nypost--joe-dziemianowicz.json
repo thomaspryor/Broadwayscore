@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Ain't Too Proud\" arrived on Broadway Thursday night buoyed by a surge of nostalgia and a slew of Motown hits. But anyone who's seen the earlier jukebox shows \"Jersey Boys\" or \"Motown: The Musical\" is bound to feel a dull sense of déja vu.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But anyone who's seen the earlier jukebox shows 'Jersey Boys' or 'Motown: The Musical' is bound to feel a dull sense of déja vu.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows qualified praise (acknowledging Motown hits and nostalgia) but warns of derivative nature and 'dull déja vu.' Very low confidence due to limited text - full review verdict unclear. | GPT-4o: The excerpt suggests a lack of originality and excitement, comparing it unfavorably to previous jukebox shows. However, the limited excerpt and lack of a clear positive or negative verdict lead to a mixed classification with low confidence. | Gemini: The excerpt suggests a sense of familiarity and lack of originality, implying a mixed reception. Given the single excerpt, confidence is low. | Kimi: The excerpt acknowledges the show's nostalgic appeal and hit songs but criticizes its lack of originality compared to similar jukebox musicals, warning of a 'dull sense of déja vu.' With only one excerpt available, the overall verdict remains unclear, but the tone suggests disappointment with the show's unoriginality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:53:25.680Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "It’s like everyone involved here tried to get down with the high school kids and what they’re thinking these days but Lloyd Webber, writers Emerald Fenell and Alexis Sheer and lyricist David Zippel — even the typically excellent director Laurence Connor, whose “Les Miserables” was better than excellent — all end up looking like nervous chaperones telling pandering jokes at prom and proving only that they can’t buy a laugh.",
   "bwwScore": 3,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's like everyone involved here tried to get down with the high school kids and what they're thinking these days but Lloyd Webber, writers Emerald Fenell and Alexis Sheer and lyricist David Zippel — even the typically excellent director Laurence Connor, whose 'Les Miserables' was better than excellent — all end up looking like nervous chaperones telling pandering jokes at prom and proving only that they can't buy a laugh.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic uses harsh imagery ('nervous chaperones', 'pandering jokes', 'can't buy a laugh') to describe a failed attempt at connecting with audiences. Even acknowledging the director's usual excellence, the verdict is clearly negative about this production's execution. | GPT-4o: The excerpt criticizes the production team for failing to connect with the intended audience, using negative imagery like 'nervous chaperones' and 'pandering jokes'. The lack of laughter suggests a failure in comedic execution, indicating a negative review. | Gemini: The review excerpt is negative, comparing the creative team to \"nervous chaperones telling pandering jokes at prom.\" The critic clearly did not enjoy the show. | Kimi: The critic describes the creative team as failing to connect with the material, appearing as 'nervous chaperones' whose jokes are so pandering that they 'can't buy a laugh,' indicating a fundamental failure of the show's comedic aims.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:10:43.399Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

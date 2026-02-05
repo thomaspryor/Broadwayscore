@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"A stylish music-hall mystery in which we know whodunit from beginning to end, \"A Gentleman's Guide to Love and Murder\" has lively songs, a congenial villain and a physically and morally flexible mistress...Most important, it has the fine actor Jefferson Mays playing all eight heirs to Highhurst Castle as they're dispatched one after another in comically gruesome ways. What he lacks in finesse as a quick-change artist, he more than makes up for in force of personality.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-GENTLEMANS-GUIDE-TO-LOVE-AND-MURDER-Opens-on-Broadway-Updating-Live-20131117",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A stylish music-hall mystery in which we know whodunit from beginning to end, 'A Gentleman's Guide to Love and Murder' has lively songs, a congenial villain and a physically and morally flexible mistress.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt is consistently positive, praising the show as 'stylish' with 'lively songs' and highlighting Jefferson Mays' performance as compelling despite lacking 'finesse.' Since this is a single curated excerpt that sounds clearly positive, scoring in the upper end of Positive bucket, but low confidence due to limited text. | GPT-4o: The excerpt praises the show as 'stylish' with 'lively songs' and highlights Jefferson Mays' performance positively. The tone suggests a strong recommendation despite the limited context. | Gemini: The review highlights positive aspects of the show, such as the songs, villain, and mistress, and praises Jefferson Mays' performance. While there are some reservations about his quick-change artistry, the overall tone is positive. | Kimi: The excerpt offers clear praise for the show's stylish presentation, lively songs, and Jefferson Mays's performance, recommending the production despite a minor reservation about his quick-change finesse.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:21:19.430Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

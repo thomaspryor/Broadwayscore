@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Well, does it kill? The answer is definitely yes, no and sometimes. In other words, success depends on what's happening in 'American Psycho,' the alternately dazzling and dull musical...in the middle is Benjamin Walker ('Bloody Bloody Andrew Jackson'), so weird and nuanced as Patrick that misgivings about the vehicle feel almost churlish...I wouldn't want to lose a swatch of Es Devlin's ever-morphing box set with the amazing nonstop videos by Finn Ross...Katrina Lindsay's costumes are ideally flattering and ridiculous. The least subtle element is Lynne Page's choreography...",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The answer is definitely yes, no and sometimes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic explicitly describes the show as 'alternately dazzling and dull' and gives a mixed verdict ('yes, no and sometimes'). Praises specific elements like Walker's performance and the design, but overall assessment is clearly uneven. | GPT-4o: The review describes the show as 'alternately dazzling and dull,' indicating a mixed experience. Praise for specific elements like the set and costumes is offset by the overall inconsistent success of the production. | Gemini: The review uses mixed language, calling the show \"alternately dazzling and dull.\" While praising Walker's performance and the design elements, the overall assessment is not clearly positive or negative. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The critic describes the show as 'alternately dazzling and dull' with variable quality depending on the scene, praising Benjamin Walker's nuanced performance and the inventive design while criticizing the choreography and acknowledging dull passages.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:34:53.246Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

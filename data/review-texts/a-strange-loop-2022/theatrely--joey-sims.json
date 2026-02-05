@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "In crafting a work so joyously and painfully honest, playwright, composer and lyricist Michael R. Jackson walks a fine line. A Strange Loop is a carefully structured piece, lean and quick-paced. Yet it is also a manic mess, a frenzied collage that stays true to its central premise of hurtling through the chaotic depths of one man's rage, trauma, and self-hatred. That is Jackson's most awe-inspiring accomplishment with A Strange Loop, which is certainly the best new musical on Broadway this season: he has created a finely honed piece of theater while always remaining true to his own distinct voice.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 90,
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That is Jackson's most awe-inspiring accomplishment with A Strange Loop, which is certainly the best new musical on Broadway this season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Declares it 'certainly the best new musical on Broadway this season' with 'awe-inspiring accomplishment.' Despite being a single excerpt, the superlative language and unqualified praise clearly indicates a rave review. | GPT-4o: The review excerpt praises the show as 'the best new musical on Broadway this season' and highlights the playwright's 'awe-inspiring accomplishment'. Despite noting its chaotic nature, the overall tone is strongly positive, indicating a rave review. | Gemini: The review excerpt contains strong praise, calling it the \"best new musical on Broadway this season\" and highlighting Jackson's \"awe-inspiring accomplishment.\" While it acknowledges the show's chaotic nature, the overall tone is positive and enthusiastic, suggesting a strong recommendation. | Kimi: The excerpt delivers unqualified praise, explicitly calling the show the season's best new musical and an 'awe-inspiring accomplishment,' though the single-excerpt format necessitates caution about potential cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:45:01.042Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

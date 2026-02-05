@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "[Sutton Foster] generated more heat being wooed by an ogre in 'Shrek' than she does here. With her eyes constantly darting around as if unsure of her place on the stage, Foster seems uncharacteristically out of sync both physically and vocally with her partners...Timothy Crouse and John Weidman's re-revised book (first undertaken for the Lincoln Center production) turns the silly original into a dopey groaner. And don't worry: Cheeky survives, even if little else does.",
   "bwwScore": 1,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Foster seems uncharacteristically out of sync both physically and vocally with her partners.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the lead performance lacking ('generated more heat' in another show, 'out of sync'), calls the book 'dopey groaner', and suggests little survives except one character. Clear negative assessment despite being only an excerpt. | GPT-4o: The review criticizes Sutton Foster's performance as out of sync and the book as a 'dopey groaner'. The overall tone suggests disappointment and lack of recommendation. | Gemini: The review is negative, criticizing Sutton Foster's performance and the book. Given the limited excerpt, confidence is low, but the tone is clearly unfavorable. | Kimi: The critic delivers a devastating assessment of Sutton Foster's out-of-sync performance and the 're-revised' book, which is dismissed as a 'dopey groaner.' The only praise offered is sarcastic (for the dog), confirming this as a pan of the current Broadway production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:00:44.089Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 42,
+    "geminiScore": 40,
+    "kimiScore": 12,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 30,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

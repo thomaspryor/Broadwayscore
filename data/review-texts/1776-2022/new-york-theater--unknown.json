@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The \"1776\" revival has a minimalist design on a muted theme of Americana; the curtain suggests faded fragments of the red, white and blue - as if shying away from overt patriotism. Yet the show retains all 13 of Sherman Edwards' original, often bright and tuneful songs from the 1969 production, and also most of the sometimes goofy humor. At the same time, it makes some half dozen changes that sometimes provide a fresh perspective; most often offer a new emphas",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At the same time, it makes some half dozen changes that sometimes provide a fresh perspective",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows balanced assessment - praises original songs as 'bright and tuneful' but notes 'sometimes goofy humor' and changes that only 'sometimes' provide fresh perspective. Text cuts off mid-sentence, preventing full verdict assessment. | GPT-4o: The excerpt highlights the retention of original songs and humor, suggesting a positive view of the show's entertainment value. However, the text is limited and lacks a clear verdict, leading to a low confidence score. | Gemini: The review excerpt describes the show as retaining original songs and humor, while also making changes that offer a fresh perspective. This suggests a positive but not overwhelmingly enthusiastic assessment. | Kimi: Single available excerpt offers mild praise for the 'bright and tuneful' score and 'fresh perspective' of revisions, but uses qualifiers ('sometimes,' 'most often') that suggest reservations. Severely truncated text and lack of full context warrant low confidence and lower-end Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:41:43.732Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

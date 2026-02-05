@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "We never learn enough about this trio to care for them as individuals. And Green Day's songs, though sometimes effective in striking general attitudes, don't do much to make these guys seem contemporary quintessences, either. Only one song, the mournful 'When September Ends,' lingers in the mind. Mayer's design team blankets this thin slice of life in cascades of projections, always apt but predictable. His astute casting pays off: His three leads, who've all proven their skill in nonmusicals, give these straw figures solid presences. An elaborately choreographed flying effect, when Sands hallucinates in his hospital bed, ranks with the most inventive such stunts I've ever seen. I didn't come away cursing, or bored, or feeling that I'd wasted my time. But I also didn't feel satisfied. And I couldn't help savoring the irony of artists who critique the system by, literally, plugging into it. It's the influence of mass media, rock included, that keeps such non-hero types from becoming themselves. If only they'd joined a community theater group instead.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I didn't come away cursing, or bored, or feeling that I'd wasted my time. But I also didn't feel satisfied.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges professional competence in casting and design but finds the characters underdeveloped and the overall experience unsatisfying. The explicit statement about not being satisfied but not feeling time was wasted places this clearly in mixed territory. | GPT-4o: The review expresses mixed feelings, noting some effective elements but also significant shortcomings. The critic neither strongly recommends nor discourages seeing the show, leading to a mixed verdict. | Gemini: The review expresses mixed feelings. While acknowledging positive aspects like the casting and a specific flying effect, it ultimately finds the show unsatisfying and lacking depth. The lack of strong recommendation places it in the Mixed category. | Kimi: The critic offers qualified praise for the casting and one inventive staging effect, but criticizes the thin characterization and concludes with a lack of satisfaction, creating an ambivalent verdict that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:33:58.343Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

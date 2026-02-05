@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"The best part: the two leads. Bryce Pinkham sings like a dream and brings great appeal to the murderous Monty. \"I Am My Own Wife\" Tony winner Jefferson Mays musters big laughs as Monty's victims. Casualty number one, a bucktoothed priest, croaks with just the right mix of hilarity and the macabre...Finally, there's the score, and, alas, it's a bit of bore. Composer Steven Lutvak wrote lyrics with Freedman. Their songs are consistently cute - and that's it. There's not one number that really sta",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-GENTLEMANS-GUIDE-TO-LOVE-AND-MURDER-Opens-on-Broadway-Updating-Live-20131117",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Finally, there's the score, and, alas, it's a bit of bore.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt praises the two leads highly but criticizes the score as 'a bit of bore' and 'consistently cute - and that's it.' With text appearing cut off mid-sentence, this suggests a mixed review highlighting strong performances but significant musical weaknesses. | GPT-4o: The review praises the performances of the leads but criticizes the score as boring. The single excerpt suggests a mix of positive and negative elements, leading to a mixed verdict. | Gemini: The review praises the leads' performances but criticizes the score as \"a bit of a bore\" and only \"consistently cute.\" This mixed assessment leads to a 'Mixed' classification. | Kimi: Single excerpt offers enthusiastic praise for the lead performances but criticizes the musical score as 'a bit of a bore,' indicating a mildly positive recommendation based primarily on the acting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:23:09.714Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 67,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

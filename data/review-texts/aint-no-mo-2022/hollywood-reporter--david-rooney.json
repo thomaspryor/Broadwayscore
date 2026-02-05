@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jordan E. Cooper's comedy is a raucous, boundary-pushing satire that takes aim at racism, police brutality and Black respectability politics with fearless irreverence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jordan E. Cooper's comedy is a raucous, boundary-pushing satire that takes aim at racism, police brutality and Black respectability politics with fearless irreverence.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jordan E. Cooper's comedy is a raucous, boundary-pushing satire that takes aim at racism, police brutality and Black respectability politics with fearless irreverence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling it 'raucous, boundary-pushing' with 'fearless irreverence' - positive language suggesting recommendation. However, single excerpt limits confidence in full verdict. | GPT-4o: The excerpt praises the show as 'raucous' and 'boundary-pushing,' indicating a strong positive reception. The use of 'fearless irreverence' suggests an enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language such as \"raucous\", \"boundary-pushing\", and \"fearless irreverence\", suggesting a positive recommendation. However, due to the limited text available, the confidence is low. | Kimi: The excerpt offers strong praise for the show's bold satirical approach and fearless tone, warranting a high-positive score, though the single-excerpt context necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:01:04.515Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

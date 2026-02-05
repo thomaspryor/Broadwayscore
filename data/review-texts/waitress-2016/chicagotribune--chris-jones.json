@@ -47,5 +47,11 @@
   "sources": [
     "web-search",
     "bww-roundup"
-  ]
+  ],
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T15:35:35.284Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Paramount Theatre in Aurora, not the current Broadway run.; gemini: This review is for a production of Waitress at the Paramount Theatre in Aurora, IL, not a Broadway production.; kimi: This review covers the regional production of 'Waitress' at the Paramount Theatre in Aurora, Illinois, not the current Broadway run. The text explicitly states this is a 'local production' directed by Katie Spelman with Michelle Lauto in the lead role, distinct from the original Broadway staging.",
+  "promptVersion": "5.2.0"
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "No doubt fans of Succession, The Sopranos, and The White Lotus will be flocking to the Circle in the Square to see Strong and Imperioli do their thing in such close quarters. And they will not be disappointed. The actors are tremendous and completely lose themselves in the parts. But as audiences file out of the theater, they may also find themselves confronting some much thornier issues — issues that 140 years and thousands of miles have not dulled in the least. A–",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The actors are tremendous and completely lose themselves in the parts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: A- grade with unqualified praise for performances ('tremendous'), promises audiences 'will not be disappointed', and indicates profound thematic impact. Single excerpt limits confidence. | GPT-4o: The excerpt praises the actors and suggests that fans will not be disappointed, indicating a strong recommendation. The 'A–' rating supports a high Positive score. | Gemini: The review states that fans of popular shows will not be disappointed and praises the actors as tremendous, indicating a strong positive recommendation. The A- grade further supports this. | Kimi: The critic awards an A- grade and assures audiences they 'will not be disappointed,' praising the lead performances as 'tremendous.' While noting the challenging themes, the overall verdict is enthusiastic. Confidence is low due to availability of only a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:55:21.518Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

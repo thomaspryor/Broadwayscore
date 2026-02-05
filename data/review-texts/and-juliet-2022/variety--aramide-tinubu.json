@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though the musical doesn't break new ground, it's an incredibly fun and energetic production that celebrates the power of female friendship and agency.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though the musical doesn't break new ground, it's an incredibly fun and energetic production that celebrates the power of female friendship and agency.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though the musical doesn't break new ground, it's an incredibly fun and energetic production that celebrates the power of female friendship and agency.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - acknowledges lack of originality but recommends for entertainment value and themes. Low confidence due to single curated quote that may not represent full verdict. | GPT-4o: The excerpt praises the production as 'incredibly fun and energetic,' suggesting a strong positive tone despite acknowledging it doesn't break new ground. The focus on celebration and energy indicates a positive recommendation. | Gemini: The review states that the musical is \"incredibly fun and energetic\" and celebrates female friendship, which indicates a positive recommendation, though it also notes that it doesn't break new ground, suggesting some reservations. Given that this is a single excerpt, I'm scoring it towards the middle of the positive range. | Kimi: The excerpt offers enthusiastic praise ('incredibly fun', 'energetic') while acknowledging the show isn't groundbreaking, indicating a solid positive recommendation in the upper range of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:54:16.899Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

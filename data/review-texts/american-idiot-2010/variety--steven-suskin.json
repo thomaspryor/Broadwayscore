@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Dramaturgy aside, 'American Idiot' comes dressed in an exciting and impressive production. Mayer's set designer, Christine Jones, has contrived a monumental space flanked by towering postered walls incorporating 43 busily working video monitors. There is also a metal staircase to the stars, or the flies of the St. James, which is only half used by the director; the two upper landings are reserved for the violinist and the violist, who must get pretty lonely up there. Mayer and Jones have been joined by video designer Darrel Maloney and lighting designer Kevin Adams to create what might be termed a 'really big show.'",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'American Idiot' comes dressed in an exciting and impressive production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on praising production design ('exciting and impressive', 'monumental') but notes dramaturgical issues and underused staging elements. Limited text suggests qualified positive. | GPT-4o: The excerpt highlights the impressive production design and collaborative effort, suggesting a positive view. However, due to the single excerpt limitation, the confidence is low. | Gemini: The review excerpt focuses on the impressive production design and technical elements, suggesting a positive experience despite potential reservations about the dramaturgy. Given the single excerpt and lack of a clear overall verdict, confidence is low, but the positive description warrants a score in the lower end of the Positive bucket. | Kimi: The excerpt offers enthusiastic praise for the technical and visual production elements ('exciting and impressive,' 'really big show') while explicitly bracketing judgment on the dramaturgy, indicating a qualified but clear recommendation based on staging and design.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:42:26.415Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

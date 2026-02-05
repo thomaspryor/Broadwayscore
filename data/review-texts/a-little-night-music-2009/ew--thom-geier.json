@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "With time, I suspect that she too will get into the rhythm of director Trevor Nunn's smartly executed production. There was always something a little odd about making a star vehicle for Zeta-Jones out of a show that is very much an ensemble piece. A certain balance has been restored to A Little Night Music in its current incarnation. As the song goes: Isn't it rich! A-",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A certain balance has been restored to A Little Night Music in its current incarnation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The A- grade and praise for 'smartly executed production' with 'balance restored' indicates strong positive recommendation, despite being only an excerpt. | GPT-4o: The excerpt suggests a positive view of the production with phrases like 'smartly executed' and 'balance has been restored.' The mention of an 'A-' grade implies a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review suggests improvement and a \"smartly executed production,\" but also mentions initial reservations about the casting. The \"A-\" grade suggests a positive leaning, but the single excerpt and initial reservations lead to a lower confidence score. | Kimi: The excerpt awards an A- grade and praises the director's smart execution, indicating a strong positive verdict, though single-excerpt limitations reduce confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:27:36.154Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

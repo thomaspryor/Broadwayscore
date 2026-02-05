@@ -14,5 +14,60 @@
   "bwwScore": 7,
   "contentTier": "excerpt",
   "playbillVerdictUrl": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Sylvia-Gurney-Broadway-337458481.html",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Taylor becomes Ann Richards, mostly thanks to her witty script, and with a nice assist from costume designer Julie Weiss.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance and creative elements, but limited scope makes overall verdict unclear. Positioned at lower end of Positive range due to excerpt warning. | GPT-4o: The excerpt praises Taylor's transformation into Ann Richards, highlighting the effectiveness of the script and costume design. However, the single excerpt warning and lack of a full review text suggest a cautious approach, placing it at the lower end of the Positive range. | Gemini: The review excerpt praises Taylor's performance and the script, suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt and lack of overall verdict, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the lead performance and script, describing the transformation as 'remarkable.' While clearly positive, the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:10:37.915Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

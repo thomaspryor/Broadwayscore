@@ -12,5 +12,60 @@
   "bwwExcerpt": "The one hundred and ten year history of Broadway's Lyceum Theatre has seen nine musicals, a couple of plays with music and a few concert evenings grace its stage. But I doubt if the walls of the classic Beaux-Arts showplace have ever felt any vibrations like the powerful full-throated wails of soulful orgasmic psychodelia emoted from Mary Bridget Davies in the title role of A Night With Janis Joplin...Writer/director Randy Johnson's concert-style musical is not to be lumped in the same category with that trio of Beatles imitation concerts that have played Times Square or other such shows that rely solely on mimicry. The ambition is a little higher here, and while A Night With Janis Joplin has its flaws as drama, as a raucous, hyper-energized tribute to one of American music's great icons, it's a joyful explosion.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "while A Night With Janis Joplin has its flaws as drama, as a raucous, hyper-energized tribute to one of American music's great icons, it's a joyful explosion.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges dramatic flaws but calls it a 'joyful explosion' and distinguishes it positively from simple tribute shows. Single excerpt warning applies - this sounds like a qualified recommendation but may not represent the full review verdict. | GPT-4o: The excerpt praises the show as a 'joyful explosion' and distinguishes it from lesser productions, indicating a positive view despite acknowledging some flaws. The single excerpt warning suggests using the upper end of the Positive range. | Gemini: The review states the show has flaws as drama, but is a 'joyful explosion' as a tribute, indicating a positive but not rave review. The single excerpt and smaller outlet reduce confidence. | Kimi: The excerpt delivers an enthusiastic verdict calling the show a 'joyful explosion' and distinguishes it from lesser mimicry concerts, though it acknowledges weaknesses as drama. With only one curated excerpt available, the score reflects strong positive sentiment but reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:33:04.764Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

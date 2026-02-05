@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "The not inconsiderable controversy that has surrounded the Broadway adaptation of Harper Lee's To Kill a Mockingbird since it was authorized by the author shortly before her death in early 2016 has been convincingly resolved at the Shubert. Concerns about whether the script by Aaron Sorkin supports or subverts the novelist's intentions are instantly allayed, with the audience held in rapt attention throughout. This stage Mockingbird is majestically triumphant.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-See-The-Critics-Verdict-On-TO-KILL-A-MOCKINGBIRD-On-Broadway-20181213"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-See-The-Critics-Verdict-On-TO-KILL-A-MOCKINGBIRD-On-Broadway-20181213",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This stage Mockingbird is majestically triumphant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with unqualified superlatives throughout: 'majestically triumphant,' 'remarkable,' 'magnificent manner,' 'theatrical magic.' The critic praises every element extensively with no meaningful reservations. | GPT-4o: The review is overwhelmingly positive, using superlatives like 'majestically triumphant' and praising the adaptation's ability to capture the essence of the original novel. The original 5/5 star rating and the strong praise throughout the text support a high score in the Rave bucket. | Gemini: The review is overwhelmingly positive, using terms like \"majestically triumphant\" and praising the adaptation as serving Lee \"exceptionally well.\" The critic anticipates and dismisses concerns about the adaptation's faithfulness, indicating a very strong endorsement. | Kimi: The critic awards 5/5 stars and delivers unqualified praise, calling the production 'majestically triumphant' with 'magnificent' adaptation and 'remarkable' performances by Jeff Daniels and the cast; any controversy is dismissed as 'convincingly resolved'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:31:38.815Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

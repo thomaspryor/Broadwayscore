@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "A one-joke sketch dragged out to, er, ungodly lengths, \"An Act of God\" feels like little more than a cash grab designed to prey on tourists drawn to its well-known star and cutesy premise. (I didn't see the Jim Parsons version, so this was my first encounter with the material.) Written by former \"Daily Show\" writer andMaplewood native David Javerbaum (or \"transcribed\" by him, since the show purports to be the word of God) and directed by Joe Mantello (\"The Humans,\" \"Blackbird\"), the play feature",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A one-joke sketch dragged out to, er, ungodly lengths, 'An Act of God' feels like little more than a cash grab designed to prey on tourists.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Text is truncated mid-sentence but opens with harsh criticism calling it a 'one-joke sketch' and 'cash grab.' Strong negative language suggests pan territory, but single excerpt warning and truncation require caution with confidence. | GPT-4o: The excerpt criticizes the show as a 'one-joke sketch' and a 'cash grab,' indicating a negative view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is negative, calling the show a \"cash grab\" and criticizing its premise. Given the limited text, the confidence is low, but the negative sentiment is clear. | Kimi: The critic dismisses the show as a 'one-joke sketch dragged out to ungodly lengths' and a 'cash grab designed to prey on tourists,' indicating clear disapproval and a recommendation against attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:52:39.982Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

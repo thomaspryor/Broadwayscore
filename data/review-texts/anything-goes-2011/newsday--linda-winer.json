@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Ethel Merman used to say that 'Anything Goes' was about 'a girl on a boat.' And that's pretty much the whole deal, except for the other girls, the guys and the fact that the boat is a deco ocean liner stocked with nonstop Cole Porter standards, standard-issue mistaken-identity convolutions and the usual bunch of '30s musical-comedy mugs...Bottom Line: By-the-numbers revival, but the numbers are prime.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "By-the-numbers revival, but the numbers are prime.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The 'Bottom Line' verdict acknowledges formulaic execution but endorses the show for its strong Cole Porter material. Single excerpt limits confidence in overall assessment. | GPT-4o: The excerpt suggests a standard revival but appreciates the quality of the material ('the numbers are prime'). The positive tone is mild, and with only one excerpt, confidence is low. | Gemini: The review acknowledges a formulaic approach but highlights the quality of the musical numbers, suggesting a positive but not overwhelmingly enthusiastic recommendation. Confidence is low due to the limited excerpt. | Kimi: While the critic dismisses the production as 'by-the-numbers' and the plot as standard-issue, the verdict clearly praises the Cole Porter standards as 'prime,' indicating the music makes the show worthwhile despite unoriginal staging.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:01:19.398Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

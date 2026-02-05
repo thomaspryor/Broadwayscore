@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "So you have to get past all that schematic writing to get to the deeper point, which is that racism poisons everything: marriages, justice, economic progress, decent black police officers, even hope for the American future. The two ex-spouses fight as proxies for their identities: Scott argues Kendra has encouraged the kid to be 'too black'; Kendra says the kid was mad at having been abandoned by his rich, white dad. The African-American cop is caught in the middle. The piece wrestles with crucial issues, and it's performed with enough intensity by Pasquale and Washington under Kenny Leon's theme-based direction that they effectively collide with your own prejudices, whoever you might be. You feel everything the characters feel, and, given the crisis we're all in, that has worth.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The piece wrestles with crucial issues, and it's performed with enough intensity that they effectively collide with your own prejudices.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt criticizes 'schematic writing' but ultimately finds value in the performances and thematic weight, concluding 'that has worth.' Single excerpt limits confidence in full verdict. | GPT-4o: The excerpt highlights the intensity of the performances and the relevance of the themes, suggesting a positive recommendation despite some schematic writing. The single excerpt warning suggests using the upper end of the Positive bucket. | Gemini: The review acknowledges schematic writing but praises the performances and the play's ability to make the audience feel the characters' emotions, suggesting a worthwhile experience despite flaws. The single excerpt and lack of explicit recommendation lead to a lower confidence score. | Kimi: While criticizing the 'schematic writing,' the critic praises the intense performances by Pasquale and Washington and the emotional impact, concluding the production 'has worth' as a meaningful theatrical experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:49:11.712Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

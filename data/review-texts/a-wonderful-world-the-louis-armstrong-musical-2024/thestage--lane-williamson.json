@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But oddly, the wattage of his wives dims the light on Armstrong himself. James Monroe Iglehart has delightful presence and nails Armstrong’s vocal quality, but he’s too often relegated to narrator, stepping out of the action to tell the audience how he felt, instead of showing us in the scene. Iglehart, Christina Sajous and Christopher Renshaw are all credited as directors of the project and, despite so many perspectives, the musical’s focus seems to be anywhere but o",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-WONDERFUL-WORLD-Opens-On-Broadway-20241111",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Iglehart has delightful presence and nails Armstrong's vocal quality, but he's too often relegated to narrator.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed evaluation - praising lead performance while criticizing structural issues. Text appears cut off mid-sentence. Low confidence due to incomplete information. | GPT-4o: The excerpt indicates a mixed review, praising Iglehart's performance but criticizing the show's focus and structure. The single excerpt and lack of full context lead to a low confidence score. | Gemini: The review praises the lead actor's performance but criticizes the musical's unfocused direction and the dimming of Armstrong's character, suggesting a mixed experience. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt offers genuine praise for Iglehart's performance but raises significant concerns about the show's structural focus and direction, suggesting the production is unfocused and relies too heavily on exposition. With only one truncated excerpt available, the overall sentiment appears mixed rather than clearly recommending or discouraging attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:44:38.862Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

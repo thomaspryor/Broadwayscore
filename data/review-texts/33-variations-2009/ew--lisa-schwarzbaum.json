@@ -10,7 +10,7 @@
   ],
   "bwwExcerpt": "\"B+ Jane Fonda shares the stage with Ludwig van Beethoven in Moisés Kaufman's satisfying, musically astute Broadway brainteaser 33 Variations. Both of them acquit themselves nicely. But under the circumstances, I'd say Fonda has the harder job - and it's a kick to watch her work out her timing as a stage actor, a half century after the Actors Studio alumna first performed in live theater\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-33-Variations-Review-Roundup-and-More-20090310",
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "assignedScore": 79,
   "llmScore": {
     "score": 79,
@@ -65,5 +65,35 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 79,
+  "fullText": "Jane Fonda shares the stage with Ludwig van Beethoven in Moisés Kaufman's satisfying, musically astute Broadway brainteaser 33 Variations. Both of them acquit themselves nicely. But under the circumstances, I'd say Fonda has the harder job  and it's a kick to watch her work out her timing as a stage actor, a half century after the Actors Studio alumna first performed in live theater. After all, Beethoven (an irascible genius channeled with gusto by Zach Grenier) seems to be playing himself in his later years. He's ailing and going deaf, to be sure. And for more than three years, he's been obsessed with turning a trifling little waltz by well-known Bonn music publisher Anton Diabelli into what would come to be known as the Diabelli Variations, one of the greatest works ever composed for piano.\n\nFonda, on the other hand, plays not-Fonda  or rather, Dr. Katherine Brandt, a musicologist as obsessed with studying how Beethoven made his art as the maestro himself was with teasing brilliant variations out of Diabelli's bouncy beer-hall tune. Katherine is under time constraints; she's seriously ill. And as she proceeds, and as her health deteriorates in a downward spiral that parallels Beethoven's, the playwright conjures variations on themes of creativity and emotional connectivity.\n\nKatherine works and reworks her relationship with her grown daughter, Clara (Samantha Mathis), and her friendship with a formidable German research librarian (Susan Kellermann), while Clara refines her romance with Colin Hanks' Mike, a nurse caring for Katherine. Meanwhile, back in time and simultaneously, Beethoven butts heads with his devoted secretary, Schindler (Erik Steele), and with Diabelli himself (Don Amendolia).\n\nThrough it all, Fonda looks so small, so thin, so fragile, and so stately! She makes her way through an intricate, allegro-paced production that incorporates live piano performance, a bit of ensemble singing, and even a soupçon of a minuet. Kaufman, who also directs, previous worked with primary source materials in his stirring ''docu-plays'' Gross Indecency: The Three Trials of Oscar Wilde and The Laramie Project, and his enthusiasm for conveying the excitement of you-are-there documents is evident, a joy. Look! Here! he says, here's where Beethoven spilled soup in his sketchbook and changed his mind and doubted himself and dug deep and found genius! Here's what matters! And at the same time, exhilarated by her discoveries in the Beethoven archives, a solitary woman facing her own death digs similarly deep.\n\nKaufman makes a convincing case for the genius of emotional variation in each of us, whether we're Beethoven or not. The set is a shuffle of historical eras (present-day New York crashes up against 18th-century Bonn and Vienna), a sliding of panels and props, with pages from the composer's sketchbooks projected on screens. The music (performed by Diane Walsh) is sublime. In her latest creative variation, Fonda is a little tremulous, a little taut. But she adds con brio to the music. B+",
+  "isFullReview": true,
+  "textWordCount": 484,
+  "archivePath": "data/archives/reviews/33-variations-2009/ew--lisa-schwarzbaum_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T17:10:23.412Z",
+  "originalScore": "D",
+  "originalScoreNormalized": 35,
+  "scoreSource": "letter-grade",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20121024061122",
+  "archiveOrgUrl": "http://web.archive.org/web/20121024061122/http://www.ew.com/ew/article/0,,20264100,00.html",
+  "wordCount": 484,
+  "tierReason": "Missing proper ending or other signals"
 }

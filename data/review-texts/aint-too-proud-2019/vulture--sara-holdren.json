@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "What's interesting, though, is that so many of these songs are presented only in part, tossed in as if to whet our appetites only before the biographical plot, such as it is, trundles along. The ushers who seat you for Ain't Too Proud encourage you to clap, sing along, and respond to the show, and looking around, I could tell that my audience was hungry to do so. This was a house of fans. They wanted a nostalgic blowout concert, and as so many songs peeped in and out without a real finish, you c",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "as so many songs peeped in and out without a real finish",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt criticizes the show's song structure and execution (songs presented 'only in part', 'tossed in', 'peeped in and out without a real finish') while acknowledging audience enthusiasm. Text is clearly truncated mid-sentence, making the full verdict unclear. | GPT-4o: The excerpt suggests a mixed experience, highlighting audience engagement but also noting incomplete song presentations. The single excerpt limits confidence in the overall sentiment. | Gemini: The review excerpt suggests the show doesn't fully deliver on what the audience wants, implying a mixed experience. The truncated nature of the text lowers confidence. | Kimi: The excerpt criticizes the show's structure for cutting songs short and failing to deliver the concert experience the audience desires, using dismissive language ('such as it is,' 'trundles along') to describe the plot. As a single cherry-picked excerpt with negative content, it suggests the overall review is unfavorable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:54:33.107Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

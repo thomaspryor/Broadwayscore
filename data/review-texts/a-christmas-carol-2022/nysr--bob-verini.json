@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The most effective touch by far is the casting of two young actors with cerebral palsy, Sebastian Ortiz (at the performance I caught) and Jai Ram Srinivasan, in alternation as Tiny Tim. It's no stunt. Tootling along in his little walker to investigate Scrooge's bounty the next morning-sorry, can't reveal anything about that either-Ortiz placidly works within his body's limits with fortitude and grace, more movingly than any ordinarily-abled moppet ever could in that role. His encounters with Scrooge bring tears to Scott's eyes and to ours: not tears of pity, but of recognition that there are people all around us who merit our help and at the very least, our respect, and yet look how often we deny both.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "His encounters with Scrooge bring tears to Scott's eyes and to ours: not tears of pity, but of recognition.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows strong praise for a specific casting choice and performance, describing it as 'most effective' and 'more movingly than any ordinarily-abled moppet ever could.' However, with only one curated excerpt available, the overall review verdict remains unclear. | GPT-4o: The excerpt highlights a particularly moving casting choice that enhances the emotional impact of the show. While the excerpt is positive, the single quote and lack of full context suggest a cautious approach, placing the score at the lower end of the Positive range. | Gemini: The review excerpt focuses on a specific performance element and praises it highly, suggesting a positive overall experience. The emotional impact described points towards a strong recommendation. | Kimi: The excerpt praises the casting as the 'most effective touch by far' and describes the performance as deeply moving and authentic, warranting a high-positive score per the guidance for clearly positive excerpts, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:09:17.991Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

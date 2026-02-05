@@ -12,5 +12,60 @@
   "bwwExcerpt": "Bryan Cranston recently ended five seasons playing a good man surrounded by depraved criminals, drowning by inches in a cesspool of guilt, paranoia and homicidal rage. In other words, he was training to be President of the United States. As Lyndon B. Johnson, borne into the Oval Office on a wave of blood and hemmed in by enemies within and without his party, Cranston rules the boards with a vengeance, a latter-day Abe Lincoln who drops f-bombs and talks plenty about balls. The TV star's galvanic turn and the layered, polyphonic production around him take the dried facts of history and make them walk, talk and kick ass to victory...Director Bill Rauch keeps the action flowing through Schenkkan's lively use of direct address, split scenes, soliloquy and fourth-wall-breaking exhortation. This being a political potboiler, there's plenty of rousing rhetoric, and Cranston imbues his inspiring speeches and profane rants with a larger-than-life intensity that leaps off the page. Even if the script sometimes lapses into History Channel expositional mode, its humor and passion never lag-and neither does Cranston.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-THE-WAY-Opens-on-Broadway-Updating-LIVE-20140306"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-THE-WAY-Opens-on-Broadway-Updating-LIVE-20140306",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cranston rules the boards with a vengeance, a latter-day Abe Lincoln who drops f-bombs and talks plenty about balls.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Cranston's 'galvanic turn' and 'larger-than-life intensity', positive assessment of direction and production values. Despite minor script critiques, the overall tone is enthusiastic and recommending. | GPT-4o: The review excerpt is highly positive, praising Cranston's performance and the production's ability to bring history to life with intensity and humor. Despite a minor critique of the script, the overall tone is enthusiastic and strongly recommends the show. | Gemini: The review is overwhelmingly positive, praising Cranston's performance and the production. The phrase \"kick ass to victory\" suggests a strong recommendation. However, due to the single excerpt, confidence is low. | Kimi: Single excerpt displays strong enthusiasm for Cranston's 'galvanic' performance and the 'kick ass' production, with only minor reservations about script exposition.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:15:42.130Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

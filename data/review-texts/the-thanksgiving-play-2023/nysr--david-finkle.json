@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Director Rachel Chavkin (Tony for Hadestown) has the able four working like Energizer bunnies. As Finneran always does, she wrings as much humor as there is to wring; in the circumstances, maybe even more. So do the other in-for-a-penny-in-for-a-pound players.",
   "bwwScore": 3,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But how comic is it, from start to finish?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic gives 2/5 stars and expresses significant reservations throughout. While praising the cast and concept, he questions the comedy's effectiveness, finds some content questionable, and notes it doesn't always work for him as a viewer. The truncated text warning suggests caution, but the available text shows clear disappointment with the execution despite acknowledging the talent involved. | GPT-4o: The review is truncated, but the 2/5 star rating and the critic's mixed reaction to the humor suggest a negative verdict. The critic acknowledges some audience enjoyment but personally finds the comedy lacking. | Gemini: The review acknowledges humor and talented cast, but questions the effectiveness of some comedic choices and doesn't offer a clear recommendation. The 2/5 star rating also suggests a mixed to negative assessment, but the truncated text makes it difficult to be certain. | Kimi: While the critic praises the cast as 'Energizer bunnies' and the opening video as 'brilliant,' the 2/5 star rating and explicit admission that the comedy did not consistently work for this viewer place the review in negative territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:27:22.188Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

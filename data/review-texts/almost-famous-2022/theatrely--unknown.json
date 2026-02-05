@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "In another devastating blow to the 'West Coast Has Taste' community, the musical Almost Famous has opened on Broadway, after a well-received premiere run in San Diego, to put another nail in that idealistic California coffin. It is a production so dull, with poor direction, ugly sets, uninteresting music, and flat performances, that it really needn't exist at all. Mind you, my beef here is mainly with the Pacific-facing critics who-be it through payola, their overall lack of theatre, or whichever self-help cult they've got going on over there these days-allowed me to raise my expectations for a show which counts among the most artistically lacking I've seen.",
   "bwwScore": 2,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103",
+  "assignedScore": 14,
+  "llmScore": {
+    "score": 14,
+    "confidence": "medium",
+    "range": {
+      "low": 9,
+      "high": 19
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is a production so dull, with poor direction, ugly sets, uninteresting music, and flat performances, that it really needn't exist at all.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating pan that questions the show's right to exist. Systematic criticism of every element with no redeeming qualities mentioned. | GPT-4o: The review is overwhelmingly negative, criticizing every aspect of the production and suggesting it shouldn't exist. The tone and language indicate a strong pan. | Gemini: The review is overwhelmingly negative, describing the production as dull, poorly directed, and artistically lacking, indicating a strong pan. | Kimi: The critic delivers a devastating pan, calling the production dull with poor direction, ugly sets, and flat performances, concluding it 'needn't exist at all' and is among the most 'artistically lacking' shows they've seen.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:14:10.386Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 12,
+    "geminiScore": 12,
+    "kimiScore": 15,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

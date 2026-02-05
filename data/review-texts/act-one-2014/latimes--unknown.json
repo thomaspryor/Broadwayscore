@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "But there's a fundamental problem in bringing 'Act One' to the stage: The episodic story isn't structured as a drama. There's tension but little suspense. Anyone who knows the vaguest thing about Hart will know that he became one of the 20th century's major Broadway figures...on stage this roller coaster journey, unable to induce butterflies of excitement, seems unduly repetitive. The book hasn't been distilled into a workable dramatic form...But there are rewards to the production. Three actors play Moss Hart: Matthew Schechter is young Hart, Tony Shalhoub is the older Hart looking back, and Santino Fontana is the anxious, eager-beaver acolyte Hart determined to conquer the Great White Way. All three are terrific, but Shalhoub, who also plays Hart's father as well as a highly neurotic George S. Kaufman (who has some of the same compulsive tendencies as Shalhoub's TV character Monk) is outstanding.",
-  "bwwScore": 7
+  "bwwScore": 7,
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But there are rewards to the production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review identifies fundamental structural problems with the adaptation ('isn't structured as a drama', 'unduly repetitive', 'hasn't been distilled') but acknowledges strong performances, particularly praising all three leads and calling Shalhoub 'outstanding'. This balances significant criticism with clear positives, indicating a mixed recommendation. | GPT-4o: The review highlights structural issues with the play, such as lack of suspense and repetitive storytelling. However, it praises the performances, especially Tony Shalhoub's. The mixed assessment of the production's overall execution versus its acting leads to a Mixed classification. | Gemini: The review identifies a fundamental problem with the structure of the play, calling it unduly repetitive. However, it praises the performances, especially Tony Shalhoub. This indicates a mixed experience. | Kimi: The excerpt cites a 'fundamental problem' with the dramatic structure and calls the story 'unduly repetitive,' but balances this with praise for the performances ('terrific,' 'outstanding'). Given the single-excerpt warning, the overall verdict appears mixed with no clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:02:43.168Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

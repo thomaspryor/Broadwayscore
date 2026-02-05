@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Thanks to Bob Crowley's gorgeous costumes and sets, which make good use of moving scrims, as well as 59 Productions' animated projections, Paris becomes a recovering city ready to start fostering new loves - especially for Jerry and Lise.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-AMERICAN-IN-PARIS-Opens-on-Broadway-Updating-LIVE-20150412",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Thanks to Bob Crowley's gorgeous costumes and sets, which make good use of moving scrims, as well as 59 Productions' animated projections, Paris becomes a recovering city ready to start fostering new loves",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising design elements (gorgeous costumes/sets, effective projections). However, with only one curated quote available, this may not represent the full review verdict. Scored conservatively in lower Positive range. | GPT-4o: The excerpt praises the visual elements of the production, suggesting a positive impression. However, with only a single excerpt available, the overall sentiment of the review is unclear, leading to a low confidence score. | Gemini: The excerpt focuses on the positive aspects of the production design, suggesting a favorable, but not overwhelmingly enthusiastic, review. Given it's a single excerpt, the confidence is low. | Kimi: The excerpt offers clear praise for the production design using strong positive language ('gorgeous'), indicating a recommendation in the upper Positive range, though the single-excerpt limitation prevents higher confidence or a Rave classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:43:10.915Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

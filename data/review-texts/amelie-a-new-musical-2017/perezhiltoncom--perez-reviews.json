@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Thankfully, Amélie is worth seeing if for no other reason than Phillipa Soo. We first encountered her in 2013 when we saw her off-Broadway in The Great Comet. In this review, we called her \"stunning\". A little show called Hamilton happened since then and she is now a bonafide leading lady of the great white way.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMELIE-A-NEW-MUSICAL-Opens-at-the-Ahmanson-Theatre-UPDATED-20161220",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Thankfully, Amélie is worth seeing if for no other reason than Phillipa Soo.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation ('worth seeing') but qualified - only for the lead performance. Single excerpt warning suggests this may be cherry-picked positive moment from a more mixed review. | GPT-4o: The review excerpt suggests the show is worth seeing primarily for Phillipa Soo's performance, indicating a positive but qualified recommendation. The lack of a full review and single excerpt warning lowers confidence. | Gemini: The review states that the show is \"worth seeing\" because of Phillipa Soo. Since this is the only excerpt available, confidence is low. | Kimi: The critic explicitly recommends the show as 'worth seeing' but heavily qualifies this by attributing the value solely to Phillipa Soo's performance, indicating a barely positive, qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:17:37.367Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

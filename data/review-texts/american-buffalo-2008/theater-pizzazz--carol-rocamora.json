@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Ultimately, Pepe’s splendid production provides a new insight into 'American Buffalo'—as a play more about friendship than about American business (you’ll see, in the ending I dare not reveal). Under Mamet’s tough iconoclastic exterior, there’s heart and humanity that ultimately triumphs at Circle in the Square.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ultimately, Pepe's splendid production provides a new insight into 'American Buffalo'—as a play more about friendship than about American business.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it a 'splendid production' and finds meaningful new insights, with 'heart and humanity that ultimately triumphs.' However, confidence is low due to single excerpt warning and potential cherry-picking of positive quotes. | GPT-4o: The excerpt praises the production as 'splendid' and highlights its insight and emotional depth, suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses positive language like \"splendid production\" and suggests the play has heart and humanity, indicating a positive recommendation. Given the single excerpt, I'm scoring towards the higher end of the positive range. | Kimi: The excerpt offers unqualified praise ('splendid production,' 'triumphs') indicating a clear recommendation, though confidence is limited by the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:25:28.029Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

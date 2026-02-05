@@ -11,5 +11,60 @@
   "bwwExcerpt": "\"That sense of excitement being brought to a pitch and then slammed back down is a hallmark of A Beautiful Noise in general. It’s so heavily focused on Neil Diamond being unhappy – the structure implies a detective story, solving the mystery of “why,” but despite a momentum-killing speech in the second act, psychological insight is thin on the ground – that the show seems to delight in denying us the surging, anthemic catharsis that’s a key part of the mix that makes those songs so beloved and m",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That sense of excitement being brought to a pitch and then slammed back down is a hallmark of A Beautiful Noise in general.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The excerpt criticizes the show's structure as denying audiences the emotional payoff they expect from Diamond's beloved songs, calling a speech 'momentum-killing' and noting 'psychological insight is thin.' However, this is only one excerpt and may be truncated mid-sentence, requiring low confidence. | GPT-4o: The excerpt criticizes the show for its lack of psychological insight and failure to deliver the expected emotional catharsis. The tone suggests disappointment, aligning with a negative verdict. However, due to the single excerpt, confidence is low. | Gemini: The review excerpt focuses on the show's failure to deliver the expected emotional impact and catharsis, suggesting a negative experience. The aggregator verdict also indicates a flat or negative reception. | Kimi: The excerpt criticizes the show's structure for denying catharsis and lacking psychological insight, suggesting disappointment with the production's emotional impact. However, given only one curated excerpt is available and the aggregator indicates a 'Flat' verdict, the overall assessment is mixed rather than fully negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:55:11.072Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

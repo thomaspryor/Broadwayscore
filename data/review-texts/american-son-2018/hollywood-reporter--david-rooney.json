@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "One might question whether the grim inevitability of such a punitive ending was necessary, and whether the play might have gained complexity without diluting its message by subverting audience expectations with a different, less predictable outcome. But this is tense theater designed to shake up our complacency and make us think. In that aim, it succeeds.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this is tense theater designed to shake up our complacency and make us think. In that aim, it succeeds.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic questions some choices but concludes the play succeeds in its aims as 'tense theater.' Single excerpt warning applied - this sounds like qualified praise from a larger review. | GPT-4o: The review acknowledges potential issues with the play's ending but ultimately praises its ability to engage and provoke thought. The excerpt suggests a positive recommendation despite reservations, but due to the single excerpt warning, confidence is low. | Gemini: The review questions some aspects of the ending but ultimately concludes that the play succeeds in its aim, indicating a positive, though not overwhelmingly enthusiastic, recommendation. | Kimi: While the critic questions whether the grim ending was necessary, they ultimately affirm that the play succeeds in its goal to shake up complacency and provoke thought.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:39:01.226Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

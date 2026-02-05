@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "There's a box of doughnuts center stage in Derek McLane's set for American Son that, try as I might, I couldn't ignore. Other than a momentary gag about cops liking them, they don't matter in the play. But I kept thinking about those baked goodies. First: Because their warm, cinnamon smell wafted across the orchestra. And second, unfortunately: They reminded me that American Son is likewise appealing, but hollow inside.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "American Son is likewise appealing, but hollow inside.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic uses the doughnut metaphor to conclude the show is 'hollow inside' despite being 'appealing.' However, with only one excerpt available, this could be taken out of context from a more balanced review. | GPT-4o: The review excerpt compares the play to doughnuts that are appealing but hollow, suggesting a negative view of the play's substance. The tone is not strongly negative, hence a score in the mid-range of the Negative bucket. | Gemini: The review excerpt compares the play to doughnuts, saying it's appealing but hollow inside, indicating a mixed reaction. The limited text and negative comparison prevent a higher score. | Kimi: The critic employs a damning metaphor comparing the show to doughnuts, acknowledging surface appeal (like the set design and sensory elements) but ultimately judging the work as empty and lacking substance at its core. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:39:18.781Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

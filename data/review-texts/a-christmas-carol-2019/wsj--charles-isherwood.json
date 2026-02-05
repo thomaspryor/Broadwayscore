@@ -3,9 +3,9 @@
   "outletId": "wsj",
   "outlet": "The Wall Street Journal",
   "criticName": "Charles Isherwood",
-  "url": "https://www.wsj.com/articles/a-christmas-carol-review-a-handsome-holiday-treat-11574967600",
+  "url": "https://www.wsj.com/articles/a-christmas-carol-review-a-cold-weather-favorite-loses-its-chills-11575576189?gaa_at=eafs&gaa_n=AWEtsqdiX_bMJn1pgqICRvoLONUn4EXyy4-p6Nl2zenK7-CH7HGvxEaqhNP8&gaa_ts=6984db2f&gaa_sig=qoYxns_Y52mrH2SyJ5ZykwC8B2ZwirXuvomBUtRd3Zo9ZAtUdn2kEZBTrwir38idxlMUDeuImgFsLA_jXNq9lQ%3D%3D",
   "publishDate": "November 28, 2019",
-  "fullText": "This handsome new staging of 'A Christmas Carol' at the Lyceum Theatre offers a respectable if not revelatory take on the Dickens classic, with Campbell Scott bringing a welcome subtlety to Scrooge.",
+  "fullText": "https://www.wsj.com/articles/a-christmas-carol-review-a-cold-weather-favorite-loses-its-chills-11575576189\n\nShareResizeCampbell Scott as Ebenezer Scrooge in ‘A Christmas Carol’ Joan MarcusNew York\n\nStage versions of “A Christmas Carol” have yet to become a theatrical equivalent of the ever-popular “Nutcrackers” that serve as perpetually milkable cash cows for America’s ballet companies. Even so, there are plenty of them, some of which are quite good, and I’ve never understood why Patrick Stewart’s one-man version of Charles Dickens’s seasonal tale of spiritual redemption, which has had four Broadway runs since 1991, is the only one to have had any luck there.",
   "isFullReview": false,
   "dtliExcerpt": "This handsome new staging of 'A Christmas Carol' at the Lyceum Theatre offers a respectable if not revelatory take on the Dickens classic, with Campbell Scott bringing a welcome subtlety to Scrooge.",
   "originalScore": null,
@@ -73,5 +73,55 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "previousUrl": "https://www.wsj.com/articles/a-christmas-carol-review-a-handsome-holiday-treat-11574967600",
+  "urlDiscoveredAt": "2026-02-05T17:47:51.053Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 73,
+  "textWordCount": 89,
+  "archivePath": "data/archives/reviews/a-christmas-carol-2019/wsj--charles-isherwood_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T17:47:51.056Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 138 (min: 300)"
+  ],
+  "wordCount": 89,
+  "tierReason": "Short text (89 words)"
 }

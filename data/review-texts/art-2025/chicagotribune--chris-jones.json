@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "bww-roundup",
     "bww-reviews"
   ],
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The ace in the hole in Ellis' revival is Corden, who is just fabulous here.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises both the play's themes and specifically calls Corden 'fabulous,' indicating a positive assessment. However, as a single curated excerpt, confidence is low since the full review verdict may differ. | GPT-4o: The excerpt praises Corden's performance as 'fabulous' and highlights the play's exploration of male friendship. However, the text is limited, and the single excerpt warning suggests caution, leading to a lower confidence and score at the lower end of the Positive range. | Gemini: The review excerpt focuses on praising Corden's performance and mentions the play delves into male friendship. While positive, the limited text and lack of overall recommendation make it a 'Positive' score with low confidence. | Kimi: Single excerpt shows strong praise for Corden's performance ('fabulous,' 'ace in the hole') and appreciation for the play's thematic depth. BroadwayWorld aggregator indicates positive sentiment. Scored at upper end of Positive range per instructions for clearly positive single excerpts, with low confidence due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:16:23.030Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

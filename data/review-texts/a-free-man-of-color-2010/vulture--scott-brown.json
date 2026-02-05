@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "By the time Cornet and Jefferson have their dialogue (one of only a handful of true, respectful exchanges between two characters on an equal intellectual footing), we're deep in the second act. Guare resorts to some very literal and op-ed-ish maneuvers in an attempt to guide us out of the hedge maze he's created. Cornet himself might've been the unifying force, but even he isn't unified. 'I do not live in factions,' he protests, when Jefferson churlishly brings up his mixed-race parentage. Yet Cornet, like the play, is a nacreous combine, lovely and unwieldy, easy to display but hard to manipulate. That's A Free Man of Color: It's not a map, or even an atlas, but a huge, misshapen, distracted globe, one that even a theatrical Tamburlaine like Guare can't quite figure out how to bestride. That doesn't mean it isn't exhilarating to match him try.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That doesn't mean it isn't exhilarating to match him try.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds the play structurally flawed ('hedge maze', 'misshapen', 'distracted') but acknowledges its ambition and finds the attempt 'exhilarating'. The final sentiment suggests qualified appreciation despite significant reservations. | GPT-4o: The review describes the play as 'lovely and unwieldy' and 'exhilarating to match him try,' indicating a mix of admiration and criticism. The text suggests a complex, challenging production without a clear recommendation. | Gemini: The review describes the play as \"lovely and unwieldy\", \"misshapen, distracted globe\" but also states that it is \"exhilarating to watch him try\", indicating a mixed opinion. The single excerpt and lack of clear recommendation lead to a lower confidence score. | Kimi: While the excerpt heavily criticizes the play's unwieldy structure and misshapen narrative, it ultimately characterizes the theatrical attempt as 'exhilarating' and the work as 'lovely,' suggesting a qualified recommendation to see the show despite its flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:20:40.653Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,96 @@
   ],
   "bwwExcerpt": "Yet the most forceful theatrical response to the administration is now on Broadway, with a nerve-jangling adaptation of George Orwell's classic novel 1984, which just opened at the Hudson Theatre. This harrowing production stages what might be the most famous picture of a totalitarian future, one that's penetrated the lexicon (\"Big Brother,\" \"double-think\") and subconscious of generations of readers because of its vision of perpetual war, constant surveillance, and state-sponsored lies.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yet the most forceful theatrical response to the administration is now on Broadway, with a nerve-jangling adaptation of George Orwell's classic novel 1984.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls this 'the most forceful theatrical response' and describes it as 'nerve-jangling' and 'harrowing' - strong positive language. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt describes the production as 'harrowing' and 'nerve-jangling,' indicating a strong emotional impact. However, the single excerpt and lack of a full review make the overall sentiment unclear, leading to a low confidence score. | Gemini: The review excerpt describes the production as a \"forceful theatrical response\" and \"nerve-jangling adaptation,\" indicating a positive, but not overwhelmingly enthusiastic, assessment. Given that it is a single excerpt, confidence is low. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:45:18.885Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "fullText": null,
+  "isFullReview": true,
+  "textWordCount": 356,
+  "archivePath": "data/archives/reviews/1984-2017/bloomberg-news--jason-zinoman_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T17:03:29.302Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "XLinkedInEmailLinkGiftExpandPhotographer: Julieta CervantesFacebookXLinkedInEmailLinkGiftGift this articleContact us:Provide news feedback or report an errorConfidential tip?Send a tip to our reportersSite feedback:Take our SurveyNew WindowFacebookXLinkedInEmailLinkGiftBy Jason ZinomanJune 23, 2017 at 1:00 AM UTCBookmarkSaveTranslateThis article is part of the June 26, 2017 issue of businessweek.Chevron RightIn the ongoing culture war between artists and our ex-­reality-TV-star president, it’s surprising that theater, that famously fragile and fusty art form, has been the tip of the spear.\n\nLess than two weeks after Donald Trump was elected, a cast member of the musical Hamilton delivered a message of concern from the stage to Mike Pence. Never one to ignore a slight, Trump tweeted that the theater must be “a safe and special place.”\n\nLEARN MOREMore From BloombergAnthropic AI Tool Sparks Selloff From Software to Broader Market\n\nTrillion-Dollar Tech Wipeout Ensnares All Stocks in AI’s Path\n\nChina Trader Who Made $3 Billion on Gold Bets Big Against Silver\n\nTrump Says He Wants $1 Billion From Harvard in New Attack\n\nTata’s Outsider CEO Battles Multiple Crises After Bad Year\n\nDivorce, Hedge-Fund Style: Inside the Breakup at Two Sigma\n\nby Hema Parmar and Chris Dolmetsch\n\nUkrainians Defy Russia’s Attempts to Freeze Them Into Submission\n\nby Volodymyr Verbianyi and Daryna Krasnolutska\n\nNYC Real Estate Binge Piles Pressure On a German Pension Plan\n\nby Natalie Wong, Arno Schuetze, Chris Dolmetsch and Karin Matussek\n\nElon Musk’s Nashville Tunneling Venture Has the Mayor Hoping No One Dies\n\nHomeBTV+Market DataOpinionAudioOriginalsMagazineEventsNewsMarketsEconomicsTechnologyPoliticsGreenCryptoAIWork & LifeWealthPursuitsBusinessweekCityLabSportsEqualityManagement & WorkMarket DataStocksCommoditiesRates & BondsCurrenciesFuturesSectorsEconomic CalendarExploreNewslettersExplainersPointed News QuizAlphadots GameThe Big TakeGraphicsSubmit a TipAbout UsTerms of ServiceDo Not Sell or Share My Personal InformationTrademarksPrivacy PolicyCareersAdvertiseAd ChoicesHelp©2026 Bloomberg L.P. All Rights Reserved.\n\nExplore live shows, documentaries, interviews and more – all in one place.\n\nBy accepting, you agree to our updated\n Terms of Service,\n including the arbitration provision and class action waiver. You understand that we process your information as described in the\n Privacy Policy,\n which may include sharing information about your use of\n Bloomberg.com\n with third parties. Accepting does not affect your right to opt-out at any time via the Do Not Sell or Share My Personal Information link in the website footer.\n\nThis page has been blocked by an extension"
 }

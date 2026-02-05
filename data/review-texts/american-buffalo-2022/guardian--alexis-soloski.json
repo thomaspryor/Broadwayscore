@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "American Buffalo feels thin, too. And sour. Like a cup of diner coffee left to cool. It's a showcase for actors. But what really is it showcasing? It's a play about men who feel that life has done them wrong. The way they speak of others - women, queer people, 'Mexicans' - suggests that they believe they are owed more, that they are possessors dispossessed, that the American dream is their birthright, even if they never do much to make that dream come through. They fight over scraps - imagined scraps at that - and then they fight one another. Back in the day, there used to be a lot of indignation over Mamet's language and whether it heralded a coarsening of American letters. The language, it turns out, wasn't the coarse part.",
   "bwwScore": 2,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "American Buffalo feels thin, too. And sour. Like a cup of diner coffee left to cool.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the play 'thin' and 'sour' with a dismissive tone about what it showcases, but this is only one excerpt so the full verdict may be more nuanced. | GPT-4o: The excerpt describes the play as 'thin' and 'sour', suggesting a negative impression. However, due to the single excerpt warning, the confidence is low as the full context of the review is not available. | Gemini: The review describes the play as \"thin\" and \"sour\", and questions what it is showcasing. While it acknowledges the actors, the overall tone is negative, suggesting it is not recommended. | Kimi: The single available excerpt reveals a dismissive tone, with the critic describing the play as insubstantial and unpleasant while questioning its artistic value beyond serving as an acting showcase. While performer skill is acknowledged, the overall assessment suggests a disappointing production not worth recommending.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:25:55.670Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

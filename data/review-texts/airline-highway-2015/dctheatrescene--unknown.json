@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "There is a feel of improvisation, although everything is scripted. And, while the individual performers get their moments for solos, the play comes off as a collective composition of overlapping voices. The 16 performers work together so effectively in creating the community that hangs around the Hummingbird Motel, that they surely deserve a Tony Award for great ensemble acting...Director Joe Mantello...works hard to orient us to what approximates Robert Altman's style of fly-on-the-wall filmmak",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The 16 performers work together so effectively in creating the community that hangs around the Hummingbird Motel, that they surely deserve a Tony Award for great ensemble acting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the ensemble as Tony-worthy and commends the director's work, indicating a positive recommendation. However, confidence is low due to single excerpt warning and potential for cherry-picking positive moments from a more mixed review. | GPT-4o: The excerpt praises the ensemble's performance and suggests a Tony Award, indicating strong approval. However, due to the single excerpt warning, confidence is low despite the positive tone. | Gemini: The review excerpt praises the ensemble acting and direction, suggesting a strong positive experience. The mention of a Tony Award indicates high praise. Given that it is a single excerpt, I am scoring at the higher end of the positive range. | Kimi: The excerpt offers strong praise for the ensemble cast, suggesting Tony-worthy performances, and compliments the director's effective work, indicating a clear positive recommendation despite the limited single-excerpt format.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:55:23.992Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

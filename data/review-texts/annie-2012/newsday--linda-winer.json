@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This is a message with a play tacked on. The message -- that we are obliviously up to our doomed ankles in our carbon footprints -- is made powerfully apparent. It's the people we don't always believe. This is especially true of George (O'Byrne) and Fiona (Michelle Gomez), the loving but incredibly obtuse (and skinny) parents of tortured Anna -- played with gutsy, layered subtlety by Annie Funke. As staged by Michael Longhurst, George is far too befuddled by the emotional world to be trusted to ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-IF-THERE-IS-I-HAVENT-FOUND-IT-YET-Starring-Jake-Gyllenhaal-and-Annie-Funke-All-the-Reviews-20120921",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a message with a play tacked on.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt criticizes the play as message-driven rather than dramatically effective, praising one performance but finding the parents 'incredibly obtuse' and not believable. However, with only a truncated excerpt available, the full verdict is unclear. | GPT-4o: The review highlights a strong message but questions the believability of the characters, indicating a mixed reception. The excerpt suggests some strengths but also significant reservations, leading to a mixed score. | Gemini: The review praises the message and the performance of Annie Funke, but expresses reservations about believing the characters. The overall sentiment is mixed, and the truncated nature of the text lowers the confidence. | Kimi: The excerpt criticizes the play's structure as subordinate to its environmental message and questions character believability, though it praises the message's power and one performance. The single truncated excerpt limits definitive classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:12:07.332Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

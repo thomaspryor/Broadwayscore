@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Richard Thomas does everything but twirl his mustache as the bogeyman in the Broadway revival of “An Enemy of the People.” That’s because he doesn’t have a mustache to twirl. The other accouterments of villainy -- black top hat and bowtie framing a lip-curling sneer, cape and cane wielded with menacing flourishes -- are all accounted for in Doug Hughes’s clipped vaudeville of a production.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Doug Hughes's clipped vaudeville of a production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The excerpt criticizes the production as reducing the character to cartoonish villainy and describes the direction as 'clipped vaudeville,' suggesting disappointment with the approach. However, with only one excerpt available, the full verdict remains unclear. | GPT-4o: The excerpt describes the performance with a tone that suggests theatricality and exaggeration, but does not clearly indicate a positive or negative recommendation. The lack of a clear verdict and the single excerpt warning suggest a mixed assessment. | Gemini: The review describes the production as a \"clipped vaudeville\" and uses terms like \"bogeyman\" and \"menacing flourishes,\" suggesting a negative or satirical take on the play. | Kimi: Single excerpt describes the production as 'clipped vaudeville' with cartoonish villainy, suggesting theatrical flair but potentially shallow treatment of the material; insufficient text to determine clear recommendation. | Buckets: claude=Negative, openai=Mixed, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:45:47.049Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

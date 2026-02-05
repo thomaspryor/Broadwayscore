@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "To that end, the musical scrupulously duplicates the movie, delivering nearly every famous line of dialogue right where you expect it, whether shouted ('Don't take drugs!'), sung ('It's all happening'), or yelled out in the middle of a song ('I am a golden god!'). It so desperately wants to remind you of something else you might've loved that the presiding emotional affect ends up being melancholy. We've missed the tour bus twice over. This is almost Almost Famous.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It so desperately wants to remind you of something else you might've loved that the presiding emotional affect ends up being melancholy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds the musical derivative and disappointing, criticizing it for 'desperately' copying the movie and concluding with the damning 'This is almost Almost Famous' - suggesting it fails to achieve what it's trying to be. | GPT-4o: The review indicates that the musical closely follows the movie but fails to capture its essence, resulting in a feeling of melancholy rather than nostalgia. This suggests a mixed reception, as it neither fully recommends nor discourages seeing the show. | Gemini: The review notes that the musical duplicates the movie and evokes melancholy, suggesting a mixed reaction. The phrase \"almost Almost Famous\" implies it falls short of expectations. | Kimi: The excerpt indicates the musical meticulously recreates the film but produces a melancholy effect by reminding audiences of what they've lost rather than creating something new, suggesting a mixed experience with limited independent merit.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:20:09.614Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

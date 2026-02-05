@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Why, one wonders, should Roundabout see fit to trot out 'Anything Goes,' the frequently produced 1934 musical chestnut? Turns out it has a compelling reason: Sutton Foster. She doesn't just deliver those Cole Porter hits, she knocks 'em out of the park. Joel Grey gives his happiest performance in years as Public Enemy #13, and director-choreographer Kathleen Marshall has a field day, outdoing herself with several rousing dance numbers. This new 'Anything Goes' is a daffy, shipshape romp.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She doesn't just deliver those Cole Porter hits, she knocks 'em out of the park.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening with skepticism about another revival, the critic delivers strong praise for Foster's performance, Grey's work, and Marshall's direction/choreography. Calls it a 'romp' and highlights multiple strong elements. Single excerpt limits confidence but tone is clearly positive. | GPT-4o: The excerpt praises the performances and direction, calling the production a 'daffy, shipshape romp.' Despite the initial question about the necessity of the revival, the overall tone is enthusiastic, highlighting standout performances and choreography. | Gemini: The review is overwhelmingly positive, praising Sutton Foster's performance, Joel Grey's performance, and Kathleen Marshall's direction and choreography. The critic calls the show a \"daffy, shipshape romp,\" indicating a strong recommendation. | Kimi: Despite initial skepticism about reviving this 'chestnut,' the critic enthusiastically praises Sutton Foster's star performance ('knocks 'em out of the park'), Joel Grey's work, and Kathleen Marshall's choreography, concluding with an unqualified endorsement of the production as a 'shipshape romp.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:01:46.474Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There are also bright spots during the show’s 2 hours, including the bouncy “Ralphie to the Rescue!” The twangy tune finds Ralphie fantasizing about being a hero with his rifle. The best scene comes with the jazzy “You’ll Shoot Your Eye Out.” Thanks to Warren Carlyle’s delicious tap-happy choreography and a gleaming gang of young hoofers, it’s great big fun. So much so you wish for more of the same. But not everyone’s as lucky as Ralphie — you can’t always get what you want.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-STORY-THE-MUSICAL-Opens-on-Broadway-Updating-LIVE-20121119",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There are also bright spots during the show's 2 hours, including the bouncy 'Ralphie to the Rescue!'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt highlights positive elements ('bright spots', 'great big fun') but concludes with disappointment ('you can't always get what you want'). Limited text suggests uneven show with good moments but overall lukewarm. | GPT-4o: The review highlights some positive aspects, such as specific musical numbers and choreography, but ends on a note suggesting that the show doesn't consistently deliver, indicating a mixed overall impression. | Gemini: The review excerpt highlights some bright spots and a particularly enjoyable scene, but the concluding sentence suggests that the overall experience may not be consistently satisfying. Given the limited text, a score on the lower end of the positive range seems appropriate. | Kimi: While the excerpt praises specific scenes and choreography enthusiastically, framing them as 'bright spots' implies the surrounding material is weaker, and the closing 'you can't always get what you want' suggests disappointment. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:12:38.884Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 66,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

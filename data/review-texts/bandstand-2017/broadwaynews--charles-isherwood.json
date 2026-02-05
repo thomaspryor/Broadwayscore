@@ -12,5 +12,60 @@
   "bwwExcerpt": "The boys singing and swinging their hearts out in 'Bandstand,' an exuberant new musical set in the days just after World War II, are chasing an uncertain future and running from their traumatic pasts. Veterans all, with the battered psyches to prove it, they pound the piano keys, bang away at the drums and blow into their horns in the hopes of burning off the steam building in their emotional pipes. This being a musical, of course, they mostly succeed. 'Bandstand,' with a frisky boogie-woogie-laced score by Richard Oberacker, and book and lyrics by Rob Taylor and Oberacker, is the last new musical to open in a season almost overstuffed with them. The total comes to a baker's dozen, an encouraging indication that the hunger for fresh voices on Broadway, fed in recent years on the success of groundbreaking shows like 'Fun Home' and (duh) 'Hamilton,' has led to a healthy spirit of risk-taking on the part of producers.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The boys singing and swinging their hearts out in 'Bandstand,' an exuberant new musical set in the days just after World War II, are chasing an uncertain future.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt describes the show as 'exuberant' with a 'frisky' score and places it positively within Broadway's season of new musicals. However, this is only one curated excerpt without a clear verdict, so confidence is low and score is at the lower end of Positive range. | GPT-4o: The excerpt describes 'Bandstand' as 'exuberant' with a 'frisky boogie-woogie-laced score,' suggesting a positive reception. However, with only one excerpt available, the confidence is low. | Gemini: The review describes the musical as \"exuberant\" and indicates that the characters \"mostly succeed\" in their endeavors, suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt, confidence is low. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:12:34.620Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

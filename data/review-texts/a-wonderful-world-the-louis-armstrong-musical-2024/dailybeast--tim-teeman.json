@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "However, the orchestrations and arrangements (by Branford Marsalis) are rich and delicious; the choreography and musical staging by Rickey Tripp similarly slick. Perhaps this is enough for Armstrong devotees; a boisterous “Hello, Dolly!” which returned Armstrong to fame later in life and a restrainedly luminous “What a Wonderful World” both bring the evening to a resounding close. But have we gotten to know Armstrong as a musician, husband, cultural force, his politi",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-WONDERFUL-WORLD-Opens-On-Broadway-20241111",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Perhaps this is enough for Armstrong devotees; a boisterous \"Hello, Dolly!\" which returned Armstrong to fame later in life and a restrainedly luminous \"What a Wonderful World\" both bring the evening to a resounding close.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt praises technical elements (orchestrations, choreography) and the strong finale, but the phrase 'Perhaps this is enough for Armstrong devotees' suggests qualified enthusiasm and questions whether the show succeeds for general audiences. The text cuts off mid-sentence questioning if we truly know Armstrong, implying the show may be incomplete in its portrait. | GPT-4o: The review excerpt praises the orchestrations, arrangements, choreography, and musical staging, suggesting a positive view. However, the mention of whether we have gotten to know Armstrong implies some reservations. Given the single excerpt and potential cherry-picking, a lower score in the Positive range is appropriate. | Gemini: The review excerpt highlights positive aspects like orchestrations, choreography, and musical staging, but questions whether it truly explores Armstrong's character. The overall sentiment seems mixed, leaning towards a conditional recommendation for fans. | Kimi: The excerpt praises technical elements (orchestrations, staging) and specific musical numbers as 'resounding,' but suggests the show may only satisfy 'Armstrong devotees' before turning to unresolved criticisms about the subject's portrayal. Limited to a single truncated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:59:30.258Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

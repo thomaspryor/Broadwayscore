@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "A Time to Kill,' also the basis for a memorable film, begins as a horrifying act is perpetrated upon a young black girl carrying groceries to her family. When her father, Carl Lee (here, John Douglas Thompson, excellent) finds out about the rape, he guns down the scoundrels. To keep him off death row, cocky attorney Jake Brigance (Sebastian Arcelus) will have to prove Carl Lee was temporarily insane...Arcelus ('House of Cards'), as the good Southern boy who takes on Carl Lee's case partly out of his own guilt over not preventing the crime, is lost here, almost as if he's just blandly working a table reading...Jake's wife and daughter have been mostly written out of the story; so, too, has a pivotal element of the book that had Ellen Roark's character attacked by the Ku Klux Klan. Indeed, with this script, much of the action has been wrung right out of the story.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Arcelus is lost here, almost as if he's just blandly working a table reading.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The excerpt criticizes the lead performance as bland and notes that key dramatic elements have been 'wrung right out' of the adaptation, suggesting significant disappointment. However, with only one excerpt available, confidence is low. | GPT-4o: The review criticizes the performance of a key actor and notes significant omissions in the script, suggesting a lack of engagement and impact. However, the limited excerpt and lack of a full verdict reduce confidence. | Gemini: The review praises John Douglas Thompson's performance but criticizes Sebastian Arcelus's performance and notes that much of the action has been wrung out of the story. This suggests a mixed assessment, leaning slightly negative, but the single excerpt and truncated nature of the text make it difficult to give a more definitive score. | Kimi: While praising supporting actor John Douglas Thompson as 'excellent,' the excerpt heavily criticizes lead Sebastian Arcelus as 'lost' and 'bland,' and faults the adaptation for stripping away pivotal plot elements and action. The single available excerpt suggests the critic finds the production flawed despite isolated strong performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:45:27.917Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

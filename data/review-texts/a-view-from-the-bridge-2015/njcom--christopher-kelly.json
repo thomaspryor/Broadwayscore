@@ -12,5 +12,60 @@
   "bwwExcerpt": "...Ivo van Hove...presents this 'View' in a square space framed by a low wall of plexiglass, with audience members on rafters on either side of the stage. There are no props, and curiously the actors wear no shoes. Lending to the strange, anxious atmosphere is an underscore of murmurous music that is heard throughout the show. The result is alternately powerful and a wee bit ridiculous. The power comes mostly courtesy of an astonishing lead performance by British actor Mark Strong ('Sherlock Holmes,' 'The Imitation Game'), who takes a nearly impossible-to-play character...and transforms him into a viscerally flesh-and-blood, palpably tortured figure...Alas, this 'A View from the Bridge'...doesn't quite cohere...a touch more humor and humility might have gone a very long way. It's one thing to serve up something strange and dark and unexpected; it's another thing entirely to be so deadly 'serious' and 'intense' that you risk devolving into self-parody.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is alternately powerful and a wee bit ridiculous.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises Strong's 'astonishing' lead performance but finds the production doesn't 'quite cohere' and risks 'self-parody.' Mixed signals throughout with no clear recommendation. | GPT-4o: The review acknowledges a powerful lead performance but criticizes the production for lacking coherence and risking self-parody. The mixed tone suggests neither a strong recommendation nor a complete dismissal. | Gemini: The review praises Mark Strong's performance but finds the overall production somewhat incoherent and at risk of self-parody. This indicates a mixed reaction, falling into the 'Mixed' bucket. | Kimi: While the critic praises Mark Strong's performance as 'astonishing' and finds moments 'powerful,' they ultimately find the production 'doesn't quite cohere,' risks 'devolving into self-parody,' and is 'a wee bit ridiculous,' indicating significant reservations about the direction despite the lead actor's excellence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:42:09.616Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "It makes perfect sense that his autobiography is onstage. And no less a modern theater icon than James Lapine has adapted and directed the play, using the stage thrillingly in a way the book could not. The sweet 'Act One,' which opened Thursday at the Vivian Beaumont Theater, faithfully and chronologically charts Hart's rise from poverty in the Bronx to co-writing with Kaufman 'Once In a Lifetime' in 1930, his first Broadway hit. But it's of course more than that: The majority of the 22 actors play multiple parts, jumping in and out of characters and costumes while the bold, complex set by Beowulf Boritt spins and spins. So in its very fiber and execution, it's a celebration of the theater itself.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The sweet 'Act One,' which opened Thursday at the Vivian Beaumont Theater, faithfully and chronologically charts Hart's rise from poverty in the Bronx to co-writing with Kaufman 'Once In a Lifetime' in 1930, his first Broadway hit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this curated quote shows clear praise ('sweet', 'thrillingly', 'celebration of theater itself') with appreciation for direction and staging, but as only one excerpt from unknown full verdict, confidence is low. | GPT-4o: The excerpt praises the adaptation and direction by James Lapine, highlighting the thrilling use of stage and the celebration of theater. The positive tone and mention of the play's execution suggest a strong recommendation. | Gemini: The review praises the adaptation, direction, and set design, highlighting the celebration of theater itself. The use of 'thrillingly' suggests a strong positive sentiment. | Kimi: The excerpt offers clear praise for the direction, staging, and adaptation, calling the production a 'celebration of the theater itself' with 'thrilling' use of stagecraft. As a single curated excerpt, it suggests a positive verdict but warrants lower confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:44:59.930Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

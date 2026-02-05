@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "To everyone's credit, Barrino is not cordoned off from the company like a traveling VIP. The singer, who catapulted from 'American Idol' popularity to Broadway respect in 'The Color Purple,' primarily does greatest-hits songs -- 'Stormy Weather.' She has a tangy baby/woman voice, a slow and clear scat and the ability to say a lot with stillness and a pout.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The singer, who catapulted from 'American Idol' popularity to Broadway respect in 'The Color Purple,' primarily does greatest-hits songs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses positively on Barrino's performance and integration with the company, but limited text prevents assessment of overall show recommendation. Scoring conservatively in lower Positive range due to single excerpt warning. | GPT-4o: The excerpt praises Barrino's integration with the company and her vocal abilities, suggesting a positive view of her performance. However, the single excerpt limits confidence in the overall sentiment. | Gemini: The review excerpt focuses on Fantasia Barrino's performance and vocal abilities, highlighting her talent and stage presence. While it doesn't offer a comprehensive evaluation of the entire show, the positive description of her performance suggests a generally positive experience. | Kimi: The excerpt offers warm praise for Barrino's vocal talent and stage presence, noting her successful integration with the company and distinctive artistic qualities. As a single curated quote, it indicates a favorable review without the ecstatic superlatives of a rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:49:23.573Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -14,5 +14,60 @@
   "bwwExcerpt": "With this script and a minimalist staging — every scene takes place in one of the men’s living rooms — Art is entirely reliant on the quality of its cast. Corden is, unsurprisingly, the stand-out: at one point he bursts in and unleashes a rib-cracking five-minute monologue about stepmothers and wedding invitations in which he barely pauses to breathe. Cannavale is a charismatic, flabbergasted straight man with hidden wounds; Harris, at times, felt a bit mannered.",
   "bwwScore": 8,
   "bwwThumb": "Up",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ART-Opens-On-Broadway-Starring-Bobby-Cannavale-James-Corden-and-Neil-Patrick-Harris-20250916"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ART-Opens-On-Broadway-Starring-Bobby-Cannavale-James-Corden-and-Neil-Patrick-Harris-20250916",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Corden is, unsurprisingly, the stand-out: at one point he bursts in and unleashes a rib-cracking five-minute monologue",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on cast performances with mostly positive assessments (Corden as 'stand-out', Cannavale as 'charismatic'), but notes one performer 'felt a bit mannered'. BroadwayWorld aggregator shows 'Up' verdict supports positive classification. | GPT-4o: The excerpt highlights strong performances, particularly by Corden, which suggests a positive view of the production. However, the limited context and mention of Harris's mannered performance introduce some reservations. | Gemini: The review praises Corden's performance and Cannavale, but notes that Harris felt a bit mannered. Given the limited excerpt, I'm placing it in the positive bucket with reservations. | Kimi: Single excerpt praises Corden as 'stand-out' and Cannavale as 'charismatic' while offering mild criticism of Harris, suggesting strong acting compensates for minimalist staging but lacking full context for definitive verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:04:44.734Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

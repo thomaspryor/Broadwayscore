@@ -12,5 +12,60 @@
   "bwwExcerpt": "As 'Act One' would have it, no love is quite so intense and tempestuous as that between a playwright and his play. In fact, in the endearing new stage adaptation of Moss Hart's memoir--long a theater world bible--any other affection revealed over the course of two and three-quarter hours in the Vivian Beaumont Theater is a pallid affair compared to the fervor of the dramatist savoring and agonizing over the reactions to his first Broadway play...And though Lapine's overlong script could use some editing, and some of the myriad supporting performances feel under-realized, his 'Act One,' which opened Thursday night, remains a warm and stimulating summation of the romance of the theater and the satisfactions of pleasing an audience.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "his 'Act One,' which opened Thursday night, remains a warm and stimulating summation of the romance of the theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic finds the show 'endearing,' 'warm and stimulating' but notes significant flaws like the 'overlong script' needing editing and 'under-realized' performances. Single excerpt warning requires caution - this sounds like qualified praise. | GPT-4o: The excerpt praises the show as 'warm and stimulating' despite noting some issues with the script and performances. The positive tone suggests a recommendation, but with reservations, fitting the Positive bucket. Given the single excerpt warning, confidence is low. | Gemini: The review is generally positive, calling the adaptation \"endearing\" and \"warm and stimulating.\" However, it also mentions that the script is \"overlong\" and some performances feel \"under-realized,\" indicating reservations. Given the single excerpt and reservations, I placed it in the lower-middle of the positive range. | Kimi: Despite noting the script is overlong and some supporting performances under-realized, the critic ultimately praises the production as 'endearing,' 'warm,' and 'stimulating,' offering a clear recommendation tempered by specific criticisms.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:04:43.230Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

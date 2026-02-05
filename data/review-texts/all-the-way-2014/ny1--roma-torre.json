@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Bryan Cranston is the big draw in 'All The Way,' a biographical drama about President Lyndon B. Johnson. And while the 'Breaking Bad' star actually exceeds the hype, the best news is that the play does, too. With 20 actors in dozens of roles, this is high drama spanning the year between the Kennedy assassination and the '64 election. The main focus is the intense fight to pass the Civil Rights Act of 1964. As staged, the legislation is treated with the gravity of our nation's founding and the suspense of a first class thriller, and despite knowing the ending, we're on the edge of our seats.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And while the 'Breaking Bad' star actually exceeds the hype, the best news is that the play does, too.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language about both star and play exceeding expectations, with praise for staging and dramatic tension. Single excerpt limits confidence but tone is clearly enthusiastic. | GPT-4o: The excerpt praises both Bryan Cranston's performance and the play itself, stating it exceeds the hype. The description of the play as high drama with suspense suggests a strong recommendation. | Gemini: The review praises Bryan Cranston's performance and states that the play exceeds expectations. It also describes the play as high drama and a first-class thriller, indicating a positive recommendation. | Kimi: The excerpt offers strong praise for both Cranston's performance and the play itself, describing it as a 'first class thriller' with genuine suspense. However, as a single curated excerpt, confidence remains low regarding the full review's overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:20:35.027Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

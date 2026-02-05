@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The most atypical of Ingmar Bergman's celebrated films, 'Smiles of a Summer Night' brought ripe carnality and a delicious sense of irony to its fin-de-siecle gathering of romantically muddled Swedes. Those same intoxicating elements were translated to 'A Little Night Music,' Stephen Sondheim and Hugh Wheeler's exquisite waltz-musical inspired by the film. Reviving the 1973 show, director Trevor Nunn brings a blunt, heavy hand where a glissando touch is required, but the wit and sophistication of the material are sufficient to withstand even this phlegmatic staging. A handful of magnetic leads provides further insurance against the uneven production.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The wit and sophistication of the material are sufficient to withstand even this phlegmatic staging.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: While praising the source material and some performances, the critic clearly finds the direction lacking ('blunt, heavy hand', 'phlegmatic staging') and calls it an 'uneven production'. Single excerpt with mixed signals warrants low confidence. | GPT-4o: The review acknowledges the strength of the original material and the performances but criticizes the direction as heavy-handed. The positive elements are noted, but the overall impression is mixed due to the staging issues. | Gemini: The review acknowledges flaws in the direction but suggests the material and leads are strong enough to make it worthwhile. Given the single excerpt, I'm scoring it as a slightly positive recommendation. | Kimi: Single excerpt shows qualified praise: while criticizing Trevor Nunn's 'blunt, heavy hand' and 'phlegmatic staging,' the review finds the Sondheim material and magnetic leads sufficient to make the revival worthwhile, indicating a mild recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:30:08.293Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

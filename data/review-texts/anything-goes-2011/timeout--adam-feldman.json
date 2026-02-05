@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Below the title, things start looking up. Colin Donnell is a deft, full-voiced and romantically persuasive Billy; as Hope, the pretty young lady he pines for, Laura Osnes knows how to give an ingenue some spine. The gangling Adam Godley nearly steals the show as her befuddled British fiancé—he’s a terrific comic dancer—and Arrested Development’s Jessica Walter is enjoyably tart as her mother. Rounding out the cast with aplomb are Jessica Stone as a sailor-friendly floozy and the invaluable John McMartin as a perpetually sloshed millionaire.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Below the title, things start looking up.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt focuses entirely on praising the cast performances with descriptive positive language ('deft', 'terrific', 'enjoyably'), but the opening phrase 'Below the title, things start looking up' suggests problems with the show itself. Single excerpt from curated quotes requires caution - this appears mildly positive but qualified. | GPT-4o: The excerpt highlights strong performances and character portrayals, suggesting a positive view of the cast. However, with only one excerpt available, the overall sentiment is uncertain, leading to a lower confidence score. | Gemini: The review excerpt focuses on praising the performances of the cast, suggesting a positive experience overall. However, without the full review, it's difficult to gauge the extent of the recommendation, so confidence is low. | Kimi: Single excerpt offers enthusiastic praise for the entire cast using words like 'deft,' 'terrific,' and 'invaluable,' though the opening line suggests the title sequence may be weaker.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:01:55.582Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

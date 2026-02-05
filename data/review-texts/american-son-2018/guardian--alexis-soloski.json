@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "But though American Son has the superficial form of a classical tragedy and a scene of raw suffering that few tragedies can equal, it also has a creaky dramatic structure, shallow characterizations, naïve politics and indifferent writing. Directed by Kenny Leon, who has submerged his tendency to showboat in favor of a studied naturalism, it's a very powerful play without being an especially good one and that shouldn't matter - power being hard to come by - but sometimes it does.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a very powerful play without being an especially good one",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the play's raw power and emotional impact but heavily criticizes its structure, characterizations, politics, and writing. The final assessment is explicitly mixed - 'powerful' but 'not especially good'. | GPT-4o: The review acknowledges the play's power but criticizes its dramatic structure, characterizations, politics, and writing. The verdict is mixed, recognizing the play's impact but questioning its quality. | Gemini: The review acknowledges the play's power but criticizes its dramatic structure, characterizations, politics, and writing. The overall sentiment is mixed, suggesting it has impactful moments but significant flaws. | Kimi: The critic acknowledges 'very powerful' moments and 'raw suffering that few tragedies can equal' but heavily criticizes the 'creaky dramatic structure,' 'shallow characterizations,' and 'indifferent writing,' ultimately suggesting the flaws sometimes undermine the power. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:49:38.351Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

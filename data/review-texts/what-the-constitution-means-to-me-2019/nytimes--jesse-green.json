@@ -36,5 +36,60 @@
   "archiveOrgTimestamp": "20250401030446",
   "archiveOrgUrl": "http://web.archive.org/web/20250401030446/https://www.nytimes.com/2019/03/31/theater/what-the-constitution-means-to-me-review.html",
   "wordCount": 1222,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is not just the best play to open on Broadway so far this season, but also the most important.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Clear rave with superlative language ('best play', 'most important', 'inspired protest') and unqualified praise throughout. The critic celebrates both artistic achievement and civic importance without meaningful reservations. | GPT-4o: The review is filled with superlatives and unqualified praise, calling it the best and most important play of the season. The critic highlights its impact, innovation, and emotional depth, strongly recommending it as essential viewing. | Gemini: The review is overwhelmingly positive, calling the play \"the best\" and \"most important\" of the season. It praises the play's ability to be both a tragedy and a comedy, and highlights its contribution to change. | Kimi: The critic offers unqualified praise, hailing it as the best and most important play of the season while celebrating its performances, direction, and unique theatrical form as inspired and essential civic engagement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:37:36.992Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

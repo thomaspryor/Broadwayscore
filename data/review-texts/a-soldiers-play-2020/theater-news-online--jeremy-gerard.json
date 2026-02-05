@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The Roundabout Theatre Company's flawless revival of A Soldier's Play is such good medicine for Broadway's January blues that it might be enough just to tick off its merits: a gripping murder mystery heightened by crackling dialog, a first-class ensemble of actors in symphonic harmony, staging that audaciously adds a pinch of sex appeal to heat up its social consciousness, and just enough music to give it a pulsing rhythm and beat that delivers us to its shocking conclusion in just under two hou",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-SOLDIERS-PLAY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200121",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Roundabout Theatre Company's flawless revival of A Soldier's Play is such good medicine for Broadway's January blues",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Single excerpt shows unqualified praise with 'flawless revival' and 'good medicine', listing multiple superlative qualities. However, confidence is low due to truncated text and potential for cherry-picked quote. | GPT-4o: The excerpt uses strong positive language ('flawless revival', 'gripping', 'first-class ensemble') indicating a highly enthusiastic recommendation. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The review uses strong positive language such as \"flawless revival\", \"gripping murder mystery\", \"first-class ensemble\", and \"symphonic harmony\", indicating a strong recommendation. Given that it is only one excerpt, I am scoring it at the higher end of the positive range. | Kimi: The excerpt offers strong unqualified praise, describing the production as 'flawless' with 'crackling dialog' and a 'first-class ensemble,' warranting a high Positive score per the single-excerpt guidance, though confidence is reduced due to the truncated, curated nature of the text. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:39:00.935Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

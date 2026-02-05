@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "James Monroe Iglehart brings his considerable charm and vocal prowess to the role of Louis Armstrong, anchoring this biographical musical with warmth and authenticity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -29,5 +29,60 @@
     "show-score-playwright"
   ],
   "garbageFullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
-  "garbageReason": "Error/404 page content"
+  "garbageReason": "Error/404 page content",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "James Monroe Iglehart brings his considerable charm and vocal prowess to the role of Louis Armstrong, anchoring this biographical musical with warmth and authenticity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the lead performance as charming, vocally strong, and authentic. However, with only one curated quote available, this could be cherry-picked praise from a mixed or negative review that found fault with other elements. | GPT-4o: The excerpt praises Iglehart's performance, suggesting a positive view of the show. However, with only one curated quote available, the overall sentiment is uncertain, warranting a low confidence score. | Gemini: The excerpt praises Iglehart's performance, suggesting a positive aspect of the show. However, with only one excerpt available, the overall verdict remains uncertain, leading to a lower confidence and a score on the lower end of the positive range. | Kimi: The single available excerpt offers strong, unqualified praise for the lead performance ('considerable charm,' 'vocal prowess,' 'warmth and authenticity'), suggesting a recommendation in the upper Positive range (80-84) as instructed for clearly positive excerpts, though confidence is low due to limited context on other production elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:59:53.658Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

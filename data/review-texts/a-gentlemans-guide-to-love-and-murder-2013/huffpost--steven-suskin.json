@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Everything about the show is so likable. I left Gentleman's Guide to Love & Murder having had a perfectly pleasant time with a pair of talented new theatre-writers, in the company of a delightful cast. But rousing? No.\" Photo by Joan Marcus",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-GENTLEMANS-GUIDE-TO-LOVE-AND-MURDER-Opens-on-Broadway-Updating-Live-20131117",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I left Gentleman's Guide to Love & Murder having had a perfectly pleasant time with a pair of talented new theatre-writers, in the company of a delightful cast. But rousing? No.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic describes the experience as 'perfectly pleasant' and 'likable' but explicitly states it's 'not rousing,' suggesting neither strong recommendation nor discouragement. Single excerpt limits confidence in overall verdict. | GPT-4o: The review excerpt describes the show as 'likable' and 'pleasant', indicating a positive experience. However, it also notes that the show is not 'rousing', suggesting some reservations. The single excerpt limits confidence in the overall sentiment. | Gemini: The review states that everything about the show is likable and that the reviewer had a perfectly pleasant time. However, the reviewer also states that the show is not rousing, indicating a reservation. | Kimi: The critic describes the production as 'likable' and 'perfectly pleasant' with a 'delightful cast,' but the explicit denial that it is 'rousing' indicates mild enthusiasm rather than a rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:22:20.540Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

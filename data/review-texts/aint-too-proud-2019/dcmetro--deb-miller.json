@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Ain't Too Proud is a stellar production that elevates the quality of jukebox musicals with its engaging story and direction, top-notch performances, sophisticated design, and a selection of high-voltage choreographed hits that keeps the legacy of Motown alive and 'Temptation strutting.' It's a good-time crossover show for fans of the music who will love to see it performed on the Broadway stage.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ain't Too Proud is a stellar production that elevates the quality of jukebox musicals with its engaging story and direction, top-notch performances, sophisticated design.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('stellar production', 'elevates the quality', 'top-notch performances') with clear recommendation for target audience. Single excerpt warning suggests using upper end of Positive range. | GPT-4o: The excerpt uses strong positive language ('stellar production', 'top-notch performances') and highlights the show's engaging story and direction, suggesting an enthusiastic recommendation. However, given the single excerpt warning, confidence is medium. | Gemini: The review uses strong positive language such as \"stellar production\", \"top-notch performances\", and \"keeps the legacy of Motown alive\". The critic also calls it a \"good-time crossover show\". | Kimi: The excerpt offers enthusiastic praise ('stellar', 'elevates', 'top-notch performances'), placing it in the upper range of Positive, though the recommendation is qualified for music fans. Single-excerpt limitation reduces confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:52:27.893Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

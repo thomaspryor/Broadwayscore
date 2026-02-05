@@ -15,5 +15,60 @@
   "showScoreExcerpt": "\"Directed by Neil Pepe with the expert eye for appraisal that the characters lack, this production is vastly superior to 'American Buffalo’s' last Broadway incarnation, which ran briefly back in 2008. The play itself, which marked Mamet’s breakthrough, is as thin as a dime, but it’s got great atmospherics. Scott Pask’s set and Dede Ayite’s costumes plunge us into the shabby world of the action; seated around the thrust stage at Circle in the Square, the audience can almost smell the mix of dirt and desperation. \"\n\nRead more",
   "bwwExcerpt": "Directed by Neil Pepe with the expert eye for appraisal that the characters lack, this production is vastly superior to American Buffalo's last Broadway incarnation, which ran briefly back in 2008. The play itself, which marked Mamet's breakthrough, is as thin as a dime, but it's got great atmospherics. Scott Pask's set and Dede Ayite's costumes plunge us into the shabby world of the action; seated around the thrust stage at Circle in the Square, the audience can almost smell the mix of dirt and desperation. Although not much happens in the play, which is less a thriller than a loiterer, it somehow seems fast-paced, thanks in large part to the three crack performers who bring it to life. They stride the stage with the game confidence of actors who know exactly how to make Mamet's monte look full.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this production is vastly superior to 'American Buffalo's' last Broadway incarnation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the direction as 'expert' and calls the production 'vastly superior' to the previous version, while acknowledging the play itself is 'thin as a dime' but has 'great atmospherics.' The positive elements outweigh the criticism of the source material. | GPT-4o: The review praises the production's direction and design, noting it as superior to a previous version. However, it also describes the play itself as 'thin,' suggesting some reservations. The excerpt is limited, so confidence is low. | Gemini: The review states the current production is \"vastly superior\" to the last Broadway incarnation, which is a positive indicator. However, it also mentions the play itself is \"as thin as a dime,\" indicating reservations. Given the limited text, a score in the lower-middle of the Positive range seems appropriate. | Kimi: The critic praises the direction, design, and atmosphere as vastly superior to the 2008 production, calling them 'great' and 'expert,' though criticizes the play itself as thin. This qualified praise warrants a mid-range Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:37:26.934Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

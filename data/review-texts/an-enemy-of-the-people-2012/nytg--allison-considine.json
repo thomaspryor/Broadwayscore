@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Key to the play’s balancing act is Strong’s performance. Stockmann’s transition from being a servant of the people to their titular enemy is swift, and Strong expertly portrays the demise. The local newspaper staff ensure their support for Stockmann, declaring, “We are behind you like a wall.” But their backing flickers out as quickly as the extinguished candles between scenes.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong expertly portrays the demise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt focuses on one performance element with praise for the lead actor, but describes a character's 'demise' and flickering support, suggesting dramatic tension rather than clear recommendation. With only one curated quote available, cannot determine overall verdict. | GPT-4o: The excerpt praises Strong's performance but does not provide a clear overall recommendation for the play. The mention of support flickering out suggests mixed elements. Given the single excerpt and lack of full context, the confidence is low. | Gemini: The review excerpt focuses on the strength of the lead performance, suggesting a positive aspect of the production. However, due to the limited text, I'm scoring it as positive with reservations. | Kimi: The excerpt offers clear praise for Jeremy Strong's performance as central to the play's balancing act, though the single excerpt format limits confidence in the overall verdict. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:47:36.416Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

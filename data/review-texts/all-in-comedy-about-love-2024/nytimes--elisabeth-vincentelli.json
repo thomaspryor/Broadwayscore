@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "You might assume that Simon Rich’s Broadway debut, “All In,” whose subtitle promises “Comedy About Love,” would join this honor roll. But this new production is a slight affair that’s as easy to forget as it is to watch. Theatergoers likely to get the most mileage out of the show’s 90 minutes at the Hudson Theater are those who bust a gut reading The New Yorker’s Shouts & Murmurs section — they must exist, right? — where some of this material has appeared.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this new production is a slight affair that's as easy to forget as it is to watch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic calls the show 'slight' and 'easy to forget', suggesting limited appeal to only niche audiences. The tone is dismissive rather than enthusiastic. | GPT-4o: The excerpt describes the production as 'slight' and 'easy to forget,' suggesting a lack of strong recommendation. The tone is neutral, indicating a mixed review. | Gemini: The review describes the play as \"a slight affair that's as easy to forget as it is to watch\" and suggests it's only for a niche audience, indicating a negative assessment. | Kimi: The critic dismisses the show as insubstantial and forgettable, suggesting only a specific subset of theatergoers (fans of The New Yorker's humor) will find value in it, indicating a negative recommendation for general audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:01:40.537Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

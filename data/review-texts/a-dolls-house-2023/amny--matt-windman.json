@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "Here, Lloyd has foregone all period detail and removed traditional production elements (including set and costumes, revealing the theater’s multilevel backstage area) and bits of staging in order to produce a seamless, direct, and fresh reexamination of the play. Although originally written in three acts, it is presented without intermission and runs exactly two hours.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DOLLS-HOUSE-Opens-On-Broadway-Starring-Jessica-Chastain-20230309",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lloyd has foregone all period detail and removed traditional production elements... to produce a seamless, direct, and fresh reexamination of the play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt praises the director's innovative approach, describing the production as 'seamless, direct, and fresh,' which suggests a positive reception. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The review excerpt suggests a positive take on the production's fresh reexamination of the play, but without more context, the confidence is low. I am scoring it as positive, but with reservations. | Kimi: Single excerpt uses clearly positive evaluative language ('seamless,' 'direct,' 'fresh') to praise the directorial approach, warranting the upper Positive range per the excerpt warning.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:16:46.891Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

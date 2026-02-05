@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Reminiscent of Greek tragedy in its depiction of its central character's inexorable fall from grace, All My Sons can feel overly mechanistic at times. Some scenes, such as George's confrontation with Joe, the man he blames for his father's imprisonment, don't quite ring true in their quicksilver emotional shifts, and the play's symbolism can be heavy-handed (a downed tree is not just a downed tree). But the classically structured drama nonetheless still exerts a tremendous raw power that is fully realized in this rendering.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the classically structured drama nonetheless still exerts a tremendous raw power that is fully realized in this rendering.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging flaws (mechanistic, heavy-handed symbolism), the critic concludes the production has 'tremendous raw power' and is 'fully realized,' indicating a positive recommendation with reservations. | GPT-4o: The review acknowledges some flaws, such as mechanistic elements and heavy-handed symbolism, but ultimately praises the production for its 'tremendous raw power.' The excerpt suggests a positive recommendation with some reservations, but due to the single excerpt warning, the confidence is low. | Gemini: The review points out flaws but ultimately states the drama exerts tremendous raw power and is fully realized in this rendering, indicating a positive recommendation. Confidence is low due to the single excerpt. | Kimi: While the critic finds the play occasionally mechanistic and heavy-handed, the final assessment strongly praises this production's 'tremendous raw power' and full realization of the drama.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:06:03.830Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

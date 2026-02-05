@@ -81,7 +81,7 @@
   ],
   "textWordCount": 70,
   "archivePath": "data/archives/reviews/1776-2022/thewrap--robert-hofler_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T06:19:11.296Z",
+  "textFetchedAt": "2026-02-05T16:59:25.067Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -89,6 +89,12 @@
       "method": "playwright",
       "success": false,
       "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Paywall detected"
     },
     {
       "tier": 2,

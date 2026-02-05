@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "While McDonagh's previous stage works reportedly were written in a sustained burst of early-career productivity, 'Spokane' was penned following completion of his 2008 feature debut as writer-director, 'In Bruges.' It feels here as if the playwright is catering to his fans' expectations -- the gruesome flourishes and blithe violence, the lacerating dialogue and savage humor, the maniacal characters and explosive confrontations -- but in sketch form rather than a full-bodied play. All the same, many will be delighted with what he serves up.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It feels here as if the playwright is catering to his fans' expectations -- but in sketch form rather than a full-bodied play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The excerpt criticizes the play as feeling like 'sketch form rather than a full-bodied play' and suggests McDonagh is 'catering to expectations,' but acknowledges 'many will be delighted.' Single excerpt warning applies - this balanced assessment with significant reservations points to Mixed range. | GPT-4o: The excerpt suggests that while the play may feel incomplete, it still delivers elements that fans will enjoy, indicating a positive but qualified recommendation. The limited text and single excerpt warning necessitate a cautious approach, leading to a lower-end Positive score. | Gemini: The review suggests the play is not fully realized but that fans will still enjoy it. This indicates a mixed reaction. | Kimi: While criticizing the work as a 'sketch' that caters to fan expectations rather than a full-bodied play, the critic concludes that audiences will be delighted, indicating a mildly positive, qualified recommendation. | Buckets: claude=Mixed, openai=Positive, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:02:48.094Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

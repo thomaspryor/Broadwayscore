@@ -12,5 +12,60 @@
   "bwwExcerpt": "In head-to-toe white from her hair on down, Taylor is splendid, capturing the humor, decency, and abrasive energy in the woman while smoothly going from speech to phone call to more yakking.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Taylor is splendid, capturing the humor, decency, and abrasive energy in the woman while smoothly going from speech to phone call to more yakking.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this curated quote praises the lead performance as 'splendid' with detailed appreciation. However, with only one excerpt available, confidence is low as the full review verdict is unknown. | GPT-4o: The excerpt praises Taylor's performance as 'splendid' and highlights her ability to capture various aspects of the character. However, the single excerpt warning and lack of a full review text suggest a cautious approach, hence a lower score within the Positive bucket. | Gemini: The excerpt is overwhelmingly positive about the performance of Taylor, using words like \"splendid\" and highlighting her ability to capture the character's essence. Given it's the only excerpt, I'm placing it in the upper range of positive, but with low confidence due to the limited text. | Kimi: The critic uses the strong commendation 'splendid' to describe Taylor's performance, praising her ability to capture complex character traits while handling technical demands smoothly. As a single clearly positive excerpt, it warrants the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:59:31.450Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

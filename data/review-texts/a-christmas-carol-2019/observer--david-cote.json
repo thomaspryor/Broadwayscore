@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "This being a holiday show for all ages, there's a broadly acted, crowd-pleasing vibe and frequent bits of audience interaction, especially after Scrooge's conversion. Carolers warble from every corner of the balconies; long sheets are unfurled to the stage to sluice apples, oranges and other treats into baskets for the Christmas feast; and stage snow drifts onto the audience. The kids at the matinee I attended squealed at the low-tech but delightful stage effects.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The kids at the matinee I attended squealed at the low-tech but delightful stage effects.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt describes positive audience reaction and calls effects 'delightful,' but as a single curated quote it may not represent the full review verdict. | GPT-4o: The excerpt describes a positive, engaging experience with audience interaction and delightful effects, suggesting a recommendation. However, the single excerpt limits confidence in the overall verdict. | Gemini: The review describes a \"crowd-pleasing vibe\" and \"delightful stage effects,\" suggesting a positive experience, but the lack of a clear recommendation and the single excerpt available lowers confidence. | Kimi: The excerpt emphasizes the show's crowd-pleasing atmosphere, effective audience interaction, and delightful stagecraft, describing an engaged, enthusiastic reception. While the single-excerpt format limits certainty, the tone is clearly appreciative of the production's charms.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:08:10.522Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

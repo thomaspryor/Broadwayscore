@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Gaines, who often plays good guys and saps, makes the most of his sympathy capital. At first you feel for his character, especially since he has noble intentions. But then he claims, self-servingly, that “the majority is the most insidious enemy to freedom.” So much for democracy.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At first you feel for his character, especially since he has noble intentions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows nuanced view - praises actor's use of sympathy capital and acknowledges noble character intentions, but ends critically questioning the character's anti-democratic stance. With only one curated quote available, this appears mixed rather than clearly positive or negative. | GPT-4o: The excerpt provides a mixed view of the character's portrayal, initially sympathetic but ultimately self-serving. The lack of a clear positive or negative recommendation suggests a mixed verdict. | Gemini: The review excerpt focuses on a single actor's performance and a specific line from the play, offering a somewhat neutral assessment. It doesn't provide a clear recommendation for or against seeing the show, suggesting a mixed reaction. | Kimi: The excerpt praises the actor's ability to generate audience sympathy and portrays complex character work, but criticizes the character's philosophical stance ('self-servingly,' 'So much for democracy'), suggesting the show's political handling may be problematic. With only one excerpt available, the overall verdict remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:57:08.028Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

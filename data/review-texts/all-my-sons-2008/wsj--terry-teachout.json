@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Lithgow gives a performance of such searing intensity that it left me shaken. This is acting of the highest order, and it transforms Arthur Miller's 1947 drama into something approaching greatness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Lithgow gives a performance of such searing intensity that it left me shaken. This is acting of the highest order, and it transforms Arthur Miller's 1947 drama into something approaching greatness.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Lithgow gives a performance of such searing intensity that it left me shaken.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Extremely strong praise for Lithgow's performance described as 'highest order' acting that 'transforms' the play 'into something approaching greatness.' However, single excerpt warning applies - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises Lithgow's performance as transformative and of the highest order, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is overwhelmingly positive, praising Lithgow's performance as acting of the highest order and suggesting it elevates the play to greatness. | Kimi: The excerpt offers unqualified superlatives for Lithgow's performance and its transformative effect on the production, describing it as 'acting of the highest order' that elevates the drama to 'greatness.' As a single curated excerpt, it represents the upper range of positive reception, though the full review may have contained additional context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:17:54.121Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

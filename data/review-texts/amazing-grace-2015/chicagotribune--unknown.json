@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "in the deeply emotional performance from Chuck Cooper, who plays Newton's personal slave and surrogate father in this new musical, there is profound longing, pain and hope for the future...Very little of that was evident in the show's Chicago tryout last fall. Much good work has been done on 'Amazing Grace'...'Amazing Grace' wants to tell the story of a conversion...But it feels rushed and unsatisfying, although not as sudden as the appearance of the title song at the conclusion of the night, even though we are hungry for more exploration of its genesis and legacy...he book, an overly linear piece of storytelling never better than serviceable that lacks nuance and ambiguity, even as the production it accompanies lacks a truly vibrant theatrical metaphor.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Much good work has been done on 'Amazing Grace'...But it feels rushed and unsatisfying",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges significant improvements from the Chicago tryout and praises Cooper's performance, but finds the book 'never better than serviceable' and the overall experience 'rushed and unsatisfying.' This is a classic mixed review - recognizing positives but not recommending. | GPT-4o: The review praises Chuck Cooper's performance but criticizes the book and overall production for being rushed and lacking nuance. The excerpt suggests improvements from a previous version but still finds the show unsatisfying, indicating a mixed verdict. | Gemini: The review praises Chuck Cooper's performance but criticizes the book and pacing, resulting in a mixed assessment. The show has undergone improvements since its Chicago tryout, but still falls short of expectations. | Kimi: The critic praises Chuck Cooper's 'deeply emotional performance' and notes improvements from the Chicago tryout, but ultimately describes the show as 'rushed and unsatisfying' with a book that is 'never better than serviceable,' indicating a mixed verdict with significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:27:26.012Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

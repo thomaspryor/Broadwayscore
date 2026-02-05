@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "What can you say about perfection? Roundabout Theatre Company's revival of 'Anything Goes' is such a giddy, goofy, giggly experience, it's almost impossible to describe. But I'll try. Imagine eating all the chocolates you want without getting full, or watching all your favorite Hollywood musicals on TCM without suffering from camp overload.",
   "bwwScore": 10,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What can you say about perfection?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Opens with 'perfection' and describes it as a 'giddy, goofy, giggly experience' with pure joy analogies. However, confidence is medium due to single excerpt warning - this could be cherry-picked praise. | GPT-4o: The excerpt uses highly enthusiastic language ('perfection', 'giddy, goofy, giggly') suggesting a strong recommendation. Despite the single excerpt warning, the tone indicates a rave review. | Gemini: The review excerpt uses very positive language like \"perfection\", \"giddy, goofy, giggly experience\", and compares it to pleasurable experiences. Given the single excerpt, I'm scoring it at the higher end of the positive range with low confidence. | Kimi: Single excerpt contains unambiguously enthusiastic praise ('perfection', 'giddy, goofy, giggly'), warranting upper Positive range per excerpt guidelines, though confidence is low due to excerpt-only availability. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:00:49.209Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }
