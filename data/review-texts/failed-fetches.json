@@ -11284,18 +11284,6 @@
     "timestamp": "2026-02-04T15:27:51.490Z"
   },
   {
-    "reviewId": "groundhog-day-2017/hollywood-reporter--david-rooney.json",
-    "showId": "groundhog-day-2017",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/review/groundhog-day-theater-review-991672/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): wicked, mamma mia!, smash, network, the audience...",
-    "textLength": 10901,
-    "timestamp": "2026-02-04T15:29:12.280Z"
-  },
-  {
     "reviewId": "gypsy-2008/nytimes--ben-brantley.json",
     "showId": "gypsy-2008",
     "outlet": "The New York Times",
@@ -13850,5 +13838,53 @@
     "garbageReason": "Multiple shows mentioned (8): giant, smash, hair, evita, elling...",
     "textLength": 6008,
     "timestamp": "2026-02-05T02:26:08.760Z"
+  },
+  {
+    "reviewId": "groundhog-day-2017/hollywood-reporter--david-rooney.json",
+    "showId": "groundhog-day-2017",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/review/groundhog-day-theater-review-991672/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): wicked, smash, network, the audience, on the twentieth century...",
+    "textLength": 10307,
+    "timestamp": "2026-02-05T02:29:30.262Z"
+  },
+  {
+    "reviewId": "guys-and-dolls-2009/nytimes--ben-brantley.json",
+    "showId": "guys-and-dolls-2009",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2009/03/02/theater/reviews/02guys.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): proof, smash, company, the music man, network...",
+    "textLength": 8653,
+    "timestamp": "2026-02-05T02:33:40.941Z"
+  },
+  {
+    "reviewId": "hamlet-2009/vulture--sara-holdren.json",
+    "showId": "hamlet-2009",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/theater-review-eddie-izzard-hamlet-nyc.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): giant, proof, purpose, sweat, eclipsed...",
+    "textLength": 9870,
+    "timestamp": "2026-02-05T02:33:44.592Z"
+  },
+  {
+    "reviewId": "hand-to-god-2015/hollywood-reporter--david-rooney.json",
+    "showId": "hand-to-god-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/hand-god-theater-review-786761/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): wicked, gypsy, purpose, sweat, hair...",
+    "textLength": 8102,
+    "timestamp": "2026-02-05T02:33:51.934Z"
   }
 ]
