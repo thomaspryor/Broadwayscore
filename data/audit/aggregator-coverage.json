@@ -1,48 +1,48 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-05T21:35:08.046Z",
+    "generatedAt": "2026-02-05T22:55:17.335Z",
     "description": "Per-show per-aggregator review coverage audit (read-only)",
     "totalShows": 724,
-    "showsWithGaps": 357,
-    "totalMissingReviews": 2271,
-    "totalTrulyMissing": 221
+    "showsWithGaps": 358,
+    "totalMissingReviews": 2247,
+    "totalTrulyMissing": 169
   },
   "summary": {
     "archiveCounts": {
       "dtli": 92,
-      "showScore": 100,
+      "showScore": 105,
       "bww": 545,
       "bwwReviews": 486,
       "playbillVerdict": 514,
       "nycTheatre": 46
     },
     "totalGaps": {
-      "dtli": 59,
-      "showScore": 39,
-      "bww": 182,
+      "dtli": 60,
+      "showScore": 38,
+      "bww": 180,
       "bwwReviews": 115,
       "playbillVerdict": 214,
       "nycTheatre": 2
     },
     "totalMissing": {
-      "dtli": 228,
-      "showScore": 293,
-      "bww": 626,
+      "dtli": 231,
+      "showScore": 314,
+      "bww": 603,
       "bwwReviews": 317,
-      "playbillVerdict": 805,
+      "playbillVerdict": 780,
       "nycTheatre": 2
     },
     "totalOverExtracted": {
       "dtli": 1,
-      "showScore": 43,
-      "bww": 61,
+      "showScore": 47,
+      "bww": 62,
       "bwwReviews": 0,
-      "playbillVerdict": 17,
+      "playbillVerdict": 18,
       "nycTheatre": 24
     },
     "showsNeverSearched": {
       "dtli": 632,
-      "showScore": 624,
+      "showScore": 619,
       "bww": 179,
       "bwwReviews": 238,
       "playbillVerdict": 210,
@@ -111,7 +111,7 @@
     "maybe-happy-ending-2024": {
       "title": "Maybe Happy Ending",
       "status": "open",
-      "totalLocal": 34,
+      "totalLocal": 36,
       "hasGap": true,
       "totalGap": 9,
       "trulyMissing": 0,
@@ -300,8 +300,8 @@
         },
         "showScore": {
           "archiveCount": 5,
-          "extractedCount": 15,
-          "gap": -10,
+          "extractedCount": 16,
+          "gap": -11,
           "hasArchive": true,
           "method": "heading"
         },
@@ -334,7 +334,7 @@
       },
       "maxAggregatorCount": 18,
       "flags": [
-        "showScore-over-10",
+        "showScore-over-11",
         "bww-under-9",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -345,7 +345,7 @@
       "status": "open",
       "totalLocal": 46,
       "hasGap": true,
-      "totalGap": 22,
+      "totalGap": 13,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -357,8 +357,8 @@
         },
         "showScore": {
           "archiveCount": 29,
-          "extractedCount": 16,
-          "gap": 13,
+          "extractedCount": 25,
+          "gap": 4,
           "hasArchive": true,
           "method": "heading"
         },
@@ -391,7 +391,7 @@
       "maxAggregatorCount": 29,
       "flags": [
         "dtli-under-5",
-        "showScore-under-13",
+        "showScore-under-4",
         "bww-under-4",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
@@ -516,9 +516,9 @@
     "wicked-2003": {
       "title": "Wicked",
       "status": "open",
-      "totalLocal": 110,
+      "totalLocal": 105,
       "hasGap": true,
-      "totalGap": 19,
+      "totalGap": 22,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -537,8 +537,8 @@
         },
         "bww": {
           "archiveCount": 51,
-          "extractedCount": 34,
-          "gap": 17,
+          "extractedCount": 31,
+          "gap": 20,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -551,7 +551,7 @@
         },
         "playbillVerdict": {
           "archiveCount": null,
-          "extractedCount": 44,
+          "extractedCount": 42,
           "gap": null,
           "hasArchive": false
         },
@@ -566,7 +566,7 @@
       "flags": [
         "dtli-under-1",
         "showScore-over-16",
-        "bww-under-17",
+        "bww-under-20",
         "bwwReviews-under-1",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -634,9 +634,9 @@
     "the-lion-king-1997": {
       "title": "The Lion King",
       "status": "open",
-      "totalLocal": 60,
+      "totalLocal": 58,
       "hasGap": true,
-      "totalGap": 14,
+      "totalGap": 16,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -655,8 +655,8 @@
         },
         "bww": {
           "archiveCount": 38,
-          "extractedCount": 27,
-          "gap": 11,
+          "extractedCount": 25,
+          "gap": 13,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -685,7 +685,7 @@
       "flags": [
         "dtli-under-1",
         "showScore-over-13",
-        "bww-under-11",
+        "bww-under-13",
         "bwwReviews-under-1",
         "playbillVerdict-under-1",
         "nycTheatre-no-archive"
@@ -865,7 +865,7 @@
     "hadestown-2019": {
       "title": "Hadestown",
       "status": "open",
-      "totalLocal": 65,
+      "totalLocal": 70,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -879,8 +879,8 @@
         },
         "showScore": {
           "archiveCount": 51,
-          "extractedCount": 63,
-          "gap": -12,
+          "extractedCount": 71,
+          "gap": -20,
           "hasArchive": true,
           "method": "heading"
         },
@@ -914,7 +914,7 @@
       },
       "maxAggregatorCount": 51,
       "flags": [
-        "showScore-over-12",
+        "showScore-over-20",
         "bww-over-2",
         "playbillVerdict-over-1",
         "nycTheatre-no-archive"
@@ -923,7 +923,7 @@
     "mj-2022": {
       "title": "MJ The Musical",
       "status": "open",
-      "totalLocal": 47,
+      "totalLocal": 49,
       "hasGap": true,
       "totalGap": 10,
       "trulyMissing": 0,
@@ -1040,7 +1040,7 @@
     "book-of-mormon-2011": {
       "title": "The Book of Mormon",
       "status": "open",
-      "totalLocal": 46,
+      "totalLocal": 45,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -1061,8 +1061,8 @@
         },
         "bww": {
           "archiveCount": 19,
-          "extractedCount": 21,
-          "gap": -2,
+          "extractedCount": 20,
+          "gap": -1,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -1089,7 +1089,7 @@
       "maxAggregatorCount": 23,
       "flags": [
         "showScore-over-1",
-        "bww-over-2",
+        "bww-over-1",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -1168,8 +1168,8 @@
         },
         "showScore": {
           "archiveCount": 18,
-          "extractedCount": 23,
-          "gap": -5,
+          "extractedCount": 24,
+          "gap": -6,
           "hasArchive": true,
           "method": "heading"
         },
@@ -1203,7 +1203,7 @@
       "maxAggregatorCount": 18,
       "flags": [
         "dtli-under-3",
-        "showScore-over-5",
+        "showScore-over-6",
         "bww-over-1",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -1270,7 +1270,7 @@
       "status": "closed",
       "totalLocal": 24,
       "hasGap": true,
-      "totalGap": 18,
+      "totalGap": 17,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -1282,8 +1282,8 @@
         },
         "showScore": {
           "archiveCount": 18,
-          "extractedCount": 12,
-          "gap": 6,
+          "extractedCount": 13,
+          "gap": 5,
           "hasArchive": true,
           "method": "heading"
         },
@@ -1316,7 +1316,7 @@
       "maxAggregatorCount": 18,
       "flags": [
         "dtli-under-5",
-        "showScore-under-6",
+        "showScore-under-5",
         "bww-under-7",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
@@ -1444,9 +1444,9 @@
     "stereophonic-2024": {
       "title": "Stereophonic",
       "status": "closed",
-      "totalLocal": 43,
+      "totalLocal": 44,
       "hasGap": true,
-      "totalGap": 11,
+      "totalGap": 3,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -1458,8 +1458,8 @@
         },
         "showScore": {
           "archiveCount": 13,
-          "extractedCount": 5,
-          "gap": 8,
+          "extractedCount": 13,
+          "gap": 0,
           "hasArchive": true,
           "method": "heading"
         },
@@ -1493,7 +1493,6 @@
       },
       "maxAggregatorCount": 19,
       "flags": [
-        "showScore-under-8",
         "bww-over-2",
         "bwwReviews-under-1",
         "playbillVerdict-under-2",
@@ -1517,8 +1516,8 @@
         },
         "showScore": {
           "archiveCount": 17,
-          "extractedCount": 17,
-          "gap": 0,
+          "extractedCount": 18,
+          "gap": -1,
           "hasArchive": true,
           "method": "heading"
         },
@@ -1551,6 +1550,7 @@
       },
       "maxAggregatorCount": 22,
       "flags": [
+        "showScore-over-1",
         "bwwReviews-under-1",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -1746,8 +1746,8 @@
         },
         "showScore": {
           "archiveCount": 18,
-          "extractedCount": 22,
-          "gap": -4,
+          "extractedCount": 23,
+          "gap": -5,
           "hasArchive": true,
           "method": "heading"
         },
@@ -1782,7 +1782,7 @@
       "maxAggregatorCount": 18,
       "flags": [
         "dtli-under-6",
-        "showScore-over-4",
+        "showScore-over-5",
         "bww-over-2",
         "playbillVerdict-no-archive",
         "nycTheatre-wrong-page"
@@ -1861,8 +1861,8 @@
         },
         "showScore": {
           "archiveCount": 17,
-          "extractedCount": 18,
-          "gap": -1,
+          "extractedCount": 21,
+          "gap": -4,
           "hasArchive": true,
           "method": "heading"
         },
@@ -1896,7 +1896,7 @@
       "maxAggregatorCount": 20,
       "flags": [
         "dtli-under-2",
-        "showScore-over-1",
+        "showScore-over-4",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -2309,7 +2309,7 @@
     "back-to-the-future-2023": {
       "title": "Back to the Future: The Musical",
       "status": "closed",
-      "totalLocal": 36,
+      "totalLocal": 37,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -2323,8 +2323,8 @@
         },
         "showScore": {
           "archiveCount": 31,
-          "extractedCount": 34,
-          "gap": -3,
+          "extractedCount": 36,
+          "gap": -5,
           "hasArchive": true,
           "method": "heading"
         },
@@ -2357,7 +2357,7 @@
       "maxAggregatorCount": 31,
       "flags": [
         "dtli-wrong-page",
-        "showScore-over-3",
+        "showScore-over-5",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -2421,10 +2421,10 @@
     "death-of-a-salesman-2026": {
       "title": "Death of a Salesman",
       "status": "previews",
-      "totalLocal": 24,
+      "totalLocal": 37,
       "hasGap": true,
-      "totalGap": 48,
-      "trulyMissing": 2,
+      "totalGap": 27,
+      "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 5,
@@ -2442,8 +2442,8 @@
         },
         "bww": {
           "archiveCount": 14,
-          "extractedCount": 6,
-          "gap": 8,
+          "extractedCount": 16,
+          "gap": -2,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -2456,8 +2456,8 @@
         },
         "playbillVerdict": {
           "archiveCount": 26,
-          "extractedCount": 13,
-          "gap": 13,
+          "extractedCount": 27,
+          "gap": -1,
           "hasArchive": true,
           "method": "link-count"
         },
@@ -2472,9 +2472,9 @@
       "flags": [
         "dtli-under-5",
         "showScore-under-12",
-        "bww-under-8",
+        "bww-over-2",
         "bwwReviews-under-10",
-        "playbillVerdict-under-13",
+        "playbillVerdict-over-1",
         "nycTheatre-no-archive"
       ]
     },
@@ -2646,10 +2646,10 @@
     "cats-the-jellicle-ball-2026": {
       "title": "CATS: The Jellicle Ball",
       "status": "previews",
-      "totalLocal": 13,
+      "totalLocal": 14,
       "hasGap": true,
-      "totalGap": 14,
-      "trulyMissing": 4,
+      "totalGap": 13,
+      "trulyMissing": 3,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -2658,15 +2658,16 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bww": {
           "archiveCount": 10,
-          "extractedCount": 3,
-          "gap": 7,
+          "extractedCount": 4,
+          "gap": 6,
           "hasArchive": true,
           "method": "blog-postings"
         },
@@ -2679,7 +2680,7 @@
         },
         "playbillVerdict": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 1,
           "gap": null,
           "hasArchive": false
         },
@@ -2693,8 +2694,8 @@
       "maxAggregatorCount": 17,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
-        "bww-under-7",
+        "showScore-wrong-page",
+        "bww-under-6",
         "bwwReviews-under-7",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -3089,10 +3090,10 @@
     "the-rocky-horror-show-2026": {
       "title": "The Rocky Horror Show",
       "status": "previews",
-      "totalLocal": 16,
+      "totalLocal": 23,
       "hasGap": true,
-      "totalGap": 8,
-      "trulyMissing": 8,
+      "totalGap": 1,
+      "trulyMissing": 1,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -3101,15 +3102,16 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bww": {
           "archiveCount": 24,
-          "extractedCount": 16,
-          "gap": 8,
+          "extractedCount": 23,
+          "gap": 1,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -3136,8 +3138,8 @@
       "maxAggregatorCount": 24,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
-        "bww-under-8",
+        "showScore-wrong-page",
+        "bww-under-1",
         "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -3201,10 +3203,10 @@
     "titanique-2026": {
       "title": "Titanique",
       "status": "previews",
-      "totalLocal": 5,
+      "totalLocal": 7,
       "hasGap": true,
-      "totalGap": 4,
-      "trulyMissing": 2,
+      "totalGap": 2,
+      "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -3213,15 +3215,16 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bww": {
           "archiveCount": 7,
-          "extractedCount": 5,
-          "gap": 2,
+          "extractedCount": 7,
+          "gap": 0,
           "hasArchive": true,
           "method": "blog-postings"
         },
@@ -3248,8 +3251,7 @@
       "maxAggregatorCount": 7,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
-        "bww-under-2",
+        "showScore-wrong-page",
         "bwwReviews-under-2",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -3485,9 +3487,9 @@
     "harmony-2023": {
       "title": "Harmony",
       "status": "closed",
-      "totalLocal": 40,
+      "totalLocal": 45,
       "hasGap": true,
-      "totalGap": 15,
+      "totalGap": 14,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -3499,8 +3501,8 @@
         },
         "showScore": {
           "archiveCount": 28,
-          "extractedCount": 24,
-          "gap": 4,
+          "extractedCount": 25,
+          "gap": 3,
           "hasArchive": true,
           "method": "heading"
         },
@@ -3535,7 +3537,7 @@
       "maxAggregatorCount": 28,
       "flags": [
         "dtli-under-2",
-        "showScore-under-4",
+        "showScore-under-3",
         "bww-under-4",
         "bwwReviews-under-2",
         "playbillVerdict-under-3",
@@ -3545,7 +3547,7 @@
     "here-lies-love-2023": {
       "title": "Here Lies Love",
       "status": "closed",
-      "totalLocal": 54,
+      "totalLocal": 59,
       "hasGap": true,
       "totalGap": 4,
       "trulyMissing": 0,
@@ -3559,8 +3561,8 @@
         },
         "showScore": {
           "archiveCount": 29,
-          "extractedCount": 32,
-          "gap": -3,
+          "extractedCount": 33,
+          "gap": -4,
           "hasArchive": true,
           "method": "heading"
         },
@@ -3595,7 +3597,7 @@
       "maxAggregatorCount": 29,
       "flags": [
         "dtli-under-1",
-        "showScore-over-3",
+        "showScore-over-4",
         "bww-over-2",
         "bwwReviews-under-1",
         "playbillVerdict-under-2",
@@ -3780,9 +3782,9 @@
     "once-upon-a-one-more-time-2023": {
       "title": "Once Upon a One More Time",
       "status": "closed",
-      "totalLocal": 49,
+      "totalLocal": 50,
       "hasGap": true,
-      "totalGap": 5,
+      "totalGap": 3,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -3794,8 +3796,8 @@
         },
         "showScore": {
           "archiveCount": 29,
-          "extractedCount": 27,
-          "gap": 2,
+          "extractedCount": 29,
+          "gap": 0,
           "hasArchive": true,
           "method": "heading"
         },
@@ -3829,7 +3831,6 @@
       "maxAggregatorCount": 29,
       "flags": [
         "dtli-under-2",
-        "showScore-under-2",
         "bww-over-2",
         "bwwReviews-under-1",
         "playbillVerdict-no-archive",
@@ -3899,9 +3900,9 @@
     "gutenberg-2023": {
       "title": "Gutenberg! The Musical!",
       "status": "closed",
-      "totalLocal": 32,
+      "totalLocal": 33,
       "hasGap": true,
-      "totalGap": 8,
+      "totalGap": 7,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -3913,8 +3914,8 @@
         },
         "showScore": {
           "archiveCount": 24,
-          "extractedCount": 22,
-          "gap": 2,
+          "extractedCount": 23,
+          "gap": 1,
           "hasArchive": true,
           "method": "heading"
         },
@@ -3947,7 +3948,7 @@
       "maxAggregatorCount": 24,
       "flags": [
         "dtli-under-2",
-        "showScore-under-2",
+        "showScore-under-1",
         "bww-under-4",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
@@ -4074,7 +4075,7 @@
     "the-whos-tommy-2024": {
       "title": "The Who's Tommy",
       "status": "closed",
-      "totalLocal": 33,
+      "totalLocal": 35,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -4131,7 +4132,7 @@
     "the-wiz-2024": {
       "title": "The Wiz",
       "status": "closed",
-      "totalLocal": 44,
+      "totalLocal": 45,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -4360,7 +4361,7 @@
     "just-for-us-2023": {
       "title": "Just for Us",
       "status": "closed",
-      "totalLocal": 29,
+      "totalLocal": 32,
       "hasGap": true,
       "totalGap": 19,
       "trulyMissing": 0,
@@ -4478,7 +4479,7 @@
     "mother-play-2024": {
       "title": "Mother Play",
       "status": "closed",
-      "totalLocal": 31,
+      "totalLocal": 33,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -4492,8 +4493,8 @@
         },
         "showScore": {
           "archiveCount": 14,
-          "extractedCount": 14,
-          "gap": 0,
+          "extractedCount": 15,
+          "gap": -1,
           "hasArchive": true,
           "method": "heading"
         },
@@ -4528,6 +4529,7 @@
       "maxAggregatorCount": 14,
       "flags": [
         "dtli-under-1",
+        "showScore-over-1",
         "playbillVerdict-no-archive",
         "nycTheatre-wrong-page"
       ]
@@ -4666,8 +4668,8 @@
         },
         "showScore": {
           "archiveCount": 26,
-          "extractedCount": 28,
-          "gap": -2,
+          "extractedCount": 29,
+          "gap": -3,
           "hasArchive": true,
           "method": "heading"
         },
@@ -4701,7 +4703,7 @@
       "maxAggregatorCount": 26,
       "flags": [
         "dtli-under-1",
-        "showScore-over-2",
+        "showScore-over-3",
         "bww-under-2",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -4710,9 +4712,9 @@
     "the-shark-is-broken-2023": {
       "title": "The Shark Is Broken",
       "status": "closed",
-      "totalLocal": 42,
+      "totalLocal": 44,
       "hasGap": true,
-      "totalGap": 9,
+      "totalGap": 8,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -4724,8 +4726,8 @@
         },
         "showScore": {
           "archiveCount": 31,
-          "extractedCount": 30,
-          "gap": 1,
+          "extractedCount": 32,
+          "gap": -1,
           "hasArchive": true,
           "method": "heading"
         },
@@ -4759,7 +4761,7 @@
       },
       "maxAggregatorCount": 31,
       "flags": [
-        "showScore-under-1",
+        "showScore-over-1",
         "bww-under-6",
         "bwwReviews-under-1",
         "playbillVerdict-under-1",
@@ -4945,7 +4947,7 @@
     "purlie-victorious-2023": {
       "title": "Purlie Victorious: A Non-Confederate Romp Through the Cotton Patch",
       "status": "closed",
-      "totalLocal": 32,
+      "totalLocal": 33,
       "hasGap": true,
       "totalGap": 6,
       "trulyMissing": 0,
@@ -5063,7 +5065,7 @@
       "status": "closed",
       "totalLocal": 33,
       "hasGap": true,
-      "totalGap": 9,
+      "totalGap": 8,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -5075,8 +5077,8 @@
         },
         "showScore": {
           "archiveCount": 14,
-          "extractedCount": 13,
-          "gap": 1,
+          "extractedCount": 14,
+          "gap": 0,
           "hasArchive": true,
           "method": "heading"
         },
@@ -5111,7 +5113,6 @@
       "maxAggregatorCount": 22,
       "flags": [
         "dtli-under-7",
-        "showScore-under-1",
         "bww-over-1",
         "playbillVerdict-under-1",
         "nycTheatre-no-archive"
@@ -5234,7 +5235,7 @@
     "the-hills-of-california-2024": {
       "title": "The Hills of California",
       "status": "closed",
-      "totalLocal": 61,
+      "totalLocal": 63,
       "hasGap": true,
       "totalGap": 8,
       "trulyMissing": 0,
@@ -5248,8 +5249,8 @@
         },
         "showScore": {
           "archiveCount": 12,
-          "extractedCount": 12,
-          "gap": 0,
+          "extractedCount": 13,
+          "gap": -1,
           "hasArchive": true,
           "method": "heading"
         },
@@ -5285,6 +5286,7 @@
       "maxAggregatorCount": 21,
       "flags": [
         "dtli-under-5",
+        "showScore-over-1",
         "bww-under-2",
         "bwwReviews-under-1",
         "nycTheatre-over-19",
@@ -5294,7 +5296,7 @@
     "mcneal-2024": {
       "title": "McNeal",
       "status": "closed",
-      "totalLocal": 43,
+      "totalLocal": 47,
       "hasGap": true,
       "totalGap": 4,
       "trulyMissing": 0,
@@ -5307,7 +5309,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 14,
+          "extractedCount": 15,
           "gap": null,
           "hasArchive": false
         },
@@ -5528,7 +5530,7 @@
     "romeo-juliet-2024": {
       "title": "Romeo + Juliet",
       "status": "closed",
-      "totalLocal": 45,
+      "totalLocal": 48,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -5541,7 +5543,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 17,
+          "extractedCount": 21,
           "gap": null,
           "hasArchive": false
         },
@@ -5643,7 +5645,7 @@
     "tammy-faye-2024": {
       "title": "Tammy Faye",
       "status": "closed",
-      "totalLocal": 50,
+      "totalLocal": 53,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -5656,7 +5658,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 16,
+          "extractedCount": 17,
           "gap": null,
           "hasArchive": false
         },
@@ -5814,7 +5816,7 @@
     "cult-of-love-2024": {
       "title": "Cult of Love",
       "status": "closed",
-      "totalLocal": 34,
+      "totalLocal": 37,
       "hasGap": true,
       "totalGap": 3,
       "trulyMissing": 0,
@@ -5827,7 +5829,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 14,
+          "extractedCount": 15,
           "gap": null,
           "hasArchive": false
         },
@@ -5873,7 +5875,7 @@
     "eureka-day-2024": {
       "title": "Eureka Day",
       "status": "closed",
-      "totalLocal": 44,
+      "totalLocal": 45,
       "hasGap": true,
       "totalGap": 6,
       "trulyMissing": 0,
@@ -6122,7 +6124,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 14,
+          "extractedCount": 15,
           "gap": null,
           "hasArchive": false
         },
@@ -6409,7 +6411,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 10,
+          "extractedCount": 12,
           "gap": null,
           "hasArchive": false
         },
@@ -6696,7 +6698,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 12,
+          "extractedCount": 13,
           "gap": null,
           "hasArchive": false
         },
@@ -6982,7 +6984,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 24,
+          "extractedCount": 25,
           "gap": null,
           "hasArchive": false
         },
@@ -7252,9 +7254,9 @@
     "topdog-underdog-2022": {
       "title": "Topdog / Underdog",
       "status": "closed",
-      "totalLocal": 45,
+      "totalLocal": 46,
       "hasGap": true,
-      "totalGap": 6,
+      "totalGap": 8,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -7273,8 +7275,8 @@
         },
         "bww": {
           "archiveCount": 23,
-          "extractedCount": 18,
-          "gap": 5,
+          "extractedCount": 16,
+          "gap": 7,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -7302,7 +7304,7 @@
       "maxAggregatorCount": 27,
       "flags": [
         "dtli-under-1",
-        "bww-under-5",
+        "bww-under-7",
         "bwwReviews-wrong-page",
         "playbillVerdict-over-1",
         "nycTheatre-no-archive"
@@ -7366,7 +7368,7 @@
     "almost-famous-2022": {
       "title": "Almost Famous",
       "status": "closed",
-      "totalLocal": 46,
+      "totalLocal": 49,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -7379,7 +7381,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 23,
+          "extractedCount": 25,
           "gap": null,
           "hasArchive": false
         },
@@ -7537,7 +7539,7 @@
     "mike-birbiglia-the-old-man-and-the-pool-2022": {
       "title": "Mike Birbiglia: The Old Man & The Pool",
       "status": "closed",
-      "totalLocal": 18,
+      "totalLocal": 20,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -7593,7 +7595,7 @@
     "a-christmas-carol-2022": {
       "title": "A Christmas Carol",
       "status": "closed",
-      "totalLocal": 39,
+      "totalLocal": 42,
       "hasGap": true,
       "totalGap": 10,
       "trulyMissing": 0,
@@ -7817,7 +7819,7 @@
     "ohio-state-murders-2022": {
       "title": "Ohio State Murders",
       "status": "closed",
-      "totalLocal": 38,
+      "totalLocal": 42,
       "hasGap": true,
       "totalGap": 6,
       "trulyMissing": 0,
@@ -7931,7 +7933,7 @@
     "the-collaboration-2022": {
       "title": "The Collaboration",
       "status": "closed",
-      "totalLocal": 38,
+      "totalLocal": 41,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -7944,7 +7946,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 19,
+          "extractedCount": 21,
           "gap": null,
           "hasArchive": false
         },
@@ -8101,9 +8103,9 @@
     "a-dolls-house-2023": {
       "title": "A Doll's House",
       "status": "closed",
-      "totalLocal": 40,
+      "totalLocal": 43,
       "hasGap": true,
-      "totalGap": 3,
+      "totalGap": 1,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -8114,7 +8116,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 25,
+          "extractedCount": 28,
           "gap": null,
           "hasArchive": false
         },
@@ -8133,8 +8135,8 @@
         },
         "playbillVerdict": {
           "archiveCount": 20,
-          "extractedCount": 17,
-          "gap": 3,
+          "extractedCount": 19,
+          "gap": 1,
           "hasArchive": true,
           "method": "link-count"
         },
@@ -8150,14 +8152,14 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bwwReviews-no-archive",
-        "playbillVerdict-under-3",
+        "playbillVerdict-under-1",
         "nycTheatre-no-archive"
       ]
     },
     "parade-2023": {
       "title": "Parade",
       "status": "closed",
-      "totalLocal": 69,
+      "totalLocal": 73,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -8170,7 +8172,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 30,
+          "extractedCount": 31,
           "gap": null,
           "hasArchive": false
         },
@@ -8386,7 +8388,7 @@
     "life-of-pi-2023": {
       "title": "Life of Pi",
       "status": "closed",
-      "totalLocal": 72,
+      "totalLocal": 74,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -8399,7 +8401,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 19,
+          "extractedCount": 22,
           "gap": null,
           "hasArchive": false
         },
@@ -8502,7 +8504,7 @@
     "fat-ham-2023": {
       "title": "Fat Ham",
       "status": "closed",
-      "totalLocal": 41,
+      "totalLocal": 46,
       "hasGap": true,
       "totalGap": 6,
       "trulyMissing": 0,
@@ -8515,7 +8517,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 18,
+          "extractedCount": 19,
           "gap": null,
           "hasArchive": false
         },
@@ -8680,7 +8682,7 @@
     "the-thanksgiving-play-2023": {
       "title": "The Thanksgiving Play",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 31,
       "hasGap": true,
       "totalGap": 4,
       "trulyMissing": 0,
@@ -8693,7 +8695,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 24,
           "gap": null,
           "hasArchive": false
         },
@@ -8739,7 +8741,7 @@
     "prima-facie-2023": {
       "title": "Prima Facie",
       "status": "closed",
-      "totalLocal": 32,
+      "totalLocal": 38,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -8752,7 +8754,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 23,
           "gap": null,
           "hasArchive": false
         },
@@ -8969,7 +8971,7 @@
     "the-sign-in-sidney-brusteins-window-2023": {
       "title": "The Sign in Sidney Brustein's Window",
       "status": "closed",
-      "totalLocal": 30,
+      "totalLocal": 32,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -9082,10 +9084,10 @@
     "waitress-2021": {
       "title": "Waitress",
       "status": "closed",
-      "totalLocal": 11,
+      "totalLocal": 56,
       "hasGap": true,
-      "totalGap": 14,
-      "trulyMissing": 8,
+      "totalGap": 15,
+      "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -9094,15 +9096,16 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 53,
+          "extractedCount": 44,
+          "gap": 9,
+          "hasArchive": true,
+          "method": "heading"
         },
         "bww": {
           "archiveCount": 19,
-          "extractedCount": 10,
-          "gap": 9,
+          "extractedCount": 18,
+          "gap": 1,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -9127,11 +9130,11 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 19,
+      "maxAggregatorCount": 53,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
-        "bww-under-9",
+        "showScore-under-9",
+        "bww-under-1",
         "bwwReviews-wrong-page",
         "playbillVerdict-under-5",
         "nycTheatre-no-archive"
@@ -9253,7 +9256,7 @@
     "is-this-a-room-2021": {
       "title": "Is This a Room",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 30,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -9266,7 +9269,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 14,
           "gap": null,
           "hasArchive": false
         },
@@ -9310,7 +9313,7 @@
     "thoughts-of-a-colored-man-2021": {
       "title": "Thoughts of a Colored Man",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 28,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -9536,7 +9539,7 @@
     "diana-the-musical-2021": {
       "title": "Diana, The Musical",
       "status": "closed",
-      "totalLocal": 28,
+      "totalLocal": 35,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -9648,29 +9651,29 @@
     "clydes-2021": {
       "title": "Clyde's",
       "status": "closed",
-      "totalLocal": 34,
+      "totalLocal": 36,
       "hasGap": true,
-      "totalGap": 2,
+      "totalGap": 10,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 17,
-          "extractedCount": 17,
-          "gap": 0,
+          "extractedCount": 14,
+          "gap": 3,
           "hasArchive": true,
           "method": "thumbs"
         },
         "showScore": {
           "archiveCount": 15,
-          "extractedCount": 15,
-          "gap": 0,
+          "extractedCount": 13,
+          "gap": 2,
           "hasArchive": true,
           "method": "heading"
         },
         "bww": {
           "archiveCount": 15,
-          "extractedCount": 13,
-          "gap": 2,
+          "extractedCount": 10,
+          "gap": 5,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -9695,7 +9698,9 @@
       },
       "maxAggregatorCount": 17,
       "flags": [
-        "bww-under-2",
+        "dtli-under-3",
+        "showScore-under-2",
+        "bww-under-5",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -9818,7 +9823,7 @@
     "flying-over-sunset-2021": {
       "title": "Flying Over Sunset",
       "status": "closed",
-      "totalLocal": 23,
+      "totalLocal": 28,
       "hasGap": true,
       "totalGap": 3,
       "trulyMissing": 0,
@@ -9831,7 +9836,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 18,
           "gap": null,
           "hasArchive": false
         },
@@ -9875,7 +9880,7 @@
     "skeleton-crew-2022": {
       "title": "Skeleton Crew",
       "status": "closed",
-      "totalLocal": 20,
+      "totalLocal": 22,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -10104,10 +10109,10 @@
     "beetlejuice-2022": {
       "title": "Beetlejuice",
       "status": "closed",
-      "totalLocal": 76,
+      "totalLocal": 94,
       "hasGap": true,
-      "totalGap": 30,
-      "trulyMissing": 7,
+      "totalGap": 60,
+      "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -10116,15 +10121,16 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 49,
+          "extractedCount": 1,
+          "gap": 48,
+          "hasArchive": true,
+          "method": "heading"
         },
         "bww": {
           "archiveCount": 83,
-          "extractedCount": 66,
-          "gap": 17,
+          "extractedCount": 73,
+          "gap": 10,
           "hasArchive": true,
           "method": "blog-postings"
         },
@@ -10137,8 +10143,8 @@
         },
         "playbillVerdict": {
           "archiveCount": 22,
-          "extractedCount": 9,
-          "gap": 13,
+          "extractedCount": 20,
+          "gap": 2,
           "hasArchive": true,
           "method": "link-count"
         },
@@ -10152,10 +10158,10 @@
       "maxAggregatorCount": 83,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
-        "bww-under-17",
+        "showScore-under-48",
+        "bww-under-10",
         "bwwReviews-wrong-page",
-        "playbillVerdict-under-13",
+        "playbillVerdict-under-2",
         "nycTheatre-no-archive"
       ]
     },
@@ -10218,7 +10224,7 @@
     "american-buffalo-2022": {
       "title": "American Buffalo",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 34,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -10231,7 +10237,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 8,
           "gap": null,
           "hasArchive": false
         },
@@ -10385,7 +10391,7 @@
     "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022": {
       "title": "for colored girls who have considered suicide / when the rainbow is enuf",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 38,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -10398,7 +10404,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 20,
           "gap": null,
           "hasArchive": false
         },
@@ -10441,7 +10447,7 @@
     "hangmen-2022": {
       "title": "Hangmen",
       "status": "closed",
-      "totalLocal": 25,
+      "totalLocal": 38,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -10454,7 +10460,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 21,
           "gap": null,
           "hasArchive": false
         },
@@ -10669,7 +10675,7 @@
     "mr-saturday-night-2022": {
       "title": "Mr. Saturday Night",
       "status": "closed",
-      "totalLocal": 19,
+      "totalLocal": 22,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -10780,7 +10786,7 @@
     "macbeth-2022": {
       "title": "Macbeth",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 26,
       "hasGap": true,
       "totalGap": 8,
       "trulyMissing": 0,
@@ -10793,7 +10799,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 6,
           "gap": null,
           "hasArchive": false
         },
@@ -10951,7 +10957,7 @@
     "frankie-and-johnny-in-the-clair-de-lune-2019": {
       "title": "Frankie and Johnny in the Clair de Lune",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 51,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -10964,7 +10970,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 41,
           "gap": null,
           "hasArchive": false
         },
@@ -11006,7 +11012,7 @@
     "sea-wall-a-life-2019": {
       "title": "Sea Wall / A Life",
       "status": "closed",
-      "totalLocal": 26,
+      "totalLocal": 41,
       "hasGap": true,
       "totalGap": 4,
       "trulyMissing": 0,
@@ -11019,7 +11025,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 21,
           "gap": null,
           "hasArchive": false
         },
@@ -11231,7 +11237,7 @@
     "linda-vista-2019": {
       "title": "Linda Vista",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 27,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -11343,7 +11349,7 @@
     "the-lightning-thief-2019": {
       "title": "The Lightning Thief",
       "status": "closed",
-      "totalLocal": 16,
+      "totalLocal": 18,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -11511,7 +11517,7 @@
     "the-inheritance-2019": {
       "title": "The Inheritance",
       "status": "closed",
-      "totalLocal": 31,
+      "totalLocal": 48,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -11524,7 +11530,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 30,
           "gap": null,
           "hasArchive": false
         },
@@ -11567,7 +11573,7 @@
     "a-christmas-carol-2019": {
       "title": "A Christmas Carol",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 29,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -11580,7 +11586,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 1,
           "gap": null,
           "hasArchive": false
         },
@@ -11793,7 +11799,7 @@
     "grand-horizons-2020": {
       "title": "Grand Horizons",
       "status": "closed",
-      "totalLocal": 26,
+      "totalLocal": 27,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -12076,7 +12082,7 @@
     "head-over-heels-2018": {
       "title": "Head Over Heels",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 61,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -12089,7 +12095,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 52,
           "gap": null,
           "hasArchive": false
         },
@@ -12132,7 +12138,7 @@
     "gettin-the-band-back-together-2018": {
       "title": "Gettin' The Band Back Together",
       "status": "closed",
-      "totalLocal": 17,
+      "totalLocal": 18,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -12354,7 +12360,7 @@
     "the-lifespan-of-a-fact-2018": {
       "title": "The Lifespan of a Fact",
       "status": "closed",
-      "totalLocal": 26,
+      "totalLocal": 30,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -12466,7 +12472,7 @@
     "the-waverly-gallery-2018": {
       "title": "The Waverly Gallery",
       "status": "closed",
-      "totalLocal": 40,
+      "totalLocal": 44,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -12636,7 +12642,7 @@
     "king-kong-2018": {
       "title": "King Kong",
       "status": "closed",
-      "totalLocal": 39,
+      "totalLocal": 92,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -12649,7 +12655,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 69,
           "gap": null,
           "hasArchive": false
         },
@@ -12692,7 +12698,7 @@
     "the-new-one-2018": {
       "title": "The New One",
       "status": "closed",
-      "totalLocal": 18,
+      "totalLocal": 22,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -12915,7 +12921,7 @@
     "to-kill-a-mockingbird-2018": {
       "title": "To Kill a Mockingbird",
       "status": "closed",
-      "totalLocal": 31,
+      "totalLocal": 36,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -13027,7 +13033,7 @@
     "true-west-2019": {
       "title": "True West",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 26,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -13137,9 +13143,9 @@
     "kiss-me-kate-2019": {
       "title": "Kiss Me, Kate",
       "status": "closed",
-      "totalLocal": 72,
-      "hasGap": false,
-      "totalGap": 0,
+      "totalLocal": 71,
+      "hasGap": true,
+      "totalGap": 1,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -13170,8 +13176,8 @@
         },
         "playbillVerdict": {
           "archiveCount": 21,
-          "extractedCount": 21,
-          "gap": 0,
+          "extractedCount": 20,
+          "gap": 1,
           "hasArchive": true,
           "method": "link-count"
         },
@@ -13187,13 +13193,14 @@
         "dtli-no-archive",
         "bww-over-18",
         "bwwReviews-no-archive",
+        "playbillVerdict-under-1",
         "nycTheatre-no-archive"
       ]
     },
     "aint-too-proud-2019": {
       "title": "Ain't Too Proud",
       "status": "closed",
-      "totalLocal": 28,
+      "totalLocal": 32,
       "hasGap": true,
       "totalGap": 3,
       "trulyMissing": 0,
@@ -13250,7 +13257,7 @@
     "what-the-constitution-means-to-me-2019": {
       "title": "What the Constitution Means to Me",
       "status": "closed",
-      "totalLocal": 25,
+      "totalLocal": 59,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -13263,7 +13270,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 45,
           "gap": null,
           "hasArchive": false
         },
@@ -13477,7 +13484,7 @@
     "hillary-and-clinton-2019": {
       "title": "Hillary and Clinton",
       "status": "closed",
-      "totalLocal": 26,
+      "totalLocal": 28,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -13588,7 +13595,7 @@
     "all-my-sons-2019": {
       "title": "All My Sons",
       "status": "closed",
-      "totalLocal": 29,
+      "totalLocal": 35,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -13755,7 +13762,7 @@
     "beetlejuice-2019": {
       "title": "Beetlejuice",
       "status": "closed",
-      "totalLocal": 28,
+      "totalLocal": 31,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -13768,7 +13775,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 7,
           "gap": null,
           "hasArchive": false
         },
@@ -13812,7 +13819,7 @@
     "1984-2017": {
       "title": "1984",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 33,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -14036,7 +14043,7 @@
     "time-and-the-conways-2017": {
       "title": "Time and the Conways",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 25,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -14148,7 +14155,7 @@
     "junk-2017": {
       "title": "Junk",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 30,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -14315,7 +14322,7 @@
     "meteor-shower-2017": {
       "title": "Meteor Shower",
       "status": "closed",
-      "totalLocal": 23,
+      "totalLocal": 55,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -14328,7 +14335,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 46,
           "gap": null,
           "hasArchive": false
         },
@@ -14370,7 +14377,7 @@
     "the-parisian-woman-2017": {
       "title": "The Parisian Woman",
       "status": "closed",
-      "totalLocal": 31,
+      "totalLocal": 36,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -14592,7 +14599,7 @@
     "farinelli-and-the-king-2017": {
       "title": "Farinelli and the King",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 25,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -14702,7 +14709,7 @@
     "escape-to-margaritaville-2018": {
       "title": "Escape to Margaritaville",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 28,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -14868,7 +14875,7 @@
     "three-tall-women-2018": {
       "title": "Three Tall Women",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 76,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -14881,7 +14888,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 67,
           "gap": null,
           "hasArchive": false
         },
@@ -14923,7 +14930,7 @@
     "mean-girls-2018": {
       "title": "Mean Girls",
       "status": "closed",
-      "totalLocal": 36,
+      "totalLocal": 87,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -14936,7 +14943,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 68,
           "gap": null,
           "hasArchive": false
         },
@@ -15147,7 +15154,7 @@
     "summer-2018": {
       "title": "Summer",
       "status": "closed",
-      "totalLocal": 33,
+      "totalLocal": 35,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -15257,7 +15264,7 @@
     "saint-joan-2018": {
       "title": "Saint Joan",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 58,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -15270,7 +15277,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 54,
           "gap": null,
           "hasArchive": false
         },
@@ -15422,7 +15429,7 @@
     "an-act-of-god-2016": {
       "title": "An Act of God",
       "status": "closed",
-      "totalLocal": 26,
+      "totalLocal": 36,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -15435,7 +15442,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 15,
           "gap": null,
           "hasArchive": false
         },
@@ -15701,7 +15708,7 @@
     "oh-hello-on-broadway-2016": {
       "title": "Oh, Hello on Broadway",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 25,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -15815,7 +15822,7 @@
     "the-cherry-orchard-2016": {
       "title": "The Cherry Orchard",
       "status": "closed",
-      "totalLocal": 17,
+      "totalLocal": 21,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -15982,7 +15989,7 @@
     "les-liaisons-dangereuses-2016": {
       "title": "Les Liaisons Dangereuses",
       "status": "closed",
-      "totalLocal": 18,
+      "totalLocal": 67,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -15995,7 +16002,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 54,
           "gap": null,
           "hasArchive": false
         },
@@ -16038,7 +16045,7 @@
     "natasha-pierre-and-the-great-comet-of-1812-2016": {
       "title": "Natasha, Pierre & The Great Comet of 1812",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 27,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -16262,7 +16269,7 @@
     "the-present-2017": {
       "title": "The Present",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 26,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -16372,9 +16379,9 @@
     "sunset-boulevard-2017": {
       "title": "Sunset Boulevard",
       "status": "closed",
-      "totalLocal": 42,
+      "totalLocal": 43,
       "hasGap": true,
-      "totalGap": 30,
+      "totalGap": 29,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -16385,8 +16392,8 @@
         },
         "showScore": {
           "archiveCount": 20,
-          "extractedCount": 2,
-          "gap": 18,
+          "extractedCount": 3,
+          "gap": 17,
           "hasArchive": true,
           "method": "heading"
         },
@@ -16421,7 +16428,7 @@
       "maxAggregatorCount": 24,
       "flags": [
         "dtli-no-archive",
-        "showScore-under-18",
+        "showScore-under-17",
         "bww-over-5",
         "bwwReviews-under-11",
         "playbillVerdict-under-1",
@@ -16542,7 +16549,7 @@
     "the-glass-menagerie-2017": {
       "title": "The Glass Menagerie",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 24,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -16597,7 +16604,7 @@
     "come-from-away-2017": {
       "title": "Come From Away",
       "status": "closed",
-      "totalLocal": 35,
+      "totalLocal": 40,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -16819,7 +16826,7 @@
     "the-play-that-goes-wrong-2017": {
       "title": "The Play That Goes Wrong",
       "status": "closed",
-      "totalLocal": 25,
+      "totalLocal": 28,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -16931,7 +16938,7 @@
     "present-laughter-2017": {
       "title": "Present Laughter",
       "status": "closed",
-      "totalLocal": 29,
+      "totalLocal": 31,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -17097,7 +17104,7 @@
     "groundhog-day-2017": {
       "title": "Groundhog Day",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 77,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -17110,7 +17117,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 67,
           "gap": null,
           "hasArchive": false
         },
@@ -17154,7 +17161,7 @@
     "indecent-2017": {
       "title": "Indecent",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 30,
       "hasGap": true,
       "totalGap": 3,
       "trulyMissing": 0,
@@ -17379,7 +17386,7 @@
     "anastasia-2017": {
       "title": "Anastasia",
       "status": "closed",
-      "totalLocal": 29,
+      "totalLocal": 37,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -17491,7 +17498,7 @@
     "bandstand-2017": {
       "title": "Bandstand",
       "status": "closed",
-      "totalLocal": 25,
+      "totalLocal": 28,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -17657,7 +17664,7 @@
     "spring-awakening-2015": {
       "title": "Spring Awakening",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 22,
       "hasGap": true,
       "totalGap": 4,
       "trulyMissing": 0,
@@ -17713,7 +17720,7 @@
     "old-times-2015": {
       "title": "Old Times",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 33,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -17934,7 +17941,7 @@
     "sylvia-2015": {
       "title": "Sylvia",
       "status": "closed",
-      "totalLocal": 26,
+      "totalLocal": 28,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -18044,7 +18051,7 @@
     "king-charles-iii-2015": {
       "title": "King Charles III",
       "status": "closed",
-      "totalLocal": 29,
+      "totalLocal": 33,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -18211,7 +18218,7 @@
     "a-view-from-the-bridge-2015": {
       "title": "A View From the Bridge",
       "status": "closed",
-      "totalLocal": 25,
+      "totalLocal": 71,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -18224,7 +18231,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 52,
           "gap": null,
           "hasArchive": false
         },
@@ -18267,7 +18274,7 @@
     "misery-2015": {
       "title": "Misery",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 30,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -18491,7 +18498,7 @@
     "fiddler-on-the-roof-2015": {
       "title": "Fiddler on the Roof",
       "status": "closed",
-      "totalLocal": 23,
+      "totalLocal": 27,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -18602,7 +18609,7 @@
     "our-mothers-brief-affair-2016": {
       "title": "Our Mother's Brief Affair",
       "status": "closed",
-      "totalLocal": 18,
+      "totalLocal": 19,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -18768,7 +18775,7 @@
     "eclipsed-2016": {
       "title": "Eclipsed",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 63,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -18781,7 +18788,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 50,
           "gap": null,
           "hasArchive": false
         },
@@ -18823,7 +18830,7 @@
     "disaster-2016": {
       "title": "Disaster!",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 24,
       "hasGap": true,
       "totalGap": 17,
       "trulyMissing": 0,
@@ -19047,7 +19054,7 @@
     "the-crucible-2016": {
       "title": "The Crucible",
       "status": "closed",
-      "totalLocal": 26,
+      "totalLocal": 29,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -19157,7 +19164,7 @@
     "american-psycho-2016": {
       "title": "American Psycho",
       "status": "closed",
-      "totalLocal": 33,
+      "totalLocal": 36,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -19326,7 +19333,7 @@
     "tuck-everlasting-2016": {
       "title": "Tuck Everlasting",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 57,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -19339,7 +19346,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 46,
           "gap": null,
           "hasArchive": false
         },
@@ -19382,7 +19389,7 @@
     "long-days-journey-into-night-2016": {
       "title": "Long Day's Journey Into Night",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 32,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -19604,7 +19611,7 @@
     "love-letters-2014": {
       "title": "Love Letters",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 24,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -19715,7 +19722,7 @@
     "the-country-house-2014": {
       "title": "The Country House",
       "status": "closed",
-      "totalLocal": 15,
+      "totalLocal": 16,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -19880,7 +19887,7 @@
     "on-the-town-2014": {
       "title": "On the Town",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 32,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -19893,7 +19900,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 13,
           "gap": null,
           "hasArchive": false
         },
@@ -19935,7 +19942,7 @@
     "disgraced-2014": {
       "title": "Disgraced",
       "status": "closed",
-      "totalLocal": 25,
+      "totalLocal": 28,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -20158,7 +20165,7 @@
     "side-show-2014": {
       "title": "Side Show",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 26,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -20270,7 +20277,7 @@
     "the-elephant-man-2014": {
       "title": "The Elephant Man",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 24,
       "hasGap": true,
       "totalGap": 3,
       "trulyMissing": 0,
@@ -20440,7 +20447,7 @@
     "fish-in-the-dark-2015": {
       "title": "Fish in the Dark",
       "status": "closed",
-      "totalLocal": 38,
+      "totalLocal": 61,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -20453,7 +20460,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 36,
           "gap": null,
           "hasArchive": false
         },
@@ -20496,7 +20503,7 @@
     "the-audience-2015": {
       "title": "The Audience",
       "status": "closed",
-      "totalLocal": 20,
+      "totalLocal": 21,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -20717,7 +20724,7 @@
     "hand-to-god-2015": {
       "title": "Hand to God",
       "status": "closed",
-      "totalLocal": 30,
+      "totalLocal": 34,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -20828,10 +20835,10 @@
     "wolf-hall-parts-one-and-two-2015": {
       "title": "Wolf Hall Parts One & Two",
       "status": "closed",
-      "totalLocal": 11,
+      "totalLocal": 12,
       "hasGap": true,
       "totalGap": 18,
-      "trulyMissing": 7,
+      "trulyMissing": 6,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -20995,7 +21002,7 @@
     "finding-neverland-2015": {
       "title": "Finding Neverland",
       "status": "closed",
-      "totalLocal": 29,
+      "totalLocal": 42,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -21008,7 +21015,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 29,
           "gap": null,
           "hasArchive": false
         },
@@ -21050,7 +21057,7 @@
     "the-king-and-i-2015": {
       "title": "The King and I",
       "status": "closed",
-      "totalLocal": 23,
+      "totalLocal": 28,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -21273,7 +21280,7 @@
     "something-rotten-2015": {
       "title": "Something Rotten!",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 28,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -21383,7 +21390,7 @@
     "the-visit-2015": {
       "title": "The Visit",
       "status": "closed",
-      "totalLocal": 26,
+      "totalLocal": 30,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -21550,7 +21557,7 @@
     "romeo-and-juliet-2013": {
       "title": "Romeo and Juliet",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 24,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -21606,7 +21613,7 @@
     "the-glass-menagerie-2013": {
       "title": "The Glass Menagerie",
       "status": "closed",
-      "totalLocal": 20,
+      "totalLocal": 23,
       "hasGap": true,
       "totalGap": 21,
       "trulyMissing": 0,
@@ -21831,7 +21838,7 @@
     "a-time-to-kill-2013": {
       "title": "A Time to Kill",
       "status": "closed",
-      "totalLocal": 18,
+      "totalLocal": 19,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -21942,7 +21949,7 @@
     "betrayal-2013": {
       "title": "Betrayal",
       "status": "closed",
-      "totalLocal": 28,
+      "totalLocal": 53,
       "hasGap": true,
       "totalGap": 22,
       "trulyMissing": 0,
@@ -21955,7 +21962,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 26,
           "gap": null,
           "hasArchive": false
         },
@@ -22111,7 +22118,7 @@
     "richard-iii-2013": {
       "title": "Richard III",
       "status": "closed",
-      "totalLocal": 18,
+      "totalLocal": 19,
       "hasGap": true,
       "totalGap": 3,
       "trulyMissing": 0,
@@ -22169,7 +22176,7 @@
     "700-sundays-2013": {
       "title": "700 Sundays",
       "status": "closed",
-      "totalLocal": 18,
+      "totalLocal": 19,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -22394,7 +22401,7 @@
     "waiting-for-godot-2013": {
       "title": "Waiting for Godot",
       "status": "closed",
-      "totalLocal": 36,
+      "totalLocal": 39,
       "hasGap": true,
       "totalGap": 48,
       "trulyMissing": 0,
@@ -22509,7 +22516,7 @@
     "machinal-2014": {
       "title": "Machinal",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 31,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -22676,7 +22683,7 @@
     "the-bridges-of-madison-county-2014": {
       "title": "The Bridges of Madison County",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 27,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -22689,7 +22696,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 1,
+          "extractedCount": 2,
           "gap": null,
           "hasArchive": false
         },
@@ -22731,7 +22738,7 @@
     "all-the-way-2014": {
       "title": "All The Way",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 31,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -22954,7 +22961,7 @@
     "ifthen-2014": {
       "title": "If/Then",
       "status": "closed",
-      "totalLocal": 19,
+      "totalLocal": 20,
       "hasGap": true,
       "totalGap": 20,
       "trulyMissing": 0,
@@ -23068,7 +23075,7 @@
     "the-realistic-joneses-2014": {
       "title": "The Realistic Joneses",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 24,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -23234,7 +23241,7 @@
     "of-mice-and-men-2014": {
       "title": "Of Mice and Men",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 29,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -23289,7 +23296,7 @@
     "act-one-2014": {
       "title": "Act One",
       "status": "closed",
-      "totalLocal": 23,
+      "totalLocal": 28,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -23511,7 +23518,7 @@
     "hedwig-and-the-angry-inch-2014": {
       "title": "Hedwig and the Angry Inch",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 25,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -23621,7 +23628,7 @@
     "cabaret-2014": {
       "title": "Cabaret",
       "status": "closed",
-      "totalLocal": 29,
+      "totalLocal": 30,
       "hasGap": true,
       "totalGap": 44,
       "trulyMissing": 0,
@@ -23791,7 +23798,7 @@
     "bring-it-on-the-musical-2012": {
       "title": "Bring It On The Musical",
       "status": "closed",
-      "totalLocal": 19,
+      "totalLocal": 20,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -23848,7 +23855,7 @@
     "chaplin-2012": {
       "title": "Chaplin",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 22,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -24077,7 +24084,7 @@
     "the-heiress-2012": {
       "title": "The Heiress",
       "status": "closed",
-      "totalLocal": 18,
+      "totalLocal": 19,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -24188,7 +24195,7 @@
     "elf-2012": {
       "title": "Elf",
       "status": "closed",
-      "totalLocal": 17,
+      "totalLocal": 20,
       "hasGap": true,
       "totalGap": 23,
       "trulyMissing": 0,
@@ -24357,7 +24364,7 @@
     "scandalous-2012": {
       "title": "Scandalous",
       "status": "closed",
-      "totalLocal": 16,
+      "totalLocal": 18,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -24414,7 +24421,7 @@
     "a-christmas-story-the-musical-2012": {
       "title": "A Christmas Story The Musical",
       "status": "closed",
-      "totalLocal": 15,
+      "totalLocal": 20,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -24639,7 +24646,7 @@
     "glengarry-glen-ross-2012": {
       "title": "Glengarry Glen Ross",
       "status": "closed",
-      "totalLocal": 28,
+      "totalLocal": 30,
       "hasGap": true,
       "totalGap": 49,
       "trulyMissing": 0,
@@ -24753,7 +24760,7 @@
     "picnic-2013": {
       "title": "Picnic",
       "status": "closed",
-      "totalLocal": 19,
+      "totalLocal": 22,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -24977,7 +24984,7 @@
     "vanya-and-sonia-and-masha-and-spike-2013": {
       "title": "Vanya and Sonia and Masha and Spike",
       "status": "closed",
-      "totalLocal": 20,
+      "totalLocal": 21,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -25201,7 +25208,7 @@
     "kinky-boots-2013": {
       "title": "Kinky Boots",
       "status": "closed",
-      "totalLocal": 26,
+      "totalLocal": 30,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -25312,7 +25319,7 @@
     "motown-the-musical-2013": {
       "title": "Motown The Musical",
       "status": "closed",
-      "totalLocal": 25,
+      "totalLocal": 29,
       "hasGap": true,
       "totalGap": 15,
       "trulyMissing": 0,
@@ -25481,7 +25488,7 @@
     "the-assembled-parties-2013": {
       "title": "The Assembled Parties",
       "status": "closed",
-      "totalLocal": 19,
+      "totalLocal": 28,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -25494,7 +25501,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 6,
           "gap": null,
           "hasArchive": false
         },
@@ -25536,7 +25543,7 @@
     "jekyll-and-hyde-2013": {
       "title": "Jekyll & Hyde",
       "status": "closed",
-      "totalLocal": 18,
+      "totalLocal": 20,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -25757,7 +25764,7 @@
     "ill-eat-you-last-a-chat-with-sue-mengers-2013": {
       "title": "I'll Eat You Last: A Chat With Sue Mengers",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 24,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -25868,7 +25875,7 @@
     "master-class-2011": {
       "title": "Master Class",
       "status": "closed",
-      "totalLocal": 26,
+      "totalLocal": 29,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -26039,7 +26046,7 @@
     "man-and-boy-2011": {
       "title": "Man and Boy",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 22,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -26096,7 +26103,7 @@
     "the-mountaintop-2011": {
       "title": "The Mountaintop",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 26,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -26321,7 +26328,7 @@
     "venus-in-fur-2011": {
       "title": "Venus in Fur",
       "status": "closed",
-      "totalLocal": 20,
+      "totalLocal": 21,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -26433,7 +26440,7 @@
     "seminar-2011": {
       "title": "Seminar",
       "status": "closed",
-      "totalLocal": 15,
+      "totalLocal": 18,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -26602,7 +26609,7 @@
     "on-a-clear-day-you-can-see-forever-2011": {
       "title": "On a Clear Day You Can See Forever",
       "status": "closed",
-      "totalLocal": 29,
+      "totalLocal": 30,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -26883,7 +26890,7 @@
     "death-of-a-salesman-2012": {
       "title": "Death of a Salesman",
       "status": "closed",
-      "totalLocal": 32,
+      "totalLocal": 35,
       "hasGap": true,
       "totalGap": 36,
       "trulyMissing": 0,
@@ -26996,7 +27003,7 @@
     "jesus-christ-superstar-2012": {
       "title": "Jesus Christ Superstar",
       "status": "closed",
-      "totalLocal": 25,
+      "totalLocal": 26,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -27163,7 +27170,7 @@
     "end-of-the-rainbow-2012": {
       "title": "End of the Rainbow",
       "status": "closed",
-      "totalLocal": 17,
+      "totalLocal": 20,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -27219,7 +27226,7 @@
     "evita-2012": {
       "title": "Evita",
       "status": "closed",
-      "totalLocal": 30,
+      "totalLocal": 36,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -27444,7 +27451,7 @@
     "clybourne-park-2012": {
       "title": "Clybourne Park",
       "status": "closed",
-      "totalLocal": 11,
+      "totalLocal": 16,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -27558,7 +27565,7 @@
     "ghost-the-musical-2012": {
       "title": "Ghost The Musical",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 25,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -28003,7 +28010,7 @@
     "mrs-warrens-profession-2010": {
       "title": "Mrs. Warren's Profession",
       "status": "closed",
-      "totalLocal": 1,
+      "totalLocal": 2,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -28114,7 +28121,7 @@
     "bloody-bloody-andrew-jackson-2010": {
       "title": "Bloody Bloody Andrew Jackson",
       "status": "closed",
-      "totalLocal": 25,
+      "totalLocal": 28,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -28284,7 +28291,7 @@
     "driving-miss-daisy-2010": {
       "title": "Driving Miss Daisy",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 23,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -28677,7 +28684,7 @@
     "a-free-man-of-color-2010": {
       "title": "A Free Man of Color",
       "status": "closed",
-      "totalLocal": 15,
+      "totalLocal": 16,
       "hasGap": true,
       "totalGap": 4,
       "trulyMissing": 0,
@@ -28845,7 +28852,7 @@
     "good-people-2011": {
       "title": "Good People",
       "status": "closed",
-      "totalLocal": 20,
+      "totalLocal": 21,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -29125,7 +29132,7 @@
     "how-to-succeed-in-business-without-really-trying-2011": {
       "title": "How to Succeed in Business Without Really Trying",
       "status": "closed",
-      "totalLocal": 34,
+      "totalLocal": 36,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -29235,7 +29242,7 @@
     "anything-goes-2011": {
       "title": "Anything Goes",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 26,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -29402,7 +29409,7 @@
     "war-horse-2011": {
       "title": "War Horse",
       "status": "closed",
-      "totalLocal": 29,
+      "totalLocal": 31,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -29458,7 +29465,7 @@
     "wonderland-2011": {
       "title": "Wonderland",
       "status": "closed",
-      "totalLocal": 28,
+      "totalLocal": 30,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -29682,7 +29689,7 @@
     "born-yesterday-2011": {
       "title": "Born Yesterday",
       "status": "closed",
-      "totalLocal": 29,
+      "totalLocal": 30,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -29795,7 +29802,7 @@
     "baby-its-you-2011": {
       "title": "Baby It's You!",
       "status": "closed",
-      "totalLocal": 16,
+      "totalLocal": 17,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -30019,7 +30026,7 @@
     "a-steady-rain-2009": {
       "title": "A Steady Rain",
       "status": "closed",
-      "totalLocal": 10,
+      "totalLocal": 11,
       "hasGap": true,
       "totalGap": 5,
       "trulyMissing": 0,
@@ -30244,7 +30251,7 @@
     "the-royal-family-2009": {
       "title": "The Royal Family",
       "status": "closed",
-      "totalLocal": 10,
+      "totalLocal": 11,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -30355,7 +30362,7 @@
     "bye-bye-birdie-2009": {
       "title": "Bye Bye Birdie",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 5,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -30577,7 +30584,7 @@
     "finians-rainbow-2009": {
       "title": "Finian's Rainbow",
       "status": "closed",
-      "totalLocal": 2,
+      "totalLocal": 3,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -30799,7 +30806,7 @@
     "fela-2009": {
       "title": "Fela!",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 7,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -30848,6 +30855,7 @@
         "showScore-no-archive",
         "bww-no-archive",
         "bwwReviews-no-archive",
+        "playbillVerdict-wrong-page",
         "nycTheatre-no-archive"
       ]
     },
@@ -30911,10 +30919,10 @@
     "a-little-night-music-2009": {
       "title": "A Little Night Music",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 28,
       "hasGap": true,
       "totalGap": 10,
-      "trulyMissing": 3,
+      "trulyMissing": 2,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -31082,7 +31090,7 @@
     "time-stands-still-2010": {
       "title": "Time Stands Still",
       "status": "closed",
-      "totalLocal": 16,
+      "totalLocal": 20,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -31470,7 +31478,7 @@
     "red-2010": {
       "title": "Red",
       "status": "closed",
-      "totalLocal": 31,
+      "totalLocal": 36,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -31692,7 +31700,7 @@
     "la-cage-aux-folles-2010": {
       "title": "La Cage aux Folles",
       "status": "closed",
-      "totalLocal": 28,
+      "totalLocal": 29,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -31919,7 +31927,7 @@
     "fences-2010": {
       "title": "Fences",
       "status": "closed",
-      "totalLocal": 22,
+      "totalLocal": 23,
       "hasGap": true,
       "totalGap": 4,
       "trulyMissing": 0,
@@ -32031,7 +32039,7 @@
     "collected-stories-2010": {
       "title": "Collected Stories",
       "status": "closed",
-      "totalLocal": 16,
+      "totalLocal": 17,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -32197,7 +32205,7 @@
     "title-of-show-2008": {
       "title": "[title of show]",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 4,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -32252,7 +32260,7 @@
     "a-tale-of-two-cities-2008": {
       "title": "A Tale of Two Cities",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 4,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -32585,10 +32593,10 @@
     "all-my-sons-2008": {
       "title": "All My Sons",
       "status": "closed",
-      "totalLocal": 16,
+      "totalLocal": 18,
       "hasGap": true,
       "totalGap": 24,
-      "trulyMissing": 2,
+      "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -32752,9 +32760,9 @@
     "american-buffalo-2008": {
       "title": "American Buffalo",
       "status": "closed",
-      "totalLocal": 27,
+      "totalLocal": 30,
       "hasGap": true,
-      "totalGap": 46,
+      "totalGap": 44,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -32766,8 +32774,8 @@
         },
         "showScore": {
           "archiveCount": 21,
-          "extractedCount": 13,
-          "gap": 8,
+          "extractedCount": 15,
+          "gap": 6,
           "hasArchive": true,
           "method": "heading"
         },
@@ -32802,7 +32810,7 @@
       "maxAggregatorCount": 21,
       "flags": [
         "dtli-under-13",
-        "showScore-under-8",
+        "showScore-under-6",
         "bww-under-3",
         "bwwReviews-under-10",
         "playbillVerdict-under-12",
@@ -32812,7 +32820,7 @@
     "dividing-the-estate-2008": {
       "title": "Dividing the Estate",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 4,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -33322,10 +33330,10 @@
     "west-side-story-2009": {
       "title": "West Side Story",
       "status": "closed",
-      "totalLocal": 19,
+      "totalLocal": 30,
       "hasGap": true,
-      "totalGap": 79,
-      "trulyMissing": 12,
+      "totalGap": 68,
+      "trulyMissing": 1,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -33335,8 +33343,8 @@
         },
         "showScore": {
           "archiveCount": 27,
-          "extractedCount": 0,
-          "gap": 27,
+          "extractedCount": 11,
+          "gap": 16,
           "hasArchive": true,
           "method": "heading"
         },
@@ -33371,7 +33379,7 @@
       "maxAggregatorCount": 31,
       "flags": [
         "dtli-no-archive",
-        "showScore-under-27",
+        "showScore-under-16",
         "bww-under-10",
         "bwwReviews-under-13",
         "playbillVerdict-under-29",
@@ -33381,7 +33389,7 @@
     "god-of-carnage-2009": {
       "title": "God of Carnage",
       "status": "closed",
-      "totalLocal": 28,
+      "totalLocal": 30,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -33605,7 +33613,7 @@
     "reasons-to-be-pretty-2009": {
       "title": "Reasons To Be Pretty",
       "status": "closed",
-      "totalLocal": 14,
+      "totalLocal": 17,
       "hasGap": true,
       "totalGap": 3,
       "trulyMissing": 0,
@@ -33717,7 +33725,7 @@
     "next-to-normal-2009": {
       "title": "Next To Normal",
       "status": "closed",
-      "totalLocal": 26,
+      "totalLocal": 28,
       "hasGap": true,
       "totalGap": 7,
       "trulyMissing": 0,
@@ -33941,7 +33949,7 @@
     "desire-under-the-elms-2009": {
       "title": "Desire Under the Elms",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 5,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -34443,7 +34451,7 @@
     "pygmalion-2007": {
       "title": "Pygmalion",
       "status": "closed",
-      "totalLocal": 1,
+      "totalLocal": 2,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -34498,10 +34506,10 @@
     "a-bronx-tale-2007": {
       "title": "A Bronx Tale",
       "status": "closed",
-      "totalLocal": 10,
+      "totalLocal": 11,
       "hasGap": true,
       "totalGap": 8,
-      "trulyMissing": 5,
+      "trulyMissing": 4,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -35001,7 +35009,7 @@
     "is-he-dead-2007": {
       "title": "Is He Dead?",
       "status": "closed",
-      "totalLocal": 5,
+      "totalLocal": 6,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -35390,7 +35398,7 @@
     "passing-strange-2008": {
       "title": "Passing Strange",
       "status": "closed",
-      "totalLocal": 5,
+      "totalLocal": 8,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -35439,6 +35447,7 @@
         "showScore-no-archive",
         "bww-no-archive",
         "bwwReviews-no-archive",
+        "playbillVerdict-wrong-page",
         "nycTheatre-no-archive"
       ]
     },
@@ -35559,7 +35568,7 @@
     "gypsy-2008": {
       "title": "Gypsy",
       "status": "closed",
-      "totalLocal": 9,
+      "totalLocal": 10,
       "hasGap": true,
       "totalGap": 3,
       "trulyMissing": 0,
@@ -35615,7 +35624,7 @@
     "south-pacific-2008": {
       "title": "South Pacific",
       "status": "closed",
-      "totalLocal": 6,
+      "totalLocal": 8,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -36670,10 +36679,10 @@
     "mary-poppins-2006": {
       "title": "Mary Poppins",
       "status": "closed",
-      "totalLocal": 9,
+      "totalLocal": 11,
       "hasGap": true,
       "totalGap": 8,
-      "trulyMissing": 5,
+      "trulyMissing": 3,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -36726,10 +36735,10 @@
     "company-2006": {
       "title": "Company",
       "status": "closed",
-      "totalLocal": 11,
+      "totalLocal": 19,
       "hasGap": true,
       "totalGap": 15,
-      "trulyMissing": 7,
+      "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -36739,7 +36748,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 7,
           "gap": null,
           "hasArchive": false
         },
@@ -36950,7 +36959,7 @@
     "the-apple-tree-2006": {
       "title": "The Apple Tree",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 4,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -37060,7 +37069,7 @@
     "journeys-end-2007": {
       "title": "Journey's End",
       "status": "closed",
-      "totalLocal": 1,
+      "totalLocal": 2,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -37225,7 +37234,7 @@
     "curtains-2007": {
       "title": "Curtains",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 5,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -37280,7 +37289,7 @@
     "the-year-of-magical-thinking-2007": {
       "title": "The Year of Magical Thinking",
       "status": "closed",
-      "totalLocal": 8,
+      "totalLocal": 9,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -37502,7 +37511,7 @@
     "frostnixon-2007": {
       "title": "Frost/Nixon",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 5,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -37779,7 +37788,7 @@
     "radio-golf-2007": {
       "title": "Radio Golf",
       "status": "closed",
-      "totalLocal": 5,
+      "totalLocal": 6,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -37834,7 +37843,7 @@
     "110-in-the-shade-2007": {
       "title": "110 in the Shade",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 5,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -38384,7 +38393,7 @@
     "the-odd-couple-2005": {
       "title": "The Odd Couple",
       "status": "closed",
-      "totalLocal": 1,
+      "totalLocal": 3,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -39492,7 +39501,7 @@
     "lestat-2006": {
       "title": "Lestat",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 4,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -39712,7 +39721,7 @@
     "the-lieutenant-of-inishmore-2006": {
       "title": "The Lieutenant of Inishmore",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 5,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -40001,7 +40010,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 30,
+          "extractedCount": 37,
           "gap": null,
           "hasArchive": false
         },
@@ -40059,7 +40068,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 11,
           "gap": null,
           "hasArchive": false
         },
@@ -40555,7 +40564,7 @@
     "angels-in-america-2018": {
       "title": "Angels in America",
       "status": "closed",
-      "totalLocal": 30,
+      "totalLocal": 76,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -40568,7 +40577,7 @@
         },
         "showScore": {
           "archiveCount": null,
-          "extractedCount": 0,
+          "extractedCount": 58,
           "gap": null,
           "hasArchive": false
         },
@@ -40610,7 +40619,7 @@
     "the-norman-conquests-2009": {
       "title": "The Norman Conquests",
       "status": "closed",
-      "totalLocal": 10,
+      "totalLocal": 11,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
