@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2011/legit/reviews/that-championship-season-1117945061/",
   "publishDate": "March 7, 2011",
-  "fullText": "Despite a cast of superb actors, this revival of Jason Miller's 1972 Pulitzer Prize-winning drama feels tired and dated, lacking the emotional intensity that made the original production so compelling.",
-  "isFullReview": false,
+  "fullText": "The stars are just as stymied as the rest of the ensemble by the play's schematic structure and transparent characters.\n\nSince it is now an article of faith that you need big stars to finance a straight play on Broadway, it definitely helps to have Kiefer Sutherland (“24”) and Chris Noth (“The Good Wife”) on board for this revival of “That Championship Season.” Scribe Jason Miller won the Tony, the Drama Critics Circle Award and the Pulitzer Prize for his 1972 drama about the explosive reunion of a high school basketball team 20 years after winning the state championship. But the stars are just as stymied as the rest of the ensemble by the play’s schematic structure and transparent characters.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Trevor Noah Roasts Nicki Minaj at Grammys for Going MAGA: 'She's Still at the White House With Donald Trump' \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Spotify Is Raising U.S. Subscription Prices in the Next Month\n\nIn the postwar years of the 1950s, when we thought better of ourselves as a nation, there was little awareness that those all-American sports ethics of team pride, class loyalty and the will to win could mask such base impulses as bigotry, racism, and the ruthless resolve to triumph at any cost. So there should be something both sad and shocking about the meticulous way that Miller goes about demolishing the reputation of the high school heroes who brought glory to Scranton, Pa., when they won the 1952 state basketball championship.\n\n“Life’s a game,” Coach (Brian Cox) reminds his “boys” when they gather for their annual reunion at his home (a gloomy museum of dated decor and dusty mementoes in Michael Yeargan’s ultra-naturalistic design). In truth, he did more than teach them how to play the game of basketball; he passed on his values for winning at the game of life.\n\nUnfortunately, there are no nuances to the character revelations that Miller makes to illustrate the shabby nature of Coach’s civics lessons. The more they drink (and these grown men knock back their drinks with the reckless abandon of teenagers), the uglier their confessions of cruel deeds, immoral behavior, and acts of outright criminal dishonesty.\n\nIn breathless bursts of exposition, we learn that George (Jim Gaffigan), the town’s joke of a mayor, routinely bends the law for cronies; that Phil (Noth), an unscrupulous businessman, made his fortune from strip-mining; that James (Sutherland), a high-school principal, has been corrupted by political patronage; and his misanthropic brother Tom (Jason Patric) is a hopeless drunk.\n\nAlong with all his other lessons in manhood, Coach also passed on (in the most vile language) his hatred of women, blacks, Jews, “fellow travelers,” and anyone else who dares challenge his boys’ supremacy or deny them the right to win this dirty game on their own terms.\n\nBut the players on this team have no individuality beyond the central character defect that defines each one of them. And Coach’s rallying cry — “We are the country, boys” — is a pretty blunt metaphor for their collective identity.\n\nWith so little dimension to the characters, it’s hard to fault the thesps for their competent but superficial perfs. Tom’s drunken despair gives Patric (the playwright’s son) a more sympathetic character hook. And the sheer breadth of Phil’s sins gives Noth more sides to play.\n\nBut what this ensemble really lacks is team identity. Watching these bad boys turn on one another loses impact because helmer Gregory Mosher fails to establish the sense of easy intimacy that only comes from knowing someone your whole life.\n\nAs a group, the boys don’t have the size or the soft, bloated look of athletic bodies gone to seed in early middle age. It doesn’t help that the rigid division of furniture in Coach’s overstuffed living room offers nowhere for them to sit together as a group to drink, talk, and horse around. But the main thing that’s missing is the sound of laughter that lets us know what kind of team they were before the rot set in.",
+  "isFullReview": true,
   "dtliExcerpt": "Despite a cast of superb actors, this revival of Jason Miller's 1972 Pulitzer Prize-winning drama feels tired and dated, lacking the emotional intensity that made the original production so compelling.",
   "originalScore": null,
   "assignedScore": 45,
@@ -16,9 +16,9 @@
   "bwwExcerpt": "Unfortunately, there are no nuances to the character revelations that Miller makes to illustrate the shabby nature of Coach's civics lessons. The more they drink (and these grown men knock back their drinks with the reckless abandon of teenagers), the uglier their confessions of cruel deeds, immoral behavior, and acts of outright criminal dishonesty.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite a cast of superb actors, this revival of Jason Miller's 1972 Pulitzer Prize-winning drama feels tired and dated, lacking the emotional intensity that made the original production so compelling.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "llmScore": {
     "score": 45,
     "confidence": "high",
@@ -78,5 +78,49 @@
   "sources": [
     "web-search",
     "bww-reviews"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 45,
+  "textWordCount": 666,
+  "archivePath": "data/archives/reviews/that-championship-season-2011/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T04:20:57.794Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 666,
+  "tierReason": "Full review text"
 }
