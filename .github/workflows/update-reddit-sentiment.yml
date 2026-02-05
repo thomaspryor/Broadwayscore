@@ -78,15 +78,23 @@ jobs:
 
             Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
-            # Retry push with rebase in case remote has new commits
+            # Retry push with robust conflict handling
             for i in 1 2 3 4 5; do
               if git push origin main; then
                 echo "Push succeeded on attempt $i"
                 break
               fi
               echo "Push failed (attempt $i), pulling and rebasing..."
-              git pull --rebase origin main
-              sleep $((RANDOM % 5 + 2))
+              git checkout -- . 2>/dev/null || true
+              git clean -fd 2>/dev/null || true
+              if git pull --rebase -X theirs origin main; then
+                echo "Rebase succeeded, retrying push..."
+              else
+                echo "Rebase failed, aborting and retrying..."
+                git rebase --abort 2>/dev/null || true
+                git pull --no-rebase -X ours origin main
+              fi
+              sleep $((RANDOM % 20 + 10))
             done
             echo "✓ Changes committed and pushed"
           fi
