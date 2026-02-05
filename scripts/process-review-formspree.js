@@ -156,6 +156,51 @@ async function createGitHubIssue(title, body) {
 }
 
 /**
+ * Trigger the Process Review Submission workflow via workflow_dispatch.
+ * GITHUB_TOKEN events don't trigger other workflows (to prevent loops),
+ * but workflow_dispatch is explicitly exempt from this restriction.
+ */
+async function triggerValidationWorkflow(issueNumber) {
+  const token = process.env.GITHUB_TOKEN;
+  const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+
+  if (!token) return false;
+
+  const [owner, repoName] = repo.split('/');
+
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${owner}/${repoName}/actions/workflows/process-review-submission.yml/dispatches`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ref: 'main',
+          inputs: {
+            issue_number: String(issueNumber),
+          },
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      const errBody = await res.text();
+      console.error(`    Workflow dispatch failed: ${res.status} — ${errBody}`);
+      return false;
+    }
+
+    return true;
+  } catch (err) {
+    console.error(`    Workflow dispatch error: ${err.message}`);
+    return false;
+  }
+}
+
+/**
  * Main
  */
 async function main() {
@@ -215,6 +260,15 @@ async function main() {
       if (issue) {
         console.log(`    Created issue #${issue.number}`);
         created++;
+
+        // Trigger the validation workflow via workflow_dispatch
+        // (GITHUB_TOKEN issue events are suppressed, but dispatch is exempt)
+        const dispatched = await triggerValidationWorkflow(issue.number);
+        if (dispatched) {
+          console.log(`    Dispatched validation workflow for #${issue.number}`);
+        } else {
+          console.log(`    Warning: Could not dispatch validation workflow`);
+        }
       } else {
         console.log(`    Failed to create issue`);
         continue; // Don't mark as processed if creation failed
