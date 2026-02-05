@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-05T16:48:19.190Z",
-  "processed": 10,
-  "failed": 40,
-  "successRate": "20.0%",
+  "updatedAt": "2026-02-05T16:52:59.181Z",
+  "processed": 11,
+  "failed": 46,
+  "successRate": "19.3%",
   "tierBreakdown": {
     "playwright": 7,
     "browserbase": 0,
     "scrapingbee": 2,
     "brightdata": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-02-05T16:30:02.708Z",
@@ -28,6 +28,17 @@
       "event": "bb-session",
       "session": "b44c7125",
       "url": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadwa"
+    },
+    {
+      "t": "2026-02-05T16:52:35.138Z",
+      "event": "bb-session",
+      "session": "788c0a14",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-02-05T16:52:37.436Z",
+      "event": "bb-login-uncertain",
+      "domain": "washingtonpost.com"
     }
   ]
 }

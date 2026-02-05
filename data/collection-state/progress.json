@@ -9,7 +9,8 @@
     "the-lion-king-1997/on-stage-colorado--alex-miller.json",
     "the-lion-king-1997/the-austin-chronicle--richard-whittaker.json",
     "the-lion-king-1997/the-cap-times--sydney-vasquez.json",
-    "the-lion-king-1997/the-chronicle--howard-gollop.json"
+    "the-lion-king-1997/the-chronicle--howard-gollop.json",
+    "the-lion-king-1997/unknown--stephen-parry.json"
   ],
   "failed": [
     "the-lion-king-1997/newyorker--john-lahr.json",
@@ -51,7 +52,13 @@
     "the-lion-king-1997/syracuse-herald-journal--joan-vadeboncoeur.json",
     "the-lion-king-1997/talkinbroadway--matthew-murray.json",
     "the-lion-king-1997/unknown--frank-scheck.json",
-    "the-lion-king-1997/unknown--harry-currie.json"
+    "the-lion-king-1997/unknown--harry-currie.json",
+    "the-lion-king-1997/unknown--mal-vincent.json",
+    "the-lion-king-1997/unknown--marianne-evett.json",
+    "the-lion-king-1997/unknown--nelson-pressley.json",
+    "the-lion-king-1997/unknown--te-foreman.json",
+    "the-lion-king-1997/unknown--unknown.json",
+    "the-lion-king-1997/washpost--lloyd-rose.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -71,11 +78,12 @@
     ],
     "brightdata": [],
     "archive": [
-      "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
+      "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
+      "the-lion-king-1997/unknown--stephen-parry.json"
     ]
   },
   "startTime": "2026-02-05T16:28:14.457Z",
-  "lastProcessed": "the-lion-king-1997/unknown--harry-currie.json",
+  "lastProcessed": "the-lion-king-1997/washpost--lloyd-rose.json",
   "log": [
     {
       "t": "2026-02-05T16:30:02.708Z",
@@ -93,6 +101,17 @@
       "event": "bb-session",
       "session": "b44c7125",
       "url": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadwa"
+    },
+    {
+      "t": "2026-02-05T16:52:35.138Z",
+      "event": "bb-session",
+      "session": "788c0a14",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-02-05T16:52:37.436Z",
+      "event": "bb-login-uncertain",
+      "domain": "washingtonpost.com"
     }
   ]
 }
