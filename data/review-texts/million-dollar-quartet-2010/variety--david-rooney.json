@@ -5,7 +5,7 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2010/legit/reviews/million-dollar-quartet-1117942343/",
   "publishDate": "April 11, 2010",
-  "fullText": "While the show doesn't break new ground dramatically, it delivers what it promises with infectious energy and authentic musical thrills that should keep audiences tapping their feet.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "While the show doesn't break new ground dramatically, it delivers what it promises with infectious energy and authentic musical thrills that should keep audiences tapping their feet.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While the show doesn't break new ground dramatically, it delivers what it promises with infectious energy and authentic musical thrills that should keep audiences tapping their feet.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 77,
@@ -72,5 +72,48 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 209,
+  "archivePath": "data/archives/reviews/million-dollar-quartet-2010/variety--david-rooney_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T04:39:57.763Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 209 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Mar 3, 2010 1:39pm PT \n\n \n\n \n \n \n\n \n\n \n Dreamkiller\n \n \n\n \n\n Shoestring psychological thriller is a bit too silly and poorly acted to attract a big audience.\n\nAs ambitious as it is amateurish, shoestring psychological thriller “Dreamkiller” would ooze a scrappy let’s-put-on-a-show charm, if only its subject matter didn’t include an elderly man having his hand shoved into a garbage disposal. Unleashed Feb. 19 in limited release, this film from young director Catherine C. Pirotta is a bit too silly and poorly acted to attract a significant audience, but one has to respect the effort.\n\n“Dreamkiller” stars Dario Deak (who wildly overuses his “smoldering eyes” look, yet fares better than his co-stars) as Nick, a lothario neuroscientist working on a classified project in which test subjects are inoculated against personal phobias through computer-controlled hypnosis, all at the behest of a shadowy corporation. Before you can say “what could possibly go wrong,” these subjects begin dying in ways that closely mirror their phobias, Nick begins suffering slow-mo hallucinations, a sexy redhead detective (Penny Drake) appears on the scene, and Nazi doctor Josef Mengele makes a quick cameo — hilarity ensues . Film’s tiny budget is easy to divine from its patchy technical quality, but the pic’s crew acquit itself well enough with what it has."
 }
