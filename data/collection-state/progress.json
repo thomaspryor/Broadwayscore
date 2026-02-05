@@ -1,5 +1,11 @@
 {
-  "processed": [],
+  "processed": [
+    "1776-2022/nydailynews--unknown.json",
+    "1776-2022/nypost--johnny-oleksinski.json",
+    "1776-2022/thewrap--robert-hofler.json",
+    "1984-2017/bloomberg-news--jason-zinoman.json",
+    "1984-2017/deadline--jeremy-gerard.json"
+  ],
   "failed": [
     "110-in-the-shade-2007/theatermania--david-finkle.json",
     "13-2008/nypost--frank-scheck.json",
@@ -10,20 +16,33 @@
     "1776-2022/ew--leah-greenblatt.json",
     "1776-2022/guardian--adrian-horton.json",
     "1776-2022/guardian--alexis-soloski.json",
-    "1776-2022/mandell-new-york-theater--unknown.json"
+    "1776-2022/mandell-new-york-theater--unknown.json",
+    "1776-2022/new-york-sun--elysa-gardner.json",
+    "1776-2022/new-york-theater--unknown.json",
+    "1776-2022/theatermania--david-gordon.json",
+    "1776-2022/timeout--adam-feldman.json",
+    "1776-2022/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "browserbase": [
-      "data/review-texts/1776-2022/deadline--greg-evans.json"
+      "data/review-texts/1776-2022/deadline--greg-evans.json",
+      "data/review-texts/1984-2017/deadline--jeremy-gerard.json",
+      "1984-2017/deadline--jeremy-gerard.json"
     ],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "1776-2022/thewrap--robert-hofler.json",
+      "1984-2017/bloomberg-news--jason-zinoman.json"
+    ],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "1776-2022/nydailynews--unknown.json",
+      "1776-2022/nypost--johnny-oleksinski.json"
+    ]
   },
   "startTime": "2026-02-05T16:54:28.001Z",
-  "lastProcessed": "1776-2022/mandell-new-york-theater--unknown.json",
+  "lastProcessed": "1984-2017/deadline--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-02-05T16:54:43.907Z",
@@ -42,6 +61,29 @@
       "event": "bb-session",
       "session": "811f4f7e",
       "url": "https://deadline.com/2022/10/1776-broadway-review-roundabout-theatre-company-ame"
+    },
+    {
+      "t": "2026-02-05T16:59:05.003Z",
+      "event": "bb-session",
+      "session": "444f0d00",
+      "url": "https://www.thewrap.com/1776-broadway-review-musical-diane-paulus/"
+    },
+    {
+      "t": "2026-02-05T17:01:26.140Z",
+      "event": "bb-session",
+      "session": "3dc0db93",
+      "url": "https://www.wsj.com/articles/1776-review-revolutionary-casting-meets-timeless-sh"
+    },
+    {
+      "t": "2026-02-05T17:02:07.871Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-05T17:03:31.617Z",
+      "event": "bb-session",
+      "session": "28b79316",
+      "url": "http://deadline.com/2017/06/broadway-review-1984-olivia-wilde-1202118365/"
     }
   ]
 }
