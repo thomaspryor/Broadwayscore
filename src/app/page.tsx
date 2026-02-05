@@ -557,6 +557,26 @@ function HomePageInner() {
         </p>
       </div>
 
+      {/* Best Recent Musicals - Featured Shelf */}
+      {bestNewMusicals.length > 0 && (
+        <section className="mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-bold text-white">Best Recent Musicals</h2>
+            <Link
+              href="/browse/best-recent-musicals"
+              className="flex items-center gap-1 text-xs text-gray-400 hover:text-brand transition-colors"
+            >
+              See all <ChevronRightIcon />
+            </Link>
+          </div>
+          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+            {bestNewMusicals.map((show, index) => (
+              <MiniShowCard key={show.id} show={show} priority={index < 4} />
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Search */}
       <div id="search" className="relative mb-6 scroll-mt-24" role="search">
         <label htmlFor="show-search" className="sr-only">Search Broadway shows</label>
@@ -726,11 +746,6 @@ function HomePageInner() {
 
       {/* Featured Rows */}
       <div className="mt-8 pt-8 border-t border-white/5">
-        <FeaturedRow
-          title="Best Recent Musicals"
-          shows={bestNewMusicals}
-          viewAllHref="/browse/best-recent-musicals"
-        />
         <FeaturedRow
           title="Best Recent Plays"
           shows={bestNewPlays}
