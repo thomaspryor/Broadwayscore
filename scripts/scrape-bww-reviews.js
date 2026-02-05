@@ -128,9 +128,9 @@ async function fetchHtml(url, maxRetries = 2) {
   throw lastError;
 }
 
-async function googleSearch(query) {
+async function googleSearch(query, numResults = 10) {
   if (!SCRAPINGBEE_KEY) return [];
-  const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(query)}&nb_results=5`;
+  const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(query)}&nb_results=${numResults}`;
   return new Promise((resolve, reject) => {
     const req = https.get(apiUrl, (res) => {
       let data = '';
@@ -151,6 +151,51 @@ async function googleSearch(query) {
     req.on('error', reject);
     req.setTimeout(30000, () => { req.destroy(); reject(new Error('Timeout')); });
   });
+}
+
+/**
+ * Search BWW's own internal search for review roundups.
+ * This catches roundups that Google doesn't surface.
+ */
+async function bwwInternalSearch(showTitle) {
+  if (!SCRAPINGBEE_KEY) return [];
+
+  const searchQuery = `${showTitle} review roundup`;
+  const searchUrl = `https://www.broadwayworld.com/search/?q=${encodeURIComponent(searchQuery)}&searchtype=articles`;
+
+  try {
+    const html = await fetchHtml(searchUrl);
+    if (!html) return [];
+
+    const $ = cheerio.load(html);
+    const urls = [];
+
+    // BWW search results contain links with "Review-Roundup" in the URL
+    $('a[href*="Review-Roundup"], a[href*="review-roundup"]').each((_, el) => {
+      const href = $(el).attr('href');
+      if (href && href.includes('/article/')) {
+        // Normalize to full URL
+        const fullUrl = href.startsWith('http') ? href : `https://www.broadwayworld.com${href}`;
+        if (!urls.includes(fullUrl)) urls.push(fullUrl);
+      }
+    });
+
+    // Also check for any review article links as fallback
+    if (urls.length === 0) {
+      $('a[href*="/article/"]').each((_, el) => {
+        const href = $(el).attr('href');
+        if (href && (href.includes('Review') || href.includes('review'))) {
+          const fullUrl = href.startsWith('http') ? href : `https://www.broadwayworld.com${href}`;
+          if (!urls.includes(fullUrl)) urls.push(fullUrl);
+        }
+      });
+    }
+
+    return urls;
+  } catch (err) {
+    console.log(`    [WARN] BWW internal search failed: ${err.message.slice(0, 80)}`);
+    return [];
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -351,61 +396,86 @@ async function discoverBwwRoundup(show, showId, options = {}) {
     }
   }
 
-  // Google search for roundup article
+  // Search for roundup article via Google + BWW internal search
   const year = show.openingDate ? new Date(show.openingDate).getFullYear() : '';
   let searchTitle = show.title
     .replace(/\s+at\s+the\s+.+$/i, '')
     .replace(/:\s+.+$/, '')
     .replace(/\s+[–—]\s+.+$/, '');
 
-  const query = `site:broadwayworld.com/article "Review Roundup" "${searchTitle}" broadway ${year}`;
+  // Title words for URL validation (prevents cross-show contamination)
+  const titleWords = searchTitle.toLowerCase().split(/\s+/).filter(w => w.length > 2 && !['the', 'and', 'for', 'new', 'broadway'].includes(w));
 
+  // Collect candidate URLs from multiple sources
+  let allCandidateUrls = [];
+
+  // Source 1: Google search (10 results)
+  const query = `site:broadwayworld.com/article "Review Roundup" "${searchTitle}" broadway ${year}`;
   try {
     stats.googleSearches++;
-    const urls = await googleSearch(query);
-    const roundupUrls = urls.filter(u => u.includes('Review-Roundup') || u.includes('review-roundup'));
+    const googleUrls = await googleSearch(query, 10);
+    allCandidateUrls.push(...googleUrls);
+  } catch (err) {
+    console.log(`  [WARN] Google search for ${showId}: ${err.message.slice(0, 80)}`);
+  }
 
-    if (roundupUrls.length === 0) {
-      stats.roundupsMiss++;
-      return null;
-    }
-
-    // Validate URL contains show title words (prevents cross-show contamination)
-    // e.g. searching "Chicago" might match a roundup mentioning "Chris Jones, Chicago Tribune"
-    const titleWords = searchTitle.toLowerCase().split(/\s+/).filter(w => w.length > 2 && !['the', 'and', 'for', 'new', 'broadway'].includes(w));
-    const validRoundupUrls = roundupUrls.filter(url => {
-      const urlSlug = url.split('/article/')[1]?.toLowerCase() || '';
-      return titleWords.some(w => urlSlug.includes(w));
-    });
-
-    if (validRoundupUrls.length === 0) {
-      console.log(`  [MISS] roundup: no URL slug matches "${searchTitle}"`);
-      stats.roundupsMiss++;
-      return null;
-    }
-
-    // Try the first matching URL
-    for (const url of validRoundupUrls.slice(0, 2)) {
-      try {
-        stats.roundupsFetched++;
-        const html = await fetchHtml(url);
-        if (html && (html.includes('critics') || html.includes('Review Roundup'))) {
-          if (!options.dryRun) {
-            if (!fs.existsSync(roundupArchiveDir)) fs.mkdirSync(roundupArchiveDir, { recursive: true });
-            fs.writeFileSync(archivePath, html);
-          }
-          stats.roundupsHit++;
-          console.log(`  [HIT] roundup: ${url.split('/article/')[1]?.slice(0, 60)}`);
-          return html;
+  // Source 2: BWW internal search (catches what Google misses)
+  if (allCandidateUrls.filter(u => u.includes('Review-Roundup') || u.includes('review-roundup')).length === 0) {
+    try {
+      const bwwUrls = await bwwInternalSearch(searchTitle);
+      // Add only URLs not already found via Google
+      for (const url of bwwUrls) {
+        if (!allCandidateUrls.includes(url)) {
+          allCandidateUrls.push(url);
         }
-      } catch (err) {
-        console.log(`  [WARN] roundup fetch: ${err.message.slice(0, 80)}`);
+      }
+      if (bwwUrls.length > 0) {
+        console.log(`  [BWW-SEARCH] Found ${bwwUrls.length} additional candidate(s) for ${showId}`);
       }
       await sleep(1500);
+    } catch (err) {
+      // Non-fatal — Google results may still work
     }
-  } catch (err) {
-    console.log(`  [ERROR] roundup search for ${showId}: ${err.message.slice(0, 80)}`);
-    stats.errors.push(`roundup-search: ${showId}: ${err.message}`);
+  }
+
+  // Filter to roundup URLs only
+  const roundupUrls = allCandidateUrls.filter(u => u.includes('Review-Roundup') || u.includes('review-roundup'));
+
+  if (roundupUrls.length === 0) {
+    stats.roundupsMiss++;
+    return null;
+  }
+
+  // Validate URL contains show title words
+  const validRoundupUrls = roundupUrls.filter(url => {
+    const urlSlug = url.split('/article/')[1]?.toLowerCase() || '';
+    return titleWords.some(w => urlSlug.includes(w));
+  });
+
+  if (validRoundupUrls.length === 0) {
+    console.log(`  [MISS] roundup: no URL slug matches "${searchTitle}"`);
+    stats.roundupsMiss++;
+    return null;
+  }
+
+  // Try the first matching URL (check up to 3 candidates)
+  for (const url of validRoundupUrls.slice(0, 3)) {
+    try {
+      stats.roundupsFetched++;
+      const html = await fetchHtml(url);
+      if (html && (html.includes('critics') || html.includes('Review Roundup'))) {
+        if (!options.dryRun) {
+          if (!fs.existsSync(roundupArchiveDir)) fs.mkdirSync(roundupArchiveDir, { recursive: true });
+          fs.writeFileSync(archivePath, html);
+        }
+        stats.roundupsHit++;
+        console.log(`  [HIT] roundup: ${url.split('/article/')[1]?.slice(0, 60)}`);
+        return html;
+      }
+    } catch (err) {
+      console.log(`  [WARN] roundup fetch: ${err.message.slice(0, 80)}`);
+    }
+    await sleep(1500);
   }
 
   stats.roundupsMiss++;
