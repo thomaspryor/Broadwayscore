@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2017/legit/reviews/the-present-review-cate-blanchett-1201963916/",
   "publishDate": "January 9, 2017",
-  "fullText": "Blanchett brings her fierce intelligence and commanding stage presence to bear on the role of Anna Petrovna, a wealthy widow whose romantic entanglements drive the plot of this leisurely paced but ultimately rewarding drama.",
-  "isFullReview": false,
+  "fullText": "Cate Blanchett and Richard Roxburgh lead the Sydney Theater Company in a sparkling production of “The Present,” Andrew Upton’s free-form treatment of Anton Chekhov's “Platonov.” The original play, an early effort written when the playwright was 21, is quite the shaggy dog — rambling, unfocused and stuffed with gratuitous characters. But the spirit of Chekhovian farce shines bright, and the ensemble work of this Aussie company is just grand.\n\nBlanchett is a glorious example of profound Chekhovian ennui (“I am so bored!”) as Anna, a widowed landowner intent on celebrating her 40th birthday with great quantities of food, drink, and good friends. Her throaty laugh suggests a cynical intellect and her long, loose limbs and bare feet convey a sense of wanton abandon that can drive men wild.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Bruno Mars Adds 30+ New Dates to ‘The Romantic Tour’ \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Bruno Mars Named Record Store Day Ambassador for 2026; Sets Exclusive RSD Compilation LP, Plus Advance Listening Parties for New Album\n\nThe friends gathered in her honor include Platonov (Mikhail, as he’s called here), an irresistibly charming rascal played by the irresistibly attractive Roxburgh. No fewer than four women (including his wife) moon over Mikhail during the course of this party weekend, but it seems perfectly clear that, if they can resist murdering one another, Anna and Mikhail are the only true and perfect mates.\n\nIn fact, the most Chekhovian (as we know it) moment in the play is a scene between Anna and Mikhail, alone at last and getting progressively drunker and more passionate. “I can never have you or be with you because you consume me. You are me,” Mikhail tells Anna. “Just take me. Shake me. Smoke me. Reduce me to ashes,” Anna dares him. “Come on!” Blanchett turns out to be a consummate comic actress, and Roxburgh her perfect foil, allowing the scene to swing from passion to painfully funny pathos without taking a breath.\n\nBut in the cursed spirit of romantic farce, these ideal lovers are kept apart by all the other lovelorn characters yearning for one or the other of them. Protestations of undying love are made in the lovely summer house designed by Alice Babidge, until it is dramatically blown up at the height of the celebratory birthday fireworks. And even when the set lies in tatters, the fools are still roaming the landscape, waving guns and looking for love.\n\nJohn Crowley (\"Brooklyn,\" Broadway's “The Pillowman”) handles the directing chores with an impressively light touch, keeping this army of characters circling one another like moths obsessively courting their flames without letting them get burned. (Or not terribly burned, anyway — maybe just a bit scorched.)\n\nBlanchett and Roxburgh give off so much heat that it’s hard to focus on all these secondary moths. Susan Prior, Jacqueline McKenzie and Anna Bamford are pathetically funny as Mikhail’s playthings; Toby Schmitz and Chris Ryan are just as amusing asserting their bruised masculinity. Martin Jacobs and Marshall Napier make sure that, no matter how annoying, the older generation is heard from. Crowley keeps the entire ensemble in orbit, although one suspects that not even Chekhov could stop them from careening into one another from time to time.\n\nThis is a Broadway debut for both leads and for the Sydney Theater Company itself. Is it too soon to ask them back?",
+  "isFullReview": true,
   "dtliExcerpt": "Blanchett brings her fierce intelligence and commanding stage presence to bear on the role of Anna Petrovna, a wealthy widow whose romantic entanglements drive the plot of this leisurely paced but ultimately rewarding drama.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,9 +16,9 @@
   "bwwExcerpt": "Cate Blanchett and Richard Roxburgh lead the Sydney Theater Company in a sparkling production of 'The Present,' Andrew Upton's free-form treatment of Anton Chekhov's 'Platonov.' The original play, an early effort written when the playwright was 21, is quite the shaggy dog - rambling, unfocused and stuffed with gratuitous characters. But the spirit of Chekhovian farce shines bright, and the ensemble work of this Aussie company is just grand.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Cate-Blanchett-and-Richard-Roxburgh-Led-THE-PRESENT--Updating-Live-20170108",
   "showScoreExcerpt": "Blanchett brings her fierce intelligence and commanding stage presence to bear on the role of Anna Petrovna, a wealthy widow whose romantic entanglements drive the plot of this leisurely paced but ultimately rewarding drama.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "llmScore": {
     "score": 76,
     "confidence": "high",
@@ -81,5 +81,49 @@
     "bww-reviews",
     "bww-roundup"
   ],
-  "bwwScore": 9
+  "bwwScore": 9,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 553,
+  "archivePath": "data/archives/reviews/the-present-2017/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T05:53:01.308Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 553,
+  "tierReason": "Full review text"
 }

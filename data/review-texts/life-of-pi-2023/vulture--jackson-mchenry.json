@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Broadway transfer of Life of Pi is a marvel of stagecraft that transforms the Schoenfeld Theatre into a vast ocean, complete with a boy, a boat, and a Bengal tiger that seems to breathe with feral intelligence.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,11 +24,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,12 +40,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The Broadway transfer of Life of Pi is a marvel of stagecraft that transforms the Schoenfeld Theatre into a vast ocean.",
+        "quote": "It's a pity that he's stranded in a story awash with platitudes.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'a marvel of stagecraft' with vivid appreciation for the production design. However, confidence is low due to single excerpt limitation - the full review verdict could differ significantly. | GPT-4o: The excerpt praises the production as a 'marvel of stagecraft' and highlights the transformation of the theater, suggesting a highly positive view of the show's technical achievements. | Gemini: The excerpt praises the stagecraft and transformation of the theater, indicating a positive experience. However, due to the limited excerpt, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the production's technical achievements and visual spectacle, using words like 'marvel' to describe the immersive stagecraft and lifelike puppetry, though the single-excerpt context prevents assessment of narrative or performance elements.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises the puppetry and stagecraft as spectacular ('marvel of stagecraft', tiger gets 'movie star' applause) but finds the story heavy-handed with platitudes and weak characterization. The recommendation leans slightly positive for the technical achievements despite narrative shortcomings. | GPT-4o: The review praises the stagecraft and puppetry, highlighting the tiger as a standout element. However, it criticizes the story's platitudes and pacing. The overall tone suggests a recommendation, particularly for the visual spectacle, but with noted reservations about the narrative. | Gemini: The review praises the puppetry and spectacle, particularly the tiger, but finds the story and moralizing to be less compelling. The recommendation is conditional, focusing on the visual aspects. | Kimi: While the critic finds the story 'awash with platitudes' and the first act dragging, they deliver ecstatic praise for the puppetry and stagecraft, ultimately giving a clear recommendation to experience the visual spectacle.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,22 +55,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T09:39:47.943Z",
+    "scoredAt": "2026-02-05T05:27:00.088Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 82,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 81,
-    "kimiScore": 83,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "claudeScore": 62,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 9,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -81,7 +82,6 @@
   "previousUrl": "https://www.vulture.com/2023/03/theater-review-life-of-pi-on-broadway.html",
   "urlDiscoveredAt": "2026-02-05T04:45:08.638Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "textWordCount": 1356,
@@ -106,5 +106,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230605233650/https://www.vulture.com/2023/03/theater-review-life-of-pi-broadway.html",
   "duplicateTextOf": "vulture--unknown.json",
   "wordCount": 1356,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T05:27:00.088Z"
 }

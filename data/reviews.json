@@ -4,11 +4,11 @@
     "lastUpdated": "2026-02-05",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 5780,
-      "skippedNoScore": 8655,
-      "skippedDuplicate": 18,
-      "skippedDuplicateUrl": 290,
-      "skippedCrossOutletDuplicateUrl": 107,
+      "totalReviews": 5795,
+      "skippedNoScore": 9327,
+      "skippedDuplicate": 38,
+      "skippedDuplicateUrl": 342,
+      "skippedCrossOutletDuplicateUrl": 160,
       "skippedWrongProduction": 187,
       "recoveredFromGarbage": 102,
       "scoreSources": {
@@ -17,15 +17,15 @@
         "explicit-slash": 5,
         "explicit-letterGrade": 1,
         "human-review": 58,
-        "originalScore-priority0": 877,
-        "llmScore": 3146,
+        "originalScore-priority0": 880,
+        "llmScore": 3141,
         "thumb-override-llm": 1,
         "llmScore-lowconf": 1437,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 248
+        "thumb": 265
       }
     }
   },
@@ -277,13 +277,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Johnny Oleksinski",
-      "url": "https://nypost.com/2022/09/17/1776-review-broadway-musical-gets-woke-makeover/",
+      "url": "https://nypost.com/2022/10/06/1776-broadway-review-woke-musical-isnt-revolutionary/",
       "publishDate": "September 17, 2022",
       "originalRating": null,
       "pullQuote": "The current revival of '1776' at the Theatre is performed by an all-female, nonbinary and trans cast, which sounds like a stunt but actually works quite well.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "1776-2022",
@@ -477,7 +477,7 @@
       "outletId": "thewrap",
       "outlet": "TheWrap",
       "assignedScore": 30,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Robert Hofler",
@@ -487,7 +487,7 @@
       "pullQuote": "There are a couple of problems with giving '1776' the male-drag treatment. First off, at its core the show is terrible. Peter Stone wrote possibly the dullest, longest book scenes ever written for a musical.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "1776-2022",
@@ -1422,7 +1422,7 @@
       "pullQuote": "“Noise” shows the toil involved and sugarcoats nothing. The Act I finale has him composing in a broken-down motel room at one of his most down-and-out moments only to stumble upon “Sweet Caroline.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -1650,7 +1650,7 @@
       "outletId": "new-york-sun",
       "outlet": "The New York Sun",
       "assignedScore": 75,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Elysa Gardner",
@@ -1660,7 +1660,7 @@
       "pullQuote": "While 'A Beautiful Noise: The Neil Diamond Musical' has its cringeworthy moments, as can be expected with this sub-genre, the music and the performance win the day.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -1836,18 +1836,18 @@
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "whats-up-newp",
       "outlet": "Whats Up Newp",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 50,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
       "criticName": "Ken Abrams",
       "url": "https://whatsupnewp.com/2024/09/theater-review-a-beautiful-noise-indeed-neil-diamond-musical-is-a-hit-a-ppac/",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "2.5/5",
       "pullQuote": "There were no real weaknesses in the production, although some of the popular songs felt a bit forced at times, a bit perfunctory, while more introspective tunes like “You Don’t Bring Me Flowers,” a duet with Fradiani and Kohn, shined bright.",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-behanding-in-spokane-2010",
@@ -3194,23 +3194,6 @@
     },
     {
       "showId": "a-dolls-house-2023",
-      "outletId": "theatermania",
-      "outlet": "TheaterMania",
-      "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.theatermania.com/broadway/reviews/a-dolls-house-part-2-review_91234.html",
-      "publishDate": "March 9, 2023",
-      "originalRating": null,
-      "pullQuote": "Jessica Chastain brings fierce intelligence and emotional complexity to her portrayal of Nora in this riveting revival that feels urgently contemporary.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-dolls-house-2023",
       "outletId": "theatrely",
       "outlet": "Theatrely",
       "assignedScore": 79,
@@ -3468,7 +3451,7 @@
       "showId": "a-gentlemans-guide-to-love-and-murder-2013",
       "outletId": "nytimes",
       "outlet": "The New York Times",
-      "assignedScore": 92,
+      "assignedScore": 94,
       "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
@@ -3476,7 +3459,7 @@
       "url": "http://www.nytimes.com/2013/11/18/theater/reviews/a-gentlemans-guide-to-love-and-murder-on-broadway.html?_r=0",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "A true tour de force that is hardly likely to be bettered on Broadway this season",
+      "pullQuote": "A true tour de force that is hardly likely to be bettered on Broadway this season...Despite the high body count, this delightful show will lift the hearts of all those who’ve been pining for what sometimes seems a lost art form: musicals that match streams of memorable melody with fizzily witty turns of phrase.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -3511,6 +3494,23 @@
       "publishDate": "November 17, 2013",
       "originalRating": null,
       "pullQuote": "This charming musical murder mystery is a lighthearted romp through Edwardian England that manages to be both wickedly funny and surprisingly touching.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "a-life-in-the-theatre-2010",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Tanner Stransky",
+      "url": "http://www.ew.com/ew/article/0,,20364394_20433750,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "It's a good thing, then, that in this well-executed revival, Patrick Stewart and T.R. Knight — playing the lead pair of theater actors at opposite ends of their careers — have the chemistry of offbeat pals who like to jabber.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -4448,7 +4448,7 @@
       "pullQuote": "Quaint is not necessarily a bad thing, and the show's producers promise as much with the subhead: 'A new courtroom drama.'",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "a-time-to-kill-2013",
@@ -8061,7 +8061,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 43,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Unknown",
@@ -8071,7 +8071,7 @@
       "pullQuote": "The song is simple, beautiful, immortal; the musical, not so much.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "amazing-grace-2015",
@@ -9200,7 +9200,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 69,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Unknown",
@@ -9210,7 +9210,7 @@
       "pullQuote": "...a bitter satire of local politics that soon reveals itself as a slow-boil tragedy",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "an-enemy-of-the-people-2012",
@@ -52819,10 +52819,10 @@
       "showId": "lempicka-2024",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 44,
+      "assignedScore": 64,
       "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Aramide Tinubu",
       "url": "https://variety.com/2024/legit/reviews/lempicka-review-broadway-musical-1235978654/",
       "publishDate": "April 15, 2024",
@@ -54860,7 +54860,7 @@
       "showId": "life-of-pi-2023",
       "outletId": "vulture",
       "outlet": "Vulture",
-      "assignedScore": 82,
+      "assignedScore": 76,
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
@@ -54868,7 +54868,7 @@
       "url": "https://www.vulture.com/2023/03/theater-review-life-of-pi-broadway.html",
       "publishDate": "March 30, 2023",
       "originalRating": null,
-      "pullQuote": "The Broadway transfer of Life of Pi is a marvel of stagecraft that transforms the Schoenfeld Theatre into a vast ocean.",
+      "pullQuote": "It's a pity that he's stranded in a story awash with platitudes.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -63416,25 +63416,25 @@
       "showId": "next-fall-2010",
       "outletId": "nytimes",
       "outlet": "The New York Times",
-      "assignedScore": 52,
+      "assignedScore": 82,
       "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
+      "bucket": "Positive",
+      "thumb": "Up",
       "criticName": "Ben Brantley",
       "url": "https://www.nytimes.com/2010/03/12/theater/reviews/12next.html",
       "publishDate": "March 11, 2010",
       "originalRating": null,
-      "pullQuote": "Mr. Norris has shaped a comedy of good intentions that feels more forced than felt, despite the sincerity of its cast and the worthiness of its message about tolerance.",
+      "pullQuote": "The funniest heartbreaker in town.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "next-fall-2010",
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 62,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Marilyn Stasio",
@@ -63444,7 +63444,7 @@
       "pullQuote": "Geoffrey Nauffts has written a touching play about the collision between faith and sexuality, but the Broadway production of 'Next Fall' suffers from uneven direction and performances that don't always rise to the material's emotional demands.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "next-to-normal-2009",
@@ -64403,18 +64403,18 @@
       "showId": "oh-hello-on-broadway-2016",
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
-      "assignedScore": 72,
+      "assignedScore": 73,
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
-      "url": "https://www.hollywoodreporter.com/news/general-news/oh-hello-broadway-theater-review-942743/",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hello-broadway-theater-review-936822/",
       "publishDate": "October 11, 2016",
       "originalRating": null,
-      "pullQuote": "The show is essentially a feature-length expansion of a sketch that might have struggled to fill even a half-hour slot, but the committed goofiness of Mulaney and Kroll makes it surprisingly sustainable.",
+      "pullQuote": "The committed goofiness of Mulaney and Kroll makes it surprisingly sustainable.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "oh-hello-on-broadway-2016",
@@ -64448,7 +64448,7 @@
       "pullQuote": "The two-man show 'Oh, Hello on Broadway' is a loving send-up of crusty Upper West Side codgers that works best when John Mulaney and Nick Kroll stay in character as the lovably obnoxious Gil Faizon and George St. Geegland.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "oh-hello-on-broadway-2016",
@@ -64465,7 +64465,7 @@
       "pullQuote": "The show is basically a two-man variety hour built around Kroll and Mulaney's elderly Upper West Side alter egos, Gil Faizon and George St. Geegland, characters so specifically observed and hilariously performed that they feel like documentary subjects.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "oh-mary-2024",
@@ -71318,7 +71318,7 @@
       "pullQuote": "This witty and wonderful show works its theatrical magic by inviting audiences to use their imagination.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "peter-pan-goes-wrong-2023",
@@ -72182,7 +72182,7 @@
       "url": "https://www.newyorktheatreguide.com/reviews/pirates-the-penzance-musical-broadway-review-david-hyde-pierce-jinkx-monsoon-ramin-karimloo",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "Thoughtfully and lovingly updated for a modern audience, there’s something for everyone in this production.",
+      "pullQuote": "There's a sense that the cast is having so much fun that they would do this every night even without an audience.",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -73476,23 +73476,6 @@
       "publishDate": "April 25, 2010",
       "originalRating": 60,
       "pullQuote": "Chenoweth is a delight to watch, bringing her trademark blend of vulnerability and comic timing to the role.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "promises-promises-2010",
-      "outletId": "usatoday",
-      "outlet": "USA Today",
-      "assignedScore": 75,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Elysa Gardner",
-      "url": "https://www.usatoday.com/story/life/theater/2010/04/26/promises-promises-broadway-review/1",
-      "publishDate": "April 26, 2010",
-      "originalRating": null,
-      "pullQuote": "The revival of the 1968 musical 'Promises, Promises' offers Broadway audiences a chance to see Kristin Chenoweth and Sean Hayes tackle Burt Bacharach's sophisticated score with considerable charm and skill.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -75755,13 +75738,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2009/04/03/theater/reviews/03reasons.html",
+      "url": "https://www.nytimes.com/2008/06/03/theater/reviews/03brantley.html",
       "publishDate": "April 3, 2009",
       "originalRating": null,
       "pullQuote": "Mr. LaBute has created his most sympathetic and least manipulative work for the theater",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "reasons-to-be-pretty-2009",
@@ -76500,7 +76483,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 78,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
@@ -76510,7 +76493,7 @@
       "pullQuote": "This jukebox musical built around '80s rock anthems is a goofy, good-natured crowd-pleaser",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "rocky-2014",
@@ -77418,7 +77401,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 62,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "David Rooney",
@@ -77428,7 +77411,7 @@
       "pullQuote": "The material feels more processed than the DreamWorks animated movies that inspired it.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "shucked-2023",
@@ -78369,23 +78352,6 @@
       "showId": "shucked-2023",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 79,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Frank Rizzo",
-      "url": "https://variety.com/2023/legit/reviews/shucked-review-corn-musical-broadway-brandy-clark-shane-mcanally-1235574263/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Those looking for silly, sweet and salty escapism will only be too happy to get 'Shucked.'",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "shucked-2023",
-      "outletId": "variety",
-      "outlet": "Variety",
       "assignedScore": 72,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -78675,15 +78641,15 @@
       "showId": "significant-other-2017",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 69,
+      "assignedScore": 81,
       "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
+      "bucket": "Positive",
+      "thumb": "Up",
       "criticName": "Marilyn Stasio",
       "url": "https://variety.com/2017/legit/reviews/significant-other-review-broadway-1202001337/",
       "publishDate": "March 2, 2017",
       "originalRating": null,
-      "pullQuote": "Gideon Glick gives a performance of such raw honesty and emotional transparency that he makes you believe in the reality of his character's pain, even when the writing doesn't always support him.",
+      "pullQuote": "Harmon strikes the perfect balance between comedy and pathos — with the emphasis on comedy — in this good-natured meditation on love and friendship.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -82079,7 +82045,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 75,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Marilyn Stasio",
@@ -82089,7 +82055,7 @@
       "pullQuote": "Despite some forced moments and occasional awkwardness in the staging, this domestic drama about class and color within the African-American community has enough emotional truth to make it compelling theater.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "straight-white-men-2018",
@@ -83838,7 +83804,7 @@
       "url": "https://www.thewrap.com/sweeney-todd-broadway-review-josh-groban/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "Which brings us to the strange but wonderful hybrid that is “Sweeney Todd.” Despite being performed in opera houses around the world, it is not an opera.",
+      "pullQuote": "All this analysis of the singing might be a clue to what’s occasionally wrong with Thomas Kail’s direction when his actors aren’t thrilling us with their superb vocals. Kail brings out the humor in “Sweeney Todd” that both John Doyle (2005. Broadway revival) and Tim Burton (2007 film version) eschewed. Ashford sees to that almost singlehandedly.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -84430,13 +84396,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Marilyn Stasio",
-      "url": "https://variety.com/2015/legit/reviews/sylvia-theater-review-1201620392/",
+      "url": "https://variety.com/2015/legit/reviews/sylvia-review-broadway-matthew-broderick-1201626897/",
       "publishDate": "October 27, 2015",
       "originalRating": null,
       "pullQuote": "Matthew Broderick and Annaleigh Ashford make a delightful comedy team in A.R. Gurney's lightweight but charming play",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "sylvia-2015",
@@ -84935,7 +84901,7 @@
       "showId": "the-39-steps-2008",
       "outletId": "nytimes",
       "outlet": "The New York Times",
-      "assignedScore": 77,
+      "assignedScore": 82,
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
@@ -85072,7 +85038,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 53,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Marilyn Stasio",
@@ -85082,7 +85048,7 @@
       "pullQuote": "David Mamet's new play 'The Anarchist' is a talky two-hander that pits a convicted terrorist against her parole officer in a battle of wits that generates more heat than light.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-assembled-parties-2013",
@@ -85110,13 +85076,13 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Marilyn Stasio",
-      "url": "https://variety.com/2013/legit/reviews/the-assembled-parties-1200336013/",
+      "url": "https://variety.com/2013/legit/reviews/legit-review-the-assembled-parties-1200383931/",
       "publishDate": "April 17, 2013",
       "originalRating": null,
       "pullQuote": "Richard Greenberg's ambitious new play about a Jewish family gathering for Christmas dinner in 1980. Manhattan is a frustrating mix of promising elements that never quite gel into a satisfying whole.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-assembled-parties-2013",
@@ -86262,7 +86228,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Marilyn Stasio",
@@ -86272,7 +86238,7 @@
       "pullQuote": "John Lithgow gives a powerhouse performance as Joseph Alsop, the imperious Washington columnist whose arrogance and self-deception make him a fascinating character study.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "the-cottage-2023",
@@ -86788,15 +86754,15 @@
       "showId": "the-crucible-2016",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 77,
+      "assignedScore": 63,
       "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Marilyn Stasio",
       "url": "https://variety.com/2016/legit/reviews/the-crucible-review-broadway-1201743099/",
       "publishDate": "March 31, 2016",
       "originalRating": null,
-      "pullQuote": "Ben Whishaw brings a feverish intensity to John Proctor that makes this revival of Arthur Miller's classic feel urgently contemporary.",
+      "pullQuote": "The ensemble is superb, and the play sustains its power to shock and thrill. But the directorial concept is baffling.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -87349,15 +87315,15 @@
       "showId": "the-gin-game-2015",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 45,
+      "assignedScore": 77,
       "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
+      "bucket": "Positive",
+      "thumb": "Up",
       "criticName": "Marilyn Stasio",
       "url": "https://variety.com/2015/legit/reviews/gin-game-review-cicely-tyson-james-earl-jones-1201618442/",
       "publishDate": "October 14, 2015",
       "originalRating": null,
-      "pullQuote": "James Earl Jones and Cicely Tyson bring their considerable star power and professional expertise to this revival of D.L. Coburn's 1977. Pulitzer Prize-winning play, but even these two seasoned performers can't inject much dramatic urgency into this static two-hander.",
+      "pullQuote": "They really are a match made in theater heaven.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -88142,7 +88108,7 @@
       "pullQuote": "Jessica Chastain brings her luminous screen presence to Broadway in a revival that captures both the cruelty and the compassion of Henry James' source novel.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-hills-of-california-2024",
@@ -88319,7 +88285,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 85,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -88329,7 +88295,7 @@
       "pullQuote": "John Guare's 1971 comedy 'The House of Blue Leaves' receives a crackling revival that finds the perfect pitch between pathos and hilarity.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-humans-2016",
@@ -90070,17 +90036,17 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 91,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "David Rooney",
-      "url": "https://variety.com/2011/legit/reviews/the-normal-heart-1117945301/",
+      "url": "https://variety.com/2011/legit/reviews/the-normal-heart-1117945105/",
       "publishDate": "April 27, 2011",
       "originalRating": null,
       "pullQuote": "Larry Kramer's furious 1985 drama about the early years of the AIDS crisis burns with undiminished urgency in this superb Broadway revival, directed with searing intensity by Joel Grey and George C. Wolfe.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "the-norman-conquests-2009",
@@ -91158,7 +91124,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 80,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
@@ -91168,7 +91134,7 @@
       "pullQuote": "Paul Reubens' gloriously goofy man-child returns in fine fettle, surrounded by the colorful denizens of his wonderfully warped world in a show that's both a nostalgic throwback and a welcome reminder of inspired silliness.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-people-in-the-picture-2011",
@@ -91192,7 +91158,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 44,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "David Rooney",
@@ -91202,7 +91168,7 @@
       "pullQuote": "Despite the efforts of a committed cast led by Donna Murphy, this earnest but dramatically unwieldy musical about Holocaust survivors lacks the narrative focus and emotional precision to sustain a full evening.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-piano-lesson-2022",
@@ -91234,23 +91200,6 @@
       "publishDate": "2022-10-13T20:24:07",
       "originalRating": "3/5 stars",
       "pullQuote": "We’re completely rapt, and by the end, we see the piano for what it really is: the embodiment of three generations of family history, and the physical representation of their slave narrative.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-piano-lesson-2022",
-      "outletId": "nyt-theater",
-      "outlet": "New York Theater",
-      "assignedScore": 81,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jonathan Mandell",
-      "url": "https://newyorktheater.me/2022/10/13/the-piano-lesson-broadway-review/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The first Broadway revival of August Wilson's 'The Piano Lesson' is full of stars and ghosts. The ghosts are what make it brilliant.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -91474,7 +91423,7 @@
       "pullQuote": "Blanchett brings her fierce intelligence and commanding stage presence to bear on the role of Anna Petrovna, a wealthy widow whose romantic entanglements drive the plot of this leisurely paced but ultimately rewarding drama.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-price-2017",
@@ -91906,7 +91855,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 83,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Marilyn Stasio",
@@ -91916,7 +91865,7 @@
       "pullQuote": "Rosemary Harris gives a performance of such fierce intelligence and emotional complexity that she transforms what could have been a talky three-character play into a riveting theatrical experience.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-roommate-2024",
@@ -92279,23 +92228,6 @@
       "showId": "the-roommate-2024",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Charles Isherwood",
-      "url": "https://variety.com/2024/legit/reviews/the-roommate-review-broadway-mia-farrow-patti-lupone-1236129890/",
-      "publishDate": "September 13, 2024",
-      "originalRating": null,
-      "pullQuote": "Farrow and LuPone make an odd and oddly affecting pair in this tender two-hander about friendship, loneliness and the courage to change.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "needs-rescrape"
-    },
-    {
-      "showId": "the-roommate-2024",
-      "outletId": "variety",
-      "outlet": "Variety",
       "assignedScore": 78,
       "scoreSource": "llmScore",
       "bucket": "Positive",
@@ -92403,7 +92335,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2019/10/07/theater/the-rose-tattoo-review.html",
+      "url": "https://www.nytimes.com/2019/10/15/theater/the-rose-tattoo-review-marisa-tomei.html",
       "publishDate": "October 7, 2019",
       "originalRating": null,
       "pullQuote": "Ms. Tomei brings a touching vulnerability to Serafina, finding the wounded child within the tempestuous woman.",
@@ -92477,7 +92409,7 @@
       "pullQuote": "The musical treatment of this shameful chapter in American legal history is both moving and musically accomplished.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-seafarer-2007",
@@ -92951,6 +92883,23 @@
       "publishDate": "2022-04-25T21:53:13",
       "originalRating": "4/5 stars",
       "pullQuote": "Go big or go home. Thornton Wilder certainly did with his Pulitzer Prize-winning 1942 play The Skin of Our Teeth, which follows a single family through an ice age, flood, and war-centuries upon centuries of epic catastrophes-only to begin the cycle all over again.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "the-skin-of-our-teeth-2022",
+      "outletId": "nytg",
+      "outlet": "New York Theatre Guide",
+      "assignedScore": 40,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Diep Tran",
+      "url": "https://www.newyorktheatreguide.com/reviews/the-skin-of-our-teeth-broadway-review",
+      "publishDate": null,
+      "originalRating": "2/5",
+      "pullQuote": "The dinosaur earned its entrance applause. Thornton Wilder's play The Skin of Our Teeth, a fantastical tragicomedy about the end of the world, calls for a dinosaur and a woolly mammoth. Typical productions have actors donning animal costumes.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -96174,7 +96123,7 @@
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Demetrios Matheou",
@@ -96184,7 +96133,7 @@
       "pullQuote": "Arguably the most difficult aspect of presenting Chekhov is finding the tonal balance in his tragicomedy. The characters' navel-gazing self-pity can be so demanding that sometimes you have to resist the urge to jump on stage and give them a good slap. There is no such issue in Conor McPherson's brilliant, buoyantly accessible adaptation of",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "uncle-vanya-2024",
@@ -96412,7 +96361,7 @@
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 80,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
@@ -96422,7 +96371,7 @@
       "pullQuote": "Sutton Foster gives a powerhouse performance in this tender musical",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "violet-2014",
@@ -96528,6 +96477,74 @@
     },
     {
       "showId": "waiting-for-godot-2025",
+      "outletId": "amny",
+      "outlet": "amNewYork",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Matt Windman",
+      "url": "https://www.amny.com/entertainment/broadway/review-waiting-for-godot-keanu-reeves-alex-winter/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "The production seems intent on reaching new audiences and making the play feel more accessible to people who know “Bill & Ted” and “The Matrix” rather than Beckett. Some will be hooked, and others will surely find the repetition unbearable and slip out at intermission. “Godot” has always divided audiences.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "cititour",
+      "outlet": "Cititour",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Brian Scott Lipton",
+      "url": "https://cititour.com/NYC_Broadway/Waiting-for-Godot/1324",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Unquestionably, Reeves and Winter have the necessary chemistry to play these men who have spent countless years together, barely separated for more than a few hours at a time. We believe they are unable to leave each other, more out of familiar comfort than actual fear.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "culturesauce",
+      "outlet": "Culture Sauce",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Thom Geier",
+      "url": "https://culturesauce.com/2025/09/28/keanu-reeves-alex-winter-waiting-for-godot-broadway-review/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Thom Geier , Culture Sauce: Reeves, in a striking Broadway debut, takes an approach that’s remarkably true to his persona. His Estragon recalls his slack-jawed hero from The Matrix series if Neo had refused both the red pills and the blue pills — one to see the world as it really is, and the other to live in blissful ignorance of the truth.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "deadline",
+      "outlet": "Deadline",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Greg Evans",
+      "url": "https://deadline.com/2025/09/waiting-for-godot-broadway-review-keanu-reeves-1236556987/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "As for the acting, there’s little doubt that Winter is the most natural (and more experienced) stage actor of the two, more versatile and, when necessary, capable to drawing real pathos from this grim, gorgeous work of art. You believe his every changing mood.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 74,
@@ -96540,8 +96557,42 @@
       "originalRating": null,
       "pullQuote": "This production isn't exactly cracking the material open in any new way, but soars in one particular aspect: the friendship between its leads.",
       "dtliThumb": null,
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "nydailynews",
+      "outlet": "New York Daily News",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Chris Jones",
+      "url": "https://www.nydailynews.com/2025/09/28/broadway-review-waiting-for-godot-keanu-reeves-alex-winter/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "It’s an interesting evening, this “Waiting for Godot,” spent in the company of very capable actors, for sure. Lloyd certainly has blown some cobwebs off a play that long has confounded anyone who has tried to sell it to regular folks. Famously and disastrously, the first U.S.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "nypost",
+      "outlet": "New York Post",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Johnny Oleksinski",
+      "url": "https://nypost.com/2025/09/28/entertainment/waiting-for-godot-review-rough-keanu-reeves-struggles-in-mediocre-production-of-stage-classic/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Acting aside, this is one of Lloyd’s better dramatic efforts. He boldly does away with the typical “Godot” aesthetic of gray emptiness and an ominous tree in the back. Instead, designer Soutra Gilmour’s set is a bright, giant wooden cylinder that looks like something Timothee Chalamet might pilot in “Dune.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
     },
     {
       "showId": "waiting-for-godot-2025",
@@ -96579,6 +96630,23 @@
     },
     {
       "showId": "waiting-for-godot-2025",
+      "outletId": "nyt-theater",
+      "outlet": "New York Theater",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Jonathan Mandell",
+      "url": "https://newyorktheater.me/2025/09/28/waiting-for-godot-review-keanu-reeves-broadway-debut/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "What I am most uncertain about in this particular production is the existence of Lloyd’s guiding intelligence.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
       "outletId": "nytg",
       "outlet": "New York Theatre Guide",
       "assignedScore": 78,
@@ -96591,8 +96659,110 @@
       "originalRating": null,
       "pullQuote": "Able star turns by Reeves and Winter ground this entertaining revival with the credible chemistry of longtime friends.",
       "dtliThumb": null,
-      "bwwThumb": null,
+      "bwwThumb": "Up",
       "contentTier": "complete"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "observer",
+      "outlet": "Observer",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "David Cote",
+      "url": "https://observer.com/2025/09/review-keanu-reeves-alex-winter-waiting-for-godot-on-broadway/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "For Beckett devotees, this Godot will come across as both idiosyncratic and faithful, a weird masterwork seen and heard afresh. Fans of Bill & Ted and the John Wick franchise may be converted to theater of the absurd. Because if they attend expecting time-travel gags or hitman Gun-Fu, it’ll be a long wait.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "none"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "slantmagazine",
+      "outlet": "Slant Magazine",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Dan Rubins",
+      "url": "https://www.slantmagazine.com/theater/waiting-for-godot-review-keanu-reeves-alex-winter/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "“We are bored to death, there’s no denying it,” Vladimir reminds Estragon. “A diversion comes along and what do we do? We let it go to waste.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "dailybeast",
+      "outlet": "The Daily Beast",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Tim Teeman",
+      "url": "https://www.thedailybeast.com/obsessed/bill-teds-broadway-adventure-keanu-reeves-in-waiting-for-godot/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Reeves and Winter make you feel it when the men embrace—as if one is holding on to the life raft embodied by the other—and when they quietly care for each other, strange day after strange day. If this is stunt casting, then it is stunt casting with a sweetened depth.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "guardian",
+      "outlet": "The Guardian",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adrian Horton",
+      "url": "https://www.theguardian.com/stage/2025/sep/29/waiting-for-godot-keanu-reeves-alex-winter-broadway-review",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Lloyd’s take on Beckett is an especially disorienting, purgatorial one – at one point, Gogo and Didi approach a literal blinding light at the end of the tunnel, only to turn back. But it is more coolly strange than spiritually disquieting, seeming to strain for provocation without need.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "hollywood-reporter",
+      "outlet": "The Hollywood Reporter",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "David Rooney",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-review-keanu-reeves-alex-winter-1236387450/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Perhaps many Broadway theatergoers paying up to $500 a ticket to see beloved screen stars up close in a uniquely intimate play may come away feeling satisfied. Reeves and Winter certainly throw themselves into crowd-pleasing moments like a frenetic hat-swapping routine.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Unknown",
+      "url": "https://www.nytimes.com/2025/09/28/theater/waiting-for-godot-review-keanu-reeves.html",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Laura Collins-Hughes, New York Times: It isn’t that Reeves and Winter are underprepared; they have done their research, and diligently. But they have not yet reached the point at which they can let that scaffolding fall away as they slip at last into the skin of their characters.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
     },
     {
       "showId": "waiting-for-godot-2025",
@@ -96608,8 +96778,93 @@
       "originalRating": null,
       "pullQuote": "Their finely tuned performances are unshowy and completely in service of the production.",
       "dtliThumb": null,
-      "bwwThumb": null,
+      "bwwThumb": "Up",
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "thewrap",
+      "outlet": "TheWrap",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Robert Hofler",
+      "url": "https://www.thewrap.com/waiting-for-godot-broadway-review-keanu-reeves-alex-winters-samuel-beckett/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Regarding the broken link in this ensemble, what Reeves does have going for him is a look. The late theater illustrator Al Hirschfeld would have drawn him with a minimum of very long lines.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/waiting-for-godot-revival-broadway-review-keanu-reeves-alex-winter-jamie-lloyd",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "The pleasant prospect of seeing Reeves and Winter together makes this production to some extent critic-proof—and anyhow, this is a play in which “Crritic!” is the worst insult that Estragon can think up.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "usatoday",
+      "outlet": "USA Today",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Patrick Ryan",
+      "url": "https://www.usatoday.com/story/entertainment/music/2025/09/28/keanu-reeves-waiting-godot-broadway-review/86341455007/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Waiting for Godot\" is the feel-bad play of the fall, with transfixing performances from Winter and Reeves that help you look past the production's shortcomings. There are few actors whom we'd rather see philosophize about mortality. As Ted once said so eloquently, \"All we are is dust in the wind, dude.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "variety",
+      "outlet": "Variety",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Frank Rizzo",
+      "url": "https://variety.com/2025/legit/reviews/waiting-for-godot-keanu-reeves-broadway-review-1236533555/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "But Lloyd’s awkward staging here and questionable affectations (including an audience clap-along) makes Pozzo’s relationship with Lucky unfocused and puzzling. Beckett’s symbols of master and slave — the whip, the rope, the servant weighed down with baggage — are either mimed or cut and in doing so lose its real horror.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "vulture",
+      "outlet": "Vulture",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Sara Holdren",
+      "url": "https://www.vulture.com/article/godot-keanu-reeves-alex-winter-jamie-lloyd-beckett.html",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Because the production feels too cool (in more ways than one), its hottest performance leaps out like a firecracker set off in a Soho boutique: Brandon Dirden’s superlative Pozzo. Once per act, a second duo crashes in on Didi and Gogo, providing the tramps’ power balance with a lurid, distended foil.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
     },
     {
       "showId": "waitress-2016",

@@ -23,46 +23,22 @@
   "urlDiscoveryMethod": "google-serp",
   "textWordCount": 721,
   "archivePath": "data/archives/reviews/an-act-of-god-2016/hollywood-reporter--david-rooney_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T01:29:19.714Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-05T05:41:04.678Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "timeout of 60000ms exceeded"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 4,
   "textQuality": "truncated",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230208014049",
   "archiveOrgUrl": "http://web.archive.org/web/20230208014049/https://www.hollywoodreporter.com/news/general-news/sean-hayes-an-act-god-864395/",
   "textIssues": [

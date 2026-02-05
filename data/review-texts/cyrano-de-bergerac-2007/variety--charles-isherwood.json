@@ -130,9 +130,9 @@
   "contentMismatchNote": "Wrong content detected by audit - fullText is about different show",
   "rescoreCompletedAt": "2026-02-04T23:26:36.945Z",
   "needsRescore": true,
-  "rejectedAt": "2026-02-05T04:38:12.631Z",
+  "rejectedAt": "2026-02-05T05:17:12.328Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This text is a jumbled collection of website navigation, advertisements, and unrelated content fragments rather than a coherent theater review; openai: The text provided is a mix of unrelated content, including navigation menus, various entertainment news snippets, and non-review content. It does not contain any coherent review of a Broadway show.; gemini: This is a collection of article headlines and blurbs, not a review of a specific show.; kimi: The text provided is a jumbled collection of unrelated Variety headlines, snippets from multiple articles (movies, music, TV), and navigation elements ('Popular on Variety' sections), not a coherent Broadway review. The content appears to be scraped from a homepage or index page rather than a single review article.",
+  "rejectionReasoning": "claude: This appears to be a website navigation menu, article feed, or aggregated content snippets rather than a coherent theater review. The text jumps between unrelated topics including TV shows, movies, music albums, and repeats the same content multiple times.; openai: The text provided is a collection of unrelated snippets and headlines, not a coherent review of a Broadway show.; gemini: This is a collection of unrelated news headlines and snippets, not a review of a specific show.; kimi: This text is a corrupted mix of webpage navigation elements, article headlines, and multiple unrelated review excerpts (covering TV, film, and theater) rather than a single coherent Broadway review. The content includes repeated 'Popular on Variety' template sections, news headlines about Donald Trump and Netflix, and snippets of multiple different theater reviews without a clear target show. The aggregator context mentions Kevin Kline, who does not appear in the provided text, confirming a mismatch.",
   "promptVersion": "5.2.0"
 }

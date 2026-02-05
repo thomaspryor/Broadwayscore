@@ -13,8 +13,8 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
-  "bwwRoundupUrl": null,
+  "bwwExcerpt": "\"Philip Seymour Hoffman, the star of Mike Nichols's revival of Arthur Miller's 'Death of a Salesman,' is following in the well-remembered footsteps of Lee J. Cobb, George C. Scott, Dustin Hoffman and Brian Dennehy, and it's a tribute to his talent that you won't feel inclined to compare him to any of his predecessors. ... The genius of Mr. Nichols's unostentatiously right staging of 'Death of a Salesman' is that each part of it is in harmony with Mr. Hoffman's plain, blunt acting. Like his star-",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Hoffman-Garfield-More-Updating-LIVE-20120315",
   "showScoreExcerpt": "Mr. Hoffman's performance is powerful and convincing, and he receives strong support from Linda Emond as his long-suffering wife Linda and Andrew Garfield as his troubled son Biff.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
@@ -23,5 +23,9 @@
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a brief excerpt or sentence fragment praising performances, but lacks any overall evaluation or recommendation about the show itself.; openai: The text is a brief mention of performances without any evaluative content or overall assessment of the show.",
   "promptVersion": "5.2.0",
-  "textQuality": "partial"
+  "textQuality": "partial",
+  "sources": [
+    "web-search",
+    "bww-roundup"
+  ]
 }

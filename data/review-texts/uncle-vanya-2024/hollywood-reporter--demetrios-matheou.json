@@ -54,11 +54,41 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 887,
   "bwwRoundupUrl": "https://www.broadwayworld.com/westend/article/Review-Roundup-UNCLE-VANYA-Starring-Toby-Jones-at-the-Harold-Pinter-Theatre-20200124",
   "url": "https://www.hollywoodreporter.com/review/uncle-vanya-theater-1272223",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "fullText": "Arguably the most difficult aspect of presenting Chekhov is finding the tonal balance in his tragicomedy. The characters’ navel-gazing self-pity can be so demanding that sometimes you have to resist the urge to jump on stage and give them a good slap. There is no such issue in Conor McPherson’s brilliant, buoyantly accessible adaptation of Uncle Vanya, directed with customary verve by Ian Rickson, which recognizes and enriches the play’s essential duality — the funnier this is, the sadder and more painful it becomes.\n\nMoreover, McPherson’s lithe, light, modern, bittersweet text is in the hands of an excellent ensemble who collectively elicit our indulgence, led by a barnstorming comic performance from Toby Jones. Suddenly the ennui and personal disappointments of fin de siècle landowners and their hangers-on have the ring of familiarity.\n\nRickson and designer Rae Smith reunite after their recent, outstanding Rosmersholm, the latter again creating a wondrously evocative, immersive set — this time, the drawing room of a provincial country house, high and wide, brick walls reaching into the rafters, Bruno Poet’s lighting streaming through rickety French windows, through which greenery also seems to be invading the house. The whole has a kind of rundown rustic elegance, which suits a family whose fortunes appear to be slipping out of their control.\n\nThere are immediate laughs, appropriately at the expense of middle-aged men obsessed with their age. “Have I changed?” asks Astrov (Richard Armitage), fishing for compliments from the one person with whom he ought to be on safe ground, the doting Nana (Anna Calder-Marshall), but who replies: “Oh, God, yes, you used to be gorgeous!” Seconds later, the diminutive Vanya leaps from out of a sofa, with a rakish bounce to his step but decidedly worse for wear, complaining that “Everything’s the same as ever — except worse.”\n\nVanya has been “cast adrift” by the arrival of his brother-in-law, Serebryakov (Ciarán Hinds), whose academic career the estate has been funding for years, and his beautiful young wife Yelena (Rosalind Eleazar), on whom Vanya has set his sights. It’s unfortunate, then, that he’s rubbing a stain from his crotch at just the moment she enters the room.\n\nJones’ performance here brings to mind the late, great Leonard Rossiter, particularly Rossiter’s sitcom mode: the acerbic intelligence, the wiliness, the snivelling ingratiation. And some of McPherson’s dialogue for Vanya, in particular, has the immediacy of sitcom, as when he describes Serebryakov as “a knobbly old croaker” and whirls around the room in vitriolic complaint.\n\nThe actor’s lightness of touch is matched by others, notably Armitage, who gives the cerebral, idealistic doctor an engagingly sweet personality — a great, big, silly, handsome man, who has suffered through being a fish out of water in the provinces and become a bit too fond of the bottle. The scene in which Vanya, Astrov and perennial spare part Telegin (the ever-dependable Peter Wight) cavort drunkenly in the night is a joy — Wight playing forlornly on his guitar as Armitage exploits his manly figure to strip and dash into the thunderstorm and Jones, utilizing his own quite different physiognomy, climbs into a writing desk and disappears.\n\nHowever, these larks are quickly followed by tender pathos, as the gulf in affection between Astrov and the lovesick Sonya (the touching Aimee Lou Wood) is made painfully apparent. And Chekhov’s characters are as lost, disappointed, frustrated, lovelorn and downright depressed as ever — the country folk bitter at variously wasted lives, Yelena trapped with a much older husband she doesn’t love. It’s debatable who is the greater catalyst for the crises to come: the professor, whom Hinds makes exactly as maddening as he should be — an egotistic, hypochondriac, draining ingrate, wondering why no one loves him while calculating how to milk them dry; or Yelena, dying of boredom while inadvertently driving both Vanya and Astrov mad with love.\n\nIf only they weren’t all so hard on themselves. After all, Astrov commendably fights to save the forests (how prescient Chekhov is here), Vanya has raised a fine young woman, Sonya’s work ethic is highly commendable. When Vanya drags Yelena into a dance, imploring her to “let yourself go,” it could be a call to arms to the whole household; the fact that none of them could ever heed it, let alone the lugubrious Vanya himself, is where the very relatable tragedy lies.\n\nIncidentally, this feels like a defining performance for Eleazar. The actress was quietly impressive alongside Matthew Broderick in The Starry Messenger last year and is one of another delightful current ensemble onscreen in The Personal History of David Copperfield. Here she lights up the stage completely, making the elusive Yelena a watchful, amused, seductive presence (her desire for Astrov as he’s mulling over his maps is sizzlingly evident), while capturing the crippling identity crisis of a young woman imprisoned by her mistakes.\n\nVenue: The Harold Pinter Theatre, London\n Cast: Toby Jones, Richard Armitage, Anna Calder-Marshall, Rosalind Eleazar, Ciarán Hinds, Dearbhla Molloy, Peter Wight, Aimee Lou Wood\n Playwright: Anton Chekhov, adapted by Conor McPherson\n Director: Ian Rickson\n Set designer: Rae Smith\n Lighting designer: Bruno Poet\n Music: Stephen Warbeck\n Sound designer: Ian Dickinson \n Presented by Sonia Friedman Productions, Gavin Kalin Productions, Rupert Gavin, Patrick Gracey/Scott M. Delman, 1001 Nights Productions, Tulchin Bartner Productions, in association with Len Blavatnik, Eilene Davidson Productions, Louise & Brad Edgerton",
+  "isFullReview": true,
+  "textWordCount": 887,
+  "archivePath": "data/archives/reviews/uncle-vanya-2024/hollywood-reporter--demetrios-matheou_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T06:22:43.948Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "tierReason": "Full review text"
 }

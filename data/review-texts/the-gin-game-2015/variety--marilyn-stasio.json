@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "James Earl Jones and Cicely Tyson bring their considerable star power and professional expertise to this revival of D.L. Coburn's 1977 Pulitzer Prize-winning play, but even these two seasoned performers can't inject much dramatic urgency into this static two-hander.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -27,14 +27,14 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 45,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -43,12 +43,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "even these two seasoned performers can't inject much dramatic urgency into this static two-hander",
+        "quote": "They really are a match made in theater heaven.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment despite acknowledging the stars' talent and expertise. The critic finds the production lacks dramatic urgency and calls it static, indicating it doesn't work theatrically. | GPT-4o: The review acknowledges the star power and expertise of the performers but ultimately criticizes the lack of dramatic urgency, indicating a negative overall impression. | Gemini: Despite praising the actors' star power, the review ultimately finds the production lacking in dramatic urgency and static, leading to a negative assessment. | Kimi: While acknowledging the considerable talent of James Earl Jones and Cicely Tyson, the critic ultimately finds the production static and failing to generate dramatic momentum, offering a clear recommendation against seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite criticizing the play as 'a slip of a thing' with 'mighty thin gruel' for revelations, the critic enthusiastically praises the two star performances and Leonard Foglia's direction, concluding audiences are 'unlikely to complain' as long as these stars 'show up nightly and proceed to twinkle their hearts out.' | GPT-4o: The review praises the performances of Cicely Tyson and James Earl Jones, describing them as captivating and enchanting. However, it notes that the play itself is a 'slip of a thing' with 'mighty thin gruel' in terms of character insights. The positive recommendation hinges on the performances rather than the material. | Gemini: The reviewer acknowledges the play itself is slight but praises the performances of the two leads, calling them \"captivating\" and a \"match made in theater heaven.\" This suggests a positive experience despite reservations about the material. | Kimi: While criticizing the play itself as 'thin gruel' and 'a slip of a thing,' Stasio delivers a clear recommendation based on the 'captivating' and 'enchanting' performances of Tyson and Jones, noting audiences 'are unlikely to complain' so long as these stars 'twinkle their hearts out.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,30 +58,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:08:46.447Z",
+    "scoredAt": "2026-02-05T05:34:21.105Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 45,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "geminiScore": 45,
-    "kimiScore": 45,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 0,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
+    "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 45,
   "textWordCount": 582,
@@ -114,5 +114,6 @@
   "tierReason": "Full review text",
   "previousUrl": "https://variety.com/2015/legit/reviews/the-gin-game-review-james-earl-jones-cicely-tyson-1201617381/",
   "urlDiscoveredAt": "2026-02-05T04:46:35.179Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "rescoreCompletedAt": "2026-02-05T05:34:21.105Z"
 }

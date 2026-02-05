@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Norris has shaped a comedy of good intentions that feels more forced than felt, despite the sincerity of its cast and the worthiness of its message about tolerance.",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
-    "score": 52,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 47,
-      "high": 57
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Mr. Norris has shaped a comedy of good intentions that feels more forced than felt, despite the sincerity of its cast and the worthiness of its message about tolerance.",
+        "quote": "The funniest heartbreaker in town.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Mixed review that acknowledges good intentions, sincere cast, and worthy message, but criticizes the execution as 'forced than felt', suggesting the show doesn't succeed despite its merits. | GPT-4o: The review describes the show as 'forced' despite 'sincerity' and 'worthiness,' suggesting it does not succeed in its aims. The tone indicates a negative assessment overall. | Gemini: The review acknowledges good intentions and a sincere cast, but ultimately finds the comedy 'more forced than felt,' indicating a mixed or neutral assessment. | Kimi: The critic acknowledges the cast's sincerity and the worthy message but finds the execution 'forced' rather than emotionally authentic, indicating a failed production that does not recommend viewing. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Brantley delivers enthusiastic praise calling it a 'smart, sensitive and utterly contemporary New York comedy' and 'the funniest heartbreaker in town.' He celebrates the performances, direction, and writing with consistent positive language throughout. | Gemini: The review is overwhelmingly positive, calling the play a \"genuine rara avis, a smart, sensitive and utterly contemporary New York comedy.\" The critic praises the humor, the cast, and the direction, and concludes that it's the \"funniest heartbreaker in town.\" | Kimi: Extracted from malformed response",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,35 +50,34 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:12:42.132Z",
+    "scoredAt": "2026-02-05T05:28:24.405Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 52,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 45,
-    "geminiScore": 62,
-    "kimiScore": 42,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
-    "scoreDelta": 20,
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwScore": 10,
   "sources": [
     "web-search",
     "bww-reviews"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 52,
   "textWordCount": 1118,
@@ -100,5 +99,6 @@
   "archiveOrgTimestamp": "20221020072301",
   "archiveOrgUrl": "http://web.archive.org/web/20221020072301/https://www.nytimes.com/2010/03/12/theater/reviews/12next.html",
   "wordCount": 1118,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T05:28:24.405Z"
 }

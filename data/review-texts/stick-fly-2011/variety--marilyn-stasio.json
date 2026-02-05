@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2011/legit/reviews/stick-fly-1117946942/",
   "publishDate": "December 8, 2011",
-  "fullText": "Despite some forced moments and occasional awkwardness in the staging, this domestic drama about class and color within the African-American community has enough emotional truth to make it compelling theater.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Despite some forced moments and occasional awkwardness in the staging, this domestic drama about class and color within the African-American community has enough emotional truth to make it compelling theater.",
   "originalScore": null,
   "assignedScore": 75,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite some forced moments and occasional awkwardness in the staging, this domestic drama about class and color within the African-American community has enough emotional truth to make it compelling theater.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "llmScore": {
     "score": 75,
     "confidence": "high",
@@ -73,5 +73,52 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 75,
+  "textWordCount": 586,
+  "archivePath": "data/archives/reviews/stick-fly-2011/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T05:46:17.083Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Tedious and tonally inept, this Katherine Heigl starrer looks to be a nonstarter at the B.O.\n\nBased on the first novel in Janet Evanovich‘s bestselling mystery-comedy series featuring spunky bounty hunter Stephanie Plum, “One for the Money” has been in development for nearly two decades, during which Evanovich has published more than a dozen follow-up novels. With that sort of time invested and franchise potential awaiting, one would assume that someone with a degree of passion for the material would have eventually found their way to the project. The end result strongly suggests otherwise. Tedious and tonally inept, this Katherine Heigl starrer looks to be a nonstarter at the B.O.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n ‘Chicago Fire,’ ‘Med’ and ‘P.D.’ Set Crossover Episodes on NBC in March \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'Chicago P.D.' Stars Jesse Lee Soffer and Tracy Spiridakos Set to Return for Crossover\n\nUnfortunately, much of the blame can be laid at the feet of Heigl (who also exec produced). That this mildly outspoken star has developed such a devoted cadre of detractors is a strange phenomenon indeed, and one not without strong sexist undercurrents, but she does herself no favors by displaying nearly all her actorly shortcomings here. Shrill, unfocused and irregularly attempting a deep New Jersey accent that seems destined for lasting infamy, she plays heroine Stephanie with an almost standoffish lack of conviction.\n\nAs the film opens, Stephanie has been unemployed for several months after losing her job as a lingerie buyer, and her bank account is mired in the single digits. After watching through the window as her car is repossessed, she agrees to take a filing position with her bail bondsman cousin, only to have his secretary offer her a freelance role collecting bail jumpers instead. Her interest is piqued when she notices that former flame Joe Morelli (Jason O’Mara) is among the most wanted; he broke her heart in high school and his bounty is huge, so she agrees to bring him in.\n\nStephanie’s obvious unsuitability for this particular job is essentially the basis for the entire film, yet within two or three minutes of being offered the gig, she’s tailing perps and breaking into vacant buildings with no one batting an eye. This type of head-scratching flippancy will emerge again and again throughout.\n\nIn any case, missing details never derail the pic’s romantic-comedy-esque trajectory: Stephanie pursues Joe while firing off forced bouts of flirtation; an ultra-studly fellow bounty-hunter (Daniel Sunjata) teaches her some of the ropes; and her wacky family (including a forcefully schticky Debbie Reynolds) tries to set her up with the neighborhood nebbish.\n\nAlso, she’s threatened and stalked by a serial rapist (Gavin-Keith Umeh); her ineptitude as a bounty-hunter causes several innocent people to be killed; and a friendly prostitute (Sherri Shepherd) is brutally beaten. A director with a feel for black comedy might have managed to marry these wildly incompatible tones, but in the hands of Julie Anne Robinson, the entire enterprise merely leaves a sour aftertaste. As Stephanie continually charges headlong into dangerous situations with unsavory men with nary a thought for her personal safety, only to be inevitably bailed out by a passing male savior, her behavior begins to seem less quirky than clinically insane. She’s far more Timothy Treadwell than Miss Marple.\n\nTech values are functional, and the aesthetic is thoroughly smallscreen. Like the book, “One for the Money” is prominently set in Trenton, N.J., though it was largely lensed in Pittsburgh; this location choice does the film no great detriment, it just doesn’t really make any sense."
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ben Whishaw brings a feverish intensity to John Proctor that makes this revival of Arthur Miller's classic feel urgently contemporary.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,14 +20,14 @@
   "contentTierReason": "Short text (20 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Ben Whishaw brings a feverish intensity to John Proctor that makes this revival of Arthur Miller's classic feel urgently contemporary.",
+        "quote": "The ensemble is superb, and the play sustains its power to shock and thrill. But the directorial concept is baffling.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single sentence excerpt praising the lead performance and noting the production feels contemporary. Positive language but insufficient text to assess full critical verdict. | GPT-4o: The review highlights a standout performance that revitalizes a classic play, suggesting a strong recommendation. The use of 'feverish intensity' and 'urgently contemporary' indicates high praise. | Gemini: The review highlights a strong performance, suggesting the revival is worth seeing due to Whishaw's portrayal of John Proctor. | Kimi: The critic offers strong praise for Whishaw's lead performance ('feverish intensity') and the production's contemporary relevance without any reservations, indicating a solid recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Strong praise for the cast and Miller's text, but significant criticism of van Hove's directorial choices that 'resist' this treatment. The review acknowledges quality elements while questioning the overall concept. | GPT-4o: The review praises the ensemble and the play's enduring power but criticizes the directorial concept as baffling. The mixed verdict reflects both strong performances and conceptual issues. | Gemini: The review praises the ensemble and the play's inherent power, but criticizes the directorial concept as 'baffling' and not suited to the play's complexity. This suggests a mixed experience. | Kimi: The review praises the cast as 'superb' and acknowledges the play retains its power, but finds the directorial concept 'baffling' and ill-suited to the material, creating a genuinely mixed assessment without clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,28 +51,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:48:00.555Z",
+    "scoredAt": "2026-02-05T05:33:39.499Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 90,
-    "geminiScore": 75,
-    "kimiScore": 81,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 15,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "bwwScore": 6,
   "sources": [
@@ -83,7 +84,6 @@
   "previousUrl": "https://variety.com/2016/legit/reviews/the-crucible-review-broadway-arthur-miller-1201728359/",
   "urlDiscoveredAt": "2026-02-05T05:08:56.281Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 1025,
@@ -113,5 +113,6 @@
   "archiveOrgTimestamp": "20160401120134",
   "archiveOrgUrl": "http://web.archive.org/web/20160401120134/http://variety.com/2016/legit/reviews/the-crucible-review-broadway-1201743099/",
   "wordCount": 1025,
-  "tierReason": "Truncation detected: ends_with_ellipsis, no_ending_punctuation"
+  "tierReason": "Truncation detected: ends_with_ellipsis, no_ending_punctuation",
+  "rescoreCompletedAt": "2026-02-05T05:33:39.499Z"
 }

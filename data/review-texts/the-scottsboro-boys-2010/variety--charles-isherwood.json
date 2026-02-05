@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "https://variety.com/2010/legit/reviews/the-scottsboro-boys-1117944127/",
   "publishDate": "November 1, 2010",
-  "fullText": "The musical treatment of this shameful chapter in American legal history is both moving and musically accomplished, with a deceptively light touch that makes its serious points all the more effective.",
-  "isFullReview": false,
+  "fullText": "Nov 29, 2010 12:56pm PT \n\n \n\n \n \n \n\n \n\n \n Some Days Are Better Than Others\n \n \n\n \n\n Lonelyhearts going nowhere fill every corner of Matt McCormick's \"Some Days Are Better Than Others,\" a film that verges on a parody of American indie cliches.\n\nLonelyhearts going nowhere fill every corner of Matt McCormick’s “Some Days Are Better Than Others,” a film that verges on a parody of American indie cliches. Pretentious in its poetic touches, yet hobbled by tin-eared dialogue, pic, like so many films of its type, has serious intentions yet proves incapable of achieving any kind of original expression. A SXSW preem hasn’t exactly positioned the film as a hot title, dimming already slight commercial hopes in theatrical and ancillary.\n\nIn short order, it’s evident that the film’s small universe, set in the greater metropolis of Portland, will be populated by a uniformly sad folks, only slightly distinguished by personal quirks. This tapestry of humanity betrays an odd lack of character depth and interest, and the actors are unable to dig deep into their roles.\n\nThese problems become apparent first with Eli (James Mercer), a would-be teacher who can’t bring himself to finish his degree and has instead settled for a series of temp jobs. His first one, involving counting types and brands of milk in a supermarket, is so ridiculous that it risks reducing Eli to a cartoon.\n\nKatrina (Carrie Brownstein, of Sleater-Kinney) tries to get over her disloyal ex-b.f. by meddling with his email, then explores her options getting cast on a reality show. Only later does it emerge that she works at an animal shelter, tending to some of the unit’s most forlorn dogs.\n\nThe rather obvious unifying theme of social outcasts of all shapes and sizes is compounded by Camille (Renee Roman Nose), who works as a clerk in a Goodwill-type facility. Coming across an urn that has been somehow included in a bag of giveaways, Camille obsesses over it to the point where she finally takes possession of the urn and scatters the ashes at a nearby beach.\n\nThe script indulges in the overdone device of linking these disparate people — either by sheer coincidence, or by deliberately delayed story revelations — but never achieves the intended poignante effect. When Katrina asks the most on-the-nose questions that could be posed here — “Have you ever had your heart broken? How long does it last?” — it’s a sure sign of the film’s lack of confidence in its ideas.\n\nStrangely, the film’s richest character is the secondary character of Otis (played by David Wodehouse, in the film’s best performance), a retiree friend of Eli’s who makes a good-natured experimental film (credited as the work of filmmaker George Andrews) made of magnified images of soap bubbles. Otis’ monologue about his long life and loves pulsates with more tenderness, life and reality than anything else around it.\n\nVid cinematography by Greg Schmitt vividly captures Portland’s powerfully moody lights and darkness, while the editing tends to drag and the score slides into overbearing grimness.\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice.",
+  "isFullReview": true,
   "dtliExcerpt": "The musical treatment of this shameful chapter in American legal history is both moving and musically accomplished, with a deceptively light touch that makes its serious points all the more effective.",
   "originalScore": null,
   "assignedScore": 80,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical treatment of this shameful chapter in American legal history is both moving and musically accomplished, with a deceptively light touch that makes its serious points all the more effective.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "llmScore": {
     "score": 80,
     "confidence": "high",
@@ -73,5 +73,46 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "textWordCount": 610,
+  "archivePath": "data/archives/reviews/the-scottsboro-boys-2010/variety--charles-isherwood_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T05:41:37.169Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 610,
+  "tierReason": "Full review text"
 }

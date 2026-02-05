@@ -18,7 +18,7 @@
   "showScoreExcerpt": "This Oklahoma! doesn't just dust off a classic; it shakes it up, turning what was once a comfort-food musical into something closer to a psychological thriller.",
   "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "fetchTier": 4,
   "truncationSignals": [],
   "textStatus": "complete",
@@ -81,5 +81,16 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "textWordCount": 762,
+  "archivePath": "data/archives/reviews/oklahoma-2019/variety--peter-debruge_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T05:16:53.228Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ]
 }

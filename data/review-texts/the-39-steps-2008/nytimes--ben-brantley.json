@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This cheeky stage adaptation of John Buchan's thriller, by way of Alfred Hitchcock's 1935 film, turns what might have been a standard evening of spoof into something more substantial: a meditation on the art of illusion itself.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (37 words)",
   "textQuality": "partial",
   "llmScore": {
-    "score": 77,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "turns what might have been a standard evening of spoof into something more substantial",
+        "quote": "this fast, frothy exercise in legerdemain is throwaway theater at its finest",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brantley praises the adaptation for exceeding expectations and being 'more substantial' than typical spoof theater, indicating a solid positive recommendation despite the brief excerpt. | GPT-4o: The review describes the adaptation as more than a standard spoof, suggesting a positive evaluation with some depth. However, the lack of strong superlatives or explicit recommendation keeps the score in the mid-positive range. | Gemini: The review describes the show as \"cheeky\" and turning a spoof into something more substantial, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic praises the adaptation for transcending mere spoof to become a substantial meditation on illusion, indicating a clear recommendation despite the brevity of the excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise calling it 'absurdly enjoyable' and 'throwaway theater at its finest' (explicitly noted as not backhanded). However, text appears truncated which may have cut off additional verdict language, warranting medium confidence. | Gemini: The review is overwhelmingly positive, calling the show \"absurdly enjoyable\" and \"throwaway theater at its finest.\" The critic clearly recommends seeing it. | Kimi: Brantley delivers enthusiastic praise ('absurdly enjoyable,' 'perfect soufflé') and explicitly recommends seeing the show ('very sound advice'), though the truncated ending prevents full confidence in the final assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,33 +51,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:00:28.296Z",
+    "scoredAt": "2026-02-05T05:33:17.889Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 76,
-    "geminiScore": 75,
-    "kimiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://www.nytimes.com/2008/01/16/theater/reviews/16step.html",
   "urlDiscoveredAt": "2026-02-04T01:20:50.589Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 292,
@@ -106,5 +105,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text is cut off and ends with a technical error message about JavaScript and access verification, making it impossible to determine the critic's final verdict.; openai: The text includes a broken link and a message about trouble retrieving article content, indicating it is not a complete review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "rescoreCompletedAt": "2026-02-05T05:33:17.889Z"
 }

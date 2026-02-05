@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2011/legit/reviews/the-people-in-the-picture-1117945176/",
   "publishDate": "April 21, 2011",
-  "fullText": "Despite the efforts of a committed cast led by Donna Murphy, this earnest but dramatically unwieldy musical about Holocaust survivors lacks the narrative focus and emotional precision to sustain a full evening.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Despite the efforts of a committed cast led by Donna Murphy, this earnest but dramatically unwieldy musical about Holocaust survivors lacks the narrative focus and emotional precision to sustain a full evening.",
   "originalScore": null,
   "assignedScore": 44,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite the efforts of a committed cast led by Donna Murphy, this earnest but dramatically unwieldy musical about Holocaust survivors lacks the narrative focus and emotional precision to sustain a full evening.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "llmScore": {
     "score": 44,
     "confidence": "high",
@@ -73,5 +73,47 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 44,
+  "textWordCount": 215,
+  "archivePath": "data/archives/reviews/the-people-in-the-picture-2011/variety--david-rooney_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T06:32:57.316Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 215 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "May 9, 2011 4:23pm PT \n\n \n\n \n \n \n\n \n\n \n See the Sea\n \n \n\n \n\n A sun-dappled, too loose-limbed road movie only moderately spiced up by that ever-dependable Gallic institution, the insouciant menage-a-trois.\n\nAcclaimed French helmer Patrice Leconte (“Man on the Train,” “Intimate Strangers”) seems, perhaps intentionally, to have unlearned his decades of filmmaking experience for “See the Sea,” a sun-dappled, too loose-limbed road movie only moderately spiced up by that ever-dependable Gallic institution, the insouciant menage-a-trois. However, rather than fresh, and despite a sensual and convincing cast, the film simply feels undisciplined. French media interest was fueled by the helmer’s recent autobiography, which suggested he’d retired. But without a similar marketing hook abroad, only some film-week action is likely before the pic ends up wherever generic, sexy French movies go to die.\n\nHunky brothers Clement (Clement Sibony) and Nicolas (Nicolas Giraud) travel from inland Burgundy to seaside town Saint-Jean-de-Luz with a sprightly, short-haired blonde (Pauline Lefevre) in tow. She’s never seen the sea, and they’re on their way to visit their ill mother. (“Mer” in the French title sounds like both “sea” and “mother.”) Helmer’s anything-goes attitude extends to its episodic screenplay (Leconte’s first original solo effort), hand-held and artily out-of-focus camerawork and random narrative ideas, including an extremely clumsy pursuit of the trio by the girl’s grotesque ex-husband (Gilles Cohen)."
 }

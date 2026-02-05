@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,11 +22,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 92,
+    "score": 94,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -38,12 +38,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "A true tour de force that is hardly likely to be bettered on Broadway this season",
+        "quote": "this delightful show will lift the hearts of all those who've been pining for what sometimes seems a lost art form",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong superlatives ('tour de force', 'hardly likely to be bettered this season', 'delightful') with unqualified praise. Despite single excerpt warning, the language is clearly in Rave territory with no caveats mentioned. | GPT-4o: The excerpt uses strong superlatives ('tour de force', 'delightful show') and suggests the production is a standout of the season, indicating a rave review. However, confidence is low due to the single excerpt warning. | Gemini: The excerpt contains strong positive language such as \"true tour de force\" and \"delightful show,\" indicating a positive recommendation. Given that it is only a single excerpt, the confidence is low. | Kimi: The excerpt employs superlatives like 'tour de force' and declares the show 'hardly likely to be bettered on Broadway this season,' indicating an unqualified, enthusiastic recommendation consistent with the Rave bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'delightful,' 'frolicsome,' 'dazzling,' and 'brilliant performance.' Calls it one of the most accomplished scores on Broadway in a dozen years and predicts the lead performance will be 'immortalized in Broadway lore.' | Gemini: The review is overwhelmingly positive, using words like \"delightful\", \"merry\", and praising the performances and music. It's a strong recommendation with no major reservations. | Kimi: The review offers unqualified praise for every aspect of the production, comparing it favorably to Sweeney Todd, hailing Jefferson Mays' performance as a 'tour de force' unlikely to be bettered this season, and calling the score one of the most accomplished on Broadway in a dozen years.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,30 +53,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:13:00.127Z",
+    "scoredAt": "2026-02-05T05:13:04.001Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 92,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 92,
+    "openaiScore": null,
     "geminiScore": 82,
-    "kimiScore": 92,
+    "kimiScore": 96,
     "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 10,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Rave"
+    "modelAgreement": "2/3 models agree: Rave"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 92,
   "textWordCount": 1241,
@@ -98,5 +97,6 @@
   "archiveOrgTimestamp": "20230626011640",
   "archiveOrgUrl": "http://web.archive.org/web/20230626011640/http://www.nytimes.com/2013/11/18/theater/reviews/a-gentlemans-guide-to-love-and-murder-on-broadway.html?_r=0",
   "wordCount": 1241,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T05:13:04.002Z"
 }

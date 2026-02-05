@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2012/legit/reviews/the-mystery-of-edwin-drood-1117948959/",
   "publishDate": "November 13, 2012",
-  "fullText": "Rupert Holmes' musical whodunit 'The Mystery of Edwin Drood' gets a spirited revival that captures the show's interactive charm and period atmosphere.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Rupert Holmes' musical whodunit 'The Mystery of Edwin Drood' gets a spirited revival that captures the show's interactive charm and period atmosphere.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,7 +16,52 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Rupert Holmes' musical whodunit 'The Mystery of Edwin Drood' gets a spirited revival that captures the show's interactive charm and period atmosphere.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "textWordCount": 222,
+  "archivePath": "data/archives/reviews/the-mystery-of-edwin-drood-2012/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T06:20:41.299Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 222 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Amid the flood of documentaries about the Arab Spring in general and the Egyptian Revolution in particular, \"Uprising\" takes a clear, cohesive approach to the spontaneous events at its center.\n\nAmid the flood of documentaries about the Arab Spring in general and the Egyptian Revolution in particular, “Uprising” takes a clear, cohesive approach to the spontaneous events at its center. Lacking the dynamic immediacy of “Tahrir: Liberation Square” or the scope of the multipart “Tahrir 2011,” Fredrik Stanton’s film — with its eyewitness testimony, well-edited cell-phone footage, euphoric young leaders, cautious elder statesmen, and awestruck journalists and foreign onlookers — often feels more like extended television reportage than feature documentary engagement. Still, the pic should receive a warm welcome in educational and smallscreen venues following its Jan. 11 limited release.\n\nStanton eschews in-depth analysis and historical overview for breathless reiteration of astonished admiration from participants and observers alike, extolling the nonviolent mutation of street protest into all-out revolution; the solidarity among people of different ages, classes and religions; and the bravery of those willing to sacrifice their lives for freedom. And although the interviewees are aware of the absurdity of the fact that a Facebook-launched revolution should be countered with camel-riding, sword-wielding defenders of the status quo, the docu’s relatively uninflected tone rarely participates in either the excitement or irony it chronicles."
 }
