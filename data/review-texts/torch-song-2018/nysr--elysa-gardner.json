@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "But Kaufman and Urie's triumph is not simply in making Arnold funny and lovable, foibles and all. The first act of Torch Song certainly milks Urie's strengths as a pure entertainer, segueing from Arnold's delectably witty introductory monologue to the gay bar (based on the actual downtown establishment \"The International Stud,\" as the play's first section is still named) where Arnold meets Ed, an apparently not-too-conflicted bisexual who, in Ward Horton's deft performance, shows us how Arnold c",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Harvey-Fiersteins-TORCH-SONG-Opens-on-Broadway--Updating-Live-20181101"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Harvey-Fiersteins-TORCH-SONG-Opens-on-Broadway--Updating-Live-20181101",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kaufman and Urie's triumph is not simply in making Arnold funny and lovable, foibles and all.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with explicit use of 'triumph' and praise for performances. Single excerpt limits full assessment but strong positive language warrants upper Positive range. | GPT-4o: The excerpt praises the production as a 'triumph' and highlights the strengths of the performances, suggesting a strong positive impression. The original rating of 4/5 stars supports a positive classification, and the excerpt's tone suggests an enthusiastic recommendation. | Gemini: The review excerpt praises the performances and the overall impact of the production, suggesting a positive experience. Given the 4/5 star rating and the positive tone, I'm placing it in the positive bucket with a high score, but with low confidence due to the limited text. | Kimi: The 4/5 star rating and enthusiastic language ('triumph,' 'delectably witty,' 'pure entertainer') indicate a strong recommendation, though the single truncated excerpt warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:30:26.100Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

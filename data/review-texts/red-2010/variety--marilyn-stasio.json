@@ -61,5 +61,60 @@
   ],
   "wordCount": 837,
   "tierReason": "Full review text",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-RED-Review-Roundup-20100402"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-RED-Review-Roundup-20100402",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Alfred Molina is majestic as Rothko, defying the future he reads in the face of Eddie Redmayne",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Consistently uses superlatives throughout - 'electrifying', 'majestic', 'pure music', 'operatic grandeur'. The critic declares anyone who leaves during the turning point 'should be shot', indicating this is essential theater. No significant reservations expressed. | GPT-4o: The review is filled with superlatives and praise for the performances, production, and writing. Words like 'electrifying,' 'majestic,' and 'robust' indicate a strong, enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, praising the writing, acting, and production. The critic uses strong language like \"electrifying\" and \"majestic,\" indicating a strong recommendation. | Kimi: The review overflows with superlatives ('electrifying,' 'majestic,' 'operatic grandeur') and unreserved praise for the performances, direction, and writing, indicating an enthusiastic must-see recommendation with no significant caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:09:33.707Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

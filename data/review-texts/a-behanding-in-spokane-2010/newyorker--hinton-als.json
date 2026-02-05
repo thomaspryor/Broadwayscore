@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "I don’t know a single self-respecting black actor who wouldn’t feel shame and fury while sitting through Martin McDonagh’s new play, “A Behanding in Spokane” (directed by John Crowley, at the Gerald Schoenfeld). Nor do I know one who would have the luxury of turning the show down, once the inevitable tours and revivals get under way. The play is engineered for success, and McDonagh’s stereotypical view of black maleness is a significant part of that engineering. Still, one wonders how compromised the thirty-one-year-old Anthony Mackie must feel, playing Toby, a black prole whose misadventures are central to this four-character show. Mackie recently attracted notice for his portrayal of a bomb-squad sergeant in Kathryn Bigelow’s Iraq war movie “The Hurt Locker.” But even in that role he was drawing on a paradigm—Lou Gossett, Jr.,’s 1982 portrayal of a drill sergeant in “An Officer and a Gentleman.” The sad fact is that, in order to cross over, most black actors of Mackie’s generation must act black before they’re allowed to act human.",
   "bwwScore": 1,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 29,
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 24,
+      "high": 34
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonagh's stereotypical view of black maleness is a significant part of that engineering.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The critic expresses clear disapproval of the play's racial stereotypes and suggests actors would feel 'shame and fury' watching it. However, this is only an excerpt, so confidence is low. | GPT-4o: The excerpt expresses a strong negative sentiment, criticizing the play for its stereotypical portrayal and the impact on black actors. The language suggests deep disapproval, aligning with a Pan classification. However, the single excerpt warning indicates the possibility of cherry-picking, so confidence is low. | Gemini: The critic expresses strong disapproval and shame regarding the play's portrayal of black characters, indicating a pan. The language is very negative. | Kimi: The review condemns the production for its reliance on racial stereotypes regarding Black masculinity, describing the experience as inducing 'shame and fury' and criticizing the play as 'engineered for success' through these problematic portrayals. | Buckets: claude=Negative, openai=Pan, gemini=Pan, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:57:19.946Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

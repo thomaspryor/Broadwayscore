@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "If neatness is what you expect from John Guare's 'A Free Man of Color,' you'll be doomed to disappointment. Mr. Guare's ambitious new play, which tells the fantastic tale of Jacques Cornet (Jeffrey Wright), a 19th-century millionaire playboy from New Orleans who happens to be black, has a cast of 33 and runs for 2½ crowded hours. Yes, it sprawls, but for all its hectic messiness, 'A Free Man of Color' is one of the three or four most stirring new plays I've seen since I started writing this column seven years ago.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 85,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'A Free Man of Color' is one of the three or four most stirring new plays I've seen since I started writing this column seven years ago.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Despite acknowledging the play's flaws ('sprawls', 'hectic messiness'), the critic places it among the best new plays in seven years of reviewing - extremely high praise that overrides the caveats. | GPT-4o: The critic acknowledges the play's messiness but ultimately praises it as one of the most stirring new plays in years, indicating a strong recommendation despite any flaws. | Gemini: Despite acknowledging messiness, the critic calls it one of the most stirring new plays they've seen in seven years, indicating a strong positive recommendation. Confidence is low due to the single excerpt. | Kimi: The critic offers superlative praise ranking it among the best plays reviewed in seven years, using words like 'stirring' and placing it in the top tier of recent theatrical works, despite acknowledging its messy, sprawling structure. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:18:53.118Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

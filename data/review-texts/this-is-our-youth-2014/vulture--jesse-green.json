@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The three young stars — Michael Cera, Kieran Culkin, and Tavi Gevinson — bring different strengths to their roles, but together they create a convincing portrait of privileged kids adrift in their own lives.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -50,5 +50,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250402073450/https://www.vulture.com/2014/09/theater-review-this-is-our-youth.html",
   "wordCount": 1015,
   "tierReason": "Full review text",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He's found that material in Kenneth Lonergan's This Is Our Youth, and under Anna D. Shapiro's superlative direction uses it to fuel an unforgettable performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear praise for Cera's 'triumph' performance and 'superlative direction' with 'astonishingly fine' writing, though notes the rest of the cast 'does not quite live up to that level.' Overall positive recommendation despite reservations. | Gemini: The review praises Cera's performance and the writing, but notes that the rest of the production doesn't quite reach the same level, indicating a positive but not rave recommendation. | Kimi: While noting that the supporting cast doesn't reach the heights of Cera's 'triumph' of a performance and citing minor pacing issues, the critic praises the 'superlative' direction, 'astonishingly fine' writing, and concludes the show is definitively 'worth staging on Broadway.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:27:07.589Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": null,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

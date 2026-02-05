@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"But under John Crowley's spare and precise direction, the actors earn their adulation, magnifying what's most gripping about Huff's writing even when the drama, stretched thin with bang-bang incident, becomes considerably less believable over time. And for those worried about authenticity, fear not: Although Jackman is from Australia and Craig is from England, they slip into the American reality of their characters as if it were a second skin.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-Review-Roundup-A-STEADY-RAIN-20090929",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the actors earn their adulation, magnifying what's most gripping about Huff's writing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises direction and performances while acknowledging the drama becomes 'less believable over time.' Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises the direction and performances, noting the actors' ability to embody their characters convincingly. However, it also mentions that the drama becomes less believable, indicating some reservations. | Gemini: The review praises the direction and acting, but notes that the drama becomes less believable over time. Given the single excerpt, I'm scoring it as positive with reservations. | Kimi: The excerpt offers strong praise for the direction and performances ('earn their adulation', 'magnifying what's most gripping') but includes significant criticism of the drama's believability. As a single curated excerpt, confidence is low, but the tone suggests a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:35:44.995Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2019/11/07/tina-trying-too-hard-to-catch-fire/",
   "bwwExcerpt": "Having been lucky enough to catch Tina Turner in concert before she essentially retired from touring, I can report that Tina, for all its huffing and puffing, doesn't capture the force of nature she was in live performance. That's not a criticism of Warren; it's just a reminder that a better, truer and generally less expensive way to appreciate our favorite artists is through their own work. Though if Tina were to lead a few uninitiated audience members to Turner's, I'd be the first to stand up ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-TINA--THE-TINA-TURNER-MUSICAL-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20191107"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-TINA--THE-TINA-TURNER-MUSICAL-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20191107",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tina, for all its huffing and puffing, doesn't capture the force of nature she was in live performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with clear disappointment that the show fails to capture Turner's essence. However, single excerpt warning and truncated text suggest caution - the positive ending about leading audiences to Turner's work may indicate mixed feelings rather than outright pan. | GPT-4o: The review suggests the show fails to capture the essence of Tina Turner's live performances and implies that experiencing her original work is preferable. The 2/5 star rating supports a negative verdict. | Gemini: The critic states the show doesn't capture the essence of Tina Turner's live performances and suggests experiencing her work directly instead. Given the 2/5 star rating, this warrants a negative score. | Kimi: The 2/5 star rating and critique that the musical fails to capture Tina Turner's live force, combined with the suggestion that cheaper alternatives (the artist's actual work) are superior, indicate a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:28:12.487Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

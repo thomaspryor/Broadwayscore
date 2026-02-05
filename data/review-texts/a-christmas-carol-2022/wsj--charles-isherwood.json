@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The staging is almost absurdly—and perhaps unnecessarily—lavish, although children and adults now accustomed to television series and movies that pour on the atmospherics with a ladle must, I suppose, be catered to.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The staging is almost absurdly—and perhaps unnecessarily—lavish, although children and adults now accustomed to television series and movies that pour on the atmospherics with a ladle must, I suppose, be catered to.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows critic finding the production excessively lavish but resignedly accepting it as necessary for modern audiences. The tone is somewhat dismissive ('absurdly', 'unnecessarily') but pragmatic. With only one excerpt available and truncated text, confidence is low. | GPT-4o: The excerpt suggests a mixed view, noting the lavish staging as potentially excessive. Without more context, it's unclear if this is a positive or negative aspect, leading to a mixed classification. | Gemini: The excerpt expresses mixed feelings about the staging, suggesting it might be excessive but also acknowledging the need to cater to certain audiences. Due to the limited text, confidence is low. | Kimi: The excerpt criticizes the production as overdone and unnecessarily extravagant, offering only reluctant acknowledgment that modern audiences might appreciate the heavy atmospherics.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:10:23.000Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

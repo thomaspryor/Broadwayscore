@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"The events informing A Steady Rain (* * *½ out of four) would make a heck of an action movie. And the cast of Keith Huff's new drama, which opened Tuesday at Broadway's Gerald Schoenfeld Theatre, consists of two superstars who have ample experience in that arena ... Huff's briskly absorbing script has its clichés and contrivances, but Denny and Joey are drawn with such earthy wit and non-patronizing compassion that Rain never rings false or superficial. It's hard to im",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-Review-Roundup-A-STEADY-RAIN-20090929",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Huff's briskly absorbing script has its clichés and contrivances, but Denny and Joey are drawn with such earthy wit and non-patronizing compassion that Rain never rings false or superficial.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 3.5/4 stars indicates positive recommendation. The excerpt praises the script as 'briskly absorbing' and characters as drawn with 'earthy wit' and 'compassion', though acknowledges 'clichés and contrivances'. Single excerpt with truncated ending limits confidence. | GPT-4o: The excerpt praises the script as 'briskly absorbing' and highlights the characters' depth, despite mentioning clichés and contrivances. The 3.5 out of 4 stars suggests a strong positive review, but the single excerpt limits confidence. | Gemini: The review excerpt is generally positive, noting the script's absorbing quality and the characters' realistic portrayal, while acknowledging some clichés. The rating of 3.5/4 stars also indicates a positive assessment. | Kimi: The review awards 3.5/4 stars, praising the 'briskly absorbing' script and character work with 'earthy wit,' though it acknowledges 'clichés and contrivances.' Single excerpt and truncated text warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:36:59.505Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

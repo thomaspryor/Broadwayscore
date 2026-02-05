@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The concept of Paulus and Page's 1776 is thrilling: to behold a diverse company portraying a story that's literally about the ideals and principles of white-cis-male politicians. From the opening curtain, anticipation runs high for a mind-blowing or at least inspiring show - probably, in part, due to the success of Hamilton and the sparse, dramatic, and surprisingly bloody 2019 revival of Oklahoma! But in reality, the onstage talent runs much hotter than the book, music a",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The onstage talent runs much hotter than the book, music",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Text is clearly truncated mid-sentence. Opens with 'thrilling concept' and 'anticipation runs high' but pivots to 'But in reality' suggesting disappointment. The excerpt implies performers exceed material quality, indicating mixed results. | GPT-4o: The excerpt highlights a thrilling concept and high anticipation but suggests that the execution ('onstage talent runs much hotter than the book, music') may not fully deliver. The single excerpt warning and lack of a full verdict necessitate a cautious, low-confidence score. | Gemini: The review expresses excitement about the concept but then implies that the execution doesn't fully live up to the potential. The truncated text makes it difficult to determine the overall verdict with high confidence, but it leans towards a mixed assessment. | Kimi: The excerpt praises the concept and cast but explicitly criticizes the book and music as inferior to the performances, suggesting an uneven show. However, with only one curated excerpt available and the text truncated mid-sentence, the final verdict is unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:38:41.848Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

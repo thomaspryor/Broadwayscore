@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "A Bronx Tale is unlikely to work without a strong performance in the central role of the gangster Sonny. (Palminteri played all the roles in the one-man show; he was Sonny in the film version.) Fortunately, Nick Cordero carries the musical with aplomb. This is the actor who appeared out of nowhere in 2014 and practically nabbed a Tony in the Woody Allen-Susan Stroman Bullets on Broadway, as the bodyguard Cheech. (Not incidentally, this role was created in Allen's 1994 film version by: Chazz Palm",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fortunately, Nick Cordero carries the musical with aplomb.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the lead performance as carrying the show 'with aplomb' and references the actor's previous near-Tony nomination. However, this is a single curated excerpt that may not represent the full review verdict, requiring caution in scoring. | GPT-4o: The excerpt praises Nick Cordero's performance, suggesting it is strong enough to carry the musical. However, the limited excerpt and lack of a full verdict necessitate a cautious, low-confidence score. | Gemini: The review excerpt focuses on the strength of Nick Cordero's performance, suggesting a positive aspect of the show. Given the limited text, a score in the lower end of the positive range is appropriate. | Kimi: The critic emphasizes that the show depends entirely on the central performance of Sonny, and praises Nick Cordero for carrying the production with skill and confidence, indicating a clear recommendation based on his work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:59:44.892Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -32,5 +32,60 @@
   "archiveOrgTimestamp": "20250405005512",
   "archiveOrgUrl": "http://web.archive.org/web/20250405005512/https://www.vulture.com/2017/11/theater-the-bands-visit-finds-strength-in-smallness.html",
   "wordCount": 1392,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Together they've created a play of deep integrity — funny, generous, sweet without sentimentality, poignant without melodrama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'triumphant,' 'beautiful,' 'exquisite,' 'astonishing,' and 'masterpiece.' The critic celebrates every element from performances to score to direction without any meaningful reservations. | GPT-4o: The review is filled with superlatives and praises the production's integrity, emotional depth, and unique musicality. The critic describes it as a 'beautiful piece of theater' and highlights the performances and direction as exceptional. | Gemini: The review is overwhelmingly positive, praising the show's integrity, humor, and emotional depth. The critic highlights the unique musical style and the strong performances, making it a solid recommendation. | Kimi: The review offers unqualified praise for the show's deep integrity, exquisite score, and stunning performances, using words like 'astonishing,' 'gorgeous,' and 'masterpiece' with no significant caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:12:28.098Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 93,
+    "geminiScore": 82,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

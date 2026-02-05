@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The production never quite finds its rhythm, but Mamet's writing certainly does. He shows us the poignance and the heroism of the performing life. 'The lights dim. Each to his own home,' Robert says to himself as he leaves the theatre, in the play's last line. But, to theatricals, home is where the art is.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production never quite finds its rhythm, but Mamet's writing certainly does.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt shows mixed assessment - production criticized for lacking rhythm while praising Mamet's writing and themes. With only one curated quote available, confidence is low as full verdict unclear. | GPT-4o: The excerpt suggests a mixed review: while Mamet's writing is praised, the production itself is criticized for lacking rhythm. The single excerpt warning and lack of a clear positive or negative verdict lead to a low confidence score in the Mixed bucket. | Gemini: The review praises Mamet's writing and highlights the poignance and heroism of the performing life, suggesting a positive experience despite the production not quite finding its rhythm. Given the single excerpt, I'm scoring it as a lower-end positive. | Kimi: While criticizing the production's rhythm, the reviewer praises Mamet's script for capturing 'the poignance and the heroism of the performing life,' suggesting the material transcends its staging. The reflective, appreciative tone of the closing lines indicates a qualified recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:23:34.724Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

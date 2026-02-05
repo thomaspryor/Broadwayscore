@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Denzel Washington is the star attraction, but it's the harmonious balance of an impeccably matched ensemble that makes Kenny Leon's lovingly staged revival of A Raisin in the Sun so alive with authentic feeling. The warmth as well as the frictions and frustrations of a real family ripple through this lived-in production, with an accomplished cast that nestles deep into every moment of humor, hope and sadness. Even in its more dated passages, Lorraine Hansberry's groundbreaking 1959 play remains a work of stirring compassion and humanity.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kenny Leon's lovingly staged revival of A Raisin in the Sun so alive with authentic feeling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the production ('impeccably matched ensemble', 'lovingly staged', 'alive with authentic feeling') and cast ('accomplished cast that nestles deep into every moment'). Single excerpt warning noted - using upper end of Positive range due to consistently enthusiastic language. | GPT-4o: The excerpt offers high praise for the ensemble, staging, and emotional impact, indicating a strong recommendation. The single excerpt and lack of full context lower confidence, but the language suggests a rave. | Gemini: The review praises the ensemble cast, the staging, and the play itself, highlighting its compassion and humanity. The phrase \"so alive with authentic feeling\" indicates a strong positive sentiment. | Kimi: The excerpt offers strong praise for the ensemble, direction, and emotional impact ('impeccably matched', 'lovingly staged', 'stirring compassion'), placing it in the upper Positive range per the single-excerpt guidance for clearly positive quotes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:30:46.142Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

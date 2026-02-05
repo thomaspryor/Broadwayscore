@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "LaChanze is luminous and fierce in the central role, showing us the dignity and warmth that have sustained Wiletta where others might have simply become embittered. Another musical theater stalwart, Chuck Cooper, has a poignant turn as Sheldon Forrester, the veteran actor cast as Job's father, whose obsequiousness contrasts with Wiletta's rising pique, while Michael Zegen captures Manners's unconscious arrogance to almost chilling effect. Don Stephenson and Danielle Campbell deliver deft comic performances as the white cast members, Bill O'Wray and Judy Sears-respectively, a latently racist character actor and a well-meaning but clueless ingénue-and Jessica Frances Dukes adds more punch as Millie Davis, a Black actress who is older than Judy but younger than Wiletta, and hasn't quite arrived at the latter's level of frustration, yet.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-TROUBLE-IN-MIND-Opens-On-Broadway-Starring-Tony-Winner-LaChanze-20211118"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-TROUBLE-IN-MIND-Opens-On-Broadway-Starring-Tony-Winner-LaChanze-20211118",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "LaChanze is luminous and fierce in the central role, showing us the dignity and warmth that have sustained Wiletta.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for performances across the cast. Uses strong positive language ('luminous and fierce', 'poignant', 'deft') but excerpt focuses only on acting, not overall production assessment. | GPT-4o: The excerpt praises multiple performances with strong positive language ('luminous', 'fierce', 'poignant'). The original 4/5 stars rating suggests a positive overall verdict. Given the single excerpt warning, the score is on the higher end of the Positive range. | Gemini: The review excerpt focuses on the strength of the performances, particularly LaChanze's. Given the 4/5 star rating and positive tone, I'm placing it in the positive bucket. However, confidence is low due to the limited excerpt. | Kimi: The 4/5 star rating and effusive praise for multiple cast members ('luminous,' 'poignant,' 'chilling effect') indicate a strong recommendation, though the single excerpt limitation restricts confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:31:02.928Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

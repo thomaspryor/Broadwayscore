@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Grier returns in the first Broadway production of \"A Soldier's Play,\" which opened Tuesday at Roundabout's American Airlines Theatre - this time as the fearsome, foul-mouthed Sgt. Vernon Waters, who commands his all-black troops as if their every move was a reflection on the future of the race. It's a searing performance from an actor best known for his work in comedies like \"In Living Color\" and \"The Carmichael Show.\" And he's well-matched by Blair Underwood as the Howard Law School graduate ca",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-SOLDIERS-PLAY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200121",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a searing performance from an actor best known for his work in comedies like 'In Living Color' and 'The Carmichael Show.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt contains strong praise for Grier's performance ('searing performance') and notes he's 'well-matched' by Underwood, suggesting quality work. However, this is only one curated excerpt, so confidence is low and the overall verdict remains uncertain. | GPT-4o: The excerpt praises Grier's performance as 'searing' and notes a strong match with Blair Underwood, suggesting a positive view of the production. However, due to the single excerpt and lack of a full review, confidence is low. | Gemini: The excerpt praises Grier's performance as \"searing\" and highlights Underwood's contribution, suggesting a positive overall assessment. Given the limited text, I'm placing it in the positive bucket with high end score. | Kimi: The excerpt provides strong praise for the lead performances ('searing', 'well-matched'), indicating a clearly positive assessment, though the single-excerpt format limits certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:34:46.478Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

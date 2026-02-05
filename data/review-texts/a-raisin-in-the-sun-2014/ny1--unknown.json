@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Every rare while, a great play is given the production it deserves. That's how it is with this revival of 'A Raisin In The Sun'. Director Kenny Leon tackled the drama 10 years ago with Sean Combs in the lead, but what a difference a star makes. And because the 55-year-old work remains astonishingly relevant today, I can happily say Denzel and company are 'da bomb.'",
-  "bwwScore": 10
+  "bwwScore": 10,
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Every rare while, a great play is given the production it deserves.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The critic uses superlative language ('great play', 'production it deserves', 'da bomb') and positions this as a rare theatrical achievement. The phrase 'I can happily say' indicates strong endorsement despite being a single excerpt. | GPT-4o: The excerpt praises the production as a rare and great revival, highlighting the relevance and impact of the current cast, particularly Denzel. The tone is enthusiastic and suggests a strong recommendation. | Gemini: The review excerpt expresses strong approval of the production, calling it a great play given the production it deserves and stating that Denzel and company are 'da bomb.' Given the single excerpt, confidence is low. | Kimi: The critic enthusiastically praises this revival as a rare perfect match of play and production, strongly endorsing the cast with the emphatic verdict that they are 'da bomb' while highlighting the work's continued relevance. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:31:42.330Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

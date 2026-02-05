@@ -21,5 +21,60 @@
   "contentMismatchNote": "Show title \"A Soldier's Play\" not found in text; Different show \"memphis\" mentioned 3+ times",
   "contentMismatchScore": -3,
   "bwwExcerpt": "Leon's demands of the cast are met in full. It's as if every member is a stick of just-lighted dynamite. Grier and Underwood detonate the brightest and account for the most emotional damage inflicted, but everyone is outstanding. The same goes for Derek McLane's set, Dede Ayite's costumes, the Allen Lee Hughes lighting and the Dan Moses Schreier sound.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-SOLDIERS-PLAY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200121"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-SOLDIERS-PLAY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200121",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's as if every member is a stick of just-lighted dynamite.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with glowing praise for performances and all design elements. Single excerpt warning noted, but the enthusiastic language ('detonate the brightest', 'everyone is outstanding') suggests strong positive recommendation. | GPT-4o: The excerpt provides strong praise for the cast and production elements, aligning with a 4/5 star rating. Despite the single excerpt warning, the language suggests a highly positive view. | Gemini: The review excerpt is overwhelmingly positive, praising the cast, set, costumes, lighting, and sound. The phrase \"detonate the brightest\" suggests a particularly strong performance. | Kimi: 4/5 stars with unqualified praise for cast and design using vivid metaphors ('dynamite', 'detonate') indicates strong recommendation, though single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:33:56.018Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

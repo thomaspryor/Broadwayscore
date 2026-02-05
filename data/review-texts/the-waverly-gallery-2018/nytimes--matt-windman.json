@@ -30,7 +30,12 @@
   "archiveOrgTimestamp": "20250811161728",
   "archiveOrgUrl": "http://web.archive.org/web/20250811161728/https://www.nytimes.com/2018/10/25/theater/review-waverly-gallery-elaine-may-kenneth-lonergan.html",
   "duplicateTextOf": "nytimes--ben-brantley.json",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 331,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T15:25:56.603Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about retrieving content and enabling JavaScript; openai: The text is incomplete and contains a technical error message about retrieving the article content, making it unscoreable.",
+  "promptVersion": "5.2.0"
 }

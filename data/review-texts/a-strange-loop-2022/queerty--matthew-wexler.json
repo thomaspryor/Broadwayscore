@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "While I can’t deny many will find the brutal honesty of A Strange Loop provocative, its success lies in the delicate balance of specificity and universality. Usher’s journey loops more like a spirograph than the neat circumference of a circle. Like all our lives, it intersects at the most inopportune moments, kicking up fears and inadequacies we thought buried long ago. And that’s not so strange, after all.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "its success lies in the delicate balance of specificity and universality",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the show's provocative nature but emphasizes its 'success' and finds deeper meaning in its portrayal of universal human experiences. The sophisticated analysis and positive framing of challenging content indicates a strong recommendation. | GPT-4o: The excerpt praises the show for its successful balance and provocation, suggesting a positive reception. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The review acknowledges the show's provocative nature but ultimately praises its success in balancing specificity and universality, suggesting a positive overall experience. Given the single excerpt, a mid-range positive score seems appropriate. | Kimi: Despite limited excerpt availability, the critic explicitly cites the show's 'success' and praises how it resonates emotionally, indicating a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:38:46.398Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

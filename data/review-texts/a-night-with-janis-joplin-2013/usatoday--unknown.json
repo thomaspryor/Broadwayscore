@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "What the blues are, exactly, is a preoccupying concern in this musical tribute, which opened Thursday at Broadway's Lyceum Theatre. They can be, Joplin tells us at different points, 'a good woman feelin' bad,' or 'the want of something,' or occasionally 'the devil himself.' Speaking these lines, Mary Bridget Davies, who plays the late '60s rock goddess, is utterly credible as a hippie icon, from her alternately blissed-out and earnest vibe to her groovy period costumes (the latter provided by designer Amy Clark). Yet under the direction of Randy Johnson, who also wrote the book, Night offers a distinctly post-American Idol version of the blues. Davies is accompanied on stage by a band and four other spectacularly gifted female vocalists, who alternate as the backing 'Joplinaires' and various artists whose work inspired Joplin's; and the fireworks they provide can border perilously on crowd-pleasing caricature.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the fireworks they provide can border perilously on crowd-pleasing caricature",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises lead performance and costumes but criticizes the production as 'post-American Idol' and warns of 'crowd-pleasing caricature.' Single excerpt with mixed signals requires low confidence. | GPT-4o: The review praises the performances and costumes but criticizes the production as a 'post-American Idol version of the blues' with 'crowd-pleasing caricature'. The excerpt suggests a mix of positive and negative elements without a clear recommendation. | Gemini: The review praises the lead actress and vocalists but criticizes the direction and overall feel, suggesting it borders on caricature. The lack of a clear recommendation and the mixed signals suggest a 'Mixed' classification. | Kimi: While the excerpt praises Mary Bridget Davies as 'utterly credible' and the supporting vocalists as 'spectacularly gifted,' it criticizes the direction as 'post-American Idol' and warns the production borders on 'crowd-pleasing caricature,' indicating significant reservations about the overall artistic approach.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:30:23.093Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

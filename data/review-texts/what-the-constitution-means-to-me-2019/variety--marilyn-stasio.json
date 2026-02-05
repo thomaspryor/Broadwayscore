@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Schreck has fashioned a work of theater that is both deeply personal and urgently political, managing to be funny, heartbreaking and galvanizing all at once.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -46,5 +46,60 @@
     "web-search",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "By the end of the show, we've been stirred — and challenged — by her penetrating insights into that document.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with terms like 'affecting,' 'eye-opener,' 'jaw-dropper,' and 'penetrating insights.' Critic appreciates both the performance and the content, concluding with 'Honestly, how great is that?' indicating clear enthusiasm and recommendation. | GPT-4o: The review is filled with praise for Heidi Schreck's performance and the show's impactful message. The critic describes the show as an 'eye-opener' and 'jaw-dropper,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the play's insightful and challenging nature. The critic clearly recommends seeing it. | Kimi: Unqualified praise with superlatives ('jaw-dropper,' 'penetrating insights'), enthusiastic tone throughout, no caveats mentioned. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:36:04.456Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

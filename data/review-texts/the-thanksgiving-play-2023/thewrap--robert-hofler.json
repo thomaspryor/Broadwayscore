@@ -48,5 +48,60 @@
   "promptVersion": "5.2.0",
   "bwwExcerpt": "“The Thanksgiving Play” runs 90 minutes without intermission. Interspersed throughout the show are a number of filmed school pageants in which “students” perform their own well-meaning and ridiculous enactments of Thanksgiving. All together, these filmed segments run approximately 15 minutes, giving the four live actors about 75 minutes to perform, which is about an hour more than Saturday Night Live would have taken to satirize this topic of woke run amok. Because “The Thanksgiving Play” runs about an hour longer than it should, a strange thing happens as its four characters grapple with the impossibility of Logan’s assignment: The most manipulative and openly self-centered of the characters steals the show. In her Broadway debut, Carden wins most of the laughs by doing little more than rolling her eyes, seductively throwing her hair back and applying yet another layer of lip gloss.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "runs about an hour longer than it should",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic finds the show overlong and tedious, comparing it unfavorably to SNL and suggesting it could have been handled in a much shorter format. Despite praising Carden's performance, the overall assessment is negative. | GPT-4o: The review criticizes the play for being overly long and suggests it could have been more effectively satirized in a shorter format. The praise for Carden's performance is overshadowed by the overall negative assessment of the play's pacing and execution. | Gemini: The review highlights issues with the play's length and structure, but also praises a specific performance. This suggests a mixed experience, leaning towards a lukewarm recommendation. | Kimi: Extracted from malformed response | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:24:05.347Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }
