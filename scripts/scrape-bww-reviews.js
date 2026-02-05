@@ -78,9 +78,9 @@ function isGarbageOutlet(outletName) {
   // Matches known garbage patterns from BWW extraction
   if (/photo-credit|average-rating|read-the-reviews|reviewed-its|the-unthinkable/.test(slug)) return true;
   // Starts with conjunctions/articles that indicate a sentence fragment
-  if (/^(but-|and-(?!juliet)|is-a-|are-|has-|enjoying-|id-wager|how-to-\w+-is-)/.test(slug)) return true;
+  if (/^(but-|and-(?!juliet)|is-a-|is-not-|are-|has-|its-|enjoying-|id-wager|how-to-\w+-is-|lets-|does-|turns-|keeps?-|tackles-)/.test(slug)) return true;
   // Contains verb phrases never found in outlet names
-  if (/(promises-the|crafted-a|likely-to|fun-surf|wager-that|silence-after|antidote-to|underdog-itself|make-it-fun)/.test(slug)) return true;
+  if (/(promises-the|crafted-a|likely-to|fun-surf|wager-that|silence-after|antidote-to|underdog-itself|make-it-fun|speeding-along|seen-on-broadway|rose-to-fame|debacle-of|candid-about|exactly-what|dear-evan-hansen)/.test(slug)) return true;
   // Ends with "-review" — show title fragment (e.g., "oscar-review", "new-york-review")
   if (/-review$/.test(slug)) return true;
   // Contains year numbers — sentence fragments like "saturday night live in 1985"
