@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-05T16:58:09.040Z",
-  "processed": 0,
-  "failed": 10,
-  "successRate": "0%",
+  "updatedAt": "2026-02-05T17:03:42.331Z",
+  "processed": 5,
+  "failed": 15,
+  "successRate": "25.0%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 1,
-    "scrapingbee": 0,
+    "browserbase": 3,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archive": 0
+    "archive": 2
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-02-05T16:54:43.907Z",
@@ -29,6 +29,29 @@
       "event": "bb-session",
       "session": "811f4f7e",
       "url": "https://deadline.com/2022/10/1776-broadway-review-roundabout-theatre-company-ame"
+    },
+    {
+      "t": "2026-02-05T16:59:05.003Z",
+      "event": "bb-session",
+      "session": "444f0d00",
+      "url": "https://www.thewrap.com/1776-broadway-review-musical-diane-paulus/"
+    },
+    {
+      "t": "2026-02-05T17:01:26.140Z",
+      "event": "bb-session",
+      "session": "3dc0db93",
+      "url": "https://www.wsj.com/articles/1776-review-revolutionary-casting-meets-timeless-sh"
+    },
+    {
+      "t": "2026-02-05T17:02:07.871Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-05T17:03:31.617Z",
+      "event": "bb-session",
+      "session": "28b79316",
+      "url": "http://deadline.com/2017/06/broadway-review-1984-olivia-wilde-1202118365/"
     }
   ]
 }
