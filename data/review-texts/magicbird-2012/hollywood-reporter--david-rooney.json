@@ -11,7 +11,7 @@
   "originalScore": null,
   "assignedScore": null,
   "source": "web-search",
-  "dtliThumb": null,
+  "dtliThumb": "DOWN",
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
@@ -23,5 +23,9 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with sufficient evaluative content to score; openai: The text is about a play focused on an NBA rivalry, not a Broadway show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "web-search",
+    "dtli"
+  ]
 }
