@@ -759,6 +759,97 @@ function clearCriticRegistryCache() {
   _criticRegistryCache = null;
 }
 
+// Cache for domain-to-outlet reverse index
+let _domainToOutletCache = null;
+
+/**
+ * Build reverse domain index from outlet-registry.json.
+ * Maps domain bases and full hostnames to outlet IDs.
+ *
+ * Examples:
+ *   "nytimes" -> { outletId: "nytimes", displayName: "The New York Times" }
+ *   "nytimes.com" -> { outletId: "nytimes", displayName: "The New York Times" }
+ */
+function buildDomainToOutletIndex() {
+  if (_domainToOutletCache) return _domainToOutletCache;
+
+  _domainToOutletCache = new Map();
+  const registry = loadOutletRegistry();
+
+  if (registry && registry.outlets) {
+    for (const [outletId, outletData] of Object.entries(registry.outlets)) {
+      if (outletData.domain) {
+        // Strip www. prefix and convert to lowercase
+        const fullHost = outletData.domain.replace(/^www\./, '').toLowerCase();
+        // Extract domain base (without TLD): "nytimes.com" -> "nytimes"
+        const domainBase = fullHost.split('.')[0];
+
+        const entry = { outletId, displayName: outletData.displayName };
+
+        // Map both full hostname and domain base
+        _domainToOutletCache.set(fullHost, entry);
+        _domainToOutletCache.set(domainBase, entry);
+      }
+    }
+  }
+
+  return _domainToOutletCache;
+}
+
+/**
+ * Resolve an outlet from a URL by matching the domain against outlet-registry.json.
+ *
+ * @param {string} url - The review URL
+ * @returns {{ outletId: string, displayName: string } | null} - Resolved outlet or null
+ *
+ * Examples:
+ *   "https://www.nytimes.com/..." -> { outletId: "nytimes", displayName: "The New York Times" }
+ *   "https://culturesauce.com/..." -> { outletId: "culturesauce", displayName: "Culture Sauce" }
+ */
+function resolveOutletFromUrl(url) {
+  if (!url) return null;
+
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+    const domainBase = hostname.split('.')[0];
+
+    const domainIndex = buildDomainToOutletIndex();
+
+    // Try exact hostname match first
+    if (domainIndex.has(hostname)) {
+      return domainIndex.get(hostname);
+    }
+
+    // Try domain base without TLD
+    if (domainIndex.has(domainBase)) {
+      return domainIndex.get(domainBase);
+    }
+
+    // Try stripping common subdomains: blog.example.com -> example.com
+    const withoutSub = hostname.replace(/^(blog|news|review|reviews|arts|entertainment)\./i, '');
+    if (withoutSub !== hostname) {
+      if (domainIndex.has(withoutSub)) {
+        return domainIndex.get(withoutSub);
+      }
+      const subBase = withoutSub.split('.')[0];
+      if (domainIndex.has(subBase)) {
+        return domainIndex.get(subBase);
+      }
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Clear the domain-to-outlet cache (for testing or after registry updates).
+ */
+function clearDomainCache() {
+  _domainToOutletCache = null;
+}
+
 /**
  * Get the canonical display name for an outlet ID.
  * Priority: outlet-registry.json, then built-in fallback.
@@ -929,6 +1020,8 @@ module.exports = {
   validateCriticOutlet,
   loadCriticRegistry,
   clearCriticRegistryCache,
+  resolveOutletFromUrl,
+  clearDomainCache,
   OUTLET_ALIASES,
   CRITIC_ALIASES,
 };
