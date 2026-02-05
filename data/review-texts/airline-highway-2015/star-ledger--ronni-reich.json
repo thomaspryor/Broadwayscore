@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In Lisa D'Amour's 'Airline Highway,' named for the home to the motel, a group of misfits take care of each other and hold one another back from the vices that tempt them. Each is something like an open wound, with harrowing pasts that have repercussions they can't seem to shake. If its characters can feel familiar, D'Amour's writing unsparingly, unabashedly gets at fundamental aspects of the human condition. There are patches of the drama that drag when everyone talks over one another. But this feels realistic and uncovers something about each character's desire to connect -- however scarred they may be -- over bonds they've formed and broken in the past. Director Joe Mantello creates a detailed world, with nuanced performances from an ensemble cast...",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "D'Amour's writing unsparingly, unabashedly gets at fundamental aspects of the human condition.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows appreciation for the writing's depth and realistic character work, plus praise for direction and performances, but acknowledges pacing issues. Single excerpt limits confidence. | GPT-4o: The excerpt praises the writing and direction, noting the realistic portrayal and nuanced performances. However, it also mentions some dragging patches, indicating a positive but slightly reserved recommendation. | Gemini: The review praises the writing and direction, but notes some pacing issues. The overall tone is positive, suggesting a recommendation with reservations. | Kimi: The excerpt strongly praises the writing, direction, and ensemble performances while noting only minor pacing issues, indicating a clear recommendation despite small flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:06:51.540Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

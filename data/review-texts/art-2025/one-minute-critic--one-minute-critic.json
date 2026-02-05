@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "David Rockwell’s minimalist scenic design in muted grey, punctuated by swift scene changes and Jen Schriever’s equally crisp lighting, nudges Art toward entertaining. However, some may be just as happy watching the famed video of Banskey’s “Girl With Balloon” shredded after it was auctioned in 2018 for $1.4 million—just a bit more than Art made during its first full week of previews.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "However, some may be just as happy watching the famed video of Banskey's 'Girl With Balloon' shredded after it was auctioned in 2018 for $1.4 million",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt praises design elements but suggests audiences might find equal value in watching a YouTube video instead of paying Broadway prices, indicating lukewarm recommendation at best. | GPT-4o: The excerpt provides some praise for the scenic design and lighting, suggesting the show is 'nudged toward entertaining'. However, the comparison to watching a video of a shredded artwork implies a lack of strong recommendation. The single excerpt and lack of full context lead to a low confidence mixed verdict. | Gemini: The review acknowledges some positive aspects like the scenic design and lighting but also suggests that some might find other things more entertaining, indicating a mixed overall impression. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:05:15.049Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "No spoilers here, but that ending and the way the ending is phrased and treated (like a soap opera cliffhanger) instead of feeling real and raw, which I am sure was the intention, feels rushed and horribly exploitative. It struck this critic later that this ending is how the play may have more effectively begun from before peeling the layers away from this 'American Son' and his parents' marriage, and the police brutality and racism the play seeks to skewer and impeach.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "that ending feels rushed and horribly exploitative",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes the play's ending as 'rushed and horribly exploitative' and suggests structural problems, but this is only one excerpt so the full verdict may be different. | GPT-4o: The excerpt criticizes the ending as 'rushed and horribly exploitative,' suggesting a negative impression. The lack of positive elements in the excerpt supports a negative classification. | Gemini: The review excerpt expresses strong disappointment with the ending, calling it \"rushed and horribly exploitative.\" Given the single excerpt and negative tone, I'm scoring it as negative with low confidence. | Kimi: The excerpt delivers harsh criticism of the play's ending as 'horribly exploitative' and structurally deficient, indicating a negative overall verdict despite the limited available context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:38:27.172Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

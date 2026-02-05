@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "To showcase and to dissect always are tricky, twin ambitions for any jukebox show, and I think the main problem with “Wonderful World” is that it worries too much about the latter, which gets in the way of fully delivering the former. The show, which organizes itself around Armstrong’s career-defining travels from New Orleans to Chicago to Hollywood to New York, has a whole lot of biographical information to deliver and it’s a very heavy load, especially in Act 2, w",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-WONDERFUL-WORLD-Opens-On-Broadway-20241111",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I think the main problem with 'Wonderful World' is that it worries too much about the latter, which gets in the way of fully delivering the former.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt identifies 'main problem' and criticizes the show's execution of its biographical material as 'a very heavy load,' suggesting significant issues. However, it acknowledges the show's 'twin ambitions' without outright dismissing it. Single excerpt with truncated text warrants low confidence. | GPT-4o: The excerpt suggests a mixed review, highlighting an imbalance between showcasing and dissecting. The critique of the show's focus implies it doesn't fully succeed in its ambitions, leading to a mixed verdict. Confidence is low due to the single excerpt warning. | Gemini: The review excerpt suggests the show struggles to balance showcasing Armstrong's music with dissecting his life, indicating a mixed experience. The phrase \"gets in the way\" suggests a significant drawback. | Kimi: The critic identifies a fundamental structural flaw, stating the show worries too much about dissecting rather than showcasing, resulting in a 'very heavy load' of biographical information that hampers the production. Confidence is low due to the availability of only a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:53:15.262Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

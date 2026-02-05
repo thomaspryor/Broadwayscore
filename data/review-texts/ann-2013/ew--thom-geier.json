@@ -14,5 +14,60 @@
   "bwwScore": 7,
   "contentTier": "excerpt",
   "playbillVerdictUrl": "http://www.ew.com/article/2015/10/27/sylvia-ew-stage-review",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She commands the stage with authority as big as Texas itself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses entirely on praising Holland Taylor's transformative and commanding performance. However, with only one curated quote available, this may not represent the full review verdict. | GPT-4o: The excerpt praises the performer's commanding presence, suggesting a positive view of her performance. However, the text is limited and lacks a full verdict, leading to a low confidence score. | Gemini: The review excerpt focuses on praising the performer's stage presence and authority, suggesting a positive but not overwhelmingly enthusiastic recommendation. The single excerpt and lack of overall verdict information lead to a lower confidence score. | Kimi: The excerpt delivers strong praise for Taylor's stage presence ('commands the stage with authority') that outweighs the qualified criticism of her writing. Following single-excerpt protocol for clearly positive curated quotes, assigned upper-range Positive score with reduced confidence due to limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:58:18.451Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

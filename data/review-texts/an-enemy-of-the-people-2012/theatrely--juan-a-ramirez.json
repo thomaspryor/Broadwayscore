@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "Because, how quickly the audience turned on the people interrupting their night out, enjoying their favorite star from the ostensibly anti-capitalist Succession. And, in an evening marked by performativity on both sides of the limelight, how unbelievably corny of the production to make Strong angrily toss leftover shot glasses into a trash pile after the town hall scene, as if to implicate and condemn the audience for having drank during his trials.",
   "bwwScore": 4,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 47,
+  "llmScore": {
+    "score": 47,
+    "confidence": "medium",
+    "range": {
+      "low": 42,
+      "high": 52
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "how unbelievably corny of the production to make Strong angrily toss leftover shot glasses into a trash pile",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | GPT-4o: The excerpt criticizes the production's choices as 'unbelievably corny' and suggests a performative nature, indicating a mixed reception. However, with only one excerpt, the full sentiment is unclear, leading to a low confidence score. | Gemini: The excerpt expresses disappointment with a specific production choice, calling it \"unbelievably corny.\" Given the single excerpt and negative tone, I'm placing it in the negative bucket with low confidence. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:48:50.962Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "American Son has power behind it: Shonda Rhimes, Jada Pinkett Smith, Dwayne Wade, and the show's star, Kerry Washington, are on its long, glittery list of producers. It has its serious sights set on a subject of indisputable tragic weight: the unjustifiable killing of unarmed black men in America by unaccountable police officers. It also has a contrived, TV-ish script peopled by one-note characters and peppered with amateurish flourishes. Its playwright, Christopher Demos-Brown, a writer and lawyer who runs a practice in Miami, seems to be positioning himself as a kind of John Grisham for the stage, and its director, Kenny Leon, can't push the material past its inherent paperback flatness. Derek McLane's bulky, photo-real Miami police-station set, with real rain falling outside the upstage windows, tells us all we need to know about tone: There's nothing remotely theatrical about this play, no reason for it to be a play at all - save that we retain a kind of anxious cultural cachet about drama. Putting something on stage seems to aggrandize it, make it more serious-minded and more luxurious, closer to opera than Netflix. But the truth is that contemporary plays like American Son are simply imitations of the shows on Netflix-or, in this case, NBC-and pale ones at that, because unlike our age's spate of fascinating television, these plays want to be something they're not. They neither take joy in the possibilities of their own form nor respect its demands.",
   "bwwScore": 2,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 29,
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 24,
+      "high": 34
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's nothing remotely theatrical about this play, no reason for it to be a play at all.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The critic systematically dismantles the production, calling the script 'contrived' and 'TV-ish' with 'one-note characters,' criticizing the direction as unable to overcome the material's 'paperback flatness,' and concluding there's no theatrical justification for its existence. This is a clear negative recommendation despite acknowledging the serious subject matter. | GPT-4o: The review criticizes the play's script, characters, and lack of theatricality, suggesting it fails to justify its existence as a stage play. The tone is strongly negative, indicating a pan. | Gemini: The review is largely negative, criticizing the script, direction, and overall theatricality of the play. The critic finds it to be a pale imitation of television, lacking the joy and respect for its own form. | Kimi: The critic delivers a fundamental rejection of the work's theatrical validity, condemning the script as contrived and amateurish, the direction as flat, and concluding it is merely a pale imitation of television with no reason to exist as a play. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:41:51.348Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 18,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

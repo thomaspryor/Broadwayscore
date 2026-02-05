@@ -14,5 +14,60 @@
   "bwwScore": 6,
   "contentTier": "excerpt",
   "playbillVerdictUrl": "http://www.newsday.com/entertainment/theater/sylvia-review-spectacular-annaleigh-ashford-matthew-broderick-in-broadway-s-anthropomorphic-love-1.11012881",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308",
+  "assignedScore": 51,
+  "llmScore": {
+    "score": 51,
+    "confidence": "medium",
+    "range": {
+      "low": 46,
+      "high": 56
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Otherwise, this trip does not feel necessary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The excerpt ends with 'this trip does not feel necessary,' suggesting the critic finds the Broadway production lacking in purpose or impact, despite acknowledging it's tour-ready. Single excerpt limits confidence. | GPT-4o: The excerpt suggests the production lacks necessity and implies it is not a must-see. The mention of a 'fresh from Broadway' label for marketing suggests it might be more about commercial appeal than artistic necessity. However, with only one excerpt, the confidence is low. | Gemini: The review states the production \"does not feel necessary,\" suggesting a mixed or slightly negative sentiment. Given the limited excerpt, I've placed it in the middle of the Mixed bucket. | Kimi: The critic dismisses the Broadway run as commercially motivated rather than artistically necessary, suggesting the production is better suited for touring and lacks compelling reason to be on Broadway. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:58:52.553Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 40,
+    "geminiScore": 60,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

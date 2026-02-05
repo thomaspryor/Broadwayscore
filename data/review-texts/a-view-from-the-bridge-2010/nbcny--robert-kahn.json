@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The latest revival of 'A View From the Bridge' -- the Arthur Miller play is having its third Broadway outing in 18 years -- will be noted for its stark set, ghostly sound effects and mesmerizing performance by Mark Strong, as the conflicted Italian-American longshoreman Eddie Carbone...'Bridge' steadily builds anxiety, because of its performances, surely, but also due to a ceaseless humming that reminds you of being at the movies when a subway passes nearby ... though here, the rumbling never stops...This production hangs on the performance by Strong, who acts with his entire lanky body and nimbly moves between rationality and psychosis. Is he in control of his incestuous feelings, or do they control him?",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production hangs on the performance by Strong, who acts with his entire lanky body and nimbly moves between rationality and psychosis.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises Mark Strong's 'mesmerizing performance' and highlights effective production elements like set design and sound. However, this is only a curated excerpt, so confidence is low - the full review's verdict may differ. | GPT-4o: The excerpt praises the production's set, sound effects, and particularly Mark Strong's performance. However, due to the single excerpt warning, the confidence is low, and the score is at the upper end of the Positive range. | Gemini: The review highlights a 'mesmerizing performance' by Mark Strong and notes the play 'steadily builds anxiety.' While the review focuses heavily on Strong's performance, it still indicates a positive experience overall, though the single excerpt limits confidence. | Kimi: The excerpt offers strong praise for Mark Strong's 'mesmerizing' performance and effective production elements (stark set, ghostly sound effects), indicating a clear recommendation. Per the single-excerpt instructions, the clearly positive tone warrants the upper end of the Positive bucket, though confidence is limited by the lack of full text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:47:49.509Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

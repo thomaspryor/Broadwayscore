@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "As for how this production judges Joe, it's hard to ignore that Letts bears an eerie resemblance to capitalist warmonger and former Vice President Dick Cheney. Yet even as Joe is careening toward his inevitable fall, he never loses our sympathy. It seems selfish to want to see Letts do more and more stage roles when he could be writing more plays like August: Osage County and Mary Page Marlowe. But he's so spectacular in All My Sons-even in the simple, speechless act of reading a letter-that you",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But he's so spectacular in All My Sons-even in the simple, speechless act of reading a letter-that you",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt praises Letts as 'spectacular' and expresses desire to see him in more stage roles, indicating strong positive assessment despite the text being cut off mid-sentence. | GPT-4o: The excerpt praises Letts' performance as 'spectacular' and expresses a desire to see him in more stage roles, indicating a strong positive sentiment. However, due to the single excerpt warning, the confidence is low. | Gemini: The review praises Letts' performance as \"spectacular\" and notes that even as the character is \"careening toward his inevitable fall, he never loses our sympathy.\" This suggests a strong positive assessment of the production, despite the limited excerpt. | Kimi: The excerpt contains effusive praise for Tracy Letts' performance, describing it as 'spectacular' and suggesting the actor is so compelling that he rivals his own acclaim as a playwright. However, as a single truncated excerpt focused on one cast member, confidence is reduced per the provided warnings.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:12:47.732Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

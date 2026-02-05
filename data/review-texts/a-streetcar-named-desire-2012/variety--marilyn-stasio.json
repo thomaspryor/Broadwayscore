@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Nicole Ari Parker, Blair Underwood and Daphne Rubin-Vega, the stars of Emily Mann's striking production of \"A Streetcar Named Desire,\" offer no subtle psychological insights into Blanche, Stanley and Stella. But the physical beauty and sexual magnetism they bring to these iconic characters would surely delight Tennessee Williams -- along with auds who might appreciate some kicks with their culture. The only downside to the production coup of looking good (witness the han",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STREETCAR-NAMED-DESIRE-Returns-to-Broadway-Updating-LIVE-20120422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The physical beauty and sexual magnetism they bring to these iconic characters would surely delight Tennessee Williams -- along with auds who might appreciate some kicks with their culture.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the striking production and acknowledges the stars' physical appeal and magnetism would delight both Williams and audiences, but notes they offer no subtle psychological insights. The text is clearly truncated mid-sentence, limiting confidence in the full verdict. | GPT-4o: The excerpt praises the physical and sexual appeal of the performances, suggesting a positive experience despite a lack of psychological depth. The single excerpt warning suggests using the upper end of the Positive bucket. | Gemini: The review praises the actors' physical beauty and sexual magnetism, suggesting it would delight Tennessee Williams and audiences. However, it also notes the lack of subtle psychological insights, indicating a reservation. | Kimi: Single excerpt suggests a qualified recommendation: praises the production's visual appeal and sexual magnetism while criticizing the lack of psychological depth, with truncated text warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:42:58.574Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

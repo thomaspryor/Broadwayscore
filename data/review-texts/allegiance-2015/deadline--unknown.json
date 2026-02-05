@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The score by Marc Acito, Jay Kuo and Lorenzo Thione (book) and Kuo (music) struck me on first hearing as more imitation than original. Case in point, Kei's late Act I 'Higher,' which gives Salonga a showcase for her still-rich pipes but is so generic it lacks any emotional punch. Validation is hardly the worst crime a show can commit, and I think that's one reason the audience was cheering at the very moving end of the show. It's a triumph of a rare sort, shedding light in a dark corner of our history with uncommon generosity of spirit.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-George-Takei-Lea-Salonga-Telly-Leung-on-Broadway-in-ALLEGIANCE-20151109"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-George-Takei-Lea-Salonga-Telly-Leung-on-Broadway-in-ALLEGIANCE-20151109",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a triumph of a rare sort, shedding light in a dark corner of our history with uncommon generosity of spirit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic acknowledges flaws (generic score, imitative music) but concludes it's 'a triumph' and explains why the audience was moved. Single excerpt warning applies - this positive conclusion may not represent the full review's balance of criticism to praise. | GPT-4o: The review acknowledges some weaknesses in the music but ultimately describes the show as a 'triumph' with a moving conclusion, suggesting a positive overall verdict despite some reservations. | Gemini: Despite some reservations about the score's originality, the review concludes with a positive statement, calling it a 'triumph' and praising its generosity of spirit. Given the single excerpt, I'm scoring it as positive but with low confidence. | Kimi: While the critic finds the score generic and imitative with songs that 'lack emotional punch,' the final verdict strongly recommends the show as 'a triumph' due to its moving ending and generous spirit, suggesting the overall experience transcends its musical flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:16:50.104Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

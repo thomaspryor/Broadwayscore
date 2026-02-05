@@ -12,5 +12,60 @@
   "bwwExcerpt": "The production truly works best in the town meeting sequence, in which the doctor struggles to communicate his findings to the community. Audience members feel as if they are at the pub where the scene is taking place, with many invited to sit onstage and the rest offered complimentary shots of liquor. The scene also concludes with an act of mob violence (in which ice buckets are poured upon the doctor). It all makes for great environmental theater – and the unexpected addition of the climate change protesters must have made for a rowdy, on-point addition.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It all makes for great environmental theater – and the unexpected addition of the climate change protesters must have made for a rowdy, on-point addition.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on one sequence that 'truly works best' and praises it as 'great environmental theater.' However, the phrase 'works best' implies other parts work less well, and this is only a curated excerpt that may not reflect the full review sentiment. | GPT-4o: The excerpt highlights a particularly effective and immersive scene, describing it as 'great environmental theater.' The positive tone and specific praise suggest a strong recommendation, though the single excerpt limits confidence. | Gemini: The review excerpt highlights a specific scene as \"great environmental theater\" and notes the positive impact of climate change protesters, suggesting a positive but limited endorsement. Given the single excerpt, confidence is low. | Kimi: Single excerpt praises the town meeting sequence as 'great environmental theater' with enthusiastic descriptions of the immersive staging, though the caveat that this is where it 'truly works best' suggests other elements may be less successful. Scored at upper end of Positive range per single-excerpt protocol.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:45:08.997Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

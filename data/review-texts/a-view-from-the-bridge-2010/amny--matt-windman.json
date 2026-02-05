@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Hove takes a scalpel-edged, stripped-down yet over-the-top approach that drains the play of its naturalistic flavor...But what really hurts the two-hour production is Hove's never-ending use of an unsettling, dirge-like soundscape, which interrupts the dialogue and is often disconnected from the storytelling. It is most effective at the play's brutal climax, which also contains a splashy visual feat. Mark Strong conveys Eddie's inner torment with a quiet intensity...For the record, this production received big raves in London, and I'm sure that many people here will be similarly turned on by it. But by the same token, I suspect that plenty of others will find it pretentious and obnoxious.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I suspect that plenty of others will find it pretentious and obnoxious.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic identifies significant production issues (problematic soundscape, drained naturalistic flavor) while acknowledging strong acting and visual elements. The explicit acknowledgment that audiences will be divided, combined with personal reservations, places this in mixed territory. | GPT-4o: The review highlights both positive and negative aspects. While Mark Strong's performance is praised, the production's soundscape and approach are criticized. The critic acknowledges that opinions will be divided, indicating a mixed reception. | Gemini: The review expresses mixed feelings, praising Strong's performance but criticizing the soundscape and overall approach. It acknowledges positive reception elsewhere but anticipates mixed reactions in the current context. | Kimi: The critic acknowledges Mark Strong's performance and an effective climax but emphasizes significant directorial flaws that 'hurt' the production, ultimately suggesting the show will polarize audiences between those 'turned on by it' and those finding it 'pretentious and obnoxious.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:46:23.967Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

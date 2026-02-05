@@ -12,5 +12,54 @@
   "bwwExcerpt": "Benjamin Walker is toned and resplendent in his tighty whities...his fiancée, played with hilarious archness by Heléne Yorke...The second act flags...but the score is strong...Duncan Sheik's synthesizer-heavy music - radical by Broadway standards...finally delivers a worthy follow-up to his 'Spring Awakening.' A comic 'American Psycho' you can dance to? Somehow, it works.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting second act issues, the critic concludes positively with 'Somehow, it works' and praises the strong score and Duncan Sheik's worthy follow-up to Spring Awakening. Single excerpt context suggests cherry-picked positive elements, warranting upper-positive range. | GPT-4o: The excerpt praises the performances and music, noting that it 'works' despite some issues with the second act. The positive tone is clear but not overwhelmingly enthusiastic, suggesting a mild recommendation. | Gemini: The review praises the lead actor, a supporting actress, and the score, while noting that the second act flags. The final verdict is positive ('Somehow, it works.'). | Kimi: The excerpt offers clear praise for the performances and Duncan Sheik's score, calling it a worthy follow-up to Spring Awakening, and concludes the show 'works' despite noting second act pacing issues.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:36:47.470Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

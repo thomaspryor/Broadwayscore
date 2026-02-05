@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Nick Payne's family drama has garnered a lot of attention because it marks Jake Gyllenhaal's New York theater debut. Spoiler alert: He and his English accent are perfectly fine…but the actors can't conceal the fact that they're playing clichés thrown into overly familiar situations. You can over-direct this Family Dysfunction 101 class all you want, but it just looks like someone wearing clothes three sizes too big.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-IF-THERE-IS-I-HAVENT-FOUND-IT-YET-Starring-Jake-Gyllenhaal-and-Annie-Funke-All-the-Reviews-20120921",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You can over-direct this Family Dysfunction 101 class all you want, but it just looks like someone wearing clothes three sizes too big.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: While acknowledging Gyllenhaal's competent performance, the critic finds the play filled with clichés and overly familiar situations, using dismissive imagery to describe the production's fundamental flaws. | GPT-4o: The review criticizes the play for its clichéd characters and overly familiar situations, suggesting a negative view despite acknowledging Gyllenhaal's performance as 'perfectly fine'. The single excerpt limits confidence. | Gemini: The review states that the actors are playing clichés and the situation is overly familiar, indicating a negative assessment of the play itself despite the praise for Gyllenhaal. The comparison to 'clothes three sizes too big' further reinforces this negative sentiment. | Kimi: While acknowledging Jake Gyllenhaal's performance as 'perfectly fine,' the critic heavily criticizes the clichéd writing and ineffective staging, indicating the production fails to overcome its familiar material. Confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:00:09.459Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

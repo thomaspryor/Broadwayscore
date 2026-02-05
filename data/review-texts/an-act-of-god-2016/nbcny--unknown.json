@@ -11,5 +11,59 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Hayes, who kept us in stitches as flighty pal Jack McFarland on NBC's \"Will & Grace,\" may not be \"infinity\" years old,\" as the script -- based on a Twitter feed by former \"Daily Show\" honcho David Javerbaum -- allows. But he isn't the young kid we remember from a TV sitcom, either. A touch of gray has crept into Hayes' hair. Forehead lines are visible when he furrows his brow. I'd normally stay clear of comment on a performer's physical traits, but there's a gravitas evident that's a help, here.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's a gravitas evident that's a help, here.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single excerpt with mild praise for Hayes' performance, noting his 'gravitas' as helpful. However, this is clearly a small portion of a larger review with uncertain overall verdict. | Gemini: The review focuses on Sean Hayes' performance and how his age adds gravitas to the role. While not overwhelmingly positive, it leans towards a positive assessment due to the mention of gravitas being a help. | Kimi: Single excerpt offers qualified praise for the performer's physical gravitas, but limited context and mild tone warrant lower-end Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:42:23.280Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

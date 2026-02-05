@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Director-choreographer Casey Nicholaw has fashioned a production that's undeniably colorful and often entertaining, but it's also overstuffed and overlong.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Director-choreographer Casey Nicholaw has fashioned a production that's undeniably colorful and often entertaining, but it's also overstuffed and overlong.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director-choreographer Casey Nicholaw has fashioned a production that's undeniably colorful and often entertaining, but it's also overstuffed and overlong.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic acknowledges entertainment value but balances it with significant criticisms (overstuffed, overlong). Single excerpt with both positive and negative elements suggests mixed reception. | GPT-4o: The excerpt provides both positive and negative elements, describing the production as 'colorful and often entertaining' but also 'overstuffed and overlong'. The mixed signals and the single excerpt warning suggest a cautious approach with a score in the middle of the Mixed range. | Gemini: The review excerpt indicates a positive but qualified recommendation, noting the production is \"colorful and often entertaining\" but also \"overstuffed and overlong.\" Given it's a single excerpt, I'm scoring at the lower end of the positive range. | Kimi: The excerpt offers qualified praise ('undeniably colorful,' 'often entertaining') but pairs it with significant structural criticisms ('overstuffed and overlong'), indicating a mild recommendation with reservations. As a single curated excerpt, the full verdict may differ. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:07:28.164Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }
