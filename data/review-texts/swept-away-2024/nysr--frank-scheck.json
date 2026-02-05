@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Despite its title, Swept Away is not a musicalization of the classic Lina Wertmuller film (or its abysmal Madonna-starring American remake). Rather, the show featuring the songs of the popular band The Avett Brothers is a dark, fable-like tale, inspired by a real event, about the fateful aftermath of a shipwreck. It’s strong stuff, and hardly the sort of musical for tourists simply looking for a fun time. But this superbly staged and acted production exerts a powerful, hypnotic force that demands attention and respect.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SWEPT-AWAY-Opens-On-Broadway-Featuring-the-Music-of-The-Avett-Brothers-20241119"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SWEPT-AWAY-Opens-On-Broadway-Featuring-the-Music-of-The-Avett-Brothers-20241119",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this superbly staged and acted production exerts a powerful, hypnotic force that demands attention and respect",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for staging, performances, and originality. The critic calls it 'one of the most original and audacious musicals of the season' and recommends it for those willing to accept challenging material, despite acknowledging it won't be for all tastes. | GPT-4o: The review praises the staging, acting, and music, noting the production's originality and audacity. Despite some reservations about characterizations and the book, the overall tone is positive, aligning with the 4/5 star rating. | Gemini: The review is overwhelmingly positive, praising the staging, acting, and music. The critic acknowledges it's not for everyone but ultimately recommends it as original and audacious. The 4/5 star rating also supports this. | Kimi: The critic awards 4/5 stars and delivers a final verdict calling the show 'one of the most original and audacious musicals of the season,' despite noting weaknesses in the book and characterization. Strong praise for the performances, staging, and music supports a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:04:20.246Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 78,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

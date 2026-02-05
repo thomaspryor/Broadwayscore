@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Decemberists' folk-rock concept album gets a stirring, if uneven, Broadway adaptation that showcases the power of ensemble storytelling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20251118094458",
   "archiveOrgUrl": "http://web.archive.org/web/20251118094458/https://variety.com/2024/legit/reviews/swept-away-review-broadway-musical-the-avett-brothers-1236208635/",
   "wordCount": 601,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's so much to recommend 'Swept Away' that it seems unkind, or even unfair, to call it a misfire.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic extensively praises music, performances, choreography, and design but finds the story fundamentally lacking. The opening acknowledges it's 'unkind' to call it a misfire despite many recommendations, and closes with audiences leaving 'hungry' for a satisfying story. | GPT-4o: The review praises the music, acting, and choreography but criticizes the story as lacking depth and not adequately exploring its themes. The overall tone suggests mixed feelings, with strong elements but a disappointing narrative. | Gemini: The review praises the music, acting, set design, and lighting, but criticizes the story as lacking depth and not adequately exploring its themes. The final verdict is mixed, suggesting enjoyment for some elements but disappointment with the narrative. | Kimi: The critic offers extensive praise for the Avett Brothers music, performances by the three leads, choreography, and design elements, calling them beautifully written, joyous, and masterful. While criticizing John Logan's book as lacking depth and a satisfying conclusion, the review explicitly recommends seeing the show for its auditory and visual strengths, stating audiences will be 'glad they did' despite leaving 'hungry' for a better story.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:05:03.976Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 77,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

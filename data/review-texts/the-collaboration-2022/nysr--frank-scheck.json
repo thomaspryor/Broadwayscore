@@ -21,5 +21,60 @@
   "showScoreExcerpt": "\"Though the writing is a letdown, 'The Collaboration' nonetheless proves entertaining, thanks to the colorful figures at its center and the superb acting.\"\n\nRead more",
   "bwwExcerpt": "Though the writing is a letdown, The Collaboration nonetheless proves entertaining, thanks to the colorful figures at its center and the superb acting. Bettany had the harder assignment of not caricaturing Warhol, even though by that point Warhol had already become a caricature of himself. He handles the task beautifully, avoiding excessively overt imitation and somehow managing to convey Warhol’s underlying Andrew Warhola. Pope ­— as much a star on the rise as the character he’s portraying, thanks to his Tony-nominated work in Choir Boy and Ain’t Too Proud and his acclaimed starring role in the film The Inspection — delivers a rivetingly physical, live-wire turn, exuding restless energy and speaking in a high-pitched voice that sounds like Michael Jackson. The two actors’ mesmerizing turns, soon to be repeated in a film adaptation of the play, are, as the old saying goes, worth the price of admission alone.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Paul-Bettany-Jeremy-Pope-Star-In-THE-COLLABORATION-On-Broadway-20221220"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Paul-Bettany-Jeremy-Pope-Star-In-THE-COLLABORATION-On-Broadway-20221220",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Collaboration nonetheless proves entertaining, thanks to the colorful figures at its center and the superb acting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 3/5 stars with clear praise for the lead performances as 'worth the price of admission alone' despite acknowledging the writing is disappointing. The entertainment value and superb acting outweigh the script issues for a positive recommendation. | GPT-4o: The review acknowledges flaws in the writing but highlights the superb acting and entertainment value, aligning with a 3/5 star rating. The positive emphasis on performances supports a solid recommendation. | Gemini: Despite the writing being a letdown, the critic says the play is entertaining due to the acting, and that the actors' turns are worth the price of admission alone. The 3/5 stars also indicates a positive, but not rave, review. | Kimi: The critic awards 3/5 stars and offers a qualified recommendation, praising the 'superb acting' as 'worth the price of admission alone' while criticizing the writing as 'a letdown.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:14:10.132Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 78,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

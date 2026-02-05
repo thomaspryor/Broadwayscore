@@ -36,5 +36,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "In some ways, the delicacy of The Height of the Storm is its strength - in the opportunity it offers for powerful actors to work with small brushes, and in the notable and refreshing absence of rage and resentment from its central characters. But this gauziness of tone also keeps the play from feeling intellectually or emotionally filling. It feels, to use the French, like an étude - a chance for performers to play briefly, and at times movingly, on certain themes, but without much ultimate sense of consequence.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Jonathan-Pryce-Eileen-Atkins-Star-In-THE-HEIGHT-OF-THE-STORM-See-What-The-Critics-Are-Saying-20190924"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Jonathan-Pryce-Eileen-Atkins-Star-In-THE-HEIGHT-OF-THE-STORM-See-What-The-Critics-Are-Saying-20190924",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It feels, to use the French, like an étude — a chance for performers to play briefly, and at times movingly, on certain themes, but without much ultimate sense of consequence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds the play intellectually and emotionally unfilling with dangling threads and coy ambiguity, but praises Eileen Atkins as 'absolutely wonderful' and the final duet as 'truly and deeply touching.' Neither recommends nor discourages - classic mixed review. | GPT-4o: The review praises the performances, especially Eileen Atkins, but criticizes the play's lack of substance and coherence. The overall tone is mixed, appreciating certain elements while finding the play ultimately unsatisfying. | Gemini: The review praises the performances, especially Eileen Atkins, but finds the play itself intellectually and emotionally lacking, calling it an \"étude\" and noting its ambiguity. | Kimi: While praising Eileen Atkins's performance as the production's saving grace and acknowledging moments of touching delicacy, the critic finds Florian Zeller's play wispy, intellectually insubstantial, and lacking ultimate consequence, describing it as a slight étude rather than a fully satisfying drama.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:22:10.617Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

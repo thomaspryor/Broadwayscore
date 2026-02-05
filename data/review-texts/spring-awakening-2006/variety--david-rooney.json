@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This electrifying musical about teenage sexual awakening in 19th-century Germany crackles with raw energy and emotional authenticity that makes it feel utterly contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -60,5 +60,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--charles-isherwood.json",
   "wordCount": 945,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For anyone weary of pedestrian screen-to-stage adaptations or cut-and-paste jukebox assemblies, the arrival on Broadway of a truly original new musical like 'Spring Awakening' is exhilarating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Consistent praise throughout with words like 'exhilarating,' 'striking,' 'captivating,' and 'seductive.' The critic acknowledges it's 'by no means flawless' but calls it 'lovely and lyrical' with 'superb results' and describes multiple elements as gorgeous or magical. | GPT-4o: The review is filled with superlatives and praises the production's originality, depth, and execution. It highlights the show's authenticity, emotional impact, and the successful adaptation from its previous run, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the originality, performances, direction, and music. The critic calls it a \"truly original new musical\" and notes that the show has deepened considerably since its earlier run. | Kimi: The review is unambiguously ecstatic, praising the score, direction, performances and design as a cohesive artistic achievement, using words like 'exhilarating,' 'transfixing,' and 'richly satisfying' with only minor caveats about marketing challenges.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:55:10.147Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

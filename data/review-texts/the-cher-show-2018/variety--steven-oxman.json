@@ -40,5 +40,59 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
   "rejectionReasoning": "openai: The review is about the pre-Broadway version of 'The Cher Show' in Chicago, not the current Broadway run.; kimi: This review explicitly covers the pre-Broadway production premiering in Chicago ('In its pre-Broadway version premiering in Chicago'), not the current Broadway run.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's funny but not that funny, clever but never interesting, and although it depicts Cher's ability to go bigger and bolder, the show itself maintains a respectful tameness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review consistently balances positive and negative elements throughout, praising individual performances and costumes while criticizing the book's lack of focus and the show's inability to fully capture Cher's boldness. The critic's final assessment suggests it will appeal primarily to devoted fans rather than general audiences. | Gemini: The review is mixed, praising aspects like the costumes and capturing Cher's personality, but also noting that the show \"sings but doesn’t soar\" and lacks a consistent thrust. It seems to appeal primarily to adoring fans, suggesting a mixed recommendation. | Kimi: While praising Bob Mackie's costumes and the performers' vocal abilities, the critic finds the book thematically vague, the second act narratively unfocused, and the overall production 'respectfully tame' rather than genuinely entertaining, suggesting limited appeal beyond existing Cher fans.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:12:31.845Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

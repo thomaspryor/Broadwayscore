@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "There is something to be said, musical comedy-wise, in leaving the answer ambiguous so that viewers can puzzle it out for themselves. The overriding flaw in Tammy Faye is that the creators seem content to jump from satire to morality tale, from Tammy-the-charlatan with her friendly proctologist to Tammy the AIDS crusader, with no clear aim other than to maximize audience response moment by moment.",
   "bwwScore": 2,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-TAMMY-FAYE-Opens-On-Broadway-20241114"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-TAMMY-FAYE-Opens-On-Broadway-20241114",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The overriding flaw in Tammy Faye is that the creators seem content to jump from satire to morality tale, from Tammy-the-charlatan with her friendly proctologist to Tammy the AIDS crusader, with no clear aim other than to maximize audience response moment by moment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The 2/5 star rating indicates a negative review. The excerpt criticizes the show's fundamental lack of coherent vision, calling it the 'overriding flaw.' However, confidence is low due to having only one excerpt from what may be a longer review. | GPT-4o: The review criticizes the show for lacking a clear aim and coherence, jumping between tones without purpose. The 2/5 star rating supports a negative classification. | Gemini: The review excerpt suggests a lack of clear direction and purpose, indicating a negative assessment. Given the 2/5 star rating, this falls into the negative bucket. | Kimi: The 2/5 star rating and identification of an 'overriding flaw' regarding tonal inconsistency indicate a negative verdict. Limited to a single excerpt, the full review context is unavailable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:06:34.635Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

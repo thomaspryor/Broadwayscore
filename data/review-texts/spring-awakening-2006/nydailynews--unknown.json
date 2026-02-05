@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20221204082155/https://www.nydailynews.com/entertainment/theater-arts/deaf-west-delivers-winning-spring-awakening-broadway-article-1.2373093",
   "contentTier": "complete",
   "wordCount": 388,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In Deaf West's exhilarating reboot of the moody and stirring 2007 Tony winner, the repressed and rudderless kids are lifting more than their voices.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language throughout ('exhilarating reboot', 'devastates', 'very impressive', 'announces himself as a director in a big way') with enthusiastic praise for performances, direction, and the innovative ASL integration. Final line 'it's good to have it back' confirms recommendation. | GPT-4o: The review is filled with superlatives and praise for the production, performances, and direction. The use of 'exhilarating reboot' and 'casting a whole new spell' indicates a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the innovative use of sign language, the performances, and the direction. The critic clearly recommends seeing the show, calling it \"exhilarating\" and \"good to have it back.\" | Kimi: The review offers unqualified praise for the production's innovative integration of ASL, performances, and direction, calling it 'exhilarating' and concluding 'it's good to have it back' with no significant reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:54:41.588Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

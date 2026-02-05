@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Mendes has pulled marvelous performances from them all, and protean contributions from his production team. The scenery by Rob Howell-of Matilda-is almost overpowering, with the farmhouse kitchen monopolized by a staircase which seems to go up into infinity. Howell's costumes are equally impressive, with eons of Irish dirt, mud and bog baked in. The exceptional lighting comes courtesy of Peter Mumford, while sound and incidental music are provided by Nick Powell. Melissa",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-The-Critics-Think-of-THE-FERRYMAN-on-Broadway-20181022"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-The-Critics-Think-of-THE-FERRYMAN-on-Broadway-20181022",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mendes has pulled marvelous performances from them all, and protean contributions from his production team.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: 5/5 stars with enthusiastic praise for direction, performances, and all production elements. Single excerpt warning noted, but the superlative language ('marvelous', 'protean', 'exceptional') combined with perfect rating indicates strong positive recommendation. | GPT-4o: The excerpt praises the performances and production elements with strong positive language. The original 5/5 star rating suggests a highly favorable review, supporting a score in the Rave range. | Gemini: The review excerpt praises the performances and production team, and the original rating is 5/5 stars. Given the limited text, I'm placing it at the high end of the positive bucket. | Kimi: The excerpt offers unqualified praise ('marvelous', 'exceptional', 'impressive') matching the critic's 5/5 star rating. However, per the single-excerpt warning, the score is capped at the upper end of the Positive bucket (84) given the risk of cherry-picking, with low confidence due to limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:18:34.736Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 84,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

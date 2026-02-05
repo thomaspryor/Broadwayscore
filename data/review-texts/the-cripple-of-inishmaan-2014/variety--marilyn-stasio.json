@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Daniel Radcliffe gives a performance of surprising emotional depth and complexity as Billy Claven, the disabled young man whose yearning to escape his narrow island existence drives this darkly comic play.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -74,5 +74,60 @@
   "sourceMethod": "brightdata",
   "wordCount": 976,
   "tierReason": "Full review text",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "director Michael Grandage's sterling production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Consistent praise throughout for Radcliffe's 'warm, sensitive performance,' Grandage's 'sterling production,' and an 'excellent cast.' While the review focuses heavily on plot and character analysis, the evaluative language is consistently positive with no significant reservations expressed. | GPT-4o: The review is filled with superlatives and praises the production, performances, and direction highly. It describes the show as a 'sterling production' and highlights the strong performances, particularly of Daniel Radcliffe and the supporting cast, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and overall production quality. The critic uses terms like \"excellent cast\" and \"sterling production,\" indicating a strong recommendation. | Kimi: The review offers unqualified praise for Daniel Radcliffe's lead performance and the supporting ensemble, using superlatives like 'sterling,' 'sublime,' and 'extraordinary' for the direction, design, and McDonagh's play itself with no reservations mentioned. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:16:38.920Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

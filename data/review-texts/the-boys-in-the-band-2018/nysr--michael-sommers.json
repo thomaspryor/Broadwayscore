@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2018/05/31/the-boys-in-the-band-50-shades-of-gay/",
   "bwwExcerpt": "A long-running Off Broadway sensation in 1968 and then a controversial film (featuring its original stage actors) in 1970, The Boys in the Band eventually was dismissed, in the bright light of latter-day social change, as a rather shady depiction of gay men. Thanks to its excellent new Broadway production, which bowed tonight at the Booth Theatre, The Boys in the Band is revealed to be a trenchant period drama that dazzles contemporary viewers with a barrage of explosive laughs even as its smart",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-THE-BOYS-IN-THE-BAND-on-Broadway-20180531"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-THE-BOYS-IN-THE-BAND-on-Broadway-20180531",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Thanks to its excellent new Broadway production, The Boys in the Band is revealed to be a trenchant period drama that dazzles contemporary viewers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: The 5/5 star rating combined with consistent superlatives throughout ('excellent', 'dazzles', 'fiercely funny', 'terrific ensemble', 'splendid company') and unqualified praise for direction, performances, and production elements clearly indicates a rave review despite the truncated text. | GPT-4o: The review is overwhelmingly positive, praising the production as 'trenchant' and 'dazzling' with 'explosive laughs'. The original 5/5 star rating supports a high score in the Rave bucket. Despite the truncation warning, the provided text is strongly enthusiastic. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, using phrases like \"excellent\", \"trenchant\", \"dazzles\", and \"smart staging\". The critic also praises the performances and direction, indicating a strong recommendation. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:10:32.666Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

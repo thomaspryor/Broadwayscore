@@ -47,5 +47,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "Festivities are certainly in order for this superbly mounted 50th anniversary production of 'The Boys in the Band,' Mart Crowley's breakthrough 1968 play about Manhattan gay life - still largely underground in an era that preceded both Stonewall and AIDS.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-THE-BOYS-IN-THE-BAND-on-Broadway-20180531"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-THE-BOYS-IN-THE-BAND-on-Broadway-20180531",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Festivities are certainly in order for this superbly mounted 50th anniversary production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout with terms like 'superbly mounted,' enthusiastic about performances especially Parsons and Quinto, calls the production 'doubly welcome' and worth celebrating. Despite discussing the play's darker themes, the critic clearly recommends this revival. | GPT-4o: The review is filled with superlatives and praises the production, performances, and direction. The critic calls it 'superbly mounted' and highlights the strong performances, particularly Jim Parsons and Zachary Quinto, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and overall production quality. The critic explicitly states that the production is \"superbly mounted\" and \"doubly welcome.\" | Kimi: The critic consistently praises the ensemble performances (particularly Parsons and Quinto), Mantello's direction, and the design elements, using words like 'superbly mounted,' 'endearing,' and 'drolly regal' while clearly welcoming the revival as 'doubly welcome' despite acknowledging the play's dated aspects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:11:45.177Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

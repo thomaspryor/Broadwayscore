@@ -22,5 +22,60 @@
   "playbillVerdictUrl": "http://nystagereview.com/2019/09/24/the-height-of-the-storm-provocative-play-offers-master-class-in-acting/",
   "bwwExcerpt": "The Height of the Storm is a puzzle built on cobwebs, with a couple of puzzle-pieces purposely missing (or perhaps several pieces too many). This allows Zeller's play, like The Father, to succeed on its own terms, sending you out into the night (after eighty-odd minutes with no intermission) talking, thinking, considering and-yes-puzzling over the affair. But in any case, fully and totally engaged.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Jonathan-Pryce-Eileen-Atkins-Star-In-THE-HEIGHT-OF-THE-STORM-See-What-The-Critics-Are-Saying-20190924"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Jonathan-Pryce-Eileen-Atkins-Star-In-THE-HEIGHT-OF-THE-STORM-See-What-The-Critics-Are-Saying-20190924",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This allows Zeller's play, like The Father, to succeed on its own terms, sending you out into the night fully and totally engaged.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic gives 4/5 stars and concludes audiences will be 'fully and totally engaged,' praising the performances as 'wonderful' and 'magnificent.' Despite some structural complexity concerns, the overall assessment is clearly positive. | GPT-4o: The review praises the acting and the intriguing nature of the play, aligning with the 4/5 star rating. However, the text is truncated, and the final verdict may be missing, which affects confidence. | Gemini: The review is positive, highlighting the intriguing nature of the play and the strong performances, especially by Pryce and Atkins. The critic notes the play's puzzling nature but concludes that it leaves the audience \"fully and totally engaged.\" | Kimi: 4/5 star review with consistent praise for the lead performances ('wonderful', 'magnificent') and the play's intellectual engagement, finding it 'fully and totally engaging' despite minor reservations about the puzzle-like structure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:21:22.570Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

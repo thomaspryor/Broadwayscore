@@ -40,5 +40,59 @@
   "wordCount": 1129,
   "tierReason": "Full review text",
   "bwwExcerpt": "Now comes a new special on the menu: the ravishingly sung, deeply emotional and strangely hilarious “Sweeney” revival that opened on Sunday at the Lunt-Fontanne Theater. Starring Josh Groban and Annaleigh Ashford, and directed by Thomas Kail, it has a rictus on its face and a scar in its heart.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SWEENEY-TODD-Opens-on-Broadway-Updating-Live-20230326"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SWEENEY-TODD-Opens-on-Broadway-Updating-Live-20230326",
+  "assignedScore": 89,
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Now comes a new special on the menu: the ravishingly sung, deeply emotional and strangely hilarious 'Sweeney' revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Jesse Green delivers enthusiastic praise throughout, calling it 'ravishingly sung, deeply emotional and strangely hilarious' with 'glorious' performances. He praises virtually every element - Groban's vocals, Ashford's performance, Kail's direction, the design work, and the full Broadway treatment - positioning this as a triumphant revival that makes 'a convincing new case' for the show at Broadway scale. | Gemini: The review is overwhelmingly positive, praising the singing, emotional depth, and humor of the revival. The critic calls it \"ravishingly sung\" and highlights the excellent performances and production elements. | Kimi: The review offers extensive praise for the performances (Groban and Ashford), direction, and design, describing the production as 'ravishingly sung, deeply emotional and strangely hilarious' with only minor technical reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:03:23.315Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

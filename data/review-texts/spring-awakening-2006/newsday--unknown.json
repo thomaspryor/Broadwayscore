@@ -49,5 +49,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20151001021609/http://www.newsday.com:80/entertainment/theater/spring-awakening-review-deaf-culture-in-a-revelatory-rock-musical-1.10890858",
   "contentTier": "complete",
   "wordCount": 471,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The results are moving and both visually and musically impressive, if ultimately a bit repetitious.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic finds the production 'moving' and 'impressive' with clear appreciation for the unique ASL integration and performances, but notes it lacks the edge of the original and is 'repetitious.' This qualifies as a positive recommendation with notable reservations. | GPT-4o: The review acknowledges the production's impressive visual and musical elements, though it notes some repetitiveness and lacks the punch of the original. Overall, it suggests a positive experience with some reservations. | Gemini: The review acknowledges that this production doesn't quite reach the heights of the original, but it is still moving and impressive. The critic notes the power of the outsider-ness and communication crises, indicating a positive experience overall. | Kimi: The critic praises the production as moving and visually impressive while noting it lacks the punch and erotic edge of the original Broadway staging, resulting in a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:54:16.344Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

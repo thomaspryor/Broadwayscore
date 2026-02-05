@@ -9,12 +9,12 @@
   "isFullReview": true,
   "dtliExcerpt": "Lynn Nottage's Pulitzer Prize-winning drama about working-class Americans struggling with economic uncertainty and racial tensions is a powerful piece of theater that speaks directly to our current national mood.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": "Nottage wrote \"Sweat\" after extensive interviews with people in Reading, which accounts for the solid character work and stretches of realistic dialogue. The plot is less successful for trying to cover every conceivable labor issue, from the failure of collective bargaining and the ultimate collapse of the trade unions to the toll on company towns when the local factory, coal mine or steel mill goes under. But credit the writer for giving many forgotten Americans a voice.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SWEAT-Drips-Onto-Broadway-Updating-Live-20170326",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
   "showScoreExcerpt": "Lynn Nottage's Pulitzer Prize-winning drama about working-class Americans struggling with economic uncertainty and racial tensions is a powerful piece of theater that speaks directly to our current national mood.",
   "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
@@ -62,8 +62,59 @@
   ],
   "wordCount": 1048,
   "tierReason": "Full review text",
-  "sources": [
-    "web-search",
-    "bww-roundup"
-  ]
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lynn Nottage's Pulitzer Prize-winning drama about working-class Americans struggling with economic uncertainty and racial tensions is a powerful piece of theater that speaks directly to our current national mood.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive evaluation calling it 'powerful' theater with contemporary relevance. Single excerpt warning requires caution, but the language is definitively positive rather than mildly so. | GPT-4o: The excerpt uses strong positive language, calling the play 'powerful' and relevant to contemporary issues. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The excerpt praises the play as a \"powerful piece of theater\" that is relevant to the current national mood, indicating a positive recommendation. However, since it's a single excerpt, the confidence is low. | Kimi: The excerpt offers strong praise ('powerful piece of theater') and emphasizes the work's contemporary relevance, indicating a solid recommendation. However, as a single curated excerpt, the confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:58:36.450Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 85,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

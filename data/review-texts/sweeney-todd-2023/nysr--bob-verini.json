@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Many fine productions, large-scale or intimate, have sauntered their way up and down Fleet Street since Hugh Wheeler’s book and Sondheim’s score premiered in 1979 in Harold Prince’s acclaimed staging. But the current revival at the Lunt-Fontanne is a thing apart. Thomas Kail, director of that latter-day groundbreaker Hamilton, has assembled all the pieces needed for what Sondheim himself finally summed up as “a movie for the stage.” The result is something both",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SWEENEY-TODD-Opens-on-Broadway-Updating-Live-20230326"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SWEENEY-TODD-Opens-on-Broadway-Updating-Live-20230326",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is something both sumptuous and terrifying, truly a Sweeney Todd for the ages.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with extraordinary praise throughout. Calls it 'a thing apart,' 'truly a Sweeney Todd for the ages,' praises every element from direction to performances to design with superlatives like 'dazzling' and 'outstanding.' No reservations expressed. | GPT-4o: The review is filled with superlative praise for the production, performances, and direction, describing it as 'sumptuous and terrifying' and 'a Sweeney Todd for the ages.' The original 5/5 stars rating supports a high score in the Rave bucket. Despite the truncation warning, the available text strongly indicates a rave review. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, using superlatives like \"masterpiece\", \"sumptuous and terrifying\", and praising all aspects of the production. The 5/5 star rating further supports a Rave classification. | Kimi: The review awards 5/5 stars and offers unqualified praise, calling the production 'a thing apart' and 'for the ages' while lauding performances, design, and direction as superior to previous stagings.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:01:54.304Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

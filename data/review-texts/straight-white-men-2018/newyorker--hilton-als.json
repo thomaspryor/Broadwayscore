@@ -49,5 +49,59 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 1244,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is no heart in 'Straight White Men,' or not much of one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Despite being truncated, the review consistently criticizes the play as shallow, dishonest, and lacking the heart of Lee's previous work. The critic calls it 'soporific' and a disappointing departure, clearly not recommending it. | Gemini: The review is largely negative, criticizing the play as shallow, simplistic, and lacking the depth and passion of the playwright's previous work. While the text is truncated, the overall tone and specific criticisms point to a negative assessment. | Kimi: The critic delivers a scathing assessment of Lee's Broadway debut as shallow and dishonest, finding it a 'simplistic morality play' lacking the heart and authenticity of her previous work, despite the cast's committed performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T03:56:03.630Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

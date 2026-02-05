@@ -22,5 +22,60 @@
   "playbillVerdictUrl": "https://nystagereview.com/2019/10/01/the-great-society-a-leader-in-shades-of-gray-in-another-troubled-time/",
   "bwwExcerpt": "Like its Broadway predecessor of 2014, which detailed Johnson's first year in office and subsequent election as President in his own right, The Great Society is again directed by Bill Rauch, employs a relatively large ensemble of 19 actors to portray more than 50 statesmen and personalities of the era, and covers a vast amount of American history within a nearly three hour-long production. Probably much too much history, as it turns out. Opening on Tuesday at the Vivian Beaumont Theater, The Great Society eventually congeals into a ponderous drama in spite of the efforts of some excellent actors who do their damnedest to inject life and excitement into a series of woeful events.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-SOCIETY-Opens-On-Broadway-See-What-The-Critics-Think-20191001"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-SOCIETY-Opens-On-Broadway-See-What-The-Critics-Think-20191001",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Eventually congeals into a ponderous drama in spite of the efforts of some excellent actors.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars indicates mixed feelings. The review acknowledges the ambitious scope and praises ensemble work, but finds the production 'ponderous' and a 'downer,' with the lead performance lacking dynamism. Neither recommends nor discourages. | GPT-4o: The review highlights the play's ambitious scope and some strong performances but criticizes its overall execution as ponderous and lacking dynamism. The critic's 3/5 stars and mixed evaluation of performances and direction align with a 'Mixed' classification. | Gemini: The review is mixed, praising some actors but finding the drama ponderous and ultimately a downer. The 3/5 star rating aligns with a mixed assessment. | Kimi: The 3/5 star rating and mixed tone acknowledge workmanlike construction and strong ensemble moments while criticizing the ponderous pacing, excessive length, and disappointing lead performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T04:19:33.130Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
