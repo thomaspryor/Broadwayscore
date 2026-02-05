@@ -12,5 +12,60 @@
   "bwwExcerpt": "The world really didn't need yet another 'Cat on a Hot Tin Roof,' least of all the one that just opened in New York. This is the third time in the past decade that Tennessee Williams's overripe, overwrought 1955 play about a grossly dysfunctional Southern couple (he's probably gay, she's definitely miserable) has been revived on Broadway. Like its predecessors, it's a belly-up disaster whose existence can be explained, if not justified, by the presence of a movie star in the cast.",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117",
+  "assignedScore": 16,
+  "llmScore": {
+    "score": 16,
+    "confidence": "high",
+    "range": {
+      "low": 11,
+      "high": 21
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like its predecessors, it's a belly-up disaster whose existence can be explained, if not justified, by the presence of a movie star in the cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Calls the production a 'belly-up disaster' and questions why it even exists. However, confidence is low since this is only one curated excerpt and may not represent the full review verdict. | GPT-4o: The review is strongly negative, describing the production as a 'belly-up disaster' and questioning the need for another revival. The tone and language indicate a deep pan with no redeeming qualities. | Gemini: The review explicitly calls the production a \"belly-up disaster\" and questions its existence, indicating a strong pan. The single excerpt is clearly negative. | Kimi: The critic condemns the production as unnecessary and disastrous, using unambiguous negative language including 'belly-up disaster' and questioning the show's justification for existence. Confidence is low due to the single excerpt warning.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:03:08.450Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 20,
+    "openaiScore": 15,
+    "geminiScore": 15,
+    "kimiScore": 15,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

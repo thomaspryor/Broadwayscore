@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Someone with no prior exposure to or familiarity with 'Carousel' is more likely to appreciate this misguided production. But speaking as someone who knows 'Carousel' inside and out, sitting through it was a disappointing, bewildering and frustrating experience.",
   "bwwScore": 3,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412",
+  "assignedScore": 39,
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 34,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sitting through it was a disappointing, bewildering and frustrating experience",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic directly calls the production 'misguided' and describes their experience as 'disappointing, bewildering and frustrating.' While acknowledging newcomers might appreciate it, the expert assessment is clearly negative. | GPT-4o: The critic describes the production as 'misguided' and the experience as 'disappointing, bewildering and frustrating', indicating a negative review. However, the single excerpt warning suggests caution, so a score at the lower end of the Negative range is appropriate. | Gemini: The critic explicitly states that seeing the production was a \"disappointing, bewildering and frustrating experience.\" This is a clear negative assessment. | Kimi: The critic explicitly calls the production 'misguided' and describes the experience as 'disappointing, bewildering and frustrating,' clearly indicating they do not recommend it despite acknowledging it might appeal to newcomers. The limited excerpt warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:53:40.303Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 40,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

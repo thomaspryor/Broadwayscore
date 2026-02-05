@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The revival could be better in some respects. The original production provided a more transporting experience because it played on a wider stage, which increased the intimacy, and its theater was more extensively transformed to suit the show's unique physical environment. Musically, the size of the orchestra has been cut in half.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival could be better in some respects.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt focuses entirely on negative comparisons to the original production, citing reduced orchestra size and less intimate staging. However, this appears to be cherry-picked criticism from a longer review, so the overall verdict may be different. | GPT-4o: The excerpt highlights shortcomings in the revival compared to the original production, such as reduced intimacy and a smaller orchestra. The lack of positive elements in the excerpt suggests a mixed review, but the single excerpt warning and lack of positive context lead to a low confidence in this assessment. | Gemini: The excerpt indicates the revival is not as good as the original production, citing issues with stage size, intimacy, and orchestra size. This suggests a mixed or lukewarm assessment. | Kimi: The critic unfavorably compares the revival to the original production, citing diminished intimacy and reduced orchestration, though the critique focuses on technical limitations rather than wholesale artistic failure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:12:36.299Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

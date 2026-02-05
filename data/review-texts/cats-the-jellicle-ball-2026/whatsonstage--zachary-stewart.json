@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It’s unexpectedly poignant, yes. But more importantly, it’s so much fun. We feel that from the moment the cats vogue down the runway (authentic and death-droppingly athletic choreography by Omari Wiles and Arturo Lyons). The crowd goes nuts, cheering, clapping, and clacking fans in appreciation, making this event feel like a real ball.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-Off-Broadway-20240620",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But more importantly, it's so much fun.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('so much fun', 'unexpectedly poignant') with enthusiastic crowd response described. Single excerpt warning applies - using upper end of Positive bucket due to unqualified praise, but low confidence due to limited text. | GPT-4o: The excerpt highlights the show's fun and engaging atmosphere, with enthusiastic audience reactions. The positive tone suggests a strong recommendation, despite the limited context. | Gemini: The review excerpt is overwhelmingly positive, describing the show as \"unexpectedly poignant\" and \"so much fun\". The audience reaction is also described as enthusiastic, indicating a highly enjoyable experience. | Kimi: The excerpt offers enthusiastic praise ('so much fun', 'death-droppingly athletic') and describes strong audience engagement, indicating a clear recommendation, though confidence is reduced due to availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:16:14.510Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

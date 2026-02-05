@@ -12,5 +12,60 @@
   "bwwExcerpt": "First there was football, with the mediocre 'Lombardi.' Then came basketball, with the bad 'Magic/Bird,' and now baseball, with the worse 'Bronx Bombers' (presented with 'special producing partners' the Yankees and Major League Baseball). Wake me when they get to horseshoes.",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206",
+  "assignedScore": 20,
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 15,
+      "high": 25
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wake me when they get to horseshoes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Clear escalating negative progression: mediocre → bad → worse. The dismissive closing line shows contempt for the entire enterprise. Single excerpt limits confidence, but tone is unambiguously pan-level negative. | GPT-4o: The excerpt compares 'Bronx Bombers' unfavorably to other mediocre and bad sports-themed shows, suggesting it is even worse. The sarcastic tone and dismissive 'wake me when' line indicate a strong negative verdict. | Gemini: The critic clearly pans the show, calling it 'worse' than a previous 'bad' show. The tone is dismissive and negative. | Kimi: The critic establishes a downward progression from mediocre to bad to worse, explicitly calling the show inferior to previous failed sports-themed plays and using sarcasm ('Wake me when they get to horseshoes') to dismiss it as worthless.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:36:06.468Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 20,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 40,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

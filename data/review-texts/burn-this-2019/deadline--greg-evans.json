@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "So what's needed? I'd say passion, or at least chemistry. But Russell's Anna just hasn't the emotional weight to provide the heft needed for an equal and opposite reaction to Driver's Pale. She seems no more inescapably drawn to Pale than she was to Burton. Better she had stayed with that rich, handsome, doting stiff. They'd have had a nice little life.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BURN-THIS-Opens-On-Broadway-Starring-Keri-Russell-And-Adam-Driver-20190416"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BURN-THIS-Opens-On-Broadway-Starring-Keri-Russell-And-Adam-Driver-20190416",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Russell's Anna just hasn't the emotional weight to provide the heft needed for an equal and opposite reaction to Driver's Pale.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Single excerpt shows clear criticism of lead performance and lack of chemistry between leads, suggesting disappointment with core elements. Low confidence due to limited text from curated excerpt. | GPT-4o: The excerpt criticizes the lack of chemistry and emotional weight in the performance, suggesting a negative view of the production. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt suggests a lack of chemistry and emotional depth, leading to a negative assessment of the performance and, presumably, the production as a whole. The single excerpt and lack of a clear recommendation lower the confidence. | Kimi: Single excerpt criticizes the lead performance for lacking emotional weight and chemistry with the co-star, suggesting the central relationship fails to generate the required dramatic tension. The sarcastic final line implies the dramatic stakes don't work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:40:28.197Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

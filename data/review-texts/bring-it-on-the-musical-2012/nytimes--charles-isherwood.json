@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "While it has its moments of memorable wit and some appealing rhythmic Broadway-pop songs, “Bring It On” is by no means in the same league as those musicals [Next to Normal, In the Heights, Avenue Q], and has the feel of a daffy lark embarked upon as a summer-vacation goof…It’s when the cast members drop the bonding and the mean-girl bitching to take part in Mr. Blankenbuehler’s exciting cheerleading routines, arranging themselves into dazzling human starbursts, that “Bring It On” really brings s",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRING-IT-ON-Opens-on-Broadway-Updating-Live-20120801",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While it has its moments of memorable wit and some appealing rhythmic Broadway-pop songs, 'Bring It On' is by no means in the same league as those musicals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges positive elements (wit, songs, exciting choreography) but clearly states it's not in the league of quality musicals and feels like a 'daffy lark' and 'summer-vacation goof,' suggesting it's lightweight entertainment rather than a strong recommendation. | GPT-4o: The review acknowledges some positive elements like wit and songs but ultimately suggests the show is not on par with more acclaimed musicals. The excerpt indicates a mixed reception, with some highlights but overall not a strong recommendation. | Gemini: The review acknowledges some positive aspects like wit and songs, but ultimately places it below other musicals and describes it as a \"daffy lark.\" The single excerpt and lack of a clear recommendation lead to a mixed classification with low confidence. | Kimi: The critic praises the cheerleading routines and songs but dismisses the show overall as a lightweight 'daffy lark' unworthy of comparison to superior musicals, indicating a mixed verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:34:16.647Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

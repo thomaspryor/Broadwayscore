@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There's nonetheless much to savor in a production polished to a high sheen. Marc Shaiman and Scott Wittman again prove themselves an ace songwriting team. Their score evokes cocktail lounges, glitzy floorshows, Rat Pack suaveness, mellow jazz and energized go-go, all wrapped up in Shaiman and Larry Blank's silky-smooth ‘60s-styled orchestrations. And Mitchell's choreography puts a vigorous period-appropriate spin on every number. As Hanratty, Butz (a Tony winner for Dirty Rotten Scoundrels) does nuanced work balancing the jaded, paunchy slob with the wisecracking professional, driven in his quest to catch Frank yet plagued by the melancholy awareness that his job is his life. The boyishly handsome Tveit, who turned heads in Next to Normal, graduates to a lead role with sparkling self-assurance, strong pipes and natural charm. He makes it easy to like Frank, even if the show makes it hard to love him.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's nonetheless much to savor in a production polished to a high sheen.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise for songwriting team, orchestrations, choreography, and lead performances. The 'nonetheless' suggests some reservations mentioned earlier, but the excerpt shows clear appreciation for multiple production elements. | GPT-4o: The excerpt provides strong praise for the production's polish, the songwriting, and the performances, particularly highlighting the choreography and lead actors. This suggests a positive recommendation, though the single excerpt limits confidence. | Gemini: The review praises the performances, songwriting, orchestrations, and choreography, but the final sentence suggests the show itself is not entirely lovable. Given the single excerpt, I'm placing it in the positive range with reservations. | Kimi: The excerpt offers consistent praise for the production values, score, orchestrations, choreography, and lead performances ('sparkling self-assurance,' 'nuanced work'), indicating a clear recommendation despite the reservation that the show makes it hard to love the protagonist.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:05:01.720Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

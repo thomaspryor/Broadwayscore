@@ -12,5 +12,60 @@
   "bwwExcerpt": "'Bullets Over Broadway' is Stroman's second bite of the apple this season. In October, she directed and choreographed 'Big Fish,' a musical about the evolving relationship of a father and son. It wasn't the right show for her fizzy style. With 'Bullets Over Broadway,' she's gotten a perfect match. And the result couldn't be more joyful.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BULLETS-OVER-BROADWAY-Opens-Updating-LIVE-20140410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BULLETS-OVER-BROADWAY-Opens-Updating-LIVE-20140410",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And the result couldn't be more joyful.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive verdict calling it a 'perfect match' and 'couldn't be more joyful', but low confidence due to single excerpt warning and potential cherry-picking bias. | GPT-4o: The excerpt provides strong praise for the production, describing it as a 'perfect match' and 'joyful,' indicating a highly positive reception. However, due to the single excerpt warning, confidence is low. | Gemini: The critic states that the show is a 'perfect match' for Stroman's style and that the result 'couldn't be more joyful,' indicating a strong positive recommendation. | Kimi: The excerpt expresses enthusiastic praise for the director's perfect fit with the material, describing the result as maximally joyful. Following the single-excerpt guidance for clearly positive quotes, this falls in the upper Positive range (80-84).",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:37:38.058Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

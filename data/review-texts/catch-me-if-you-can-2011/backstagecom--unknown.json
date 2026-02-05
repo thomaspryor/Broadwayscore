@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Under Jack O'Brien's impersonal direction, the talented cast works hard to make an impression. As Frank, Aaron Tveit has stage presence, sings powerfully, and dances with pizzazz, but he's unpersuasive as a teenager and misses the character's vulnerability. The role of Hanratty has been retooled to fit Norbert Leo Butz's wonderfully shlumpy eccentricity, and the actor brings all his formidable musical comedy skills to bear on it, but even the heroic Butz can't tran",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-CATCH-ME-IF-YOU-CAN-Updating-Live-20110410",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Jack O'Brien's impersonal direction, the talented cast works hard to make an impression.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt criticizes the direction as 'impersonal' and notes the cast 'works hard' (suggesting struggle). While acknowledging individual talents, it points out significant flaws in key performances. The truncated text cuts off mid-sentence about even a strong performer not being able to transform the material, suggesting ongoing criticism. | GPT-4o: The review excerpt highlights both positive elements (talented cast, specific actor performances) and negatives (impersonal direction, unconvincing portrayal). The lack of a full conclusion and the mixed signals from the excerpt suggest a mixed verdict. | Gemini: The review praises the cast's talent and individual performances, but also notes shortcomings in character portrayal and direction, suggesting a mixed overall impression. The truncated text and single excerpt lower confidence. | Kimi: The excerpt praises the cast's effort and specific performances, particularly Butz's eccentricity and skill, but criticizes the direction as 'impersonal' and notes that Tveit misses key aspects of his character, ending mid-sentence with an apparent negative qualification about the show's overall success.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:04:33.425Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

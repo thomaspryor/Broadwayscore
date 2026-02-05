@@ -12,5 +12,60 @@
   "bwwExcerpt": "Let me quickly specify that Cumming, repeating the role that brought him a Tony 16 years ago, is every juicy leer as good now as he was then in his role of the deliciously decadent compere at the Third Reich's Kit Kat Klub in Berlin...Time now unfortunately, for the problems besetting this Cabaret incarnation. The major one is the accomplished movie star Michelle Williams in her Main Stem bow as Sally Bowles...The singing's not the snag. Just about everything else, starting with her English accent, is...The high point and low point of her performance are the same: her rendition of the title song. Technically, she delivers it extremely well and for her efforts receives sustained applause. As an expression of Sally Bowles's state of mind, the way librettist Joe Masteroff and Ebb write, Williams has it all wrong--and so have director Mendes, Marshall and Onrubia, if they're allowing this misconstrued treatment.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Time now unfortunately, for the problems besetting this Cabaret incarnation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows praise for Cumming's performance but substantial criticism of Williams's casting and interpretation. Mixed signals with no clear recommendation warrant low confidence mixed score. | GPT-4o: The review praises Alan Cumming's performance but criticizes Michelle Williams' portrayal of Sally Bowles, indicating a mixed reception. The excerpt suggests both high and low points, leading to a mixed verdict. | Gemini: The review praises Cumming but heavily criticizes Michelle Williams' performance and the direction's choices regarding her portrayal of Sally Bowles. This outweighs the positive aspects. | Kimi: While praising Alan Cumming's reprised performance highly, the critic finds fundamental flaws in Michelle Williams's interpretation of Sally Bowles and the creative team's direction, creating a sharply divided assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:44:17.785Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

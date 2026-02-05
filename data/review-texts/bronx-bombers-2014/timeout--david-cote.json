@@ -12,5 +12,60 @@
   "bwwExcerpt": "If penning sports plays were a competition, Eric Simonson would be MVP. He's found drama in football coaching (Lombardi), basketball rivalry (Magic/Bird) and now, with Bronx Bombers, the national pastime. None of these qualify as great works, but for some theatergoers, they offer tantalizing glimpses into exotic subcultures...Bronx Bombers touches on high points of 20th-century Yankee history, although it hasn't been so much plotted as researched and pitched to guys who get a lump in the throat from seeing Lou Gehrig shake hands with Derek Jeter...Simonson, who directs his own script too laxly, touches on predictable tensions between individual excellence versus team spirit, but in terms of ideas or visual flair, there are no curves here.",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "None of these qualify as great works, but for some theatergoers, they offer tantalizing glimpses into exotic subcultures.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the play offers value for specific audiences but clearly states it doesn't qualify as a 'great work' and criticizes the plotting and direction as lacking in ideas or visual flair. | GPT-4o: The review acknowledges that the play may appeal to certain audiences but criticizes its lack of depth and direction. The excerpt suggests a mixed reception, noting both appeal and shortcomings. | Gemini: The review acknowledges some appeal for specific audiences but notes the play isn't a \"great work\" and lacks visual flair. The overall tone is mixed, leaning slightly positive due to the \"tantalizing glimpses\" comment. | Kimi: While the critic credits Simonson's sports-play expertise and acknowledges the show offers 'tantalizing glimpses' for specific audiences, the review emphasizes significant flaws including lax direction, predictable plotting, and lack of visual flair or original ideas.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:36:46.072Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

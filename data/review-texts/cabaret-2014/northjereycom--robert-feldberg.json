@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Cabaret,\" which opened at Studio 54 Thursday night, is the last show of the 2013-14 Broadway season. And perhaps the most exciting. Yet, it's totally fresh and crisp, and completely seductive, with Alan Cumming repeating his memorable performance, and Hollywood's Michelle Williams making a triumphant Broadway debut.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "perhaps the most exciting. Yet, it's totally fresh and crisp, and completely seductive",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Calls it 'perhaps the most exciting' show of the season and 'completely seductive' with 'triumphant' debut - strong superlatives indicating rave territory. Medium confidence due to single excerpt warning. | GPT-4o: The excerpt provides strong positive language ('totally fresh and crisp', 'completely seductive', 'triumphant Broadway debut') indicating a highly favorable review. The use of 'most exciting' suggests a standout production. However, with only one excerpt, confidence is low. | Gemini: The excerpt uses positive language like \"most exciting\", \"fresh and crisp\", \"completely seductive\", and \"triumphant Broadway debut\". Due to the single excerpt, confidence is low, but the language suggests a strong positive review. | Kimi: The excerpt offers strong praise using words like 'most exciting,' 'triumphant,' and 'completely seductive,' indicating a clear recommendation, though the single-excerpt format warrants caution. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:46:47.207Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 89,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

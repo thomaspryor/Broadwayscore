@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Two of Catch Me's best attributes are its handsome chorus and its voices; anybody who's anybody in the cast gets a turn in the spotlight, a few in show-stoppers. Butz' \"Don't Break the Rules\" is a little number he makes very big, a look into his FBI-man psyche; Kerry Butler, in a great turn as our scammer's love, has another of the best moments in \"Fly, Fly Away,\" and Tviet, 27, a tenor who made his name as the son in Next to Normal, delivers several pieces",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-CATCH-ME-IF-YOU-CAN-Updating-Live-20110410",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Two of Catch Me's best attributes are its handsome chorus and its voices; anybody who's anybody in the cast gets a turn in the spotlight, a few in show-stoppers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for performances and production values ('best attributes', 'great turn', 'best moments'), but as a curated quote may not represent full verdict. Low confidence due to excerpt-only nature. | GPT-4o: The excerpt highlights strong performances and vocal talent, suggesting a positive view of the production. However, due to the single excerpt warning and lack of a full review, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The review excerpt highlights positive aspects of the show, such as the chorus, voices, and individual performances, suggesting a positive but not overwhelmingly enthusiastic recommendation. Given it's a single excerpt, confidence is low. | Kimi: The excerpt enthusiastically praises the cast and musical numbers with terms like 'best attributes,' 'show-stoppers,' and 'great turn,' indicating a strong positive recommendation, though confidence is reduced due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:06:04.970Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

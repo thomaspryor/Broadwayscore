@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "But stripping away any element of this far-seeing and fiercely imaginative show might compromise the whole. In any case it has become a landmark of musical theater in the 21st century. Still, for this viewer, it is the unblinking yet compassionate portrait of the title character that lifts the show into the sublime, and Clarke's performance - much like Tonya Pinkins's in the original production - is the driving force behind its moments of transcendence.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is the unblinking yet compassionate portrait of the title character that lifts the show into the sublime.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Calls the show 'sublime' and 'a landmark of musical theater in the 21st century' with praise for transcendent moments. However, confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt praises the show as a 'landmark of musical theater' and highlights Clarke's performance as 'sublime' and 'transcendent.' Despite the single excerpt warning, the language used suggests a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"fiercely imaginative\", \"landmark of musical theater\", \"lifts the show into the sublime\", and praises the performance as the \"driving force behind its moments of transcendence.\" Despite the limited text, the overall sentiment is clearly positive. | Kimi: While the excerpt contains rave-level superlatives ('landmark', 'sublime', 'transcendence'), the single-excerpt guidance directs scoring clearly positive isolated quotes in the 80-84 Positive range. The transitional word 'Still' suggests the full review may contain qualifying context not visible here. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:51:28.736Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

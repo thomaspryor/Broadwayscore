@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production doesn't just break the fourth wall; it obliterates any barrier between performer and audience, demanding that we become complicit in the world it creates.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "web-search",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Williams comes closer to evoking the musical style of the Depression than any Sally I've seen.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review praises Cumming's return and Williams' authentic Depression-era interpretation, though notes her character seems unhappy. The critic appreciates Williams' brave performance and authentic musical style, suggesting a positive but measured assessment of this revival. | GPT-4o: The review praises Michelle Williams for her interpretation of Sally but notes a 'damper on the festivities' and her 'shell-shocked stare'. The excerpts suggest a mixed reception with some positive elements. | Gemini: The review praises Alan Cumming's return but expresses reservations about Michelle Williams' performance, suggesting a mixed experience overall. The excerpted nature of the text makes it difficult to gauge the overall recommendation strength. | Kimi: The review offers high praise for Williams' musical delivery ('closer to evoking the musical style... than any Sally I've seen') but criticizes her apparent discomfort and its dampening effect on the overall production. As these are excerpts, the full verdict is unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:47:32.332Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

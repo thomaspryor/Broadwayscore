@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Choreography by the legendary Gillian Lynne has been reworked in a minor way by Hamilton's Andy Blankenbuehler, whose touch can be seen in the slinky duet, \"Mungojerrie and Rumpleteazer\" (Tony D'Alelio and Rose Iannaccone). Unburdened by narrative, Lynne, who passed away last July, offers a dance sampler including music hall, English folk, jazz and tap over Lloyd Webber's often evocative anthems and lingering ballads. What's not to like? Cats is a crowd-pleaser that keeps it in the litter box. N",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-CATS-on-Tour-20191030",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What's not to like? Cats is a crowd-pleaser that keeps it in the litter box.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt is clearly positive with 'What's not to like?' and calling it a 'crowd-pleaser,' but this is only a single curated quote that may not represent the full review sentiment, so scored at lower end of Positive bucket. | GPT-4o: The excerpt describes 'Cats' as a 'crowd-pleaser' and highlights the choreography and music positively. The rhetorical question 'What's not to like?' suggests a positive sentiment. However, due to the single excerpt warning, the confidence is low. | Gemini: The review acknowledges the show's appeal as a crowd-pleaser but also implies it's somewhat contained or predictable. Given the single excerpt and the phrase 'What's not to like?', it leans positive, but with reservations. | Kimi: The excerpt offers clear enthusiasm with rhetorical endorsement ('What's not to like?') and identifies the show as a 'crowd-pleaser,' though the single-excerpt format and truncation limit certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:08:49.760Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

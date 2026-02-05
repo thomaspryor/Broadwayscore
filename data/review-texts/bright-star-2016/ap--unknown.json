@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The new Broadway musical 'Bright Star' starts with a bit of bluster, maybe even some swagger. 'If you knew my story, you'd have a good story to tell,' the leading lady sings. But after 2½ hours of this down-home hokum, the answer is clear: No, we don't. Comedian and banjo enthusiast Steve Martin has teamed up with singer-songwriter Edie Brickell to write a cliche-ridden, foot-pounding, over-eager Southern Gothic romance that ill serves a wonderful Broadway debut in Carmen Cusack. The show that opened Thursday at the Cort Theatre never hits an honest note and seems to have been written by two people who adore classic Broadway musicals but who have intentionally decided to make a third-rate version. The music, with a few exceptions, is weak...The book and lyrics are even more feeble, with graceless lines...and weird characters...Director Walter Bobbie gets everything out of his cast and keeps a frenetic pace going but for no clear payoff.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 33,
+  "llmScore": {
+    "score": 33,
+    "confidence": "medium",
+    "range": {
+      "low": 28,
+      "high": 38
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show that opened Thursday at the Cort Theatre never hits an honest note and seems to have been written by two people who adore classic Broadway musicals but who have intentionally decided to make a third-rate version.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative verdict with harsh language: 'down-home hokum,' 'cliche-ridden,' 'never hits an honest note,' 'third-rate version.' Despite praising Carmen Cusack's debut, the critic finds the show fundamentally flawed in music, book, and concept. | GPT-4o: The review is strongly negative, criticizing the musical as 'cliche-ridden' and 'over-eager' with 'weak' music and 'feeble' book and lyrics. The verdict is clear with no redeeming qualities mentioned, placing it in the Pan bucket. | Gemini: The review is overwhelmingly negative, describing the musical as \"cliche-ridden\", \"third-rate\", and lacking honest notes. Despite praising the director's efforts, the overall assessment is unfavorable. | Kimi: The review delivers a devastating assessment, calling the show 'third-rate,' 'feeble,' and 'cliche-ridden,' with only backhanded praise for the cast's wasted efforts. The critic explicitly rejects the show's premise and execution. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:28:47.299Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 28,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

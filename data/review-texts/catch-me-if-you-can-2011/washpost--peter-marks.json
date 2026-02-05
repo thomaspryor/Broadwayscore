@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show has the glossy, mechanized feel of a theme park attraction, complete with an efficiently whirring set that zips the audience from airport to hospital to courtroom to cocktail party.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,59 @@
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or fragment, not a complete review with an evaluative verdict; openai: The text provided is a description of the set design and does not include any evaluative content or a verdict on the show.; kimi: This appears to be an excerpt or fragment without the full review context. While it contains evaluative language comparing the show to a 'theme park attraction,' it lacks a clear verdict, scoring information, or sufficient length to determine the critic's overall recommendation. The single sentence could be opening context, a mixed observation, or part of a larger argument, but without more text, no reliable score can be assigned.",
   "promptVersion": "5.2.0",
-  "textQuality": "partial"
+  "textQuality": "partial",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show has the glossy, mechanized feel of a theme park attraction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | GPT-4o: The review describes the show as having a 'glossy, mechanized feel' akin to a 'theme park attraction,' suggesting a lack of depth or authenticity. This indicates a negative impression, though not strongly enough for a pan. | Gemini: The review uses negative language, comparing the show to a \"theme park attraction\", indicating a lack of depth and artistry. This suggests a negative overall assessment. | Kimi: The comparison to a 'theme park attraction' and description of 'mechanized' production typically signal criticism of shallow spectacle in theater reviews, though the text is too truncated to determine a definitive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:08:06.394Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

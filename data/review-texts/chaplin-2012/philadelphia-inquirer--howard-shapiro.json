@@ -12,5 +12,60 @@
   "bwwExcerpt": "In the new musical Chaplin, which is every bit as entertaining as Charlie Chaplin himself, Rob McClure portrays the film genius with an irresistible sweetness, like candy you can't - and don't want to - stop eating…Director-choreographer Warren Carlyle gives the musical some inspired touches, not least of which is the scenes of movie-making, which play out while the real film flashes in the background. Carlyle also lets McClure take over - but makes sure the actor's Chaplin is far more nuanced than just little-tramp screen imitations. In the end, the compact, sparkling McClure – like Chaplin – makes you believe he can perform just about anything and command an ovation for it.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHAPLIN-Opens-on-Broadway-Updating-LIVE-20120910"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHAPLIN-Opens-on-Broadway-Updating-LIVE-20120910",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the new musical Chaplin, which is every bit as entertaining as Charlie Chaplin himself",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise comparing the show favorably to its legendary subject, with enthusiastic language about lead performance and direction. Single excerpt warning noted, but tone is clearly positive throughout. | GPT-4o: The review excerpt praises the musical as entertaining and highlights McClure's performance and Carlyle's direction as inspired. The tone is clearly positive, suggesting a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the lead performance, direction, and overall entertainment value. The critic uses strong positive language like \"irresistible sweetness\" and \"inspired touches.\" | Kimi: The excerpt offers enthusiastic praise for the lead performance ('irresistible sweetness,' 'sparkling') and direction ('inspired touches'), calling the show 'entertaining' and capable of commanding ovations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:18:19.343Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

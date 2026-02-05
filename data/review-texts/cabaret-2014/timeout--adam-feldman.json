@@ -12,5 +12,60 @@
   "bwwExcerpt": "Why so soon? A better question might be: Why not? This Cabaret is a superb production of one of the great Broadway musicals of all time-an exhilarating, harrowing masterpiece. In Sam Mendes and Rob Marshall's staging, Cumming is the corroded soul of the show; he haunts it and intrudes on it, magnetically mercurial...Cumming's bouncy downtown energy keeps Cabaret from seeming like a period piece, and his new costars pull their weight. Waifish and vocally tremulous, Michelle Williams is credibly lost as Sally Bowles, a wanna-be bad girl who sings at the club; Bill Heck is appealing as her unlikely lover, Cliff, a sexually ambiguous writer. Though too young for their roles, Linda Emond and the lovable Danny Burstein are forceful and touching as Cliff's practical landlady and her menschy Jewish suitor; and Gayle Rankin is vividly gaudy as Fräulein Kost, a whore with a heart of flint.",
   "bwwScore": 10,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Cabaret is a superb production of one of the great Broadway musicals of all time-an exhilarating, harrowing masterpiece.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise with superlatives ('superb', 'masterpiece', 'exhilarating'), enthusiastic assessment of performances across the board, no meaningful criticisms despite single excerpt limitation. | GPT-4o: The excerpt describes the production as 'superb' and a 'masterpiece', with strong praise for the performances and staging. Despite the single excerpt warning, the language used suggests a highly positive review. | Gemini: The review uses strong positive language such as \"superb production\", \"exhilarating\", \"harrowing masterpiece\" and praises the performances and staging, indicating a rave review. | Kimi: The excerpt offers strong praise using words like 'superb' and 'masterpiece' and commends the lead performances, though it notes minor casting caveats (actors being 'too young for their roles'), placing it in the strong Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:48:11.819Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 92,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "Whether all the sound effects are meant to enhance the performances onstage or cover up the acting is unclear. What's not unclear is that an unnecessarily noisy production opened Thursday at the Richard Rodgers Theatre...Scarlett Johansson turns in a nifty turn as Maggie, finding humor and barely hidden desperation in her role as frustrated wife and mother-to-be. She's less overtly sexy than other actresses who have played the ironic role, making her Maggie more cerebral, angry and proud. Benjamin Walker, as her husband Brick, is slow to boil but savage when he does, a former athlete turned into a languid hunk of beef who sits on the edges of the stage avoiding conversation and hiding in a bottle. They have little chemistry at first - but that's kind of the point.",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Whether all the sound effects are meant to enhance the performances onstage or cover up the acting is unclear.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Opens with criticism of production choices ('unnecessarily noisy') but praises lead performances. Single excerpt warning applies - unclear overall verdict from limited text. | GPT-4o: The review highlights both positive aspects, such as Johansson's performance, and negative aspects, like the unclear purpose of sound effects and lack of chemistry. The mixed signals and single excerpt lead to a low confidence score. | Gemini: The review highlights good performances from Johansson and Walker but also criticizes the noisy production. It neither strongly recommends nor discourages seeing the show. | Kimi: While the excerpt criticizes the production as unnecessarily noisy and questions whether sound effects mask weak acting, it offers substantial praise for both Johansson's cerebral, desperate Maggie and Walker's savage Brick, suggesting the performances justify attendance despite technical issues.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:59:20.683Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

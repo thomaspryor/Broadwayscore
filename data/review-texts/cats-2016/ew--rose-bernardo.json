@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "I have a bone to pick with Andrew Lloyd Webber about Cats. For the past few days, since I saw the first-ever Broadway revival at the Neil Simon Theatre, that's all I've had running through my head. And I'm not talking about \"Memory,\" the showstopper made famous by Barbra Streisand before Cats even opened on Broadway in 1982. I mean the almost hypnotically repetitive prologue \"Jellicle Songs for Jellicle Cats\"; the jazzy, doo-wop ode to Jennyanydots, \"The Old Gumbie Cat\"; and the singsongy \"Magic",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CATS-Returns-to-Broadway--UPDATING-LIVE-20160731",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "that's all I've had running through my head",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic describes the songs as stuck in their head in a way that suggests appreciation rather than annoyance. However, this is only one excerpt and may not represent the full review verdict. | Gemini: The reviewer has had the songs stuck in their head, but it's unclear if this is a positive or negative experience. Given the limited text, it's difficult to determine the overall sentiment, so I'm classifying it as mixed with low confidence. | Kimi: While framed as a complaint ('bone to pick'), the excerpt emphasizes the music's memorability and catchiness with detailed, appreciative descriptions ('jazzy, doo-wop ode'), suggesting the songs are effectively stuck in the critic's head. However, with only one truncated excerpt available, the full verdict is uncertain.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:10:14.838Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"The good news about \"Burn the Floor,\" a ballroom dancing extravaganza that opened Sunday at the Longacre Theater, is that it is every bit as flashy and tacky as you would expect. Do I need to add that this is also the bad news?\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-Review-Roundup-Burn-the-Floor-and-More-20090803",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is every bit as flashy and tacky as you would expect",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt presents a backhanded compliment where 'flashy and tacky' is both good and bad news. This suggests a mixed response - acknowledging entertainment value while criticizing quality. Low confidence due to limited excerpt. | GPT-4o: The excerpt suggests a mixed sentiment, noting both 'good news' and 'bad news' about the show's flashy and tacky nature. Without a clear recommendation or discouragement, it falls into the Mixed bucket. | Gemini: The excerpt presents a mixed view, acknowledging the show's expected qualities but questioning their overall value. The 'good news...bad news' structure suggests a lack of strong recommendation. | Kimi: The critic describes the show as 'flashy and tacky,' employing ironic wit to suggest that the production's defining spectacle is simultaneously its only attribute and its fundamental flaw, indicating a negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:39:49.123Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

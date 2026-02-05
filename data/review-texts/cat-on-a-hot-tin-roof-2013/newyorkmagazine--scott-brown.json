@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Even now, audiences are lining up to see Scarlett Johansson challenge the structural integrity of her slip as Maggie the Cat, Tennessee Williams's most bodacious creation: ambitious, lubricious, sex-starved, and ovulating. Your hundred-clams'-worth seems all but guaranteed. And yet the scene-stealer of the evening turns out to be a $5 bath towel. It's worn by Benjamin Walker, who plays Maggie's beautiful, inert husband Brick, broken plantation scion, shattered ex-gridiron star, and now celibate ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Your hundred-clams'-worth seems all but guaranteed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt suggests value for money despite focusing on spectacle elements. However, limited text makes full verdict assessment difficult. | GPT-4o: The excerpt suggests a positive recommendation, highlighting Scarlett Johansson's performance and implying value for the ticket price. However, the mention of a bath towel as a scene-stealer introduces some reservation. Given the single excerpt warning, the score is set at the lower end of the Positive range. | Gemini: The review suggests the show is worth seeing, but the focus on individual elements and lack of a clear overall verdict indicates a recommendation with reservations. The single excerpt and truncated nature lower confidence. | Kimi: The excerpt explicitly guarantees entertainment value for the ticket price and praises a scene-stealing supporting performance, indicating a clear recommendation despite the limited available context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:01:28.070Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

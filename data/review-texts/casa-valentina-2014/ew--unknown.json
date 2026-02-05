@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "A quasi-witchhunt follows, setting a violent and sobering climax in motion. In a play full of proud fakeries, the story hits the loudest false note. Fierstein's explosive resolution feels rushed and less authentic to the characters than the Donna Reed wigs on their heads. Still, the most lasting impressions of Casa Valentina are good ones: Fierstein's meticulous dialogue, Joe Mantello's smooth and confident direction, the cast's flawless performances. And if the characters teach us anything, it's that confidence and charm can cover a multitude of imperfections. B+",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CASA-VALENTINA-Opens-on-Broadway-Updating-LIVE-20140423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CASA-VALENTINA-Opens-on-Broadway-Updating-LIVE-20140423",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, the most lasting impressions of Casa Valentina are good ones: Fierstein's meticulous dialogue, Joe Mantello's smooth and confident direction, the cast's flawless performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: B+ grade indicates positive recommendation. Despite criticizing the climax as 'rushed' and 'false,' the critic emphasizes that the 'most lasting impressions are good ones' and praises dialogue, direction, and performances as excellent. Single excerpt warning applied - scoring at upper end of positive range for clear B+ grade. | GPT-4o: The excerpt acknowledges flaws in the climax and authenticity but ultimately praises the dialogue, direction, and performances. The B+ rating suggests a positive verdict with some reservations. | Gemini: The review has a B+ grade and highlights several positive aspects of the production, including the dialogue, direction, and performances, despite some reservations about the ending. | Kimi: The B+ grade and explicit statement that lasting impressions are good indicate a clear recommendation, despite significant criticism of the rushed resolution. Single excerpt limitation reduces confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:56:25.939Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 81,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

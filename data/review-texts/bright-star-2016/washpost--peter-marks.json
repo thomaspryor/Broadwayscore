@@ -12,5 +12,60 @@
   "bwwExcerpt": "Director Walter Bobbie's production in the Cort Theatre, where the musical had its official opening Thursday night, retains the intelligently spare look of the incarnation in the Kennedy Center's Eisenhower Theater. (It's also tauter - about 10 minutes shorter than it was in Washington.) Evoking a bucolic North Carolina of the 1920s and '40s, set designer Eugene Lee deploys a skeletal cabin on wheels as the visual centerpiece, in which the band, expertly conducted by Rob Berman, sits and strums Martin and Brickell's amiable tunes, albeit with some oddly-set lyrics. It's also worth noting that one of the biggest hands of the evening comes for the orchestra's playing of the entr'acte, the purely instrumental interlude that greets us after intermission.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Walter Bobbie's production retains the intelligently spare look and is tauter than it was in Washington.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the direction as 'intelligently spare' and notes improvements ('tauter'), but qualifies the music as merely 'amiable' with 'oddly-set lyrics'. Single excerpt limits full verdict assessment. | GPT-4o: The excerpt highlights positive aspects like the intelligent design and expert musical direction, but also notes some 'oddly-set lyrics'. Given the single excerpt and lack of a full verdict, the score is on the lower end of Positive. | Gemini: The review describes the production as \"intelligently spare\" and the tunes as \"amiable,\" but also notes \"oddly-set lyrics.\" Given the single excerpt, I'm scoring it as mildly positive. | Kimi: Single excerpt offers qualified praise for direction, design, and musical execution with minor reservations about lyrics. Lacking full context, confidence is reduced per single-excerpt protocol.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:30:52.046Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

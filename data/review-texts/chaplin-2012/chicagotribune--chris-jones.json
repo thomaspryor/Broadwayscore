@@ -12,5 +12,60 @@
   "bwwExcerpt": "Despite an enigmatic, career-making performance from Rob McClure in the title role, an earnest turn from Wayne Alan Wilcox as his tag-along brother Sydney, and an engaging performance from Erin Mackey as Chaplin's late-in-life love Oona, 'Chaplin' is a musical where the material is just not up to the complexity of its enigmatic subject. It's impossible to believe that the creator of such masterpieces as 'Modern Times' and 'The Gold Rush' would express himself in such prosaic, cliched terms. He may not have spoken in his works, but he surely was thinking up a storm with every twitch of his Tramp's eyebrows.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHAPLIN-Opens-on-Broadway-Updating-LIVE-20120910"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHAPLIN-Opens-on-Broadway-Updating-LIVE-20120910",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's impossible to believe that the creator of such masterpieces as 'Modern Times' and 'The Gold Rush' would express himself in such prosaic, cliched terms.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic praises three lead performances but finds the material fundamentally inadequate for its subject, calling it 'prosaic' and 'cliched.' The core assessment is that the show fails to match the complexity of Chaplin himself. | GPT-4o: While the performances are praised, the review criticizes the material as lacking depth and complexity, suggesting it does not do justice to Chaplin's legacy. This indicates a negative overall assessment despite individual strengths. | Gemini: The review praises the performances but ultimately finds the musical's material lacking, especially in comparison to Chaplin's own work. The overall sentiment leans negative, indicating a lack of recommendation. | Kimi: Despite high praise for Rob McClure's 'career-making' performance and other cast members, the critic fundamentally rejects the show's material as 'prosaic' and 'cliched,' finding it fails to match the complexity of its subject. The 'Despite' framing indicates the overall verdict is negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:16:53.541Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "It is hard to think of a single revival of any musical that has achieved such fusion with the popular perception of the material. That makes this remounting, or reviving, or whatever the Tony Awards committee is calling it, perfectly justifiable in my book. Mendes' 'Cabaret' was, and is, a brilliantly inventive and revealing conception. Then and now...Cumming now oozes relaxed confidence in his charms, whereas he formerly spilled unctuous ambition. Both work, frankly. Cumming does not kill himself anymore, but there is no demonstrable need. He is, really, the consummate Emcee -- others who take on hosting duties at the Kit Kat Klub invariably copy him -- and his relationship with his delighted audience now arrives with ease...Williams, who makes her Broadway debut as Sally, certainly taps into the fragility of her character...She does not, however, deliver the famous numbers with the force (or tonal quality) of a great Broadway singer, which she is not.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mendes' 'Cabaret' was, and is, a brilliantly inventive and revealing conception.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Calls the revival 'perfectly justifiable' and praises the 'brilliantly inventive' conception. Cumming praised as 'consummate Emcee' despite some reservations about Williams' vocal power. | GPT-4o: The excerpt praises the revival as a 'brilliantly inventive and revealing conception' and justifies its remounting. Despite some reservations about Williams' performance, the overall tone is positive, suggesting a strong recommendation. | Gemini: The review praises the revival's fusion with popular perception and Cumming's performance, but notes Williams' singing isn't top-tier. This suggests a positive but not rave recommendation. | Kimi: The critic offers strong praise for the production's conception and Cumming's 'consummate' performance, calling the revival 'perfectly justifiable,' though with significant reservations about the lead actress's vocal abilities in the famous numbers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:43:05.345Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

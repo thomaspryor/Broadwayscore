@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Unsurprisingly for Ashford, a musical comedy specialist, the show unfolds like a jagged waltz gone haywire. Maggie's not the only one recoiling from the heat of the sun on that hot tin roof.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show unfolds like a jagged waltz gone haywire",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt describing the show as 'jagged' and 'gone haywire' suggests problems, but acknowledges director's comedy specialty. Metaphorical language is ambiguous - could be praise for controlled chaos or criticism of disorder. Low confidence due to single excerpt limitation. | GPT-4o: The excerpt suggests a mixed sentiment, describing the show as 'a jagged waltz gone haywire,' implying a lack of coherence or smoothness. The lack of a clear positive or negative verdict and the single excerpt warning lead to a low confidence mixed score. | Gemini: The review excerpt suggests an unconventional and potentially chaotic production, hinting at both positive (Ashford's expertise) and negative (jagged, haywire) aspects. With limited text, it's hard to determine the overall recommendation, but 'mixed' seems most appropriate. | Kimi: The excerpt describes the production as a 'jagged waltz gone haywire' and suggests the audience is recoiling from the experience, indicating a negative assessment. However, confidence is low given only one curated excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:00:12.399Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 52,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

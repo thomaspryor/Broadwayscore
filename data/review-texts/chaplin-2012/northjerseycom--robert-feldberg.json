@@ -12,5 +12,60 @@
   "bwwExcerpt": "'Chaplin,' the bio-musical that opened Monday night at the Ethel Barrymore Theatre, is a mixture of the imaginative and the timeworn. The good things in it begin with Rob McClure’s deft performance in the title role — at times presented on film, in the style of a vintage movie.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHAPLIN-Opens-on-Broadway-Updating-LIVE-20120910"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHAPLIN-Opens-on-Broadway-Updating-LIVE-20120910",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Chaplin' is a mixture of the imaginative and the timeworn.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt describes show as both having 'good things' and being 'timeworn', suggesting mixed qualities. Praises lead performance but overall assessment seems balanced between positive and negative elements. | GPT-4o: The excerpt describes the show as a mix of imaginative and timeworn elements, suggesting a balance of positive and negative aspects without a clear recommendation. The praise for McClure's performance is noted, but the overall tone is mixed. | Gemini: The review excerpt describes the show as a \"mixture,\" suggesting a mixed or neutral recommendation. The praise for Rob McClure's performance is a positive element, but the \"timeworn\" aspect indicates reservations. Given the limited text, confidence is low. | Kimi: The critic describes the show as an uneven combination of creative strengths ('imaginative') and weaknesses ('timeworn'), praising the lead performance specifically while the overall assessment suggests inconsistent quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:17:28.445Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

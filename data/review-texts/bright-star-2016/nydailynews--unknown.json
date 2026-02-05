@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Steve Martin is famous for wild-and-crazy antics. But in his debut as a Broadway author and composer, he drops the arrow-through-the-head zaniness. He and co-writer Edie Brickell aim straight for the heart in a new musical about love, loss, family and forgiveness. Called 'Bright Star,' the show isn't a bullseye. But it's sweet and tender and boasts a fine cast...Martin and Brickell's bluegrassy score is mellow and pretty. But it's also repetitive -- melodically and lyrically...Director Walter Bobbie ('Chicago') and choreographer Josh Rhodes keep the show chugging along...Cusack, a Broadway rookie, consistently shines -- even when 'Bright Star' doesn't.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Called 'Bright Star,' the show isn't a bullseye.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Review acknowledges positive elements (sweet, tender, fine cast, pretty score) but emphasizes significant flaws (repetitive music/lyrics, not hitting the mark). The 'not a bullseye' verdict suggests missing the target despite good intentions. | GPT-4o: The review highlights positive aspects such as the show's sweetness, tenderness, and fine cast, but also notes repetitiveness and that it isn't a 'bullseye'. The single excerpt suggests a mildly positive view, hence a score at the lower end of the Positive range. | Gemini: The review is generally positive, describing the show as \"sweet and tender\" with a \"fine cast\" and \"mellow and pretty\" score. However, it also notes that the show isn't a \"bullseye\" and the score is \"repetitive,\" indicating reservations. Given the single excerpt, I'm placing it at the lower end of the positive range. | Kimi: The excerpt offers qualified praise: while the show 'isn't a bullseye' and the score is 'repetitive,' the critic finds it 'sweet and tender' with a 'fine cast' and a 'mellow and pretty' bluegrass score. The mild positivity and performer praise amid execution criticisms place this in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:30:14.263Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

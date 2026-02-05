@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "It is rare for a musical to have a stronger second act than first, with most outings' ambitions meeting their limits by the time the stakes are set. Kushner's story, which might fare better as a tight one-acter, has somewhat of a bumbling start as it muddles through its introduction of characters, plot, and artistic flights of fancy. Longhurst's direction valiantly makes its way through these flaws, and ends with a masterstroke of lighting (by Jack Knowles) and stagin",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is rare for a musical to have a stronger second act than first, with most outings' ambitions meeting their limits by the time the stakes are set.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The text appears truncated mid-sentence. The excerpt describes a 'bumbling start' and muddled first act, but notes the second act is stronger and praises the direction and staging. Without the full conclusion, this seems like a qualified, uneven assessment. | GPT-4o: The review acknowledges flaws in the first act and suggests the story might work better as a one-acter, but also highlights a strong second act and commendable direction. The single excerpt and lack of full context limit confidence. | Gemini: The review excerpt describes a flawed start but hints at a stronger second act and praises the direction and staging. This suggests a mixed experience overall, but with potential. | Kimi: The excerpt criticizes the book's bumbling first act but praises the direction as valiant and the ending as a masterstroke, suggesting the production overcomes script weaknesses. Single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:52:44.532Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

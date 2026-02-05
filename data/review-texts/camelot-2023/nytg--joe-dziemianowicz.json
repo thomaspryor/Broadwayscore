@@ -15,5 +15,60 @@
   "showScoreExcerpt": "“Director Bartlett Sher’s gray and forbidding revival of the classic show could definitely use a bit more shine. It’s dark a lot in this ‘Camelot’.”\n\nRead more",
   "bwwExcerpt": "The optimistic notion that greatness is within reach if only for “one brief, shining moment” is indelibly ingrained in Alan Jay Lerner and Frederick Loewe’s 1960 musical Camelot. Director Bartlett Sher’s gray and forbidding revival of the classic show could definitely use a bit more shine. It’s dark a lot in this Camelot. Running 3 hours at Lincoln Center's Vivian Beaumont Theater, the production is stately and beautifully sung, yet it’s seldom exciting or joyful. That's a long sit for, essentially, a relatively straightforward story.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAMELOT-Opens-On-Broadway-Starring-Phillipa-Soo-Jordan-Donica-Andrew-Burnap-More-20230413"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAMELOT-Opens-On-Broadway-Starring-Phillipa-Soo-Jordan-Donica-Andrew-Burnap-More-20230413",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Bartlett Sher's gray and forbidding revival of the classic show could definitely use a bit more shine.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt suggests disappointment with the production's darkness and lack of shine, indicating mixed-to-negative feelings. However, given the truncated nature and 'Read more' prompt, the full verdict may be elsewhere in the complete review. | GPT-4o: The excerpt suggests a negative tone, describing the revival as 'gray and forbidding' and needing 'more shine'. However, due to the limited text, the confidence is low. | Gemini: The review excerpt indicates a lack of enthusiasm, describing the production as \"gray and forbidding\" and needing \"more shine.\" This suggests a mixed or lukewarm reception, as it doesn't explicitly discourage seeing the show but also doesn't offer strong praise. | Kimi: The excerpt criticizes the director's vision as 'gray and forbidding' and notes the production is too dark and lacks shine, but given this is a truncated excerpt, the overall verdict may be more balanced than this single critical observation suggests.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:50:14.663Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 61,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

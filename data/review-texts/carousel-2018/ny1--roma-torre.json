@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It's been nearly 25 years since Rodgers and Hammerstein's 'Carousel' has come around on Broadway. And good reason... the last production featuring a young Audra McDonald set the bar pretty high. And while the current revival doesn't measure up in some ways, it makes up for it in others - starting with that glorious score.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "while the current revival doesn't measure up in some ways, it makes up for it in others",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt shows balanced assessment - acknowledges shortcomings compared to previous production but finds compensating strengths in the score. Neither clearly recommends nor discourages. | GPT-4o: The review acknowledges that the current revival doesn't fully measure up to past productions but highlights the strength of the score as a redeeming factor, indicating a mixed assessment. The single excerpt limits confidence in the overall verdict. | Gemini: The review states the current revival doesn't measure up in some ways, but makes up for it in others, indicating a positive but not rave review. The mention of the 'glorious score' further supports a positive classification. | Kimi: The critic acknowledges the revival falls short of the previous production in some respects but compensates with a glorious score, indicating a qualified but positive recommendation to see the show. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:55:14.321Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "The night may be unsatisfying, but it's not a total loss. Ciarán Hinds's Big Daddy offers some goatish fun; Debra Monk's Big Mama bustles and blubbers amusingly. And Emily Bergl's Mae (Maggie's sister-in-law and rival for Big Daddy's inheritance) is deliciously bitchy. Johansson could take a few pointers from Bergl on the fine art of purring",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The night may be unsatisfying, but it's not a total loss.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Opens with explicit statement that the show is 'unsatisfying' but acknowledges some good performances. Praises supporting actors but implies the lead (Johansson) needs improvement. Single excerpt limits full assessment. | GPT-4o: The excerpt suggests a mixed review, noting some enjoyable performances but an overall unsatisfying experience. The lack of a full review and single excerpt warning suggest caution, leading to a low confidence score. | Gemini: The review states the night is \"unsatisfying\" but highlights some positive performances. This suggests a mixed experience, leaning slightly negative. | Kimi: While the critic judges the overall experience as 'unsatisfying,' they qualify this by noting it is 'not a total loss' and cite specific enjoyable performances from supporting cast members, suggesting a mixed rather than wholly negative assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:02:24.429Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

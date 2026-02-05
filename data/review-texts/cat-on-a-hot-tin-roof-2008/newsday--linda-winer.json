@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Of all the plays currently not begging to be revived in New York, the oft-seen \"A Streetcar Named Desire\" must be near the top of the give-it-a-rest list. [...] But director Emily Mann and Stephen C. Byrd, the producer responsible for Broadway's 2008 all-black \"Cat on a Hot Tin Roof,\" have put together a solid, credible, more aggressive than poetic \"Streetcar\" starring Nicole Ari Parker as Blanche DuBois and a glistening-buff Blair Underwood as Stanley.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STREETCAR-NAMED-DESIRE-Returns-to-Broadway-Updating-LIVE-20120422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But director Emily Mann and Stephen C. Byrd have put together a solid, credible, more aggressive than poetic 'Streetcar'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Opens negatively about the revival concept but pivots to praise the actual production as 'solid, credible.' Single excerpt warning suggests cautious scoring in lower Positive range. | GPT-4o: The excerpt suggests a competent but not groundbreaking production, noting it as 'solid' and 'credible' but lacking poetic elements. The tone is mixed with a hint of reservation about the revival's necessity. | Gemini: The review excerpt indicates a \"solid, credible\" production, suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the limited text, confidence is low. | Kimi: The review opens with revival fatigue about the play itself, but the verdict on this production is cautiously positive ('solid, credible'), though qualified by the criticism that it's 'more aggressive than poetic.' With only a single excerpt available, the mild praise suggests a lower Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:58:13.442Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

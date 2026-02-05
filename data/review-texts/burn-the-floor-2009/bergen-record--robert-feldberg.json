@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"\"Burn the Floor\" is an experience that alternates between exhilarating and contrived. As a bonus, just thinking of what those dancers put themselves through should give you a great night's sleep.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-Review-Roundup-Burn-the-Floor-and-More-20090803",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Burn the Floor is an experience that alternates between exhilarating and contrived.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly states the show alternates between positive (exhilarating) and negative (contrived) qualities, which is the definition of mixed. Single excerpt warning requires caution, but the balanced language is clear. | GPT-4o: The review excerpt describes the show as both 'exhilarating and contrived,' indicating a mixed experience. The lack of a clear recommendation or discouragement places it in the Mixed bucket. The single excerpt and text quality warning reduce confidence in the verdict. | Gemini: The review uses \"alternates between exhilarating and contrived,\" indicating a mixed experience. The bonus comment at the end doesn't sway it to positive. | Kimi: The excerpt explicitly balances strong positive praise ('exhilarating') with significant criticism ('contrived'), indicating an ambivalent assessment without a clear recommendation to see or skip the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:39:01.877Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

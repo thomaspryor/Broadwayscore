@@ -12,5 +12,60 @@
   "bwwExcerpt": "What world are we in? Who is this show for? These strike me as the central problems with this adaptation and production. There are 'nudge, nudge, wink, wink, say no more' references intended presumably to keep adult theatergoers interested. For example, Veruca proclaims to Russian Dad at one point, 'Buy me North Korea!' But the tonal handling of the surreal so essential to Dahl is neither consistent nor secure. If Charlie is meant to be the incorruptible anchor of our journey, what do we make of this exchange? Wonka to Charlie, 'Do you like seeing children maimed?' To which Charlie responds, 'No, but - I love seeing how chocolate is made.' It seems even Charlie has his price.",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHARLIE-AND-THE-CHOCOLATE-FACTORY-Opens-its-Doors-Updating-Live-20170423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHARLIE-AND-THE-CHOCOLATE-FACTORY-Opens-its-Doors-Updating-Live-20170423",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What world are we in? Who is this show for? These strike me as the central problems with this adaptation and production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic identifies fundamental structural problems with the adaptation and questions who the target audience is, indicating serious concerns about the show's coherence and purpose. | GPT-4o: The review excerpt highlights significant issues with the adaptation and production, questioning the target audience and criticizing the inconsistent handling of the show's tone. This suggests a negative verdict. | Gemini: The critic questions the show's purpose and target audience, highlighting inconsistencies in tone and problematic exchanges, suggesting a negative overall experience. | Kimi: The critic fundamentally questions the show's premise and target audience, criticizing inconsistent tonal handling and problematic writing choices. While analytical rather than vitriolic, the excerpt indicates clear disapproval of the production's execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:18:56.989Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

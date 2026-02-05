@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "It took real guts for the lead producers and director Jack O'Brien to revive Rodgers and Hammerstein's 'Carousel,' which opened Thursday at the Imperial Theatre. Theatergoers still speak with hushed reference about Nicholas Hytner's phenomenal 'Carousel' revival, imported from the National Theatre to Lincoln Center Theatre in 1994. The good news is that we don't have to choose which version is more perfect. Enjoy the memory of Hytner's show and make sure you don't miss O'Brien's.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Make sure you don't miss O'Brien's.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive recommendation with 'make sure you don't miss' despite comparing to legendary 1994 production. Single excerpt limits confidence but verdict is unambiguous. | GPT-4o: The excerpt strongly recommends seeing the current production, suggesting it is on par with a highly regarded past revival. The phrase 'make sure you don't miss' indicates a must-see recommendation. | Gemini: The critic explicitly recommends seeing the current production, even favorably comparing it to a highly regarded previous production. The phrase 'make sure you don't miss' indicates a strong positive recommendation. | Kimi: The excerpt contains an explicit recommendation to not miss the production, placing it firmly in the Positive bucket at the higher end. However, confidence is low given only one curated excerpt is available, which may not represent the full review's nuance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:55:50.539Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

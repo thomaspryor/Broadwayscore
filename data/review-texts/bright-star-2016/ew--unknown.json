@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "It's Martin and Brickell's music that's the brightest star in Bright Star. The bluegrass sounds compliment the show's setting and era, Americana music with layered harmonies and beautiful use of banjo and fiddle. Not every song is a winner, but there are stirring ballads and toe-tapping numbers throughout that audience members will enjoy.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Not every song is a winner, but there are stirring ballads and toe-tapping numbers throughout that audience members will enjoy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed praise for the music with acknowledgment of flaws ('Not every song is a winner') but overall positive assessment that audiences 'will enjoy'. Single excerpt limits confidence in full verdict. | GPT-4o: The review excerpt praises the music as the standout element, noting its suitability and appeal. While not every song is praised, the overall tone suggests a positive experience with the music, warranting a lower-end Positive score due to the single excerpt limitation. | Gemini: The review praises the music as the \"brightest star\" and notes that audience members will enjoy the songs, but also mentions that not every song is a winner. Given the single excerpt and mixed signals, I've scored it as positive with reservations. | Kimi: The critic offers enthusiastic praise for Martin and Brickell's bluegrass score, calling it the 'brightest star' with beautiful instrumentation, while acknowledging minor inconsistencies in the songwriting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:29:25.985Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
