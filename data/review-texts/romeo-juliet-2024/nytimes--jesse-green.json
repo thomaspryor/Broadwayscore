@@ -13,8 +13,8 @@
     "bww-roundup"
   ],
   "nycTheatreExcerpt": "\"Is that a reasonable response to aim for when staging the world's most famous weepie? For me, seeing so many young people engaged, it is. Perhaps, as Shakespeare commands in the play's closing speech, they will \"Go hence, to have more talk of these sad things.\" And so what if the production achieves that goal by protecting them from too much unruly feeling, just as the Capulets aimed to protect Juliet? Probably, the Capulets were right.\"",
-  "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available",
+  "contentTier": "complete",
+  "tierReason": "Full review text",
   "assignedScore": 74,
   "llmScore": {
     "score": 74,
@@ -72,5 +72,51 @@
   },
   "bwwExcerpt": "It’s a little slick, though, at least for seen-that adults. The play’s twisty language, expressive of twisty thoughts, is largely untangled but, in the process, flattened. (Gold’s edit brings the running time, not counting intermission, to “the two hours’ traffic of the stage” Shakespeare mentions, but some of that traffic is stop-and-go.) I smiled a lot but never came close to crying.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Rachel-Zegler-and-Kit-Connor-Opens-On-Broadway-20241024"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Rachel-Zegler-and-Kit-Connor-Opens-On-Broadway-20241024",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 74,
+  "fullText": "You have a preview view of this article while we are checking your access. When we have confirmed access, the full article content will load.Theater Review\n\nThe Broadway revival of “Romeo + Juliet” plays to the TikTok crowd. But maybe that’s a good thing.\n\nCredit...Sara Krulwich/The New York Times\n\nListen to this article · 6:34 min Learn moreShare full article71By Jesse Green\n\nWho can forget the classic first line of “Romeo and Juliet”: “How y’all doin’ today?”\n\nWell, perhaps not so classic. But as uttered at the start of the play’s 36th Broadway revival, which opened Thursday at Circle in the Square, the words are certainly more welcoming to the production’s youthful target audience than the traditional iambic pentameter ones: “Two households, both alike in dignity.”\n\nNot that there are two households in the director Sam Gold’s rec-room adaptation anyway. Romeo’s parents, along with a clutch of other characters, have been discarded. Juliet’s are both played by one actor, with little more than a change of inflection. And though Kit Connor and Rachel Zegler, the box-office draws, cover just one star-crossed lover each — he a beagly Romeo, she a beamish Juliet — the other eight cast members take on 17 roles, adorably if often indistinguishably. It’s a puppy pile.\n\nBut before you wonder whether this production was sponsored by CliffsNotes, with only as much poetry and staying power as an Instagram story, bear in mind that many of the characters are teenagers, and that the play may most usefully be directed at people seeing it for the first time, not the 36th. Certainly Gold has used everything in his formidable toolbox — scissors, hammers, punches, wrenches — to get young people interested in a world that looks more like theirs than Elizabethan London or Renaissance Verona.\n\nSo after an energetic preshow, filled with flirting, peacocking and snits of aggression, the story begins with that casual greeting from Gabby Beans, the play’s Chorus. Beans, later a hotheaded Mercutio, a beneficent Friar Lawrence and a barely there Prince Escalus, makes a relatable hype woman, introducing the rest of the cast by first name and telling us whom they’ll be playing. If you’re confused — and even a frequent flier might be — you can consult a program insert that visualizes the Montagues and Capulets as a mood board.\n\nFeeling the groove: Gabby Beans, far right, leading Tommy Dorfman (center), Kit Connor (far back) and other cast members in a dance in Sam Gold’s “Romeo + Juliet” at Circle in the Square.Credit...Sara Krulwich/The New York TimesWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
+  "textWordCount": 447,
+  "archivePath": "data/archives/reviews/romeo-juliet-2024/nytimes--jesse-green_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T03:57:57.247Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
+  "wordCount": 447
 }
