@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import FeedbackForm from '@/components/FeedbackForm';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -10,8 +11,6 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/feedback`,
   },
 };
-
-const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || 'https://formspree.io/f/YOUR_FORM_ID';
 
 export default function FeedbackPage() {
   return (
@@ -34,28 +33,28 @@ export default function FeedbackPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">What Can You Share?</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="flex items-start gap-3 p-4 bg-purple-50 rounded-lg">
-                <span className="text-2xl">🐛</span>
+                <span className="text-2xl">&#x1f41b;</span>
                 <div>
                   <h3 className="font-semibold text-gray-900">Report a Bug</h3>
                   <p className="text-sm text-gray-500">Something not working right?</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg">
-                <span className="text-2xl">💡</span>
+                <span className="text-2xl">&#x1f4a1;</span>
                 <div>
                   <h3 className="font-semibold text-gray-900">Feature Request</h3>
                   <p className="text-sm text-gray-500">Ideas for new features</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 p-4 bg-red-50 rounded-lg">
-                <span className="text-2xl">📝</span>
+                <span className="text-2xl">&#x1f4dd;</span>
                 <div>
                   <h3 className="font-semibold text-gray-900">Content Error</h3>
                   <p className="text-sm text-gray-500">Incorrect show data or scores</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 p-4 bg-green-50 rounded-lg">
-                <span className="text-2xl">💬</span>
+                <span className="text-2xl">&#x1f4ac;</span>
                 <div>
                   <h3 className="font-semibold text-gray-900">General Feedback</h3>
                   <p className="text-sm text-gray-500">Thoughts, praise, or suggestions</p>
@@ -65,110 +64,7 @@ export default function FeedbackPage() {
           </section>
 
           {/* Feedback Form */}
-          <form
-            action={FORMSPREE_ENDPOINT}
-            method="POST"
-            className="space-y-6"
-          >
-            {/* Name */}
-            <div>
-              <label htmlFor="name" className="block text-sm font-semibold text-gray-900 mb-2">
-                Name (optional)
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                placeholder="Your name"
-              />
-            </div>
-
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-2">
-                Email (optional)
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                placeholder="your.email@example.com"
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                Only if you&apos;d like a response
-              </p>
-            </div>
-
-            {/* Category */}
-            <div>
-              <label htmlFor="category" className="block text-sm font-semibold text-gray-900 mb-2">
-                Category
-              </label>
-              <select
-                id="category"
-                name="category"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                required
-              >
-                <option value="">Select a category...</option>
-                <option value="bug">🐛 Bug Report</option>
-                <option value="feature">💡 Feature Request</option>
-                <option value="content-error">📝 Content Error</option>
-                <option value="praise">👏 Praise</option>
-                <option value="other">💬 Other</option>
-              </select>
-            </div>
-
-            {/* Show (optional, for content errors) */}
-            <div>
-              <label htmlFor="show" className="block text-sm font-semibold text-gray-900 mb-2">
-                Show Name (if applicable)
-              </label>
-              <input
-                type="text"
-                id="show"
-                name="show"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                placeholder="e.g., Hamilton, Wicked, etc."
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                For content errors or feature requests related to a specific show
-              </p>
-            </div>
-
-            {/* Message */}
-            <div>
-              <label htmlFor="message" className="block text-sm font-semibold text-gray-900 mb-2">
-                Message <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={6}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                placeholder="Tell us more..."
-                required
-              />
-            </div>
-
-            {/* Hidden honeypot field for spam protection */}
-            <input type="text" name="_gotcha" style={{ display: 'none' }} />
-
-            {/* Submit Button */}
-            <div className="flex items-center justify-between">
-              <p className="text-sm text-gray-500">
-                <span className="text-red-500">*</span> Required fields
-              </p>
-              <button
-                type="submit"
-                className="px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl"
-              >
-                Send Feedback
-              </button>
-            </div>
-          </form>
+          <FeedbackForm />
         </div>
 
         {/* Additional Info */}
@@ -179,7 +75,7 @@ export default function FeedbackPage() {
 
           <div className="space-y-4">
             <div className="flex items-start gap-4">
-              <span className="text-3xl">📖</span>
+              <span className="text-3xl">&#x1f4d6;</span>
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1">
                   <Link href="/submit-review" className="text-purple-600 hover:text-purple-700">
@@ -193,26 +89,7 @@ export default function FeedbackPage() {
             </div>
 
             <div className="flex items-start gap-4">
-              <span className="text-3xl">💻</span>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">
-                  <a
-                    href="https://github.com/thomaspryor/Broadwayscore"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-purple-600 hover:text-purple-700"
-                  >
-                    Contribute on GitHub
-                  </a>
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  This is an open-source project. View the code, report issues, or contribute improvements
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <span className="text-3xl">🎭</span>
+              <span className="text-3xl">&#x1f3ad;</span>
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1">
                   Spread the Word
