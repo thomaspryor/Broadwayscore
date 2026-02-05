@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "While the mysterious sources of Mr. Leguizamo's boundless energy show no signs of imminent depletion, the writing in this, his fifth solo show over the course of two decades, is beginning to show traces of flab. The show's energy stalls when Mr. Leguizamo slides from sharply funny satirical highs to puddles of banal confession...the scabrous class clown begins to feel a little too much like a lecturer at the Learning Annex promoting his latest self-help book.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Leguizamo has a gift for creating vivid characters with just a few deft strokes, and his ability to shift seamlessly between voices and personas remains impressive.",
   "contentTier": "invalid",
@@ -22,5 +22,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a brief excerpt or quote fragment praising an actor's performance, but lacks any overall evaluation or recommendation about a specific show; openai: The text is a brief comment on Mr. Leguizamo's performance abilities without evaluating a specific Broadway show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwScore": 5,
+  "sources": [
+    "web-search",
+    "bww-reviews"
+  ]
 }

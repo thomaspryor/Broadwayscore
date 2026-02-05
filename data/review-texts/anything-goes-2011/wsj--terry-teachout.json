@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "Ms. Marshall, who did so well by 'The Pajama Game' and 'Wonderful Town,' takes a while to get going this time around, perhaps because the book is stale...'Anything Goes' has the air of a safe option, a risk-free show designed to take the minimum number of chances and please the maximum number of people. That it succeeds in the latter goal is mainly due to Ms. Foster (and, of course, Cole Porter). Her Reno Sweeney is definitely worth the price of two tickets.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new Broadway revival of 'Anything Goes' is a hugely entertaining show that gets just about everything right. It's the kind of old-fashioned musical comedy that reminds you why people fell in love with Broadway in the first place.",
   "contentTier": "truncated",
@@ -73,5 +73,10 @@
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "bwwScore": 7,
+  "sources": [
+    "web-search",
+    "bww-reviews"
+  ]
 }

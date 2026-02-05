@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "Before the show even opened on Broadway last night, Mark Rylance's performance in 'Jerusalem' was generating a big buzz. We've come to expect greatness from this actor -- he was superlative in 'Boeing-Boeing' and 'La Bete' -- and once again he delivers.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mark Rylance gives a performance for the ages as Johnny 'Rooster' Byron, a dissolute pied piper who lives in a trailer in the woods and holds court for a motley crew of misfits.",
   "contentTier": "invalid",
@@ -23,5 +23,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single descriptive sentence about a character and performance, not a complete review with evaluative content or recommendation; openai: The text is a brief description of a performance without any evaluative content or overall assessment of the show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwScore": 6,
+  "sources": [
+    "web-search",
+    "bww-reviews"
+  ]
 }
