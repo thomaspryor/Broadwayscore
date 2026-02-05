@@ -13,13 +13,13 @@
   ],
   "showScoreExcerpt": "\"One of the things that impressed me about the play this time around - was the oppressive presence of whiteness that Cooper and the creative team create with nary a Caucasian in sight.\"\n\nRead more",
   "publishDate": "December 4, 2022",
-  "assignedScore": 73,
+  "assignedScore": 80,
   "llmScore": {
-    "score": 73,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 68,
-      "high": 78
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,12 +31,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "One of the things that impressed me about the play this time around - was the oppressive presence of whiteness that Cooper and the creative team create with nary a Caucasian in sight.",
+        "quote": "it's impossible to say that Ain't No Mo' doesn't have longevity to it",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt indicates an appreciation for the creative team's work, suggesting a positive view. However, due to the single excerpt and lack of full context, the confidence is low. | Gemini: The excerpt suggests a positive impression of the play's creative choices, but the lack of context and single excerpt makes it difficult to gauge the overall sentiment with high confidence. | Kimi: The critic expresses clear appreciation ('impressed me') for the production's artistic execution, indicating a positive reception. However, with only a single curated excerpt available, the overall verdict strength remains uncertain, warranting the lower end of the Positive range.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the performances as 'master-class' and 'hilarious,' calls the direction 'astute,' and finds the play has lasting value despite some dated elements. The critic appreciates the theatrical craft and social commentary, though notes some segments feel 'creaky' now. | GPT-4o: The review praises the play's ingenious premise and performances, despite noting some dated elements. The overall tone is positive, recommending the show while acknowledging some flaws. | Gemini: The review acknowledges some dated elements but ultimately finds the play impactful and thought-provoking, recommending it despite its flaws. | Kimi: The critic praises the 'master-class' performances, 'astute' direction, and 'ingenious' writing, calling the play 'hilarious yet sobering' with lasting power, despite noting some dated elements.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,28 +46,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T06:54:05.168Z",
+    "scoredAt": "2026-02-05T04:28:34.090Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 73,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 72,
-    "geminiScore": 75,
-    "kimiScore": 72,
+    "claudeScore": 79,
+    "openaiScore": 80,
+    "geminiScore": 77,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 73,
   "fullText": "When Barack Obama was elected President in 2008, some of us naively hoped that the arrival of our first Black leader in the White House signaled the beginning of the end of racial strife in this country. That's what the congregation at the funeral of Brother Righttocomplain believe at the opening of Jordan E. Cooper's hilarious yet sobering comedy, Ain't No Mo', now making its Broadway debut under the astute direction of Stevie Walker-Webb at the Belasco Theatre.\n\n\"Ain't no mo' Emmit Till, ain't no mo' Rodney King, ain't no mo' Jena 6, ain't no mo' Stop, ain't no mo' Frisk. Ain't no mo' getting followed around by the tall white lady in the K-Mart on Jones Street,\" says Pastor Freeman (Marchánt Davis) to the ecstatic mourners, all ironically dressed in white (costumes by Emilio Sosa). Of course, things haven't panned out that way. Brother Righttocomplain, as we now know, was due for a resurrection.\n\nBut Cooper isn't going to complain over the next hour and 40 minutes in his bitingly satirical play, which had its world premiere at the Public Theater in 2019 (most of the cast reprise their roles here). He's going to hand out some mental lollipops for us to suck on as he takes us through some outrageous scenarios in America's complex racial landscape using elements of sketch comedy and reality TV. While you're laughing, he intends you to choke on that lollipop a little.\n\nCooper himself plays Peaches, a fabulous flight attendant in drag (hair and wig design by Mia M. Neal) working for African American Airlines at Gate 1619 (Scott Pask's air terminal set design unsubtly puts that year before us). Peaches is preparing to board all the Black people in America (some Latinos are on standby) on a one-way flight to Africa — exactly where in Africa seems beside the point. Tickets are courtesy of the now presumably all-white US government. Obama and Kamala Harris will be flying the plane.\n\nIt's an absurd, altogether disturbing premise, and we don't believe for a second that Cooper thinks this is the way things should go. But it's an ingenious way to dig into some of the nasty truths about this country's equally absurd failure to come to terms with the legacy of slavery.\n\nIn one scene we meet a woman named Trisha (Fedna Jacquet), who is about to terminate her pregnancy because she doesn't want to give birth to a child who's destined to become a statistic like her late husband, whose name has become yet another hashtag (Davis gives a powerful performance as his ghost). Ebony Marshall-Oliver adds dark humor to this otherwise painful segment as a woman who has other reasons for waiting in an insanely long line for an abortion. News of a free ticket out of the States, however, changes Trisha's mind.\n\nBut not everyone wants to leave. Elsewhere, we meet a wealthy Black family who thinks things are just hunky-dorky here in the United States of America, and the idea of going to Africa seems, well, just so gosh-darn silly. Little do they know that the patriarch of their family has kept them financially and socially comfortable by keeping all their Blackness chained up in the cellar. Crystal Lucas-Perry (giving master-class performances here and later in the play as a prison inmate) hilariously embodies the unbreakable spirit of \"Black\" as she rises from the depths of the mansion to wreak havoc on the bougie family.\n\nCooper also dissects a facet of racial identity that seemed more current in 2019 in a segment called \"Real Baby Mamas of the South-Side,\" in which we watch the outrageously funny taping of a \"reality\" TV show involving four women, one of whom is \"transracial.\" The episode feels a little creaky now as it harks back in the most obvious way to the 2015 controversy surrounding Rachel Dolezal, a white woman who self-identified as Black. Shannon Matesky (this production's new cast member who played the role of Rachonda in Woolly Mammoth's Washington, DC production this year) owns the stage as she ridiculously tries the show the other women how to up their Black game for the camera. Needless to say, when the tickets to Africa get handed out, she doesn't get one.\n\nDespite the datedness of that episode and jokes that don't hold up so well, it's impossible to say that Ain't No Mo' doesn't have longevity to it. One of the things that impressed me about the play this time around, something I didn't sense when I saw the play at the Public, was the oppressive presence of whiteness that Cooper and the creative team create with nary a Caucasian in sight.\n\nWe feel the threat of it everywhere though: in the voice of the reality TV director's booming voice from above (sound design by Jonathan Deans and Taylor Williams), in the threat of a fantastical machine that will turn Black people white if they refuse to leave the country, and in the crushing darkness of the play's final moments (Adam Honoré's lighting is used to devastating effect). That can be an unpleasant sensation for the white folks in the audience, but then again, understanding often begins with discomfort. None of us gets a free ticket out.",
@@ -101,5 +103,6 @@
   ],
   "contentTier": "complete",
   "wordCount": 873,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T04:28:34.090Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Bruce Norris has written a provocative play that's unafraid to wade into the murky waters of American racial politics, and he's done so with intelligence, humor and theatrical flair.",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
-    "score": 81,
-    "confidence": "high",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 40,
+      "high": 50
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Bruce Norris has written a provocative play that's unafraid to wade into the murky waters of American racial politics, and he's done so with intelligence, humor and theatrical flair.",
+        "quote": "This metaphysical mystery is surprisingly shallow on the life-and-death issues it raises.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the playwright's intelligence, humor, and theatrical skill. However, this is only one excerpt from the full review, so the complete verdict may differ. | GPT-4o: The excerpt praises the play's intelligence, humor, and flair, indicating a strong positive reception. However, the single excerpt warning suggests caution, so the score reflects an enthusiastic recommendation within the Positive range. | Gemini: The excerpt praises the play's writing as provocative, intelligent, humorous, and theatrical, suggesting a positive, but not overwhelmingly enthusiastic, recommendation. Given that it's a single excerpt, confidence is low. | Kimi: The excerpt offers strong praise for the play's ambitious themes and execution, citing intelligence, humor, and theatrical flair. As a single curated excerpt, it indicates a clear positive verdict but warrants low confidence due to potential cherry-picking.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic finds the play fundamentally flawed ('surprisingly shallow'), calls the characters 'dullards,' and concludes that Albee 'refuses to come up with the kind of stimulating cerebral showdown' needed. While praising design and some performances, the overall assessment is clearly negative. | GPT-4o: The review highlights the play's lack of depth and thematic clarity, despite some praise for the production's visual elements. The overall tone is critical, focusing on the play's shortcomings. | Gemini: The review acknowledges some positive aspects like the set design and Alexander's performance, but ultimately finds the play shallow and lacking thematic clarity, resulting in a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,29 +50,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T23:25:42.217Z",
+    "scoredAt": "2026-02-05T04:36:15.032Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 81,
     "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 82,
-    "geminiScore": 78,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": null,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "textQuality": "partial",
   "rescoreReason": "fullText added after excerpt-based scoring",
@@ -123,6 +122,5 @@
   "tierReason": "Full review text",
   "wrongFullText": "A notorious Broadway flop in 1980, Edward Albee's \"The Lady From Dubuque\" doesn't exactly rise triumphantly from the ashes here. Despite its imaginative and terrifically theatrical personification of the Angel of Death as a regal matron from the American heartland (who sweeps in on the arm of a distinguished black man, no less), this metaphysical mystery is surprisingly shallow on the life-and-death issues it raises.\n\nA notorious Broadway flop in 1980, Edward Albee’s “The Lady From Dubuque” doesn’t exactly rise triumphantly from the ashes here. Despite its imaginative and terrifically theatrical personification of the Angel of Death as a regal matron from the American heartland (who sweeps in on the arm of a distinguished black man, no less), this metaphysical mystery is surprisingly shallow on the life-and-death issues it raises. In its handsome mounting by David Esbjornson, the play does, however, look absolutely stunning on the largest and grandest of the three stages at the new Signature Center.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'White Lotus' Season 4 Casts Steve Coogan, Caleb Jonte Edwards \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Damon Lindelof Sets Limited Series 'The Chain' at HBO Under New Overall Deal\n\nThe characters in this ill-defined piece are such dullards, they don’t deserve John Arnone’s elegant set of a modern suburban living room — a light and airy space, all clean lines and creamy tones, dominated by a sleek open staircase curving up to the second floor. This is a room designed for intelligent adults. But the six friends gathered here for drinks and party games all behave like children.\n\nSam (Michael Hayden), the host, is bullying everyone in a game of 20 Questions. “Who am I?” he insistently demands of his bored guests. So far, we’re in familiar Albee territory, where party games have weighty existential meaning.\n\nSam’s wife, Jo (Laila Robins), immediately understands his problem: “Poor man, he doesn’t know who he is.” But Jo doesn’t feel like playing games tonight because, as she bluntly announces early on: “I am dying.”\n\nAs the evening wears on, Jo’s impending death becomes more pressing, with Robins increasingly called upon to writhe in pain and shriek in agony, a demanding if rather thankless acting task that the actress carries off with dignity.\n\nDespite Jo’s deteriorating condition, the games go on, making Albee’s critical point that people will ignore whatever makes them uneasy, unhappy, or uncomfortable. The innocuous Edgar (Thomas Jay Ryan) and his mousy wife, Lucinda (Catherine Curtin), make awkward social conversation. Fred (C.J. Wilson), a racist and a bully, concentrates on humiliating his dimwit girlfriend, Carol (Tricia Paoluccio).\n\nSam’s state of denial is far more acute than the simple, willful blindness of his insensitive guests. Hayden intensifies his angst to a point of desperation that’s quite painful to watch, although Albee doesn’t make it at all clear what Sam’s denials have to do with his own existential dilemma.\n\nThematic clarity has never been high on Albee’s dramatic to-do list, so nothing is really illuminated by the sudden, stunning appearance of Jane Alexander and Peter Francis James as Elizabeth, the mysterious lady from Dubuque, and her coolly intimidating escort, Oscar.\n\nLooking positively regal in Elizabeth Hope Clancy’s dove-gray ensemble, Alexander sweeps aside Sam’s dithering objections and takes charge of Jo’s dying (a huge relief to everyone worn down by poor Jo’s suffering). But with Sam reduced to howling denials of Elizabeth’s mission of mercy, and all the other characters hustled offstage, Albee refuses to come up with the kind of stimulating cerebral showdown that might have sent us out of the theater praising his name.",
   "contentMismatchNote": "Wrong content detected by audit - fullText is about different show",
-  "rescoreCompletedAt": "2026-02-04T23:25:42.217Z",
-  "needsRescore": true
+  "rescoreCompletedAt": "2026-02-05T04:36:15.032Z"
 }

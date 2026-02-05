@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 77,
+    "score": 81,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "There's no doubt that casting a Black actor as Willy Loman adds a deeper dimension to this monumental role.",
+        "quote": "Pierce portrays Willy as a hero for both his time and ours — a complex human being with grave character flaws, but 'a good man' for all that.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises casting choice as adding 'deeper dimension' to 'monumental role' but insufficient text to determine full verdict. Scored in upper Positive range due to clear praise, but low confidence given limited excerpt. | GPT-4o: The excerpt highlights a positive aspect of the production, specifically the casting choice, which adds depth to the role. However, without more context, the overall sentiment is unclear, leading to a low confidence, mildly positive score. | Gemini: The excerpt highlights a positive aspect of the casting, suggesting a potentially interesting interpretation. However, without more context, it's difficult to gauge the overall recommendation strength. | Kimi: The excerpt offers unambiguous praise for the casting choice and its artistic impact on the role using words like 'no doubt' and 'monumental,' indicating a clearly positive assessment. However, confidence is reduced due to the single excerpt limitation.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Pierce's performance and Cromwell's direction, with particular acclaim for Sharon D. Clarke's 'brilliant performance.' Despite criticizing the abstract set design, the overall assessment celebrates the production's fresh take on the classic play. | GPT-4o: The review is filled with praise for the performances, direction, and production elements, highlighting the depth and impact of the show. The critic uses strong positive language, indicating a must-see recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and overall impact of the production. The critic highlights the powerful performances and insightful direction, making it a strong recommendation. | Kimi: While the critic strongly criticizes the abstract set design as a 'nowheresville,' the review otherwise overflows with praise for the direction, lighting, costumes, and especially the lead performances by Pierce, Clarke, and Davis, clearly endorsing the production as an effective and moving interpretation of the classic.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T08:05:08.669Z",
+    "scoredAt": "2026-02-05T04:40:04.848Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 72,
-    "geminiScore": 72,
-    "kimiScore": 82,
+    "claudeScore": 79,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "bwwScore": 9,
   "sources": [
@@ -79,7 +80,6 @@
     "bww-reviews",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 472,
@@ -114,5 +114,6 @@
     "Show title not found in text"
   ],
   "wordCount": 472,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T04:40:04.848Z"
 }

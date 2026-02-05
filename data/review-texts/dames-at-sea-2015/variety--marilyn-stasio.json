@@ -16,7 +16,7 @@
   "bwwExcerpt": "How cruel, to make comparisons with a legendary star! How unkind! How unfair! Well, tough luck, because here it comes: the new leading lady of 'Dames at Sea' is no Bernadette Peters. There's nothing wrong with this revival that Peters, who played the role of Ruby in the original 1968 production, couldn't fix. But musical theater stars of her caliber don't grow on trees, and although newcomer Eloise Kropp is a power tapper par excellence, she hasn't the saucy charm of a Broadway Baby like Ruby -- or the magnetic appeal of a star like Peters.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAMES-AT-SEA-Opens-on-Broadway-Updating-LIVE-20151022",
   "showScoreExcerpt": "This cheerfully silly little musical comedy about chorus girls and sailors in the 1930s is so determinedly retro that it makes 'Anything Goes' look like 'Hamilton.'",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
     "score": 63,
@@ -121,5 +121,10 @@
     "Show title not found in text"
   ],
   "wordCount": 937,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T04:38:35.782Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a website navigation page or content aggregator with repeated text about Aretha Franklin and various unrelated entertainment content, not a theater review; openai: The text provided is not a review but rather a collection of unrelated headlines and snippets from Variety, unrelated to the show 'Dames at Sea'.; gemini: This is a list of various articles and reviews, none of which are about Dames at Sea.; kimi: The provided text is a scrambled collection of unrelated Variety article snippets (Super Bowl coverage, SNL casting news, film reviews, music album reviews) rather than a coherent theater review of 'Dames at Sea.' The content includes repeated 'Popular on Variety' segments and navigation-like elements, indicating a web scraping error or corrupted page content.",
+  "promptVersion": "5.2.0"
 }

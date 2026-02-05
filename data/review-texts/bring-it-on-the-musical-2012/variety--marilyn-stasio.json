@@ -120,5 +120,11 @@
     "Show title not found in text"
   ],
   "wordCount": 475,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-05T04:33:40.532Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a review of 'Morning' by Simon Stephens, not the Broadway show being scored; openai: The review is about a production at the Edinburgh Fringe, not the current Broadway run.; kimi: This review covers the Edinburgh Fringe premiere of Simon Stephens' 'Morning' (transferring to London's Lyric Hammersmith), not a current Broadway production.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Washington brings a searing authenticity to Troy, capturing both his magnetic charisma and his destructive selfishness with equal conviction.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (20 words)",
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Mr. Washington brings a searing authenticity to Troy, capturing both his magnetic charisma and his destructive selfishness with equal conviction.",
+        "quote": "There are scenes as vivid and heartfelt as any on Broadway now.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Gemini: The review praises the performance of Mr. Washington, indicating a positive, though possibly qualified, recommendation. | Kimi: The excerpt offers unambiguous praise for Washington's performance using superlatives like 'searing' and 'magnetic,' suggesting a strong recommendation, though the limited length prevents certainty about the overall production verdict.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley praises the lead performances, especially Washington and Davis, calling their work 'magnificent' and finding 'moments of genuine glory.' However, he notes the play's flaws are 'more clearly visible' and calls it Wilson's 'least inventive work' with 'artificial overuse' of symbols. The positive elements outweigh the criticisms. | Gemini: The review is mostly positive, highlighting the performances of Washington and Davis, but also points out flaws in the play itself. It's a recommendation with reservations. | Kimi: While acknowledging the play's structural flaws and unfavorable comparisons to the original James Earl Jones production, the critic delivers a strong recommendation based on vibrant performances by Washington and Davis, calling them 'magnificent' and praising the production's emotional power.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,34 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:50:32.633Z",
+    "scoredAt": "2026-02-05T04:43:27.098Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
+    "claudeScore": 78,
     "openaiScore": null,
-    "geminiScore": 75,
-    "kimiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwScore": 8,
   "sources": [
     "web-search",
     "bww-reviews"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 1205,
@@ -98,5 +99,6 @@
   "archiveOrgTimestamp": "20250814071906",
   "archiveOrgUrl": "http://web.archive.org/web/20250814071906/https://www.nytimes.com/2010/04/27/theater/reviews/27fences.html",
   "wordCount": 1205,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T04:43:27.098Z"
 }

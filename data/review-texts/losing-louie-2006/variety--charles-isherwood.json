@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Simon Neil's dramedy about a middle-aged man's midlife crisis feels overly familiar and schematic, despite some winning performances.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 61,
-    "confidence": "medium",
+    "score": 60,
+    "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows fundamental criticism of the material as 'overly familiar and schematic' while acknowledging 'winning performances.' The structure suggests overall disappointment despite positive elements. | GPT-4o: The excerpt indicates a mixed review, highlighting the play's familiarity and schematic nature while acknowledging some positive aspects in the performances. The single excerpt warning suggests caution, leading to a low confidence score. | Gemini: The review notes that the show feels \"overly familiar and schematic\" but acknowledges \"some winning performances,\" indicating a mixed assessment. Due to the limited text, confidence is low. | Kimi: The critic finds the play itself 'overly familiar and schematic' (clear criticisms) while acknowledging 'winning performances' as the only redeeming quality. This follows the classic pattern of performer-praise-not-redeeming-pan, indicating a recommendation against seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds the material 'overly familiar and schematic' but acknowledges 'winning performances.' This balanced negative/positive assessment suggests mixed reception. Single excerpt warning applies - confidence is low. | GPT-4o: The excerpt notes that the play feels 'overly familiar and schematic,' which suggests a lack of originality or impact, but acknowledges 'some winning performances.' This indicates a mixed review, with neither a strong recommendation nor a strong discouragement. | Gemini: The review notes the play is \"overly familiar and schematic\" but acknowledges \"winning performances.\" This suggests a mixed experience, with some redeeming qualities but significant flaws. Given that it is only one excerpt, confidence is low. | Kimi: The excerpt criticizes the material as derivative and mechanical while acknowledging good acting, suggesting a middling assessment. With only one curated excerpt available, the full verdict is unclear.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T01:38:20.458Z",
+    "scoredAt": "2026-02-05T04:56:41.302Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 58,
     "openaiScore": 60,
     "geminiScore": 62,
-    "kimiScore": 42,
+    "kimiScore": 58,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
-    "scoreDelta": 20,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 1168,
@@ -121,5 +121,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a website navigation page or content feed with multiple unrelated articles about Super Bowl ads, Disney executives, and various entertainment projects - not a theater review.; openai: The text consists of unrelated content about various entertainment topics and does not contain any review of a Broadway show.; gemini: This appears to be a listing of various articles and news items, not a review of a specific show.; kimi: The text provided is a jumbled collection of entertainment news headlines, navigation elements, and snippets about various topics (Super Bowl, films, albums, TV shows) rather than a coherent review article of a specific Broadway production. It appears to be scraped webpage content containing multiple unrelated articles and menu items.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "rescoreCompletedAt": "2026-02-05T04:56:41.302Z"
 }

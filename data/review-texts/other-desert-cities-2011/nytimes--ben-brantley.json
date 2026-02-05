@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jon Robin Baitz has written a family drama that crackles with the electricity of old wounds being picked at until they bleed afresh. This is a smart, savage and ultimately moving portrait of a family whose love for one another is both their salvation and their curse.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,13 +20,13 @@
   "contentTierReason": "Short text (47 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 85,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This is a smart, savage and ultimately moving portrait of a family whose love for one another is both their salvation and their curse.",
+        "quote": "Yet “Cities,” directed with a masterly combination of shadow and shimmer by Joe Mantello, emerges as stronger, more sincere and more credible in its Broadway reincarnation.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise with vivid, enthusiastic language ('crackles with electricity', 'smart, savage and ultimately moving'). The critic uses compelling metaphors and finds the work both intellectually and emotionally engaging. | GPT-4o: The review uses strong positive language such as 'smart,' 'savage,' and 'ultimately moving,' indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"crackles with electricity,\" \"smart, savage and ultimately moving,\" indicating a strong recommendation. | Kimi: The critic employs vivid, unqualified superlatives ('crackles with electricity,' 'smart, savage and ultimately moving') to praise the work, indicating strong enthusiasm and a must-see recommendation without reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review praises the production's improvement over its Off-Broadway run, highlighting the strong direction and cohesive ensemble. The positive tone and lack of significant reservations suggest a rave recommendation. | Gemini: The review indicates that the Broadway production is even better than the Off-Broadway one, praising the direction and the ensemble cast. The critic clearly recommends seeing it. | Kimi: The review praises the Broadway transfer as superior to the already acclaimed Off-Broadway production, citing masterly direction, a peerless performance by Stockard Channing, and an ensemble that has settled 'comfortably into its own skin.' Despite noting the loss of original cast members, the critic finds the current incarnation 'deeply enjoyable' and more credible than before, delivering an enthusiastic recommendation tempered only by the text's truncated ending.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,33 +51,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T19:42:48.413Z",
+    "scoredAt": "2026-02-05T04:59:03.796Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 85,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
+    "claudeScore": null,
     "openaiScore": 90,
-    "geminiScore": 82,
-    "kimiScore": 88,
-    "claudeBucket": "Positive",
+    "geminiScore": 81,
+    "kimiScore": 83,
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
+    "kimiBucket": "Positive",
     "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "previousUrl": "https://www.nytimes.com/2011/11/04/theater/reviews/other-desert-cities-at-lincoln-center-theater-review.html",
   "urlDiscoveredAt": "2026-02-05T03:41:51.024Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 85,
   "textWordCount": 394,
@@ -98,5 +97,6 @@
   "archiveOrgTimestamp": "20241217141810",
   "archiveOrgUrl": "http://web.archive.org/web/20241217141810/https://www.nytimes.com/2011/11/04/theater/reviews/other-desert-cities-at-booth-theater-review.html",
   "wordCount": 394,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T04:59:03.796Z"
 }

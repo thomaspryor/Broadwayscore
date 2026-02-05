@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical, starring Katie Brayben as the televangelist, is as generous and nonjudgmental as its subject, though it sometimes seems to mistake kindness for depth.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,14 +24,14 @@
     "nyc-theatre"
   ],
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 43,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 38,
+      "high": 48
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -40,12 +40,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "it sometimes seems to mistake kindness for depth",
+        "quote": "By trying to hit so many notes, none of them resonate.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises the show's generosity and non-judgmental approach, but the key criticism about mistaking 'kindness for depth' suggests meaningful reservations about substance. With only an excerpt available, confidence is low. | GPT-4o: The review excerpt suggests a balanced view, noting the show's generosity but also a lack of depth. Without a clear recommendation or discouragement, it fits the Mixed bucket. The confidence is low due to the limited excerpt. | Gemini: The review praises the musical's generosity but suggests it lacks depth, indicating a mixed assessment. The truncated text lowers confidence. | Kimi: The excerpt offers qualified praise (generous, nonjudgmental) but levels a significant criticism that the show conflates kindness with depth, suggesting a shallow quality that prevents full endorsement.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the show 'disjointed, strangely bland' with narrative problems and lack of energy. Despite praising individual elements like Brayben's performance and John's music, the overall assessment is clearly negative, calling it 'too little' for such a compelling subject. | GPT-4o: The review criticizes the musical for being disjointed and bland, failing to capture the essence of Tammy Faye. Despite some praise for individual performances, the overall tone is negative, highlighting a lack of energy and focus. | Gemini: The review identifies strengths (performances, some music) but ultimately finds the show disjointed and unable to commit to a clear narrative or emotional throughline, resulting in a mixed assessment. | Kimi: While praising Katie Brayben's performance and Elton John's score, the critic finds the musical disjointed, bland, and lacking energy, with 'toothless satire' and a failure to capture what made its subject distinctive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,33 +55,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T14:31:08.547Z",
+    "scoredAt": "2026-02-05T05:04:45.792Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
+    "claudeScore": 42,
+    "openaiScore": 45,
     "geminiScore": 62,
-    "kimiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "previousUrl": "https://www.nytimes.com/2024/11/15/theater/tammy-faye-review.html",
   "urlDiscoveredAt": "2026-02-04T18:40:20.941Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "textWordCount": 1077,
@@ -103,5 +103,6 @@
   "archiveOrgTimestamp": "20251028174349",
   "archiveOrgUrl": "http://web.archive.org/web/20251028174349/https://www.nytimes.com/2024/11/14/theater/tammy-faye-review.html",
   "wordCount": 1077,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T05:04:45.792Z"
 }

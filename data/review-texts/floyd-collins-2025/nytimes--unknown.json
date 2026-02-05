@@ -101,7 +101,12 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250422055022",
   "archiveOrgUrl": "http://web.archive.org/web/20250422055022/https://www.nytimes.com/2025/04/21/theater/floyd-collins-review.html",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 311,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T04:43:55.114Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a JavaScript error message about retrieving article content, making it unscoreable; openai: The text is incomplete and includes a technical error message, indicating it's not a complete review.",
+  "promptVersion": "5.2.0"
 }

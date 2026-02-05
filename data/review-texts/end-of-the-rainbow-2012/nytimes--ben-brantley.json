@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Buckley doesn't just sing Ms. Garland's songs; she seems to bleed them. And while she avoids the more obvious impersonation tactics, she captures something essential about Garland's tortured relationship with performance.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (32 words)",
   "llmScore": {
-    "score": 79,
+    "score": 93,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Ms. Buckley doesn't just sing Ms. Garland's songs; she seems to bleed them.",
+        "quote": "After watching Tracie Bennett's electrifying interpretation of Garland you feel exhilarated and exhausted, equally ready to dance down the street and crawl under a rock.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Gemini: The review praises Buckley's performance and captures Garland's essence, suggesting a positive experience overall. | Kimi: The critic employs vivid, superlative language to praise Buckley's performance ('seems to bleed them', 'captures something essential'), indicating a strong recommendation, though the text appears truncated and lacks a clear final verdict on the overall production.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Brantley delivers unqualified praise for Bennett's performance, calling it 'electrifying,' 'sensational,' and 'one of the most complete portraits of an artist I've ever seen.' Despite acknowledging the play's formulaic elements, his enthusiasm for the lead performance and overall production is unmistakable. | Gemini: The review is overwhelmingly positive, focusing on Tracie Bennett's performance as Judy Garland. The critic uses strong language like \"electrifying\" and \"sensational\" to describe the performance, leading to a strong positive score. | Kimi: Brantley praises Bennett's performance as sensational and unconditionally committed, calling it one of the most complete portraits of an artist he has ever seen, and describes the experience as making the audience feel utterly alive despite minor criticisms of the script's familiar biographical tropes.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,26 +50,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:49:19.810Z",
+    "scoredAt": "2026-02-05T04:41:05.347Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
+    "claudeScore": 92,
     "openaiScore": null,
-    "geminiScore": 75,
-    "kimiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "textQuality": "full",
   "bwwScore": 9,
@@ -80,7 +82,6 @@
   "previousUrl": "https://www.nytimes.com/2012/04/03/theater/reviews/end-of-the-rainbow-at-belasco-theater.html",
   "urlDiscoveredAt": "2026-02-05T02:59:35.037Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 1062,
@@ -117,5 +118,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 1062,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T04:41:05.347Z"
 }

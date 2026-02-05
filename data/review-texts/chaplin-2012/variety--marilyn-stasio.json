@@ -120,5 +120,11 @@
     "Show title not found in text"
   ],
   "wordCount": 555,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-05T04:35:52.372Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a film review of 'Kelly + Victor', not a Broadway theater review; openai: The review is about the film 'Kelly + Victor', not a Broadway show.; gemini: This review is for the film \"Kelly + Victor\", not a Broadway show.; kimi: This is a film review of 'Kelly + Victor' (a 2012 British film), not a Broadway theater review. It references film festivals, distributors, cinematography ('digital lensing'), and compares it to other films like '9 Songs' and 'Shame'.",
+  "promptVersion": "5.2.0"
 }

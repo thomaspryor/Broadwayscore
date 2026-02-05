@@ -110,9 +110,9 @@
   ],
   "wordCount": 299,
   "tierReason": "Short text (299 words)",
-  "rejectedAt": "2026-02-04T21:29:19.636Z",
+  "rejectedAt": "2026-02-05T04:54:44.407Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text cuts off mid-article with a technical error message about retrieving content and enabling JavaScript, making it impossible to assess the critic's full evaluation of the show.; openai: The text includes a message about trouble retrieving the article content and instructions to enable JavaScript, indicating it is not a complete review.; gemini: The review is truncated, cutting off the critic's evaluation and recommendation. Unable to determine a score without the conclusion.",
+  "rejectionReasoning": "claude: The text cuts off mid-review with a JavaScript error message about retrieving article content, making it unscoreable; openai: The text is interrupted with a technical message about enabling JavaScript and verifying access, making it incomplete and not a full review.; gemini: The review is truncated, cutting off before a clear verdict can be determined.",
   "promptVersion": "5.2.0"
 }

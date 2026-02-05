@@ -120,5 +120,11 @@
     "Show title not found in text"
   ],
   "wordCount": 558,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-05T04:55:45.993Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a film review of 'Colors in the Dark' starring Bruno Ganz and Senta Berger, not a Broadway theater review.; openai: The text is a review of the film 'Colors in the Dark,' not a Broadway show.; gemini: This is a review of the film \"Colors in the Dark\", not a Broadway show.; kimi: This is a film review for 'Colors in the Dark' starring Bruno Ganz and Senta Berger, not a Broadway theater review.",
+  "promptVersion": "5.2.0"
 }

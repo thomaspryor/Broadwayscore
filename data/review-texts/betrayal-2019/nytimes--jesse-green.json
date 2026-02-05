@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production of Harold Pinter's masterpiece about adultery and friendship features superb performances from Tom Hiddleston, Zawe Ashton and Charlie Cox that make the familiar feel fresh.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 81,
@@ -104,10 +104,10 @@
     "web-search",
     "playbill-verdict"
   ],
-  "rejectedAt": "2026-02-04T19:43:00.632Z",
+  "rejectedAt": "2026-02-05T04:32:44.073Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: Text ends with 'We are having trouble retrieving the article content. Please enable JavaScript in your browser settings' - this is a technical error message, not a complete review; openai: The text includes navigation issues and a request to enable JavaScript, indicating it is not a complete review.",
+  "rejectionReasoning": "claude: The review text is cut off mid-sentence and ends with a technical error message about retrieving article content and enabling JavaScript; openai: The text includes navigation issues and a request to enable JavaScript, indicating it is not a complete review.",
   "promptVersion": "5.2.0",
   "duplicateTextOf": "nytimes--ben-brantley.json"
 }

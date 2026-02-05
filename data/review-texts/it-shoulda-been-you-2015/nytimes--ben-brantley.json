@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This determinedly cheerful musical about a wedding gone awry has more plot twists than a telenovela and about as much subtlety.",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (21 words)",
   "llmScore": {
-    "score": 43,
+    "score": 41,
     "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 48
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This determinedly cheerful musical about a wedding gone awry has more plot twists than a telenovela and about as much subtlety.",
+        "quote": "It's so aggressively bubbly it gives you the hiccups. Or do I mean acid reflux? In any case, it's not easy to swallow.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The comparison to a telenovela and criticism of lack of subtlety indicates a negative assessment, though not a complete pan. | GPT-4o: The review criticizes the musical for its lack of subtlety and excessive plot twists, suggesting a negative view without any positive elements mentioned. | Gemini: The review compares the musical to a telenovela, implying it lacks subtlety, which is a negative assessment. The overall tone suggests a lack of recommendation. | Kimi: The critic offers a backhanded compliment ('determinedly cheerful') while criticizing the plotting as melodramatic ('telenovela') and lacking sophistication, resulting in a balanced mixed assessment without a clear recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Brantley delivers consistent criticism throughout - calling it 'crumbly meringue,' 'not easy to swallow,' comparing it unfavorably to past failures, and concluding there's 'not an element that hasn't been used and wrung dry before.' While he acknowledges the talented cast doing their best, he finds the material fundamentally flawed and derivative. | GPT-4o: The review is largely negative, critiquing the show for being clichéd and lacking originality. Despite some praise for the cast, the overall tone suggests the show is not worth seeing. | Gemini: The review is largely negative, describing the show as aggressively bubbly and full of clichés. While acknowledging the talented cast, the overall assessment is that the show falls flat and lacks originality, leading to a negative recommendation. | Kimi: While acknowledging the talented cast gives their best effort, the critic delivers a harsh verdict on the clichéd, unoriginal material with metaphors like 'crumbly meringue' and 'acid reflux,' concluding the show falls flat.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:14:39.931Z",
+    "scoredAt": "2026-02-05T04:52:40.830Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 43,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
+    "claudeScore": 38,
     "openaiScore": 40,
     "geminiScore": 45,
-    "kimiScore": 62,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 22,
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "playbillVerdictUrl": "http://www.nytimes.com/2015/04/15/theater/review-it-shoulda-been-you-a-wedding-on-broadway.html?_r=0",
   "sources": [
@@ -83,7 +84,6 @@
   "previousUrl": "https://www.nytimes.com/2015/04/15/theater/review-it-shoulda-been-you-a-wedding-with-lots-of-surprises.html",
   "urlDiscoveredAt": "2026-02-04T00:07:52.405Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 43,
   "textWordCount": 829,
@@ -129,5 +129,6 @@
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about JavaScript and verifying access, making it impossible to determine the critic's final verdict.; openai: The review text is truncated and ends with a message about retrieving content, indicating it is incomplete and not scoreable.; gemini: The text is truncated and ends with an error message, making it impossible to determine the critic's overall assessment of the show.",
   "promptVersion": "5.2.0",
-  "bwwScore": 6
+  "bwwScore": 6,
+  "rescoreCompletedAt": "2026-02-05T04:52:40.830Z"
 }

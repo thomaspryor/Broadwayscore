@@ -15,16 +15,16 @@
   "nycTheatreExcerpt": "\"Is that a reasonable response to aim for when staging the world's most famous weepie? For me, seeing so many young people engaged, it is. Perhaps, as Shakespeare commands in the play's closing speech, they will \"Go hence, to have more talk of these sad things.\" And so what if the production achieves that goal by protecting them from too much unruly feeling, just as the Capulets aimed to protect Juliet? Probably, the Capulets were right.\"",
   "contentTier": "complete",
   "tierReason": "Full review text",
-  "assignedScore": 74,
+  "assignedScore": 62,
   "llmScore": {
-    "score": 74,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -33,12 +33,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "For me, seeing so many young people engaged, it is.",
+        "quote": "But before you wonder whether this production was sponsored by CliffsNotes, with only as much poetry and staying power as an Instagram story, bear in mind that many of the characters are teenagers, and that the play may most usefully be directed at people seeing it for the first time, not the 36th.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt suggests qualified approval - the critic finds the production succeeds in engaging young audiences, even if it 'protects them from too much unruly feeling.' However, this is only one excerpt and may not represent the full verdict. | GPT-4o: The excerpt suggests a positive outcome by engaging young audiences, despite some reservations about the emotional impact. However, the single excerpt and lack of full context reduce confidence. | Gemini: The critic seems to be saying that the production is successful in engaging young people, even if it does so by protecting them from too much emotion. This suggests a qualified recommendation. | Kimi: The excerpt offers qualified approval of the production's restrained approach, finding value in its ability to engage young audiences despite protecting them from intense emotion. Single excerpt limits confidence in overall verdict.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review is genuinely mixed - it critiques the adaptation as simplified ('CliffsNotes', 'Instagram story') and confusing, but defends the approach as appropriate for its young target audience. The tone neither clearly recommends nor discourages attendance. | Gemini: The review acknowledges the production's efforts to engage a younger audience but also points out its unconventional and potentially confusing choices. It neither strongly recommends nor discourages seeing the show. | Kimi: The review text cuts off before delivering a final verdict or clear recommendation. The available portion presents a balanced view: praising the production's accessibility and appeal to young audiences ('adorably', 'formidable toolbox') while criticizing its stripped-down, confusing execution ('indistinguishably', 'barely there Prince'). Without the conclusion, the overall recommendation direction remains ambiguous.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,32 +48,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:39:05.822Z",
+    "scoredAt": "2026-02-05T05:03:29.758Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 74,
-    "geminiScore": 75,
-    "kimiScore": 72,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwExcerpt": "It’s a little slick, though, at least for seen-that adults. The play’s twisty language, expressive of twisty thoughts, is largely untangled but, in the process, flattened. (Gold’s edit brings the running time, not counting intermission, to “the two hours’ traffic of the stage” Shakespeare mentions, but some of that traffic is stop-and-go.) I smiled a lot but never came close to crying.",
   "bwwScore": 6,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Rachel-Zegler-and-Kit-Connor-Opens-On-Broadway-20241024",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "fullText": "You have a preview view of this article while we are checking your access. When we have confirmed access, the full article content will load.Theater Review\n\nThe Broadway revival of “Romeo + Juliet” plays to the TikTok crowd. But maybe that’s a good thing.\n\nCredit...Sara Krulwich/The New York Times\n\nListen to this article · 6:34 min Learn moreShare full article71By Jesse Green\n\nWho can forget the classic first line of “Romeo and Juliet”: “How y’all doin’ today?”\n\nWell, perhaps not so classic. But as uttered at the start of the play’s 36th Broadway revival, which opened Thursday at Circle in the Square, the words are certainly more welcoming to the production’s youthful target audience than the traditional iambic pentameter ones: “Two households, both alike in dignity.”\n\nNot that there are two households in the director Sam Gold’s rec-room adaptation anyway. Romeo’s parents, along with a clutch of other characters, have been discarded. Juliet’s are both played by one actor, with little more than a change of inflection. And though Kit Connor and Rachel Zegler, the box-office draws, cover just one star-crossed lover each — he a beagly Romeo, she a beamish Juliet — the other eight cast members take on 17 roles, adorably if often indistinguishably. It’s a puppy pile.\n\nBut before you wonder whether this production was sponsored by CliffsNotes, with only as much poetry and staying power as an Instagram story, bear in mind that many of the characters are teenagers, and that the play may most usefully be directed at people seeing it for the first time, not the 36th. Certainly Gold has used everything in his formidable toolbox — scissors, hammers, punches, wrenches — to get young people interested in a world that looks more like theirs than Elizabethan London or Renaissance Verona.\n\nSo after an energetic preshow, filled with flirting, peacocking and snits of aggression, the story begins with that casual greeting from Gabby Beans, the play’s Chorus. Beans, later a hotheaded Mercutio, a beneficent Friar Lawrence and a barely there Prince Escalus, makes a relatable hype woman, introducing the rest of the cast by first name and telling us whom they’ll be playing. If you’re confused — and even a frequent flier might be — you can consult a program insert that visualizes the Montagues and Capulets as a mood board.\n\nFeeling the groove: Gabby Beans, far right, leading Tommy Dorfman (center), Kit Connor (far back) and other cast members in a dance in Sam Gold’s “Romeo + Juliet” at Circle in the Square.Credit...Sara Krulwich/The New York TimesWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
@@ -118,5 +118,6 @@
   "truncationSignals": [],
   "textStatus": "partial",
   "sourceMethod": "brightdata",
-  "wordCount": 447
+  "wordCount": 447,
+  "rescoreCompletedAt": "2026-02-05T05:03:29.758Z"
 }

@@ -126,5 +126,11 @@
     "bww-reviews",
     "bww-roundup"
   ],
-  "needsRescore": true
+  "needsRescore": true,
+  "wrongShow": true,
+  "rejectedAt": "2026-02-05T04:33:50.530Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is an interview article about the TV series 'New Girl' ending, not a Broadway theater review.; openai: The text is about the TV show 'New Girl' and its final season, not a Broadway production.; gemini: This is an interview with Zooey Deschanel about the TV show \"New Girl\", not a review of a Broadway show.; kimi: This text is an interview with Zooey Deschanel about the television series 'New Girl' (a Fox comedy), not a review of any Broadway theatrical production.",
+  "promptVersion": "5.2.0"
 }

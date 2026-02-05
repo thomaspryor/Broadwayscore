@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Pierce brings a welcome specificity to Willy, investing him with a warmth and humanity that makes his delusions all the more heartbreaking.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 78,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Pierce brings a welcome specificity to Willy, investing him with a warmth and humanity that makes his delusions all the more heartbreaking.",
+        "quote": "Pierce's powerhouse performance firmly identifies Willy Loman as a tragic hero for these modern times.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance with emotional impact ('heartbreaking'). However, confidence is low due to single excerpt warning - this could be cherry-picked praise from a mixed review. | GPT-4o: The excerpt praises Pierce's performance, highlighting his ability to bring warmth and humanity to the character. However, the single excerpt warning suggests this may not fully represent the overall sentiment, leading to a cautious, lower-end Positive score. | Gemini: The excerpt praises the performance of Pierce as Willy, suggesting a positive aspect of the production. However, with only one excerpt, the overall verdict is uncertain, leading to a lower confidence and a score on the lower end of the positive range. | Kimi: The excerpt provides strong praise for the lead performance, citing emotional specificity and heartbreaking humanity, which indicates a positive verdict, though the limited single-excerpt context warrants lower confidence.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Pierce's 'powerhouse performance' and Clarke's 'brilliant performance', with appreciation for the production's fresh perspective on the classic. Despite criticism of the abstract set, the overall assessment celebrates the acting and direction. | GPT-4o: The review is filled with superlatives and praises the performances, direction, and production choices. It highlights the depth and impact of the revival, making it a must-see. | Gemini: The review is overwhelmingly positive, praising the performances of Wendell Pierce and Sharon D. Clarke, as well as the direction and other design elements. While the set is criticized, the overall recommendation is strong. | Kimi: The review delivers overwhelming praise for the lead performances and direction, using words like 'powerhouse,' 'brilliant,' and 'outstanding,' and calls the drama a 'mighty punch.' While the set design receives significant criticism, the overall verdict strongly recommends the production based on its exceptional acting.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,19 +50,20 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T07:42:29.471Z",
+    "scoredAt": "2026-02-05T04:39:28.051Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 72,
-    "geminiScore": 75,
-    "kimiScore": 81,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
     "scoreDelta": 10,
@@ -70,13 +71,12 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2022/legit/reviews/death-of-a-salesman-review-broadway-wendell-pierce-sharon-d-clarke-1235411374/",
   "urlDiscoveredAt": "2026-02-05T02:38:03.851Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 661,
@@ -120,5 +120,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 661,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T04:39:28.052Z"
 }

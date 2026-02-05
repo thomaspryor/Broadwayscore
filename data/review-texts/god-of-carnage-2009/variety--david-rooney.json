@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Reza's play is a surgical dissection of bourgeois civility that peels back layers of politeness to reveal the primal savagery beneath. The Broadway production, directed by Matthew Warchus, is a taut 90-minute exercise in escalating tension.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (36 words)",
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic uses positive evaluative language ('surgical dissection,' 'taut') to describe both the play and production, indicating appreciation for the craft and execution. | GPT-4o: The review praises the play as a 'surgical dissection' and describes the production as 'taut' with 'escalating tension,' indicating a strong recommendation. | Gemini: The review describes the play as a 'surgical dissection' and 'taut,' indicating a positive assessment, but without strong enthusiasm, placing it in the lower end of the positive bucket. | Kimi: The review employs strong positive descriptors ('surgical dissection', 'taut') to praise the direction and dramatic tension, though the brevity of the excerpt prevents a higher confidence assessment.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the direction as 'taut' and describes effective 'escalating tension,' suggesting a well-executed production. However, confidence is low due to limited excerpt text that may not capture the full verdict. | GPT-4o: The excerpt praises the production's direction and tension, suggesting a positive view. However, the lack of full context and potential reservations about the play's content lead to a moderate positive score with low confidence. | Gemini: The review describes the play as a \"surgical dissection\" and a \"taut 90-minute exercise in escalating tension,\" suggesting a positive, albeit potentially intense, experience. However, due to the limited excerpt, the confidence is low. | Kimi: The excerpts offer unambiguous praise for the production's precision and escalating tension, though the limited context warrants low confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,35 +50,35 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:52:52.515Z",
+    "scoredAt": "2026-02-05T04:49:45.066Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 90,
+    "openaiScore": 76,
     "geminiScore": 75,
-    "kimiScore": 76,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwScore": 9,
   "sources": [
     "web-search",
     "bww-reviews"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 904,
@@ -124,5 +124,6 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 904,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T04:49:45.066Z"
 }

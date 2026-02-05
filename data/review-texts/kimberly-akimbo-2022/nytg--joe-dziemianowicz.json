@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 82,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "'Kimberly Akimbo' is more polished and endearing than before.",
+        "quote": "The show is more polished and endearing than before.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'wondrous quirkiness' and noting the show is 'more polished and endearing than before.' Single excerpt warning applies but tone is distinctly positive, suggesting upper end of Positive bucket. | GPT-4o: The excerpt praises the show's 'wondrous quirkiness' and notes it is 'more polished and endearing than before,' indicating a strong positive recommendation. However, confidence is low due to the single excerpt warning. | Gemini: The review excerpt indicates that the show is \"more polished and endearing than before,\" which is a strong positive endorsement. | Kimi: The excerpt offers strong praise for the Broadway transfer, describing it as 'wondrous,' 'polished,' and 'more endearing than before,' indicating an enthusiastic recommendation despite the limited context.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'wondrous,' 'letter-perfect,' and 'irresistible.' Critic addresses concerns about Broadway transfer and dismisses them completely, praising cast, direction, and material without reservations. | GPT-4o: The review is filled with superlatives and enthusiastic praise for the show, its cast, and its production. It describes the show as 'wondrous', 'polished', and 'endearing', with a strong recommendation to see it. | Gemini: The review is overwhelmingly positive, praising the cast, direction, music, and overall message. The critic explicitly states the show is \"more polished and endearing than before\" and that it has \"found the ideal home.\" | Kimi: The critic offers unqualified praise for the Broadway transfer, calling it \"more polished and endearing than before\" and \"letter-perfect,\" while celebrating the rich songs, successful black comedy balance, and excellent performances from the entire cast with no significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T09:18:20.397Z",
+    "scoredAt": "2026-02-05T04:53:54.963Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 82,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 82,
-    "geminiScore": 82,
-    "kimiScore": 83,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "bwwScore": 10,
   "sources": [
@@ -79,7 +80,6 @@
     "bww-reviews",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "textWordCount": 921,
@@ -101,5 +101,6 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 921,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T04:53:54.963Z"
 }

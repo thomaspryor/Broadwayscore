@@ -119,5 +119,11 @@
     "Show title not found in text"
   ],
   "wordCount": 521,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-05T04:41:15.370Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a film review of the Dutch movie 'Hunting & Son', not a Broadway theater review; openai: The text is a review of the film 'Hunting & Son,' not a Broadway show.; gemini: This is a review of the film \"Hunting & Son\", not a Broadway show.; kimi: This is a film review of the Dutch movie 'Hunting & Son,' not a Broadway theater review. The text references cinematic elements (director of photography, 16mm film, festival circuit, shots/camera work) and describes a film production rather than a theatrical stage production.",
+  "promptVersion": "5.2.0"
 }

@@ -30,12 +30,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The entire night has the low boil of a long-winded intro that builds to nothing.",
+        "quote": "the audience does the very same with their hard-earned money — and loses big-time.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic describes the show as tediously paced with no payoff - 'builds to nothing' is a clear negative verdict. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt suggests a negative view, describing the show as uneventful and lacking a satisfying climax. However, with only one excerpt, the confidence is low. | Gemini: The single excerpt available is negative, suggesting a disappointing and anticlimactic experience. Given the limited text, confidence is low. | Kimi: The single available excerpt offers a definitive negative verdict, describing the show as tedious and ultimately pointless, though the limited context warrants low confidence.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite the 4-star rating, the review is overwhelmingly negative with harsh criticism of overpricing, weak material, and disappointing execution. The critic calls it a 'bait and switch' and suggests audiences will be 'crossing their arms in annoyance.' | GPT-4o: Despite the original 4-star rating, the review text criticizes the show as misleading and lacking substance, with humor that falls flat and a high ticket price that doesn't justify the experience. The truncated nature of the text warrants caution, but the available content leans negative. | Gemini: The review is largely negative, calling the show a \"bait and switch\" and saying the audience \"loses big-time.\" While there are scattered laughs, the overall impression is disappointing. | Kimi: Extracted from malformed response",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,29 +45,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T11:25:46.213Z",
+    "scoredAt": "2026-02-05T04:30:31.486Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 41,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 38,
+    "claudeScore": 38,
+    "openaiScore": 40,
     "geminiScore": 45,
-    "kimiScore": 38,
+    "kimiScore": 28,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 7,
+    "kimiBucket": "Pan",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 41,
   "fullText": "John Mulaney and Fred Armisen star in \"All In: Comedy About Love,\" which opened Sunday night on Broadway. \n Emilio Madrid \n \n \n \n \n \n \n\n \n \n Theater review \n \n ALL IN: COMEDY ABOUT LOVE \n \n \n \n\n \n \n \n \n \n \n \n \n\n \n \n \n \n \n \n \n \n\n \n \n \n \n \n \n \n \n\n \n \n \n \n \n \n \n \n\n \n \n One hour and 30 minutes with no intermission. At the Hudson Theatre, 141 West 44th Street. Through Feb. 16.\n\nThe phrase “all in” probably summons flop-sweat memories of putting every one of your chips on the poker table.\n\nWell, at the Broadway show “All In: Comedy About Love,” the audience does the very same with their hard-earned money — and loses big-time.\n\nTicket-buyers are being charged as much as $800 a pop some weeks for what is little more than a sedate staged reading of New Yorker cartoon captions uttered by celebrities.\n\nOver the next 2 ½ frigid months, some 14 stars — including Jimmy Fallon, Lin-Manuel Miranda, Annaleigh Ashford and Hank Azaria — will lounge in armchairs clutching binders for dear life.\n\nBut the first group, which opened Sunday at the Hudson Theatre, is John Mulaney, Renée Elise Goldsberry, Richard Kind and Fred Armisen.\n\nThat talented quartet plays a roster of obnoxiously wacky roles from humorist Simon Rich’s short stories: sensitive pirates, child film noir detectives, “Elephant Man” Joseph Merrick and a nearly dead talent agent who tries to sign the Grim Reaper.\n\nMulaney, the best stand-up comic around, kicks things off with an overlong “guy walks into a bar” joke centered around a “12-inch pianist.” I needn’t elaborate. And then the crew quickly recites “dog missed connections” in which canines attempt to reconnect after a run-in at the park.\n\nEach cutesy bit is more self-satisfied and twee than the next. And the entire night has the low boil of a long-winded intro that builds to nothing.\n\nThe title, by the way, is Broadway’s biggest bait and switch.\n\nTo slap a heart on the Playbill and claim that all of these disparate scenarios are “About Love” is terribly misleading. It’s only true in the sense that, to quote Tim Rice, “every story is a love story.” “Scream 2,” if you dig a bit, is also “about love.”\n\nJust don’t come to the Hudson looking to put an arm around your date. You’ll be too busy crossing them in annoyance.\n\nThe “Comedy” billing is more subjective. Rich is a former “Saturday Night Live” writer and Harvard grad who’s received acclaim for his published works. And there are some scattered laughs in “All In.” But they arrive early in scenes and then taper off because most of the episodes are built around the same repeated joke: Olde-tyme cartoons punch-lining in anachronisms.\n\nFor instance, in “Learning the Ropes,” a pair of “yo ho, me hearties” pirates played by Mulaney and Armisen become accidental parents to a little girl (Goldsberry).\n\nSays one in a thick seafaring brogue: “She be too young for understanding subtext!”\n\nAnd before that: “I knew he be being passive aggressive!”\n\nLater on, the Grim Reaper bashfully reminisces about doing Shakespeare in school: “It wasn’t Shakespeare Shakespeare!,” Armisen’s artistic Death insists, adding that his production used cell phones.\n\nAnother, “The Big Nap,” in which Mulaney plays an infant investigator with the smokey voice of a baby Bogart, employs a similar Stewie-from-“Family Guy” strategy: Tyke speaks like an adult. That sketch, balancing observational gags with clearly dramatized events, is the only one that feels somewhat at home in a theater.\n\nThe rest are obviously taken from books, where amusement and true hilarity are indistiguishable and nobody needs to hold for laughs. That literary, Ivy League sensibility falls flat on Broadway, no matter how famous and beloved the people reading it are.\n\nDirector Alex Timbers, the go-to guy for starry special events like this one, pads out the performance into something almost resembling a play. A band called the Bengsons sings chilled-out original songs by Stephen Merritt of the Magnetic Fields between stories. And the stage has been made to look like a spacious coffee house by designer David Korins, albeit one where a lukewarm latte costs $400.\n\nActually, speaking of java, here’s an idea of what to rename this surely lucrative enterprise: “Stars! Bucks!”",
@@ -115,5 +116,6 @@
   "wordCount": 680,
   "tierReason": "Full review text",
   "bwwExcerpt": "Well, at the Broadway show “All In: Comedy About Love,” the audience does the very same with their hard-earned money — and loses big-time.\n\nTicket-buyers are being charged as much as $800 a pop some weeks for what is little more than a sedate staged reading of New Yorker cartoon captions uttered by celebrities.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222",
+  "rescoreCompletedAt": "2026-02-05T04:30:31.486Z"
 }

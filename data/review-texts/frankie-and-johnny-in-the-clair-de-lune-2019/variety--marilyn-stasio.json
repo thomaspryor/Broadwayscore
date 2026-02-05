@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "McDonald and Shannon are both accomplished actors who know how to handle Terrence McNally's demanding dialogue, but they never find the emotional core that would make this fractured romance feel urgent or even particularly moving.",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (35 words)",
   "llmScore": {
-    "score": 44,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "they never find the emotional core that would make this fractured romance feel urgent or even particularly moving",
+        "quote": "McDonald and Shannon make an earnest attempt to give the characters the commonplace quality that makes them so disturbingly endearing.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite acknowledging the actors' technical skills, the critic finds the production lacks emotional impact and urgency, indicating a clear negative assessment. | GPT-4o: The review acknowledges the actors' skills but criticizes the lack of emotional impact, suggesting the production fails to engage or move the audience. | Gemini: The review acknowledges the actors' skills but ultimately finds the production lacking in emotional depth, leading to a negative assessment. | Kimi: The excerpt praises the leads' technical abilities but fundamentally criticizes the production for lacking emotional resonance and urgency, which is particularly damaging for an intimate romance. Without the full review's final verdict, the mixed signals of good acting versus failed emotional impact place this in the middle range.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the lead performances as 'electrifying' and 'palpable,' appreciates the director's approach, and finds the revival brings the play to 'warm-blooded life.' While noting some concerns about relevance without the AIDS epidemic subtext, the overall assessment is positive with strong praise for the acting. | GPT-4o: The review praises the performances of McDonald and Shannon, highlighting their ability to bring the characters to life with warmth and depth. The critic emphasizes the successful revival of the play's themes, suggesting a strong recommendation. | Gemini: The review is positive overall, highlighting the performances of McDonald and Shannon and the warm-blooded life they bring to the historical artifact. However, there are some reservations about the play's relevance in a modern context. | Kimi: The critic praises both leads enthusiastically (calling Shannon 'positively electrifying' and McDonald palpable) and commends the revival for giving the play warmth and life, despite noting the changed cultural context from the original AIDS-era production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:03:33.672Z",
+    "scoredAt": "2026-02-05T04:46:03.543Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 44,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 45,
-    "geminiScore": 45,
-    "kimiScore": 58,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 16,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwScore": 8,
   "sources": [
@@ -81,7 +82,6 @@
   "previousUrl": "https://variety.com/2019/legit/reviews/frankie-and-johnny-in-the-clair-de-lune-review-audra-mcdonald-michael-shannon-1203225540/",
   "urlDiscoveredAt": "2026-02-05T02:31:21.354Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 44,
   "textWordCount": 531,
@@ -119,5 +119,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 531,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T04:46:03.543Z"
 }

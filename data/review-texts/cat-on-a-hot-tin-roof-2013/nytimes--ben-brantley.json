@@ -122,5 +122,11 @@
     "Word count too low: 277 (min: 300)"
   ],
   "wordCount": 265,
-  "tierReason": "Short text (265 words)"
+  "tierReason": "Short text (265 words)",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T04:34:52.528Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This is a 2013 review of a Broadway revival starring Scarlett Johansson, not the current Broadway production; openai: The review is about a 2013 production of 'Cat on a Hot Tin Roof', not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

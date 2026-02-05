@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Despite a cast of superb actors, this revival of Jason Miller's 1972 Pulitzer Prize-winning drama feels tired and dated, lacking the emotional intensity that made the original production so compelling.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (30 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 45,
-    "confidence": "high",
+    "score": 43,
+    "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 38,
+      "high": 48
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "this revival of Jason Miller's 1972 Pulitzer Prize-winning drama feels tired and dated",
+        "quote": "But the stars are just as stymied as the rest of the ensemble by the play's schematic structure and transparent characters.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the revival 'tired and dated' and 'lacking emotional intensity.' The praise for the cast doesn't overcome the fundamental criticism of the production. | GPT-4o: The review criticizes the revival for lacking emotional intensity and feeling dated, despite having a superb cast. This indicates a negative assessment of the overall production. | Gemini: The review explicitly states that the revival feels \"tired and dated\" and lacks the emotional intensity of the original, leading to a negative classification. | Kimi: Although the critic acknowledges the cast's abilities, the overall verdict finds the production tired, dated, and lacking the emotional intensity of the original, clearly indicating it is not recommended.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds fundamental flaws in the play's structure and character development, notes the performances are 'competent but superficial,' and identifies multiple directorial failures that undermine the production's impact. | GPT-4o: The review criticizes the play's lack of character depth and ineffective ensemble performance. Despite the presence of big stars, the production is described as lacking dimension and failing to establish team identity, leading to a negative overall impression. | Gemini: The review is overall negative, criticizing the play's structure, characters, and the production's lack of intimacy. While acknowledging competent performances, it ultimately finds the production lacking. | Kimi: While acknowledging the star power, Stasio criticizes the play's schematic structure, transparent characters, and direction that fails to establish intimacy, ultimately describing the performances as competent but superficial with no recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,14 +51,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:01:15.267Z",
+    "scoredAt": "2026-02-05T05:05:22.329Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 45,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
+    "claudeScore": 38,
     "openaiScore": 45,
     "geminiScore": 45,
     "kimiScore": 45,
@@ -66,7 +67,7 @@
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 0,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -79,7 +80,6 @@
     "web-search",
     "bww-reviews"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 45,
   "textWordCount": 666,
@@ -122,5 +122,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 666,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T05:05:22.329Z"
 }

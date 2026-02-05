@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The immersive staging transforms the Broadway Theatre into a gleaming dance club, with audience members standing on the floor and moving around as the story unfolds around them.",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 72,
@@ -116,5 +116,10 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 834,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T04:50:44.372Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This text is an analysis of Emmy award categories and competition between TV shows, not a review of a Broadway theatrical production.; openai: The text is about Emmy Awards categories and nominees, not a Broadway show review.; gemini: This is an article discussing Emmy nominations and the competition between different shows, not a review of a specific show.; kimi: This text is an Emmy Awards prediction/analysis article about television shows (Last Week Tonight With John Oliver, Saturday Night Live, and other variety series), not a review of a Broadway theater production.",
+  "promptVersion": "5.2.0"
 }

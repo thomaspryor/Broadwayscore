@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Schreck has crafted a work of uncommon intelligence and emotional power that manages to be both deeply personal and bracingly political without ever feeling preachy.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (25 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 85,
+    "score": 86,
     "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 81,
+      "high": 91
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for the work's intelligence and emotional impact, with positive descriptors like 'uncommon' and 'bracingly political,' though this appears to be an excerpt with limited context. | GPT-4o: The review praises the show for its intelligence and emotional power, describing it as both personal and political without being preachy, indicating a strong recommendation. | Gemini: The review uses strong positive language such as \"uncommon intelligence\" and \"emotional power\", indicating a positive recommendation. | Kimi: The excerpt contains high praise, describing the work as having uncommon intelligence and emotional power while successfully balancing personal and political themes without being preachy. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for the work's intelligence and emotional impact, with positive qualifiers like 'uncommon' and 'bracingly political.' However, confidence is low due to this being only a curated excerpt. | GPT-4o: The excerpt praises the show for its intelligence and emotional power, indicating a strong positive impression. However, the lack of full text limits confidence in the overall verdict. | Gemini: The quote uses strong positive language like \"uncommon intelligence\" and \"emotional power,\" indicating a positive review. Confidence is low because it's an excerpt. | Kimi: The excerpt offers unqualified praise using superlatives like 'uncommon intelligence' and 'emotional power,' while noting the show successfully navigates political themes without being didactic. This indicates strong enthusiasm typical of a rave review, though the excerpt-only format limits certainty about the full verdict. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,22 +51,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T05:16:33.825Z",
+    "scoredAt": "2026-02-05T05:09:16.798Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 85,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
+    "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 88,
+    "kimiScore": 89,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 9,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -77,7 +78,6 @@
   "previousUrl": "https://www.hollywoodreporter.com/news/what-constitution-means-me-theater-review-1197315/",
   "urlDiscoveredAt": "2026-02-04T18:54:38.502Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 85,
   "textWordCount": 1690,
@@ -112,5 +112,6 @@
     "web-search",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-05T05:09:16.798Z"
 }

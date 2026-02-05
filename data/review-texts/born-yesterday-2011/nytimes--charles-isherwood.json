@@ -16,7 +16,7 @@
   "bwwExcerpt": "But even the babel of fierce combat between the American theater's definitive dumb blonde, Billie Dawn (Nina Arianda), and her abusive lover Harry Brock (Jim Belushi), cannot obscure the occasional sound of creaking at the Cort Theater, where a solid but inessential revival of Garson Kanin's comedy 'Born Yesterday' opened on Sunday night. The celluloid shadow of the wondrous Judy Holliday, who played Billie in the original 1946 Broadway production and the movie directed by George Cukor, inevitably looms large over any revival of 'Born Yesterday.' (Madeline Kahn starred in the only previous Broadway revival, in 1989.) To her immense credit Ms. Arianda, who made a spectacular Off Broadway debut last season as the actress-seductress in David Ives's 'Venus in Fur,' colors this cartoon role with her own set of Crayolas.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Arianda's performance is a tour de force of physical comedy and emotional authenticity, bringing fresh life to Billie Dawn's transformation from dizzy blonde to awakened woman.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 80,
@@ -102,5 +102,10 @@
   "sources": [
     "web-search",
     "bww-reviews"
-  ]
+  ],
+  "rejectedAt": "2026-02-05T04:33:20.882Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text is cut off mid-sentence and ends with a technical error message about JavaScript and verifying access, making it impossible to determine the critic's final verdict.; openai: The text provided is incomplete and includes navigation instructions and error messages, indicating it is not a full review.",
+  "promptVersion": "5.2.0"
 }

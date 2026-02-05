@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While 'MJ' succeeds as a celebration of Jackson's artistry and features phenomenal performances, it sidesteps the more troubling aspects of the pop icon's life.",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 77,
@@ -120,5 +120,10 @@
     "Show title not found in text"
   ],
   "wordCount": 944,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T04:57:15.253Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is industry news about television formats, production deals, and streaming content - not a review of any Broadway show; openai: The text is not a review of a Broadway show, but rather a press release about various international television productions and projects.; gemini: This article discusses various television programs and industry news, not a Broadway show.; kimi: This text is an industry news article reporting on television format showcases, licensing deals, and broadcasting announcements. It contains no evaluation or critical assessment of any Broadway theatrical production.",
+  "promptVersion": "5.2.0"
 }

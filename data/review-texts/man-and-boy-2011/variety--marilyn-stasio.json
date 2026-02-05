@@ -125,5 +125,11 @@
     "Show title not found in text"
   ],
   "wordCount": 675,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T04:56:56.733Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review discusses John Hurt's performance in 'Krapp's Last Tape,' which is not a current Broadway production but a previous production at the Gate theater and West End.; kimi: This review covers a production at BAM (Brooklyn Academy of Music), not a Broadway theater. The text explicitly references performances at the Harvey Theater at BAM ('BAM auds'), which is an off-Broadway venue, not a Broadway house.",
+  "promptVersion": "5.2.0"
 }

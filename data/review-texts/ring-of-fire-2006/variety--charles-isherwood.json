@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This jukebox musical built around the songs of Johnny Cash feels more like a reverent tribute concert than a fully realized theatrical experience.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 63,
@@ -113,5 +113,10 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 942,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T04:59:29.601Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a garbled website page with navigation menus, repeated content blocks, and no actual theater review text about a Broadway show.; openai: The text provided is a mix of unrelated content, including navigation menus and unrelated articles, not a review of the target show.; gemini: This appears to be a list of headlines and blurbs for various articles on Variety's website, not a review of a specific show.; kimi: The provided text is a fragmented collection of unrelated Variety headlines, snippets, and repeated content (Aretha Franklin doc appears 4 times) rather than a coherent review of a single Broadway show. It contains random references to TV, movies, albums, and multiple different theater pieces without forming a unified critical assessment of the target production.",
+  "promptVersion": "5.2.0"
 }

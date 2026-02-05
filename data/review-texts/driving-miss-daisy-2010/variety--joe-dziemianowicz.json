@@ -122,5 +122,11 @@
     "Show title not found in text"
   ],
   "wordCount": 588,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-05T04:40:25.614Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a film review of 'Little Sparrows,' not a Broadway theater review; openai: The text is a review of a film called 'Little Sparrows,' not a Broadway show.; gemini: This is a review of the film \"Little Sparrows\", not a Broadway show.; kimi: This is a film review of 'Little Sparrows,' not a Broadway theater review. The text references cinematic elements throughout, including 'Film Movement' distribution rights, 'camerawork,' 'edits,' 'onscreen' captions, and the 'Rome competish' (film festival). It critiques the movie's 'stagy' quality, confirming it is evaluating a film rather than a theatrical production.",
+  "promptVersion": "5.2.0"
 }

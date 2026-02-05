@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This haunted-house musical, based on the 1990 hit movie, is so eager to embrace every cliché of Broadway spectacle that it winds up floating through the evening like a lost soul.",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
-    "score": 43,
-    "confidence": "high",
+    "score": 42,
+    "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 48
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "so eager to embrace every cliché of Broadway spectacle that it winds up floating through the evening like a lost soul",
+        "quote": "But it is just as flavorless and lacking in dramatic vitality as many that have come before.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment comparing the show to a 'lost soul' and criticizing it for relying on clichés rather than substance. | GPT-4o: The review criticizes the show for relying on clichés and lacking substance, suggesting a negative view of the production. | Gemini: The review uses negative language such as \"lost soul\" and criticizes the show for embracing clichés, indicating a negative assessment. | Kimi: The critic dismisses the show as unoriginal and unfocused, criticizing its reliance on clichés and comparing it to a 'lost soul' with no positive elements mentioned to counterbalance the disappointment.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Brantley consistently criticizes the show as 'flavorless,' 'thrill-free,' and compares it unfavorably to theme park rides. While he acknowledges some individual performances, his overall assessment is clearly negative with no recommendation to see it. | GPT-4o: The review is overwhelmingly negative, describing the show as 'flavorless' and 'dreary'. It compares the experience to a 'theme-park ride' and criticizes the music and lyrics as 'innocuous' and 'forgettable'. | Gemini: The review is largely negative, describing the show as a \"thrill-free singing theme-park ride\" and \"flavorless.\" While acknowledging some positive aspects like Randolph's performance, the overall assessment is unfavorable. | Kimi: While the critic praises Da'Vine Joy Randolph's comic performance, the overall verdict is that the show is a 'thrill-free singing theme-park ride' with forgettable songs and plodding storytelling, explicitly comparing it unfavorably to better musicals and suggesting it lacks dramatic vitality.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:18:49.558Z",
+    "scoredAt": "2026-02-05T04:48:08.463Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 43,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 40,
+    "claudeScore": 38,
+    "openaiScore": 20,
     "geminiScore": 45,
     "kimiScore": 42,
     "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
+    "openaiBucket": "Pan",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 5,
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 43,
   "textWordCount": 943,
@@ -111,5 +111,6 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 943,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T04:48:08.463Z"
 }

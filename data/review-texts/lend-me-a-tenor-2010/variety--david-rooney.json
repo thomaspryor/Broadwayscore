@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of Ken Ludwig's 1989 Broadway farce proves that even the most expertly crafted comedic machinery can feel creaky when it's not firing on all cylinders.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
-    "score": 45,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "even the most expertly crafted comedic machinery can feel creaky when it's not firing on all cylinders",
+        "quote": "It's a joy to watch Shalhoub attack it.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Acknowledges the play's quality ('expertly crafted') but finds the current production lacking in execution ('creaky', 'not firing on all cylinders'). Mixed assessment of material vs. production. | GPT-4o: The review suggests that the revival does not live up to its potential, describing it as 'creaky' and not fully effective, indicating a negative assessment. | Gemini: The review states that the production feels \"creaky\" and \"not firing on all cylinders,\" indicating a negative assessment. | Kimi: While acknowledging the source material is 'expertly crafted,' the critic describes the revival as 'creaky' and 'not firing on all cylinders,' indicating a disappointing production that fails to deliver despite the quality of the play itself.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic consistently praises individual performances (especially Shalhoub) and Tucci's direction, calling moments 'hilarious and touching' and performances 'clean' with 'honest laughs.' However, notes some casting issues (LaPaglia 'probably too serious') and technical problems (ragged curtain call), indicating a solid but not unqualified recommendation. | GPT-4o: The review praises the performances, particularly Tony Shalhoub's, and the direction by Stanley Tucci, highlighting the humor and execution of the farce. The tone is enthusiastic with no significant reservations. | Gemini: The review is generally positive, highlighting the comedic performances and the farcical nature of the play. While there are minor reservations about LaPaglia's casting, the overall tone suggests a worthwhile and enjoyable experience. | Kimi: The review offers consistent praise for the performances, particularly Tony Shalhoub's comedic turn, and finds Stanley Tucci's direction successfully delivers honest laughs and well-chiseled character work in this farce revival.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:06:06.244Z",
+    "scoredAt": "2026-02-05T04:55:38.177Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 45,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 45,
-    "geminiScore": 45,
-    "kimiScore": 45,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 13,
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 45,
   "textWordCount": 807,
@@ -100,5 +100,6 @@
   "tierReason": "Full review text",
   "previousUrl": "https://variety.com/2010/legit/reviews/lend-me-a-tenor-1117942406/",
   "urlDiscoveredAt": "2026-02-05T03:02:31.792Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "rescoreCompletedAt": "2026-02-05T04:55:38.177Z"
 }

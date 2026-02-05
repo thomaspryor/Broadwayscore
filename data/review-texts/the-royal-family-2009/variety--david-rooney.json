@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This handsome Broadway revival of Edna Ferber and George S. Kaufman's 1927 backstage comedy about a theatrical dynasty gets by on old-fashioned star power and polished craft, even if the material shows its age.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,14 +20,14 @@
   "contentTierReason": "Short text (34 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 63,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "gets by on old-fashioned star power and polished craft, even if the material shows its age",
+        "quote": "The production does find a workable comic footing, and its lead performers rise to the occasion in sparkling turns.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges positive elements (star power, polished craft) but qualifies this with significant reservations about dated material. 'Gets by' suggests adequacy rather than enthusiasm. | GPT-4o: The review acknowledges the production's strengths in star power and craft but notes that the material feels dated. This suggests a mixed recommendation. | Gemini: The review acknowledges positive aspects like star power and craft but also notes that the material is dated, resulting in a mixed assessment. | Kimi: The critic genuinely praises the production's star power and polished craftsmanship, offering a recommendation despite acknowledging that the source material feels dated.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the lead performances, design, and the play's theatrical charm while acknowledging directorial shortcomings and pacing issues. The overall tone is appreciative with clear reservations about execution. | Gemini: The review is generally positive, highlighting strong performances and design, but notes unevenness in the production and dated aspects of the play. The overall recommendation is positive but with reservations. | Kimi: While the critic criticizes the uneven direction and creaky script, he praises the sparkling lead performances and lavish design, ultimately finding the production entertaining and recommending it as a charming pleasure for theater enthusiasts.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,30 +51,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:20:22.581Z",
+    "scoredAt": "2026-02-05T05:08:25.884Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
     "kimiScore": 76,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "textWordCount": 924,
@@ -116,5 +115,6 @@
   "tierReason": "Full review text",
   "previousUrl": "https://variety.com/2009/legit/reviews/the-royal-family-1200476227/",
   "urlDiscoveredAt": "2026-02-04T19:32:10.094Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "rescoreCompletedAt": "2026-02-05T05:08:25.884Z"
 }

@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new version of the musical, which opened Sunday night at the Broadway Theater, turns out to be a satisfying piece of old-fashioned musical theater that has been given just enough contemporary touches to feel fresh without losing its essential sweetness.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 81,
@@ -104,5 +104,10 @@
   "archiveOrgTimestamp": "20140101005858",
   "archiveOrgUrl": "http://web.archive.org/web/20140101005858/http://www.nytimes.com/2013/03/04/theater/reviews/rodgers-hammersteins-cinderella-at-broadway-theater.html",
   "wordCount": 880,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T05:00:46.877Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a truncated web page with subscription prompts, navigation elements, and incomplete review text that cuts off mid-sentence, making it unscoreable.; openai: The text is primarily navigation menus, ticket information, and promotional content, not a coherent review.",
+  "promptVersion": "5.2.0"
 }

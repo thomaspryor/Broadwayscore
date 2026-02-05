@@ -123,9 +123,9 @@
   "sources": [
     "web-search"
   ],
-  "rejectedAt": "2026-02-04T20:48:46.980Z",
+  "rejectedAt": "2026-02-05T04:48:48.083Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The text is truncated with a technical error message at the end ('We are having trouble retrieving the article content') and appears to cut off mid-review without providing the critic's final verdict or recommendation.; openai: The review is about a 2012 production of 'Glengarry Glen Ross', not the current Broadway run.",
+  "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about retrieving article content and enabling JavaScript, making it impossible to determine the critic's final verdict; openai: The text includes a broken link and a message about enabling JavaScript, indicating it is not a complete review.",
   "promptVersion": "5.2.0"
 }

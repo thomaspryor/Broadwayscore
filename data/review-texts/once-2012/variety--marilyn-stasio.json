@@ -117,5 +117,11 @@
   "textStatus": "truncated",
   "sourceMethod": "brightdata",
   "wordCount": 578,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-05T04:58:01.615Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a film review of the Brazilian movie 'Xingu', not a Broadway theater review; openai: The text is a review of the film 'Xingu' and not a Broadway show.; gemini: This is a review of the film 'Xingu', not a Broadway show.; kimi: This is a film review for the movie 'Xingu' (directed by Cao Hamburger), not a Broadway theater review. The text discusses cinematography, filming locations, film festivals, and screen actors.",
+  "promptVersion": "5.2.0"
 }

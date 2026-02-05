@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 73,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 73,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 78
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Majok wisely doesn't sugarcoat realities in sentimentality, but she also leaves the door ajar for an optimistic glimmer.",
+        "quote": "this lean, perceptive, and beautifully acted drama explores several provocative themes",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises the playwright's approach as 'wise' and notes balance between realism and optimism, suggesting quality, but limited text and lack of explicit recommendation language keeps this in lower Positive range. | GPT-4o: The excerpt suggests a positive view of the show's balance between realism and optimism. However, the single excerpt and lack of full context limit confidence. | Gemini: The excerpt suggests a positive, but not overwhelmingly enthusiastic, assessment. The phrase \"leaves the door ajar for an optimistic glimmer\" indicates a qualified recommendation. | Kimi: Single curated excerpt offers mild praise for the playwright's craft and tonal balance without strong enthusiasm. Per instructions for single excerpts with mild positivity, scoring at lower end of Positive range.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the performances as flawless ('actors don't strike a false note'), calls it 'lean, perceptive, and beautifully acted,' and highlights its 'bracing originality.' Despite noting some script issues and plot convenience, the overall assessment is positive with clear appreciation for the drama's qualities. | GPT-4o: The review praises the play's originality, acting, and direction, despite noting some plot issues and character inconsistencies. The overall tone is positive, recommending the play for its themes and performances. | Gemini: The review is generally positive, praising the acting and originality, but notes some issues with the plot and believability. This warrants a score in the positive range, but not too high due to the reservations. | Kimi: The critic offers strong praise for the performances ('beautifully acted,' 'don't strike a false note') and the play's originality, while noting specific script weaknesses ('spotty,' 'windy'). The final verdict clearly favors seeing the show despite its flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T07:31:09.456Z",
+    "scoredAt": "2026-02-05T04:37:15.434Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 73,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 72,
-    "geminiScore": 75,
-    "kimiScore": 73,
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 77,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -79,7 +80,6 @@
     "bww-reviews",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 73,
   "textWordCount": 648,
@@ -101,5 +101,6 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 648,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T04:37:15.435Z"
 }

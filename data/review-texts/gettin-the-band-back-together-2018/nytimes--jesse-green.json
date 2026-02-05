@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The new musical 'Gettin' the Band Back Together' is so determined to be likable that it nearly succeeds despite itself. But nearly isn't quite enough for Broadway.",
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 20,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
-    "score": 55,
-    "confidence": "medium",
+    "score": 20,
+    "confidence": "high",
     "range": {
-      "low": 50,
-      "high": 60
+      "low": 15,
+      "high": 25
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Pan",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "But nearly isn't quite enough for Broadway.",
+        "quote": "The show aims so low that all it achieves is a ruckus in the tuchis.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic acknowledges the show's charm and effort ('so determined to be likable that it nearly succeeds') but ultimately concludes it falls short of Broadway standards. This is classic mixed territory - seeing merit but not recommending. | GPT-4o: The review indicates that the show falls short of being successful on Broadway, suggesting a lack of recommendation. The phrase 'nearly isn't quite enough' implies a negative verdict. | Gemini: The review states the show 'nearly succeeds' but 'nearly isn't quite enough,' indicating a mixed or neutral stance. | Kimi: The critic acknowledges the show's determined effort to be likable and that it 'nearly succeeds,' but delivers a firm negative verdict that it is insufficient for Broadway, constituting a recommendation against seeing it. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating pan with systematic criticism of every element. Green calls it 'empty-headed,' 'calculated rehash,' and uses harsh metaphors like 'mystery stew' and 'clammy.' The final line delivers a contemptuous dismissal using the show's own crude humor against it. | GPT-4o: The review is overwhelmingly negative, describing the show as 'empty-headed' and 'half-baked' with 'rote' tunes and 'fuzzy' lyrics. The critic finds the production 'icky' and 'clammy,' with a lack of originality and engagement. | Gemini: The review is overwhelmingly negative, calling the show a \"calculated rehash of a million tired tropes\" and criticizing the music, lyrics, book, and overall production. The critic clearly does not recommend seeing it. | Kimi: The critic delivers a devastating assessment calling the material 'empty-headed,' 'textureless,' and 'fatally wrong,' acknowledging only isolated competent performances that fail to redeem the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:21:03.657Z",
+    "scoredAt": "2026-02-05T04:47:32.480Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 55,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 45,
-    "geminiScore": 62,
-    "kimiScore": 52,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
-    "scoreDelta": 17,
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 22,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
   },
   "sources": [
     "web-search",
@@ -80,7 +81,6 @@
   "previousUrl": "https://www.nytimes.com/2018/08/14/theater/gettin-the-band-back-together-review.html",
   "urlDiscoveredAt": "2026-02-05T03:19:42.249Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 55,
   "textWordCount": 1014,
@@ -108,5 +108,6 @@
   "archiveOrgTimestamp": "20180814043440",
   "archiveOrgUrl": "http://web.archive.org/web/20180814043440/https://www.nytimes.com/2018/08/13/theater/review-gettin-the-band-back-together-broadway.html",
   "wordCount": 1014,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T04:47:32.481Z"
 }
