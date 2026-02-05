@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": ": Directed by three-time Tony winner Jack O'Brien ('Hairspray,' 'Henry IV,' 'The Coast of Utopia'), this revival gets to the heart of Miller's writing and brings out increasingly intense and layered performances, making for highly compelling and confrontational theater. Period costumes, an extensive exterior set design and video projections between scenes further enrich a fine production.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "making for highly compelling and confrontational theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction, performances, and production values with descriptors like 'highly compelling' and 'fine production', but single excerpt limits confidence in full review sentiment. | GPT-4o: The excerpt praises the direction, performances, and production elements, indicating a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises the direction, performances, and set design, calling it a \"fine production\" that gets to the heart of the writing. Given the single excerpt, I'm scoring it at the higher end of positive, but with low confidence. | Kimi: The excerpt offers strong praise for the direction, performances, and production design, describing the show as 'highly compelling' and 'fine,' though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:15:48.066Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

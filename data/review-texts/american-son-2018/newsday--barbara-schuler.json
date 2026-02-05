@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The play, directed by Kenny Leon, makes no attempt to hide its agenda. As the plot unfurls and details slowly emerge about a traffic stop (Jamal's driving a silver Lexus, an 18th birthday present from his parents), there are few surprises. Demos-Brown, a Florida trial attorney, writes what he knows but breaks no new ground and offers no solutions. This probably wouldn't have made it to Broadway without the imprimatur of Washington, who has expressed in interviews that she hopes the play will force people to listen to each other in ways the characters do not.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Demos-Brown writes what he knows but breaks no new ground and offers no solutions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt criticizes the play as predictable and unoriginal ('few surprises', 'breaks no new ground'), suggesting it wouldn't have reached Broadway without star power. However, with only one excerpt available, the full verdict may be more positive or negative than this suggests. | GPT-4o: The review notes that the play 'breaks no new ground and offers no solutions,' which suggests a lack of enthusiasm or strong recommendation. The mention of the play making it to Broadway due to Washington's involvement rather than its own merits further supports a mixed verdict. | Gemini: The review excerpt suggests the play is predictable and doesn't offer new insights, but also mentions Washington's hope for the play to encourage dialogue. Given the limited text, it's difficult to determine a clear recommendation, leading to a mixed classification with low confidence. | Kimi: The critic finds the play predictable with 'few surprises,' criticizes the writing for lacking originality and solutions, and suggests it only reached Broadway due to its star's involvement rather than its own merits.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:48:14.736Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 58,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

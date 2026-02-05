@@ -12,5 +12,60 @@
   "bwwExcerpt": "Fresh-faced, attractive and amusing, Fairchild holds the stage in leading-man style. He acts effectively and sings remarkably well. Cope, whose dark, gamine good looks suggest the film's Leslie Caron, has perhaps less acting range, but she can sing and is thoroughly appealing. Their dancing is exhilarating, especially in the big 'American in Paris' ballet, which begins and ends as a performance piece by Lise's ballet company, with a romantic middle of Lise and Jerry conveying their growing relationship.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-AMERICAN-IN-PARIS-Opens-on-Broadway-Updating-LIVE-20150412"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-AMERICAN-IN-PARIS-Opens-on-Broadway-Updating-LIVE-20150412",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fresh-faced, attractive and amusing, Fairchild holds the stage in leading-man style.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise for lead performances ('acts effectively and sings remarkably well', 'thoroughly appealing') and dancing ('exhilarating'). However, single excerpt warning applies - this could be cherry-picked positive content from a mixed review. | GPT-4o: The excerpt praises the performances and dancing, suggesting a positive view. However, the single excerpt limits confidence in the overall sentiment. | Gemini: The excerpt focuses on the positive aspects of the performances and dancing, using words like 'exhilarating' and 'appealing.' Given the single excerpt, I am placing it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the lead performers' acting, singing, and dancing, with particular emphasis on the exhilarating ballet sequences. While a single excerpt limits certainty, the tone is clearly and strongly positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:52:59.796Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

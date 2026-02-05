@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "All this could have come across as a high school English class assignment, but Read manages to make it work. He clearly has respect for and knowledge of the source material but also isn't afraid to highlight just how ridiculous the play really is. (As we are reminded here, Romeo and Juliet only knew each other for four days.) Though he keeps the characters true to the original, there are slight tweaks for modern sensibility, as when Anne brings Juliet's age up from 13 (",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JULIET-Brings-To-Music-of-Max-Martin-To-Broadway-20221117",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All this could have come across as a high school English class assignment, but Read manages to make it work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows qualified praise - the critic acknowledges potential problems but says the director 'makes it work' and shows 'respect for and knowledge of the source material.' However, with only one truncated excerpt available, confidence is low and the positive assessment appears cautious rather than enthusiastic. | GPT-4o: The excerpt suggests a positive view of the production, noting that it 'manages to make it work' and respects the source material. However, the single excerpt warning and lack of a full review text limit confidence in the overall tone. | Gemini: The review excerpt suggests a positive but not overwhelmingly enthusiastic assessment, praising Read's adaptation while acknowledging the source material's flaws. Given the limited text, confidence is low. | Kimi: The excerpt indicates the production successfully navigates potential cheesiness, with the reviewer praising the creator's respect for source material and ability to highlight its ridiculousness, but 'manages to make it work' suggests competent execution rather than excellence. Single excerpt and truncation warrant low confidence and conservative scoring in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:05:23.909Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

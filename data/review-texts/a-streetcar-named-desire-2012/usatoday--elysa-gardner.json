@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It's telling that Blanche DuBois, one of the most famous neurotics in American literature, sometimes comes across as the least hysterical person on stage — or maybe just the least aggressive in her hysteria. As summoned by director Emily Mann, whom Williams befriended and worked with late in his life, the French Quarter, where Blanche visits her sister, Stella, is a raucous place, with people forever laughing or fighting, making love, or stomping and whining in agitatio",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STREETCAR-NAMED-DESIRE-Returns-to-Broadway-Updating-LIVE-20120422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Blanche DuBois, one of the most famous neurotics in American literature, sometimes comes across as the least hysterical person on stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single truncated excerpt makes definitive scoring difficult. The critic seems to have reservations about the staging approach, noting that the famous character comes across as 'least hysterical' in what appears to be an overly chaotic production environment. | GPT-4o: The excerpt suggests a mixed tone, noting that Blanche DuBois appears less hysterical compared to others, implying a chaotic or overly aggressive staging. The lack of a clear positive or negative verdict and the single excerpt warning lead to a low confidence mixed score. | Gemini: The excerpt describes the setting and characters, but doesn't offer a clear recommendation. The phrase \"sometimes comes across as the least hysterical person on stage\" suggests a mixed or neutral assessment. Given the limited text, confidence is low. | Kimi: Single truncated excerpt provides descriptive analysis of directorial choices and atmosphere without clear recommendation language. The chaotic depiction of the French Quarter ('raucous,' 'stomping and whining') suggests mixed reception to the production's energy, while the observation about Blanche's relative composure is analytical rather than clearly praising or condemning.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:49:07.543Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

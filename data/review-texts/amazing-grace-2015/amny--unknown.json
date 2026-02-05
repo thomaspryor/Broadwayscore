@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "On the heels of President Barack Obama breaking into 'Amazing Grace' during a eulogy, a well-meant but embarrassingly uninteresting musical depicting the life saga of the hymn' writer has opened. Watching it, you keep thinking, 'How in the world did this get to Broadway?'...Resembling an old-fashioned adventure novel, 'Amazing Grace' is packed with changes of fortune, sentimentality and one-dimensional characters. Smith's mushy, forgettable songs sound like the work of someone who loves 'Les Miz' but has little talent of his own...Too bad they couldn't just sing 'Amazing Grace' at the start and save everyone 2 1/2 hours.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716",
+  "assignedScore": 19,
+  "llmScore": {
+    "score": 19,
+    "confidence": "medium",
+    "range": {
+      "low": 14,
+      "high": 24
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "How in the world did this get to Broadway?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Devastating pan questioning the show's existence, calling it 'embarrassingly uninteresting' with 'mushy, forgettable songs' and suggesting audiences would be better off skipping it entirely. | GPT-4o: The review is strongly negative, questioning how the show made it to Broadway and criticizing the music and characters. The tone suggests a clear recommendation to avoid the show. | Gemini: The review is overwhelmingly negative, describing the musical as embarrassingly uninteresting, mushy, forgettable, and questioning how it made it to Broadway. The critic clearly does not recommend seeing it. | Kimi: The critic calls the production 'embarrassingly uninteresting' with 'mushy, forgettable songs' and questions its Broadway viability, suggesting audiences would be better off skipping this 2.5-hour experience entirely.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:14:41.825Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "We don't get many ancient Greek tragedies on Broadway. Tastes have changed, and what we think of as dramatic has shifted into different patterns. So Christopher Demos-Brown's American Son seems like a play from another time. It basically consists of two-person arguments, interspersed with messenger speeches: Something has happened offstage, and we wait with the characters to find out what it is. The rhetoric is heavy-handed, the grief and fear are unremitting, the brushstrokes are asphalt-thick, and there's no subtlety in either the characterizations or the narrative structure. In other words, Demos-Brown hasn't written a particularly skillful modern drama. But when the fate of a nation was at stake, Euripides wrote plays like this too.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Demos-Brown hasn't written a particularly skillful modern drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic clearly states the play lacks skill and subtlety, calling it heavy-handed with thick brushstrokes, but the comparison to Euripides suggests some historical/artistic context that prevents total dismissal. Single excerpt limits full assessment. | GPT-4o: The review criticizes the play's heavy-handed rhetoric, lack of subtlety, and outdated structure, indicating a negative assessment. However, the comparison to Euripides suggests some recognition of the play's thematic ambition, preventing a deeper pan. | Gemini: The review states that the play is not a skillful modern drama, with heavy-handed rhetoric and no subtlety. The comparison to Euripides does not redeem the negative assessment of the play's quality. | Kimi: The critic delivers harsh criticism of the play's craft ('heavy-handed,' 'asphalt-thick,' 'no subtlety') but offers a qualified defense by comparing it to Euripides' treatment of national crises, suggesting thematic gravity compensates for lack of subtlety. With only one excerpt available, the overall verdict remains ambiguous but leans mixed rather than recommended. | Buckets: claude=Mixed, openai=Negative, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:51:17.811Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

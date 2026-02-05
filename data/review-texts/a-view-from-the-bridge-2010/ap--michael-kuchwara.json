@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"As Alfieri says of the play's protagonist: \"Eddie Carbone never expected to have a destiny.\" At the Cort, Schreiber, Johansson and company have managed to make it a memorable one.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-A-VIEW-FROM-THE-BRIDGE-Review-Roundup-20100124",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Schreiber, Johansson and company have managed to make it a memorable one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the cast for creating a 'memorable' production, which is positive evaluation. However, with only one curated quote available, confidence is low as this may not represent the full review sentiment. | GPT-4o: The excerpt praises the production as 'memorable,' suggesting a positive experience. However, with only one curated quote available, confidence is low, and the score is placed in the upper range of Positive to reflect the strong positive implication. | Gemini: The quote indicates a positive assessment of the performances and overall impact of the production, but the limited text and lack of context make it difficult to gauge the strength of the recommendation. | Kimi: The excerpt offers clear praise for the principal cast, calling the production 'memorable,' which indicates a solid recommendation. However, as a single curated excerpt, the full context of any reservations is unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:49:42.349Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

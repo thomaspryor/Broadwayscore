@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "There is the pleasure, for the first half anyway, of Arthur Miller's All My Sons-which opened Monday night on Broadway (at the American Airlines Theatre, to June 23)-of well-executed theatrical convention; the reassurance of a revival done traditionally and done right.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is the pleasure of well-executed theatrical convention; the reassurance of a revival done traditionally and done right.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise ('pleasure,' 'well-executed,' 'done right') but qualifier 'for the first half anyway' suggests reservations about the full production. Given single excerpt warning and qualified praise, scoring at lower end of Positive range. | GPT-4o: The excerpt praises the traditional execution and the pleasure of the first half, suggesting a positive view, but the limited context and single excerpt warrant a cautious, low-confidence score. | Gemini: The review excerpt indicates a positive experience, particularly in the first half, praising the traditional execution. However, the limited text and the phrase \"for the first half anyway\" suggest some reservations, leading to a score in the lower-middle of the Positive range. | Kimi: The excerpt offers qualified praise for the production's competent execution of theatrical tradition, but the limitation to 'the first half' and emphasis on conventionality rather than innovation suggest a mild, reserved recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:14:57.441Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

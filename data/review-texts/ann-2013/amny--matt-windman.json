@@ -14,5 +14,60 @@
   "bwwScore": 6,
   "contentTier": "excerpt",
   "playbillVerdictUrl": "http://www.amny.com/entertainment/sylvia-review-matthew-broderick-annaleigh-ashford-in-one-good-dog-1.11017652",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show would also be better suited for a more intimate theater rather than the extended thrust stage of the Vivian Beamount at Lincoln Center.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt warning applies. The text acknowledges flaws (wrong venue size) but praises the lead performance. Mixed assessment with both criticism and praise, but insufficient context for clear verdict. | GPT-4o: The excerpt suggests a positive view of the performance, indicating it will appeal to a wide audience. However, the mention of a better-suited venue implies some reservations. Given the single excerpt warning, the score is placed at the lower end of the Positive range. | Gemini: The review acknowledges the theater size issue but praises Taylor's performance, suggesting a positive but qualified recommendation. Given the single excerpt, confidence is low. | Kimi: The excerpt criticizes the venue as ill-suited but strongly praises the lead performance as 'dynamic' and broadly appealing, suggesting a qualified recommendation based on the acting. Score reflects the mildly positive tone of this single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:57:15.739Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This strange family drama lacks a cohesive plot and lingers on endlessly for about 90 minutes. Its unusual crew of characters includes an academic (Brian F. O'Byrne), a tough teacher (Michelle Gomez), an overweight bullied teen (Annie Funke) and her heartfelt but idiotic uncle (Gyllenhaal)…Gyllenhaal easily blends into his heartbroken, thick-accented character, while Funke presents an often harrowing portrait of a lonely and emotionally abused girl. But if there was a point to \"If There Is ...,\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-IF-THERE-IS-I-HAVENT-FOUND-IT-YET-Starring-Jake-Gyllenhaal-and-Annie-Funke-All-the-Reviews-20120921",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This strange family drama lacks a cohesive plot and lingers on endlessly for about 90 minutes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic describes the show as lacking cohesive plot and 'lingering endlessly,' while acknowledging strong individual performances. The truncated ending suggests the critic couldn't find the show's point, indicating a negative overall assessment despite performer praise. | GPT-4o: The excerpt criticizes the show for lacking a cohesive plot and dragging on, which indicates a negative view. However, there is some praise for individual performances, which prevents it from being a full pan. | Gemini: The review states that the play lacks a cohesive plot and lingers endlessly. While it praises some performances, the overall sentiment is negative due to the plot issues. | Kimi: The critic praises Gyllenhaal and Funke's performances but strongly criticizes the play's structure and pacing; the truncated ending suggests reservations about the show's overall purpose. Single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:59:41.884Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "Letts' performance likely will strike some as odd or disconnected - I find it perfectly in tune with the moment, and there is much to like about Bening's work, too. Kate Keller is a tricky part - she can come off as merely an enabler or a kook. Bening comes up with something much richer, as does Walker, who is quite moving and, well, sad. It will take another generation or two to fix things, you think.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I find it perfectly in tune with the moment, and there is much to like about Bening's work, too.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic praises lead performances as 'much to like' and 'quite moving' but excerpt suggests qualified appreciation rather than strong enthusiasm. Single excerpt limits confidence. | GPT-4o: The excerpt praises Bening's and Walker's performances, indicating a positive view, but the single excerpt and lack of a clear overall verdict suggest a cautious, low-confidence score. | Gemini: The critic finds Letts' performance \"perfectly in tune\" and says there is \"much to like\" about Bening's work, indicating a positive, though perhaps not overwhelmingly enthusiastic, assessment. The phrase \"something much richer\" also suggests a positive view. | Kimi: The excerpt offers warm, specific praise for the principal performances, finding Letts 'perfectly in tune,' Bening's work 'much richer,' and Walker 'quite moving,' indicating a clear positive recommendation despite limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:18:44.422Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

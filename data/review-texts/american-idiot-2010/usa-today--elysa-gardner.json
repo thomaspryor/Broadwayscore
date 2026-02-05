@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Anyone who had hoped that Green Day would  finally bring  punk-rock nihilism to Broadway is about to be sorely  disappointed. Few  could have predicted that American Idiot (***½ out of four), the  new adaptation of the band's massively popular,  starkly disenchanted  album of the same name, would be the feel-good  musical of the season.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-AMERICAN-IDIOT-Review-Roundup-20100420",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Few could have predicted that American Idiot would be the feel-good musical of the season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The ***½ out of four rating (3.5/4 stars) indicates positive reception, and calling it 'the feel-good musical of the season' is praise. However, with only one excerpt available and some qualifying language about disappointment for punk fans, confidence is low and score stays in lower positive range. | GPT-4o: The excerpt suggests a positive surprise, with the show being described as the 'feel-good musical of the season' despite initial expectations. The ***½ out of four rating indicates a strong positive review, aligning with the upper range of the Positive bucket. | Gemini: The review excerpt suggests a mixed reaction. While it acknowledges the show's unexpected 'feel-good' nature, it also implies a disappointment for those expecting punk-rock nihilism. The star rating is missing, making it difficult to assess the overall sentiment with high confidence. | Kimi: The 3.5/4 star rating and designation as the 'feel-good musical of the season' indicate strong enthusiasm, though the single-excerpt limitation necessitates caution and placement in the upper Positive range rather than Rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:31:12.520Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 62,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 21,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

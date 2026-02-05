@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tracy Letts's new play, 'August: Osage County,' is a sprawling, three-act family drama that unfolds in the stifling heat of an Oklahoma summer, and it's one of the most exciting new American plays I've seen in years.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tracy Letts's new play, 'August: Osage County,' is a sprawling, three-act family drama that unfolds in the stifling heat of an Oklahoma summer, and it's one of the most exciting new American plays I've seen in years.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's one of the most exciting new American plays I've seen in years.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt provides a strong, enthusiastic recommendation, calling the play one of the most exciting new American plays in years. However, due to the single excerpt warning, confidence is low. | Gemini: The critic calls the play 'one of the most exciting new American plays I've seen in years,' which is strong positive language. Given the single excerpt, I'm scoring it at the higher end of the positive range. | Kimi: The single available excerpt offers enthusiastic superlatives ('most exciting new American plays I've seen in years'), indicating strong praise. However, confidence is low given only one curated excerpt is available, which may not represent the full review's nuances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:17:15.330Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

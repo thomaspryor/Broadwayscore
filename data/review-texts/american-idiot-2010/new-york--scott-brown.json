@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It’s a self-described “rock opera” set in a self-created “Recent Past,” and it purports to evoke, with a single tear and a power chord, the confusing days of the terror-stricken early 21st century, when we yo-yoed from cowed powerlessness to inchoate fury. Well, confusing and inchoate this show most definitely is: Its version of youthful anomie is so far off the mark, and such a muddled conflation of vague Gen-X nostalgia and generic rebellion sample tracks, that the effect is almost comical. But mostly just irritating.",
   "bwwScore": 1,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Its version of youthful anomie is so far off the mark, and such a muddled conflation of vague Gen-X nostalgia and generic rebellion sample tracks, that the effect is almost comical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Single excerpt shows clear negative assessment calling the show 'muddled,' 'off the mark,' and 'irritating.' However, confidence is low due to limited text availability which may not represent the full verdict. | GPT-4o: The excerpt describes the show as confusing, inchoate, and irritating, with a muddled execution. The lack of redeeming qualities and negative tone suggest a strong pan, despite the single excerpt warning. | Gemini: The review excerpt is negative, describing the show as confusing, irritating, and missing the mark. Given the limited text, confidence is low, but the tone suggests a negative assessment. | Kimi: The excerpt describes the show as 'confusing and inchoate,' a 'muddled conflation,' and 'mostly just irritating,' indicating a clear rejection. However, given this is a single curated excerpt, confidence is low and the score reflects the lower end of the Negative range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:29:17.507Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

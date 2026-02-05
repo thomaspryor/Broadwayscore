@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "as anyone who has stayed up late watching a Law & Order repeat knows, familiarity can be enormously reassuring. And Rupert Holmes (The Mystery of Edwin Drood) does an admirable job of condensing Grisham's 600-plus-page book, jettisoning entire subplots and characters (the wife of Jake, our defense lawyer hero, for instance) while emphasizing the story's dramatic highlights. Unfortunately, this also means that character development often gets short shrift. Ashley Williams' Boston-bred law student, who joins the defense team and has a brief flirtation with Jake, seems particularly sketchy... There isn't much subtlety in A Time To Kill - Lindsay Jones' overly intrusive underscore cues up at every dramatic moment - but it manages to convey a mostly satisfying sense of justice being served.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There isn't much subtlety in A Time To Kill but it manages to convey a mostly satisfying sense of justice being served.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review acknowledges Holmes does an 'admirable job' but criticizes character development and lack of subtlety. The final verdict is 'mostly satisfying' which suggests mixed reception rather than clear recommendation. | GPT-4o: The review acknowledges the play's ability to convey a satisfying sense of justice but criticizes the lack of subtlety and character development. The overall tone suggests a mixed reception with some positive elements. | Gemini: The review acknowledges flaws (lack of subtlety, sketchy characters) but concludes with a \"mostly satisfying\" experience. Given the single excerpt and the positive conclusion, I'm placing it in the lower end of the Positive bucket. | Kimi: While the excerpt lists significant criticisms (sketchy character development, lack of subtlety, intrusive underscore), the final verdict frames the show as 'mostly satisfying,' indicating a qualified but genuine recommendation. Given this is a single curated excerpt with substantial caveats, it falls at the lower end of the Positive range. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:48:13.150Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

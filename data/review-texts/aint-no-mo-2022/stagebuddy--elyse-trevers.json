@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,63 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The show is loud and the dialogue is raunchy...Some of the speech is delivered rapid-fire and is difficult to understand...I admire Cooper’s talent and his resolve, but I wonder if the play has enough universal themes to draw in a large audience.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I admire Cooper's talent and his resolve, but I wonder if the play has enough universal themes to draw in a large audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic acknowledges the lead's talent but raises concerns about dialogue clarity and broad appeal. The wondering about audience draw suggests uncertainty rather than recommendation. | GPT-4o: The excerpt expresses admiration for Cooper's talent but questions the play's appeal to a broad audience. The mixed tone suggests neither a strong recommendation nor a clear discouragement. | Gemini: The review expresses admiration for the talent involved but questions the play's broader appeal, suggesting a mixed assessment. The limited excerpt makes confidence low. | Kimi: The excerpt praises Cooper's performance and resolve but criticizes the show for being loud, raunchy, and difficult to understand, while explicitly doubting whether the play possesses sufficient universal themes to attract a large audience. This balance of performer praise and substantial reservations about the work itself indicates a mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:51:28.881Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "sources": [
+    "show-score-playwright"
+  ]
 }

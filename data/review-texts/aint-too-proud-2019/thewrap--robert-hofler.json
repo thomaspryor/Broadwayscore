@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Real drama doesn't arrive until singer Al Bryant (Jarvis B. Manning Jr.) is replaced by David Ruffin (Ephraim Sykes). There are four more musicals to opens this Broadway season, but it's difficult to imagine a performer more energized in any of them than Sykes. His superstar-making turn as Ruffin sums up that old adage about the brightest burning out the fastest.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There are four more musicals to opens this Broadway season, but it's difficult to imagine a performer more energized in any of them than Sykes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Sykes' performance as 'superstar-making' and 'more energized' than upcoming Broadway shows suggests enthusiasm, but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises Ephraim Sykes' performance as a standout, suggesting a positive view of the show overall. However, the lack of full context and only one excerpt limits confidence in the overall verdict. | Gemini: The review excerpt focuses on a standout performance, suggesting a positive experience, especially given the limited text available. The phrase \"superstar-making turn\" indicates a strong recommendation. | Kimi: Single excerpt offers enthusiastic praise for Ephraim Sykes' performance as David Ruffin, calling it a 'superstar-making turn' and comparing it favorably to other Broadway musicals this season. However, as a solitary curated quote, it may not represent the full review's verdict on the production as a whole.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:11:26.959Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The revival’s design aspects are handsome – Donald Holder’s lighting nicely eases the transitions in time – while composer Corin Buckeridge’s piano music adds greatly to the show’s increasing wistfulness in mood. Keeping the play’s underlying emotions rather on the cool side, Leveaux grievously errs by usually pacing the conversations at a hasty clip. No doubt the director knows the play very well but he should not assume that American audiences can follow its British and Stoppardian intricacies quite so easily.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Keeping the play's underlying emotions rather on the cool side, Leveaux grievously errs by usually pacing the conversations at a hasty clip.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt praises design elements but delivers serious criticism of the director's pacing choices, calling it a 'grievous error.' With only one excerpt available and no clear overall recommendation, this appears mixed with notable reservations. | GPT-4o: The review praises the design and music but criticizes the direction for pacing issues and assumes audience familiarity. The mixed feedback suggests a balanced view with both positive and negative elements. | Gemini: The review praises design and music but criticizes the pacing and emotional depth, suggesting a mixed experience. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The critic offers genuine praise for the revival's design, lighting, and music, but delivers a significant criticism of the director's pacing, suggesting it hinders comprehension of the play's intricacies without issuing a clear recommendation to attend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:15:07.528Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

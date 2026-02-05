@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The audience becomes the jury in A Time To Kill, Rupert Holmes' by-the-numbers stage adaptation of John Grisham's page-turning 1989 debut novel. But unlike the workings of a real jury, there's no room for ambiguity, moral complexity or startling insight in this formulaic courtroom drama about institutionalized racism in the Deep South, in which every liberal-pandering response has been hardwired into the dated material. Sturdy ensemble acting and Grisham's compelling storytelling make this go down easily, but the production provides little persuasive evidence that the thriller needed to become a play.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production provides little persuasive evidence that the thriller needed to become a play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Clear negative verdict questioning the adaptation's necessity. Despite acknowledging 'sturdy ensemble acting' and that it 'goes down easily,' the critic finds it 'formulaic,' 'by-the-numbers,' with 'no room for ambiguity' or 'startling insight.' The final sentence definitively argues against the production's value. | GPT-4o: The review acknowledges strong acting and storytelling but criticizes the adaptation as formulaic and unnecessary. The tone is mixed, with both positive and negative elements. | Gemini: The review acknowledges compelling storytelling and sturdy acting, but ultimately finds the adaptation unnecessary and formulaic. This suggests a mixed reaction, leaning slightly positive due to the acting and storytelling. | Kimi: While acknowledging competent acting and source material, the critic dismisses the adaptation as formulaic, dated, and unnecessary, concluding it offers no persuasive reason to exist as a play. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:50:49.352Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

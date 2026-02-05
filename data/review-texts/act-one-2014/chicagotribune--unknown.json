@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Watching James Lapine's long, laborious and, well, hackneyed, Lincoln Center adaptation of Hart's book, you are constantly struck by the notion that Hart himself, had he been a creative consultant on the project, would have been leaping out of his seat, ready to cut some of his own scenes (plenty!), rewrite others and restage almost everything, being a fellow who understood the difference between autobiography and a work for the theater, between life and carefully constructed artifice. He knew the dance around the archetype without its actual embrace, the revelation of joy and the sorrow that cuts the treacle. And he would, I think, have been pushing for many more truths along with many more laughs.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Watching James Lapine's long, laborious and, well, hackneyed, Lincoln Center adaptation of Hart's book...",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the adaptation 'long, laborious and hackneyed' and suggests extensive cuts and rewrites would be needed. However, confidence is low due to single excerpt warning - this may not represent the full verdict. | GPT-4o: The excerpt criticizes the adaptation as 'long, laborious and hackneyed', suggesting significant dissatisfaction with the production. However, due to the single excerpt warning, confidence is low as it may not represent the full review sentiment. | Gemini: The review uses negative descriptors like \"long, laborious and, well, hackneyed\" and suggests the original author would want to rewrite and restage almost everything. This indicates a negative assessment of the production. | Kimi: The excerpt describes the production as 'long, laborious and hackneyed,' suggesting the adaptation fails to distinguish between autobiography and theatrical artifice while lacking both truth and humor.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:01:35.205Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

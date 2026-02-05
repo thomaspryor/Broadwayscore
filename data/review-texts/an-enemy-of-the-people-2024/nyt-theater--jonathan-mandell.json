@@ -16,7 +16,7 @@
   "bwwExcerpt": "Verdict: Jeremy Strong changes our perception of Ibsen’s character in Herzog’s complicating adaptation",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-Starring-Jeremy-Strong-Opens-On-Broadway-20240318",
   "showScoreExcerpt": "\"Strong changes our perception of Ibsen’s character in Herzog’s complicating adaptation\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "playbillVerdictUrl": "https://newyorktheater.me/2024/03/18/enemy-of-the-people-broadway-review/",
   "sources": [
@@ -25,5 +25,10 @@
     "bww-reviews",
     "bww-roundup"
   ],
-  "bwwScore": 8
+  "bwwScore": 8,
+  "rejectedAt": "2026-02-05T18:00:33.446Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a brief promotional excerpt with no actual critical evaluation - only a single descriptive sentence followed by 'Read more' link text.; openai: The text provided is a brief excerpt with no evaluative content or clear verdict. It does not constitute a full review.; gemini: This is just a brief quote and a link to 'read more,' not a complete or even excerpted review with enough evaluative content to score.",
+  "promptVersion": "5.2.0"
 }

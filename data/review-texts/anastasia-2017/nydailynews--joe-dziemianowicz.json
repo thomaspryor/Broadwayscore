@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "A young woman with no memory tries to find out who she is in the new Broadway musical 'Anastasia.' The show, despite being filled with some very good songs and performances, suffers from its own identity crisis. It's got a split personality and is torn between whether it's serious drama or frothy musical comedy. One wishes that the creative team - the same one behind 'Ragtime' - of Terrence McNally (book), Stephen Flaherty (music) and Lynn Ahrens (lyrics) had found a way to make it cohesive and more balanced.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show, despite being filled with some very good songs and performances, suffers from its own identity crisis.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges good songs and performances but criticizes fundamental structural problems (identity crisis, lack of cohesion). Single excerpt warning applied - no clear recommendation either way. | GPT-4o: The review acknowledges good songs and performances but criticizes the show for lacking cohesion and balance. The mixed tone suggests neither a strong recommendation nor a strong dissuasion. | Gemini: The review highlights both positive aspects (good songs and performances) and negative aspects (identity crisis, split personality, lack of cohesion). This indicates a mixed reaction, falling into the 'Mixed' bucket. | Kimi: The critic acknowledges 'very good songs and performances' but levels significant criticism at the show's lack of cohesive identity, calling it 'torn' between genres. As a single excerpt with balanced praise and criticism, it falls in the mixed range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:02:55.881Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

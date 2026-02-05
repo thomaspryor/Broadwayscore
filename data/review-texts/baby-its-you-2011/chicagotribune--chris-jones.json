@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The Shirelles, one of the greatest girl groups of all time (heck, they were covered by the Beatles), get a show of such total ineptitude and cynical profiteering that your mouth pretty much dangles open in disbelief for the duration of the entire tawdry proceedings...At least designer David H. Lawrence's parade of ever-changing hair gives you something to watch.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BABY-ITS-YOU-Updating-Live-20010101",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "high",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a show of such total ineptitude and cynical profiteering that your mouth pretty much dangles open in disbelief",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Despite being a single excerpt, the language is unambiguously scathing - 'total ineptitude,' 'cynical profiteering,' 'tawdry proceedings,' with only hair design mentioned positively. This is a clear pan. | GPT-4o: The excerpt is strongly negative, describing the show as inept and cynical. The mention of the designer's work as the only redeeming feature suggests a deep pan. However, the single excerpt warning indicates potential cherry-picking, so confidence is low. | Gemini: The review uses very strong negative language like \"total ineptitude\" and \"cynical profiteering,\" indicating a pan. The only positive is about the hair design, which doesn't redeem the overall negative assessment. | Kimi: The excerpt employs extreme negative language ('total ineptitude,' 'cynical profiteering,' 'tawdry proceedings') to condemn the production, offering only the faintest praise for hair design as a solitary redeeming element.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:06:11.800Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Boyd Gaines and Richard Thomas are marvelous as the battling brothers at the heart of the play, but there are terrific turns also by Gerry Bamman, Michael Siberry and Kathleen McNenny. Director Doug Hughes paces it like a thriller, with the heat rising steadily.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Boyd Gaines and Richard Thomas are marvelous as the battling brothers at the heart of the play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performances ('marvelous') and supporting cast ('terrific turns'), plus positive assessment of direction ('paces it like a thriller'). Single excerpt warning applied - this sounds clearly positive, so scored in upper end of Positive bucket. | GPT-4o: The excerpt praises the performances and direction, describing it as thrilling and engaging. The positive language suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The excerpt praises the performances of multiple actors and the director's pacing, suggesting a positive experience. Given the single excerpt and lack of full context, confidence is low, but the enthusiastic tone warrants a score on the higher end of the positive range. | Kimi: The excerpt offers strong praise for the cast ('marvelous', 'terrific turns') and direction ('paces it like a thriller'), indicating an enthusiastic recommendation. However, confidence is low because only a single curated excerpt is available, which may not represent the full review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:43:47.063Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

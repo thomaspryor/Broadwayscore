@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But Goldberg, with her perfect timing, takes things up a notch and finds new moments for Miss Hannigan to steal focus. She moves from the character's many mood swings — bitter, batty, sweet, sarcastic, flirty, funny — with ease, so quickly sometimes that the pivot induces its own laughs. And in Annie's climax, delivers one of the biggest comedic moments in the show with an off-handed remark to Mark Woodard's FDR.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Goldberg, with her perfect timing, takes things up a notch and finds new moments for Miss Hannigan to steal focus.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Goldberg's performance with specific technical appreciation. Single excerpt limits confidence, but the detailed positive assessment suggests solid recommendation territory. | GPT-4o: The excerpt praises Goldberg's performance, highlighting her comedic timing and ability to enhance the character. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt focuses on Whoopi Goldberg's performance and praises her comedic timing and ability to embody the character's mood swings, suggesting a positive experience, but it's hard to determine the overall recommendation due to the limited text. | Kimi: Single curated excerpt offers enthusiastic praise for Whoopi Goldberg's comedic performance and timing, but focuses solely on one performer without assessing the overall production, limiting confidence in the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:00:01.644Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

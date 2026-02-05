@@ -12,5 +12,60 @@
   "bwwExcerpt": "A thrilling cast rise to the challenge of making this entirely believable, fraught and eventually scorching. As matriarch Kate, Annette Bening is devastating as well as devastated: a woman clinging to hope, despite knowing in her heart that it is hopeless. And Tracy Letts -- who is also a playwright who wrote the Tony and Pulitzer Prize-winning August: Osage County -- is equally superb as a man consumed by his secrets.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A thrilling cast rise to the challenge of making this entirely believable, fraught and eventually scorching.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the cast with words like 'thrilling,' 'devastating,' and 'superb,' but this is only a single excerpt so the full verdict may differ. | GPT-4o: The excerpt praises the cast's performance as 'thrilling' and 'scorching', with specific commendation for Annette Bening and Tracy Letts. The tone is strongly positive, suggesting a solid recommendation. | Gemini: The excerpt uses strong positive language like \"thrilling\", \"entirely believable\", \"devastating\", and \"superb\", indicating a positive review. Given the single excerpt warning, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the performances ('devastating', 'superb') and describes the production as 'scorching' and 'entirely believable', indicating a clear positive verdict despite limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:06:43.825Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

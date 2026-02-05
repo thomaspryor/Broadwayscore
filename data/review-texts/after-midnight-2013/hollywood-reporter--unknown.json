@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The paramount requirement for any revue celebrating the Harlem Renaissance of the 1920s and '30s is stated right there in the Duke Ellington standard, 'It Don't Mean a Thing (If It Ain't Got That Swing).' And After Midnight has it in abundance, courtesy of a superlative jazz orchestra handpicked by producer Wynton Marsalis from among the best in the business. Ninety minutes of exuberantly entertaining song and dance, this is a show that renders it impossible to keep your toes from tapping. Up first in a series of rotating special guest stars, Fantasia Barrino with her luscious vocals sets the bar high.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ninety minutes of exuberantly entertaining song and dance, this is a show that renders it impossible to keep your toes from tapping.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language throughout - 'superlative', 'exuberantly entertaining', 'impossible to keep your toes from tapping' - but low confidence due to single excerpt warning and potential cherry-picking. | GPT-4o: The excerpt praises the show as 'exuberantly entertaining' and highlights the 'superlative jazz orchestra' and 'luscious vocals' of Fantasia Barrino. The language suggests a highly positive experience, fitting the Rave bucket. | Gemini: The review uses very positive language such as \"superlative jazz orchestra\" and \"exuberantly entertaining song and dance\", indicating a strong recommendation. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:03:12.851Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

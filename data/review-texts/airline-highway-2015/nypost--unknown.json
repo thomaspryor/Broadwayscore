@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Hungry for clichés? 'Airline Highway' is chock full of them. A hooker with a heart of gold, a gruff handyman, a sassy gender-bending African-American, a lonely stripper: Every character in this new Broadway show is straight out of central casting. You keep waiting for playwright Lisa D'Amour to put a new spin on those archetypes .?.?. but no. There's little even the excellent Julie White can do with Tanya, the aging prostitute...There's one fabulous, unexpected scene at the end -- Miss Ruby's address to her troops. Gorgeously lit and hauntingly poetic, it makes you angry for the show's missed opportunities.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You keep waiting for playwright Lisa D'Amour to put a new spin on those archetypes but no.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict criticizing clichéd characters and missed opportunities. Even praising one scene and Julie White's performance, the overall assessment is disappointment at wasted potential. | GPT-4o: The review criticizes the show for relying on clichés and failing to offer new perspectives. While there is some praise for a single scene, the overall tone is negative, highlighting missed opportunities and a lack of originality. | Gemini: The review criticizes the show's reliance on clichés and missed opportunities, despite praising one scene and Julie White's performance. The overall tone is negative, indicating a lack of recommendation. | Kimi: The review dismisses the show as relying on tired clichés and archetypes, noting that even excellent performers cannot salvage the material. While acknowledging one standout scene, the critic's final sentiment emphasizes frustration and 'missed opportunities' rather than any recommendation to attend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:10:02.035Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

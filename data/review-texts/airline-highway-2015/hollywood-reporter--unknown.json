@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "In her terrific 2010 play, Detroit, Lisa D'Amour showed gimlet-eyed observation, a spiky sense of humor and a vivid feel for a place and people being left behind by the American Dream...But despite being given a dynamic production with a highly capable cast, this rambling character-driven piece lacks the earlier work's drive and clarity of purpose. While it's a vividly populated canvas, the playwright doesn't do anything much of interest with it...as soulful, alive and frequently funny as D'Amour's characters are, there's also a soggy veil of nostalgia over this gallery of beautiful losers -- hookers, strippers, bartenders, bouncers, drug addicts, dealers, poets and street philosophers. The depiction of these outsiders, with their gritty nobility and purity of heart that remain unseen beyond their community, seems simplistic almost to the point of quaintness.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this rambling character-driven piece lacks the earlier work's drive and clarity of purpose",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Despite praising the cast and production quality, the critic finds fundamental flaws in the play itself - calling it 'rambling,' lacking 'drive and clarity,' and 'simplistic almost to the point of quaintness.' The overall assessment is negative. | GPT-4o: The review acknowledges the dynamic production and capable cast but criticizes the lack of drive and clarity, and finds the depiction simplistic. The single excerpt provides mixed signals, leading to a low confidence score. | Gemini: The review acknowledges the dynamic production and capable cast, but ultimately finds the play lacking drive and clarity, and the depiction of characters simplistic. This suggests a mixed reaction, not strongly positive or negative. | Kimi: The critic praises the dynamic production and capable cast, but finds the play itself rambling, lacking purpose, and simplistic in its depiction of characters. The mixed signals and single excerpt limitation warrant a middle-range Mixed score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:12:36.425Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

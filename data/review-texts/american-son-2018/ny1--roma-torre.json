@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Enhancing the production is an outstanding company of A-listers: Jeremy Jordan as a young white cop limited by his narrow world view; Eugene Lee providing the pragmatic voice of a black man who's learned how to straddle both sides to survive; Steven Pasquale as a member of the ruling class who's never had to compromise; and Kerry Washington - at times combative and emotionally overwrought - reflects the soul-crippling history of the black experience in America.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Enhancing the production is an outstanding company of A-listers",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises an 'outstanding company of A-listers' and provides detailed appreciation of each performance. However, this is only one curated excerpt, so confidence is low and the verdict may not represent the full review. | GPT-4o: The excerpt praises the cast as 'outstanding', indicating a positive view of the performances. However, the lack of a full review and the single excerpt warning suggest caution, leading to a lower score within the Positive range. | Gemini: The excerpt praises the cast as \"outstanding\" which suggests a positive experience, but without more context, it's hard to gauge the overall recommendation strength. | Kimi: The excerpt offers unambiguous praise for the cast, describing them as 'outstanding' and 'A-listers' with specific accolades for each performance's emotional depth and authenticity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:50:12.725Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

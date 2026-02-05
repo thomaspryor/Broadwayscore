@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Those who fell for the play's humor and wonder the first time around (they are unlikely to be disappointed in director Marianne Elliott's take), and those who come to the show with no history. As a member of the first group, I have some envy for those in the second. Because while there may be bragging rights in being able to compare the Angel then (looking as if she flew off a Roman edifice) with the Angel now (more wild, broken-down and bird-like), the play's text and imagery deliver an ecstati",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play's text and imagery deliver an ecstati",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear appreciation for both the original and current production, with the critic expressing 'envy' for newcomers who get to experience it fresh. The truncated ending appears to be building toward 'ecstatic' - a strongly positive word. Single excerpt warning applies, but the tone suggests solid recommendation. | GPT-4o: The excerpt suggests a positive reception for both new and returning audiences, with praise for the director's approach. However, the single excerpt and lack of full context necessitate a cautious approach, leading to a high score within the Positive range. | Gemini: The reviewer states that those who enjoyed the play previously will likely not be disappointed with this production. The excerpt is positive, but truncated, so confidence is low. | Kimi: The critic assures returning audiences they will not be disappointed and expresses admiration for the fresh experience the show offers newcomers, with praise for the production's 'ecstati' delivery. However, confidence is low due to single-excerpt availability and truncation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:56:47.156Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

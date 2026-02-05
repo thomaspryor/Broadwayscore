@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Letts' performance likely will strike some as odd or disconnected - I find it perfectly in tune with the moment, and there is much to like about Bening's work, too. Kate Keller is a tricky part - she can come off as merely an enabler or a kook. Bening comes up with something much richer, as does Walker, who is quite moving and, well, sad. It will take another generation or two to fix things, you think.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I find it perfectly in tune with the moment, and there is much to like about Bening's work, too.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive assessment of performances with specific praise for Letts and Bening, but single excerpt warning suggests caution about overall verdict strength. | GPT-4o: The excerpt praises the performances of Bening and Walker, describing them as rich and moving. However, the single excerpt warning and lack of a clear overall verdict suggest a cautious, mildly positive score. | Gemini: The review highlights positive aspects of the performances, particularly Letts' and Bening's, and describes Walker's performance as \"quite moving.\" While not an overwhelming rave, it leans towards a positive recommendation. | Kimi: The excerpt offers clear praise for the principal performances, with the critic finding Letts' work perfectly tuned, Bening's interpretation surprisingly rich, and Walker's turn genuinely moving, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:13:35.495Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

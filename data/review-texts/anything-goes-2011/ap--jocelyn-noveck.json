@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But the Tony-winning actress, who by the way looks smashing in all those silky and sparkly costumes by Martin Pakledinaz, is the very definition of a Broadway triple threat. And she shows it all off in the title song, which closes the first act with a cascade of tapping feet reminiscent of '42nd Street.' After what feels like 10 minutes of tap dancing, you imagine there's just no way that Foster, leading the pack, can still belt out the rest of the song. But she manages it...Happily, the real star here is Cole Porter and his wonderful music and lyrics.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the Tony-winning actress, who by the way looks smashing in all those silky and sparkly costumes by Martin Pakledinaz, is the very definition of a Broadway triple threat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Foster's performance as 'the very definition of a Broadway triple threat' and calling Porter's music 'wonderful.' However, single excerpt warning means full verdict unclear - could be higher praise elsewhere. | GPT-4o: The excerpt praises the lead actress as a 'Broadway triple threat' and highlights the impressive performance and Cole Porter's music. The tone is clearly positive, suggesting a strong recommendation. | Gemini: The review praises Sutton Foster's performance and Cole Porter's music, suggesting an enjoyable experience despite the lack of a strong overall recommendation. The single excerpt limits confidence. | Kimi: The excerpt offers unqualified praise for the lead actress's talents, the costume design, and Cole Porter's music, describing the performance with enthusiasm ('smashing', 'wonderful', 'very definition'). While clearly positive, the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:12:29.681Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

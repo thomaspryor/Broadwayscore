@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Not everyone in the large supporting cast is up to her level. Colin Donnell is bland as Billy Crocker, the young stockbroker who stows aboard the ship to pursue Hope Harcourt (Laura Osnes), the pretty debutante with whom he’s fallen hopelessly in love; Joel Grey milks his cutesy shtick too shamelessly as the gangster Moonface Martin; and Jessica Martin is largely wasted as Hope’s gold-digging mother.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Not everyone in the large supporting cast is up to her level.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: This excerpt focuses on criticizing several supporting cast members as 'bland,' overly affected, or 'wasted.' With only one negative excerpt available, this suggests a mixed review that acknowledges problems with the production. | GPT-4o: The excerpt criticizes multiple cast members, describing performances as 'bland', 'cutesy', and 'wasted'. The negative tone suggests a lack of recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt focuses on the weaknesses of the supporting cast, describing performances as \"bland,\" \"cutesy shtick,\" and \"largely wasted.\" This indicates a negative assessment, despite the single excerpt. | Kimi: The excerpt criticizes multiple supporting performances as bland or wasted, while implying a stronger lead performance exists elsewhere, suggesting an uneven production with significant casting weaknesses. | Buckets: claude=Mixed, openai=Negative, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:13:41.624Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

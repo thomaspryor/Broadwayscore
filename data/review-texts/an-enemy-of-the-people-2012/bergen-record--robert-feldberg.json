@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "Ibsen wrote the play, at least in part, as a response to the public outcry against his previous play, \"Ghosts,\" which bashed Victorian morality and made reference to syphilis. Lenkiewicz seems to give special emphasis to Stockmann’s conflicting qualities. The problem with that, aside from meshing his contradictions into a single, recognizable human being, is that it sticks out of the play like a sore thumb. None of the other characters are in any way complex. The bad guys are essentially nasty, ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The problem with that, aside from meshing his contradictions into a single, recognizable human being, is that it sticks out of the play like a sore thumb.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | GPT-4o: The excerpt criticizes the production for failing to integrate character contradictions effectively and for lacking complexity in other characters. This suggests a negative view of the production's execution. | Gemini: The excerpt expresses a negative opinion about the play's character development, stating that it 'sticks out like a sore thumb.' Given the limited text, confidence is low. | Kimi: The excerpt criticizes the adaptation for making the protagonist's complexity inconsistent with one-dimensional supporting characters, suggesting significant dramaturgical issues, but without the full review context, the overall verdict remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:54:49.014Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

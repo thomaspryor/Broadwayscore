@@ -8,8 +8,65 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "bww-roundup"
+    "bww-roundup",
+    "nyc-theatre"
   ],
   "bwwExcerpt": "But there’s a gap between being game and being entertaining — especially at inflated Broadway prices. Director Alex Timbers tries to amp up the production with cartoon projections (by Lucy Mackinnon) and occasional smoke and lighting effects (by Jake DeGroot) but there’s an underlying laziness to the staging that makes the show feel slight even before you note the 85-minute running time.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But there's a gap between being game and being entertaining — especially at inflated Broadway prices.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds the show not entertaining despite effort, calls staging lazy and the show slight, questions value at Broadway prices. Single excerpt limits confidence but tone is clearly discouraging. | GPT-4o: The excerpt criticizes the production for being lazy and slight, suggesting it does not justify the Broadway ticket price. The negative tone indicates a lack of recommendation, placing it in the Negative bucket. | Gemini: The review excerpt suggests the show is not entertaining despite the efforts of the director, and the price is a concern. The critic also notes an underlying laziness to the staging. | Kimi: The critic finds the production lazy and insubstantial, failing to deliver entertainment value commensurate with Broadway ticket prices.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:00:38.359Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  },
+  "nycTheatreExcerpt": "Every now and then, an enchanting new musical classic comes along out of nowhere. Two Strangers Carry a Cake Across New York, which opened Thursday at Broadway's Longacre Theatre, is a modern musical romance that has the feel of an old-fashioned movie but also the look and sound of a story that could only take place in 2025."
 }

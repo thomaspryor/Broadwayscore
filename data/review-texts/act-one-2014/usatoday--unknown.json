@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Lapine's Act One (* * * out of four stars), which opened Thursday at Lincoln Center's Vivian Beaumont Theatre, doesn't match the inspired zaniness that was Hart's ideal and trademark -- but its creator doesn't seem to be going for that. The new Broadway production is rather an appreciation, most notable for its deep affection and almost deferential reverence. To say the play lacks the complex poignance of the Sunday in the Park with George and Into the Woods librettist's best work wouldn't be fair; however wry Hart's humor or complicated his relationships -- with show business, his family, other people -- his Act One is a nostalgic and ultimately upbeat reflection on fulfilling a dream.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway production is rather an appreciation, most notable for its deep affection and almost deferential reverence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 3/4 stars indicates positive territory. The review praises the production's affection and reverence, calls it nostalgic and upbeat, but notes it doesn't match Hart's ideal zaniness and lacks the complexity of Lapine's best work. Single excerpt warning suggests caution - this qualified praise puts it in the lower Positive range. | GPT-4o: The review acknowledges that the production doesn't match the inspired zaniness of Hart's ideal but appreciates its affection and reverence. The 3 out of 4 stars suggests a positive but not overwhelmingly enthusiastic reception. | Gemini: The review is generally positive, noting the production's affection and reverence, but also acknowledging it doesn't match the 'inspired zaniness' of the subject's ideal. Given the single excerpt, I'm scoring it as a slightly reserved positive. | Kimi: The three-out-of-four-star rating indicates a qualified recommendation. While the critic praises the production's warmth and 'ultimately upbeat' tone, they note it lacks the 'inspired zaniness' and 'complex poignance' of the subject's best work, warranting a score in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:01:16.618Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

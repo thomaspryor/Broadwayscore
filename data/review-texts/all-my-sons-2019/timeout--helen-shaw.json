@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "First Bening combusts, then Walker goes up like a Roman candle, and ultimately Letts collapses in an avalanche of dust. There are other strong elements in these final sequences, particularly Hampton Fluker's performance as the weirdly childlike George-who has been deeply wronged by the Kellers but who wants to forgive them anyway, because it would let him pretend to be innocent again. His dazzled eyes reflect the central trio, staggered by their charisma and blinded to any flaws. Does All My Sons have failings? Never you mind. All you'll be able to remember is a family of giants falling one after the other, like a stand of redwoods crashing down.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All you'll be able to remember is a family of giants falling one after the other, like a stand of redwoods crashing down.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite acknowledging the play may have failings, the critic is clearly swept away by the powerful performances, using vivid imagery like 'combusts,' 'Roman candle,' and 'giants falling' to convey theatrical impact. The final dismissal of flaws ('Never you mind') suggests strong overall recommendation. | GPT-4o: The excerpt uses vivid imagery and strong praise for the performances, suggesting a powerful impact. Despite the lack of a full review, the language indicates an enthusiastic recommendation. | Gemini: The review describes strong performances and a memorable experience, suggesting a positive recommendation despite the caveat \"Does All My Sons have failings? Never you mind.\" The single excerpt and lack of a rating lead to low confidence. | Kimi: The excerpt offers vivid, superlative praise for the central performances ('combusts', 'Roman candle', 'giants'), indicating a highly positive verdict, though the single-excerpt limitation requires caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:16:09.591Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

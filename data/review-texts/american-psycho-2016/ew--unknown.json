@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "If you can resign yourself to the story's innate ambiguity, you're in for a perversely enjoyable experience. The script, by Roberto Aguirre-Sacasa...captures, and deftly skewers, all of Patrick Bateman's and the 1980s' most over-the-top obsessions...The music is totally '80s as well: Sheik's bizarrely catchy, entirely electronic score - far from the usual Broadway fare...Since its 2013 premiere at London's Almeida Theatre with erstwhileDoctor Who star Matt Smith as the titular psycho, AP has gotten a lot bloodier. It's also gotten a lot slicker, sharper, faster, and funnier...Patrick's secretary, Jean (Next to Normal's Jennifer Damiano), haplessly and hopelessly in love with him, and his mother (Tony-winner Alice Ripley)...these two sincere characters seem out of place in such a stinging satire...And as for the violence - it's simply part of the story, usually a joke, and often part of a stunning stage picture.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you can resign yourself to the story's innate ambiguity, you're in for a perversely enjoyable experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Review praises the script as 'deft', music as 'bizarrely catchy', and notes improvements making it 'slicker, sharper, faster, and funnier'. Despite minor criticisms about character placement, overall tone is enthusiastic and recommending. | GPT-4o: The review excerpt describes the show as 'perversely enjoyable' and praises the script and music. However, the single excerpt warning and lack of full context necessitate a cautious approach, placing the score at the lower end of the Positive range. | Gemini: The review uses the phrase \"perversely enjoyable experience,\" which indicates a positive recommendation. However, the caveat about ambiguity suggests some reservations, placing it in the positive range but not a rave. | Kimi: The critic delivers a conditional recommendation, praising the production as 'slicker, sharper, faster, and funnier' with a 'stunning stage picture', while noting that some characters feel out of place and the story requires resignation to its ambiguity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:47:13.056Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

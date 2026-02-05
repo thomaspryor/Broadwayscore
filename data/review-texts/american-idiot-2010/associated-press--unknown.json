@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\" Fans of the recording most likely will marvel at this  theatrical take on  \"American Idiot.\" It will give then a stunning  visualization of what  they already have on their iPods or CD players.  Others might want a  little more from the characters who are displaying  such all-consuming  angst.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-AMERICAN-IDIOT-Review-Roundup-20100420",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fans of the recording most likely will marvel at this theatrical take on 'American Idiot.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Review divides audiences - fans will 'marvel' but others 'might want a little more.' This conditional recommendation with reservations falls in mixed territory. Low confidence due to single excerpt. | GPT-4o: The review suggests that fans of the original recording will appreciate the theatrical adaptation, but others might find it lacking in character depth. This indicates a mixed reception, appealing primarily to existing fans. | Gemini: The review seems positive for fans of the album, but suggests others might want more. Due to the limited excerpt, confidence is low, and the score is at the lower end of the positive range. | Kimi: Extracted from malformed response | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:27:27.097Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

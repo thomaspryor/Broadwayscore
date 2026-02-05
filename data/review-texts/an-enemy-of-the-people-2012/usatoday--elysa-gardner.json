@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This Manhattan Theatre Club production also has a huge asset in leading man Boyd Gaines, whose Thomas is a distinctly earthbound but still mesmerizing force of nature -- by turns formidable, frail, frazzled, funny and tragic. Gaines captures all the arrogance and compassion of a man devoted to a noble but impossible cause, letting us see both the wisdom in his words and their futility.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Gaines captures all the arrogance and compassion of a man devoted to a noble but impossible cause, letting us see both the wisdom in his words and their futility.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Boyd Gaines' performance with rich descriptive language ('mesmerizing force of nature', 'formidable', 'tragic'). However, this is only one excerpt focused on the lead actor, so confidence is low as the overall show verdict may differ. | GPT-4o: The excerpt praises Boyd Gaines' performance as 'mesmerizing' and highlights his ability to convey complex emotions, suggesting a strong recommendation. However, with only one excerpt available, confidence is low. | Gemini: The excerpt focuses on the positive performance of the leading man, describing him as a \"mesmerizing force of nature\". This suggests a strong positive recommendation, but with only one excerpt, confidence is medium. | Kimi: The excerpt offers enthusiastic praise for Boyd Gaines' performance ('mesmerizing force of nature,' 'huge asset'), indicating a strong positive recommendation, though the single-excerpt format limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:59:17.607Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

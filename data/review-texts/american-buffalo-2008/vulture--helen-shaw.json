@@ -13,5 +13,60 @@
   ],
   "showScoreExcerpt": "\"Judged as a showcase, 'American Buffalo' works beautifully. Rockwell has exactly the right tools to crack the Mamet safe. His half-whine, half-growl voice sings in what Todd London evocatively called the writer’s “fricative riffs” — unsurprisingly, given how well he’s suited to other writers of masculine lyric like Martin McDonagh. Fishburne, judging his rhythms to the nanosecond, grips the play and captains it, and it’s lucky that the close quarters of Circle in the Square allow you to see the details of his casual command. Criss, too, does fine work as the play’s slow-minded straight man, though he finds fewer details in his character than the other two men.\"\n\nRead more",
   "bwwExcerpt": "Judged as a showcase, American Buffalo works beautifully. Rockwell has exactly the right tools to crack the Mamet safe. His half-whine, half-growl voice sings in what Todd London evocatively called the writer's \"fricative riffs\" - unsurprisingly, given how well he's suited to other writers of masculine lyric like Martin McDonagh. Fishburne, judging his rhythms to the nanosecond, grips the play and captains it, and it's lucky that the close quarters of Circle in the Square allow you to see the de",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Judged as a showcase, 'American Buffalo' works beautifully.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the production as working 'beautifully' and gives detailed positive assessments of the lead performances, particularly Rockwell and Fishburne. However, confidence is low due to truncated text and lack of overall verdict. | GPT-4o: The review praises the performances of Rockwell and Fishburne, noting their command and suitability for the material, indicating a positive assessment of the production. However, the excerpt is limited, so the confidence is low. | Gemini: The review praises the performances of the three actors, particularly Rockwell and Fishburne, suggesting a positive experience overall, but the 'judged as a showcase' indicates a focus on performance rather than the play itself. | Kimi: The excerpt offers enthusiastic praise for the principal performances ('exactly the right tools', 'grips the play and captains it'), with the critic explicitly stating the production 'works beautifully' as a showcase for its stars. While Criss receives slightly less enthusiastic praise, the overall tone is strongly positive and recommendatory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:25:11.756Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

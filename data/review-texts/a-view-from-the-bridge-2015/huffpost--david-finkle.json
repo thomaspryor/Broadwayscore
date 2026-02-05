@@ -12,5 +12,60 @@
   "bwwExcerpt": "Van Hove knows what he's doing, all right. Where I've often thought the playwrights he's toyed with would greatly disapprove of the toying, I suspect that were Miller to have seen this treatment, he would've applauded. As the actors aren't being asked to underline subtexts along with the text, they're free to play Miller's script to the utmost.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Van Hove knows what he's doing, all right.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the director's approach and actors' freedom to play the script effectively. However, single excerpt warning means this could be cherry-picked from a more mixed review, warranting caution but the language is definitively positive. | GPT-4o: The excerpt praises the director's approach and suggests the playwright would have approved, indicating a positive view. However, with only one excerpt, confidence is low. | Gemini: The review excerpt praises the director's interpretation and the actors' performances, suggesting a positive overall experience. Given the single excerpt, confidence is low. | Kimi: The critic praises Van Hove's direction as effective and respectful to Miller's text, suggesting the playwright would have approved of this treatment and commending the acting approach.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:56:14.737Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

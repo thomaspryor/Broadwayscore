@@ -12,5 +12,60 @@
   "bwwExcerpt": "What makes this slight misfit of play and production finally unimportant is that the actors are so devastatingly good. Their habit of fealty to character as defined by dialogue survives the director's effacements. Mark Strong may be styled to look like a neutral Everyman of the past or future, but, in his bearing and cadence and anguish and bafflement, he is only Red Hook's Eddie Carbone, in full tragic tilt. Phoebe Fox makes Catherine's transition from baby doll to furious womanhood thrillingly transparent, just as Nicola Walker, as Eddie's wife, Beatrice, shows how every hopeful choice she and Eddie have made now closes in on her like a trap. (For once, Beatrice and Catherine actually look like aunt and niece.) The Italian brothers, Marco (Michael Zegen) and Rodolpho (Russell Tovey), are both excellent in difficult roles, and Michael Gould makes of Alfieri the perfectly regretful guide. Some of the credit for the cast's superb work obviously belongs to van Hove; he knew he needed actors who could stand up to his powerful, showy interventions. It's a fair trade; those interventions probably made this revival viable. Still, one looks on them, and on van Hove's upcoming Broadway production of The ­Crucible with, as Alfieri says, 'a certain alarm.'",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes this slight misfit of play and production finally unimportant is that the actors are so devastatingly good.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite calling the production a 'slight misfit,' the critic strongly praises the 'devastatingly good' performances and suggests the show is viable. Single excerpt warning requires caution - this sounds like qualified praise that could be part of a more mixed overall verdict. | GPT-4o: The review praises the actors' performances as 'devastatingly good,' which outweighs the concerns about the production's fit. The positive tone towards the acting suggests a recommendation, but the mention of 'a certain alarm' indicates some reservations. | Gemini: The review praises the actors' performances as \"devastatingly good\" and describes individual performances in detail. While there are reservations about the production itself, the strength of the acting leads to a positive, though qualified, recommendation. | Kimi: While noting a 'misfit' between play and production and 'showy' directorial interventions, the critic dismisses these flaws as 'finally unimportant' due to the superb, 'devastatingly good' performances that make the revival viable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:42:55.684Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

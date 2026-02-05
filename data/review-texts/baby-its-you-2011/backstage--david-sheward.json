@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "If your show is in trouble, be sure to get Beth Leavel in your cast...With subtle humor, expert timing, and knockout pipes, Leavel strives mightily to bring this mishmash of a rock tuner up to her level, but she can't perform miracles.  There is an audience for this kind of show...but if you crave a well-written story with your nostalgic score, walk on by.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BABY-ITS-YOU-Updating-Live-20010101",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With subtle humor, expert timing, and knockout pipes, Leavel strives mightily to bring this mishmash of a rock tuner up to her level, but she can't perform miracles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict with 'walk on by' recommendation. Praises Leavel's performance but calls the show a 'mishmash' that she 'can't perform miracles' to save. Single excerpt limits confidence but tone is clearly discouraging. | GPT-4o: The review acknowledges Beth Leavel's strong performance but ultimately suggests the show is a 'mishmash' and not well-written, recommending to 'walk on by' for those seeking a good story. This indicates a negative assessment despite some positive elements. | Gemini: The review praises Beth Leavel's performance but ultimately recommends that audiences \"walk on by\" if they want a well-written story, indicating a negative overall assessment. | Kimi: While the critic praises Beth Leavel's committed performance, they call the show a 'mishmash' and explicitly advise audiences seeking a well-written story to 'walk on by,' constituting a clear recommendation against seeing the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:18:02.350Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

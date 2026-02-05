@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Portraying America's 36th chief executive, Lyndon Baines Johnson, in Robert Schenkkan's democratic procedural drama 'All the Way,' Cranston proves so effortlessly captivating that you could imagine pulling a lever for him - or even contributing generously to whatever campaign war chest he trots out. Well, maybe 'effortlessly' is the wrong word. Because Cranston, late of TV's habit-forming 'Breaking Bad,' works like the dickens to convey in his cagey, short-fused, eternally prowling LBJ a strength of will that reveals what a political leader needs to get big things done. It's a darn good thing, too, for without him, the three-hour production, which opened Thursday night at Broadway's Neil Simon Theatre, might feel like something a little duller, along the lines of a talking textbook. Perhaps in the vast cavalcade of Washington events and personalities the play covers, there was not much room left for nuanced portraits. In any event, none of the personages filling out the story, from J. Edgar Hoover (Michael McKean) to George Wallace (Rob Campbell), from Ralph Abernathy (J. Bernard Calloway) to, yes, The Washington Post publisher Katharine Graham (Aidem, again), come to feel as anything more than the audience for LBJ's one-man band. Fortunately for us, though, it's Cranston who is holding the baton.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-THE-WAY-Opens-on-Broadway-Updating-LIVE-20140306"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-THE-WAY-Opens-on-Broadway-Updating-LIVE-20140306",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cranston proves so effortlessly captivating that you could imagine pulling a lever for him.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Enthusiastic praise for Cranston's performance ('effortlessly captivating', 'works like the dickens') but significant criticism of the three-hour production as potentially 'duller' and 'like a talking textbook' without him. Single excerpt warning suggests caution - this reads as qualified positive. | GPT-4o: The review praises Cranston's performance as captivating and essential to the production's success, though it notes the play itself may lack nuance and relies heavily on his portrayal. The excerpt suggests a positive view primarily due to Cranston's performance, but the lack of full context and potential reservations about the play itself warrant a lower-end Positive score. | Gemini: The review heavily praises Cranston's performance, suggesting it elevates the play. While noting some dullness and lack of nuance in other characters, the overall impression is positive due to Cranston's captivating portrayal. | Kimi: While the critic notes the play itself risks being a 'talking textbook' with underdeveloped supporting characters, the review is dominated by enthusiastic praise for Cranston's 'effortlessly captivating' star turn, presenting his performance as the essential reason to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:22:29.216Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

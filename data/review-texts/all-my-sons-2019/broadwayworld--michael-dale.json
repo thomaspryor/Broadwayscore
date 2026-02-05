@@ -12,5 +12,60 @@
   "bwwExcerpt": "Contrasting with video designer Jeff Sugg's horrific clips of doomed airplanes plummeting to the ground, O'Brien's production is decidedly low-key. Letts' Joe is an unremarkable everyman, happy to retire comfortably. Bening's Kate, living in an era when wives don't have much choice in the matter, determinedly stands by her husband's claims of innocence, knowing that her personal future is dependent on his. Walker's Chris, whose wartime experiences may have instilled a greater empathy for others, is an earnest voice of emerging ideals.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "O'Brien's production is decidedly low-key.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt describes performances and production choices analytically without clear evaluative language. 'Decidedly low-key' suggests restrained approach. No recommendation evident in this fragment. | GPT-4o: The excerpt describes the production as 'low-key' and characterizes the performances without strong praise or criticism. The lack of a clear positive or negative tone suggests a mixed review. The single excerpt and lack of a full review text contribute to the low confidence. | Gemini: The review describes elements of the production (video design, performances) without a clear recommendation. The tone is neutral, suggesting a mixed or lukewarm response. Given only a single excerpt, confidence is low. | Kimi: Single curated excerpt provides neutral production description with minimal evaluative language; the only clear critical term ('unremarkable') suggests mediocrity, while lacking positive endorsement phrases needed for a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:05:02.768Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

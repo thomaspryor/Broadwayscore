@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“In its original production, Appropriate had a clanky, monotonous quality that undermined the playwright's premise; the characters came off as shrill and uninteresting, a gaggle of one-note harpies having at each other at a high decibel level. I can't tell what, if any, rewriting has taken place but, under the direction of Lila Neugebauer, a superb cast revivifies the play's foreground, bringing its legacy-of-slavery backdrop into sharper relief. Pulling off the niftiest trick of the season so far, Appropriate engages both as a cankered, poisonously funny black comedy and as a scalding satire on white privilege.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pulling off the niftiest trick of the season so far, Appropriate engages both as a cankered, poisonously funny black comedy and as a scalding satire on white privilege.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for this revival despite criticizing the original production. Calls it 'the niftiest trick of the season' and praises the 'superb cast' and direction for transforming the material into effective comedy and satire. | GPT-4o: The excerpt praises the current production's ability to revitalize the play and highlights its dual success as a comedy and satire. The positive tone and specific praise for the direction and cast suggest a strong recommendation. | Gemini: The review praises the direction and cast for 'revivifying' the play and describes it as engaging and funny. Despite the initial negative comment about the original production, the current production is highly recommended. | Kimi: Single excerpt demonstrates strong enthusiasm with phrases like 'niftiest trick of the season' and 'superb cast,' clearly recommending this production over the original, though limited text requires caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:14:31.434Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

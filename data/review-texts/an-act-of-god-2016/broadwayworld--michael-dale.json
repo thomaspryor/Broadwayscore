@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Broadway's faithful didn't have to wait long before the second coming of David Javerbaum's cute and charming comedy, An Act of God. In the beginning (last May) Jim Parsons premiered the nightclubby diversion at Studio 54. Now Sean Hayes stars in a limited run at the Booth, described by his character as \"the only theatre named for the brother of a man who assassinated a President in a different theatre.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "David Javerbaum's cute and charming comedy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt describes the show as 'cute and charming,' which is mildly positive language. However, with only one curated quote available, confidence is low as this may not represent the full review sentiment. | GPT-4o: The excerpt describes the show as 'cute and charming,' which suggests a positive impression. However, the lack of a full review and the single excerpt warning limit confidence in the overall tone. | Gemini: The excerpt describes the show as \"cute and charming\" but doesn't offer a clear recommendation. Given the limited text, it's difficult to determine the overall sentiment, so I've classified it as mixed with low confidence. | Kimi: The excerpt uses clearly positive descriptors ('cute and charming') and recommends the comedy as an enjoyable 'diversion,' but the mild praise and 'nightclubby' characterization suggest light entertainment rather than a must-see triumph. Confidence is low due to single-excerpt limitations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:51:45.419Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 60,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

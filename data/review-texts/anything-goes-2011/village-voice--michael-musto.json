@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "I'll be crucified for saying this, but Sutton Foster is a wee bit miscast as Reno Sweeney. Unlike Merman and LuPone before her, she doesn't summon hard-boiled brassiness with ease. But Sutton's such a pro, with tons of spunk and a great deadpan, and on the numbers she soars and makes the mismatch less of a world crisis.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But Sutton's such a pro, with tons of spunk and a great deadpan, and on the numbers she soars and makes the mismatch less of a world crisis.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite opening with casting criticism, the critic ultimately praises Foster's professionalism and performance quality, suggesting the concerns are manageable. However, single excerpt limits confidence in overall verdict. | GPT-4o: The review acknowledges a casting mismatch but praises Sutton Foster's performance, suggesting a mixed review with notable positive elements. The single excerpt and lack of full context lead to a low confidence score. | Gemini: The review expresses reservations about Sutton Foster's casting but ultimately praises her performance and professionalism. Given the single excerpt and mixed signals, the score is in the lower end of the positive range. | Kimi: While the critic notes Foster is miscast compared to previous stars, the review ultimately praises her professionalism and performance, stating she 'soars' on the numbers and makes the casting mismatch work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:13:05.018Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

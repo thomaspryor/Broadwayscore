@@ -12,5 +12,60 @@
   "bwwExcerpt": "...is it possible today to tell another slave history through the eyes of a white man and the noble woman who believes in him? So much effort, sincerity and talent -- not to mention cash -- have been funneled into 'Amazing Grace' that it would be nice to be able to answer yes to any of that...The production has been confidently directed by Gabriel Barre, with a first-class creative team and a large, excellent cast -- most impressively, Chuck Cooper and Laiona Michelle in supporting roles as the families' favorite slaves.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So much effort, sincerity and talent -- not to mention cash -- have been funneled into 'Amazing Grace' that it would be nice to be able to answer yes to any of that.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic raises fundamental questions about the show's premise while acknowledging the quality of production and performances. The tone suggests disappointment despite recognizing the talent involved. | GPT-4o: The excerpt acknowledges the production's effort, talent, and direction but questions the premise and impact. The praise for the cast and creative team is countered by the implication that the show doesn't fully succeed in its aims. | Gemini: The review excerpt acknowledges effort and talent but poses a question about the show's premise, suggesting a mixed reaction. The praise for the cast and direction is positive, but the overall sentiment is not strongly positive or negative. | Kimi: The excerpt praises the direction, creative team, and cast highly, but opens with skepticism about the show's fundamental premise and implies it fails to justify its narrative approach despite the talent involved. With only one curated excerpt available, the overall verdict remains ambiguous.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:28:45.724Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

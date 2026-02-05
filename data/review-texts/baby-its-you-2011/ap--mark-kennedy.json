@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It becomes clear by the second act that Greenberg's story - or the acts she discovered - cannot sustain this musical....An actress portraying Leslie Gore makes an appearance singing \"It's My Party\" but it's not clear why. Toward the end, it really has become a jukebox musical, adding songs for atmosphere rather than consistency.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BABY-ITS-YOU-Updating-Live-20010101",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It becomes clear by the second act that Greenberg's story cannot sustain this musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds fundamental structural problems with the musical - the story can't sustain the show, random song additions, and devolution into atmosphere over consistency. However, this is only one excerpt so confidence is low. | GPT-4o: The excerpt indicates significant issues with the musical's structure and coherence, suggesting it cannot sustain itself. The mention of songs being added for atmosphere rather than consistency further implies a lack of cohesion. However, the single excerpt warning suggests caution, so a conservative score within the Negative range is appropriate. | Gemini: The review states the story cannot sustain the musical and that it becomes a jukebox musical, indicating a negative assessment. The single excerpt and lack of a clear recommendation lead to medium confidence. | Kimi: The critic identifies fatal structural flaws, noting the story cannot sustain the musical format and devolves into inconsistent jukebox formatting by the second act. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:18:50.746Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

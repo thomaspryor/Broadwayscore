@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Drifting in and out of the crumbling Humming Bird Motel are a half-dozen friends, including Tanya, a prostitute (Tony winner Julie White)...For Tanya, who gave up her own biological children for adoption, the Humming Bird family has become an outlet for nurturing instincts, and White is just lovely as a woman who can't face the decisions of her own past. 'Airline Highway' also includes an excellent turn from K. Todd Freeman as Sissy Na Na, a trans bartender who is the play's requisite voice of spiritual wisdom. The raucous party organized by Tanya brings with it much of the energy we associate with the freewheeling city...There aren't any sort of tidy resolutions in 'Airline Highway,' and we never get the feeling these has-beens at the Humming Bird will pay Miss Ruby any due. They're stuck, but at least they're having a swell time.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "White is just lovely as a woman who can't face the decisions of her own past.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows praise for individual performances (White is 'just lovely', Freeman 'excellent') and appreciates the energy, but notes lack of resolution and that characters are 'stuck.' Qualified positive tone suggests lower end of Positive range. | GPT-4o: The excerpt highlights strong performances and energy, but also notes a lack of resolution and characters being 'stuck'. The overall tone suggests a positive view with some reservations. | Gemini: The review highlights strong performances and some energy, but also notes the lack of tidy resolutions, suggesting a qualified recommendation. Given the single excerpt, confidence is low. | Kimi: The excerpt offers specific praise for lead performances ('lovely', 'excellent turn') and the production's energy, while acknowledging the plot's loose structure and lack of resolutions. As a single curated excerpt, the score is conservatively placed in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:56:22.372Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

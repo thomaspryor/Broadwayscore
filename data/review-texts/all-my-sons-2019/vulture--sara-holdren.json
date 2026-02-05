@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The stormy climax of All My Sons still packs a wallop, but the road to it is long, painfully dated, and-though we don't like to admit to basic failings in our canonized playwrights-marked by some truly frustrating logical potholes. And in director Jack O'Brien's production, the play's glaring issues go unexamined, swathed in a suburban summertime scenic design by Douglas W. Schmidt that's so artificially verdant it feels cloying. Of course, the point of the play is that unpleasant things are going to go down in this Norman Rockwell-esque backyard, but there are also unpleasant things going on in the fabric of Miller's play, and these are being summarily avoided-even added to-as the production reverentially, almost complacently, presents All My Sons as an unquestioned masterpiece.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The road to it is long, painfully dated, and marked by some truly frustrating logical potholes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the production disappointing, calling it 'painfully dated' with 'frustrating logical potholes' and criticizing the director for avoiding the play's issues. However, with only one excerpt available, the full verdict may be more nuanced. | GPT-4o: The review highlights significant issues with the production, describing it as 'painfully dated' and 'frustrating,' with unexamined issues. While acknowledging the climax's impact, the overall tone suggests a negative view of the production. | Gemini: The review criticizes the dated writing and the director's failure to address the play's issues, ultimately presenting a negative assessment of the production. | Kimi: The excerpt offers genuine praise for the climactic impact but heavily criticizes the dated material, logical inconsistencies, and a cloying production design that fails to examine the play's underlying issues. With only one curated excerpt available, the full verdict is unclear, but the tone suggests significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:20:08.152Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

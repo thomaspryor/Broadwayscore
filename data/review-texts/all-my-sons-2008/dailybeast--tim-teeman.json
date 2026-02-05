@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There is the pleasure, for the first half anyway, of Arthur Miller's All My Sons-which opened Monday night on Broadway (at the American Airlines Theatre, to June 23)-of well-executed theatrical convention; the reassurance of a revival done traditionally and done right.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is the pleasure...of well-executed theatrical convention; the reassurance of a revival done traditionally and done right.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise ('pleasure', 'done right') but limited to 'first half anyway' suggests reservations. With only one curated quote available, confidence is low and score reflects cautious positive assessment. | GPT-4o: The excerpt suggests a positive view of the production's execution, particularly in the first half, but lacks a comprehensive verdict. The limited text and single excerpt warning suggest a cautious approach, placing it at the lower end of the Positive range. | Gemini: The review excerpt indicates a positive experience, particularly in the first half, praising the traditional and well-executed nature of the revival. However, the limited excerpt and the phrase \"for the first half anyway\" suggest some reservations, leading to a score in the lower-middle of the Positive range. | Kimi: The critic acknowledges pleasure and competent execution ('done traditionally and done right') but significantly qualifies the praise with 'for the first half anyway,' suggesting reservations about the second half. As a single excerpt, the full verdict remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:01:59.712Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
