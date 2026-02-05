@@ -8644,42 +8644,6 @@
     "timestamp": "2026-02-03T23:43:42.765Z"
   },
   {
-    "reviewId": "hedwig-and-the-angry-inch-2014/hollywood-reporter--unknown.json",
-    "showId": "hedwig-and-the-angry-inch-2014",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/neil-patrick-harris-hedwig-angry-698195",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): wicked, mamma mia!, home, company, tina...",
-    "textLength": 9705,
-    "timestamp": "2026-02-03T23:49:18.161Z"
-  },
-  {
-    "reviewId": "hedwig-and-the-angry-inch-2014/nytimes--unknown.json",
-    "showId": "hedwig-and-the-angry-inch-2014",
-    "outlet": "New York Times",
-    "critic": "Unknown",
-    "url": "http://www.nytimes.com/2014/04/23/theater/hedwig-and-the-angry-inch-stars-neil-patrick-harris.html?ref=theater&gwh=2032BE266AE0925D15136B44FB84556D&gwt=regi",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): tina, frozen, sweat, spring awakening, twelfth night...",
-    "textLength": 7881,
-    "timestamp": "2026-02-03T23:49:28.351Z"
-  },
-  {
-    "reviewId": "hedwig-and-the-angry-inch-2014/vulture--unknown.json",
-    "showId": "hedwig-and-the-angry-inch-2014",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2014/04/theater-review-hedwig-and-the-angry-inch.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): rocky, once, rain, elling, race...",
-    "textLength": 6313,
-    "timestamp": "2026-02-03T23:50:08.542Z"
-  },
-  {
     "reviewId": "inherit-the-wind-2007/nytimes--ben-brantley.json",
     "showId": "inherit-the-wind-2007",
     "outlet": "The New York Times",
@@ -13886,5 +13850,89 @@
     "garbageReason": "Multiple shows mentioned (10): wicked, gypsy, purpose, sweat, hair...",
     "textLength": 8102,
     "timestamp": "2026-02-05T02:33:51.934Z"
+  },
+  {
+    "reviewId": "hand-to-god-2015/variety--gordon-cox.json",
+    "showId": "hand-to-god-2015",
+    "outlet": "Variety",
+    "critic": "Gordon Cox",
+    "url": "http://variety.com/2015/legit/reviews/hand-to-god-review-broadway-1201467612/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): appropriate, purpose, the father, hair, elling...",
+    "textLength": 5811,
+    "timestamp": "2026-02-05T02:34:38.599Z"
+  },
+  {
+    "reviewId": "hand-to-god-2015/vulture--jesse-green.json",
+    "showId": "hand-to-god-2015",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2015/04/theater-review-hand-to-god.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, company, the audience, the performers, once...",
+    "textLength": 7656,
+    "timestamp": "2026-02-05T02:35:19.082Z"
+  },
+  {
+    "reviewId": "hedwig-and-the-angry-inch-2014/hollywood-reporter--unknown.json",
+    "showId": "hedwig-and-the-angry-inch-2014",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/neil-patrick-harris-hedwig-angry-698195",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): wicked, home, company, tina, spring awakening...",
+    "textLength": 8967,
+    "timestamp": "2026-02-05T02:35:34.410Z"
+  },
+  {
+    "reviewId": "hedwig-and-the-angry-inch-2014/nytimes--unknown.json",
+    "showId": "hedwig-and-the-angry-inch-2014",
+    "outlet": "New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2014/04/23/theater/hedwig-and-the-angry-inch-stars-neil-patrick-harris.html?ref=theater&gwh=2032BE266AE0925D15136B44FB84556D&gwt=regi",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): tina, frozen, sweat, spring awakening, twelfth night...",
+    "textLength": 8081,
+    "timestamp": "2026-02-05T02:38:34.668Z"
+  },
+  {
+    "reviewId": "hedwig-and-the-angry-inch-2014/vulture--unknown.json",
+    "showId": "hedwig-and-the-angry-inch-2014",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2014/04/theater-review-hedwig-and-the-angry-inch.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): rocky, once, rain, elling, race...",
+    "textLength": 7688,
+    "timestamp": "2026-02-05T02:38:40.489Z"
+  },
+  {
+    "reviewId": "hello-dolly-2017/hollywood-reporter--frank-scheck.json",
+    "showId": "hello-dolly-2017",
+    "outlet": "Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "https://www.hollywoodreporter.com/review/hello-dolly-1087158",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): into the woods, parade, sweeney todd, network, sunday in the park with george...",
+    "textLength": 5793,
+    "timestamp": "2026-02-05T02:38:54.293Z"
+  },
+  {
+    "reviewId": "hello-dolly-2017/variety--marilyn-stasio.json",
+    "showId": "hello-dolly-2017",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2017/legit/reviews/hello-dolly-review-bette-midler-1202025087/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): parade, company, hello, dolly!, the audience, rain...",
+    "textLength": 3543,
+    "timestamp": "2026-02-05T02:39:32.701Z"
   }
 ]
