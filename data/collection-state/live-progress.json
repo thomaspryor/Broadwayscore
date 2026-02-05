@@ -1,56 +1,56 @@
 {
-  "updatedAt": "2026-02-05T02:16:01.307Z",
-  "processed": 17,
-  "failed": 93,
-  "successRate": "15.5%",
+  "updatedAt": "2026-02-05T02:21:56.571Z",
+  "processed": 21,
+  "failed": 99,
+  "successRate": "17.5%",
   "tierBreakdown": {
     "playwright": 1,
-    "browserbase": 3,
-    "scrapingbee": 1,
-    "brightdata": 3,
+    "browserbase": 1,
+    "scrapingbee": 2,
+    "brightdata": 6,
     "archive": 12
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-05T00:55:29.767Z",
+      "t": "2026-02-05T00:54:31.070Z",
       "event": "bb-session",
-      "session": "35d2802e",
-      "url": "https://www.vulture.com/2019/12/theater-review-a-christmas-carol-on-broadway.htm"
+      "session": "f36a323b",
+      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
     },
     {
-      "t": "2026-02-05T00:55:31.846Z",
+      "t": "2026-02-05T00:54:58.160Z",
+      "event": "bb-session",
+      "session": "6438e17e",
+      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+    },
+    {
+      "t": "2026-02-05T00:55:41.526Z",
+      "event": "bb-session",
+      "session": "8a69af78",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-behanding-in-spokane-theater-"
+    },
+    {
+      "t": "2026-02-05T00:58:09.292Z",
+      "event": "bb-session",
+      "session": "e6dfe253",
+      "url": "http://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als?"
+    },
+    {
+      "t": "2026-02-05T00:58:11.698Z",
       "event": "bb-login-uncertain",
-      "domain": "vulture.com"
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-05T00:56:04.862Z",
+      "t": "2026-02-05T01:01:11.360Z",
       "event": "bb-session",
-      "session": "69122a91",
-      "url": "http://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-1256271"
+      "session": "5b9f2d76",
+      "url": "https://www.nytimes.com/2010/04/05/theater/reviews/05behanding.html"
     },
     {
-      "t": "2026-02-05T00:56:37.918Z",
-      "event": "bb-session",
-      "session": "3fe3b6e5",
-      "url": "https://variety.com/2019/legit/reviews/christmas-carol-review-broadway-campbell-"
-    },
-    {
-      "t": "2026-02-05T00:58:23.128Z",
-      "event": "bb-session",
-      "session": "0d32c0ce",
-      "url": "https://www.vulture.com/2022/12/theater-review-a-christmas-carol-on-broadway.htm"
-    },
-    {
-      "t": "2026-02-05T00:58:25.186Z",
+      "t": "2026-02-05T01:01:18.295Z",
       "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-05T01:00:12.173Z",
-      "event": "bb-session",
-      "session": "0c9798c2",
-      "url": "http://www.hollywoodreporter.com/review/a-raisin-sun-theater-review-693457"
+      "domain": "nytimes.com"
     }
   ]
 }
