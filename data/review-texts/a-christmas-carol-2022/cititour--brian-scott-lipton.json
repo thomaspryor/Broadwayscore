@@ -5,8 +5,8 @@
   "criticName": "Brian Scott Lipton",
   "url": "https://cititour.com/NYC_Broadway/A-Christmas-Carol/1112",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "NYC Events, Restaurants, Music, & Nightlife\n\nTwitter\nX\nPinterest\nThreads\nSnapchat\nWhatsApp\nMessage\nEmail\n\nTickets from $0\n Buy Tickets\n\nCititour.com Review\n Stop me if you’ve heard this one before: A elderly miser in 19th-century London is visited by three ghosts on Christmas Eve, and their visions of his past, present and future cause him to become a better person and restore joy and humanity to his formerly miserable life.\n\nYep, it’s time for yet another theatrical take of Charles Dickens’ classic story “A Christmas Carol,” this time at Broadway’s Nederlander Theatre. But despite the herculean efforts of the often-astonishing Jefferson Mays, a team of technical wizards led by set designer Dane Laffrey, and the intelligent direction of Michael Arden, the reality is that one’s familiarity with this holiday parable is likely to breed ennui (although not contempt) in some viewers.\n\nUnlike the 2019 Broadway production of “A Christmas Carol” or the long-running production many years ago at the Theater at Madison Square Garden, both of which were enlivened by music, this version (adapted by Mays, his wife Susan Lyons, and Arden) is pure, serious storytelling. As a result, the show often feels like Mays is reading the book to us, which can occasionally have the unintended effect of lulling one to sleep -- especially given how dark the theater often is.\n\nTo be accurate, it’s not Mays, the actor, who is narrating the story. Billed as “The Mourner,” Mays effortlessly plays dozens of roles ranging from Ebenezer Scrooge to all the Cratchits to the three main ghosts. In doing so, he adeptly alters his voice and mannerisms from character to character so you’re always sure who is speaking. Moreover, he seems to have particular fun creating certain characters, notably Mrs. Cratchit and Jacob Marley.\n\nStill, I personally missed seeing other actors on stage portraying these people. To be technical, the actor Danny Gardner eventually shows up briefly, heavily costumed and unrecognizable, as a ghostly character identified as The Spectre. And there is one scene where other actors appear in a hologram-like form.\n\nI also missed the act of “seeing” large portions of the show, especially in its first half. These sections are deliberately dark, I imagine, to make some of the clever “reveals” in Laffrey’s ingenious set design even more surprising. (No spoilers about these from me!) And one must marvel at the show’s innovative use of lighting (by Ben Stanton), sound (by Joshua B. Reid), and projections (by Lucy Mackinnon), which are especially effective in the visitations by the three ghosts.\n\nIs it enough? Not for me. Admittedly, I feel a bit like Scrooge himself not to be fully embracing this production. Bah, humbug? More like, bah, humdrum!\n By Brian Scott Lipton\n\nVisit the Sitehttps://www.achristmascarollive.comOpen/Close DatesOpening 11/21/2022Closing Open-ended\nTheatre Info\nNederlander Theatre208 West 41st StreetNew York, NY 10036 Map\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 63,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Admittedly, I feel a bit like Scrooge himself not to be fully embracing this production.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 63,
@@ -72,5 +72,32 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 63,
+  "textWordCount": 506,
+  "archivePath": "data/archives/reviews/a-christmas-carol-2022/cititour--brian-scott-lipton_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T16:58:01.417Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 506,
+  "tierReason": "Full review text"
 }
