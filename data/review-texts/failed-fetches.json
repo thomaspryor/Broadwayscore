@@ -13934,5 +13934,89 @@
     "garbageReason": "Multiple shows mentioned (8): parade, company, hello, dolly!, the audience, rain...",
     "textLength": 3543,
     "timestamp": "2026-02-05T02:39:32.701Z"
+  },
+  {
+    "reviewId": "elf-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "elf-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/11/17/elf-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): maybe happy ending, tammy faye, shucked, mean girls, hair...",
+    "textLength": 3961,
+    "timestamp": "2026-02-05T02:42:53.820Z"
+  },
+  {
+    "reviewId": "elf-2024/nytg--caroline-cao.json",
+    "showId": "elf-2024",
+    "outlet": "New York Theatre Guide",
+    "critic": "Caroline Cao",
+    "url": "https://www.newyorktheatreguide.com/reviews/elf-the-musical-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 5120,
+    "timestamp": "2026-02-05T02:43:02.125Z"
+  },
+  {
+    "reviewId": "elf-2024/nytimes--unknown.json",
+    "showId": "elf-2024",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2024/11/17/theater/elf-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): oh, mary!, wicked, all in: comedy about love, the prom, the children...",
+    "textLength": 5953,
+    "timestamp": "2026-02-05T02:43:15.580Z"
+  },
+  {
+    "reviewId": "elf-2024/variety--unknown.json",
+    "showId": "elf-2024",
+    "outlet": "Variety",
+    "critic": "Unknown",
+    "url": "http://variety.com/2014/tv/reviews/tv-review-elf-buddys-musical-christmas-1201376770/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): smash, evita, elling, well, rent",
+    "textLength": 2243,
+    "timestamp": "2026-02-05T02:43:30.930Z"
+  },
+  {
+    "reviewId": "elf-2024/vulture--jackson-mchenry.json",
+    "showId": "elf-2024",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/article/theater-review-elf-musical-broadway-return.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): wicked, the lion king, aladdin, giant, shucked...",
+    "textLength": 6121,
+    "timestamp": "2026-02-05T02:43:34.772Z"
+  },
+  {
+    "reviewId": "fiddler-on-the-roof-2015/hollywood-reporter--unknown.json",
+    "showId": "fiddler-on-the-roof-2015",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/fiddler-roof-theater-review-850349",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): mamma mia!, home, cats, rocky, rain...",
+    "textLength": 12639,
+    "timestamp": "2026-02-05T02:44:12.925Z"
+  },
+  {
+    "reviewId": "fiddler-on-the-roof-2015/nytimes--unknown.json",
+    "showId": "fiddler-on-the-roof-2015",
+    "outlet": "New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2015/12/21/theater/review-a-fiddler-on-the-roof-revival-with-an-echo-of-modernity.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, company, in transit, hair, evita...",
+    "textLength": 9417,
+    "timestamp": "2026-02-05T02:44:16.402Z"
   }
 ]
