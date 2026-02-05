@@ -34,7 +34,12 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250604214234",
   "archiveOrgUrl": "http://web.archive.org/web/20250604214234/https://www.nytimes.com/2019/10/10/theater/linda-vista-review.html",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 303,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T07:43:34.778Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about retrieving content and enabling JavaScript, making it impossible to assess the critic's full verdict.; openai: The text is interrupted with a technical error message, indicating that the full review content is not accessible.; gemini: The review text is incomplete and contains an error message indicating that the article content could not be retrieved.",
+  "promptVersion": "5.2.0"
 }

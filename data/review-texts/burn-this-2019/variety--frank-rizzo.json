@@ -45,5 +45,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--marilyn-stasio.json",
   "wordCount": 703,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Two compelling stars make sparks in a passionate dance of denial and discovery.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performances ('incendiary', 'riveting', 'mesmerizing') and direction ('finely-tuned', 'deftly staged'), with clear recommendation despite acknowledging the play is 'fascinating, flawed and overlong'. The critic emphasizes the production's 'brilliance' through its stars. | GPT-4o: The review praises the performances of Adam Driver and Keri Russell, describing them as incendiary and central to the play's success. Despite noting the play's imperfections, the critic's overall tone is positive, emphasizing the compelling nature of the production. | Gemini: The review is overwhelmingly positive, highlighting the 'incendiary performances' of the leads and praising the director's staging. Despite acknowledging flaws in the play itself, the critic emphasizes the brilliance of the production due to the performances. | Kimi: While acknowledging the script is imperfect and overlong, the critic delivers enthusiastic praise for the incendiary performances and finely-tuned production, clearly recommending the show for its acting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:57:35.424Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

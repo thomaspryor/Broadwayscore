@@ -32,5 +32,60 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 774,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 89,
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even after nearly three and a half hours of Death of a Salesman, I'd gladly stay longer to watch that story continue.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Critic praises every major element - Pierce's commanding performance, the ensemble work, Clarke's Olivier-winning turn, and Cromwell's direction. The closing sentiment about wanting to stay longer despite the 3.5 hour runtime demonstrates genuine enthusiasm and strong recommendation. | GPT-4o: The review is filled with praise for the performances, direction, and depth added by the casting choices. The critic expresses a strong desire to continue watching, indicating an enthusiastic recommendation. | Gemini: The critic praises the performances, direction, and overall impact of the production, indicating a strong positive recommendation. The concluding statement solidifies this assessment. | Kimi: The critic offers unqualified praise for the cast's performances (particularly Wendell Pierce and Sharon D Clarke) and the production's interpretive depth, finding new layers in the classic text and concluding with an enthusiastic endorsement that indicates a must-see theatrical experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:19:17.094Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 87,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

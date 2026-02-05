@@ -49,5 +49,60 @@
   "rejectionReasoning": "claude: This appears to be an introductory paragraph that sets up a comparison between two shows but contains no actual evaluation or critique of either production.; openai: The text is about 'Bullets Over Broadway' and 'Rocky', not a review of a specific Broadway show.; gemini: This is a brief introduction comparing two musicals, 'Rocky' and 'Bullets Over Broadway,' but it doesn't offer a critical evaluation or recommendation of 'Bullets Over Broadway.' It's more of a setup than a review.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "Allen has pulled something of a Sylvester Stallone in his Broadway book-writer debut: His book never really abandons his screenplay sufficiently to reinvent itself for the theater. For most of the evening, some great dance numbers and many old tunes have simply be inserted into this tale of a young writer (Zach Braff) who willingly allows a mobster (Nick Cordero) to rewrite his play, much to the play's improvement...'Bullets,' the musical, is loaded down with old ditties that wore out their welcome sometime during the run of 'Arthur Godfrey Time' and only vaguely refer to Allen's story...'Bullets' on Broadway rarely breaks free of the movie, and fond memories keep taking us back to the original.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bullets' on Broadway rarely breaks free of the movie, and fond memories keep taking us back to the original.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The review acknowledges some positives (great dance numbers, superior pedigree) but delivers consistent criticism about the adaptation being too faithful to the film and the songs being worn out. The overall tone suggests disappointment rather than recommendation. | GPT-4o: The review criticizes the adaptation for not sufficiently reinventing itself for the stage, relying too heavily on the original film, and using outdated music. The overall tone suggests disappointment with the production. | Gemini: The review acknowledges some positive aspects like dance numbers and tunes, but criticizes the book for not reinventing itself for the theater and relying too heavily on the movie. This suggests a mixed experience. | Kimi: While acknowledging some great dance numbers, the critic finds the book fails to reinvent the screenplay for theater, the song choices are tired and ill-fitting, and the production ultimately sends viewers back to the superior film. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:55:06.520Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

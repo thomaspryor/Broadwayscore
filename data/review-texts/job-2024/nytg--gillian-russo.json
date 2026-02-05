@@ -35,5 +35,60 @@
     "Show title not found in text"
   ],
   "wordCount": 951,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though superbly acted and unrelentingly tense under Michael Herwitz's direction, that conversation reveals little food for long-term thought beneath its slick veneer.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the performances and tension but finds the play undermined by an implausible ending that abandons its interesting themes for shock value. The mixed verdict is reinforced by noting audiences debated plot mechanics rather than meaningful themes. | GPT-4o: The review praises the acting and direction but criticizes the play's lack of depth and its implausible ending. The overall tone suggests a mixed reception, with some positive elements overshadowed by significant flaws. | Gemini: The review praises the acting and tension, but ultimately finds the play lacking in substance and undermined by its ending. This suggests a mixed reaction, leaning slightly positive due to the performance quality. | Kimi: The review offers strong praise for the performances (superbly acted, excellent) and tension but criticizes the implausible final 10 minutes and lack of depth beneath the slick veneer, resulting in a qualified, mixed assessment rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:26:53.896Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

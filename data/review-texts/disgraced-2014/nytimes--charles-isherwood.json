@@ -52,5 +52,60 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 1120,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 89,
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Akhtar's terrific, turbulent drama 'Disgraced' has come roaring back to life on Broadway in a first-rate production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: The critic uses strong positive language throughout: 'terrific, turbulent drama,' 'first-rate production,' 'engrossing drama,' and praises the performances extensively. The review celebrates both the play's continued relevance and the quality of this Broadway production. | GPT-4o: The review uses strong positive language such as 'terrific,' 'turbulent,' and 'first-rate production,' indicating an enthusiastic recommendation without reservations. | Gemini: The review is overwhelmingly positive, praising the direction, cast, and the play's relevance. The critic uses terms like \"terrific, turbulent drama\" and \"engrossing drama\". | Kimi: The review offers unqualified praise, calling the play 'terrific' and 'engrossing,' the production 'first-rate,' and commending the direction and all performances without reservation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:22:11.823Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

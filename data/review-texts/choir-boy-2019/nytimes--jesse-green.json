@@ -42,5 +42,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20190109071831/https://www.nytimes.com/2019/01/08/theater/choir-boy-review.html",
   "contentTier": "complete",
   "wordCount": 1033,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the result is a script, or at least a production, that is far more powerful than its flaws might indicate.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Green acknowledges significant structural and character problems but ultimately finds the production powerful and recommends it, praising Pope's spectacular performance and McCraney's strengths in mood and feeling. | GPT-4o: The review praises the lead performance and the musical elements, while noting issues with plot and character development. Despite these flaws, the production is described as powerful and captivating, indicating a positive recommendation with some reservations. | Gemini: The review is mostly positive, praising Jeremy Pope's performance and the music, but it also notes flaws in the plot and character development. The final verdict leans towards a recommendation despite the issues. | Kimi: While the critic extensively details logical inconsistencies, underwritten characters, and tonally blurry staging, the final verdict emphasizes that Jeremy Pope's sensational performance and the gorgeous musical numbers make the production captivating and ultimately powerful. The review clearly recommends seeing the show for its fresh perspective and emotional impact, despite significant reservations about the play's construction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:06:14.053Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -33,9 +33,10 @@
   "contentTier": "needs-rescrape",
   "wordCount": 179,
   "tierReason": "Short text (179 words)",
-  "rejectedAt": "2026-02-05T02:32:53.226Z",
+  "rejectedAt": "2026-02-05T07:33:16.028Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The text appears to be a corrupted mix of content - starts as a review of King Kong musical but ends with an unrelated sentence about a talk show wrapping after seven seasons, indicating this is garbled or incorrectly scraped content.; openai: The review discusses the Melbourne production of the King Kong musical, not the current Broadway run.; gemini: This review discusses the Melbourne production of King Kong, not the Broadway production.; kimi: The text explicitly states it is reviewing the 'Melbourne production' of King Kong, not the Broadway production.",
-  "promptVersion": "5.2.0"
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is about the Melbourne production of King Kong, not a Broadway production. The text mentions 'Melbourne production' explicitly and describes it as a 'world-first stage production', indicating this is not reviewing the Broadway run.; openai: The review discusses the Melbourne production of the King Kong musical, not the current Broadway run.; gemini: This review discusses the Melbourne production of King Kong, not the Broadway production.; kimi: The review explicitly refers to the 'Melbourne production' and describes the world premiere staging from 2013, not the subsequent Broadway production which opened in 2018. The text focuses on the Australian/original production's puppetry and premiere.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

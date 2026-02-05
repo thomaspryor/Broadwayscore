@@ -32,5 +32,59 @@
   "archiveOrgTimestamp": "20120603163044",
   "archiveOrgUrl": "http://web.archive.org/web/20120603163044/http://theater.nytimes.com/2010/03/26/theater/reviews/26fly.html?ref=theater",
   "wordCount": 793,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This dazzling new dance musical heightens the theatrical allure of ballroom dance with movement that captures underlying emotional tensions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise throughout with words like 'dazzling,' 'brilliant,' 'eye-popping,' and 'electrifying.' The critic celebrates Tharp's choreography and the performers' work with consistent enthusiasm and no significant reservations. | Gemini: The review is overwhelmingly positive, praising the choreography, dancers, and music. While there are minor reservations about the set and costumes, the overall recommendation is strong. | Kimi: The reviewer offers high praise for Tharp's choreography ('dazzling,' 'electrifying') and the performances ('brilliant'), noting that despite minor visual clichés, the dancing and music transcend the familiar setting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:09:27.900Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

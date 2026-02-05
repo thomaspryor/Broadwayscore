@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Joshua Jackson and Lauren Ridloff bring authentic passion to Mark Medoff's play about the romantic relationship between a hearing teacher and a deaf custodian at a school for the deaf.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -73,5 +73,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 732,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Groundbreaking in its day, 'Children of a Lesser God' feels like a slog in this revival directed by Kenny Leon.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite extensive praise for Ridloff's 'stunning' performance, the critic finds the revival a 'slog' with 'unspeakably banal' dialogue, weak direction that fails to surface key themes, and Jackson's inadequate performance. The overall assessment is clearly negative. | GPT-4o: The review criticizes the revival as lacking the original's forceful conflict, describes the romantic drama as banal and embarrassing, and notes the lead actor's performance as lacking heat. Despite some praise for Ridloff, the overall tone is negative. | Gemini: The review states the play \"feels like a slog\" and that it \"deflates into just another romantic drama.\" While praising Ridloff, the overall assessment is negative. | Kimi: While praising Lauren Ridloff's stunning performance, the critic finds the revival boring ('slog', 'banal', 'soporific'), poorly directed by Kenny Leon, and dramatically inert, with the central conflict buried until the final scenes and the romantic elements described as 'embarrassing'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:05:31.827Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

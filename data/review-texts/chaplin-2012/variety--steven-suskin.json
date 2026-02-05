@@ -36,5 +36,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 657,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They have come up all thumbs, alas, in the writing and staging departments.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: While praising McClure's lead performance as 'a small wonder,' the critic finds fundamental flaws in the writing and staging, calling the treatment of Chaplin's life clichéd and inaccurate. The overall assessment is clearly negative despite acknowledging the strength of the central performance. | GPT-4o: While the review praises Rob McClure's performance, it criticizes the writing and staging, describing the show as cliched and misrepresenting Chaplin's life. The overall tone is negative, focusing on significant flaws in the production. | Gemini: The review praises Rob McClure's performance but criticizes the writing and staging, resulting in a mixed assessment. The show is worth seeing for the lead performance but has significant flaws. | Kimi: The critic praises Rob McClure's performance as 'a small wonder' but heavily criticizes the writing as 'cliche' and the staging as clumsy ('all thumbs'), creating a split verdict without clear recommendation to see the show. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:02:36.619Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

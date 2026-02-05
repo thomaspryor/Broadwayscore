@@ -54,5 +54,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 998,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I felt like I was watching a hastily organized radio play, and half expected a station-break from the Guy's All-Star Shoe Band.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The review praises Boyd Gaines as 'indispensable' but finds the lead performances lacking authenticity and the production visually 'scuffed and ugly.' The critic acknowledges some effective moments but overall conveys disappointment with this 'rickety read-through of a revival.' | GPT-4o: The review criticizes the production's lack of substance beyond the famous actors' voices and describes the staging as unappealing. While there is some appreciation for Gaines's performance, the overall tone is negative, focusing on the shortcomings of the production. | Gemini: The review praises Boyd Gaines' performance but is critical of Redgrave and Jones, as well as the overall production design. The critic doesn't outright recommend or discourage seeing the show. | Kimi: The critic describes the production as a 'rickety read-through' with 'scuffed and ugly' design, criticizes both lead performances as lifeless ('marmoreal deities'), and praises only Boyd Gaines as 'the lone breathing human onstage.' While acknowledging the famous casting, the overall assessment is that the revival offers 'very little else' beyond recognizable voices. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:24:21.652Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 44,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

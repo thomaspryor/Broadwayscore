@@ -47,5 +47,60 @@
     "Show title not found in text"
   ],
   "wordCount": 713,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production is a banquet of too much rich food that allows a pause for digestion only when the diner is over-satiated and exhausted.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising some performances (Dano, Mos) and design elements, the critic finds the work 'overstuffed,' calls it 'a long hard slog,' and criticizes Wright's lead performance and the play's structure. The overall assessment is negative with some acknowledged merits. | GPT-4o: The review criticizes the play for being overstuffed and self-indulgent, with performances that are hard to invest in. While there are some positive notes on the visual elements and certain performances, the overall tone suggests a negative experience. The truncated nature of the text adds uncertainty to the final verdict. | Gemini: The review is mixed, noting the play's intellectual arrogance and difficulty while also acknowledging some rewarding moments in the final act. The truncated text makes it hard to be certain of the final verdict, but the overall tone suggests a 'Mixed' classification. | Kimi: The review acknowledges 'flashes of brilliance' and strong supporting performances but finds the production 'overstuffed,' 'self-indulgent,' and a 'long hard slog,' concluding with a metaphor about being over-satiated. While the text is truncated, the available content shows a clear negative trajectory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:25:30.751Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

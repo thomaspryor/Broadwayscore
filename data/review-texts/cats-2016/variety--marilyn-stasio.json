@@ -44,5 +44,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 483,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's showtime at the Neil Simon Theater, creatively transformed into a great big, beautiful trash heap for this faithfully resurrected extravaganza",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening criticism of the lead's singing, the review is overwhelmingly positive about the revival, praising the choreography, design, performances, and overall production as 'fabulous' and 'spectacular' with dancers in 'perfectly splendid form.' | GPT-4o: The review is overwhelmingly positive, praising the production's set, choreography, and performances, despite a minor critique of Leona Lewis. The tone and language indicate a strong recommendation. | Gemini: The review is largely positive, praising the revival's choreography, set design, and dancing, while only expressing reservations about Leona Lewis' performance as Grizabella. The overall recommendation is positive. | Kimi: While noting Leona Lewis falls short of Betty Buckley's standard as Grizabella, the critic lavishes enthusiastic praise on every other aspect of the production, calling the design 'spectacular,' the dancers 'brilliant,' and the overall revival 'fabulous.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:01:21.617Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

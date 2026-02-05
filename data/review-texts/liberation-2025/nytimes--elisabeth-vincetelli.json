@@ -52,5 +52,60 @@
   "sourceMethod": "scrapingbee",
   "duplicateTextOf": "nytimes--elisabeth-vincentelli.json",
   "wordCount": 392,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "spending time in their company is also an unadulterated pleasure",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout with terms like 'miracle,' 'unadulterated pleasure,' and 'superb.' Critic emphasizes the show is entertaining rather than didactic, praises direction, performances, and writing consistently. | GPT-4o: The review is filled with praise for the production, direction, and performances, describing it as an 'unadulterated pleasure' and 'consistently funny.' The positive language and lack of reservations indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the play's suspense, the pleasure of spending time with the characters, the direction, the cast, and the humor. The critic explicitly states it's not a 'good-for-you didactic show'. | Kimi: The review offers consistent praise for the play's pacing, humor, direction, and performances, calling it an 'unadulterated pleasure' and a 'miracle' without any reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:40:42.698Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

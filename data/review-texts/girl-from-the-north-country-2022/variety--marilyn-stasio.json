@@ -36,5 +36,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 694,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McPherson makes the case by setting more than twenty of Dylan's songs into a surprisingly sturdy narrative",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting that some songs don't always fit dramatically, the critic praises the 'surprisingly sturdy narrative,' calls the ensemble 'inspired,' and highlights multiple standout performances with enthusiasm. The overall tone is appreciative of the production's achievements. | GPT-4o: The review praises the production's ability to capture the bleakness of the period and highlights strong performances, particularly by Mare Winningham. While there are some reservations about the fit of certain songs, the overall tone is positive with a recommendation to see the show. | Gemini: The review is generally positive, highlighting the strong performances and effective use of Dylan's music to capture the bleakness of the Depression era, but notes some songs don't perfectly fit the dramatic situations. | Kimi: Stasio offers enthusiastic praise for the 'inspired ensemble,' 'stunning' vocals, and atmospheric production design, calling the narrative 'surprisingly sturdy,' though she notes some songs don't perfectly suit their dramatic contexts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:51:01.783Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

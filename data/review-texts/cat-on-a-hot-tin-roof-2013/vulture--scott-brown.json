@@ -32,5 +32,59 @@
   "archiveOrgTimestamp": "20240415042111",
   "archiveOrgUrl": "http://web.archive.org/web/20240415042111/https://www.vulture.com/2013/01/theater-review-cat-on-a-hot-tin-roof.html",
   "wordCount": 822,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Attractive bodies are arranged artfully; they orbit, but do not attract.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review criticizes the staging as heat-absorbing rather than generating, finds Johansson's performance overly constructed, but praises Hinds and Walker's chemistry in Act Two. The overall tone suggests a production with potential undermined by directorial choices. | Gemini: The review highlights both strengths (Johansson's performance, Hinds' Big Daddy) and weaknesses (staging issues, lack of chemistry). The overall tone is ambivalent, not strongly recommending or discouraging the show. | Kimi: While the critic praises individual performances (Johansson's radiance, Hinds' energy), the overall verdict condemns the production as 'mystifyingly tepid,' criticizing staging choices that diffuse rather than generate the necessary sexual heat and tension.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:59:47.351Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

@@ -10,7 +10,7 @@
   ],
   "bwwExcerpt": "So an anodyne rom-com is for the most part what we get from this play, which opened on Wednesday night at the James Earl Jones Theater. Julianna Margulies stars as Delia, an anxious, bookish denizen of Greenwich Village, still grieving her husband’s death. Peter Gallagher plays the widowed Peter, the calm Californian psychoanalyst for whom Delia falls by email, so suddenly that it feels fated.",
   "bwwScore": 5,
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "fullText": "The website for “Left on Tenth,” Delia Ephron’s new Broadway play, is approximately the last place I would have expected to encounter a content advisory, but there one is. From a marketing standpoint, it’s a sensible move — a tip-off, for anyone expecting pure romantic comedy, that the show also deals with life-threatening illness.\n\nWhat’s strange is that, having warned us, the play doesn’t nearly go for broke. Unlike Ephron’s 2022 memoir, “Left on Tenth: A Second Chance at Life,” which deals affectingly with her widowhood and leukemia as well as her tripping headlong into new love, the stage adaptation gives the impression of being desperate not to bum anyone out.\n\nSo an anodyne rom-com is for the most part what we get from this play, which opened on Wednesday night at the James Earl Jones Theater. Julianna Margulies stars as Delia, an anxious, bookish denizen of Greenwich Village, still grieving her husband’s death. Peter Gallagher plays the widowed Peter, the calm Californian psychoanalyst for whom Delia falls by email, so suddenly that it feels fated.\n\nShades of “You’ve Got Mail,” the 1998 classic rom-com that Ephron wrote with her older sister, Nora, but what can you do? That’s how their romance sparked in real life.\n\nIt all started with an essay that Ephron wrote for The New York Times in 2016, the year after her husband Jerry’s death, about the particular circle of phone-tree hell she entered when she asked Verizon to disconnect his landline. In response, she heard from a lot of readers, one of whom was Peter, noting in an email that Nora once set them up when they were college students.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "isFullReview": true,
   "textWordCount": 299,
@@ -42,5 +42,10 @@
   ],
   "duplicateTextOf": "nytimes--jesse-green.json",
   "wordCount": 299,
-  "tierReason": "Short text (299 words)"
+  "tierReason": "Short text (299 words)",
+  "rejectedAt": "2026-02-05T07:34:05.534Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence with a JavaScript error message about retrieving article content, making it impossible to determine the critic's verdict or recommendation.; openai: The text is incomplete and includes a technical error message, indicating it's not a full review.; gemini: The review is incomplete and cuts off mid-sentence due to retrieval issues.",
+  "promptVersion": "5.2.0"
 }

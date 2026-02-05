@@ -36,5 +36,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 562,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "dress it up in $5 million togs and it still feels slight",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Mixed review that acknowledges the nostalgic appeal and tuneful score but criticizes the direction as unimpressive, calls the show 'slight,' and finds it 'drifts aimlessly' between eras without clear vision. | GPT-4o: The review criticizes the production for its lack of coherence and unsuccessful modernization, while acknowledging some nostalgic value in the score. The overall tone is negative, focusing on the production's failure to effectively update the show. | Gemini: The review is mixed, praising the score but criticizing the direction and the show's inability to reconcile its modern updates with its original form. It neither strongly recommends nor discourages seeing the show. | Kimi: While the critic praises Stephen Schwartz's original score as 'tuneful and effective,' the review consistently faults the production as 'slight,' the direction as 'not impressively so,' and the modernization as a 'scattershot approach' that diminishes the show's power. The overall assessment discourages seeing this Broadway revival despite the quality of the underlying material. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:52:40.608Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

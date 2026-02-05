@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Law brings a refreshing sanity to a role that is often treated as a tour de force for neurotic exhibitionism. His Hamlet is tortured, yes, but he's not a show-off about it.",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,59 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be an incomplete excerpt that cuts off mid-review and ends with a technical error message about retrieving content, making it impossible to determine the critic's overall verdict.; openai: The review is about a 2009 production of Hamlet, not a current Broadway run.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "People who ask for a little introspection from the man whose name is a byword for that activity may find it perplexing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic acknowledges Law's vigor and stage presence but finds significant fault with his lack of introspection and emotional depth. The review is truncated, but the overall tone suggests disappointment with the interpretation despite recognizing the actor's energy. | Gemini: The review describes Jude Law's performance as lacking introspection and depth, despite his vigor and energy. The critic finds the character's distress unconvincing and ultimately expresses disappointment in the portrayal. | Kimi: Brantley acknowledges Law's committed physical performance and stage presence but criticizes the interpretation as fundamentally externalized and lacking the introspective depth essential to the character, finding it one-dimensional and ultimately unfulfilling.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:58:26.223Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

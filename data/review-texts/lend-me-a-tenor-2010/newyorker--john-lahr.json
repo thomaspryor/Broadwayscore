@@ -34,5 +34,60 @@
   "archiveOrgTimestamp": "20100410070324",
   "archiveOrgUrl": "http://web.archive.org/web/20100410070324/http://www.newyorker.com:80/arts/critics/theatre/2010/04/12/100412crth_theatre_lahr?currentPage=2",
   "wordCount": 418,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there is a lot of theatrical panache on display, but not one idea",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Lahr criticizes the show's intellectual emptiness and lack of substance while acknowledging the performers' skills and audience enjoyment. His condescending tone toward both the material and audience indicates clear disappointment. | GPT-4o: The review acknowledges the theatrical panache and audience enjoyment but criticizes the lack of substance and depth in the play. The critic does not recommend against seeing it but highlights significant shortcomings. | Gemini: The critic acknowledges theatrical panache but ultimately finds the play lacking in substance and originality, comparing it unfavorably to masters of the form. The review suggests the audience enjoys it despite its flaws, but the critic does not recommend it. | Kimi: While acknowledging the slick direction and professional performances, the critic dismisses the writing as devoid of ideas and the comedy as 'unearned,' ultimately characterizing the show as empty 'folderol' for undiscriminating audiences paying too much for safe, mindless entertainment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:36:33.249Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

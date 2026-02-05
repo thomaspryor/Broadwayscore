@@ -33,5 +33,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251121085557/https://www.vulture.com/2023/06/theater-reviews-just-for-us-and-one-woman-show.html",
   "duplicateTextOf": "vulture--helen-shaw.json",
   "wordCount": 1518,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a crowd-pleasing, often hilarious show, with a time bomb labeled 'Is it good that I am here making you laugh?' at its center.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic clearly recommends the show, calling it 'crowd-pleasing, often hilarious' and praising Edelman's performance and construction. While noting some pacing issues and broader jokes in places, the overall assessment is positive with thoughtful analysis of the show's deeper themes. | GPT-4o: The review praises Alex Edelman's show as 'crowd-pleasing' and 'hilarious,' highlighting its clever construction and engaging performance. The critic's enthusiasm and the absence of significant reservations support a strong positive score. | Gemini: The review is largely positive, highlighting the show's humor and thought-provoking nature, but also notes some ambivalence and a desire for deeper exploration of certain themes. | Kimi: The critic praises Edelman's cannily constructed storytelling and thorny themes while appreciating the hilarious, crowd-pleasing performance, though noting some shaggy digressions and wishing the self-critical climax arrived sooner.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:31:15.305Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

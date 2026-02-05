@@ -32,5 +32,60 @@
   "archiveOrgTimestamp": "20101016235056",
   "archiveOrgUrl": "http://web.archive.org/web/20101016235056/http://nymag.com:80/daily/entertainment/2010/10/theater_review_a_very_chilly_l.html",
   "wordCount": 980,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You will laugh, most likely, though perhaps not as hard as you might have had you felt a bit more of the show's inner ache.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises the performances and comic timing but finds the production emotionally hollow and missing 'Human Feeling.' The review concludes audiences will laugh but be left cold, wanting 'a little more out of life.' | GPT-4o: The review acknowledges strong performances and comic timing but criticizes the lack of emotional depth and stakes. The overall tone suggests a competent production that entertains but doesn't fully satisfy. | Gemini: The review acknowledges the solid performances and comic timing but ultimately finds the production lacking in emotional depth and feeling, resulting in a somewhat detached experience for the audience. | Kimi: While the critic lavishes praise on Patrick Stewart's 'vital and precise' performance and T.R. Knight's admirable work, and acknowledges that 'a fine time is had by all' with laughs delivered in abundance, the review ultimately finds the production emotionally hollow, criticizing its lack of 'Human Feeling' and pathos, leaving the audience 'a little cold.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:24:53.266Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

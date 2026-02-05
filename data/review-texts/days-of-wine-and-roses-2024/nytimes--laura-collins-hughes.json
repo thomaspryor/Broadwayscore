@@ -33,5 +33,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250724233526/https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html",
   "duplicateTextOf": "nytimes--jesse-green.json",
   "wordCount": 360,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What’s astonishing about this show...is the way its devastating chic snuggles right up to catastrophic self-destruction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises the performances, score, and production, describing them as superb and tone-perfect. While there are some reservations about the opening scene, the overall tone is strongly positive. | Gemini: The review is overwhelmingly positive, praising the performances, score, and production. Despite a confusing opening scene, the overall impression is highly favorable, making it a strong positive. | Kimi: The review offers enthusiastic praise for the 'superb' central performances, 'sumptuous' score, and 'tone-perfect' direction, noting the production is 'deeper, wiser and warmer' than its Off-Broadway predecessor. However, the text is truncated before the final verdict, and the critic explicitly criticizes the opening scene as 'perplexing,' warranting reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:15:34.669Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

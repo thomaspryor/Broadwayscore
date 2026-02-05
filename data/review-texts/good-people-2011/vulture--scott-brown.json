@@ -54,5 +54,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 492,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Good People is a fine, small, heartfelt work that shadowboxes with social darkness in a safely lit room.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic clearly recommends the show ('you could do worse than to put your money where her mouth is') while acknowledging its limitations. Praises McDormand's performance and the intimate storytelling, but notes the play's predictability and reticence about larger social issues. | GPT-4o: The review praises the play as 'fine, small, heartfelt' with strong performances, particularly by Frances McDormand. While it notes predictability and some reservations about the play's depth, it ultimately recommends seeing it, especially for McDormand's performance. | Gemini: The review is generally positive, highlighting McDormand's performance and the play's exploration of class, while acknowledging its predictability and limited scope. The final line implies it's worth seeing. | Kimi: While noting the play's predictability and reticence on systemic issues, the critic delivers a clear recommendation to see it for Frances McDormand's 'ferociously talented' performance and the strong supporting cast, calling it 'heartfelt' and advising readers they 'could do worse' than buy a ticket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:57:12.344Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

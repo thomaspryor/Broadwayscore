@@ -40,12 +40,12 @@
     "Word count too low: 57 (min: 300)",
     "Show title not found in text"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 51,
   "tierReason": "Short text (51 words)",
-  "rejectedAt": "2026-02-05T02:16:48.629Z",
+  "rejectedAt": "2026-02-05T07:17:30.148Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be the opening anecdotal setup of a review, not evaluative content about the current Broadway production; openai: The text is an anecdote about a past experience with the show 'Company' and does not provide any evaluative content about the current Broadway production.; gemini: This is an anecdote about seeing a previous production of Company, not a review of the current Broadway run.; kimi: The text describes a performance of 'Company' from 'nearly 45 years ago' when the show 'had just opened' (the 1970 original production), not a current Broadway revival. It contains no evaluation of any current Broadway production.",
+  "rejectionReasoning": "claude: This appears to be the opening of a personal anecdote about seeing Company 45 years ago, not a review of a current Broadway production; openai: The text is a personal anecdote about a past performance of 'Company' and does not provide any evaluation or review of the current Broadway production.; gemini: This is the start of a review, but it only describes seeing a previous production of the show. There is no evaluation of the current production.; kimi: The text explicitly describes a performance of 'Company' from 'nearly 45 years ago' when the show 'had just opened' (referring to the original 1970 production), not a current Broadway revival. It contains no evaluation of any current production.",
   "promptVersion": "5.2.0"
 }

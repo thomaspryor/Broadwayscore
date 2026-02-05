@@ -34,5 +34,60 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 774,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even after nearly three and a half hours of Death of a Salesman, I'd gladly stay longer to watch that story continue.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for the production with detailed analysis of performances, particularly Pierce and Clarke. The closing sentiment of wanting to stay longer despite the lengthy runtime indicates genuine enthusiasm and recommendation. | GPT-4o: The review is filled with high praise for the production, performances, and direction, with no reservations. The critic expresses a strong desire to continue watching, indicating a highly positive reception. | Gemini: The critic praises the performances, direction, and the depth of the play, highlighting the tragic elements and the actors' portrayals. The final line indicates a strong recommendation. | Kimi: The critic offers unqualified praise for the performances, direction, and interpretive choices, framing the revival as deeply affecting and compelling throughout, culminating in an eager endorsement to keep watching. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:20:20.762Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

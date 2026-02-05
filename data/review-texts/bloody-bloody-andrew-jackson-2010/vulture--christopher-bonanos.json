@@ -32,5 +32,60 @@
   "archiveOrgTimestamp": "20110816202608",
   "archiveOrgUrl": "http://web.archive.org/web/20110816202608/http://nymag.com/daily/entertainment/2010/10/theater_review_andrew_jackson.html",
   "wordCount": 879,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 53,
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Around minute 70, I began to despair of it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The review praises the spectacular set design and some performances but finds the show fundamentally flawed with 'ironic distance,' deliberately dumb dialogue, and unclear character development. The critic 'began to despair' by the end, indicating clear disappointment despite acknowledging some positives. | GPT-4o: The review praises the set design and some aspects of the performance, but criticizes the dialogue, tone, and overall execution. The critic expresses disappointment and a lack of emotional engagement, leading to a mixed verdict. | Gemini: The review praises the set design and some aspects of the performance, but criticizes the dialogue and overall tone as uneven and lacking emotional depth. It's a mixed assessment with both positive and negative aspects. | Kimi: While praising the scenic design as 'spectacular' and acknowledging the cast's talent, the critic finds the show emotionally distant and tonally frustrating, ultimately despairing of the production before it ends. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:49:19.264Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

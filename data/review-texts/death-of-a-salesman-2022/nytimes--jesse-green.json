@@ -56,7 +56,12 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "brightdata",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 391,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T06:20:58.662Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text is cut off mid-sentence and ends with a technical error message about retrieving article content and enabling JavaScript, making it impossible to determine the critic's final verdict.; openai: The text is interrupted with a message about retrieving article content, indicating it is not a complete review.",
+  "promptVersion": "5.2.0"
 }

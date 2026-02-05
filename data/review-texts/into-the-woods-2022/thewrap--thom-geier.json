@@ -46,5 +46,60 @@
   "rejectionReasoning": "claude: This appears to be an introductory paragraph providing background context about the show's cultural impact, not an actual review with critical evaluation of a current production.; openai: The text provided is a contextual introduction to 'Into the Woods' rather than an evaluative review of the current Broadway production.; gemini: This is just background/context about the show, not a review of the current Broadway production.; kimi: The text provided contains only introductory background about the musical's cultural history and the 2014 film adaptation, with no evaluation of the current Broadway production's performances, direction, or overall quality. It appears to be a truncated opening paragraph without any critical verdict or recommendation.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "All that talent is put to very good use in this pencil-sharp, fast-paced production - whose high points are many and often beanstalk-high. They help to disguise some of the shortcomings of the musical, from Sondheim's unfortunate and awkward attempts to re-create 1980s rap to a second act that forgets to leave breadcrumbs of relatability as it meanders into a thicket of philosophical abstractions. But even as the story turns darker, and Miller abandons her raps for some of Sondheim's best ballad",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-INTO-THE-WOODS-Opens-on-Broadway--Updating-Live-20220710"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-INTO-THE-WOODS-Opens-on-Broadway--Updating-Live-20220710",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All that talent is put to very good use in this pencil-sharp, fast-paced production - whose high points are many and often beanstalk-high.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the production as 'pencil-sharp' and 'fast-paced' with 'many' high points that are 'beanstalk-high', while acknowledging some shortcomings in the source material. The positive assessment of the production itself outweighs the critiques of Sondheim's writing. | GPT-4o: The review praises the production's talent and high points, though it notes some shortcomings in the musical itself. The overall tone suggests a positive recommendation with some reservations. | Gemini: The review is generally positive, highlighting the talent and pace of the production, while acknowledging some shortcomings in the musical itself. The overall tone suggests a recommendation with reservations. | Kimi: While the critic acknowledges shortcomings in Sondheim's original material (dated rap attempts, meandering second act), they praise this production as 'pencil-sharp' and 'fast-paced' with talent put to 'very good use,' clearly recommending the interpretation despite source material flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:20:31.618Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

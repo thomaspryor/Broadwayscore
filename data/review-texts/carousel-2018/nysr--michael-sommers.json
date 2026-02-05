@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "The latest rendition of Carousel is scarcely so revelatory. It is smudged visually. Yet, as briskly staged by veteran director Jack O'Brien, this production for the greater part proves satisfying. It is beautifully sung, exuberantly danced and ardently performed.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this production for the greater part proves satisfying",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with 'satisfying' verdict and praise for performances/direction, but acknowledges visual flaws and describes it as 'scarcely revelatory'. | GPT-4o: The excerpt indicates a positive review with praise for singing, dancing, and performance, despite some visual issues. The 4/5 star rating supports a strong positive classification. | Gemini: The review states that the production \"proves satisfying\" and is \"beautifully sung, exuberantly danced and ardently performed,\" but also notes that it is \"smudged visually.\" Given the 4/5 star rating, this seems like a positive review with reservations. | Kimi: The 4/5 star rating indicates a solid recommendation, while the text offers qualified praise noting visual shortcomings ('smudged') but ultimately finding the production satisfying with beautiful singing and dancing. As a single excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:59:11.061Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

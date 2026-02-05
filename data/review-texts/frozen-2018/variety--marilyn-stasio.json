@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Broadway musical 'Frozen' is a spectacular production that captures the magic of the Disney animated film while adding theatrical depth and emotional resonance to the beloved story.",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -50,5 +50,60 @@
   "tierReason": "Full review text",
   "previousUrl": "https://variety.com/2018/legit/reviews/frozen-review-broadway-musical-1202728053/",
   "urlDiscoveredAt": "2026-02-05T02:24:19.877Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show succeeds best at this challenge in the familiar anthem 'Let It Go'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Stasio praises the cast performances (especially Levy as 'stunning' and Hildreth bringing 'heart and humor') and specific musical moments, but criticizes the plot as 'soggy' and 'lame,' notes the sets aren't 'transporting,' and concludes with 'What a waste' - indicating a show with strong elements that doesn't fully succeed. | GPT-4o: The review praises performances and certain elements like the anthem 'Let It Go,' but criticizes the plot as 'soggy' and lacking dramatic conflict, indicating a mixed reception. | Gemini: The review is generally positive, praising the cast and characters. However, it also notes some weaknesses in the plot and dramatization, making it a recommendation with reservations. | Kimi: While the critic criticizes the 'soggy' plot and laments the lack of a proper villain ('What a waste'), the review is dominated by strong praise for the cast—particularly Caissie Levy's 'stunning' performance and 'silvery soprano'—and finds the show succeeds best in its musical moments. The opening framing ('warms up on Broadway') and appreciation for the 'warmly human cast' indicate a recommendation, albeit with reservations about the book. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:42:17.226Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 86
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

@@ -35,5 +35,59 @@
     "Show title not found in text"
   ],
   "wordCount": 900,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She's a bit much here, too. In one sitting, in the concentrated form of a one-woman play, how much wit, color, and moral competence can you take?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises Taylor's masterful performance and impersonation but finds significant flaws in the script's compression, lack of depth in personal matters, and the relentless audience-working approach. The review balances appreciation with clear reservations about the overall theatrical experience. | Gemini: The review praises Holland Taylor's performance and accuracy in portraying Ann Richards, but notes some issues with the script's conflations and lack of depth in personal matters. Overall, it's a positive review with reservations. | Kimi: While the review includes significant reservations about the script's conflation of events, shallow treatment of Richards's personal life, and cheesy directorial choices, it delivers strong praise for Holland Taylor's performance ('masterful', 'works the room relentlessly'). The critic implies the show is worth seeing for the star turn alone ('How could it not be?'), placing it in the Positive bucket rather than Mixed, though the substantial caveats prevent a higher score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:37:11.438Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

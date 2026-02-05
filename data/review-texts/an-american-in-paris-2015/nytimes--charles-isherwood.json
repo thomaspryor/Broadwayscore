@@ -36,5 +36,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240913035248/https://www.nytimes.com/2015/04/13/theater/review-an-american-in-paris-a-romance-of-song-and-step.html?_r=0",
   "wordCount": 499,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"The city of light is ablaze with movement in the rhapsodic new stage adaptation of “An American in Paris.” This gorgeously danced — and just plain gorgeous — production pays loving tribute to the 1951 movie, to the marriage of music and movement, and to cherished notions about romance that have been a defining element of the American musical theater practically since its inception. Just about everything in this happily dance-drunk show moves with a spring in its step.\"\n\nRead more"
+  "showScoreExcerpt": "\"The city of light is ablaze with movement in the rhapsodic new stage adaptation of “An American in Paris.” This gorgeously danced — and just plain gorgeous — production pays loving tribute to the 1951 movie, to the marriage of music and movement, and to cherished notions about romance that have been a defining element of the American musical theater practically since its inception. Just about everything in this happily dance-drunk show moves with a spring in its step.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This gorgeously danced — and just plain gorgeous — production pays loving tribute to the 1951 movie.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong positive language throughout with phrases like 'rhapsodic,' 'gorgeously danced,' 'triumph,' and 'exuberant motion.' The critic praises virtually every element - direction, choreography, performances, and design - calling it a visual and musical feast. | Gemini: The review is overwhelmingly positive, using words like \"gorgeously danced\", \"gorgeous\", \"loving tribute\", and \"happily dance-drunk\". It praises the direction, choreography, performances, and design, indicating a strong recommendation. | Kimi: Isherwood offers unqualified praise for Wheeldon's choreography, the visual design, and the performances, using superlatives like 'rhapsodic,' 'triumph,' and 'incomparable finesse' throughout with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:35:21.958Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 96,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

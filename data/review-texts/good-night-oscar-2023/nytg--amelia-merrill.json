@@ -32,5 +32,60 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 761,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With a less compelling performance from its lead, Good Night, Oscar would fall flat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review praises Hayes's performance as 'a marvel' and notes strong design elements, but criticizes the script structure, underdeveloped supporting characters, and pacing issues. The critic finds it worth seeing primarily for the lead performance rather than as a fully successful production. | GPT-4o: The review praises Sean Hayes's performance as a standout but criticizes the supporting characters and overall execution. The production is described as lacking urgency and being burdened by 'hacky late-night antics,' indicating a mixed reception. | Gemini: The review praises Sean Hayes' performance and some design elements, but criticizes the supporting characters and the play's structure, ultimately suggesting it's worth seeing for Hayes' portrayal. | Kimi: While criticizing the script structure and supporting characters as forgettable, the reviewer praises Sean Hayes's performance as a 'marvel' and calls the final result a 'powerful and cohesive character study,' indicating a qualified but clear recommendation to see the show. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:54:09.266Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

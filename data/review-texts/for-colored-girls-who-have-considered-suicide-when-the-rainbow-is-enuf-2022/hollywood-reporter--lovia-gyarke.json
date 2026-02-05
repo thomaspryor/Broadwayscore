@@ -36,5 +36,60 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 861,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 85,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Brown's version of the production injects Shange's already electrifying work with a distinctive and vivid energy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: The review is consistently enthusiastic throughout, calling it 'a joy to witness' and praising Brown's direction as adding 'distinctive and vivid energy' to the canonical work. The critic shows deep appreciation for the performances, staging, and creative choices, with no significant reservations expressed. | GPT-4o: The review is filled with enthusiastic praise for the production, highlighting its vivid energy, dynamic cast, and innovative elements. The critic describes it as a joy to witness and emphasizes the captivating performances and creative direction. | Gemini: The review is overwhelmingly positive, praising the energy, direction, cast, and overall impact of the revival. The critic clearly recommends seeing it. | Kimi: The critic consistently praises the revival's direction, choreography, and performances with enthusiastic language like 'electrifying,' 'joy to witness,' and 'magic,' offering no significant reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:40:34.087Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "The first act, as James continues to both bully and seduce Sarah, is icky. They fall in love, and they marry, but in a dysfunctional, James-dominated relationship. The lack of any chemistry between the leads doesn't help. And that this production, staged by the great, Tony-winning African-American director Kenny Leon, makes Sarah (and her mother) black turns it from icky to deeply discomfiting.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-CHILDREN-OF-A-LESSER-GOD-on-Broadway-20180411"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-CHILDREN-OF-A-LESSER-GOD-on-Broadway-20180411",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The lack of any chemistry between the leads doesn't help.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with consistent negative language ('icky', 'deeply discomfiting') and criticism of lead chemistry. Single excerpt limits confidence but aligns with low rating. | GPT-4o: The review describes the first act as 'icky' and 'deeply discomfiting', with a lack of chemistry between leads. The 2/5 stars rating indicates a negative verdict. | Gemini: The review excerpt describes the show as \"icky\" and \"deeply discomfiting\", pointing to a negative experience. The 2/5 star rating confirms this assessment. | Kimi: The 2/5 star rating and criticism of the plot as 'icky', lack of chemistry between leads, and 'deeply discomfiting' directorial choices indicate a clear negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:03:37.155Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -56,5 +56,59 @@
   "archiveOrgTimestamp": "20100502013113",
   "archiveOrgUrl": "http://web.archive.org/web/20100502013113/http://www.variety.com:80/review/VE1117942623.html?categoryid=33&cs=1",
   "wordCount": 634,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Washington comes into his own when everything that Troy loves and values becomes lost to him.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Consistently praises Washington's performance as 'heartbreaking' and 'moving', calls Davis 'a treasure' and 'electrifying', with detailed appreciation for the production elements and direction. Despite some reservations about Washington in early scenes, the overall assessment is strongly positive. | Gemini: The review is generally positive, highlighting Washington's performance and the emotional depth of the play, although it notes that Washington doesn't quite reach the towering presence of Jones. It is recommended with reservations. | Kimi: Stasio offers strong praise for the emotional depth of Washington's performance in later scenes and Davis's electrifying turn, while noting Washington struggles in early scenes compared to the original production, ultimately recommending the heartfelt revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:34:55.703Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

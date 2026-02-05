@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Cost of Living is a play about disabled bodies and the people who care for them, but it's also about the economics of care — how much it costs, literally and figuratively, to tend to another human being.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -48,5 +48,59 @@
   "archiveOrgTimestamp": "20240301231011",
   "archiveOrgUrl": "http://web.archive.org/web/20240301231011/https://www.vulture.com/2022/10/theater-review-cost-of-living-mtc-majok-broadway.html",
   "wordCount": 1147,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a remarkable (and remarkably unsentimental) look at who we are, what we have, and what we're able to be for ourselves and others.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Shaw calls the play 'remarkable' and praises the performances, direction, and emotional truth, but notes structural issues with one storyline and some credibility lapses that prevent this from being a stronger positive. | Gemini: The review is mostly positive, praising the performances and writing, but notes some issues with the plot and character development. The overall recommendation is positive, but with reservations. | Kimi: The critic praises the play as 'remarkable' and the playwright as 'ingenious,' highlighting 'near-revelatory' performances from David Zayas and Kara Young. While noting that one of the two storylines is 'less satisfying' and occasionally implausible, the overall verdict strongly endorses the production's emotional truth and craftsmanship.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:11:33.964Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": null,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

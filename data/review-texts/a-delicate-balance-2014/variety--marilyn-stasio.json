@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Glenn Close and John Lithgow lead an excellent cast in this revival of Edward Albee's 1966 Pulitzer Prize-winning drama about a family whose emotional equilibrium is disrupted by the arrival of close friends seeking refuge from their own nameless terror.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -31,5 +31,60 @@
     "bww-reviews",
     "bww-roundup"
   ],
-  "bwwScore": 8
+  "bwwScore": 8,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "MacKinnon helms a lustrous cast toplined by Glenn Close and John Lithgow",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the production quality, performances, and direction. The critic appreciates the challenging material and commends the 'lustrous cast' and director who 'did the scribe proud.' While acknowledging the play's difficulty, the tone is admiring and recommends engagement with this 'brilliantly constructed' work. | GPT-4o: The review praises the cast and direction, highlighting strong performances and the play's enduring impact. While it notes some challenges, such as the existential nature of the play, the overall tone is positive, recommending the production for its performances and direction. | Gemini: The review is generally positive, highlighting the performances and the play's thought-provoking nature, but acknowledges its disturbing and unfathomable qualities, leading to a recommendation with reservations. | Kimi: The reviewer consistently praises the 'lustrous' direction and performances, particularly Close's 'positively regal' turn and Lithgow's 'carefully calibrated' work, while appreciating Albee's 'brilliantly constructed' play, indicating strong admiration for this revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:19:55.082Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

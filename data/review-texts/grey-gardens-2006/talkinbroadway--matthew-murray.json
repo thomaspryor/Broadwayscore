@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Christine Ebersole gives not one but two stunning performances in Grey Gardens, playing both the glamorous young socialite Edith Bouvier Beale and her elderly, eccentric counterpart with equal conviction and heartbreaking authenticity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,59 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single promotional sentence about performances rather than an actual review with critical evaluation or recommendation.; openai: This text is a brief excerpt focusing solely on a performance without evaluating the overall production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Christine Ebersole gives not one but two stunning performances in Grey Gardens",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the lead performance with superlatives like 'stunning' and 'heartbreaking authenticity,' but this appears to be a brief excerpt focused only on one element, lacking broader production assessment. | Gemini: The review focuses on the stunning performances of Christine Ebersole, indicating a positive experience and making the show worth seeing. | Kimi: The text contains strong unequivocal praise for the lead performer using superlatives like 'stunning' and 'heartbreaking authenticity,' clearly recommending the show on the strength of its acting, though the extreme brevity prevents assessment of other production elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:57:41.309Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

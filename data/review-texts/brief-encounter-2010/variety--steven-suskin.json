@@ -56,5 +56,60 @@
   "archiveOrgTimestamp": "20101014123224",
   "archiveOrgUrl": "http://web.archive.org/web/20101014123224/http://www.variety.com:80/review/VE1117943746.html?categoryid=33&cs=1",
   "wordCount": 538,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rice uses a small cast and modest trappings to turn out a consistent parade of jolts of playhouse wonderment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistently positive language throughout ('wonderment,' 'uniformly strong,' 'ingenious theatricality') with specific praise for performances, direction, and staging. Only caveat is that film devotees 'might feel' it's trivialized, but this is presented as a minor concern rather than a significant flaw. | GPT-4o: The review praises the production's theatricality, the strong cast, and the director's creative adaptation. The tone is enthusiastic with no significant reservations, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the ingenuity and theatricality of the production, but also acknowledges that strict devotees of the film might find it trivialized. This suggests a recommendation with reservations. | Kimi: The critic praises Emma Rice's inventive direction, the uniformly strong cast, and wonderful musical arrangements, describing the show as delivering 'consistent parade of jolts of playhouse wonderment' with only minor reservations about the adaptation's departure from the original film.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:50:45.974Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

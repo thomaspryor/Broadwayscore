@@ -36,5 +36,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 645,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 29,
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 24,
+      "high": 34
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This dour production, whose additions only subtract from the potency of the transformative tale.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Review systematically criticizes the adaptation's changes to Dickens, calls it 'dour' and 'bereft of magic,' wastes talented actors, and concludes the transformation feels 'unearned.' Clear negative recommendation despite acknowledging some fun elements. | GPT-4o: The review is overwhelmingly negative, criticizing the production's reinterpretation of the classic story, the lack of magic and haunting elements, and the unearned transformation of Scrooge. The critic finds the changes misguided and the performances wasted, indicating a strong recommendation against seeing the show. | Gemini: The review is largely negative, criticizing the production's deviations from the original story and its lack of magic. The critic finds the additions subtract from the tale's potency and the performances underwhelming. | Kimi: The critic delivers a thorough pan, condemning the 'dour production' whose 'additions only subtract from the potency,' criticizing wrong-headed adaptation choices like killing Tiny Tim prematurely, wasted talent (Andrea Martin and LaChanze in 'drab' roles), and an unearned transformation, ultimately dismissing it as a 'Bah Humbug' of a show. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:18:23.328Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 18,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 27,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

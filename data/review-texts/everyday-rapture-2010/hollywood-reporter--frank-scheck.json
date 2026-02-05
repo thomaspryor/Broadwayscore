@@ -65,5 +65,60 @@
   "extractedByline": "Film Review",
   "expectedCritic": "Frank Scheck",
   "wordCount": 183,
-  "tierReason": "Short text (183 words)"
+  "tierReason": "Short text (183 words)",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But 'Rapture' comes across as overly precious and lacking the thematic heft that would justify its unexpected Broadway berth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising Scott's performance, the critic finds the material lacking resonance and questions why it deserves a Broadway production. The overall assessment is negative. | GPT-4o: The review highlights issues with the script's resonance and thematic depth, suggesting the show doesn't justify its Broadway run. While performances are handled well, the overall tone is negative. | Gemini: The review praises Scott's performance but finds the script lacking resonance and thematic heft, resulting in a mixed assessment. The single excerpt and smaller outlet lower confidence. | Kimi: While the critic praises the lead performer's handling of the material and acknowledges some funny one-liners, the final verdict clearly criticizes the show as 'overly precious' and lacking sufficient substance for a Broadway production, ultimately questioning its presence on the Main Stem.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:26:53.125Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

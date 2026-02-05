@@ -42,5 +42,59 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 779,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Producers and creatives have smartly crafted a polished production for this revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the production values, performances, and smart adaptations while acknowledging commercial risks and some directorial choices that 'can be wearing.' The overall assessment is positive with reservations about Broadway survival. | Gemini: The review highlights both strengths (luscious score, shrewd adaptations, visual appeal, sturdy performances) and weaknesses (melodramatic style, reliance on luck). It leans positive overall, acknowledging the polished production but expressing concern about its long-term success. | Kimi: While acknowledging the material's melodramatic risks and uncertain commercial prospects, the critic consistently praises the production values ('enormous visual appeal'), performances ('sturdy'), and directorial choices ('smartly crafted'), recommending the show as a quality revival despite reservations about its Broadway longevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:49:04.158Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

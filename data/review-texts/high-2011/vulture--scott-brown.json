@@ -54,5 +54,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 634,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 23,
+  "llmScore": {
+    "score": 23,
+    "confidence": "medium",
+    "range": {
+      "low": 18,
+      "high": 28
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this intervention melodrama manages to establish itself as far and away the campiest panoply of nunsense now onstage",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: The critic calls it 'indelibly misconceived,' attacks the script as clichéd PSA dialogue, mocks the performances as histrionic overacting, and suggests it belongs in a church basement rather than Broadway. Despite acknowledging Turner's star power, the overall verdict is a devastating pan. | GPT-4o: The review is overwhelmingly negative, highlighting the play's serious tone as unintentionally comedic and critiquing the script's reliance on clichés. The critic suggests the play is misplaced on Broadway and better suited for a church basement. | Gemini: The review is largely negative, criticizing the writing as cliche-ridden and overwrought. While Turner's performance is noted, the overall assessment is unfavorable, leading to a negative classification. | Kimi: While acknowledging Lombardo's occasional sharp banter and Turner's commanding presence, the critic ultimately dismisses the production as a clichéd, misguided melodrama that is only on Broadway due to its specific casting and authorship, suggesting it otherwise belongs in a church basement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:07:30.774Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 22,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 28,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

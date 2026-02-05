@@ -41,12 +41,13 @@
   "contentTier": "truncated",
   "wordCount": 69,
   "tierReason": "Short text (69 words)",
-  "rejectedAt": "2026-02-04T05:42:27.125Z",
+  "rejectedAt": "2026-02-05T06:45:05.546Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be the opening of a longer article that provides background context about previous productions, but contains no evaluation of the current Broadway production being reviewed.; openai: The text provided is a personal anecdote and historical context about a past performance, not a review of the current Broadway production.; gemini: The text describes a past performance of Funny Girl, not a review of the current Broadway production.; kimi: The text describes a one-night-only benefit performance of 'Funny Girl' from September 23, 2002, not a current Broadway production.",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The text discusses a past benefit performance and a film sequel, not the current Broadway production.; gemini: This is a personal anecdote about a previous production and a comparison to the movie sequel, not a review of the current Broadway revival.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "Michele's version of Fanny Brice instead recalls 'Funny Lady.' And anyone who knows the career of La Streisand knows that to bring up the 1975 big-screen sequel to the 1968 classic 'Funny Girl' is not exactly a compliment. Even Kevin Kline's Babs-loving character in 'In & Out' had to admit the 1975 movie musical in which the star reprised her Oscar-winning role as an older Fanny Brice is dreadful. 'She was under contract!' he apologizes to the bride he has just jilted at the altar when he belatedly comes out of the closet on their wedding day.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUNNY-GIRL-Returns-to-Broadway--Updating-Live-20220424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUNNY-GIRL-Returns-to-Broadway--Updating-Live-20220424",
+  "wrongProduction": true
 }

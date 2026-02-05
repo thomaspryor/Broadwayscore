@@ -53,5 +53,60 @@
   "extractedByline": "Laurie Metca",
   "expectedCritic": "Jesse Green",
   "wordCount": 559,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, the new cast in place since July 25 pretty much seals the deal on the play's extraordinary merits.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Green explicitly calls the play 'already great' and says the new cast 'seals the deal on the play's extraordinary merits.' He concludes by calling it 'a triumph' and expressing hope 'you hope won't end.' This is clearly enthusiastic praise for both the play and this particular cast iteration. | GPT-4o: Despite the truncation warning, the review is filled with praise for the new cast and the production's ability to maintain and even enhance the play's original merits. The critic describes it as a 'triumph' and expresses a desire for the play not to end, indicating a strong recommendation. | Gemini: Despite opening by referencing the original cast, the review is overwhelmingly positive about the new cast and production, calling it a \"triumph\" and saying it \"seals the deal on the play's extraordinary merits.\" | Kimi: Despite the truncated text warning, the review offers unqualified praise for the new cast and production, calling it a 'triumph' with 'superb' performances and declaring it 'the kind of play you hope won't end.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:20:56.800Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

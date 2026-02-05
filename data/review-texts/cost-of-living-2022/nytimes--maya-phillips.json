@@ -58,5 +58,60 @@
   "sourceMethod": "brightdata",
   "wordCount": 879,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"This production either broke or mended something in me...We give nearly two hours of attention, and great theater offers us empathy and humanity in return: riches of which even the world’s wealthiest can only dream.\"\n\nRead more"
+  "showScoreExcerpt": "\"This production either broke or mended something in me...We give nearly two hours of attention, and great theater offers us empathy and humanity in return: riches of which even the world’s wealthiest can only dream.\"\n\nRead more",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This play left me breathless, and I'm not just using a manner of speech.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: The critic describes a profound emotional and physical response to the production, praising Majok's sharp writing, Bonney's direction, and all four performances. The review concludes that great theater offers 'riches of which even the world's wealthiest can only dream,' indicating this is an exceptional, transformative theatrical experience. | GPT-4o: The review is filled with superlatives and emotional impact, describing the play as 'outstanding' and leaving the critic 'breathless'. The critic's personal, profound reaction indicates a strong recommendation. | Gemini: The review is overwhelmingly positive, describing the play as an \"outstanding work of art\" that is \"brilliantly, painfully, cathartically\" affecting. The critic praises the writing, direction, and performances, and emphasizes the emotional impact of the play. | Kimi: The critic offers unqualified praise for the writing, direction, and performances, describing the production as 'an outstanding work of art' that left her physically and emotionally overwhelmed in a cathartic way.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:10:44.320Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

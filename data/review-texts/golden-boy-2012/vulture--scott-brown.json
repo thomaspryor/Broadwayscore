@@ -32,5 +32,59 @@
   "archiveOrgTimestamp": "20231209213635",
   "archiveOrgUrl": "http://web.archive.org/web/20231209213635/https://www.vulture.com/2012/12/theater-review-golden-boy.html",
   "wordCount": 1173,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a Golden Boy that's as much sung as performed, and Sher has assembled one hell of a tabernacle choir to sing it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic consistently praises the production, calling it 'tremendously impressive' with 'white-hot performance' and 'superb' acting. Despite opening with context about Odets being difficult to stage, the review clearly recommends this production for successfully bringing the material to life. | Gemini: The review is generally positive, praising the performances and direction, but acknowledges the play's broadness and archetypal characters. The critic finds the production impressive and worth seeing. | Kimi: Strong praise for the direction and performances, with particular enthusiasm for the ensemble work and tonal management, despite minor reservations about the first act's pacing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:53:14.121Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

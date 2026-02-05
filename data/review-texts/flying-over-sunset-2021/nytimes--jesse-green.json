@@ -34,7 +34,12 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250721011619",
   "archiveOrgUrl": "http://web.archive.org/web/20250721011619/https://www.nytimes.com/2021/12/13/theater/flying-over-sunset-review.html",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 397,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T06:37:42.989Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The text cuts off mid-sentence and ends with a technical error message about JavaScript and access verification, making it impossible to determine the critic's final verdict.; openai: The text is incomplete and includes navigation and error messages, making it not a scoreable review.",
+  "promptVersion": "5.2.0"
 }

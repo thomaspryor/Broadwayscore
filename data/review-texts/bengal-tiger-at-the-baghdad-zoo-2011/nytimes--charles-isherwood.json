@@ -32,5 +32,59 @@
   "archiveOrgTimestamp": "20120630080205",
   "archiveOrgUrl": "http://web.archive.org/web/20120630080205/http://theater.nytimes.com/2011/04/01/theater/reviews/bengal-tiger-with-robin-williams-review.html",
   "wordCount": 915,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rajiv Joseph's smart, savagely funny and visionary new work of American theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'smart, savagely funny and visionary,' comparing it to 'a majestic cat' among 'cute kittens,' and praising both the writing and Williams' performance with unqualified enthusiasm. This is clearly a rave review. | Gemini: The review is overwhelmingly positive, calling the play \"smart, savagely funny and visionary.\" The critic praises the direction, cast, and the play's ability to make the audience think and feel like adults. | Kimi: The critic offers unqualified praise for the play as 'visionary' and 'smart,' commends the direction with 'gorgeous finesse,' and praises Robin Williams' performance of 'focused intelligence and integrity,' positioning it as superior to typical Broadway fare.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:40:52.224Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 91,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

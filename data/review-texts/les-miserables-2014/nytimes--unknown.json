@@ -32,7 +32,12 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 539,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T07:39:18.028Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text is truncated and ends with a technical error message about retrieving article content and enabling JavaScript.; openai: The review text is truncated and ends with a message about retrieving article content, leaving the verdict unclear.",
+  "promptVersion": "5.2.0"
 }

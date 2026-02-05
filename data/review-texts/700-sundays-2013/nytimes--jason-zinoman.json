@@ -32,5 +32,60 @@
   "archiveOrgTimestamp": "20200303044603",
   "archiveOrgUrl": "http://web.archive.org/web/20200303044603/https://www.nytimes.com/2013/11/14/theater/reviews/billy-crystal-brings-700-sundays-back-to-broadway.html?_r=0",
   "wordCount": 629,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The core pleasures of this warmly affectionate portrait of a New York childhood involve nostalgia and sentiment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment praising Crystal's charm, polish, and the show's nostalgic pleasures, though notes it's overlong and relies on familiar material. | GPT-4o: The review praises Billy Crystal's charm and the nostalgic appeal of the show. While it notes the show's length and some dated jokes, the overall tone is positive, emphasizing the enjoyment derived from Crystal's performance and the sentimental value. | Gemini: The review is generally positive, highlighting Crystal's charm and the show's nostalgic appeal, while acknowledging its slow pace and reliance on familiar material. It's a recommendation with reservations. | Kimi: The critic acknowledges the show's structural flaws and dated material but praises Crystal's polished, nostalgic performance and finds genuine pleasure in the warmly affectionate portrait, ultimately recommending the experience despite reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:13:54.683Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

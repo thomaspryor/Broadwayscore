@@ -42,5 +42,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 708,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lloyd's chic, stripped-down staging might be his best attempt yet at modernizing Pinter.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with terms like 'revelatory,' 'masterful,' 'gorgeous,' and 'quietly radical.' Minor reservations about occasional over-emphasis don't diminish the clear recommendation. | GPT-4o: The review is filled with superlatives and praise for the direction, performances, and staging, describing the production as 'revelatory' and 'masterful'. The critic's tone is enthusiastic with no significant reservations, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and overall impact of the production. The critic uses terms like \"revelatory\", \"masterful\", and \"gorgeous\". | Kimi: The review is overwhelmingly enthusiastic, describing the production as 'revelatory,' 'masterful,' and Lloyd's 'best attempt yet,' with only minor stylistic quibbles that don't diminish the strong recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:42:30.400Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

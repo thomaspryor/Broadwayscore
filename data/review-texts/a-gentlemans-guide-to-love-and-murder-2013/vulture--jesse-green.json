@@ -48,5 +48,60 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 329,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "for all its merits, the show never quite achieves musical liftoff",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises Jefferson Mays' performance and acknowledges the show has merits, but concludes it fails to achieve what it needs most - musical distinction. The truncated nature and mixed signals lower confidence. | GPT-4o: The review praises Jefferson Mays' performance but criticizes the musical for not achieving 'musical liftoff.' The tone is mixed, acknowledging merits but also significant shortcomings. | Gemini: The review praises Jefferson Mays' performance but criticizes the score for not being distinctive enough, leading to a mixed assessment. | Kimi: While praising Jefferson Mays' 'knock-'em-dead performance' and noting the comedy usually hits its mark, the critic finds the score lacks distinction and prevents the show from achieving 'musical liftoff,' suggesting it works in parts but not as a cohesive whole.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:23:10.097Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

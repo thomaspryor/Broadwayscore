@@ -43,5 +43,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--frank-rizzo.json",
   "wordCount": 744,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a crystalline showcase for sensational performances from an all-star cast of marquee veterans, and a testament to the enduring genius of the beloved musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'glorious', 'crystalline showcase', 'sensational performances', 'radiant production'. No meaningful reservations, only enthusiasm for performances, direction, and overall experience. | GPT-4o: The review is filled with superlatives and praises the production as a 'glorious lifeline' and 'crystalline showcase,' highlighting sensational performances and the enduring genius of the musical. The tone is overwhelmingly positive with no reservations. | Gemini: The review is overwhelmingly positive, using phrases like \"glorious lifeline\", \"crystalline showcase for sensational performances\", and \"enduring genius\". The critic clearly recommends seeing the show. | Kimi: The review offers unqualified praise for the revival's performances, direction, and score, using superlatives like 'glorious,' 'sensational,' and 'radiant' without significant criticism.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:21:27.779Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -71,5 +71,60 @@
   "extractedByline": "Film Review",
   "expectedCritic": "Frank Scheck",
   "wordCount": 183,
-  "tierReason": "Short text (183 words)"
+  "tierReason": "Short text (183 words)",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You can practically feel Patrick Stewart and T.R. Knight's joy in performing in the Broadway revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on strong praise for both lead performances with vivid descriptors like 'master' and 'delighted,' but limited text prevents assessing full verdict. Given excerpt-only nature and clearly positive performance praise, scored at lower end of Positive bucket. | GPT-4o: The excerpt highlights the joy and strong performances of the lead actors, suggesting a positive experience. However, due to the single excerpt warning, the overall sentiment may not be fully captured, leading to a lower confidence and score within the Positive range. | Gemini: The review excerpt focuses on the positive performances of the leads, suggesting an enjoyable experience despite the limited text available. Given the single excerpt, confidence is medium. | Kimi: The excerpt provides enthusiastic praise for the lead actors' performances, using words like 'master,' 'joy,' and 'delighted' to indicate strong appreciation for the acting, though the single-excerpt format limits assessment of the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:23:45.924Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

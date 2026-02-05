@@ -45,5 +45,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 450,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scott is a force to be reckoned with.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language throughout ('enchanting carnival', 'entertaining jolt', 'distinctive, hilarious and quirky') with clear recommendation for transfer and extension. Praises lead performance, direction, and overall production quality. | GPT-4o: The review is filled with praise for Sherie Rene Scott's performance and the production, describing it as 'charmingly frenetic' and 'enchanting.' The critic emphasizes the show's success and Scott's star power, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the show \"enchanting\", \"distinctive, hilarious and quirky\". The critic clearly recommends seeing it. | Kimi: The review offers unqualified praise for Sherie Rene Scott's star turn and the production, calling it an 'enchanting carnival' and a 'victory' with no significant reservations, while advocating for an open-ended run. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:28:17.442Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

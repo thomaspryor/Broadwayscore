@@ -47,5 +47,60 @@
     "Show title not found in text"
   ],
   "wordCount": 624,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The synergy between Ali, Ijames and the nose-to-tail extraordinary cast are more than enough for a feast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with words like 'brilliance,' 'thrilling,' 'extraordinary cast,' and 'feast.' The critic celebrates the adaptation's originality and performances with enthusiasm and minimal reservations. | GPT-4o: The review is filled with superlatives and praises the play's innovation, direction, and performances. The critic describes the production as 'thrilling' and 'brilliant,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the play's brilliance, the director's exuberance, and the extraordinary cast. The critic highlights the play's unique approach and its ability to satisfy even those unfamiliar with the source material. | Kimi: The review consistently praises the performances, direction, and writing with superlatives like 'brilliance,' 'extraordinary,' and 'perfection,' offering only a minor note about unnecessary Shakespeare references while strongly recommending the production. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:33:21.734Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 91,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

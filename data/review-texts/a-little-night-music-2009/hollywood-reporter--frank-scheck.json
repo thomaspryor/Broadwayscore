@@ -62,5 +62,60 @@
     "Word count too low: 184 (min: 300)"
   ],
   "wordCount": 184,
-  "tierReason": "Short text (184 words)"
+  "tierReason": "Short text (184 words)",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "New leads Bernadette Peters and Elaine Stritch bring a whole new level to a show that demands a repeat visit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt clearly recommends seeing the show ('demands a repeat visit') and praises the leads for bringing 'a whole new level' to the production. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the new leads and suggests the show is worth seeing again, indicating a strong positive impression. However, with only one excerpt, confidence is low. | Gemini: The phrase \"demands a repeat visit\" indicates a strong positive recommendation. The mention of new leads bringing \"a whole new level\" further reinforces this positive sentiment. | Kimi: The excerpt offers strong praise for the replacement cast, stating they elevate the production to a 'whole new level' and explicitly recommending that the show 'demands a repeat visit.' While clearly positive, the limited excerpt warrants caution and a score in the upper Positive range rather than Rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:25:28.822Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

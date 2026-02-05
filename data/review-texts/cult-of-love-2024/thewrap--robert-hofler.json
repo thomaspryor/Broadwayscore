@@ -36,12 +36,12 @@
   "textIssues": [
     "Word count too low: 60 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 54,
   "tierReason": "Short text (54 words)",
-  "rejectedAt": "2026-02-04T10:13:56.408Z",
+  "rejectedAt": "2026-02-05T06:12:12.990Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be only an opening paragraph or excerpt from a review, containing no critical evaluation or verdict about the production.; openai: The review is about a play at Second Stage's Helen Hayes Theater, which is not a Broadway production.",
+  "rejectionReasoning": "claude: This appears to be only an opening paragraph or excerpt that provides setup/context about the play's premise but contains no critical evaluation or verdict about the production's quality.; openai: The review is about a production at Second Stage's Helen Hayes Theater, not a Broadway production.",
   "promptVersion": "5.2.0"
 }

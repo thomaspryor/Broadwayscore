@@ -58,5 +58,59 @@
   "archiveOrgTimestamp": "20101111015721",
   "archiveOrgUrl": "http://web.archive.org/web/20101111015721/http://www.nytheatre.com:80/nytheatre/showpage.php?t=bloo10837",
   "wordCount": 1040,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I disliked the show very much, principally for its deliberate, rampant, and random distortions of the historical record.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic explicitly states 'I disliked the show very much' and finds the historical misrepresentations 'dangerous.' While acknowledging some entertaining elements and decent performances, the overall verdict is clearly negative with strong moral objections to the show's approach. | Gemini: The reviewer explicitly states \"I disliked the show very much\" and criticizes its historical inaccuracies, despite acknowledging some positive aspects like the music and a couple of performances. | Kimi: The critic explicitly states strong dislike for the show due to its historical distortions, finding the narrative confusing and lacking contemporary resonance despite acknowledging some entertaining elements and good performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:48:32.872Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

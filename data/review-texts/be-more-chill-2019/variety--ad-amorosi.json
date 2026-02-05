@@ -45,5 +45,60 @@
   "duplicateTextOf": "variety--marilyn-stasio.json",
   "wordCount": 580,
   "tierReason": "Full review text",
-  "playbillVerdictUrl": "https://variety.com/2019/legit/reviews/be-more-chill-review-broadway-musical-1203157518/"
+  "playbillVerdictUrl": "https://variety.com/2019/legit/reviews/be-more-chill-review-broadway-musical-1203157518/",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, rushed or relaxed, 'Be More Chill' is Broadway's wiliest and socially savviest night out for teens and parents alike.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting some changes from Off-Broadway and occasional nostalgia for the original's pace, the critic concludes with clear praise, calling it Broadway's 'wiliest and socially savviest night out' with broad appeal. The review consistently highlights the show's strengths and entertainment value. | GPT-4o: The review praises the show's appeal to both teens and traditional theatergoers, highlights the energetic cast and catchy music, and notes improvements from the Off Broadway run. The positive tone and recommendation for a broad audience suggest a strong positive score. | Gemini: The review is generally positive, highlighting the show's appeal and catchy music, while also noting some changes from the Off-Broadway production. It's recommended for both teens and parents, indicating a positive overall assessment. | Kimi: The critic enthusiastically praises the Broadway transfer as smoother and more polished than the Off-Broadway run, highlighting the energetic cast, catchy melodies, and broad cross-generational appeal, despite minor notes about lost frenetic energy from the original.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:39:35.913Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 81,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

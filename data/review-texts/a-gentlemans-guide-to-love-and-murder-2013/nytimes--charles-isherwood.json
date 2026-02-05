@@ -32,5 +32,59 @@
   "archiveOrgTimestamp": "20131127194652",
   "archiveOrgUrl": "http://web.archive.org/web/20131127194652/http://www.nytimes.com/2013/11/18/theater/reviews/a-gentlemans-guide-to-love-and-murder-on-broadway.html?pagewanted=2",
   "wordCount": 913,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A daffy, inspired musical with brilliant performance that deserves to be immortalized in Broadway lore.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise throughout for performances, score, direction, and overall production. Calls it 'inspired' and praises Jefferson Mays' 'brilliant performance' worthy of Broadway immortalization. Enthusiastic tone with detailed appreciation. | Gemini: The review is overwhelmingly positive, praising the direction, music, lyrics, and performances. The critic clearly enjoyed the show and highlights its accomplishments. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:22:27.889Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 91,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

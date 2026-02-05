@@ -36,5 +36,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251025125821/https://www.nytimes.com/2021/10/27/theater/caroline-or-change-review.html",
   "contentTier": "complete",
   "wordCount": 1420,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The chance to believe in change is her hard-won bequest to them — and, in this devastating, uncomfortable, crucial musical, to us.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Green delivers unqualified praise throughout, calling it 'electrifying,' 'thrilling,' and 'crucial.' Despite describing difficult subject matter, he consistently emphasizes the show's artistic triumph and emotional power, concluding with strong endorsement of its importance. | GPT-4o: The review praises the production as 'electrifying' and 'thrilling to experience,' with strong commendation for the performances and thematic depth. Despite the truncated text warning, the available content suggests a highly positive assessment. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the show's prescience, the performances, and the overall impact. The critic calls it \"devastating, uncomfortable, crucial.\" | Kimi: Despite noting a rare miscalculation with one character, Green overwhelmingly praises the production as 'electrifying,' 'never less than thrilling,' and 'crucial,' with particular emphasis on Sharon D. Clarke's performance of 'tragic grandeur.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:58:20.897Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

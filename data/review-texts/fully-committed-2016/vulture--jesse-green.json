@@ -36,5 +36,60 @@
   "archiveOrgTimestamp": "20230328124958",
   "archiveOrgUrl": "http://web.archive.org/web/20230328124958/https://www.vulture.com/2016/04/theater-review-fully-committed.html",
   "wordCount": 1002,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ferguson takes on the vocal and gestural lives of all the callers",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows appreciation for Ferguson's performance versatility and comedic setup, but lacks clear recommendation language or overall verdict assessment. | GPT-4o: The review excerpt highlights Jesse Tyler Ferguson's impressive performance in playing multiple roles, suggesting a positive view of his acting. However, the lack of a full review or explicit recommendation makes the overall sentiment mildly positive. | Gemini: The review describes the premise and Ferguson's performance, but doesn't offer a clear recommendation. The tone is somewhat amused, but not overwhelmingly positive, suggesting a mixed reaction. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:44:00.284Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 60,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

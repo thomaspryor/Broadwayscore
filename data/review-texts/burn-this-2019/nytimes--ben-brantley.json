@@ -39,5 +39,60 @@
   "duplicateTextOf": "nytimes--jesse-green.json",
   "wordCount": 1084,
   "tierReason": "Full review text",
-  "playbillVerdictUrl": "https://www.nytimes.com/2019/04/16/theater/burn-this-review-adam-driver-keri-russell.html"
+  "playbillVerdictUrl": "https://www.nytimes.com/2019/04/16/theater/burn-this-review-adam-driver-keri-russell.html",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this 'Burn This,' which is steeped in the rich compassion for the lonely and lost that is the hallmark of works by Mr. Wilson (1937-2011), only rarely stirs the heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the play's inherent qualities but finds this production lacking, describing it as 'only rarely' stirring and suggesting it falls short of the ideal. Single excerpt warning and limited text reduce confidence. | GPT-4o: The review acknowledges the play's potential and the hallmark compassion of Wilson's work but criticizes this production for only rarely stirring the heart. The description of a 'one-man conflagration' suggests some positive elements but overall mixed execution. | Gemini: The review acknowledges the play's potential but ultimately finds this production lacking, describing it as a \"one-man conflagration\" rather than a true meeting of minds. Given the single excerpt and lack of full context, confidence is low. | Kimi: The critic finds the production fails to achieve the necessary chemistry between the leads, resulting in a one-sided performance that 'only rarely stirs the heart.' While acknowledging the richness of the source material, the clear verdict is that this revival disappoints.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:56:06.258Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

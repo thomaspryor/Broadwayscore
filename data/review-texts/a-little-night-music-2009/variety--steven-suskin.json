@@ -56,5 +56,59 @@
   "archiveOrgTimestamp": "20100810144215",
   "archiveOrgUrl": "http://web.archive.org/web/20100810144215/http://www.variety.com:80/review/VE1117943265.html?categoryid=4034&cs=1&nid=2562&utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+variety/headlines+(Variety+-+Latest+News)&utm_content=Google+Reader",
   "wordCount": 347,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this new edition of 'Night Music' transforms a lackluster revival with an alchemy similar to Reba McEntire's reinvigoration",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly states this cast change 'transforms a lackluster revival' and praises the marked improvement in performances, particularly Stritch's 'sparklingly, devilishly good' work and the enhanced chemistry between leads. | Gemini: The review acknowledges initial reservations about the revival but notes improvements with the new cast, particularly Stritch and Hanson. While there are some criticisms, the overall tone suggests a positive experience. | Kimi: The reviewer praises the new cast for elevating a previously 'lackluster revival,' calling Stritch's performance 'sparklingly, devilishly good' and noting marked improvements across the ensemble, despite minor reservations about one supporting performance and brief memory lapses.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:26:06.474Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

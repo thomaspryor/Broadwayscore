@@ -34,5 +34,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250930190225/https://www.nytimes.com/2023/03/30/theater/life-of-pi-review.html",
   "contentTier": "complete",
   "wordCount": 1045,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And oh, is it a wonder.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout with superlatives like 'wonder,' 'dazzling imagination,' 'sublime control,' and 'astonishing character and style.' The critic acknowledges story weakness but celebrates the theatrical spectacle and craftsmanship. Ends predicting standing ovations. | GPT-4o: The review is filled with superlatives and vivid praise for the production's creativity, puppetry, and overall execution. The critic describes the show as a 'wonder' and highlights the standing ovation, indicating a strong, enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, praising the imagination, control, and wonder of the production. While noting the story is \"somewhat thin\", the overall recommendation is strong. | Kimi: The review lavishes praise on the puppetry, direction, and theatrical execution as 'dazzling' and 'astonishing', while offering significant reservations about the thin story and glancing engagement with philosophical themes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:41:40.220Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

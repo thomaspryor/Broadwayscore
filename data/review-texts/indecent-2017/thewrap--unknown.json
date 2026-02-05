@@ -48,5 +48,59 @@
   "promptVersion": "5.2.0",
   "bwwExcerpt": "I'm a total sucker for plays, movies and books about little known events that completely shake up our sense of history...Lesbian love was glorified in a popular Yiddish play in the early 20th century? Vogel tells her complicated, sprawling story with urgent economy. She uses the rain scene, enacted by Katrina Lenk and Adina Verson, as a leitmotiv. The words remain the same (and they're pretty graphic), but the meaning keeps changing, growing.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Paula-Vogels-INDECENT-Opens-on-Broadway-Updating-Live-20170418"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Paula-Vogels-INDECENT-Opens-on-Broadway-Updating-Live-20170418",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Vogel tells her complicated, sprawling story with urgent economy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic expresses enthusiasm for the subject matter ('total sucker for' this type of story) and praises Vogel's storytelling technique. However, the review feels more appreciative than enthusiastic, suggesting a solid recommendation rather than a rave. | Gemini: The review praises Vogel's storytelling and highlights the play's historical significance, suggesting a positive overall experience despite the limited text. | Kimi: The reviewer expresses personal enthusiasm ('total sucker') and praises the playwright's efficient storytelling and the production's emotional resonance, clearly endorsing the show despite the excerpted text ending abruptly.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:19:42.360Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

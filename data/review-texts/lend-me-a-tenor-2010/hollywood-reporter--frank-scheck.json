@@ -65,5 +65,60 @@
   "extractedByline": "Film Review",
   "expectedCritic": "Frank Scheck",
   "wordCount": 176,
-  "tierReason": "Short text (176 words)"
+  "tierReason": "Short text (176 words)",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play itself might be derivative, mechanical and devoid of real wit, but this production is at times hysterically funny.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Harsh criticism of the play as 'uninspired', 'derivative, mechanical and devoid of real wit' but praises Tucci's direction and acknowledges moments of comedy success. Neither recommends nor discourages clearly. | GPT-4o: The review acknowledges the production's comedic success but criticizes the play as derivative and mechanical. The mixed evaluation suggests a balance of positive and negative elements. | Gemini: The review acknowledges the play's weaknesses but praises the production and performances, indicating a positive but qualified recommendation. The phrase \"staged the hell out of it\" also suggests a positive experience despite the source material. | Kimi: While the critic criticizes the play itself as derivative and mechanical, they praise the production as hysterically funny and well-staged, offering a qualified recommendation based on strong direction and performances. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:35:33.335Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

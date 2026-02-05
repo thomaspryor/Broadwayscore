@@ -43,5 +43,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--aramide-tinubu.json",
   "wordCount": 942,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play jolts alive when Rockwell enters, and the Oscar-winner is practically compelling enough to buoy this staging.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review praises Rockwell and Fishburne's performances but finds the production overall lacking in vitality and specificity, with significant criticism of Criss and the staging's emptiness. | GPT-4o: The review highlights strong performances by Rockwell and Fishburne but criticizes Criss' performance and the production's lack of vitality and relevance. The mixed assessment of performances and the overall production leads to a mixed verdict. | Gemini: The review expresses disappointment in the production, stating it lacks the necessary specificity and feels emptied of vitality. While praising Rockwell and Fishburne, the overall assessment is negative due to the show's perceived lack of relevance and Criss's ineffective performance. | Kimi: While Sam Rockwell and Laurence Fishburne deliver commanding performances that energize the production, the revival lacks the granularity and specificity to make a case for its relevance, and Darren Criss's tentative performance feels out of place, resulting in an uneven experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:34:29.613Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

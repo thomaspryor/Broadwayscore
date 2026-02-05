@@ -37,5 +37,60 @@
     "Word count too low: 270 (min: 300)"
   ],
   "wordCount": 270,
-  "tierReason": "Short text (270 words)"
+  "tierReason": "Short text (270 words)",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production suggests that it might be best not to think too hard about such things; better to have a blast and revel in the glory of the coolest guy at the party.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review praises individual performances and acknowledges the show is entertaining ('have a blast'), but criticizes the sophomoric approach, historical insensitivity, and suggests the production avoids deeper engagement with serious subject matter. The critic neither recommends nor discourages attendance. | GPT-4o: The review acknowledges the show's cheeky and entertaining aspects but also highlights its lack of historical sensitivity and shallow treatment of serious themes. It suggests enjoying the spectacle without deep reflection, indicating a mixed reception. | Gemini: The review acknowledges the show's entertainment value and strong performances, but also points out its historical insensitivity and lack of depth, resulting in a mixed assessment. | Kimi: The reviewer praises the 'haunting' score, 'persuasive' lead performance, and 'shrewdly drawn' atmosphere while criticizing the 'sophomoric' tone and weak historical treatment of Native Americans, ultimately advising audiences to 'have a blast' rather than overthink the politics.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:47:23.333Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 77,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

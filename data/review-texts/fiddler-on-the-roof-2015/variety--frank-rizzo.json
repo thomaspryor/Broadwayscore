@@ -45,5 +45,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--marilyn-stasio.json",
   "wordCount": 794,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Should prove an attractive draw for both first-timers and returning fans of the show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises Burstein's performance enthusiastically and finds strengths in choreography and several cast members, but notes the production is 'uneven' with some directorial choices that 'seem unfinished, unclear or labored.' Overall recommends seeing it for the lead performance and new perspectives on classic material. | GPT-4o: The review praises Danny Burstein's performance and highlights the production's strengths, while acknowledging some uneven elements in the staging. Overall, it recommends the show, particularly for Burstein's portrayal, despite some reservations about directorial choices. | Gemini: The review is mostly positive, praising Burstein's performance and some of Sher's choices, but also noting unevenness and some underwhelming aspects. It's a qualified recommendation. | Kimi: While the critic identifies significant flaws in the staging ('unfinished, unclear or labored,' 'disappointingly underwhelming') and finds supporting cast members merely 'solid, if not exceptional,' the review ultimately recommends the production based on Danny Burstein's exceptional lead performance, which is praised as the driving force that 'carries the show' with charm and depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:35:59.516Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Whitaker brings a touching vulnerability to Erie, making him less a figure of fun than of pathos, a man whose need for connection is as palpable as his loneliness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -75,5 +75,59 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 1065,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you wouldn't feel the full mortal ache and ghostly chill that this production summons",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley praises Whitaker's 'transfixing' performance and Grandage's direction that transforms the play into something that 'keeps growing larger in your mind.' Despite noting some minor flaws ('rhythmic glitches', 'intrusive music'), the overall assessment is clearly positive with memorable imagery and strong artistic achievement. | Gemini: The review is generally positive, praising Whitaker's performance and the production's atmosphere, while acknowledging the play's slightness and some minor staging issues. It ultimately recommends seeing it for its emotional impact. | Kimi: While acknowledging the play's slender nature and minor staging glitches, Brantley offers strong praise for Whitaker's transfixing performance and Grandage's direction, describing the production as a 'gentle, churning dream' that summons 'mortal ache and ghostly chill' and grows larger in the mind.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:13:20.062Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

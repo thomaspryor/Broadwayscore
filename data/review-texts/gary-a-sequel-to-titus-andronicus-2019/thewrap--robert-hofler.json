@@ -46,5 +46,59 @@
   "rejectionReasoning": "claude: This appears to be the opening paragraph of an article providing biographical context about Charles Ludlam, not an evaluative review of a current Broadway production; openai: The text is a historical context about Charles Ludlam and does not evaluate a current Broadway production.; gemini: The text is an introduction to the playwright and his history, not a review of a current production.; kimi: The text provided consists entirely of biographical/historical context about Charles Ludlam and his unfulfilled desire to stage 'Titus Andronicus.' It contains zero evaluation of the current Broadway production (no mention of performances, direction, staging, or writing) and offers no verdict or recommendation regarding the show itself.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "Mac borrows lightly from \"Waiting for Godot,\" but unlike Samuel Beckett, Mac doesn't indulge in repetition to the point of tedium. Lane has played this kind of absurdist character before. Here, he even uses Harpo Marx's horn to goose a laugh; yet, despite all the gags, this clown-turned-worker-turned-Fool is ultimately very poignant in his quest to save the world. Meanwhile, the usually flighty Nielsen has never been more comically stolid. Watching Lane's gnat of a character pick away at her fil",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "despite all the gags, this clown-turned-worker-turned-Fool is ultimately very poignant in his quest to save the world.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review provides positive remarks about the performances and the play's ability to avoid tedium, but the text is truncated, leaving the overall verdict unclear. The positive tone towards the performances suggests a positive bucket. | Gemini: The review praises the performances of Lane and Nielsen, indicating a positive experience, but the overall tone is somewhat reserved, suggesting a recommendation with reservations. | Kimi: While the text cuts off mid-sentence, the available content offers clear praise for both the playwright's writing (favorable comparison to Beckett without the tedium) and the lead performances (Lane's poignant turn, Nielsen's comedic solidity). No negative criticism of the production itself is present in the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:46:08.909Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

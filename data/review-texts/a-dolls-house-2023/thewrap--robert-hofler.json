@@ -39,12 +39,12 @@
     "Word count too low: 63 (min: 300)",
     "Show title not found in text"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 57,
   "tierReason": "Short text (57 words)",
-  "rejectedAt": "2026-02-04T05:30:19.235Z",
+  "rejectedAt": "2026-02-05T05:20:11.530Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This text only provides context about adaptations of classics and mentions other shows - contains no evaluation or assessment of any specific Broadway production; openai: The text discusses various productions but does not review the current Broadway production of 'Fat Ham'.; gemini: This is just an introduction setting up context about other shows, not a review of a specific production.; kimi: The provided text contains only introductory context describing trends in theatrical adaptations and mentioning upcoming or recent Off-Broadway productions. It offers no critical evaluation, opinion, or verdict regarding any specific current Broadway production.",
+  "rejectionReasoning": "claude: This text is just context about adaptations of classics, not a review of any specific show. It mentions multiple shows but provides no evaluation of any production.; openai: The text discusses different shows and upcoming productions, not a review of a specific Broadway show.; gemini: This is just an introduction setting up a trend, not a review of a specific show.; kimi: The provided text contains only introductory context about adaptation trends and upcoming shows, with no evaluative content or critical opinion about any specific production. It mentions Fat Ham as opening 'next month' and describes other shows' premises without reviewing them.",
   "promptVersion": "5.2.0"
 }

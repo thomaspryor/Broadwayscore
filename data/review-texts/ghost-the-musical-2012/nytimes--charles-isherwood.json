@@ -55,5 +55,59 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "nytimes--ben-brantley.json",
   "wordCount": 345,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But it is just as flavorless and lacking in dramatic vitality as many that have come before.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Isherwood delivers a scathing review calling it a 'thrill-free singing theme-park ride' and 'flavorless and lacking in dramatic vitality.' While he acknowledges it's not the 'very worst musical ever,' the comparison to other notorious flops and the overall tone clearly discourage attendance. | Gemini: The review is overwhelmingly negative, calling the show a \"thrill-free singing theme-park ride\" and \"flavorless.\" While acknowledging some elements like Randolph's performance, the overall assessment is clearly unfavorable. | Kimi: Isherwood condemns the production as a 'thrill-free singing theme-park ride' that is 'flavorless and lacking in dramatic vitality,' criticizing its hollow reliance on video imagery and effects over dramatic substance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:47:46.797Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

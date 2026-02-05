@@ -62,5 +62,60 @@
     "Word count too low: 191 (min: 300)"
   ],
   "wordCount": 191,
-  "tierReason": "Short text (191 words)"
+  "tierReason": "Short text (191 words)",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You have one of the most entertaining if bizarre offerings on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Walken's 'brilliant performance' and 'superb support' from cast, calling it 'one of the most entertaining' Broadway offerings. Single excerpt warning requires caution, but language is clearly positive. | GPT-4o: The review excerpt provides strong praise for Walken's performance and the supporting cast, describing the play as 'one of the most entertaining if bizarre offerings on Broadway.' This suggests a highly positive verdict. | Gemini: The review is overwhelmingly positive, praising Walken's performance and the support cast, calling it \"one of the most entertaining if bizarre offerings on Broadway.\" | Kimi: The excerpt offers enthusiastic praise for Walken's 'brilliant' lead performance and 'superb' supporting cast, calling the production 'one of the most entertaining' on Broadway, though it notes the material itself is 'slight.' Given this is a single curated excerpt, confidence is low, but the tone is clearly strong positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:17:45.806Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -31,5 +31,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240514075700/https://www.nytimes.com/2018/02/22/theater/hello-dolly-review-bernadette-peters.html",
   "contentTier": "complete",
   "wordCount": 411,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She sings the Jerry Herman songs thrillingly, of course.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Green praises Peters' thoughtful, nuanced performance and her singing, but notes she's 'more disciplined' than previous stars and questions some choices. The text appears truncated which limits confidence in the full verdict. | Gemini: The review is generally positive, praising Bernadette Peters' performance and singing. However, it notes a darker underlay and some reservations about believability, leading to a score in the middle of the 'Positive' bucket. | Kimi: Green consistently praises Peters' 'delightful' stage presence and 'thrilling' vocals, appreciating her thoughtful, darker interpretation of the role despite it differing from Midler's. However, the text truncates before delivering a final verdict paragraph.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:02:42.358Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

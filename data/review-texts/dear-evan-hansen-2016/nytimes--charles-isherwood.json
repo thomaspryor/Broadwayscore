@@ -35,5 +35,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20260119124209/https://www.nytimes.com/2016/12/04/theater/dear-evan-hansen-review.html",
   "duplicateTextOf": "nytimes--ben-brantley.json",
   "wordCount": 1140,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This gorgeous heartbreaker of a musical has grown in emotional potency and is giving a performance that's not likely to be bettered on Broadway this season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'gorgeous heartbreaker,' 'marvelous,' 'remarkable,' and 'superb.' The critic calls it emotionally powerful, praises all aspects from performances to score to direction, and recommends it broadly to families and anyone who has felt like an outsider. | GPT-4o: The review is filled with superlatives and praises the performances, direction, and emotional impact of the show, making it a strong recommendation with no reservations. | Gemini: The review is overwhelmingly positive, praising the performances, direction, score, and book. The critic calls it a \"gorgeous heartbreaker\" and notes its emotional potency. | Kimi: The review offers unqualified praise for Ben Platt's 'remarkable' performance, the 'superb' direction, and the 'haunting' score, calling the show a 'gorgeous heartbreaker' that has only grown more powerful for Broadway, with the critic noting unprecedented emotional audience response.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:16:53.227Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 83,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -46,5 +46,59 @@
   "rejectionReasoning": "claude: This appears to be an incomplete excerpt that only contains personal anecdotes about seeing the original 1978 production, with no evaluation of the current Broadway revival.; openai: The text is primarily a personal anecdote about the critic's memory of the original production, not an evaluative review of the current Broadway show.; gemini: The text is mostly about the critic's memory of seeing the original production, not a review of the current revival. There's no evaluation of the current show's quality.; kimi: The text contains only biographical context about the critic's memory of the original 1978 production and mentions the current opening date, but provides no evaluation of the current Broadway production's quality, performances, or overall merit.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "I don’t recall how Fosse ended his 'Dancin’.' Cilento ends his with a real flourish. He gives each of his nearly two dozen dancers the full-star treatment, complete with his, her or their name emblazoned (lighting by David Grill) in tall letters on the upstage wall. Cilento, who appeared in the original company of 'A Chorus Line,' presents the anti-'Chorus Line' with this extended curtain call. These quick solo turns feature some of the evening’s best choreography. Here and elsewhere in the show",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "These quick solo turns feature some of the evening's best choreography.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises specific choreographic elements and the director's choices, particularly highlighting the 'real flourish' ending and 'some of the evening's best choreography.' However, the text appears truncated and the critic's memory limitations about the original add uncertainty to the overall assessment. | Gemini: The review is generally positive, highlighting the choreography and the dancers. The critic praises the ending and the way Cilento gives each dancer the \"full-star treatment.\" | Kimi: The excerpt offers specific praise for the production's staging ('real flourish') and choreography, but the text appears truncated before a final verdict is delivered, limiting certainty about the overall recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:50:06.349Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

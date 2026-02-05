@@ -46,5 +46,60 @@
   "rejectionReasoning": "claude: This appears to be a brief plot summary or show description providing historical context about the play's development, but contains no critical evaluation or recommendation about the current Broadway production.; openai: This text is a historical context about the play's past productions and does not provide any evaluation of the current Broadway production.; gemini: This is just a brief announcement of the opening, with historical context, but no evaluative content or recommendation.; kimi: The provided text consists solely of historical background about previous productions and basic information about the current cast/venue. It contains no critical evaluation, opinions on performances, direction, or writing, and offers no recommendation regarding the quality of the current Broadway production.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "If only it were a better play...A lot has changed on Broadway in 30 years, but for McNally it all comes down to changing not much more than a few tons of famous names. McNally doesn't just drop names -- he stomps on them, too...These put-downs comprise act one. In act two, the characters take turn reading the bad reviews. Brantley takes more jabs, but frankly, his New York Times reviews are much funnier than McNally's imitations. Many of the jokes would fail if not for Lane, Broderick and their ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ITS-ONLY-A-PLAY-Opens-on-Broadway-Updating-LIVE-20141009"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ITS-ONLY-A-PLAY-Opens-on-Broadway-Updating-LIVE-20141009",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If only it were a better play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds fundamental flaws in McNally's writing and structure, suggesting the show relies too heavily on name-dropping and weak jokes that only work because of Lane and Broderick's talents. The truncated ending appears to reinforce that the material fails without the star power. | GPT-4o: The review criticizes the play for relying on name-dropping and failing to deliver humor, suggesting it does not live up to expectations. The praise for Lane and Broderick is not enough to redeem the overall negative assessment. | Gemini: The review expresses disappointment with the play itself, despite acknowledging the cast's efforts. The critic implies the play relies too heavily on name-dropping and lacks substantial humor. | Kimi: The critic pans the play's writing, finding the name-dropping humor forced and inferior to actual theater criticism, while acknowledging the star cast salvages some laughs. The review text is truncated.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:23:28.534Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -38,5 +38,60 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 488,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, despite any quibbles, it remains a pleasure to watch these two old pros at work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges casting problems with Redgrave and Jones but ultimately finds the production pleasurable to watch, calls it 'box-office catnip,' and notes it's 'already selling out.' The positive elements outweigh the reservations. | GPT-4o: The review acknowledges casting issues and some lack of dramatic impact but ultimately finds pleasure in the performances of the lead actors, suggesting a positive recommendation with some reservations. The text is truncated, so the final verdict may be missing, lowering confidence. | Gemini: The review acknowledges casting issues but ultimately concludes it's a pleasure to watch the leads. The final line suggests it could run longer with recasting, indicating a positive but qualified recommendation. | Kimi: While the critic identifies significant casting weaknesses in Redgrave and Jones compared to previous productions, he ultimately praises the play as 'well-indestructible' and the production as a 'pleasure to watch,' indicating a positive recommendation with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:23:31.722Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

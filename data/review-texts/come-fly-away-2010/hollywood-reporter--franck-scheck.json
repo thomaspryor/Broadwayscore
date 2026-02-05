@@ -62,5 +62,60 @@
     "Word count too low: 170 (min: 300)"
   ],
   "wordCount": 170,
-  "tierReason": "Short text (170 words)"
+  "tierReason": "Short text (170 words)",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But despite the sensational dancing on display, the show inevitably loses impact over the course of its two-hour running time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt praises Tharp's choreography as 'striking and inventive' and acknowledges 'sensational dancing,' but the key verdict is that the show 'inevitably loses impact' over its runtime. The structure 'But despite...' signals that the negatives outweigh the positives. With only one excerpt available, this could represent a broader mixed-to-negative assessment. | GPT-4o: The review praises the choreography as 'striking and inventive' but notes that the show 'loses impact' over time, suggesting a mixed experience with both positive and negative elements. | Gemini: The review praises the choreography and dancing but notes that the show loses impact over time. The ending is described as 'properly buoyant,' suggesting a somewhat positive but not overwhelmingly enthusiastic conclusion. | Kimi: While praising Tharp's choreography as 'sensational' and 'striking,' the critic notes the production 'inevitably loses impact' over its runtime, offering a balanced assessment with both significant praise and criticism.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:08:01.948Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

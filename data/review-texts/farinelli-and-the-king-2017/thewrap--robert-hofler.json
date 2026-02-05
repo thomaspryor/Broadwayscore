@@ -48,5 +48,60 @@
   "promptVersion": "5.2.0",
   "bwwExcerpt": "Fortunately, Rylance puts his full arsenal of mannerisms on display to prevent this king from being the royal bore of Madrid. Whenever van Kampen's dialogue turns florid, he gives it a flat modern reading, and throws in an F-bomb. Elsewhere, he vocally stumbles and pauses, and lets dull phrases wither in his mouth for added comic effect. Meanwhile, Grove's queen suffers without giving much range to her desperation other than an occasional eyeball roll or nostril flare. And Crane's castrato remains glum, especially when Davies is singing. Dove delivers an appropriately spectacular entrance for the singing Farinelli at the end of Act 1, but for the most part his direction of the two Farinellis is a major waste of potentially golden opportunities.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FARINELLI-AND-THE-KING-Arrives-on-Broadway-with-Mark-Rylance-Updating-Live-20171217"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FARINELLI-AND-THE-KING-Arrives-on-Broadway-with-Mark-Rylance-Updating-Live-20171217",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dove delivers an appropriately spectacular entrance for the singing Farinelli at the end of Act 1, but for the most part his direction of the two Farinellis is a major waste of potentially golden opportunities.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises Rylance's performance and acknowledges spectacular moments, but criticizes the direction as a 'major waste of potentially golden opportunities' and finds other performances lacking range. | GPT-4o: The review highlights both positive and negative aspects. Rylance's performance is praised for adding humor, but the direction and other performances are criticized for missing opportunities. This suggests a mixed reception overall. | Gemini: The review highlights both positive and negative aspects, such as Rylance's performance and the waste of potential with the two Farinellis, resulting in a mixed assessment. | Kimi: While Mark Rylance receives enthusiastic praise for elevating the material, the review heavily criticizes the direction as a 'major waste' and finds other performances lacking. The provided text appears truncated and lacks a clear final verdict, creating ambiguity about the overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T06:29:23.654Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

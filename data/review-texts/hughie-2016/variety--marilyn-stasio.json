@@ -44,5 +44,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 649,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Whitaker's hangdog vulnerability makes it tough to believe in Erie's better days — and besides, there's no pretending that 'Hughie' is much more than a warm-up for 'Iceman.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Stasio praises the production design, atmosphere, and individual acting moments, but finds fundamental flaws in Whitaker's casting and concludes the play is merely a 'warm-up' for O'Neill's greater work. The review balances appreciation with significant reservations. | GPT-4o: The review highlights strong performances and atmospheric design but notes limitations in Whitaker's portrayal and the play's impact compared to 'Iceman.' The overall tone is mixed, appreciating elements but acknowledging significant shortcomings. | Gemini: The review praises Whitaker's performance and the set design but notes the play's limited arc and compares it unfavorably to \"The Iceman Cometh,\" suggesting it's more of a warm-up. | Kimi: While the production design receives high praise ('astonishing set design') and the direction is sensitive, the critic notes limitations in Whitaker's casting and considers the play itself minor O'Neill ('warm-up for Iceman'), recommending it conditionally for the atmospheric staging and performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:14:17.854Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

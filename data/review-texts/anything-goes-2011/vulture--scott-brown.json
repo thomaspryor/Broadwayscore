@@ -55,5 +55,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "vulture--jesse-green.json",
   "wordCount": 944,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 85,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is, in other words, a fun-machine, and it's got precious few bugs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with enthusiasm for performances, direction, and the production as a whole. The critic calls it a 'fun-machine' with 'precious few bugs' and describes watching Grey as 'a privilege not to be missed,' indicating clear recommendation despite acknowledging the thin plot. | GPT-4o: The review is filled with praise for the production, performances, and the timelessness of the show. The critic describes it as a 'fun-machine' with 'precious few bugs,' indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, highlighting the show's enduring appeal and the strength of the performances. The critic clearly enjoyed the production and recommends it. | Kimi: The review offers consistent, effusive praise for the direction, performances, and production numbers, calling it 'enormously encouraging' and a 'privilege not to be missed' with only minor, qualified observations about the plot. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:37:58.375Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

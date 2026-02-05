@@ -49,5 +49,60 @@
   "bwwExcerpt": "“John Proctor” is written in short snippets of scenes, often the crutch of a novice playwright. Danya Taymor’s direction looks to punch up all these scene changes with flashy interludes that offer blinding shots of lightning (by Natasha Katz), ominous “Carmina Burana”-esque music (by Palmer Hefferan) and a black-lit classroom set (by Amp and Teresa L. Williams) that jiggles. It’s all about as subtle as Taymor’s direction of her cast, Ebert excluded.",
   "bwwScore": 3,
   "bwwThumb": "Down",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JOHN-PROCTOR-IS-THE-VILLAIN-Opens-On-Broadway-20250414"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JOHN-PROCTOR-IS-THE-VILLAIN-Opens-On-Broadway-20250414",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "John Proctor is written in short snippets of scenes, often the crutch of a novice playwright.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic dismisses the play as amateurishly written ('novice playwright', 'crutch') and finds the direction unsubtle and flashy. The opening suggests this is part of a misguided trend of revisionist plays. | GPT-4o: The review criticizes the play's writing style as novice and the direction as unsubtle, indicating a negative assessment. However, the review lacks a clear overall verdict, leading to medium confidence. | Gemini: The review criticizes the playwrighting as novice and the direction as unsubtle, indicating a negative overall assessment despite mentioning one positive performance. | Kimi: The critic dismisses the play's structure as the work of a novice and criticizes the direction as unsubtle and overly flashy, indicating a clear negative assessment despite the truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:30:25.703Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

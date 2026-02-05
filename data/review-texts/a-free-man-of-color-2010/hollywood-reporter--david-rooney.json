@@ -44,5 +44,60 @@
   "textStatus": "truncated",
   "sourceMethod": "brightdata",
   "wordCount": 713,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Whatever flashes of brilliance it contains, there's a certain willful intellectual arrogance evident in a work that batters the spectator with two hours of zigzagging exposition and opaque characters.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising some design elements and individual performances, the critic finds the play overstuffed, self-indulgent, and hard to invest in. The review emphasizes negative elements like 'willful intellectual arrogance,' 'long hard slog,' and compares it to 'too much rich food' that leaves audiences 'over-satiated and exhausted.' | GPT-4o: The review criticizes the play for being overstuffed and self-indulgent, with performances that fail to engage. While there are some positive notes about the visual elements and certain performances, the overall tone is negative. The truncated nature of the text suggests caution, but the available content leans towards a negative assessment. | Gemini: The review describes the play as an \"overstuffed work\" that is a \"long hard slog\" to get to the good parts. While there are some positive aspects, the overall tone is mixed. | Kimi: While the critic acknowledges flashes of brilliance and strong performances from Mos and Paul Dano, the dominant verdict describes the show as a 'long hard slog' burdened by self-indulgent staging, mannered acting, and exhausting excess that overwhelms the play's insights.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T05:21:34.290Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 24,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }
