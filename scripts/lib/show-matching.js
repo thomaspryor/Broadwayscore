@@ -584,11 +584,64 @@ function loadShows() {
   return data.shows || data;
 }
 
+// ---------------------------------------------------------------------------
+// Robust title-word matching for aggregator page validation
+// Prevents wrong-show contamination from Google search results and fuzzy URL routing
+// ---------------------------------------------------------------------------
+
+const TITLE_GENERIC_WORDS = new Set([
+  'the', 'a', 'an', 'new', 'musical', 'play', 'broadway', 'show', 'revival',
+  'comedy', 'drama', 'about', 'and', 'of', 'in', 'on', 'at', 'for', 'to',
+  'is', 'it', 'my', 'all', 'be', 'or', 'no', 'so', 'do', 'we', 'up', 'if',
+  'me', 'us', 'by', 'with', 'from', 'review', 'reviews', 'roundup', 'critics',
+  'verdict', 'what', 'are', 'says', 'think', 'say',
+]);
+
+/**
+ * Check if candidateText (article title, URL slug, or page body) matches a show title.
+ *
+ * Uses three-tier matching based on meaningful-word count:
+ *   - Single-word titles: word-boundary regex (prevents "dog" matching "topdog")
+ *   - Multi-word titles: ≥50% of meaningful words must appear (min 2)
+ *   - Zero meaningful words after filtering: raw first-word substring fallback
+ *
+ * @param {string} showTitle - The show's title from shows.json
+ * @param {string} candidateText - Text to check (article title, URL slug, page body)
+ * @returns {boolean} Whether the candidate matches the show title
+ */
+function titleWordsMatch(showTitle, candidateText) {
+  const showTitleLower = showTitle.toLowerCase()
+    .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
+  const showSlugWords = showTitleLower.split(/[\s,]+/)
+    .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
+
+  const candidateLower = candidateText.toLowerCase();
+
+  if (showSlugWords.length === 0) {
+    // Fallback: raw first word substring check
+    const rawTitle = showTitleLower.split(/[\s,]+/)[0];
+    return rawTitle && rawTitle.length >= 3 && candidateLower.includes(rawTitle);
+  }
+
+  if (showSlugWords.length === 1) {
+    // Single-word: word-boundary match to prevent partial matches
+    const word = showSlugWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const wordBoundary = new RegExp(`(?:^|[\\s\\-/,.'""])${word}(?:$|[\\s\\-/,.'""])`, 'i');
+    return wordBoundary.test(candidateLower) || wordBoundary.test(candidateLower.replace(/-/g, ' '));
+  }
+
+  // Multi-word: require ≥50% of meaningful words, minimum 2
+  const matchCount = showSlugWords.filter(w => candidateLower.includes(w)).length;
+  const threshold = Math.max(2, Math.ceil(showSlugWords.length * 0.5));
+  return matchCount >= threshold;
+}
+
 module.exports = {
   matchTitleToShow,
   loadShows,
   cleanExternalTitle,
   normalizeTitle,
   titleToSlug,
+  titleWordsMatch,
   KNOWN_ALIASES,
 };

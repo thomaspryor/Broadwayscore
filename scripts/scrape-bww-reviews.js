@@ -28,7 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
-const { matchTitleToShow, loadShows } = require('./lib/show-matching');
+const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const { classifyContentTier } = require('./lib/content-quality');
 
@@ -446,10 +446,10 @@ async function discoverBwwRoundup(show, showId, options = {}) {
     return null;
   }
 
-  // Validate URL contains show title words
+  // Validate URL slug matches show title using robust word matching
   const validRoundupUrls = roundupUrls.filter(url => {
-    const urlSlug = url.split('/article/')[1]?.toLowerCase() || '';
-    return titleWords.some(w => urlSlug.includes(w));
+    const urlSlug = (url.split('/article/')[1] || '').replace(/-/g, ' ').toLowerCase();
+    return titleWordsMatch(searchTitle, urlSlug);
   });
 
   if (validRoundupUrls.length === 0) {
@@ -464,6 +464,14 @@ async function discoverBwwRoundup(show, showId, options = {}) {
       stats.roundupsFetched++;
       const html = await fetchHtml(url);
       if (html && (html.includes('critics') || html.includes('Review Roundup'))) {
+        // Validate page title actually matches show (BWW fuzzy URL routing can serve wrong articles)
+        const $ = cheerio.load(html);
+        const pageTitle = ($('title').text() + ' ' + $('h1').text());
+        if (!titleWordsMatch(searchTitle, pageTitle)) {
+          console.log(`  [SKIP] roundup page doesn't match "${searchTitle}": "${pageTitle.slice(0, 80)}"`);
+          continue;
+        }
+
         if (!options.dryRun) {
           if (!fs.existsSync(roundupArchiveDir)) fs.mkdirSync(roundupArchiveDir, { recursive: true });
           fs.writeFileSync(archivePath, html);
