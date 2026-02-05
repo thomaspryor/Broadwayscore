@@ -9,6 +9,7 @@ import { Anthropic } from '@anthropic-ai/sdk';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { diagnoseBug } from './diagnose-feedback-bug.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -131,7 +132,7 @@ Respond in this JSON format:
 /**
  * Generate markdown summary
  */
-function generateSummary(submissions, categorized) {
+function generateSummary(submissions, categorized, bugDiagnoses = []) {
   if (submissions.length === 0) {
     return 'No feedback submissions to process this week.';
   }
@@ -201,6 +202,13 @@ function generateSummary(submissions, categorized) {
       if (sub.show) summary.push(`- **Show**: ${sub.show}`);
       summary.push(`- **Message**: ${sub.message}`);
       summary.push(`- **Action**: ${item.recommendedAction}`);
+
+      // Cross-reference bug diagnosis if available
+      const diag = bugDiagnoses.find(d => d.item.submissionNumber === item.submissionNumber && d.diagnosis);
+      if (diag) {
+        summary.push(`- **Diagnosis**: ${diag.diagnosis.summary} (${diag.diagnosis.confidence} confidence) — see separate bug-diagnosis issue`);
+      }
+
       summary.push('');
     });
 
@@ -239,7 +247,37 @@ async function main() {
 
     console.log('✅ Categorization complete\n');
 
-    const summary = generateSummary(submissions, categorized);
+    // Diagnose bugs and content errors (max 5)
+    const bugDiagnoses = [];
+    const MAX_DIAGNOSES = 5;
+
+    for (const item of categorized) {
+      if (bugDiagnoses.length >= MAX_DIAGNOSES) break;
+      if (item.category !== 'Bug' && item.category !== 'Content Error') continue;
+
+      const sub = submissions[item.submissionNumber - 1];
+      if (!sub) continue;
+
+      console.log(`🔍 Diagnosing: ${item.summary}`);
+      try {
+        const diagnosis = await diagnoseBug(sub.message, sub.show || null, sub.category || null);
+        bugDiagnoses.push({ item, submission: sub, diagnosis });
+        console.log(`   ✅ ${diagnosis.confidence} confidence: ${diagnosis.summary}`);
+      } catch (err) {
+        console.error(`   ❌ Diagnosis failed: ${err.message}`);
+        bugDiagnoses.push({ item, submission: sub, diagnosis: null });
+      }
+    }
+
+    if (bugDiagnoses.length > 0) {
+      console.log(`\n✅ Diagnosed ${bugDiagnoses.filter(d => d.diagnosis).length}/${bugDiagnoses.length} bugs\n`);
+    }
+
+    // Write diagnoses for workflow to create separate issues
+    const diagnosesPath = path.join(__dirname, '../.bug-diagnoses.json');
+    fs.writeFileSync(diagnosesPath, JSON.stringify(bugDiagnoses, null, 2));
+
+    const summary = generateSummary(submissions, categorized, bugDiagnoses);
 
     console.log('=== SUMMARY ===');
     console.log(summary);

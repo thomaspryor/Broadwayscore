@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${BASE_URL}/director`,
   },
+  robots: {
+    index: false,
+    follow: true,
+  },
   openGraph: {
     title: 'Broadway Directors',
     description: 'Browse all Broadway directors and their productions with critic scores.',

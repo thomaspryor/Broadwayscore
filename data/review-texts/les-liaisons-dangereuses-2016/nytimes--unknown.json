@@ -19,7 +19,8 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
-    "show-score-playwright"
+    "show-score-playwright",
+    "playbill-verdict"
   ],
   "llmScore": {
     "score": 46,
@@ -75,5 +76,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Negative"
-  }
+  },
+  "playbillVerdictUrl": "http://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html"
 }

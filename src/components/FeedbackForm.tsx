@@ -48,13 +48,13 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
     return (
       <div className="text-center py-12">
         <div className="text-5xl mb-4">&#10003;</div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h3>
-        <p className="text-gray-600 mb-6">
+        <h3 className="text-2xl font-bold text-white mb-2">Thank You!</h3>
+        <p className="text-gray-400 mb-6">
           Your feedback has been received. We appreciate you helping improve Broadway Scorecard.
         </p>
         <button
           onClick={() => setStatus('idle')}
-          className="text-purple-600 hover:text-purple-700 font-medium"
+          className="text-purple-400 hover:text-purple-300 font-medium"
         >
           Submit another response
         </button>
@@ -62,13 +62,13 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
     );
   }
 
-  const inputClasses = 'w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-purple-600 focus:border-transparent';
+  const inputClasses = 'w-full px-4 py-3 bg-surface-overlay border border-white/10 rounded-lg text-white placeholder:text-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Name */}
       <div>
-        <label htmlFor="name" className="block text-sm font-semibold text-gray-900 mb-2">
+        <label htmlFor="name" className="block text-sm font-semibold text-gray-200 mb-2">
           Name (optional)
         </label>
         <input
@@ -82,7 +82,7 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
 
       {/* Email */}
       <div>
-        <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-2">
+        <label htmlFor="email" className="block text-sm font-semibold text-gray-200 mb-2">
           Email (optional)
         </label>
         <input
@@ -92,14 +92,14 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
           className={inputClasses}
           placeholder="your.email@example.com"
         />
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs text-gray-500/70">
           Only if you&apos;d like a response
         </p>
       </div>
 
       {/* Category */}
       <div>
-        <label htmlFor="category" className="block text-sm font-semibold text-gray-900 mb-2">
+        <label htmlFor="category" className="block text-sm font-semibold text-gray-200 mb-2">
           Category
         </label>
         <select
@@ -120,7 +120,7 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
 
       {/* Show */}
       <div>
-        <label htmlFor="show" className="block text-sm font-semibold text-gray-900 mb-2">
+        <label htmlFor="show" className="block text-sm font-semibold text-gray-200 mb-2">
           Show Name (if applicable)
         </label>
         <input
@@ -130,14 +130,14 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
           className={inputClasses}
           placeholder="e.g., Hamilton, Wicked, etc."
         />
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs text-gray-500/70">
           For content errors or feature requests related to a specific show
         </p>
       </div>
 
       {/* Message */}
       <div>
-        <label htmlFor="message" className="block text-sm font-semibold text-gray-900 mb-2">
+        <label htmlFor="message" className="block text-sm font-semibold text-gray-200 mb-2">
           Message <span className="text-red-500">*</span>
         </label>
         <textarea
@@ -155,7 +155,7 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
 
       {/* Error message */}
       {status === 'error' && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+        <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
           {errorMessage}
         </div>
       )}
@@ -168,7 +168,7 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 bg-brand text-gray-900 font-semibold rounded-lg hover:bg-brand-hover transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {status === 'submitting' ? 'Sending...' : 'Send Feedback'}
         </button>

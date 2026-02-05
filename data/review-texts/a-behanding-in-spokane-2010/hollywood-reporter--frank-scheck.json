@@ -15,7 +15,7 @@
   "isFullReview": false,
   "textWordCount": 191,
   "archivePath": "data/archives/reviews/a-behanding-in-spokane-2010/hollywood-reporter--frank-scheck_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T04:11:16.362Z",
+  "textFetchedAt": "2026-02-05T04:39:05.326Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -25,16 +25,10 @@
       "error": "Skipped (known-blocked site)"
     },
     {
-      "tier": 1.5,
-      "method": "browserbase",
-      "success": false,
-      "error": "Insufficient text: 53 chars"
-    },
-    {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "ScrapingBee error (404): Request failed with status code 404"
+      "error": "ScrapingBee error (500): Request failed with status code 500"
     },
     {
       "tier": 3,

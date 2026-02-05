@@ -48,8 +48,8 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
     return (
       <div className="text-center py-12">
         <div className="text-5xl mb-4">&#10003;</div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">Review Submitted!</h3>
-        <p className="text-gray-600 mb-2">
+        <h3 className="text-2xl font-bold text-white mb-2">Review Submitted!</h3>
+        <p className="text-gray-400 mb-2">
           Thank you for helping expand our database.
         </p>
         <p className="text-gray-500 text-sm mb-6">
@@ -57,7 +57,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
         </p>
         <button
           onClick={() => setStatus('idle')}
-          className="text-purple-600 hover:text-purple-700 font-medium"
+          className="text-purple-400 hover:text-purple-300 font-medium"
         >
           Submit another review
         </button>
@@ -65,13 +65,13 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
     );
   }
 
-  const inputClasses = 'w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-purple-600 focus:border-transparent';
+  const inputClasses = 'w-full px-4 py-3 bg-surface-overlay border border-white/10 rounded-lg text-white placeholder:text-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Review URL */}
       <div>
-        <label htmlFor="review_url" className="block text-sm font-semibold text-gray-900 mb-2">
+        <label htmlFor="review_url" className="block text-sm font-semibold text-gray-200 mb-2">
           Review URL <span className="text-red-500">*</span>
         </label>
         <input
@@ -82,14 +82,14 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           placeholder="https://www.nytimes.com/2024/04/25/theater/..."
           required
         />
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs text-gray-500/70">
           The full URL of the review article
         </p>
       </div>
 
       {/* Show Name */}
       <div>
-        <label htmlFor="show_name" className="block text-sm font-semibold text-gray-900 mb-2">
+        <label htmlFor="show_name" className="block text-sm font-semibold text-gray-200 mb-2">
           Show Name
         </label>
         <input
@@ -99,14 +99,14 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           className={inputClasses}
           placeholder="Hamilton, Wicked, Stereophonic, etc."
         />
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs text-gray-500/70">
           Optional &mdash; we&apos;ll auto-detect if not provided
         </p>
       </div>
 
       {/* Outlet Name */}
       <div>
-        <label htmlFor="outlet_name" className="block text-sm font-semibold text-gray-900 mb-2">
+        <label htmlFor="outlet_name" className="block text-sm font-semibold text-gray-200 mb-2">
           Outlet Name
         </label>
         <input
@@ -116,14 +116,14 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           className={inputClasses}
           placeholder="The New York Times, Variety, Vulture, etc."
         />
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs text-gray-500/70">
           Optional &mdash; we&apos;ll auto-detect if not provided
         </p>
       </div>
 
       {/* Critic Name */}
       <div>
-        <label htmlFor="critic_name" className="block text-sm font-semibold text-gray-900 mb-2">
+        <label htmlFor="critic_name" className="block text-sm font-semibold text-gray-200 mb-2">
           Critic Name
         </label>
         <input
@@ -133,14 +133,14 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           className={inputClasses}
           placeholder="Jesse Green, Naveen Kumar, etc."
         />
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs text-gray-500/70">
           Optional &mdash; we&apos;ll auto-detect if not provided
         </p>
       </div>
 
       {/* Additional Notes */}
       <div>
-        <label htmlFor="notes" className="block text-sm font-semibold text-gray-900 mb-2">
+        <label htmlFor="notes" className="block text-sm font-semibold text-gray-200 mb-2">
           Additional Notes
         </label>
         <textarea
@@ -157,7 +157,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
 
       {/* Error message */}
       {status === 'error' && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+        <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
           {errorMessage}
         </div>
       )}
@@ -170,7 +170,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 bg-brand text-gray-900 font-semibold rounded-lg hover:bg-brand-hover transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {status === 'submitting' ? 'Submitting...' : 'Submit Review'}
         </button>

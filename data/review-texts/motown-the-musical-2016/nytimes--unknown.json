@@ -19,7 +19,8 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
-    "show-score-playwright"
+    "show-score-playwright",
+    "playbill-verdict"
   ],
   "llmScore": {
     "score": 74,
@@ -75,5 +76,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "playbillVerdictUrl": "http://theater.nytimes.com/2013/04/15/theater/reviews/motown-the-musical-berry-gordys-story.html?hpw"
 }

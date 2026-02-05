@@ -103,7 +103,7 @@ async function googleSearch(query) {
     return [];
   }
 
-  const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(query)}&nb_results=5`;
+  const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(query)}&nb_results=10`;
 
   return new Promise((resolve, reject) => {
     const req = https.get(apiUrl, (res) => {
@@ -562,12 +562,11 @@ async function processShowViaGoogle(show, showId, shows) {
         ? new Date(showEntry.closingDate).getFullYear() : new Date().getFullYear();
       const showUpperBound = showOpeningYear ? Math.max(showOpeningYear + 2, showClosingYear + 1) : null;
 
-      const GENERIC_WORDS = new Set(['the', 'a', 'an', 'new', 'musical', 'play', 'broadway', 'show', 'revival', 'comedy', 'drama', 'about', 'and', 'of', 'in', 'on', 'at', 'for']);
+      const GENERIC_WORDS = new Set(['the', 'a', 'an', 'new', 'musical', 'play', 'broadway', 'show', 'revival', 'comedy', 'drama', 'about', 'and', 'of', 'in', 'on', 'at', 'for', 'to', 'is', 'it', 'my', 'all', 'be', 'or', 'no', 'so', 'do', 'we', 'up', 'if', 'me', 'us', 'by']);
       const showTitleLower = show.title.toLowerCase()
         .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
       const showSlugWords = showTitleLower.split(/[\s,]+/)
         .filter(w => w.length > 2 && !GENERIC_WORDS.has(w));
-      const firstWord = showSlugWords[0] || showTitleLower.split(/[\s,]+/)[0];
 
       // Try each candidate URL — skip non-Broadway/non-matching, use first good one
       let found = false;
@@ -592,9 +591,32 @@ async function processShowViaGoogle(show, showId, shows) {
 
         const pageTitleLower = pageTitle.toLowerCase();
         const articleSlug = (articleUrl.split('/article/')[1] || '').toLowerCase();
-        const titleHasFirstWord = firstWord && pageTitleLower.includes(firstWord);
-        const urlHasFirstWord = firstWord && articleSlug.includes(firstWord);
-        if (!titleHasFirstWord && !urlHasFirstWord) {
+        const combinedText = pageTitleLower + ' ' + articleSlug;
+
+        // Multi-word title matching: require a significant portion of title words
+        // to appear in the article title or URL slug
+        let titleMatch = false;
+        if (showSlugWords.length === 0) {
+          // Fallback for titles that reduce to nothing after filtering:
+          // use the raw title (lowercased) as a substring check
+          const rawTitle = showTitleLower.split(/[\s,]+/)[0];
+          titleMatch = rawTitle && rawTitle.length >= 3 && combinedText.includes(rawTitle);
+        } else if (showSlugWords.length === 1) {
+          // Single-word titles (e.g., "Shucked", "Hadestown", "Hamilton"):
+          // require word-boundary match to prevent partial matches
+          // (e.g., "dog" should NOT match "topdog")
+          const word = showSlugWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const wordBoundary = new RegExp(`(?:^|[\\s\\-/,.'"])${word}(?:$|[\\s\\-/,.'"])`, 'i');
+          titleMatch = wordBoundary.test(pageTitleLower) || wordBoundary.test(articleSlug.replace(/-/g, ' '));
+        } else {
+          // Multi-word titles: require at least 50% of meaningful words to match,
+          // with a minimum of 2 matching words
+          const matchCount = showSlugWords.filter(w => combinedText.includes(w)).length;
+          const threshold = Math.max(2, Math.ceil(showSlugWords.length * 0.5));
+          titleMatch = matchCount >= threshold;
+        }
+
+        if (!titleMatch) {
           console.log(`    [SKIP] Article doesn't match show "${show.title}": "${pageTitle.slice(0, 80)}"`);
           continue;
         }
