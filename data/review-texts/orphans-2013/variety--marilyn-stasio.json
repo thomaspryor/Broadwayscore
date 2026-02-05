@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2013/legit/reviews/orphans-1200333693/",
   "publishDate": "April 18, 2013",
-  "fullText": "Baldwin brings emotional gravity and psychological complexity to his role as Harold, the wealthy businessman who becomes a father figure to the two brothers.",
-  "isFullReview": false,
+  "fullText": "'Orphans' follows 'Testament of Mary' as the latest Tony nominee to close\n\nThe Broadway revival of \"Orphans\" is the latest Tony contender to post a closing notice, with the Alec Baldwin topliner set to shutter later this month.\n\nLike “The Testament of Mary,” the Fiona Shaw topliner that closed Sunday despite earning a trio of Tony nods, “Orphans” did receive some awards recognition but it evidently wasn’t enough to boost audience attention. Penned by Lyle Kessler and helmed by Daniel Sullivan, “Orphans” snagged a nom for play revival and one for Tom Sturridge in the lead actor category.\n\nWhereas “Testament” was plagued by low sales from its first perf, “Orphans” B.O. began promisingly, with the show initially earning more than $650,000 in its first full week of previews. But the production’s weekly sales have never again been so strong, with the consistent sales slide over the past four weeks indicating the bottom had begun to fall out.\n\nProduction attracted media attention during its rehearsal period when original co-star Shia LaBeouf was dropped from the show amid rumors of the actor’s backstage volatility. Ben Foster jumped aboard to appear alongside Baldwin and Sturridge in the three-character play.\n\nIt’s unusual to have two shows land Tony noms in major categories and then throw in the towel before the ceremony. On the other hand, most legiters believe the new musical award is the only Tony that can really move the needle on ticket sales; producers of “Orphans” seem to have decided that any awards attention couldn’t counteract the box office slippage.\n\nWith a producing team led by Frederick Zollo and Robert Cole (“A Steady Rain“), “Orphans” shutters at the Gerald Schoenfeld Theater May 19.",
+  "isFullReview": true,
   "dtliExcerpt": "Baldwin brings emotional gravity and psychological complexity to his role as Harold, the wealthy businessman who becomes a father figure to the two brothers.",
   "originalScore": null,
   "assignedScore": null,
@@ -18,7 +18,7 @@
   "showScoreExcerpt": "Baldwin brings emotional gravity and psychological complexity to his role as Harold, the wealthy businessman who becomes a father figure to the two brothers.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "http://variety.com/2013/legit/reviews/legit-review-orphans-1200387387/",
   "sources": [
     "web-search",
@@ -28,5 +28,49 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is a single descriptive sentence about a performance, not a review with any evaluative content or recommendation; openai: The text is a single sentence focusing on a performance, lacking overall evaluation or recommendation of the show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "textWordCount": 281,
+  "archivePath": "data/archives/reviews/orphans-2013/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T05:25:05.994Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 281 (min: 300)"
+  ],
+  "wordCount": 281,
+  "tierReason": "Short text (281 words)"
 }
