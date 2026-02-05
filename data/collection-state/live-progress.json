@@ -1,51 +1,56 @@
 {
-  "updatedAt": "2026-02-05T01:39:37.507Z",
-  "processed": 5,
-  "failed": 65,
-  "successRate": "7.1%",
+  "updatedAt": "2026-02-05T01:45:10.596Z",
+  "processed": 7,
+  "failed": 63,
+  "successRate": "10.0%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 3
+    "brightdata": 1,
+    "archive": 6
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-05T00:53:28.491Z",
+      "t": "2026-02-05T00:55:29.767Z",
       "event": "bb-session",
-      "session": "30e74c12",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/1776-broadway-review-1235228615"
+      "session": "35d2802e",
+      "url": "https://www.vulture.com/2019/12/theater-review-a-christmas-carol-on-broadway.htm"
     },
     {
-      "t": "2026-02-05T00:54:19.467Z",
-      "event": "bb-session",
-      "session": "c2364ec9",
-      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
-    },
-    {
-      "t": "2026-02-05T00:56:25.060Z",
-      "event": "bb-session",
-      "session": "728af654",
-      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
-    },
-    {
-      "t": "2026-02-05T00:58:54.288Z",
-      "event": "bb-session",
-      "session": "13d2c5a9",
-      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
-    },
-    {
-      "t": "2026-02-05T00:59:13.002Z",
+      "t": "2026-02-05T00:55:31.846Z",
       "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-05T01:00:30.978Z",
+      "t": "2026-02-05T00:56:04.862Z",
       "event": "bb-session",
-      "session": "9a46df43",
-      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
+      "session": "69122a91",
+      "url": "http://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-1256271"
+    },
+    {
+      "t": "2026-02-05T00:56:37.918Z",
+      "event": "bb-session",
+      "session": "3fe3b6e5",
+      "url": "https://variety.com/2019/legit/reviews/christmas-carol-review-broadway-campbell-"
+    },
+    {
+      "t": "2026-02-05T00:58:23.128Z",
+      "event": "bb-session",
+      "session": "0d32c0ce",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-christmas-carol-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-05T00:58:25.186Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-05T01:00:12.173Z",
+      "event": "bb-session",
+      "session": "0c9798c2",
+      "url": "http://www.hollywoodreporter.com/review/a-raisin-sun-theater-review-693457"
     }
   ]
 }

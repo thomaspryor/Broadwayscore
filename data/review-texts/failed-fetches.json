@@ -12700,42 +12700,6 @@
     "timestamp": "2026-02-04T20:24:35.944Z"
   },
   {
-    "reviewId": "bob-fosses-dancin-2023/nyt-theater--jonathan-mandell.json",
-    "showId": "bob-fosses-dancin-2023",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2023/03/19/bob-fosses-dancin-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): chicago, giant, gypsy, new york, new york, company...",
-    "textLength": 8405,
-    "timestamp": "2026-02-04T20:27:53.484Z"
-  },
-  {
-    "reviewId": "bob-fosses-dancin-2023/nytg--gillian-russo.json",
-    "showId": "bob-fosses-dancin-2023",
-    "outlet": "New York Theatre Guide",
-    "critic": "Gillian Russo",
-    "url": "https://www.newyorktheatreguide.com/reviews/bob-fosses-dancin-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): proof, home, company, the audience, cabaret...",
-    "textLength": 4388,
-    "timestamp": "2026-02-04T20:28:04.322Z"
-  },
-  {
-    "reviewId": "bob-fosses-dancin-2023/nytimes--jesse-green.json",
-    "showId": "bob-fosses-dancin-2023",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2023/03/19/theater/bob-fosses-dancin-review-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): chicago, company, cabaret, hair, once...",
-    "textLength": 7159,
-    "timestamp": "2026-02-04T20:29:18.398Z"
-  },
-  {
     "reviewId": "boeingboeing-2008/nytimes--ben-brantley.json",
     "showId": "boeingboeing-2008",
     "outlet": "The New York Times",
@@ -13550,5 +13514,65 @@
     "garbageReason": "Multiple shows mentioned (7): home, all the way, hair, once, war horse...",
     "textLength": 12960,
     "timestamp": "2026-02-05T01:39:37.495Z"
+  },
+  {
+    "reviewId": "bob-fosses-dancin-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "bob-fosses-dancin-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/03/19/bob-fosses-dancin-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): chicago, giant, gypsy, new york, new york, company...",
+    "textLength": 8405,
+    "timestamp": "2026-02-05T01:40:57.347Z"
+  },
+  {
+    "reviewId": "bob-fosses-dancin-2023/nytg--gillian-russo.json",
+    "showId": "bob-fosses-dancin-2023",
+    "outlet": "New York Theatre Guide",
+    "critic": "Gillian Russo",
+    "url": "https://www.newyorktheatreguide.com/reviews/bob-fosses-dancin-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): proof, home, company, the audience, cabaret...",
+    "textLength": 4388,
+    "timestamp": "2026-02-05T01:41:06.366Z"
+  },
+  {
+    "reviewId": "bob-fosses-dancin-2023/nytimes--jesse-green.json",
+    "showId": "bob-fosses-dancin-2023",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2023/03/19/theater/bob-fosses-dancin-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): chicago, company, cabaret, hair, once...",
+    "textLength": 7159,
+    "timestamp": "2026-02-05T01:41:09.547Z"
+  },
+  {
+    "reviewId": "born-yesterday-2011/variety--marilyn-stasio.json",
+    "showId": "born-yesterday-2011",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "http://www.variety.com/review/VE1117945077",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): junk, the audience, venus in fur, rain, elling...",
+    "textLength": 4476,
+    "timestamp": "2026-02-05T01:45:02.875Z"
+  },
+  {
+    "reviewId": "born-yesterday-2011/vulture--scott-brown.json",
+    "showId": "born-yesterday-2011",
+    "outlet": "New York Magazine",
+    "critic": "Scott Brown",
+    "url": "http://nymag.com/daily/entertainment/2011/04/theater_review_a_born_yesterda.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): home, purpose, smash, betrayal, tina...",
+    "textLength": 13339,
+    "timestamp": "2026-02-05T01:45:10.588Z"
   }
 ]
