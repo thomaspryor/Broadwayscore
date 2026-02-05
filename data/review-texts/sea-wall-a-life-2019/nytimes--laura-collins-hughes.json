@@ -6,7 +6,8 @@
   "url": "https://www.nytimes.com/2019/08/08/theater/sea-wall-a-life-review-broadway-gyllenhaal.html?smtyp=cur&smid=tw-nytimesarts",
   "source": "bww-reviews",
   "sources": [
-    "bww-reviews"
+    "bww-reviews",
+    "show-score-playwright"
   ],
   "bwwExcerpt": "Directed by Carrie Cracknell, 'Sea Wall/A Life' - a hit downtown early this year, at the Public Theater - is the most stripped-down storytelling on Broadway right now. The quiet spectacle these plays offer is in the acting of tragicomedies of love and loss, young men's stories about fatherhood and family, and about the hole that grief can blast right through a person's center.",
   "bwwScore": 8,
@@ -37,5 +38,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text cuts off mid-article with an error message about JavaScript and verifying access, making it impossible to determine the critic's verdict on the show.; openai: The text includes a technical error message indicating issues with retrieving the full article content, making it unscoreable.; gemini: The review is cut off abruptly, preventing a clear understanding of the overall recommendation.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "showScoreExcerpt": "CRITIC’S PICK \"Quiet Tragicomedies of Love and Loss: In a tender pair of monologues, Tom Sturridge and Jake Gyllenhaal portray young fathers shaken out of complacency.\"\n\nRead more"
 }

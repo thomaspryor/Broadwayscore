@@ -23,40 +23,7 @@
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is a brief plot summary or description with no critical evaluation, opinion, or recommendation about the production; openai: The text is a brief description of the play's themes and subject matter, not an evaluative review of the Broadway production.; gemini: This is a plot summary with no evaluative content or critical opinion.",
   "promptVersion": "5.2.0",
-  "textWordCount": 412,
-  "archivePath": "data/archives/reviews/indecent-2017/forward--jesse-green_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T18:00:26.018Z",
-  "fetchMethod": "playwright",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": true
-    }
-  ],
-  "fetchTier": 1,
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "incomplete",
-  "sourceMethod": "playwright",
-  "textIssues": [
-    "Show title not found in text"
-  ],
-  "showNotMentioned": true,
-  "wrongFullText": "By Daniel J. Solomon March 27, 2017 After President Trump’s effort to repeal and replace Obamacare came to naught, Senate Minority Leader Chuck Schumer had a message for the beleaguered commander-in-chief: the art of the deal is different in Washington, D.C. “You cannot run the presidency like you run a real estate deal. You can’t tweet your way through it,” the New York senator told ABC’s George Stephanopoulos on Sunday. “You can’t threaten and intimidate and say I’ll walk away. It’s more complicated.” He also said that so-called Trumpcare represented the goals of “hard-right wealthy special interests.” Democrats have been reveling in the administration’s defeat last week, when Republicans in the House were forced to pull an Obamacare replacement from the floor without a vote, after it became clear the measure would not pass. Trump campaigned on a promise to revamp the healthcare system, lowering costs and increasing quality and access. But for now, the White House plans to leave Obamacare in place and move to tax reform. Schumer predicted that if Trump and Republicans are not willing to compromise on overhauling the tax code “they’ll lose again.” Contact Daniel J. Solomon at solomon@forward.com or on Twitter @DanielJSolomon Daniel J. Solomon is the former Assistant to the Editor/News Writer at the Forward. Originally from Queens, he attended Harvard as an undergraduate, where he wrote his senior thesis on French-Jewish intellectual history. He is excited to have returned to New York after his time in Massachusetts. Daniel’s passions include folk music, cycling, and pointed argument. Thoughtful, balanced reporting from the Forward and around the web, bringing you updated news and analysis each day. 100% of profits support our journalism 100% of profits support our journalism Please read before republishing We’re happy to make this story available to republish for free, unless it originated with JTA, Haaretz or another publication (as indicated on the article) and as long as you follow our guidelines. You must comply with the following: See our full guidelines for more information, and this guide for detail about canonical URLs. To republish, copy the HTML by clicking on the yellow button to the right; it includes our tracking pixel, all paragraph styles and hyperlinks, the author byline and credit to the Forward. It does not include images; to avoid copyright violations, you must add them manually, following our guidelines. Please email us at editorial@forward.com, subject line “republish,” with any questions or to let us know what stories you’re picking up.",
-  "misattributedFullText": true,
-  "extractedByline": "Daniel J. Solomon",
-  "expectedCritic": "Jesse Green"
+  "sources": [
+    "web-search"
+  ]
 }

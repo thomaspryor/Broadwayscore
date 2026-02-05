@@ -73,29 +73,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Mixed"
   },
-  "needsRescore": true,
-  "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 63,
-  "textWordCount": 272,
-  "archivePath": "data/archives/reviews/a-christmas-carol-2022/wsj--charles-isherwood_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T17:56:22.330Z",
-  "fetchMethod": "archive",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": true
-    }
-  ],
-  "fetchTier": 4,
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
-  "textStatus": "truncated",
-  "sourceMethod": "archive",
-  "archiveOrgTimestamp": "20230526232837",
-  "archiveOrgUrl": "http://web.archive.org/web/20230526232837/https://www.wsj.com/articles/a-christmas-carol-and-sandra-reviews-out-of-one-many-11669242345",
-  "wordCount": 272,
-  "tierReason": "Short text (272 words)"
+  "sources": [
+    "show-score-playwright"
+  ]
 }
