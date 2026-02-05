@@ -1738,7 +1738,7 @@ function parseRating(rating, outletId) {
 /**
  * Main review gathering for a single show
  */
-async function gatherReviewsForShow(showId) {
+async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   console.log(`\n${'='.repeat(60)}`);
   console.log(`Gathering reviews for: ${showId}`);
   console.log('='.repeat(60));
@@ -1851,35 +1851,39 @@ async function gatherReviewsForShow(showId) {
   await sleep(DELAY_MS);
 
   // STEP 2: Search ALL outlets via web search (comprehensive coverage)
-  console.log(`\n[2/4] Searching all ${outlets.length} outlets via web search...`);
+  if (aggregatorsOnly) {
+    console.log(`\n[2/4] SKIPPED web search (--aggregators-only mode)`);
+  } else {
+    console.log(`\n[2/4] Searching all ${outlets.length} outlets via web search...`);
 
-  // Search ALL tiers - we're a comprehensive site, every review matters
-  // Tier 1 outlets first, then Tier 2, then Tier 3
-  const allOutlets = outlets.sort((a, b) => a.tier - b.tier);
+    // Search ALL tiers - we're a comprehensive site, every review matters
+    // Tier 1 outlets first, then Tier 2, then Tier 3
+    const allOutlets = outlets.sort((a, b) => a.tier - b.tier);
 
-  for (const outlet of allOutlets) {
-    process.stdout.write(`  ${outlet.name}... `);
+    for (const outlet of allOutlets) {
+      process.stdout.write(`  ${outlet.name}... `);
 
-    const result = await searchForReview(show.title, year, outlet);
+      const result = await searchForReview(show.title, year, outlet);
 
-    if (result && result.url) {
-      console.log('✓ Found');
-      foundReviews.push({
-        showId,
-        outletId: outlet.id,
-        outlet: outlet.name,
-        criticName: result.critic,
-        url: result.url,
-        publishDate: normalizePublishDate(result.publishDate),
-        excerpt: result.excerpt,
-        originalRating: result.originalRating,
-        source: 'web-search'
-      });
-    } else {
-      console.log('✗');
+      if (result && result.url) {
+        console.log('✓ Found');
+        foundReviews.push({
+          showId,
+          outletId: outlet.id,
+          outlet: outlet.name,
+          criticName: result.critic,
+          url: result.url,
+          publishDate: normalizePublishDate(result.publishDate),
+          excerpt: result.excerpt,
+          originalRating: result.originalRating,
+          source: 'web-search'
+        });
+      } else {
+        console.log('✗');
+      }
+
+      await sleep(DELAY_MS);
     }
-
-    await sleep(DELAY_MS);
   }
 
   // STEP 3: Deduplicate and create review files
@@ -1894,42 +1898,99 @@ async function gatherReviewsForShow(showId) {
     }
   }
 
-  // [3b/4] Merge BWW excerpt-only reviews into existing files
+  // [3b/4] Merge BWW excerpt-only reviews into existing files, create stubs for unmatched
   // BWW roundups provide excerpts but no individual URLs, so we merge them into existing files
-  const bwwReviews = foundReviews.filter(r => r.source === 'bww-roundup' && !r.url && r.bwwExcerpt);
-  if (bwwReviews.length > 0) {
+  // or create stub files for reviews that don't match any existing file
+  const rawBwwReviews = foundReviews.filter(r => r.source === 'bww-roundup' && !r.url && r.bwwExcerpt);
+  if (rawBwwReviews.length > 0) {
+    // Deduplicate BWW reviews by outlet+critic to prevent duplicate stubs from roundup format overlap
+    const bwwSeen = new Set();
+    const bwwReviews = [];
+    for (const r of rawBwwReviews) {
+      const key = `${normalizeOutlet(r.outlet || r.outletId)}|${normalizeCritic(r.criticName)}`;
+      if (!bwwSeen.has(key)) {
+        bwwSeen.add(key);
+        bwwReviews.push(r);
+      }
+    }
+    if (bwwReviews.length < rawBwwReviews.length) {
+      console.log(`    Deduplicated ${rawBwwReviews.length} → ${bwwReviews.length} BWW excerpts`);
+    }
+
     console.log(`\n[3b/4] Merging ${bwwReviews.length} BWW excerpts into existing files...`);
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-    if (fs.existsSync(showDir)) {
-      const existingFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
-      let merged = 0;
-      for (const bwwReview of bwwReviews) {
-        const criticNorm = normalizeCritic(bwwReview.criticName);
-        const outletNorm = normalizeOutlet(bwwReview.outlet || bwwReview.outletId);
+    fs.mkdirSync(showDir, { recursive: true });
+    const existingFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+    let merged = 0;
+    let stubsCreated = 0;
 
-        for (const file of existingFiles) {
-          const expectedPattern = `${outletNorm}--${criticNorm}`;
-          if (file.startsWith(expectedPattern + '.json') || file.startsWith(expectedPattern + '-') ||
-              file.includes(`--${criticNorm}.json`) || file.includes(`--${criticNorm}-`)) {
-            const filePath = path.join(showDir, file);
-            const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    for (const bwwReview of bwwReviews) {
+      const criticNorm = normalizeCritic(bwwReview.criticName);
+      const outletNorm = normalizeOutlet(bwwReview.outlet || bwwReview.outletId);
 
-            if (!data.bwwExcerpt) {
-              data.bwwExcerpt = bwwReview.bwwExcerpt;
-              data.bwwRoundupUrl = bwwReview.bwwRoundupUrl;
-              if (!data.sources) data.sources = [];
-              if (!data.sources.includes('bww-roundup')) data.sources.push('bww-roundup');
+      let matched = false;
+      for (const file of existingFiles) {
+        const expectedPattern = `${outletNorm}--${criticNorm}`;
+        if (file.startsWith(expectedPattern + '.json') || file.startsWith(expectedPattern + '-') ||
+            file.includes(`--${criticNorm}.json`) || file.includes(`--${criticNorm}-`)) {
+          const filePath = path.join(showDir, file);
+          const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-              fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
-              console.log(`    [BWW] ${file}`);
-              merged++;
-            }
-            break;
+          if (!data.bwwExcerpt) {
+            data.bwwExcerpt = bwwReview.bwwExcerpt;
+            data.bwwRoundupUrl = bwwReview.bwwRoundupUrl;
+            if (bwwReview.bwwThumb) data.bwwThumb = bwwReview.bwwThumb;
+            if (!data.sources) data.sources = [];
+            if (!data.sources.includes('bww-roundup')) data.sources.push('bww-roundup');
+
+            // Atomic write: .tmp then rename
+            const tmpPath = filePath + '.tmp';
+            fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2) + '\n');
+            fs.renameSync(tmpPath, filePath);
+            console.log(`    [BWW merged] ${file}`);
+            merged++;
           }
+          matched = true;
+          break;
         }
       }
-      console.log(`    Merged BWW data into ${merged} existing files`);
+
+      // Create stub file for unmatched BWW excerpts
+      if (!matched) {
+        const filename = generateReviewFilename(bwwReview.outlet || bwwReview.outletId, bwwReview.criticName);
+        const filePath = path.join(showDir, filename);
+
+        // Don't overwrite existing files (could exist from a different source)
+        if (!fs.existsSync(filePath)) {
+          const stub = {
+            showId,
+            outletId: outletNorm,
+            outlet: bwwReview.outlet || outletNorm,
+            criticName: bwwReview.criticName,
+            url: null,
+            publishDate: null,
+            fullText: null,
+            isFullReview: false,
+            bwwExcerpt: bwwReview.bwwExcerpt,
+            bwwRoundupUrl: bwwReview.bwwRoundupUrl || null,
+            bwwThumb: bwwReview.bwwThumb || null,
+            showScoreExcerpt: null,
+            contentTier: 'excerpt',
+            contentTierReason: 'Only aggregator excerpts available',
+            source: 'bww-roundup',
+            sources: ['bww-roundup']
+          };
+
+          // Atomic write: .tmp then rename
+          const tmpPath = filePath + '.tmp';
+          fs.writeFileSync(tmpPath, JSON.stringify(stub, null, 2) + '\n');
+          fs.renameSync(tmpPath, filePath);
+          console.log(`    [BWW stub] ${filename}`);
+          stubsCreated++;
+        }
+      }
     }
+    console.log(`    Merged BWW data into ${merged} existing files, created ${stubsCreated} new stubs`);
   }
 
   // Summary
@@ -1982,23 +2043,31 @@ async function main() {
   }
 
   const showIds = showsArg.replace('--shows=', '').split(',').map(s => s.trim());
+  const aggregatorsOnly = args.includes('--aggregators-only');
 
   console.log('========================================');
   console.log('Broadway Review Gatherer');
   console.log('========================================');
   console.log(`Shows to process: ${showIds.join(', ')}`);
-  console.log(`ANTHROPIC_API_KEY: ${process.env.ANTHROPIC_API_KEY ? 'Set' : 'NOT SET'}`);
+  console.log(`Mode: ${aggregatorsOnly ? 'Aggregators only (fast)' : 'Full (aggregators + web search)'}`);
+  if (!aggregatorsOnly) {
+    console.log(`ANTHROPIC_API_KEY: ${process.env.ANTHROPIC_API_KEY ? 'Set' : 'NOT SET'}`);
+  }
 
   const results = [];
 
   for (const showId of showIds) {
-    const result = await gatherReviewsForShow(showId);
+    const result = await gatherReviewsForShow(showId, aggregatorsOnly);
     results.push(result);
     await sleep(2000); // Delay between shows
   }
 
-  // Rebuild reviews.json
-  await rebuildReviewsJson();
+  // Rebuild reviews.json (skip in aggregators-only mode — caller rebuilds once at end)
+  if (aggregatorsOnly) {
+    console.log('\nSkipping rebuild (--aggregators-only mode)');
+  } else {
+    await rebuildReviewsJson();
+  }
 
   // Final summary
   console.log('\n========================================');

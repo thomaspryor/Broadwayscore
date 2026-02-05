@@ -1,4 +1,4 @@
-# Close aggregator coverage gaps — fetch missing archives, re-audit, gather missing reviews
+# Close aggregator coverage gaps — audit, gather missing reviews in parallel, rebuild
 # Era-prioritized: most recent shows first
 name: Close Coverage Gaps
 
@@ -16,11 +16,11 @@ on:
           - '2011-2015'
           - 'pre-2011'
           - 'all'
-      skip_fetch:
-        description: 'Skip archive fetching (just re-audit and gather gaps)'
+      parallel_jobs:
+        description: 'Number of parallel gather jobs (1-10)'
         required: false
-        default: false
-        type: boolean
+        default: '5'
+        type: string
       dry_run:
         description: 'Dry run (audit only, no gathering)'
         required: false
@@ -31,22 +31,31 @@ permissions:
   contents: write
 
 jobs:
-  # Job 1: Prepare show list for the selected era
+  # Job 1: Audit coverage, identify gap shows, partition into batches
   prepare:
-    name: Prepare show list
+    name: Prepare & audit
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     outputs:
-      show_ids: ${{ steps.filter.outputs.show_ids }}
+      matrix: ${{ steps.partition.outputs.matrix }}
+      job_count: ${{ steps.partition.outputs.job_count }}
+      gap_shows: ${{ steps.audit.outputs.gap_shows }}
+      gap_count: ${{ steps.audit.outputs.gap_count }}
+      truly_missing: ${{ steps.audit.outputs.truly_missing }}
       show_count: ${{ steps.filter.outputs.show_count }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Filter shows by era
         id: filter
@@ -81,182 +90,108 @@ jobs:
           echo "show_count=$SHOW_COUNT" >> $GITHUB_OUTPUT
           echo "Era: $ERA — $SHOW_COUNT shows"
 
-  # Job 2: Fetch missing DTLI/SS/BWW archives
-  fetch-archives:
-    name: Fetch DTLI/SS/BWW archives
-    needs: prepare
-    if: ${{ inputs.skip_fetch != true }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright browsers
-        run: npx playwright install chromium
-
-      - name: Fetch missing aggregator pages
-        env:
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-        run: |
-          SHOWS="${{ needs.prepare.outputs.show_ids }}"
-          echo "Fetching archives for ${{ needs.prepare.outputs.show_count }} shows..."
-
-          # Fetch each aggregator (skip existing archives)
-          npx tsx scripts/fetch-aggregator-pages.ts --aggregator all --shows "$SHOWS" || true
-
-      - name: Commit archives
-        run: |
-          if git diff --quiet data/aggregator-archive/; then
-            echo "No new archives"
-            exit 0
-          fi
-
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add data/aggregator-archive/
-          CHANGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
-          git commit -m "data: Fetch $CHANGED aggregator archives (${{ inputs.era }})
-
-          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-
-          for i in 1 2 3 4 5; do
-            if git push origin main; then
-              echo "Push succeeded on attempt $i"
-              break
-            fi
-            echo "Push failed (attempt $i), rebasing..."
-            git checkout -- . 2>/dev/null || true
-            git clean -fd 2>/dev/null || true
-            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
-            sleep $((RANDOM % 21 + 10))
-          done
-
-  # Job 3: Scrape Playbill Verdict + NYC Theatre
-  scrape-pv-nyc:
-    name: Scrape PV + NYC Theatre
-    needs: [prepare, fetch-archives]
-    if: ${{ always() && needs.prepare.result == 'success' && inputs.skip_fetch != true }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Pull latest (after archive fetch)
-        run: git pull --rebase origin main || true
-
-      - name: Scrape Playbill Verdict
-        continue-on-error: true
-        env:
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-        run: |
-          SHOWS="${{ needs.prepare.outputs.show_ids }}"
-          node scripts/scrape-playbill-verdict.js --shows="$SHOWS" --no-date-filter || true
-
-      - name: Scrape NYC Theatre
-        continue-on-error: true
-        env:
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-        run: |
-          SHOWS="${{ needs.prepare.outputs.show_ids }}"
-          node scripts/scrape-nyc-theatre-roundups.js --shows="$SHOWS" || true
-
-      - name: Commit PV + NYC results
-        run: |
-          if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard data/)" ]; then
-            echo "No new data"
-            exit 0
-          fi
-
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add data/review-texts/ data/aggregator-archive/playbill-verdict/ data/aggregator-archive/nyc-theatre/
-          CHANGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
-
-          if [ "$CHANGED" = "0" ]; then
-            echo "Nothing staged"
-            exit 0
-          fi
-
-          git commit -m "data: Scrape PV + NYC Theatre for ${{ inputs.era }} ($CHANGED files)
-
-          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-
-          for i in 1 2 3 4 5; do
-            if git push origin main; then break; fi
-            git checkout -- . 2>/dev/null || true
-            git clean -fd 2>/dev/null || true
-            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
-            sleep $((RANDOM % 21 + 10))
-          done
-
-  # Job 4: Re-audit to find genuine gaps
-  audit:
-    name: Re-audit coverage
-    needs: [prepare, fetch-archives, scrape-pv-nyc]
-    if: ${{ always() && needs.prepare.result == 'success' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    outputs:
-      gap_shows: ${{ steps.audit.outputs.gap_shows }}
-      gap_count: ${{ steps.audit.outputs.gap_count }}
-      truly_missing: ${{ steps.audit.outputs.truly_missing }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Pull latest
-        run: git pull --rebase origin main || true
-
       - name: Run coverage audit
         id: audit
         run: |
-          # Run audit and capture output
           node scripts/audit-aggregator-coverage.js --output-gaps 2>&1 | tee /tmp/audit-output.txt
 
           # Extract truly missing count
           TRULY_MISSING=$(node -e "const d=require('./data/audit/aggregator-coverage.json'); console.log(d._meta.totalTrulyMissing)")
           echo "truly_missing=$TRULY_MISSING" >> $GITHUB_OUTPUT
 
-          # Extract gap show IDs from audit output
-          GAP_SHOWS=$(grep "^Comma-separated" -A1 /tmp/audit-output.txt | tail -1 || echo "")
-          GAP_COUNT=$(echo "$GAP_SHOWS" | tr ',' '\n' | grep -c . || echo "0")
+          # Extract gap show IDs, filtered by era
+          ERA_SHOWS="${{ steps.filter.outputs.show_ids }}"
+          GAP_SHOWS=$(node -e "
+            const gapLine = require('fs').readFileSync('/tmp/audit-output.txt','utf8')
+              .split('\n').find(l => l.includes(',') && !l.includes(':') && l.match(/^[a-z0-9,-]+$/));
+            if (!gapLine) { console.log(''); process.exit(0); }
+            const eraSet = new Set('$ERA_SHOWS'.split(','));
+            const filtered = gapLine.split(',').filter(id => eraSet.has(id));
+            console.log(filtered.join(','));
+          ")
+
+          GAP_COUNT=0
+          if [ -n "$GAP_SHOWS" ]; then
+            GAP_COUNT=$(echo "$GAP_SHOWS" | tr ',' '\n' | grep -c . || echo "0")
+          fi
           echo "gap_shows=$GAP_SHOWS" >> $GITHUB_OUTPUT
           echo "gap_count=$GAP_COUNT" >> $GITHUB_OUTPUT
-          echo "Truly missing: $TRULY_MISSING reviews across $GAP_COUNT shows"
+          echo "Truly missing: $TRULY_MISSING reviews across $GAP_COUNT shows in this era"
+
+      - name: Write gap shows to artifact
+        run: |
+          mkdir -p /tmp/gap-data
+          echo "${{ steps.audit.outputs.gap_shows }}" > /tmp/gap-data/gap-shows.txt
+          echo "${{ steps.audit.outputs.gap_count }}" > /tmp/gap-data/gap-count.txt
+          echo "${{ steps.audit.outputs.truly_missing }}" > /tmp/gap-data/truly-missing.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gap-data
+          path: /tmp/gap-data/
+
+      - name: Partition gap shows into matrix batches
+        id: partition
+        run: |
+          GAP_SHOWS="${{ steps.audit.outputs.gap_shows }}"
+          JOBS=${{ inputs.parallel_jobs }}
+
+          # Validate parallel_jobs is 1-10
+          if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then
+            JOBS=5
+          fi
+
+          if [ -z "$GAP_SHOWS" ]; then
+            echo 'matrix={"include":[]}' >> $GITHUB_OUTPUT
+            echo "job_count=0" >> $GITHUB_OUTPUT
+            echo "No gap shows to process"
+            exit 0
+          fi
+
+          IFS=',' read -ra SHOW_ARRAY <<< "$GAP_SHOWS"
+          TOTAL=${#SHOW_ARRAY[@]}
+
+          if [ "$JOBS" -gt "$TOTAL" ]; then
+            JOBS=$TOTAL
+          fi
+
+          echo "Gap shows: $TOTAL, parallel jobs: $JOBS"
+
+          # Round-robin distribution
+          declare -a BATCHES
+          for i in $(seq 0 $((JOBS - 1))); do
+            BATCHES[$i]=""
+          done
+
+          for i in "${!SHOW_ARRAY[@]}"; do
+            BATCH_IDX=$((i % JOBS))
+            SHOW=$(echo "${SHOW_ARRAY[$i]}" | xargs)
+            if [ -n "${BATCHES[$BATCH_IDX]}" ]; then
+              BATCHES[$BATCH_IDX]="${BATCHES[$BATCH_IDX]},$SHOW"
+            else
+              BATCHES[$BATCH_IDX]="$SHOW"
+            fi
+          done
+
+          # Build JSON matrix
+          MATRIX='{"include":['
+          FIRST=true
+          for i in $(seq 0 $((JOBS - 1))); do
+            if [ -n "${BATCHES[$i]}" ]; then
+              if [ "$FIRST" = true ]; then
+                FIRST=false
+              else
+                MATRIX="$MATRIX,"
+              fi
+              DELAY=$((i * 30))
+              MATRIX="$MATRIX{\"batch_id\":$i,\"shows\":\"${BATCHES[$i]}\",\"delay\":$DELAY}"
+            fi
+          done
+          MATRIX="$MATRIX]}"
+
+          echo "Matrix: $MATRIX"
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+          echo "job_count=$JOBS" >> $GITHUB_OUTPUT
 
       - name: Commit audit results
         run: |
@@ -270,7 +205,7 @@ jobs:
           git add data/audit/aggregator-coverage.json
 
           TRULY_MISSING="${{ steps.audit.outputs.truly_missing }}"
-          git commit -m "audit: Coverage re-audit after ${{ inputs.era }} gap closure ($TRULY_MISSING truly missing)
+          git commit -m "audit: Coverage audit for ${{ inputs.era }} ($TRULY_MISSING truly missing)
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
@@ -282,13 +217,16 @@ jobs:
             sleep $((RANDOM % 21 + 10))
           done
 
-  # Job 5: Gather reviews for shows with genuine gaps
+  # Job 2: Gather reviews for gap shows in parallel (aggregators only — no web search)
   gather-gaps:
-    name: Gather missing reviews
-    needs: [audit]
-    if: ${{ always() && needs.audit.result == 'success' && needs.audit.outputs.gap_count != '0' && needs.audit.outputs.gap_count != '' && inputs.dry_run != true }}
+    name: "Gather batch ${{ matrix.batch_id }}"
+    needs: prepare
+    if: ${{ needs.prepare.outputs.gap_count != '0' && needs.prepare.outputs.gap_count != '' && inputs.dry_run != true }}
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+    timeout-minutes: 90
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -306,6 +244,12 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install chromium
 
+      - name: Stagger start
+        if: matrix.delay > 0
+        run: |
+          echo "Waiting ${{ matrix.delay }}s before starting (batch ${{ matrix.batch_id }})"
+          sleep ${{ matrix.delay }}
+
       - name: Pull latest
         run: git pull --rebase origin main || true
 
@@ -316,18 +260,17 @@ jobs:
 
       - name: Gather reviews with checkpointing
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
-          GAP_SHOWS="${{ needs.audit.outputs.gap_shows }}"
-          IFS=',' read -ra SHOWS <<< "$GAP_SHOWS"
+          IFS=',' read -ra SHOWS <<< "${{ matrix.shows }}"
           TOTAL=${#SHOWS[@]}
-          CHECKPOINT_EVERY=5
+          CHECKPOINT_EVERY=10
           COUNT=0
           TOTAL_COMMITTED=0
+          FAILED_SHOWS=""
 
-          echo "Gathering reviews for $TOTAL shows with genuine gaps (checkpointing every $CHECKPOINT_EVERY)..."
+          echo "Batch ${{ matrix.batch_id }}: Gathering $TOTAL shows (aggregators-only, checkpoint every $CHECKPOINT_EVERY)..."
 
           for show in "${SHOWS[@]}"; do
             COUNT=$((COUNT + 1))
@@ -336,25 +279,54 @@ jobs:
             echo "[$COUNT/$TOTAL] Gathering: $show"
             echo "==========================================="
 
-            node scripts/gather-reviews.js --shows="$show" || true
+            if ! node scripts/gather-reviews.js --shows="$show" --aggregators-only; then
+              echo "FAILED: $show"
+              FAILED_SHOWS="$FAILED_SHOWS,$show"
+            fi
 
             # Checkpoint every N shows or on the last show
             if [ $((COUNT % CHECKPOINT_EVERY)) -eq 0 ] || [ "$COUNT" -eq "$TOTAL" ]; then
               echo "--- Checkpoint at $COUNT/$TOTAL ---"
+
+              # Stage files
               git add data/review-texts/ data/aggregator-archive/ 2>/dev/null || true
-              STAGED=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
+              STAGED_FILES=$(git diff --cached --name-only 2>/dev/null)
+              STAGED=$(echo "$STAGED_FILES" | grep -c . 2>/dev/null || echo "0")
+
               if [ "$STAGED" -gt 0 ]; then
-                TOTAL_COMMITTED=$((TOTAL_COMMITTED + STAGED))
-                git commit -m "data: Checkpoint $COUNT/$TOTAL — $STAGED files (coverage gaps ${{ inputs.era }})" || true
-                for i in 1 2 3 4 5; do
-                  if git push origin main; then
-                    echo "Checkpoint pushed ($TOTAL_COMMITTED total files committed so far)"
-                    break
+                # Pre-commit JSON validation
+                INVALID=0
+                while IFS= read -r file; do
+                  if [[ "$file" == *.json ]]; then
+                    if ! node -e "JSON.parse(require('fs').readFileSync('$file','utf8'))" 2>/dev/null; then
+                      echo "INVALID JSON: $file"
+                      git reset HEAD "$file" 2>/dev/null || true
+                      INVALID=$((INVALID + 1))
+                    fi
                   fi
-                  echo "Push retry $i..."
-                  git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
-                  sleep $((RANDOM % 11 + 5))
-                done
+                done <<< "$STAGED_FILES"
+
+                if [ "$INVALID" -gt 0 ]; then
+                  echo "Excluded $INVALID invalid JSON files from commit"
+                  STAGED=$((STAGED - INVALID))
+                fi
+
+                if [ "$STAGED" -gt 0 ]; then
+                  TOTAL_COMMITTED=$((TOTAL_COMMITTED + STAGED))
+                  git commit -m "data: Batch ${{ matrix.batch_id }} checkpoint $COUNT/$TOTAL — $STAGED files (${{ inputs.era }})" || true
+
+                  for i in 1 2 3 4 5; do
+                    if git push origin main; then
+                      echo "Checkpoint pushed ($TOTAL_COMMITTED total files so far)"
+                      break
+                    fi
+                    echo "Push retry $i..."
+                    git checkout -- . 2>/dev/null || true
+                    git clean -fd 2>/dev/null || true
+                    git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
+                    sleep $((RANDOM % 21 + 10))
+                  done
+                fi
               else
                 echo "No new files since last checkpoint"
               fi
@@ -363,31 +335,123 @@ jobs:
 
           echo ""
           echo "==========================================="
-          echo "DONE: Processed $COUNT/$TOTAL shows, committed $TOTAL_COMMITTED files total"
+          echo "DONE: Batch ${{ matrix.batch_id }} processed $COUNT/$TOTAL shows, committed $TOTAL_COMMITTED files"
+          if [ -n "$FAILED_SHOWS" ]; then
+            echo "FAILED: ${FAILED_SHOWS:1}"
+          fi
           echo "==========================================="
 
-      - name: Final commit (catch any uncommitted files)
+          # Write failures for artifact upload
+          mkdir -p /tmp/failures
+          echo "${FAILED_SHOWS:1}" > /tmp/failures/batch-${{ matrix.batch_id }}.txt
+
+      - name: Final commit (catch uncommitted files)
+        if: always()
         run: |
           git add data/review-texts/ data/aggregator-archive/ 2>/dev/null || true
           STAGED=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
           if [ "$STAGED" -gt 0 ]; then
-            git commit -m "data: Final gather commit — $STAGED remaining files (coverage gaps ${{ inputs.era }})
-
-          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>" || true
+            git commit -m "data: Batch ${{ matrix.batch_id }} final — $STAGED remaining files (${{ inputs.era }})" || true
             for i in 1 2 3 4 5; do
               if git push origin main; then break; fi
+              git checkout -- . 2>/dev/null || true
+              git clean -fd 2>/dev/null || true
               git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
               sleep $((RANDOM % 21 + 10))
             done
-          else
-            echo "All files already committed via checkpoints"
           fi
 
-  # Job 6: Rebuild reviews.json
+      - name: Upload failure report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failures-batch-${{ matrix.batch_id }}
+          path: /tmp/failures/
+          if-no-files-found: ignore
+
+  # Job 3: Scrape Playbill Verdict + NYC Theatre for gap shows
+  scrape-pv-nyc:
+    name: Scrape PV + NYC Theatre
+    needs: [prepare, gather-gaps]
+    if: ${{ always() && needs.prepare.result == 'success' && needs.prepare.outputs.gap_count != '0' && inputs.dry_run != true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Pull latest (after all gather jobs)
+        run: git pull --rebase origin main || true
+
+      - name: Configure git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: gap-data
+          path: /tmp/gap-data/
+
+      - name: Scrape Playbill Verdict
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          SHOWS=$(cat /tmp/gap-data/gap-shows.txt)
+          node scripts/scrape-playbill-verdict.js --shows="$SHOWS" --no-date-filter || true
+
+      - name: Scrape NYC Theatre
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          SHOWS=$(cat /tmp/gap-data/gap-shows.txt)
+          node scripts/scrape-nyc-theatre-roundups.js --shows="$SHOWS" || true
+
+      - name: Commit PV + NYC results
+        run: |
+          if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard data/)" ]; then
+            echo "No new data"
+            exit 0
+          fi
+
+          git add data/review-texts/ data/aggregator-archive/playbill-verdict/ data/aggregator-archive/nyc-theatre/
+          CHANGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
+
+          if [ "$CHANGED" = "0" ]; then
+            echo "Nothing staged"
+            exit 0
+          fi
+
+          git commit -m "data: Scrape PV + NYC Theatre for ${{ inputs.era }} gap shows ($CHANGED files)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then break; fi
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
+            sleep $((RANDOM % 21 + 10))
+          done
+
+  # Job 4: Validate and rebuild reviews.json
   rebuild:
-    name: Rebuild reviews.json
-    needs: [gather-gaps, audit]
-    if: ${{ always() && (needs.gather-gaps.result == 'success' || needs.gather-gaps.result == 'skipped') && needs.audit.result == 'success' }}
+    name: Validate & rebuild
+    needs: [prepare, gather-gaps, scrape-pv-nyc]
+    if: ${{ always() && needs.prepare.result == 'success' && inputs.dry_run != true }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -404,22 +468,29 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Pull latest
+      - name: Pull latest (after all gather + scrape jobs)
         run: git pull --rebase origin main || true
+
+      - name: Configure git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Validate data
+        run: node scripts/validate-data.js
+        continue-on-error: true
 
       - name: Rebuild reviews.json
         run: node scripts/rebuild-all-reviews.js
 
       - name: Commit rebuild
         run: |
-          if git diff --quiet data/reviews.json; then
-            echo "No changes to reviews.json"
+          git add data/reviews.json data/audit/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
             exit 0
           fi
 
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add data/reviews.json
           git commit -m "data: Rebuild reviews.json after ${{ inputs.era }} coverage gap closure
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
@@ -433,10 +504,12 @@ jobs:
           done
 
       - name: Summary
+        if: always()
         run: |
           echo "## Coverage Gap Closure: ${{ inputs.era }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Shows in era:** ${{ needs.prepare.outputs.show_count }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Truly missing reviews found:** ${{ needs.audit.outputs.truly_missing }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Shows with gaps:** ${{ needs.audit.outputs.gap_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Truly missing reviews:** ${{ needs.prepare.outputs.truly_missing }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Shows with gaps:** ${{ needs.prepare.outputs.gap_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Parallel jobs:** ${{ inputs.parallel_jobs }}" >> $GITHUB_STEP_SUMMARY
           echo "**Dry run:** ${{ inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
