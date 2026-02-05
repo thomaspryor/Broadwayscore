@@ -97,7 +97,8 @@ const OUTLET_ALIASES = {
     'variety', 'variety magazine'
   ],
   'hollywood-reporter': [
-    'hollywood reporter', 'the hollywood reporter', 'thr', 'hollywoodreporter'
+    'hollywood reporter', 'the hollywood reporter', 'thr', 'hollywoodreporter',
+    'hollywoodwood-reporter'
   ],
   'deadline': [
     'deadline', 'deadline hollywood', 'deadline.com'
@@ -107,7 +108,7 @@ const OUTLET_ALIASES = {
     'time out ny', 'timeout ny', 'timeout-ny', 'time-out-new-york'
   ],
   'guardian': [
-    'guardian', 'the guardian', 'theguardian'
+    'guardian', 'the guardian', 'theguardian', 'the-gaurdian'
   ],
   'washpost': [
     'washpost', 'washington post', 'the washington post', 'wapo',
@@ -134,7 +135,8 @@ const OUTLET_ALIASES = {
     'broadwaynews', 'broadway news', 'broadway-news', 'bwaynews'
   ],
   'broadwayworld': [
-    'broadwayworld', 'broadway world', 'bww', 'broadway-world'
+    'broadwayworld', 'broadway world', 'bww', 'broadway-world',
+    'broadwayworldcom', 'broadwayworld.com'
   ],
   'playbill': [
     'playbill', 'play bill', 'playbill.com'
@@ -174,13 +176,14 @@ const OUTLET_ALIASES = {
     'new-york-theater'
   ],
   'cititour': [
-    'cititour', 'citi tour', 'city tour'
+    'cititour', 'citi tour', 'city tour', 'cititourcom'
   ],
   'stageandcinema': [
     'stageandcinema', 'stage and cinema', 'stage & cinema', 'stage-and-cinema'
   ],
   'talkinbroadway': [
-    'talkinbroadway', 'talkin broadway', "talkin' broadway", 'talkin-broadway'
+    'talkinbroadway', 'talkin broadway', "talkin' broadway", 'talkin-broadway',
+    'talkin-boradway'
   ],
   'frontmezzjunkies': [
     'frontmezzjunkies', 'front mezz junkies', 'front-mezz-junkies', 'fmj'
