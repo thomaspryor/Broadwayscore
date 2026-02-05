@@ -11,5 +11,60 @@
   "bwwExcerpt": "“Beetlejuice” is based on the 1988 Tim Burton film of the same name. For those who have seen the movie, don't expect a rerun … the characters are the same, but the plot shifts are fairly enormous. With a book by Scott Brown and Anthony King, music and lyrics by Eddie Perfect the show will leave you cheering in your seat, stomping your feet, rolling over in fits of laughter and even a little bit scared.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show will leave you cheering in your seat, stomping your feet, rolling over in fits of laughter",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong enthusiastic language promising multiple positive audience reactions (cheering, laughing, engagement). However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses enthusiastic language indicating a strong positive reaction, suggesting a rave review. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt describes a very positive audience reaction, suggesting a strong recommendation. Confidence is low due to the limited text available. | Kimi: The excerpt uses enthusiastic language describing intense audience reactions (cheering, stomping, laughing), indicating a clear recommendation for entertainment value. However, as a single curated excerpt, the overall verdict may not be fully represented.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:48:30.296Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

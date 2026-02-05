@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In its transfer to Broadway, 'Bloody Bloody Andrew Jackson' has gotten even wilder since its incarnations at Off-Broadway's Public Theater last season. This raucous combination political cartoon, rock concert, and extended 'Saturday Night Live' sketch now fills the Bernard B. Jacobs Theatre with irreverent wit, in-your-face satire, and lots of sweaty sex appeal. Alex Timbers' off-the-wall book and direction and Michael Friedman's pulse-pounding score provide the first two elements, and Benjamin Walker in the lead delivers the third.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This raucous combination political cartoon, rock concert, and extended 'Saturday Night Live' sketch now fills the Bernard B. Jacobs Theatre with irreverent wit, in-your-face satire, and lots of sweaty sex appeal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear enthusiasm with vivid descriptors ('raucous', 'pulse-pounding', 'irreverent wit') and praise for all key elements. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the Broadway transfer as wilder and highlights its wit, satire, and appeal. The tone is enthusiastic, suggesting a strong recommendation. | Gemini: The review excerpt is highly positive, describing the show as a raucous and irreverent combination of various entertaining elements. The praise for the book, direction, score, and lead performance suggests a strong recommendation. | Kimi: The excerpt offers enthusiastic praise for the show's direction, score, and lead performance with descriptors like 'pulse-pounding' and 'irreverent wit,' indicating a strong positive recommendation, though the single-excerpt format warrants caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:20:14.314Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

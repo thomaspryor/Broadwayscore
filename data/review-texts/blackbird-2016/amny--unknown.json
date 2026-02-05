@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "It is a lean and muscular piece of drama, where two emotionally damaged characters with a terrible past are brought together for an uncomfortable reunion that is sure to end in further disaster and trauma. Mantello...once again shows how he can draw out fully-developed performances from great actors that are both believable and richly detailed. The interplay between Daniels and Williams could not be rawer or more dramatically charged. From the start, Daniels is jumpy and terrified, while William",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mantello...once again shows how he can draw out fully-developed performances from great actors that are both believable and richly detailed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction and performances with vivid descriptive language, but text appears cut off mid-sentence limiting full assessment of verdict. | GPT-4o: The excerpt praises the direction and performances, describing them as 'believable and richly detailed,' indicating a positive view. However, the single excerpt and lack of full context limit confidence. | Gemini: The excerpt focuses on the strong performances and direction, indicating a positive assessment. However, due to the limited text, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the direction and performances, describing the drama as 'lean and muscular' with 'fully-developed performances' and electric interplay between the leads. However, confidence is low due to the limited availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:15:54.453Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The title of Garson Kanin’s play proves all too accurate with the new Broadway revival of Born Yesterday. This comedy about a crooked businessman in cahoots with corrupt politicians may have been written in 1946, but it seems timelier than ever in this era of tawdry Washington backroom dealings. The same can’t quite be said of its romance plotline, which has become familiar via the endless imitators that have followed it.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The same can't quite be said of its romance plotline, which has become familiar via the endless imitators that have followed it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed evaluation - praises political relevance but criticizes romance as overly familiar. With only one curated quote available, confidence is low as this may not represent the full verdict. | GPT-4o: The review highlights the timeliness of the play's themes but notes the romance plotline feels familiar due to many imitators. The lack of a full review and single excerpt warning suggests a mixed reception. | Gemini: The review excerpt notes the play's relevance but also its dated romance plotline, suggesting a mixed assessment. The limited excerpt makes it difficult to determine a definitive recommendation. | Kimi: The excerpt offers qualified praise for the play's political relevance ('timelier than ever') while explicitly criticizing the romance plotline as 'familiar' and unoriginal. With only one curated excerpt available, the overall verdict remains uncertain, but the text presents a clear mixed assessment balancing strengths and weaknesses.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:35:19.457Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

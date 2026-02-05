@@ -11,5 +11,60 @@
   "bwwExcerpt": "Some of it—particularly its use of clever pop culture references, pun-heavy toilet jokes, wow-inducing visual theatrics, and mostly funny meta-humor—do work, while the rest of it feels a bit like a purposely-overwhelming use of sensory overload to keep attention-deficient audiences entertained.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Some of it—particularly its use of clever pop culture references, pun-heavy toilet jokes, wow-inducing visual theatrics, and mostly funny meta-humor—do work, while the rest of it feels a bit like a purposely-overwhelming use of sensory overload",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review acknowledges what works (clever references, visual theatrics, meta-humor) but criticizes the show as purposely overwhelming sensory overload. This balanced but ultimately lukewarm assessment suggests mixed feelings. Single excerpt warning and BroadwayWorld 'Up' verdict noted, but the text itself reads as qualified praise at best. | GPT-4o: The excerpt highlights both positive elements (clever references, visual theatrics) and negative aspects (sensory overload). The mixed tone suggests a balanced view without a strong recommendation. | Gemini: The review notes that some elements work well, while others feel overwhelming, suggesting a mixed experience. Given the single excerpt and 'Up' aggregator verdict, I'm placing it in the Mixed bucket but erring on the slightly positive side. | Kimi: The excerpt identifies specific successful elements (clever references, funny meta-humor, visual theatrics) that 'do work,' indicating a qualified recommendation, though it criticizes the overall approach as sensory pandering. Given the 'Up' aggregator classification and explicit acknowledgment of effective components, this registers as a cautious positive despite significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:41:51.227Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

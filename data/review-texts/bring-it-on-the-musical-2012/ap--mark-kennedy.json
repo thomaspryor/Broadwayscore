@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Cheerleaders got crushed last season on Broadway when \"Lysistrata Jones\" hit the mat hard and never recovered. But \"Bring It On: The Musical\" has more – more athletics, more songs, more dazzle, more interesting characters. Someone may just need to regularly count the cheerleaders.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRING-IT-ON-Opens-on-Broadway-Updating-Live-20120801",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But 'Bring It On: The Musical' has more – more athletics, more songs, more dazzle, more interesting characters.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic favorably compares this show to a previous Broadway flop, praising multiple elements (athletics, songs, dazzle, characters). However, this is only one curated excerpt and may not represent the full verdict, so confidence is low and score is in lower Positive range. | GPT-4o: The excerpt praises the show for its athletics, songs, dazzle, and characters, suggesting a positive impression. However, with only one excerpt available, confidence is low. | Gemini: The review excerpt compares the show favorably to a previous cheerleading-themed flop, suggesting it's worth seeing despite potential reservations. Given the single excerpt, confidence is low. | Kimi: The excerpt favorably contrasts the show with a previous failed cheerleading musical ('Lysistrata Jones'), praising its superior athletics, songs, dazzle, and characters. While clearly positive, confidence is low due to availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:46:26.648Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

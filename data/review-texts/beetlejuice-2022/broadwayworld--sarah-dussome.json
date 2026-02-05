@@ -11,5 +11,60 @@
   "bwwExcerpt": "Justin Collette leads the cast as the crass, larger-than-life Beetlejuice, who delights in scandalizing the wholesome Maitlands. On opening night, Will Burton’s Adam played opposite understudy Katie Griffith's Barbara. Griffith and Burton share an endearing chemistry and showcase impressive singing chops, particularly during the number Barbara 2.0.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Griffith and Burton share an endearing chemistry and showcase impressive singing chops, particularly during the number Barbara 2.0.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on praising cast performances and chemistry, suggesting positive reception. However, limited to one curated quote makes full verdict unclear, warranting lower confidence and conservative positive score. | GPT-4o: The excerpt praises the performances of the cast, highlighting their chemistry and singing abilities. The tone is positive, but due to the single excerpt and lack of a full review, the confidence is low. | Gemini: The review excerpt highlights positive aspects of the performances and chemistry between actors, suggesting a positive but not overwhelmingly enthusiastic recommendation. Confidence is low due to the limited text. | Kimi: This single excerpt offers mild praise for specific performances ('endearing chemistry', 'impressive singing chops') but lacks strong verdict language or overall show recommendation. Following single-excerpt guidelines for mildly positive content, this falls in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:42:47.866Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

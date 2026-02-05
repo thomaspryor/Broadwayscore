@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Blankenbuehler's production just never stops for a moment, sometimes at the expense of the narrative flow and certainly at some cost when it comes to getting to know and care about these characters, especially Donny and Julia, played by actors who never fully connect emotionally, not least because they don't really get enough scenes to help them. The dancing - the ensemble is mostly playing the swing kids at the clubs where the band plays - is, however, spectacular, not least for its grounding i",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The dancing is spectacular, not least for its grounding in",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt shows mixed signals - praising spectacular dancing while criticizing narrative flow and character development. Single excerpt warning applies, and the text appears truncated mid-sentence, making a definitive verdict difficult to assess. | GPT-4o: The review highlights issues with narrative flow and emotional connection, but praises the dancing as spectacular. The single excerpt suggests a mixed verdict with both positive and negative elements. | Gemini: The review excerpt points out flaws in narrative flow and character development, but also praises the dancing as \"spectacular.\" This suggests a mixed assessment. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:24:52.348Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

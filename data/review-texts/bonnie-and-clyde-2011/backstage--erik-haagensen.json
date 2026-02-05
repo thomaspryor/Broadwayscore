@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The one thing that a show about infamous killers Bonnie Parker and Clyde Barrow should not be is safe. Unfortunately, book writer Ivan Menchell, lyricist Don Black, composer Frank Wildhorn, and director-choreographer Jeff Calhoun have settled for a paint-by-numbers primer that presents the murderous pair as a couple of misunderstood kids trapped by the Depression. But there were many people in the 1930s who didn't respond to poverty and oppression by robbing banks and",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The one thing that a show about infamous killers Bonnie Parker and Clyde Barrow should not be is safe.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the show 'safe' when it shouldn't be and criticizes it as a 'paint-by-numbers primer,' indicating clear disappointment. However, with only one truncated excerpt available, confidence is low as the full verdict may be cut off. | GPT-4o: The excerpt criticizes the show for being 'safe' and 'paint-by-numbers,' indicating a lack of originality and depth. The negative tone suggests a recommendation against seeing the show. | Gemini: The review excerpt indicates the show is \"safe\" and a \"paint-by-numbers primer,\" suggesting a negative assessment. Given the truncated nature, the score is in the negative range but not a pan. | Kimi: The critic condemns the show for being 'safe' and 'paint-by-numbers,' faulting the creative team for a sanitized, formulaic portrayal of the notorious killers. With only a single truncated excerpt available, confidence is low, but the explicit criticism and dismissive tone indicate a negative assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:24:27.422Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

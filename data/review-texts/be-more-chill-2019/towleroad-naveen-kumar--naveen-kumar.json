@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "But Be More Chill is as confused and un-self-aware as a hormonal teenage boy - and nearly as reckless. Fitting then, that it begins with one grousing in song that his porn won't load so he can beat off before school. It's funny, sure, and perfectly natural (no shame!). It's also our first sign that the musical, with score by Joe Iconis and book by Joe Tracz, considers frustrated male desire its primary problem in need of solving. Not by teaching its protagonist that he's not entitled to the girl",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But Be More Chill is as confused and un-self-aware as a hormonal teenage boy - and nearly as reckless.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the show 'confused and un-self-aware' and identifies problematic themes around male entitlement. However, this is only one excerpt and may not represent the full verdict. | GPT-4o: The excerpt criticizes the show for being confused and un-self-aware, with a focus on frustrated male desire. The tone suggests a negative view, but the single excerpt provides limited context, leading to low confidence. | Gemini: The review excerpt is negative, describing the show as confused and reckless. Given the single excerpt and lack of a clear recommendation, confidence is low. | Kimi: The excerpt offers clear criticism of the show's thematic confusion and reckless handling of male desire, describing it as un-self-aware despite acknowledging moments of humor. As a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:30:46.185Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

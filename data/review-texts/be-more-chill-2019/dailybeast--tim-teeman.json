@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Be More Chill feels squawkily split between camp sci fi romp and searing teenage-life-today commentary. The title itself is the last annoying puzzle. If anything the show suggests that we all have to live with our insecurities and other inner demons; the trick is not to let them dominate us.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Be More Chill feels squawkily split between camp sci fi romp and searing teenage-life-today commentary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt describes the show as 'squawkily split' between elements, suggesting unevenness. Acknowledges thematic value but implies tonal confusion. Low confidence due to limited text. | GPT-4o: The review excerpt indicates a mixed tone, highlighting a split between different thematic elements without clear praise or criticism. The lack of a full review and single excerpt warning suggest a low confidence in the overall sentiment. | Gemini: The review excerpt suggests a mixed reaction, highlighting a split between campy sci-fi and teenage commentary. The lack of a clear recommendation and the single excerpt contribute to the low confidence. | Kimi: The excerpt criticizes the show's tonal inconsistency ('squawkily split') and calls the title 'annoying,' while acknowledging its ambitious attempt at serious teenage commentary, suggesting an ambivalent, mixed reception rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:28:51.018Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

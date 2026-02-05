@@ -11,5 +11,60 @@
   "bwwExcerpt": "Many iconic moments from the movie are welcomed surprises, not shoehorned fan service. The striped sandworm, “Jump in the Line,” and a Scooby-Doo-style chase featuring Miss Argentina, Shrunken Head Man and other Netherworld characters all make appearances, and the designs, which riff on the outlandish, signature Burton aesthetic, are eye-popping. Even the uncomfortable child bride plot is transformed into a green card situation for Beetlejuice, which is underlined by the cringey, yet catchy tune",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Many iconic moments from the movie are welcomed surprises, not shoehorned fan service.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt shows appreciation for design choices and faithful adaptation elements, but single curated quote from aggregator context suggesting 'Flat' verdict indicates likely qualified positive at lower end of bucket. | GPT-4o: The excerpt highlights positive aspects like 'welcomed surprises' and 'eye-popping' designs, suggesting a mildly positive tone. However, the single excerpt and aggregator context indicate a cautious approach. | Gemini: The excerpt highlights positive aspects like iconic moments and eye-popping designs, but without a clear overall recommendation or full context, confidence is low and the score is at the lower end of the positive range. | Kimi: The excerpt praises the show's design as 'eye-popping' and appreciates how iconic moments are integrated as 'welcomed surprises' rather than fan service, indicating a solid recommendation despite the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:48:59.127Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

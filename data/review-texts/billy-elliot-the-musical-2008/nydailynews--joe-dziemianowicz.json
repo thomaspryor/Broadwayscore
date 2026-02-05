@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Hall's script is vivid and smart and gets excellent support from the songs. He wrote lyrics, Elton John, the music. No single tune is bound to be a pop recording hit. Still, the fine score covers an array of styles - folk tunes, anthems, novelty numbers - and emotions that beautifully move the story along. It's worth noting that the show's soundscape is crystal-clear.\nDaldry's staging shows an eye for intelligent detail throughout, especially in the knockout 'Solidarity' sequence.\nIt brilliantly weaves plot, music and dance together as a classroom of pint-sized ballerinas in tutus (the cutest mob of moppets since 'Annie') merge with angry miners and cops.",
   "bwwScore": 10,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hall's script is vivid and smart and gets excellent support from the songs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise for script ('vivid and smart'), score ('fine'), staging ('intelligent detail'), and production quality ('crystal-clear soundscape'). The 'knockout' and 'brilliantly weaves' language suggests strong positive assessment, warranting upper Positive range despite single excerpt limitation. | GPT-4o: The excerpt praises the script, score, and staging with terms like 'vivid', 'smart', 'excellent', and 'brilliantly'. Despite noting no pop hits, the overall tone is strongly positive, suggesting a high recommendation. | Gemini: The excerpt praises the script, score, and staging, indicating a positive recommendation. The lack of a clear overall verdict and the single excerpt lowers the confidence. | Kimi: The excerpt offers consistent praise for the script ('vivid and smart'), score ('fine,' 'beautifully move the story'), and staging ('knockout,' 'brilliantly'), indicating a clear recommendation despite the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:09:36.806Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

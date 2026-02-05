@@ -11,5 +11,60 @@
   "bwwExcerpt": "Collette's Beetlejuice was lovably hilarious. The entire cast was exceptionally talented, but Collette carried the show with his wit and larger-than-life stage presence. Every minute Collette was onstage was essentially a nonstop standup comedy act. With his ceaseless energy, impeccable comedic timing and occassional breaking the fourth wall, Collette made the audience howl with laughter during much of the two-and-a-half-hour show.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Collette's Beetlejuice was lovably hilarious.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance with enthusiastic language ('lovably hilarious', 'made the audience howl with laughter'), but only one excerpt available from a smaller outlet limits confidence in representing the full review verdict. | GPT-4o: The excerpt praises Collette's performance as hilarious and highlights his impact on the show, suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review is overwhelmingly positive, highlighting Collette's performance and the audience's reaction. The language used suggests a strong recommendation. | Kimi: The excerpt offers enthusiastic, unqualified praise for the lead performance and comedic elements, describing the show as 'lovably hilarious' with 'impeccable comedic timing.' Following the single-excerpt guidance for clearly positive quotes, this falls in the upper Positive range (80-84).",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:46:53.638Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

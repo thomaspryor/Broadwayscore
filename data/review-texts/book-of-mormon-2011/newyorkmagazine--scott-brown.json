@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The Book of Mormon, arriving after months of hype, somehow delivers even more than its ridiculously felicitous advance buzz promised: It's an often uproarious, spiritually up-tempo satire not just of Mormonism, and not just religion in general, but of (no kidding) Occidental civilization itself, in all its well-intentioned, self-mythologizing, autoerotically entitled glory.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "arriving after months of hype, somehow delivers even more than its ridiculously felicitous advance buzz promised",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The critic explicitly states the show 'delivers even more' than its already high expectations, calling it 'uproarious' and praising its ambitious satirical scope. The phrase 'somehow delivers even more' indicates exceptional quality that surpassed anticipation. | GPT-4o: The excerpt provides strong praise, describing the show as 'uproarious' and exceeding high expectations. Despite the limited text, the language suggests a highly positive reception. | Gemini: The review states the show delivers even more than promised and is \"often uproarious\", indicating a strong positive recommendation. | Kimi: The critic states the show surpasses its 'ridiculously felicitous' hype, calling it 'often uproarious' and praising its ambitious satirical scope. While the language is strongly enthusiastic, the single-excerpt warning requires a high Positive score (80-84) and low confidence rather than a Rave classification. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:32:14.382Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

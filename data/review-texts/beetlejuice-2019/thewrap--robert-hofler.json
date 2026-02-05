@@ -12,5 +12,60 @@
   "bwwExcerpt": "Elaine Stritch once visited Nathan Lane backstage at the \"Addams Family\" musical and famously told him, \"They're not paying you enough.\" They're not paying Alex Brightman enough to star in the ghost ship of a new musical called \"Beetlejuice,\" which opened Thursday at Broadway's Winter Garden Theatre to mark the unfortunate end of the 2018-19 Broadway season.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
   "contentTier": "excerpt",
-  "playbillVerdictUrl": "https://www.thewrap.com/beetlejuice-broadway-review-tim-burtons-ghosts-turn-scarily-uncomic-in-musical-misfire/"
+  "playbillVerdictUrl": "https://www.thewrap.com/beetlejuice-broadway-review-tim-burtons-ghosts-turn-scarily-uncomic-in-musical-misfire/",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They're not paying Alex Brightman enough to star in the ghost ship of a new musical called 'Beetlejuice.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the show a 'ghost ship' and describes it as marking the 'unfortunate end' of the Broadway season, clearly negative language despite praising Brightman's underpaid efforts. | GPT-4o: The excerpt suggests a negative view of the show, referring to it as a 'ghost ship' and implying that the lead actor is not compensated enough for the effort required. However, with only one excerpt, the overall sentiment is uncertain, leading to a low confidence level. | Gemini: The review excerpt calls the show a \"ghost ship\" and implies that the lead actor is underpaid for the effort, indicating a negative assessment. Given the limited text, confidence is low. | Kimi: The critic describes the production as a 'ghost ship' and an 'unfortunate end' to the season, indicating a failed show that wastes its lead actor's talents. While implicitly praising Brightman, the overall verdict is clearly negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:36:08.973Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Williams submits himself wholly to the play's utterly natural surrealism. Concerns that the actor might turn this into a vehicle for his signature shtick are dispelled right way: Williams is in complete sync with the blasted tragicomic vision of the playwright, whose ample humor is far too sneaky for stand-up showboating...He's put himself at the drama's service, and if that means ceding the stage to Moayed, whose poignancy has only deepened, so be it.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Williams is in complete sync with the blasted tragicomic vision of the playwright.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for Williams' performance and artistic choices, with appreciation for both leads. However, this is a single curated excerpt, so confidence is medium despite the positive tone. | GPT-4o: The excerpt praises Williams for aligning with the play's vision, dispelling concerns about his performance. The tone is clearly positive, suggesting a strong recommendation. However, with only one excerpt, confidence is low. | Gemini: The review praises Williams' performance and his commitment to the play, suggesting a positive experience. Given the single excerpt, I'm scoring it as positive but with lower confidence. | Kimi: The excerpt offers enthusiastic praise for the lead performances, noting Williams is in 'complete sync' with the play's vision and has put himself 'at the drama's service,' while commending Moayed's deepening poignancy. Per the single excerpt warning, confidence is reduced despite the clearly positive tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:55:40.715Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

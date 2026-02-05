@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "I'm usually a sober sitter-out of end-of-show ovations but on this occasion I not only jumped up, I joined in the whooping. It's not just a treat but a privilege to have seen this Arcati and I urge anyone else to do the same if they can get tickets.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-West-Ends-BLITHE-SPIRIT-with-Angela-Lansbury-20140319",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not just a treat but a privilege to have seen this Arcati and I urge anyone else to do the same if they can get tickets.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: The critic explicitly describes joining a standing ovation despite usually being reserved, calls it both 'a treat' and 'a privilege,' and directly urges others to see it. This is enthusiastic endorsement language warranting the Rave bucket, though confidence is medium due to single excerpt warning. | GPT-4o: The excerpt shows strong enthusiasm and a clear recommendation, with the critic expressing it as a privilege to see the show and urging others to attend. The use of 'privilege' and 'urge' indicates a rave review. | Gemini: The critic explicitly urges people to see the show and describes it as a 'privilege,' indicating a rave review. The critic also joined in the standing ovation. | Kimi: The excerpt expresses unqualified enthusiasm with standing ovation praise and a strong urging to see the show, but is scored in the Positive range (rather than Rave) per single-excerpt guidance to avoid over-interpreting cherry-picked quotes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:17:46.142Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

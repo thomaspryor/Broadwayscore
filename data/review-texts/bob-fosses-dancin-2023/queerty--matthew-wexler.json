@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Cilento delivers on his promise. His staging faithfully pays homage to the choreographer’s work through a relevant lens for a new generation. For anyone looking to tap their toes and clap their jazz hands at a Broadway show, Bob Fosse’s Dancin’ delivers. Melissa",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For anyone looking to tap their toes and clap their jazz hands at a Broadway show, Bob Fosse's Dancin' delivers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with 'delivers' and enthusiastic tone about the staging and choreography, but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises the staging and suggests it successfully appeals to a new generation. The positive tone and specific praise indicate a strong recommendation. | Gemini: The review excerpt is positive, stating that the staging is faithful and that the show delivers for those looking for a fun Broadway experience. Given the single excerpt, the score is placed on the higher end of the positive range. | Kimi: The excerpt offers a clear recommendation stating the production 'delivers' with faithful homage to the choreographer's work, warranting a clearly positive score despite limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:23:30.373Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

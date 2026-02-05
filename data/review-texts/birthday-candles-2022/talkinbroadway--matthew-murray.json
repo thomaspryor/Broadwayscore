@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Debra Messing gives a tour-de-force performance in Noah Haidle's Birthday Candles, aging from 17 to 107 as she lives out her character's entire life in 90 minutes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,59 @@
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is just a single sentence describing the premise and lead performance, with no critical evaluation or recommendation about the show's quality.; openai: The text is a brief description of Debra Messing's performance and role, without any evaluative content or overall assessment of the show.",
   "promptVersion": "5.2.0",
-  "textQuality": "partial"
+  "textQuality": "partial",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Debra Messing gives a tour-de-force performance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises Messing's performance as 'tour-de-force' but this appears to be a very brief excerpt with no broader evaluation of the show itself, warranting low confidence. | Gemini: The review highlights a 'tour-de-force performance' by Debra Messing, suggesting a positive experience, but it's a brief review, implying some reservations. | Kimi: The critic employs the superlative 'tour-de-force' to describe Messing's performance, indicating high enthusiasm and recommendation, though the extreme brevity of the excerpt prevents assessment of the overall production quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:15:27.900Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

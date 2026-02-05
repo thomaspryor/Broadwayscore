@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Wonderful story and performances notwithstanding, much of 'Bandstand's' dazzle finds root in Andy Blankenbuehler's direction and choreography. The Tony-winning choreographer of 'Hamilton' takes on double duty here, allowing the dancing and progression of the show to work in seamless tandem. Simple changes in David Korins's nimble set and Paloma Young's inventive costumes signal important scene changes, while the company fills the stage with high-voltage dance backed by the live band's energy. The spectacle is busy, yet precise, and a whole lot of fun to watch.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The spectacle is busy, yet precise, and a whole lot of fun to watch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise for direction, choreography, performances, and production values with enthusiastic language like 'dazzle' and 'high-voltage.' However, single excerpt warning requires caution - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the direction, choreography, and overall spectacle of the show, highlighting it as fun and precise. Given the single excerpt warning, the positive tone suggests a strong recommendation. | Gemini: The review excerpt focuses on the positive aspects of the show, particularly the direction, choreography, set design, and costumes, indicating a favorable overall impression. Given that it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the choreography, design, and energy, using words like 'dazzle' and 'high-voltage.' However, confidence is reduced because only a single curated excerpt is available, which may not reflect the full review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:27:34.558Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

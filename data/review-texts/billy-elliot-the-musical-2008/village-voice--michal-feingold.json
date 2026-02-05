@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Billy Elliot's adapters, in contrast, are also its source authors: Librettist Lee Hall and director Stephen Daldry were the original film's screenwriter and director. Tchaikovsky, who wrote the show's best number, was presumably not available to rewrite, but Elton John, who composed the remainder of the score, presumably was. The result is an oddly uneven work, full of beautiful and exhilarating moments, their energy dissipated by what looks like uncertainty of purpose: The creators don't always seem sure what story to tell, where to focus in telling it, or how best to use the enormous resources at their command. It adds up to a kind of musical-theater tasting menu: A little Disney, a little docudrama, a little heightened realism à la Brecht, a little music-hall rowdiness, a little old-fashioned showbiz, and even a little Piscator-style Expressionist political theater.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is an oddly uneven work, full of beautiful and exhilarating moments, their energy dissipated by what looks like uncertainty of purpose.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic acknowledges 'beautiful and exhilarating moments' but finds the show 'oddly uneven' with 'uncertainty of purpose.' Single excerpt warning applies - this appears genuinely mixed rather than clearly positive or negative. | GPT-4o: The review describes the show as 'oddly uneven' with both 'beautiful and exhilarating moments' and a lack of clear focus. This suggests a mixed verdict, acknowledging both strengths and weaknesses. | Gemini: The review describes the show as \"oddly uneven\" with both \"beautiful and exhilarating moments\" and \"uncertainty of purpose.\" This suggests a mixed reaction, but the lack of a clear recommendation and the single excerpt available lower the confidence. | Kimi: The excerpt praises 'beautiful and exhilarating moments' but criticizes the work as 'uneven' with 'uncertainty of purpose,' suggesting a disjointed experience without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:10:14.404Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

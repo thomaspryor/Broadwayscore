@@ -12,5 +12,60 @@
   "bwwExcerpt": "If you are a fan of the film, there are plot similarities and divergences. Actually, the story careens all over the place, which doesn't matter because the performances are mostly excellent and the sets by David Korins notably stunning (including a mansion living room seemingly redecorated mid-performance).",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
   "contentTier": "excerpt",
-  "playbillVerdictUrl": "https://www.thedailybeast.com/beetlejuice-on-broadway-it-was-a-horror-show-now-it-feels-like-a-hit?source=email&via=desktop"
+  "playbillVerdictUrl": "https://www.thedailybeast.com/beetlejuice-on-broadway-it-was-a-horror-show-now-it-feels-like-a-hit?source=email&via=desktop",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the performances are mostly excellent and the sets by David Korins notably stunning",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging plot issues ('careens all over the place'), the critic dismisses these problems because the performances are 'mostly excellent' and sets 'notably stunning.' This is a qualified positive recommendation. Low confidence due to single excerpt limitation. | GPT-4o: The excerpt highlights excellent performances and stunning set design, which suggests a positive view, but the lack of full context and mention of a story that 'careens all over the place' tempers the enthusiasm. | Gemini: The review praises the performances and sets, but notes the story is all over the place. Given the single excerpt, I'm scoring it as a positive with reservations. | Kimi: The critic explicitly dismisses the messy story as irrelevant ('doesn't matter') due to 'mostly excellent' performances and 'notably stunning' sets, constituting a clear recommendation despite reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:34:23.101Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

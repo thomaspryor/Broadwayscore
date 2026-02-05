@@ -11,5 +11,60 @@
   "bwwExcerpt": "It’s... a lot. This musical is like that friend who is always “on.” You know the one. So desperate to entertain, they’re a constant stream of consciousness full of ideas and jokes, hoping a few of them actually land. They go off into tangents, don’t always make sense and sometimes you wish they would just relax and take a beat. Still, when they’re good, they’re really good and you remember why you enjoy their company.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So desperate to entertain, they're a constant stream of consciousness full of ideas and jokes, hoping a few of them actually land.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review criticizes the show as overwhelming and desperate ('always on', 'hoping a few land') but acknowledges it has good moments ('when they're good, they're really good'). The friend analogy suggests tolerable but taxing experience - classic mixed territory. | GPT-4o: The review describes the show as overwhelming and inconsistent, with moments that stand out positively. The mixed tone suggests neither a strong recommendation nor a clear discouragement. | Gemini: The review uses mixed metaphors to describe the show, highlighting both its overwhelming nature and its moments of brilliance, suggesting a mixed experience. | Kimi: While the critic finds the show exhausting and inconsistent ('desperate to entertain,' 'don't always make sense'), the final sentiment acknowledges genuine entertainment value. Given the single-excerpt warning and 'Flat' aggregator context, this registers as a mixed assessment rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:43:30.139Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "That's what I call a rebirth. A new face has breathed fresh life into 'Born Yesterday' at the Cort Theatre. Not that Garson Kanin's 1946 comedy was even a little tired. It is as deliciously witty and pungent as when it was born. But it takes a special actress in the key role of Billie Dawn - the dumb blond who outsmarts her junk-dealer tycoon boyfriend - to make the play more than funny and to make you fall in love. With the knockout newcomer Nina Arianda center stage, be prepared to fall hard, fast and completely. If you missed her last year as a dominatrix downtown in 'Venus in Fur,' you probably don't know her work.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BORN-YESTERDAY-Updating-LIVE-20110424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BORN-YESTERDAY-Updating-LIVE-20110424",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With the knockout newcomer Nina Arianda center stage, be prepared to fall hard, fast and completely.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for lead performance ('knockout newcomer') and production ('rebirth', 'fresh life'), with enthusiastic language throughout. Single excerpt warning noted, but tone is clearly positive with strong recommendation language. | GPT-4o: The excerpt praises the production as a 'rebirth' and highlights Nina Arianda's performance as exceptional, suggesting a strong recommendation. However, with only one excerpt, confidence is low. | Gemini: The review is overwhelmingly positive, praising the play's wit and the actress's performance, indicating a strong recommendation. | Kimi: Single excerpt offers enthusiastic praise describing the production as a 'rebirth' that is 'deliciously witty' and featuring a 'knockout' lead performance, though limited text requires cautious scoring in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:34:42.157Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

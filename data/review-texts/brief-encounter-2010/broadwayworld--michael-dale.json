@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Proving once more that Noel Coward wrote sexier scenes for clothed people that most playwrights could with naked ones, the evening's steamy highlight comes in a moment where Yelland and Sturrock, alone together at last, finally reach the 'will we or won't we' point. With the company singing Stu Barker's soft ukulele arrangement of 'Go Slow, Johnny' in the background, the tension is elegantly unbearable.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Proving once more that Noel Coward wrote sexier scenes for clothed people that most playwrights could with naked ones, the evening's steamy highlight comes in a moment where Yelland and Sturrock, alone together at last, finally reach the 'will we or won't we' point.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows strong praise for specific moments and performances, with sophisticated appreciation of Coward's craft. However, confidence is low due to limited text - this could be highlighting the best part of an otherwise mixed review. | GPT-4o: The excerpt praises the production's ability to create tension and highlights a key scene as a 'steamy highlight'. The tone is clearly positive, suggesting a strong recommendation. | Gemini: The excerpt describes a highlight of the show and uses positive language like \"elegantly unbearable,\" suggesting a positive but not overwhelmingly enthusiastic recommendation. Given it's a single excerpt, confidence is low. | Kimi: The excerpt identifies a moment as the 'evening's steamy highlight' and praises the staging as 'elegantly unbearable,' indicating clear approval of the production. Score placed in the upper range per instructions for clearly positive single excerpts, with low confidence due to the limited, potentially cherry-picked context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:40:49.580Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

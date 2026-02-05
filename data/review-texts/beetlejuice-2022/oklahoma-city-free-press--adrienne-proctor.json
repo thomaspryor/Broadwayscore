@@ -11,5 +11,60 @@
   "bwwExcerpt": "It’s a treat to see Marc Ginsburg perform as Beetlejuice. The undead menace is abrasive and gross, inappropriate and jarring, and must be all kinds of fun to portray. Ginsburg is having a blast on stage, making the audience cringe, laugh, and shudder in delight. Ginsburg fully leans into the creep factor, yet he manages to create a likable character out of the would-be villain.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ginsburg is having a blast on stage, making the audience cringe, laugh, and shudder in delight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance with vivid positive language ('treat', 'blast', 'delight'). Single excerpt limitation and BroadwayWorld 'Up' verdict support positive bucket, upper range due to enthusiastic tone. | GPT-4o: The excerpt praises Marc Ginsburg's performance as Beetlejuice, highlighting his ability to entertain and engage the audience. However, due to the single excerpt warning, the confidence is low, and the score is placed at the lower end of the Positive bucket. | Gemini: The review excerpt focuses on the positive performance of Marc Ginsburg as Beetlejuice, highlighting his ability to make the character both creepy and likable. The overall tone is enthusiastic, suggesting a positive experience. | Kimi: The excerpt enthusiastically praises Marc Ginsburg's performance as a 'treat' that generates genuine audience delight, indicating a clear recommendation. However, as a single curated excerpt focused on one performance element, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:46:22.831Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

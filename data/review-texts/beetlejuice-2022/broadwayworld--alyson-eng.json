@@ -11,5 +11,60 @@
   "bwwExcerpt": "The most admirable aspect of this musical is that it’s unapologetically itself. While embracing its quirky and cheesy moments, the show cracks jokes that push boundaries and puts a bit of emphasis on a shock factor that draws audiences in. Although some may raise eyebrows, the clever and (at times) crude humour definitely brought life to the show. As we enter a new era of musical theatre both based on existing films or completely new subject matter, this new trend of exploring topics, humor, and",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The most admirable aspect of this musical is that it's unapologetically itself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows positive sentiment ('most admirable', 'brought life to the show') but with qualifications ('some may raise eyebrows'). Text cuts off mid-sentence, and aggregator indicates 'Up' verdict. Low confidence due to incomplete excerpt. | GPT-4o: The excerpt highlights positive aspects like humor and uniqueness, but also notes potential divisiveness ('some may raise eyebrows'). Given the single curated quote, the score is on the lower end of Positive. | Gemini: The review excerpt highlights the show's admirable qualities and humor, suggesting a positive but not overwhelmingly enthusiastic recommendation. The limited text and 'up' aggregator verdict support a positive classification. | Kimi: The excerpt offers enthusiastic praise for the show's authentic voice and boundary-pushing comedy, calling it 'admirable' and noting it 'draws audiences in.' While acknowledging the humor is 'cheesy' and 'crude,' the critic clearly values these qualities as strengths. Confidence is low due to reliance on a single curated excerpt that may not represent the full review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:38:01.543Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

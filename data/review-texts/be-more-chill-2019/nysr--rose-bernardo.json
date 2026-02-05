@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "What I liked-actually, loved-about Be More Chill more than anything is its potential. The show can so easily be produced in a high school or college on a shoestring budget. It could be staged in a black box. The cast could shop their own closets for the costumes (no offense to Bobby Frederick Tilley II's work here, which is a spot-on celebration of neon). The songs would sound just as good without all the amplification. Perhaps-no, definitely-even better.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What I liked-actually, loved-about Be More Chill more than anything is its potential.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic expresses clear enthusiasm ('loved') and sees significant value in the show's potential and accessibility. However, this is only one excerpt from the review, so confidence is low as the full verdict may differ. | GPT-4o: The excerpt expresses love for the show's potential and adaptability, indicating a positive view. However, the focus on potential rather than the current production suggests a mild recommendation. The single excerpt warning and lack of full context necessitate a low confidence score. | Gemini: The reviewer states that they \"loved\" the show's potential, but the rest of the excerpt focuses on how it could be produced on a low budget. Given the single excerpt and the focus on potential rather than the current production, I'm scoring it as mildly positive with low confidence. | Kimi: The critic expresses strong affection ('loved') for the show, praising its scalability for school productions while complimenting the costumes ('spot-on celebration of neon') and songs ('definitely even better' unamplified). As a single curated excerpt, this represents clearly positive sentiment in the 80-84 range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:29:55.225Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

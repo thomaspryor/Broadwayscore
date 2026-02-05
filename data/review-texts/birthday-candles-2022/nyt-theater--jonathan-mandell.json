@@ -13,5 +13,59 @@
   ],
   "bwwExcerpt": "Noah Haidle is no Thornton Wilder. 'Birthday Candles' has its warmhearted and amusing moments, but it's essentially a middle brow entertainment that tries too hard to be ethereal, poignant, and poetic. If Haidle's script isn't as impressive as it's trying to be, director Vivienne Benesh makes the best of it, with an appealing production that is beautifully designed and wonderfully acted by a nimble six-member cast who take an appropriately understated approach. The heart of the production is the performance by Debra Messing, who never leaves the stage, neither changing costume nor applying makeup, as she credibly ages 90 years over 90 minutes, using a shift in voice and posture.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
+  "assignedScore": 65,
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Birthday Candles' has its warmhearted and amusing moments, but it's essentially a middle brow entertainment that tries too hard to be ethereal, poignant, and poetic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges positive elements (appealing production, wonderful acting, Messing's performance) but delivers a core verdict that the show is 'middle brow entertainment that tries too hard' and the script 'isn't as impressive as it's trying to be.' This is classic mixed territory - neither recommended nor discouraged. | GPT-4o: The review acknowledges some positive aspects, like the appealing production and strong performances, but criticizes the script for trying too hard and being middle brow. The overall tone is mixed, with both positive and negative elements. | Gemini: The review praises the acting, direction, and design, but criticizes the script as trying too hard and not being as impressive as it aims to be. This indicates a mixed overall impression.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:14:55.396Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 65,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

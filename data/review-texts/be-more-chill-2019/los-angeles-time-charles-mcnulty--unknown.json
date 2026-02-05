@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Directed by Stephen Brackett, the production differentiates itself from the Broadway pack by being even more riotous and extreme. The imagination is gaudy, the volume deafening and the plot kinetically convoluted. Exhaustingly exaggerated, the show should consider an advisory that some material might not be suitable for adults.",
-  "bwwScore": 5
+  "bwwScore": 5,
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Exhaustingly exaggerated, the show should consider an advisory that some material might not be suitable for adults.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the production's extreme energy and imagination but frames it as 'exhaustingly exaggerated' with a sarcastic warning about adult suitability, suggesting mixed feelings about the overwhelming spectacle. | GPT-4o: The excerpt describes the production as 'riotous and extreme' with a 'deafening' volume and 'kinetically convoluted' plot, suggesting a mixed experience. The tone is critical of the exaggeration, indicating neither a strong recommendation nor a complete dismissal. | Gemini: The review describes the production as \"riotous and extreme,\" \"gaudy,\" \"deafening,\" and \"kinetically convoluted,\" suggesting a mixed reaction. The comment about an advisory hints at potential issues, but the overall tone doesn't clearly recommend or discourage seeing the show. Given the single excerpt, confidence is low. | Kimi: While the excerpt notes the production differentiates itself with riotous energy, the descriptors ('gaudy,' 'deafening,' 'convoluted,' 'exhaustingly exaggerated') criticize the excess as tiring and overwhelming rather than entertaining.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:29:26.977Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 19,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

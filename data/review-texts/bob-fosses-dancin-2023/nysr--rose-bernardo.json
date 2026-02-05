@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The heart, soul, and irrepressible spirit of Bob Fosse’s Dancin’, which just opened in a burst of sparkle and joy at Broadway’s Music Box Theatre, is best embodied in the curtain call. One by one, each dancer glides out from the wings and to the front of the stage performing a different combo—wearing the costume from their biggest moment in the show, adding a few steps, spins, or flourishes from said moment. All the while, the dancer’s name appears in blazing blue neon letters on the back wall o",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The heart, soul, and irrepressible spirit of Bob Fosse's Dancin', which just opened in a burst of sparkle and joy at Broadway's Music Box Theatre",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with vivid positive language ('burst of sparkle and joy', 'heart, soul, and irrepressible spirit') suggests strong enthusiasm, but truncated text limits full assessment. | GPT-4o: The excerpt describes the show with enthusiastic language ('burst of sparkle and joy'), suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses very positive language like \"heart, soul, and irrepressible spirit\", \"burst of sparkle and joy\", indicating a strong positive sentiment. Given it's a single excerpt, confidence is low, but the language suggests the upper end of the positive bucket. | Kimi: The excerpt uses enthusiastic language ('burst of sparkle and joy,' 'irrepressible spirit') indicating strong approval, though as a single truncated excerpt, confidence must remain low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:22:54.284Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
