@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2010/legit/reviews/lombardi-1117943702/",
   "publishDate": "October 21, 2010",
-  "fullText": "Dan Lauria brings gruff authenticity to his portrayal of the legendary Green Bay Packers coach, but the play itself fumbles in its attempt to find dramatic coherence.",
-  "isFullReview": false,
+  "fullText": "Flaws notwithstanding, \"Colors\" is likely to find a core audience on Euro screens.\n\nBruno Ganz and Senta Berger are wonderful together in “Colors in the Dark,” but they should have told novice helmer Sophie Heldman how people past a certain age actually think and behave. There’s nothing far-fetched about the idea of an older couple making hard decisions following a cancer diagnosis (Heldman based the story on people she knew), but the film’s appraisal of what life can offer at a not especially advanced age strains credibility, and there’s a hole where other relationships are meant to exist. Flaws notwithstanding, “Colors” is likely to find a core audience on Euro screens.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Bruno Mars' 'I Just Might' Becomes His First Song to Debut at No. 1 on Singles Chart \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Spotify Is Raising U.S. Subscription Prices in the Next Month\n\nA charming opening sets the mood, with Anita (Berger) stirring from under a duvet and only then revealing Fred (Ganz) from behind the plump pillows. They’re a happy, successful couple living in a warm-toned, upmarket house. He’s just retired but goes off to the office anyway: Later, Anita sees him entering an unfamiliar building and, on investigating, discovers he’s just bought an empty apartment. He says it’s to have some private space now that he’s retired, but she’s convinced he’s got a mistress.\n\nSon Patrick (Barnaby Metschurat) is staying with his folks just before sis Karoline (Carina Wiese) is about to marry for the second time, and the tension in the house following Anita’s discovery leads to the parents’ revelation that Fred has prostate cancer. Fred has decided against treatment, not wanting to end his days as a patient; he also fears erectile dysfunction.\n\nWhen Anita tells Patrick, “We’re approaching an age when we’re nearing the end,” it’s hard for auds to buy such statements coming from the vivacious Berger. Equally unbelievable is Anita’s decision, following a nasty storm that requires her to run around the large garden saving some plants, to move into an arid retirement home, alone. Yes, she’s angry with Fred, and fearful of what life might be like without him, but too often the protags jump the gun to a ridiculous degree, as if they’re living in an advanced version of “Logan’s Run” where the cutoff age is now 70. Also problematic is the absence, apart from Patrick, of any real sense of familial warmth.\n\nThe faults are not with Ganz or Berger, who bring much more to the script than it gives them. It’s particularly frustrating, considering the poor roles usually offered actors (and especially actresses) past 60. Berger nails the deep-seated fear of long-time couples faced with the prospect of a half-life following the inevitable loss of a partner, but she also makes Anita an independent, strong-willed person. Ganz, too, projects an affection for his screen partner that’s tangible. A late scene in which the two pros let loose to a cover of “I’m So Excited” may make auds recall their own grandparents cutting a rug; there’s a joy and comfortability between these two that shines onscreen.\n\nLensing by Christine A. Maier (“Grbavica”) is largely personality-free, though slow fades between scenes have a distinctly smallscreen feel. A warm palette in the first half reveals Heldman’s affection for the couple’s house (in Dusseldorf), while colors turn colder with the waning of the days.",
+  "isFullReview": true,
   "dtliExcerpt": "Dan Lauria brings gruff authenticity to his portrayal of the legendary Green Bay Packers coach, but the play itself fumbles in its attempt to find dramatic coherence.",
   "originalScore": null,
   "assignedScore": 45,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Dan Lauria brings gruff authenticity to his portrayal of the legendary Green Bay Packers coach, but the play itself fumbles in its attempt to find dramatic coherence.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 45,
@@ -72,5 +72,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 45,
+  "textWordCount": 558,
+  "archivePath": "data/archives/reviews/lombardi-2010/variety--david-rooney_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T03:54:51.015Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 558,
+  "tierReason": "Full review text"
 }
