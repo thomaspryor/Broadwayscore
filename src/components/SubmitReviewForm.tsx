@@ -2,18 +2,16 @@
 
 import { useState, FormEvent } from 'react';
 
-const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_REVIEW_ENDPOINT || '';
-
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
-export default function SubmitReviewForm() {
+export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
   const [status, setStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!FORMSPREE_ENDPOINT) {
+    if (!endpoint) {
       setStatus('error');
       setErrorMessage('Review submission form is not configured. Please try again later.');
       return;
@@ -26,7 +24,7 @@ export default function SubmitReviewForm() {
     const data = new FormData(form);
 
     try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
+      const res = await fetch(endpoint, {
         method: 'POST',
         body: data,
         headers: { Accept: 'application/json' },

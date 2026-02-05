@@ -77,7 +77,7 @@ export default function SubmitReviewPage() {
           </section>
 
           {/* Review Submission Form */}
-          <SubmitReviewForm />
+          <SubmitReviewForm endpoint={process.env.NEXT_PUBLIC_FORMSPREE_REVIEW_ENDPOINT || ''} />
         </div>
 
         {/* FAQ Section */}
