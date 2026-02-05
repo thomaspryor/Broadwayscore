@@ -5,7 +5,7 @@
   "criticName": "Robert Hofler",
   "url": "https://www.thewrap.com/1776-broadway-review-musical-diane-paulus/",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "Whenever Charles Busch or John Epperson puts on a dress, wig and uncomfortable shoes, you can bet they are making a statement. They possess an attitude — a very big attitude — toward the female character they’re portraying.\n\nUtterly lacking is any point of view when the female, transgender or nonbinary actors put on men’s clothes in the new revival of “1776,” which opened Thursday at Roundabout’s American Airline Theatre.",
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": "John Adams may be the biggest bore ever to be the lead character in an American musical stage. He and others keep telling us what an insufferable pedant he is. Here, Crystal Lucas-Perry plays him as straight and humorless as any male actor ever has. Beyond the nontraditional casting, there's nothing very revolutionary about this lackluster '1776.'",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006",
   "showScoreExcerpt": "\"There are a couple of problems with giving '1776' the male-drag treatment. First off, at its core the show is terrible. Peter Stone wrote possibly the dullest, longest book scenes ever written for a musical.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 30,
@@ -78,5 +78,32 @@
     "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "textWordCount": 70,
+  "archivePath": "data/archives/reviews/1776-2022/thewrap--robert-hofler_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T06:19:11.296Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 76 (min: 300)"
+  ],
+  "wordCount": 70,
+  "tierReason": "Short text (70 words)"
 }
