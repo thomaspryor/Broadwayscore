@@ -1,0 +1,271 @@
+name: Bulk Show Score
+
+on:
+  workflow_dispatch:
+    inputs:
+      parallel_jobs:
+        description: 'Number of parallel shards (1-6)'
+        required: false
+        type: number
+        default: 4
+      limit_per_shard:
+        description: 'Max shows per shard (0 = all)'
+        required: false
+        type: number
+        default: 0
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+      chain:
+        description: 'Auto-chain next run when done (if shows remain)'
+        required: false
+        type: boolean
+        default: true
+      remaining_chains:
+        description: 'Max remaining chain iterations (prevents runaway)'
+        required: false
+        type: number
+        default: 10
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.shards }}
+      total_shards: ${{ steps.matrix.outputs.total_shards }}
+      missing_count: ${{ steps.count.outputs.missing }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Count missing shows
+        id: count
+        run: |
+          MISSING=$(node -e "
+            const s = require('./data/shows.json');
+            const b = require('./data/audience-buzz.json');
+            const list = s.shows || s;
+            const active = list.filter(x => x.status === 'open' || x.status === 'closed');
+            const missing = active.filter(x => { const e = (b.shows || {})[x.id]; return !(e && e.sources && e.sources.showScore); });
+            process.stdout.write(String(missing.length));
+          ")
+          echo "missing=$MISSING" >> $GITHUB_OUTPUT
+          echo "Shows missing Show Score data: $MISSING"
+
+      - name: Build shard matrix
+        id: matrix
+        run: |
+          JOBS=${{ github.event.inputs.parallel_jobs || 4 }}
+          if [ "$JOBS" -gt 6 ]; then JOBS=6; fi
+          if [ "$JOBS" -lt 1 ]; then JOBS=1; fi
+
+          SHARDS="["
+          for i in $(seq 0 $((JOBS - 1))); do
+            if [ $i -gt 0 ]; then SHARDS="$SHARDS,"; fi
+            SHARDS="$SHARDS$i"
+          done
+          SHARDS="$SHARDS]"
+
+          echo "shards=$SHARDS" >> $GITHUB_OUTPUT
+          echo "total_shards=$JOBS" >> $GITHUB_OUTPUT
+          echo "Matrix: $SHARDS (total: $JOBS)"
+
+  scrape:
+    needs: prepare
+    if: needs.prepare.outputs.missing_count > 0
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Stagger shard starts to avoid simultaneous API hammering
+      - name: Stagger start
+        run: sleep $(( ${{ matrix.shard }} * 30 ))
+
+      - name: Run Show Score scraper (shard ${{ matrix.shard }})
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          ARGS="--shows=missing --all --shard=${{ matrix.shard }} --total-shards=${{ needs.prepare.outputs.total_shards }}"
+          LIMIT=${{ github.event.inputs.limit_per_shard || 0 }}
+          if [ "$LIMIT" -gt 0 ]; then
+            ARGS="$ARGS --limit=$LIMIT"
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          echo "Running: node scripts/scrape-show-score-audience.js $ARGS"
+          node scripts/scrape-show-score-audience.js $ARGS
+
+      # Commit shard results + URL cache updates
+      - name: Commit shard results
+        if: always()
+        run: |
+          SHARD_FILE="data/show-score-shards/shard-${{ matrix.shard }}.json"
+          # Also commit URL cache updates (each shard may discover new URLs)
+          git add data/show-score-urls.json 2>/dev/null || true
+          git add data/audience-buzz.json 2>/dev/null || true
+          if [ -f "$SHARD_FILE" ]; then
+            git add "$SHARD_FILE"
+          fi
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: Show Score shard ${{ matrix.shard }}/${{ needs.prepare.outputs.total_shards }}
+
+            Automated Show Score data collection (parallel shard).
+
+            Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Push failed (attempt $i), pulling and rebasing..."
+              git pull --rebase origin main
+              sleep $((RANDOM % 10 + 5))
+            done
+          fi
+
+  merge:
+    needs: [prepare, scrape]
+    if: always() && needs.prepare.outputs.missing_count > 0
+    runs-on: ubuntu-latest
+    outputs:
+      still_missing: ${{ steps.count-remaining.outputs.remaining }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull latest (includes shard commits)
+        run: git pull origin main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge shard results into audience-buzz.json
+        run: |
+          if [ -d "data/show-score-shards" ]; then
+            SHARD_COUNT=$(ls data/show-score-shards/shard-*.json 2>/dev/null | wc -l)
+            echo "Found $SHARD_COUNT shard files"
+            if [ "$SHARD_COUNT" -gt 0 ]; then
+              node scripts/merge-show-score-shards.js --cleanup
+            else
+              echo "No shard files to merge"
+            fi
+          else
+            echo "No shard directory found"
+          fi
+
+      - name: Commit merged results
+        run: |
+          git add data/audience-buzz.json data/show-score-urls.json
+          git add -A data/show-score-shards/ 2>/dev/null || true
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: Merge Show Score shards into audience-buzz.json
+
+            Merged parallel shard results and recalculated combined scores.
+
+            Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Push failed (attempt $i), pulling and rebasing..."
+              git pull --rebase origin main
+              sleep $((RANDOM % 5 + 2))
+            done
+            echo "✓ Merge complete"
+          fi
+
+      - name: Count remaining shows
+        id: count-remaining
+        run: |
+          REMAINING=$(node -e "
+            const s = require('./data/shows.json');
+            const b = require('./data/audience-buzz.json');
+            const list = s.shows || s;
+            const active = list.filter(x => x.status === 'open' || x.status === 'closed');
+            const missing = active.filter(x => { const e = (b.shows || {})[x.id]; return !(e && e.sources && e.sources.showScore); });
+            process.stdout.write(String(missing.length));
+          ")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          echo "Shows still missing Show Score data: $REMAINING"
+
+  chain:
+    needs: [prepare, merge]
+    if: |
+      always() &&
+      needs.merge.outputs.still_missing > 0 &&
+      github.event.inputs.chain == 'true' &&
+      github.event.inputs.dry_run != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chain next run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REMAINING_CHAINS=${{ github.event.inputs.remaining_chains || 10 }}
+          STILL_MISSING=${{ needs.merge.outputs.still_missing }}
+
+          if [ "$REMAINING_CHAINS" -le 0 ]; then
+            echo "No remaining chain iterations. Stopping. $STILL_MISSING shows still need Show Score data."
+            exit 0
+          fi
+
+          NEXT_CHAINS=$((REMAINING_CHAINS - 1))
+          JOBS=${{ github.event.inputs.parallel_jobs || 4 }}
+
+          echo "Chaining next run: $STILL_MISSING shows remaining, $NEXT_CHAINS chain iterations left"
+          gh workflow run "Bulk Show Score" \
+            -f parallel_jobs=$JOBS \
+            -f chain=true \
+            -f remaining_chains=$NEXT_CHAINS \
+            -f limit_per_shard=0 \
+            -f dry_run=false
+
+          echo "✓ Next run triggered"
