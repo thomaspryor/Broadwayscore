@@ -409,6 +409,58 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     sort: 'opening-date-asc',
     relatedPages: ['new-broadway-shows-2025', 'broadway-shows-closing-soon', 'broadway-lottery-shows'],
   },
+
+  'broadway-shows-for-teens': {
+    slug: 'broadway-shows-for-teens',
+    title: 'Best Broadway Shows for Teens',
+    h1: 'Best Broadway Shows for Teens',
+    metaTitle: 'Best Broadway Shows for Teenagers (2026)',
+    metaDescription: 'Broadway shows perfect for teenagers. Age-appropriate productions with themes and stories that resonate with teen audiences.',
+    intro: 'Looking for Broadway shows that will actually engage your teenager? These productions feature themes, stories, and music that resonate with teen audiences while remaining age-appropriate. From coming-of-age stories to high-energy musicals, these shows offer the perfect introduction to Broadway for older kids who\'ve outgrown the purely family-friendly fare. Many of these productions deal with relatable topics like identity, belonging, and growing up.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const ageRec = show.ageRecommendation?.toLowerCase() || '';
+      // Ages 10+ through 14+ are teen-appropriate
+      return ageRec.includes('ages 10') ||
+             ageRec.includes('ages 12') ||
+             ageRec.includes('ages 13') ||
+             ageRec.includes('ages 14');
+    },
+    sort: 'score',
+    relatedPages: ['broadway-shows-for-kids', 'first-time-broadway', 'best-broadway-musicals'],
+  },
+
+  'broadway-shows-under-2-hours': {
+    slug: 'broadway-shows-under-2-hours',
+    title: 'Broadway Shows Under 2 Hours',
+    h1: 'Broadway Shows Under 2 Hours',
+    metaTitle: 'Broadway Shows Under 2 Hours (2026)',
+    metaDescription: 'Broadway shows with runtimes under 2 hours including intermission. Perfect for busy schedules or evening plans after the show.',
+    intro: 'Want to see a Broadway show but have dinner reservations or an early flight? These productions clock in at under two hours, giving you a complete theatrical experience without the lengthy time commitment. Whether you\'re short on time, have kids with limited attention spans, or just prefer a tighter show, these productions prove that great theater doesn\'t have to be an all-night affair. Most still include an intermission for a quick stretch.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const runtime = parseRuntime(show.runtime);
+      return runtime > 0 && runtime <= 120;
+    },
+    sort: 'score',
+    relatedPages: ['short-broadway-shows', 'broadway-shows-no-intermission', 'broadway-shows-for-kids'],
+  },
+
+  'broadway-shows-based-on-movies': {
+    slug: 'broadway-shows-based-on-movies',
+    title: 'Broadway Shows Based on Movies',
+    h1: 'Broadway Shows Based on Movies',
+    metaTitle: 'Broadway Musicals Based on Movies (2026)',
+    metaDescription: 'Broadway shows adapted from popular films. See your favorite movies come to life on stage with spectacular music, dance, and staging.',
+    intro: 'Love a movie? See it live on Broadway! These productions bring beloved films to the stage, often expanding the story with new songs, elaborate choreography, and the unique magic of live theater. From Disney classics to cult favorites, these adaptations offer a fresh take on stories you already know and love. Whether you\'re curious how they\'ll translate your favorite film or want to introduce someone to a story through live performance, these shows deliver familiar tales in spectacular new ways.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      return tags.includes('film-adaptation');
+    },
+    sort: 'score',
+    relatedPages: ['jukebox-musicals-on-broadway', 'broadway-shows-for-kids', 'best-broadway-musicals'],
+  },
 };
 
 // Get all browse page slugs for static generation
