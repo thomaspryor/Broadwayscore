@@ -1,0 +1,79 @@
+{
+  "showId": "the-prom-2018",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2018/11/15/theater/the-prom-review.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Such a joyful hoot. With its kinetic dancing, broad mugging and belty anthems, it makes you believe in musical comedy again...As in many of the greatest Golden Age musicals, they latch onto a subject of topical importance, using its gravity to anchor their satire and their satire to leaven its earnestness...The ensemble’s big numbers, set to Glen Kelly’s dance arrangements, are a blast...It consistently delivers on its entertainment promises as well as its Golden Age premise.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Such a joyful hoot...it makes you believe in musical comedy again.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong enthusiastic language ('joyful hoot', 'makes you believe again', 'consistently delivers') with comparison to greatest Golden Age musicals. Single excerpt warning noted, but tone is clearly positive with no reservations mentioned. | GPT-4o: The excerpt is highly positive, describing the show as a 'joyful hoot' and praising its ability to 'make you believe in musical comedy again.' The language suggests a strong recommendation, fitting the Rave bucket. However, confidence is low due to the single excerpt warning. | Gemini: The review excerpt is overwhelmingly positive, using phrases like \"joyful hoot\", \"makes you believe in musical comedy again\", and \"a blast\". Given the single excerpt warning, I'm scoring it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt contains strong praise ('joyful hoot', 'makes you believe in musical comedy again', 'are a blast') indicating a clear recommendation, though as a single curated excerpt it may not capture the full review's nuance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:34:13.708Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "showId": "i-need-that-2023",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "David Sheward",
+  "url": "https://theaterlife.com/i-need-that-sabbaths-theater/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 63,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“There’s nothing wrong with a touchy-feely show, but ‘I Need That’ lacks the aching pain of real-life hoarders. That’s not the play’s mission and it succeeds in its limited goals. Director Moritz von Stuelpnagel delivers a tight, precise staging, as neat as Sam’s house is cluttered.”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's not the play's mission and it succeeds in its limited goals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the show succeeds but within 'limited goals,' suggesting modest achievement. Single excerpt warning applies - this could be cherry-picked from a more negative or positive full review. | GPT-4o: The review acknowledges the play's limited goals and praises the direction, but notes it lacks the depth of real-life experiences. The single excerpt suggests a mixed verdict with some positive elements. | Gemini: The review states the show succeeds in its limited goals, but lacks the aching pain of real-life hoarders. This suggests a mixed reaction, not strongly positive or negative. | Kimi: The critic acknowledges the show lacks depth ('lacks the aching pain') but explicitly states it succeeds in its aims and praises the director's 'tight, precise staging.' This constitutes a qualified positive recommendation, though the single excerpt warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:17:05.704Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
+}

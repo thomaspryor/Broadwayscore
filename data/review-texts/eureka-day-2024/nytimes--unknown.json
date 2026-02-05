@@ -1,0 +1,79 @@
+{
+  "showId": "eureka-day-2024",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2024/12/16/theater/eureka-day-review-broadway.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Spector’s hilarious poison-pen satire of educational wokeism has led us to that point with great care.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Spector's hilarious poison-pen satire of educational wokeism has led us to that point with great care.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the show as 'hilarious' with writing done 'with great care,' indicating positive assessment. However, confidence is low due to single excerpt warning and lack of full review context. | GPT-4o: The excerpt praises the show as a 'hilarious poison-pen satire' and highlights the careful execution, indicating a strong positive sentiment. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt calls the show \"hilarious\" and praises its satire, indicating a positive recommendation. Due to the limited text, confidence is low, but the positive language suggests a score on the higher end of the positive range. | Kimi: The excerpt offers unambiguous praise for the show's comedic impact and construction, describing it as 'hilarious' and executed with 'great care.' As a single curated quote, it indicates a clear recommendation in the upper Positive range, though the full context is unavailable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:54:32.816Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

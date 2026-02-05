@@ -1,0 +1,76 @@
+{
+  "showId": "i-need-that-2023",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Samuel L. Leiter",
+  "url": "https://theaterlife.com/i-need-that-1-2/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 53,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "I Need That is a vehicle...built to highlight the kind of profane, lovable, everyman curmudgeon DeVito has specialized in since he played Louie De Palma on TV’s “Taxi.” Its structure is essentially that of a situation, with material suitable for an hour-long one-act unconvincingly stretched to fill an extra 40 minutes or so. Just as the set is crammed with personal “stuff,” so is I Need That with dramaturgic stuff.\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Its structure is essentially that of a situation, with material suitable for an hour-long one-act unconvincingly stretched to fill an extra 40 minutes or so.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic identifies fundamental structural problems, describing the show as 'unconvincingly stretched' and overstuffed with 'dramaturgic stuff.' However, confidence is low due to single excerpt warning and incomplete text. | GPT-4o: The review criticizes the show's structure as being stretched and filled with unnecessary content, suggesting a negative view. However, due to the single excerpt and potential cherry-picking, confidence is low. | Gemini: The review describes the play as stretched and crammed, suggesting it has issues but is not entirely negative, placing it in the Mixed category. The truncated text and single excerpt reduce confidence. | Kimi: While the excerpt acknowledges the show effectively showcases DeVito's 'lovable, everyman curmudgeon' persona, it fundamentally criticizes the dramaturgy as overstuffed and the material as 'unconvincingly stretched,' suggesting significant structural flaws temper any recommendation. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:33:39.089Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 60,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
+}

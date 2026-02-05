@@ -1,0 +1,79 @@
+{
+  "showId": "carousel-2018",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2018/04/12/theater/carousel-review-broadway.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"The tragic inevitability of 'Carousel' has seldom come across as warmly or as chillingly as it does in this vividly reimagined revival. As directed by Jack O’Brien and choreographed by Justin Peck, with thoughtful and powerful performances by Mr. Henry and Ms. Mueller, the love story at the show’s center has never seemed quite as ill-starred or, at the same time, as sexy...For its first two-thirds, this 'Carousel' tingles with the rapture of life in all its contradictions.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For its first two-thirds, this 'Carousel' tingles with the rapture of life in all its contradictions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction, choreography, and performances with evocative language like 'tingles with rapture.' However, single excerpt and 'first two-thirds' qualifier suggests possible reservations about the ending. | GPT-4o: The excerpt praises the production as 'vividly reimagined' and highlights 'thoughtful and powerful performances', suggesting a strong positive impression despite the limited context. | Gemini: The excerpt is overwhelmingly positive, using words like \"warmly\", \"chillingly\", \"vividly reimagined\", \"thoughtful and powerful performances\", and \"never seemed quite as ill-starred or, at the same time, as sexy\". Given the limited text, I am scoring it as a strong positive. | Kimi: The excerpt is strongly positive ('vividly reimagined', 'tingles with the rapture of life', 'thoughtful and powerful performances') but explicitly notes the praise applies only to 'the first two-thirds,' suggesting a potential drop-off. Single excerpt with warning about cherry-picking limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:59:19.789Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

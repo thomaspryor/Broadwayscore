@@ -1,0 +1,79 @@
+{
+  "showId": "amazing-grace-2015",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "http://www.nytimes.com/2015/07/17/theater/review-amazing-grace-the-story-of-a-slave-traders-moral-awakening.html?ref=theater&_r=0",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 43,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Unfortunately, while aspects of Newton’s tale are indeed noteworthy, maybe even amazing, the musical itself unfolds as an overstuffed history lesson trimmed in melodrama, with a standard-issue romantic subplot and some dutiful attempts to explore the lives of the slaves... 'Amazing Grace,' thick with such moralizing, naturally concludes on a note of uplift, or rather many notes of uplift: a choral singing of the title song... The song is simple, beautiful, immortal; the musical, not so much.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The song is simple, beautiful, immortal; the musical, not so much.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict calling the musical 'overstuffed,' with 'standard-issue' elements and excessive moralizing. The final comparison explicitly dismisses the show while praising only the source song. | GPT-4o: The review criticizes the musical as an 'overstuffed history lesson' and 'thick with moralizing,' concluding that while the song is praised, the musical itself is not. The excerpt suggests a negative tone, but the single excerpt limits confidence. | Gemini: The review praises the song but finds the musical \"overstuffed\" and not as impressive, indicating a mixed assessment. The excerpt-only nature lowers confidence. | Kimi: While acknowledging the noteworthy subject matter and the beauty of the hymn itself, the critic dismisses the musical as an 'overstuffed history lesson trimmed in melodrama' with a 'standard-issue romantic subplot,' concluding that the show fails to match the immortality of its title song.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:02:20.916Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "showId": "les-liaisons-dangereuses-2016",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "http://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html?_r=0",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 46,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Ms. McTeer and Mr. Schreiber come across as magnificent bulls who have strayed into a Limoges china shop...Directed by Josie Rourke, this latest 'Liaisons' falls into the trap of such broadness early and lies there, gesticulating madly, for more than two and a half hours. Occasionally something like real feeling raises its startled head — especially in the second act, when Valmont falls in love despite himself. But such twinges of emotion are more disruptive than illuminating.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this latest 'Liaisons' falls into the trap of such broadness early and lies there, gesticulating madly, for more than two and a half hours",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic describes the production as trapped in 'broadness' and 'gesticulating madly' for the entire runtime, with only occasional moments of 'real feeling' that are more 'disruptive than illuminating.' However, confidence is low due to single excerpt warning - this could be cherry-picked from a longer, more nuanced review. | GPT-4o: The review describes the production as broad and lacking depth, with only occasional moments of genuine emotion. The tone suggests a mixed verdict with some redeeming qualities, particularly in the performances. | Gemini: The review excerpt describes the production negatively, stating it falls into a trap of broadness and lies there for over two hours. While there are some positive aspects mentioned, the overall tone suggests a negative experience. | Kimi: While the critic praises McTeer and Schreiber as 'magnificent bulls,' the review condemns the production for falling into 'broadness' and 'gesticulating madly,' ultimately finding even its rare emotional moments 'more disruptive than illuminating.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:37:54.259Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 65,
+    "geminiScore": 48,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
+}

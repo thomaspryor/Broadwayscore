@@ -1,0 +1,76 @@
+{
+  "showId": "into-the-woods-2022",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Paulanne Simmons",
+  "url": "https://theaterlife.com/into-the-woods-2/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 73,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\" 'Into the Woods' is arguably Sondheim’s lightest and funniest work. And this production is appropriately filled with vamping, playful overacting, pratfalls and ironic winks to the audience. But after everyone has their dreams fulfilled, comes the second act.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this production is appropriately filled with vamping, playful overacting, pratfalls and ironic winks to the audience",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows appreciation for the production's approach to Sondheim's work, describing it as 'appropriate' with enjoyable theatrical elements. However, the 'But after...' suggests complications ahead, and with only one excerpt available, confidence is low. | GPT-4o: The excerpt highlights the production's playful and humorous elements, suggesting a positive tone. However, the single excerpt and lack of full context necessitate a cautious, low-confidence score. | Gemini: The excerpt describes the production as \"appropriately filled\" with positive qualities. Given it's a single excerpt, I'm scoring it as positive but with low confidence and a lower score. | Kimi: The excerpt praises the production's playful, comedic style and calls the material Sondheim's 'lightest and funniest,' but cuts off with 'But' introducing the second act, leaving the full verdict unclear. Given the single excerpt warning and truncation, scored at the lower end of Positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:48:54.383Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

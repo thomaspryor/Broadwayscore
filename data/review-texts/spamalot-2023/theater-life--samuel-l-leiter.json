@@ -1,0 +1,76 @@
+{
+  "showId": "spamalot-2023",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Samuel L. Leiter",
+  "url": "https://theaterlife.com/monty-pythons-spamalot-3/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Idle’s book leans heavily on the film—Pythonites wouldn’t have it otherwise—but there’s enough original material to provide wonderful surprises for those familiar only with the movie. And the cast, under the merrily inspired direction and choreography of Josh Rhodes, is perfectly in sync with the needs of the absurdist humor; it keeps just straight-faced enough to maintain the needed conviction while subverting every line and piece of business with anarchic punch aimed at institutional structures and established beliefs.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the cast, under the merrily inspired direction and choreography of Josh Rhodes, is perfectly in sync with the needs of the absurdist humor",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction, cast, and material with phrases like 'merrily inspired' and 'perfectly in sync.' However, confidence is low due to single excerpt limitation - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the cast and direction, highlighting the show's humor and originality. The positive tone suggests a strong recommendation, but confidence is low due to the single excerpt warning. | Gemini: The review excerpt praises the book, direction, choreography, and cast's performance, indicating a positive experience. Given the single excerpt warning, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers strong praise for the direction ('merrily inspired'), cast ('perfectly in sync'), and book ('wonderful surprises'), indicating an enthusiastic recommendation, though as a single curated excerpt the full context is unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:15:42.169Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

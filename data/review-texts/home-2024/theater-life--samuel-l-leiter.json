@@ -1,0 +1,76 @@
+{
+  "showId": "home-2024",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Samuel L. Leiter",
+  "url": "https://theaterlife.com/home/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "vividly theatrical, frequently funny, and never less than pleasurable. \n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "vividly theatrical, frequently funny, and never less than pleasurable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('vividly theatrical', 'frequently funny', 'never less than pleasurable') suggests solid recommendation. Single excerpt warning and 'Read more' suggests truncated text, so scored at upper end of Positive bucket with low confidence. | GPT-4o: The excerpt provides a strongly positive impression with phrases like 'vividly theatrical' and 'never less than pleasurable.' However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is very positive, using terms like \"vividly theatrical\" and \"frequently funny,\" leading to a positive classification. Due to the single excerpt, confidence is low, but the strength of the quote pushes the score to the higher end of the positive range. | Kimi: The single available excerpt uses strongly positive language ('vividly theatrical,' 'never less than pleasurable'), indicating a clear recommendation in the upper Positive range, though limited context prevents higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:52:17.479Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

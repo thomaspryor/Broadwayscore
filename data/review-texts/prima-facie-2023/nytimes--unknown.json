@@ -1,0 +1,79 @@
+{
+  "showId": "prima-facie-2023",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2023/04/23/theater/prima-facie-review-jodie-comer.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 69,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“One-person, multicharacter stories often fail to develop suspense and momentum, but Miller has structured this one precisely...The abandonment of that structure in the play’s final third is likewise precise, and many will value the disruption ‘prima facie’ — at first glance.”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Miller has structured this one precisely",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Single excerpt shows measured praise for structure and craft, but notes disruption in final third. Positive assessment but qualified, and low confidence due to limited text. | GPT-4o: The review excerpt praises the structure but notes a significant change in the final third, suggesting a mixed view. The excerpt's tone is not clearly positive or negative, leading to a mixed classification with low confidence due to limited context. | Gemini: The review excerpt notes a positive structure but also mentions a disruptive final third, suggesting a mixed experience. The truncated nature of the text lowers confidence. | Kimi: The excerpt praises the play's structure as 'precise' but employs distanced language ('many will value') regarding the final third, suggesting a mild, qualified recommendation rather than an enthusiastic endorsement. Single-excerpt limitations warrant conservative scoring in the lower Positive range. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:02:37.533Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
+}

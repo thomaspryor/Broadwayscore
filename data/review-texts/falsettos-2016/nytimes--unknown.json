@@ -1,0 +1,79 @@
+{
+  "showId": "falsettos-2016",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "http://www.nytimes.com/2016/10/28/theater/falsettos-review.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 88,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"There’s hardly a moment in the exhilarating, devastating revival of the musical 'Falsettos' that doesn’t approach, or even achieve, perfection...Directed by Mr. Lapine—whose work is so sharp it’s as if he were seeing the show with a new pair of eyes...Mr. Borle shines here as he has never before...'Falsettos' never feels like a singing time capsule. Its fundamental subject is that mysterious, maddening, uplifting, life-complicating emotion we refer to as love, which hasn’t changed in 25 years.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's hardly a moment in the exhilarating, devastating revival of the musical 'Falsettos' that doesn't approach, or even achieve, perfection",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Opens with near-perfection claim, uses superlatives like 'exhilarating' and 'devastating', praises direction as 'sharp' and lead performance as career-best. However, single excerpt warning requires medium confidence. | GPT-4o: The excerpt provides unqualified praise with superlatives ('exhilarating', 'devastating', 'perfection'). Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The excerpt uses strong positive language like \"exhilarating\", \"devastating\", and \"perfection\", indicating a strong recommendation. Given the single excerpt warning, I've scored it on the higher end of the positive range. | Kimi: Single excerpt contains superlative praise ('perfection,' 'exhilarating') suggesting a rave, but following the single-excerpt guidance to score in the upper Positive range (80-84) due to limited context. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:54:23.015Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 83,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
+}

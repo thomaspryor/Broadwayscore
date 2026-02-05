@@ -1,0 +1,76 @@
+{
+  "showId": "camelot-2023",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Samuel L. Leiter",
+  "url": "https://theaterlife.com/camelot/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 44,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Regardless of what one thinks of how well Mr. Sorkin’s book tells the story, it’s hard not to feel there’s simply too much of it, making the nearly three-hour show seem even longer. It’s a shame Lerner and Loewe didn’t provide more music. At times the show comes off like a Maxwell Anderson historical drama, now and then lightened by a musical number; too many extended scenes depend on talk, when they might have been sung. And when there’s little or no musical underscoring, dullness creeps in.\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Regardless of what one thinks of how well Mr. Sorkin's book tells the story, it's hard not to feel there's simply too much of it, making the nearly three-hour show seem even longer.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes the show's excessive length, dullness, and lack of musical content. However, with only one excerpt available that may be cherry-picked, confidence is low - the full review verdict could be different. | GPT-4o: The excerpt criticizes the length and pacing, suggesting the show feels overly long and dull. The lack of music is noted as a significant issue. Despite limited text, the tone is clearly negative. | Gemini: The review excerpt expresses disappointment with the show's length and lack of music, suggesting it relies too heavily on dialogue and lacks musical underscoring, leading to dullness. Given the limited text, confidence is low. | Kimi: The critic finds the production overly talky and lacking in musical content, with 'dullness' creeping in during extended dialogue scenes. While measured in tone, the review clearly discourages attendance due to the bloated runtime and insufficient score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:42:04.530Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 48,
+    "kimiScore": 44,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "showId": "how-to-dance-in-ohio-2023",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Samuel L. Leiter",
+  "url": "https://theaterlife.com/how-to-dance-in-ohio-1-2/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 44,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Regrettably,...book writer Rebekah Greer Melocik, in her quest for a show that would somehow satisfy the conventional expectations of a Broadway audience, has chosen to hoke up the action with additional subplots, romanticizing and sentimentalizing what was already romantic and sentimental but in no way as thickly. There’s even a prologue line excusing the dramatic liberties: “The show is based on things that actually happened. But parts have been embellished for dramatic purposes. You have to spice things up in Ohio.” I guess it depends on what “embellished” means. \n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Regrettably,...book writer Rebekah Greer Melocik, in her quest for a show that would somehow satisfy the conventional expectations of a Broadway audience, has chosen to hoke up the action with additional subplots",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt shows clear disappointment with the book writer's choices, using 'regrettably' and criticizing the decision to 'hoke up' the material with unnecessary subplots. However, this is only one excerpt from what appears to be a longer review, so confidence is low. | GPT-4o: The excerpt criticizes the book writer's choice to add subplots and embellishments, suggesting a negative view of the production. However, without the full review, the confidence is low. | Gemini: The excerpt expresses disappointment with the book, stating it has been \"hoked up\" with unnecessary subplots and romanticizing the original material. Given the negative tone and the focus on a key element of the show (the book), I'm classifying this as negative, but with low confidence due to the limited excerpt. | Kimi: The excerpt criticizes the book writer for adding excessive subplots and over-sentimentalizing the material, expressing skepticism about the adaptation's dramatic liberties. With only one excerpt available, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:31:12.240Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
+}

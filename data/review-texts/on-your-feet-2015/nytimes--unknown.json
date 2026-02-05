@@ -1,0 +1,79 @@
+{
+  "showId": "on-your-feet-2015",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "http://www.nytimes.com/2015/11/06/theater/review-on-your-feet-rides-the-rhythm-of-the-estefans.html?_r=0",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 63,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"The recipe may be familiar, but the flavor is fresh in 'On Your Feet!,' the half-formulaic, half-original and undeniably crowd-pleasing musical...But with an often mechanical book, moving through its rags-to-riches paces as if to a rigid percussive beat, 'On Your Feet!' ultimately falls somewhere in the middle of the hefty pack of jukebox musicals that have plugged in to Broadway’s power strip.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'On Your Feet!' ultimately falls somewhere in the middle of the hefty pack of jukebox musicals that have plugged in to Broadway's power strip.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show is 'crowd-pleasing' but criticizes the 'mechanical book' and explicitly states it 'falls somewhere in the middle' - classic mixed review language with no clear recommendation either way. | GPT-4o: The review describes the musical as 'half-formulaic, half-original' and 'crowd-pleasing' but criticizes the book as 'mechanical'. The overall tone suggests a mixed reception, with both positive and negative elements. | Gemini: The review acknowledges fresh elements but also notes a mechanical book and formulaic aspects, placing it in the mixed category. The truncated text and single excerpt lower the confidence. | Kimi: While the excerpt acknowledges the show is 'undeniably crowd-pleasing' with 'fresh' flavor, the critic's final assessment places it 'somewhere in the middle' of the jukebox musical genre, citing a 'mechanical book' as a significant flaw.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:39:40.734Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
+}

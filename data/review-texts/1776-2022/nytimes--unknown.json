@@ -1,0 +1,79 @@
+{
+  "showId": "1776-2022",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2022/10/06/theater/1776-review-broadway.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 44,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"The production is instead so overpumped and overplayed as to be hardly comprehensible is the result of a fundamental misunderstanding of the musical, which is plenty complicated as written.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production is instead so overpumped and overplayed as to be hardly comprehensible",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds the production fundamentally flawed and incomprehensible due to directorial choices. Single excerpt limits confidence, but the language is clearly negative. | GPT-4o: The excerpt criticizes the production for being 'overpumped and overplayed,' suggesting a negative view. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The excerpt indicates a negative assessment of the production due to being \"overpumped and overplayed\" and a \"fundamental misunderstanding of the musical.\" Given the single excerpt, confidence is low. | Kimi: The excerpt describes the production as 'overpumped,' 'overplayed,' and 'hardly comprehensible,' citing a 'fundamental misunderstanding' of the source material. This constitutes a clear recommendation against, though confidence is low given only one curated excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:13:55.298Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 52,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
+}

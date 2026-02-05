@@ -1,0 +1,79 @@
+{
+  "showId": "network-2018",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2018/12/06/theater/network-review-bryan-cranston.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 77,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"And if you’re a glutton for great, high-risk acting, you owe Mr. Cranston the courtesy — and yourself the thrill — of watching his self-immolation...If the bravura dementia of his Howard makes much of the rest of the show seem as two-dimensional as a flat TV screen, it’s a trade-off I’m willing to accept, albeit with a sigh...As a portrait of a displaced man unraveling, Mr. Cranston’s wrenching performance stands on its own.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you owe Mr. Cranston the courtesy — and yourself the thrill — of watching his self-immolation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies. The critic recommends seeing it specifically for Cranston's performance ('you owe' suggests obligation, 'thrill' is positive), but acknowledges the rest of the show is weak ('two-dimensional'). This qualified recommendation lands in lower Positive range. | GPT-4o: The excerpt praises Bryan Cranston's performance as thrilling and high-risk, suggesting a strong reason to see the show. However, it acknowledges that the rest of the show may not match his level, indicating some reservations. | Gemini: The review praises Cranston's performance highly, but notes that it overshadows the rest of the show. The critic is willing to accept this trade-off, indicating a positive but qualified recommendation. Confidence is low due to the limited excerpt. | Kimi: The critic strongly recommends seeing the show specifically for Cranston's 'wrenching performance,' but explicitly notes that the rest of the production is comparatively 'two-dimensional' and calls the experience a 'trade-off' accepted 'with a sigh,' indicating significant reservations about the overall production despite the exceptional acting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:06:51.215Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

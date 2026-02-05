@@ -1,0 +1,76 @@
+{
+  "showId": "harmony-2023",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Isa Goldberg",
+  "url": "https://theaterlife.com/harmony-1-2-3/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“How beautifully Barry Manilow’s new musical stumbles into our hearts...even though the production implodes with the rush of history, the show starts out quietly, and moves at a comfortable pace, not necessarily an urgent one...Warren Carlyle’s direction is grounded in telling the truth earnestly, and his choreography while minimal, sparkles when it must.”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "How beautifully Barry Manilow's new musical stumbles into our hearts",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Mixed signals with positive opening ('beautifully stumbles into our hearts') but mentions production 'implodes' and pacing issues. Single excerpt creates uncertainty about full verdict. | GPT-4o: The excerpt suggests a positive view with some reservations. The musical 'stumbles into our hearts' indicates a positive impact, but 'implodes with the rush of history' suggests some issues. The direction and choreography are praised, supporting a positive classification. However, the single excerpt and lack of full context lower confidence. | Gemini: The review states the musical \"stumbles into our hearts\" and praises the direction and choreography, although it notes the production \"implodes with the rush of history.\" This suggests a positive but not rave review. | Kimi: The excerpt presents sharply contradictory sentiments: while the show 'beautifully... stumbles into our hearts' with earnest direction and occasional sparkle, it simultaneously 'implodes with the rush of history' and maintains a pace that is 'not necessarily an urgent one,' suggesting significant structural flaws alongside emotional resonance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:38:20.850Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 78,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
+}

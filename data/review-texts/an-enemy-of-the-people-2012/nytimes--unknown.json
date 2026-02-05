@@ -1,0 +1,79 @@
+{
+  "showId": "an-enemy-of-the-people-2012",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 69,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"...a bitter satire of local politics that soon reveals itself as a slow-boil tragedy\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a bitter satire of local politics that soon reveals itself as a slow-boil tragedy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Single excerpt describes the show's dramatic arc in neutral-to-positive terms, suggesting thoughtful construction, but extremely limited text makes confidence assessment difficult. | GPT-4o: The excerpt suggests a complex tone with elements of satire and tragedy, but lacks clear evaluative language indicating a strong recommendation or dissuasion. The single excerpt and lack of a clear verdict contribute to low confidence. | Gemini: The excerpt describes the show as a \"bitter satire\" and a \"slow-boil tragedy,\" suggesting a complex and potentially thought-provoking experience, but without a clear recommendation. Given the limited text, a mixed score seems appropriate. | Kimi: Single excerpt describes effective dramatic structure ('slow-boil tragedy') and genre ('bitter satire') without explicit praise or criticism. Lacks enthusiastic endorsement language, suggesting mild approval. Confidence is low due to limited context. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:49:31.664Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "showId": "stranger-things-2024",
+  "outletId": "culturesauce",
+  "outlet": "Culture Sauce",
+  "criticName": "Thom Geier",
+  "url": "https://culturesauce.com/2025/04/22/stranger-things-the-first-shadow-netflix-broadway-review/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 63,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"What ‘The Last Shadow’ lacks in storytelling momentum it compensates for with fan service and mesmerizing stagecraft\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What 'The Last Shadow' lacks in storytelling momentum it compensates for with fan service and mesmerizing stagecraft",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt acknowledges significant storytelling flaws while praising production elements - classic mixed review language suggesting neither clear recommendation nor discouragement. | GPT-4o: The review excerpt highlights a lack of storytelling momentum, which is a significant critique, but also praises the stagecraft. This suggests a mixed review, with notable strengths and weaknesses. | Gemini: The review acknowledges a weakness in storytelling but praises the stagecraft and fan service, suggesting a positive but qualified recommendation. Given that this is a single excerpt, the confidence is low. | Kimi: The excerpt presents a trade-off: significant criticism of the narrative ('lacks storytelling momentum') balanced against strong praise for production values ('mesmerizing stagecraft'). The mention of 'fan service' suggests niche appeal rather than universal recommendation, placing this in Mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:25:53.618Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
+}

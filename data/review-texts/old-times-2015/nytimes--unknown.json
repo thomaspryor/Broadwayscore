@@ -1,0 +1,79 @@
+{
+  "showId": "old-times-2015",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "http://www.nytimes.com/2015/10/07/theater/review-old-times-where-the-past-is-a-dangerous-place.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 63,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"If you’ve seen 'Old Times' before, and retain fond memories of its quiet creeping impact, Mr. Hodge’s flashy production may well irritate you...Though this is not an 'Old Times' for purists, it has its pleasures...I’ve seldom seen a cast so palpably enjoying delivering Pinter’s dialogue, even if it often here feels closer to Noël Coward...I’d love to see them have the chance to lower their voices, kick off their poses and make themselves more comfortably at home in this ever-discomfiting play.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though this is not an 'Old Times' for purists, it has its pleasures.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the production has pleasures and praises the cast's enjoyment, but expresses significant reservations about the directorial approach being 'flashy' and potentially irritating to those familiar with the play. The final wish for a different approach suggests the current production misses the mark. | GPT-4o: The review acknowledges some enjoyment and pleasures in the production but also notes potential irritation for purists and a mismatch in style. The excerpt suggests a mixed reception with both positive and negative elements. | Gemini: The review acknowledges pleasures but also criticizes the production's flashiness and suggests the cast needs to be more comfortable in their roles. The overall tone is mixed, leaning slightly positive. | Kimi: Single excerpt shows qualified praise: critic acknowledges 'pleasures' and praises cast enjoyment, but clearly dislikes the flashy, posed production style and deviation from Pinter's tone. Reads as mildly positive with significant caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:36:09.525Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
+}

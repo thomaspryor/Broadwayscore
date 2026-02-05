@@ -1,0 +1,79 @@
+{
+  "showId": "come-from-away-2017",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2017/03/12/theater/come-from-away-review.html?_r=0",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"A big bearhug of a musical...Even the most stalwart cynics may have trouble staying dry-eyed during this portrait of heroic hospitality under extraordinary pressure...'Come From Away' is smarter than it first appears...The show covers a vast expanse of sensitive material with a respect for its complexity...It sustains an air of improvisational urgency, which feels appropriate to a show about making do in crisis, and it doesn’t linger on obvious moments of heartbreak and humanity.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A big bearhug of a musical...Even the most stalwart cynics may have trouble staying dry-eyed",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling it 'a big bearhug of a musical' with emotional impact that affects even cynics, plus compliments on intelligence and respectful handling of material. Single excerpt warning applied - this reads as strong positive praise. | GPT-4o: The excerpt praises the show for its emotional impact, intelligence, and handling of complex material. The tone is clearly positive, suggesting a strong recommendation. | Gemini: The review uses positive language such as \"big bearhug of a musical\" and praises the show's respect for complexity, indicating a positive recommendation. However, due to the limited excerpt, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the show's emotional impact and intelligence, describing it as a 'big bearhug' that handles sensitive material with respect and complexity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:16:43.017Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

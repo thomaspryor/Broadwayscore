@@ -1,0 +1,79 @@
+{
+  "showId": "good-night-oscar-2023",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2023/04/24/theater/good-night-oscar-review-sean-hayes.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 61,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“The work is startling, but the performance is less an inhabitation of character than a nonstop loop of perfectly rendered facial tics, trembling hands and compulsive gestures. ”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The work is startling, but the performance is less an inhabitation of character than a nonstop loop of perfectly rendered facial tics, trembling hands and compulsive gestures.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt presents mixed signals - 'startling' suggests positive impact but 'less an inhabitation' and description of tics suggests criticism of the performance approach. Given single excerpt warning and mixed tone, scored in Mixed range with low confidence. | GPT-4o: The excerpt describes the work as 'startling' but criticizes the performance as lacking depth, suggesting a mixed assessment. The single excerpt and lack of full context lead to low confidence. | Gemini: The excerpt describes the performance negatively, suggesting it's more about tics and gestures than genuine character portrayal. Given the single excerpt and negative tone, I've classified it as negative with low confidence. | Kimi: The excerpt offers contradictory signals: 'startling' praise for the work itself is undercut by significant criticism that the performance relies on technical tics rather than genuine character depth. With only one excerpt available, the overall verdict remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:28:22.400Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
+}

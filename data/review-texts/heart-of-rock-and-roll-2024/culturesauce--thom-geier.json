@@ -1,0 +1,76 @@
+{
+  "showId": "heart-of-rock-and-roll-2024",
+  "outletId": "culturesauce",
+  "outlet": "Culture Sauce",
+  "criticName": "Thom Geier",
+  "url": "https://culturesauce.com/2024/04/22/heart-of-rock-and-roll-broadway-review/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The Heart of Rock and Roll is a foot-tapping, candy-colored delight\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Heart of Rock and Roll is a foot-tapping, candy-colored delight",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear enthusiasm with 'delight' and vivid positive descriptors, but low confidence due to truncated text with only one line available. | GPT-4o: The excerpt describes the show as a 'foot-tapping, candy-colored delight', indicating a positive and enthusiastic tone. However, due to the single excerpt warning, confidence is low. | Gemini: The single excerpt available is very positive, describing the show as a \"foot-tapping, candy-colored delight.\" Given the limited information, I'm placing it in the upper range of the Positive bucket. | Kimi: The excerpt uses strongly positive language ('delight,' 'foot-tapping'), indicating clear enthusiasm for the production. As a single curated quote, it suggests an upper-range Positive verdict, though the limited context prevents higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:08:15.992Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

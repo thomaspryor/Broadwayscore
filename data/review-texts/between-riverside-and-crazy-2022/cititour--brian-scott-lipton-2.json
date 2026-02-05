@@ -1,0 +1,76 @@
+{
+  "showId": "between-riverside-and-crazy-2022",
+  "outletId": "cititour",
+  "outlet": "Cititour",
+  "criticName": "Brian Scott Lipton",
+  "url": "https://cititour.com/NYC_Broadway/Between-Riverside-and-Crazy/1120",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Much of the beauty of Guirgis’ play is how often it curves off the road you might expect it to stay on. Thankfully, the work could have no better driver than the amazing Henderson...just fasten your seatbelt and come along for the ride!\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Much of the beauty of Guirgis' play is how often it curves off the road you might expect it to stay on.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear enthusiasm with 'amazing Henderson' and invitation to 'come along for the ride!' But single excerpt warning means this could be cherry-picked from a more mixed review, so confidence is low. | GPT-4o: The excerpt provides a positive evaluation of the play and its lead actor, suggesting an engaging and worthwhile experience. However, with only one curated excerpt, the confidence is low. | Gemini: The excerpt expresses strong praise for the play and the lead performance, suggesting a positive recommendation. Given it's a single excerpt, I'm placing it at the higher end of the 'Positive' bucket. | Kimi: The single available excerpt is clearly positive, praising the play's 'beauty' and calling the lead actor 'amazing' while explicitly inviting audiences to see the show. Following the single-excerpt guidance for clearly positive quotes, this falls in the 80-84 Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:36:40.720Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

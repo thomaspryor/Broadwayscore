@@ -1,0 +1,79 @@
+{
+  "showId": "the-collaboration-2022",
+  "outletId": "lighting-and-sound-america",
+  "outlet": "Lighting & Sound America",
+  "criticName": "Unknown",
+  "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BJK3TX&fbclid=IwAR1Bh28qpbbWwW40veh7idXI3AYKuF_joJ7yVfDeWSzFRRD1_KApgbKCeEw",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 43,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The pairing of art-world bad boys might seem to promise some dramatic fireworks, or at least some gossipy fun, but this vehicle lacks a dramatic motor. The Collaboration is a high-concept pitch in search of a rationale\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this vehicle lacks a dramatic motor",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the show conceptually promising but dramatically deficient, calling it a 'pitch in search of a rationale' - clear disappointment with execution. Low confidence due to single excerpt and 'Read more' truncation. | GPT-4o: The excerpt suggests a lack of substance and direction in the show, indicating disappointment. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt indicates the show \"lacks a dramatic motor\" and is \"in search of a rationale,\" suggesting a negative assessment. Due to the limited text, confidence is low. | Kimi: The excerpt describes the show as lacking a 'dramatic motor' and calls it a 'high-concept pitch in search of a rationale,' indicating fundamental flaws in the writing and construction. Given this is a single curated excerpt with no mention of redeeming qualities, it suggests a negative verdict, though confidence is lowered due to potential truncation and lack of full context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:37:05.986Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
+}
