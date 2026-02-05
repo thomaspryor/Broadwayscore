@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
-const { matchTitleToShow, loadShows } = require('./lib/show-matching');
+const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
 
 // Paths
@@ -480,13 +480,13 @@ async function scrapeNYCTheatreRoundups() {
       }
 
       // Verify page is actually about this show (prevent cross-show contamination)
-      // NYC Theatre pages have the site name in h1/title, so check the full page text instead
+      // Check page title/h1 AND body text for show title words
       const $page = cheerio.load(html);
-      const pageText = $page('body').text().toLowerCase();
-      const showTitleLower = show.title.toLowerCase()
-        .replace(/^the\s+/, '').replace(/\s*\(.*?\)\s*$/, '').replace(/:\s+.*$/, '').trim();
-      if (showTitleLower.length > 3 && !pageText.includes(showTitleLower)) {
-        console.log(`  [SKIP] Page doesn't mention "${show.title}" — likely wrong show`);
+      const pageTitle = $page('title').text() + ' ' + $page('h1').text() + ' ' + $page('h2').first().text();
+      const pageText = $page('body').text();
+      // Check title/headings first (most reliable), fall back to body text
+      if (!titleWordsMatch(show.title, pageTitle) && !titleWordsMatch(show.title, pageText)) {
+        console.log(`  [SKIP] Page doesn't match "${show.title}" — likely wrong show`);
         continue;
       }
 
