@@ -12,5 +12,59 @@
   "bwwExcerpt": "If there were ever tears behind that famous smile, Iglehart’s Armstrong is too reserved to share. (The actor is also weakest when he feigns playing the trumpet, the instrument that made Armstrong a star.) There’s no time for introspection when there’s another career highlight to hit, another song to cram into a show that boasts nearly 30 tunes in all. A Wonderful World doesn’t offer a very deep understanding of Louis Armstrong and what made him a legend, but it does ov",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-WONDERFUL-WORLD-Opens-On-Broadway-20241111",
   "contentTier": "excerpt",
-  "showScoreExcerpt": "\"The book is serviceable but overstuffed\"\n\nRead more"
+  "showScoreExcerpt": "\"The book is serviceable but overstuffed\"\n\nRead more",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The book is serviceable but overstuffed",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The excerpt suggests a mixed assessment, noting the book is 'serviceable' but also 'overstuffed'. The limited text and lack of a clear verdict result in low confidence. | Gemini: The single quote provided suggests a mixed assessment, indicating neither strong praise nor outright rejection. The 'serviceable but overstuffed' nature points to a middle-ground classification. | Kimi: The excerpt offers a balanced critique of the show's book as functional yet bloated, but provides no overall verdict on performances, direction, or whether the critic recommends attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:55:55.432Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

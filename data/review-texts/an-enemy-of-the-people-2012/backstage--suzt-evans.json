@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Rebecca Lenkiewicz has transformed Henrik Ibsen’s 1882 play “An Enemy of the People,” an insightful work about the cost of free expression, into a coherent, topical, and thrilling piece that pokes and prods at our own moral fiber. Expertly realized by director Doug Hughes, the production succeeds on merit instead of flashiness or celebrity—with an outstanding cast of theater veterans led by Richard Thomas and Boyd Gaines—and causes us to question just how far we are willing to go to stand up for",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the production succeeds on merit instead of flashiness or celebrity—with an outstanding cast",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for adaptation ('coherent, topical, and thrilling'), direction ('expertly realized'), and cast ('outstanding'). However, text is clearly truncated mid-sentence, so confidence is low despite positive language. | GPT-4o: The excerpt praises the transformation of the play into a 'coherent, topical, and thrilling piece,' with strong direction and an outstanding cast. The language suggests a highly positive view, indicating a strong recommendation. | Gemini: The excerpt is overwhelmingly positive, using words like \"coherent\", \"topical\", and \"thrilling\". It also praises the director and cast, leading to a positive classification. | Kimi: The excerpt offers strong praise, describing the production as 'thrilling' and 'expertly realized' with an 'outstanding cast,' indicating a clear recommendation despite limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:55:00.294Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

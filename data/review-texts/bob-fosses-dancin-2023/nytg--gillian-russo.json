@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "He's added in some famous Fosse numbers from other shows, but Cilento otherwise preserves Fosse's original Dancin' choreography, much of which pushes the boundaries of, and departs from, his style as we think of it. And by doing so, Bob Fosse's Dancin' (as the revival's title has been stylized) reminds us of the breadth of Fosse's talent and resurfaces a facet of his legacy we often forget: joy. Dancin' brims with it — in Fosse's moves, the dancers' soaring energy, the lively orchestra, and, tha",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dancin' brims with it — in Fosse's moves, the dancers' soaring energy, the lively orchestra",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Text is clearly appreciative, praising how the revival 'reminds us of the breadth of Fosse's talent' and emphasizing the show 'brims with joy.' However, confidence is low due to truncated text and single excerpt warning. | GPT-4o: The excerpt highlights the joy and energy of the production, praising the choreography and overall experience. Given the single excerpt warning, the positive tone suggests a strong recommendation. | Gemini: The excerpt focuses on the joy and energy of the production, highlighting Fosse's talent and the dancers' performance. Given the limited text, I'm scoring it as positive but with low confidence. | Kimi: The excerpt enthusiastically praises the production's preservation of Fosse's choreography while emphasizing the 'joy' that 'brims' from the dancers' energy and lively staging, indicating a strong recommendation despite the truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:13:33.058Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "More to the point, 'Amazing Grace' focuses on Newton as a bratty young man in the 1740s, when he was truly the self-proclaimed 'wretch' of that hymn's first stanza. The spiritual -- recently sung by the president at a eulogy for the Charleston shooting victims -- isn't heard until the musical's final moments. Writer Smith (sharing book credit with Arthur Giron) piles on a lot to explain why John is a rebellious man: His mother died when he was young ... His love interest, Mary (the appealing Erin Mackey, of 'Chaplin'), comes from a broken family that wants to marry her off to a pompous British major (Chris Hoch)...Because most of the relationships are musical theater tropes, they tend to drag on the pacing. The tone of scenes in the first act oscillates wildly, from striking and severe -- particularly the difficult images of chained slaves being branded -- to overly smug and smirky (Hoch is fun, though he seems to be channeling King George from 'Hamilton'). The songs are confident, if not quite memorable -- the best being 'Truly Alive,' early on.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Because most of the relationships are musical theater tropes, they tend to drag on the pacing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt shows mixed assessment: acknowledges some positives (appealing performances, confident songs) but criticizes pacing issues, wildly oscillating tone, and reliance on tropes. No clear recommendation either way. | GPT-4o: The review highlights issues with pacing and tone, describing the relationships as musical theater tropes that drag. While there is some praise for the songs being confident, they are also noted as not quite memorable. The excerpt provides a mixed impression with no clear recommendation. | Gemini: The review notes both positive and negative aspects, such as confident songs but pacing issues and reliance on tropes. The lack of a clear recommendation and the mixed tone suggest a 'Mixed' classification. | Kimi: The excerpt praises individual performances and some striking imagery but criticizes the cluttered book, dragging pace, inconsistent tone, and unmemorable songs, suggesting a production with notable flaws alongside its merits.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:25:11.317Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

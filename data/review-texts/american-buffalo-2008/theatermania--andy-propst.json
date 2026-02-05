@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cedric the Entertainer brings surprising depth and nuance to his role as Walter 'Teach' Cole, while Haley Joel Osment makes a solid Broadway debut as the young Bobby.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cedric the Entertainer brings surprising depth and nuance to his role as Walter 'Teach' Cole, while Haley Joel Osment makes a solid Broadway debut as the young Bobby.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cedric the Entertainer brings surprising depth and nuance to his role as Walter 'Teach' Cole, while Haley Joel Osment makes a solid Broadway debut as the young Bobby.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising two lead performances with positive descriptors ('surprising depth', 'solid debut'), but limited context makes it difficult to assess overall show recommendation. | GPT-4o: The excerpt praises the performances of Cedric the Entertainer and Haley Joel Osment, indicating a positive view of the acting. However, without more context on the overall production, the score is set at the lower end of the Positive range due to the single excerpt warning. | Gemini: The excerpt praises the performances of Cedric the Entertainer and Haley Joel Osment. Given that this is the only information available, it suggests a positive, but potentially qualified, recommendation. | Kimi: The excerpt offers clear, unambiguous praise for both lead performances ('surprising depth and nuance,' 'solid Broadway debut'), warranting a score in the upper range of the Positive bucket per the single-excerpt guidelines. Confidence is low due to the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:32:02.358Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

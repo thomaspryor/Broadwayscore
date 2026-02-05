@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Here, Soo plays the role created with effortless whimsy by Audrey Tautou, and though the show collectively adds up to a wondrous little bauble of innocuous magic, its individual pieces could use a little polish before Amelie's Broadway dream is realized in April...As a blanket issue with both Soo's portrayal and director Pam MacKinnon's take on the tale, Amelie herself doesn't register as particularly quirky or endearing; she's more aloof and disconcerting...If only Amelie meddled in the music. ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMELIE-A-NEW-MUSICAL-Opens-at-the-Ahmanson-Theatre-UPDATED-20161220",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though the show collectively adds up to a wondrous little bauble of innocuous magic, its individual pieces could use a little polish.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Excerpt shows mixed assessment - calls show 'wondrous' but notes need for 'polish' and criticizes lead performance as 'aloof and disconcerting.' Single excerpt limits full verdict assessment. | GPT-4o: The review acknowledges some charm ('wondrous little bauble of innocuous magic') but criticizes key elements like the portrayal and direction, suggesting the show lacks quirkiness and endearment. The excerpt's mixed tone and lack of a clear positive recommendation place it in the Mixed bucket. | Gemini: The review acknowledges the show's potential and \"wondrous\" qualities, but also points out areas needing improvement, such as Soo's portrayal and MacKinnon's direction, resulting in a mixed assessment. | Kimi: While the critic finds the show charming and magical overall ('wondrous little bauble'), they note substantial issues with the lead performance, direction, and music that require refinement before opening.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:31:45.379Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

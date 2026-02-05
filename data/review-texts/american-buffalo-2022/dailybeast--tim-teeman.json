@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Invective, repetition, manly backchat: the Mamet staples are here, but truly what gives with the damn coins? The actors make as much sense as they can of the foggy mystery and verbal extremity Mamet has written for them around these misplaced little shiny objects, but the playwright's hot air-so visible on Fox News this week-barely seems to merit his characters' heightened tempers, much less our interest. Still, Rockwell rocks it.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the playwright's hot air barely seems to merit his characters' heightened tempers, much less our interest.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising Rockwell's performance ('Rockwell rocks it'), the critic dismisses the play itself as 'foggy mystery' with 'hot air' that doesn't merit audience interest. Single excerpt limits confidence. | GPT-4o: The review criticizes the play's writing as 'hot air' and questions its merit, suggesting a lack of interest. Despite some praise for Rockwell, the overall tone is negative. | Gemini: The review criticizes the writing as a \"foggy mystery\" and \"hot air,\" while acknowledging the actors' efforts. The overall tone is negative, despite praising Rockwell's performance. | Kimi: The critic describes Mamet's writing as 'hot air' that 'barely seems to merit... our interest,' clearly discouraging attendance despite praising Sam Rockwell's performance. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:35:31.298Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

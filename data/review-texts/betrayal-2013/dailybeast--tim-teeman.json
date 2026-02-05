@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Pinter-and the brilliant trio of actors here-treat this uneasy dance as a particularly British game, where everyone is terrifically polite and sporting when they should be shouting, screaming and throwing suitcases out of windows. Instead, here a life-changing revelation is followed by a clipped inquiry into favorite books and summer holiday destinations.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pinter-and the brilliant trio of actors here-treat this uneasy dance as a particularly British game",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises the 'brilliant trio of actors' and shows appreciation for how Pinter's style is executed as a 'particularly British game,' suggesting admiration for the theatrical approach. However, with only one excerpt available, confidence is low as this may not represent the full verdict. | GPT-4o: The excerpt praises the actors as 'brilliant' and describes the play's treatment as a 'particularly British game,' suggesting a positive view. However, the single excerpt warning and lack of full context necessitate a cautious, low-confidence score. | Gemini: The excerpt praises the actors and Pinter's treatment of the play, but also suggests a certain restraint that might be seen as a limitation. Given the single excerpt, I'm placing it in the lower end of the positive range. | Kimi: While praising the actors as 'brilliant,' the critic suggests the production treats the material with excessive restraint and politeness, missing the necessary dramatic intensity that 'should' be there. Given only one excerpt is available, the overall verdict remains ambiguous.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:48:19.000Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 64,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

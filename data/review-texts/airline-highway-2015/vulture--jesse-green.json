@@ -12,5 +12,60 @@
   "bwwExcerpt": "...Airline Highway, a beautiful and mesmerizing kaleidoscope of a play by Lisa D'Amour... is set in a post-Katrina New Orleans...In Airline Highway, she has evidently sought to split the difference between her devised high-concept work and the kind of traditional narrative that theater companies can actually stage. There are characters you get to know and care about; an event everything points toward; a perceptible conflict leading to a crisis; and at least a quasi-resolution. On the other hand, the play bleeds well beyond those ordinary dramaturgical boundaries...The crisis, too, is unusual: It is not a central overarching one but a series of related realizations, dispersed among the characters. The unusual resolution, bringing together a fantasy sermon from the spectral Miss Ruby with an excerpt from Zoe's finished sociology paper, is, for me, the play's only overindulgence.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Airline Highway, a beautiful and mesmerizing kaleidoscope of a play by Lisa D'Amour",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls the play 'beautiful and mesmerizing' and praises D'Amour's ambitious approach to balancing experimental and traditional theater. Only criticism is calling the resolution an 'overindulgence.' Single excerpt warning suggests this positive language may represent the overall verdict. | GPT-4o: The excerpt describes the play as 'beautiful and mesmerizing' and praises its unique structure, though it notes a minor overindulgence. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review describes the play as \"beautiful and mesmerizing\" and highlights its characters and narrative structure. However, it also mentions \"overindulgence,\" suggesting some reservations. Given the single excerpt and lack of a clear recommendation, confidence is low. | Kimi: The excerpt offers strong praise ('beautiful and mesmerizing') and appreciation for the play's character development and structure, with only minor criticism regarding the resolution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:11:04.328Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

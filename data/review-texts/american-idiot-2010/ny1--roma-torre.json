@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There’s a prismatic effect to this show. Some will see 'American Idiot' as an elaborate music video for the big stage while others will find it revelatory. As a mother of a 16-year-old, I found it to be a powerful cautionary tale. As a critic, I felt I’d seen it all before and as someone who appreciates superior talent in any form, it’s quite awesome.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Some will see 'American Idiot' as an elaborate music video for the big stage while others will find it revelatory.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic explicitly presents multiple contradictory perspectives - finding it powerful as a parent but derivative as a critic, acknowledging both awesome talent and familiar territory. This balanced ambivalence places it firmly in Mixed territory. | GPT-4o: The review excerpt presents a mixed perspective, acknowledging the show's potential impact and talent but also expressing a sense of familiarity. The positive elements slightly outweigh the negatives, suggesting a mild recommendation. | Gemini: The critic acknowledges seeing it all before but also finds it \"quite awesome\" due to the talent. The \"powerful cautionary tale\" aspect also leans positive, though with reservations. | Kimi: The critic explicitly describes a 'prismatic effect' with divergent reactions, personally finding it both derivative ('seen it all before') and impressive ('quite awesome'), resulting in a balanced mixed verdict. | Buckets: claude=Mixed, openai=Positive, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:41:14.799Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 63,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

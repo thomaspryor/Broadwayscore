@@ -12,5 +12,60 @@
   "bwwExcerpt": "The play might be a star vehicle but its star delivers. It's thrilling to watch Cranston go from his default, comic stance of forward-thrust hips and slumped shoulders, to fearsome, chest-puffed, confrontation. The play charts Johnson's first year in office and the passing of the 1964 Civil Rights Act, taking LBJ from 'accidental president' (he took over after the killing of John F Kennedy) to elected man of the people, with meticulous fidelity. And this is the problem: so often it seems more like a putatively objective history lesson than an examination of character and compromise.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-THE-WAY-Opens-on-Broadway-Updating-LIVE-20140306"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-THE-WAY-Opens-on-Broadway-Updating-LIVE-20140306",
+  "assignedScore": 68,
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's thrilling to watch Cranston go from his default, comic stance of forward-thrust hips and slumped shoulders, to fearsome, chest-puffed, confrontation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Praises Cranston's performance as 'thrilling' but identifies a fundamental problem with the play feeling like a 'history lesson' rather than character examination. Single excerpt limits confidence in overall verdict assessment. | GPT-4o: The review praises Cranston's performance but criticizes the play for being more of a history lesson than a character examination. The single excerpt suggests a mix of positive and negative elements, leading to a mixed verdict. | Gemini: The review praises Cranston's performance and the play's fidelity, but notes it feels more like a history lesson than character examination. Given the single excerpt and mixed signals, I'm scoring it as positive with reservations and low confidence. | Kimi: The excerpt offers strong praise for Cranston's thrilling performance ('star delivers') but ends with significant criticism that the play feels like an 'objective history lesson' lacking dramatic depth. Given the single-excerpt limitation and mixed signals, this reads as a qualified positive recommendation based on the star power. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:21:21.454Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

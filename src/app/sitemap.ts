@@ -42,12 +42,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Browse pages - high priority SEO landing pages
-  const browsePages = browseSlugs.map((slug) => ({
-    url: `${BASE_URL}/browse/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.85,
-  }));
+  // Exclude browse slugs that redirect to guide pages (301 in vercel.json)
+  const redirectedBrowseSlugs = new Set([
+    'best-broadway-musicals',
+    'best-broadway-plays',
+    'broadway-shows-closing-soon',
+    'broadway-shows-for-kids',
+  ]);
+  const browsePages = browseSlugs
+    .filter(slug => !redirectedBrowseSlugs.has(slug))
+    .map((slug) => ({
+      url: `${BASE_URL}/browse/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    }));
 
   // Director pages - excluded from sitemap (noindex for now)
   // const directorPages = directorSlugs.map((slug) => ({

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Others perfectly in tune with the 1930s period include frisky John McMartin as a tipsy tycoon, a properly ripping Adam Godley as a British nobleman (who tears into “The Gypsy in Me” hilariously) and cutie-patootie Jessica Stone as the gun-moll who slays most of the crew. Speaking of whom, the ensemble is uniformly fleet in performance and sweet both to the eye and ear. Costume designer Martin Pakledinaz dresses everyone beautifully according to their characters and physical types. (Loved Reno’s perky halo hat worn when she boarded the boat!)",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the ensemble is uniformly fleet in performance and sweet both to the eye and ear",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows consistent praise for cast performances and production design with enthusiastic language ('perfectly in tune', 'uniformly fleet', 'sweet'). However, low confidence due to limited text that may not represent full verdict. | GPT-4o: The excerpt provides positive feedback on performances and costume design, indicating a positive sentiment. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt focuses on positive aspects of the show, including the performances, costumes, and ensemble. Given the limited text, it's difficult to ascertain the full verdict, but the tone is clearly positive. | Kimi: The excerpt offers enthusiastic praise for the cast and design, describing performances as 'uniformly fleet' and costumes as 'beautifully' executed. While clearly positive, the single curated excerpt limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:13:01.332Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

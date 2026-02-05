@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "In a modern classic, the actor shows off, to my mind, his classical theatre chops too. His range is beginning to look pretty limitless; Hiddleston excels in a brilliant performance as Robert, the publisher who is cuckolded by the seven-year affair between his wife Emma (Zawe Ashton) and his best friend, literary agent Jerry (Charlie Cox).",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-Hiddleston-and-Co-in-BETRAYAL-20190314"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-Hiddleston-and-Co-in-BETRAYAL-20190314",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hiddleston excels in a brilliant performance as Robert, the publisher who is cuckolded by the seven-year affair between his wife Emma.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Hiddleston's 'brilliant performance' and calling his range 'limitless' indicates positive recommendation, but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises Hiddleston's performance as 'brilliant' and highlights his 'limitless' range, indicating a strong positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt focuses on Hiddleston's 'brilliant performance' and 'limitless' range, indicating a strong positive sentiment. Given the single excerpt warning, I'm placing the score on the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the lead actor ('brilliant', 'excels', 'limitless range') and refers to the play as a 'modern classic'. Per instructions for clearly positive single excerpts, scoring in the upper Positive range (80-84) with low confidence due to limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:54:16.769Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

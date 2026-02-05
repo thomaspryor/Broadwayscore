@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The despair of being bullied is one theme of Nick Payne's clever, edgy domestic drama, \"If There Is I Haven't Found It Yet,\" about a British family that knows it's falling apart but can't seem to take action to stop it. Kudos to Beowulf Boritt for set design, and to the whole production crew for creating major watery magic. Whether this family can pull themselves out of their troubled waters is another matter, but they're worth rooting for in this complex, compelling drama.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-IF-THERE-IS-I-HAVENT-FOUND-IT-YET-Starring-Jake-Gyllenhaal-and-Annie-Funke-All-the-Reviews-20120921",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Whether this family can pull themselves out of their troubled waters is another matter, but they're worth rooting for in this complex, compelling drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('clever, edgy', 'complex, compelling drama', 'worth rooting for') with praise for production elements. Single excerpt warning noted - scoring at upper end of Positive bucket due to consistently favorable tone. | GPT-4o: The excerpt praises the drama as 'complex, compelling' and highlights the production's cleverness and set design, indicating a positive recommendation. Given the single excerpt warning, the score is placed on the higher end of the Positive range. | Gemini: The review calls the drama \"complex, compelling\" and says the family is \"worth rooting for\", indicating a positive recommendation. The phrase \"another matter\" suggests some reservations. | Kimi: The excerpt offers enthusiastic praise for the play's writing ('clever, edgy,' 'complex, compelling'), production design ('kudos,' 'watery magic'), and emotional investment ('worth rooting for'), indicating a solid recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:10:11.109Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

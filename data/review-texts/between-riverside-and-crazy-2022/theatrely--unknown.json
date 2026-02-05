@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Though the productions share those same elements, like a broom you find in the back of the closet, the words to describe the Prize-winner’s Broadway premiere are stiff and dusty. Save for Stephen McKinley Henderson’s masterful lead performance and Walt Spangler’s attractive, misused set, they apply to the book itself as much as to Austin Pendleton’s lifeless direction and 5.5 of the 6 other performances.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Pulitzer-Prize-Winner-BETWEEN-RIVERSIDE-AND-CRAZY-Opens-On-Broadway-20221219"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Pulitzer-Prize-Winner-BETWEEN-RIVERSIDE-AND-CRAZY-Opens-On-Broadway-20221219",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the words to describe the Prize-winner's Broadway premiere are stiff and dusty",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic uses harsh language ('stiff and dusty', 'lifeless direction') and finds fault with nearly all elements except Henderson's performance and the set design. This is clearly a negative recommendation despite acknowledging two bright spots. | GPT-4o: The excerpt criticizes the production as 'stiff and dusty' with 'lifeless direction' and underwhelming performances, despite praising the lead actor and set design. The overall tone suggests a negative impression, but the single excerpt limits confidence. | Gemini: The review uses negative language like \"stiff and dusty\" and \"lifeless direction\", indicating a negative overall assessment despite praising one performance and the set. | Kimi: While the critic praises Stephen McKinley Henderson's performance as 'masterful,' the excerpt condemns the direction as 'lifeless,' the set as 'misused,' and implies 5.5 of 6 other performances are poor. The 'save for' structure indicates these are isolated exceptions in an otherwise failed production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:56:53.728Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

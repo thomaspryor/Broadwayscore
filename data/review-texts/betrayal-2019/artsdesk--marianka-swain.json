@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Hiddleston has the great actor's gift of stillness; when Robert learns of the affair, he doesn't rage, but tears glitter in his eyes and gradually spill down his cheeks, unchecked vulnerability springing forth from this coolly controlled man. It's extraordinary to witness.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-Hiddleston-and-Co-in-BETRAYAL-20190314",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's extraordinary to witness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Hiddleston's performance as 'extraordinary' suggests positive reception, but limited text prevents full assessment of overall show verdict. | GPT-4o: The excerpt provides strong praise for Hiddleston's performance, describing it as 'extraordinary to witness.' However, with only a single excerpt available, the overall sentiment of the review is uncertain, leading to a low confidence score. | Gemini: The excerpt focuses on a powerful performance by Hiddleston, using words like \"extraordinary\" and describing the scene with great detail, suggesting a strong positive reaction. Given it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:51:35.829Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

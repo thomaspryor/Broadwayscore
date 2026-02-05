@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Now 'Anastasia,' inspired by the 1956 Ingrid Bergman film but mostly the 1997 animation, does have plenty of snow - lovely fat snowflakes that flit like fireflies behind the semicircle of graceful windows (designed by Alexander Dodge) that twirl and reveal scenes from St. Petersburg to Paris. This one also has a score by Stephen Flaherty and Lynn Ahrens, who wrote the music for the cartoon that catapulted the song, 'Journey to the Past,' to pop stardom. For the Broadway version, they have teamed up with playwright Terrence McNally, their collaborator for the far superior 'Ragtime.' More power ballads have been added to the pretty but dispiritingly predictable story of Anastasia, the princess who, as rumor once had it, may have escaped the revolution's firing squad as a child in 1918.",
-  "bwwScore": 7
+  "bwwScore": 7,
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "More power ballads have been added to the pretty but dispiritingly predictable story of Anastasia.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt with mixed signals - praises design elements ('lovely fat snowflakes', 'graceful windows') but criticizes the story as 'dispiritingly predictable'. Low confidence due to limited text. | GPT-4o: The review excerpt highlights both positive elements (visuals, music) and negatives (predictable story). The tone suggests a mixed reception, with no clear recommendation or discouragement. | Gemini: The review describes the show as \"pretty but dispiritingly predictable\", which suggests a mixed reaction. The lack of a clear recommendation and the truncated nature of the text contribute to the low confidence. | Kimi: The excerpt praises the production design (lovely snow, graceful windows) but criticizes the story as dispiritingly predictable and unfavorably compares the creative team to their superior work on Ragtime. With only one excerpt available, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:04:16.571Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

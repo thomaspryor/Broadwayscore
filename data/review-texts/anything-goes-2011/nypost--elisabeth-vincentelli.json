@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Kathleen Marshall's revival for the Roundabout, which opened on Broadway last night, is like one of those old Hollywood movies with Bette Davis as a frumpy schoolteacher: You don't really buy it, but the star's still fun to watch.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You don't really buy it, but the star's still fun to watch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic explicitly states they don't buy the production overall but finds the star entertaining to watch. This balanced assessment with both negative ('don't really buy it') and positive ('fun to watch') elements places it in mixed territory. Single excerpt warning applies - setting confidence to low. | GPT-4o: The review suggests that while the production is enjoyable due to the star's performance, it lacks believability. This indicates a mixed reception, with some positive elements but overall reservations. | Gemini: The review acknowledges flaws but ultimately suggests the show is enjoyable due to the star's performance. Given the single excerpt and positive sentiment, a low-end positive score is appropriate. | Kimi: The critic finds the production unconvincing ('don't really buy it') but offers qualified praise for the star's performance ('fun to watch'), suggesting the show has redeeming entertainment value despite significant flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:12:30.830Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

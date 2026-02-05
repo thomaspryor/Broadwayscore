@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "In the new Broadway production After Midnight(three and a half out of four stars), which opened Sunday at the Brooks Atkinson Theatre, a big band shares the spotlight with the singers and dancers, moving front and center for several numbers. The Jazz At Lincoln Center All-Stars, as they're billed, were assembled by that group's artistic director, Wynton Marsalis; and you will be struck as much by their intensity, playfulness and sheer joy in making music as you are by their technical virtuosity.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you will be struck as much by their intensity, playfulness and sheer joy in making music as you are by their technical virtuosity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Three and a half out of four stars indicates strong positive recommendation. The excerpt emphasizes the emotional impact and quality of the musical performances with vivid, enthusiastic language about being 'struck' by the performers' joy and virtuosity. | GPT-4o: The excerpt praises the musical performance with high enthusiasm and assigns a high rating of three and a half out of four stars, indicating a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt gives the show three and a half out of four stars and praises the intensity, playfulness, and joy of the performers, indicating a strong positive recommendation. | Kimi: The explicit 3.5/4 star rating and enthusiastic praise for the musicians' virtuosity and joy indicate a clear recommendation. However, as a single curated excerpt, the full critical context is unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:08:47.332Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

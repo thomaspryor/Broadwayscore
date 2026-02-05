@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Scarlett Johansson matches Schreiber's intensity as the inexperienced but determined Catherine. This film star makes an impressive Broadway debut, clearly conveying what this girl wants-to be a grown woman-and pushing against the only obstacle in her path: her overly attentive uncle. As Eddie's loving but agonized wife, Beatrice, Jessica Hecht stakes her claim as one of our most sensitive portrayers of downtrodden women. Her climactic howl of despair rings through the",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-A-VIEW-FROM-THE-BRIDGE-Review-Roundup-20100124",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This film star makes an impressive Broadway debut, clearly conveying what this girl wants.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performances with specific positive language ('matches intensity', 'impressive Broadway debut', 'stakes her claim'). However, low confidence due to truncated text and single excerpt limitation. | GPT-4o: The excerpt praises the performances of Scarlett Johansson and Jessica Hecht, indicating a positive view of the acting. However, due to the single excerpt warning, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt praises the performances of the lead actors, indicating a positive review. Given that it's a single excerpt, I'm scoring it on the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for Scarlett Johansson's 'impressive Broadway debut' and Jessica Hecht's 'sensitive' portrayal, using strong evaluative language that indicates a clear recommendation, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:51:41.452Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

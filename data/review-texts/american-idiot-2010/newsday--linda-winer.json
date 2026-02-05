@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "If 'Spring Awakening' was the birth of genuine rock musicals on Broadway, then 'American Idiot' is its worthy son. Not as groundbreaking or original as its precocious papa in 2006, the punk-pop opera based on Green Day's multiplatinum album is an exuberant assault - a slick and tough 95-minute package of alienated suburban youth, media overstimulation and seamless, high-concept theatricality.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the punk-pop opera based on Green Day's multiplatinum album is an exuberant assault",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('worthy son', 'exuberant assault', 'slick and tough') with clear praise for the production's energy and theatricality. Single excerpt warning suggests this represents a positive verdict, placed in upper Positive range. | GPT-4o: The review excerpt praises 'American Idiot' as a 'worthy son' of 'Spring Awakening', highlighting its exuberance and high-concept theatricality. Despite noting it is not as groundbreaking, the overall tone is positive and enthusiastic. | Gemini: The review excerpt compares the show favorably to 'Spring Awakening' and describes it as an 'exuberant assault' and 'slick and tough,' indicating a positive, but not rave, assessment. Confidence is low due to the single excerpt. | Kimi: The critic positions the show as a worthy successor to Spring Awakening, praising its exuberant energy, slick execution, and seamless theatricality despite noting it lacks the groundbreaking originality of its predecessor.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:39:49.956Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

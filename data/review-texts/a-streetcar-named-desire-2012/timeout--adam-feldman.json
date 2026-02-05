@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "The Streetcar revival now playing at BAM, directed by Rebecca Frecknall, doesn’t have much truck with magic; it does not invite the audience, even momentarily, to share the nympho- and dipsomaniacal Blanche’s delusions of gentility. But neither does it go for realism: There is barely any set, and nearly all of the action is squeezed onto a central square platform on cinderblocks that suggests a boxing ring minus the ropes; an onstage drummer sometimes bangs loudly on his kit, like a migraine in Blanche’s head, and there are occasional shifts into dancey stylized movement.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Streetcar revival doesn't have much truck with magic; it does not invite the audience to share Blanche's delusions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single excerpt describes directorial choices neutrally without clear positive or negative evaluation. The phrase 'doesn't have much truck with magic' suggests the production lacks the play's essential emotional pull, but the tone is analytical rather than clearly recommending or discouraging attendance. | GPT-4o: The excerpt describes the production choices without clear praise or criticism, indicating a neutral stance. The lack of magic and realism suggests a non-traditional approach that may not appeal to all audiences. | Gemini: The excerpt describes the production's stylistic choices without a clear recommendation. It highlights the lack of magic and realism, suggesting a unique interpretation, but doesn't explicitly praise or criticize the show's overall effectiveness. Given the single excerpt, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:46:18.226Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

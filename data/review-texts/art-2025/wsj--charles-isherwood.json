@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "bww-roundup",
     "bww-reviews"
   ],
-  "bwwThumb": "Meh"
+  "bwwThumb": "Meh",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Impeccable though both performances are, these fine actors almost seem to fade into, um, blank white canvases with a few gray streaks when Mr. Corden bounds or blusters onstage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows qualified praise for performances but suggests imbalance with Corden overshadowing others. The 'BroadwayWorld: Flat' aggregator context supports a mixed assessment, but limited text prevents confident scoring. | GPT-4o: The excerpt praises James Corden's performance but suggests that the other actors fade in comparison, indicating a mixed impression. The single excerpt limits confidence in the overall verdict. | Gemini: The review excerpt praises Corden's performance highly, but also suggests that other actors are overshadowed. The overall sentiment is mixed, leaning slightly positive due to the focus on Corden's impact. Confidence is low due to the limited excerpt. | Kimi: The excerpt offers enthusiastic praise for Corden's dominant, crowd-pleasing performance, comparing it to his previous 'sensation' on Broadway. While noting other actors are overshadowed, the overall tone clearly recommends the show based on its star power.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:18:02.160Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 81,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 19,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Richards is treated, in other words, much like a sitcom character. Her notable achievements are alluded to -- revitalizing the local economy, reforming the prison system, championing civil and reproductive rights -- but in ways that are both simplistic and pedantic. There's also something slightly patronizing about all the 'y'all's and 'yegods' with which Taylor -- a Yankee, as she admits in her author's notes -- litters her speech.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's also something slightly patronizing about all the 'y'all's and 'yegods' with which Taylor litters her speech.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes the show's simplistic, pedantic treatment of the main character and patronizing dialogue choices. However, confidence is low since this is only one curated excerpt and may not represent the full review's verdict. | GPT-4o: The excerpt criticizes the portrayal of Richards as simplistic and pedantic, with a patronizing tone. This suggests a negative view of the show's writing and characterization, leading to a negative verdict. | Gemini: The review excerpt criticizes the portrayal of the subject and the writing, suggesting a negative overall assessment. The single excerpt and lack of a clear verdict lower confidence. | Kimi: The excerpt criticizes the play's writing as 'simplistic and pedantic' and the use of dialect as 'patronizing,' indicating a negative assessment of the production's quality, though the full review context is unavailable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:11:24.221Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

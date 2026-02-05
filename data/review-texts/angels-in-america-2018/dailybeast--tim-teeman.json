@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Each character, so precisely played, is worthy of investment. This is seven and a half hours of luxurious dramatic immersion, and in no way arid or plodding.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is seven and a half hours of luxurious dramatic immersion, and in no way arid or plodding.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('luxurious dramatic immersion', 'precisely played', 'worthy of investment') with explicit rejection of negative characterizations. Single excerpt warning requires caution, but tone is clearly enthusiastic. | GPT-4o: The excerpt praises the precise performances and describes the experience as 'luxurious dramatic immersion,' indicating a strong positive recommendation. Given the single excerpt warning, the score is placed in the upper end of the Positive range. | Gemini: The excerpt is highly positive, describing the show as a \"luxurious dramatic immersion\" with precisely played characters. Given the single excerpt warning, I'm scoring it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the production's pacing and richness ('luxurious dramatic immersion'), explicitly defending its length against potential criticism. As a single curated quote, the confidence is low, but the language clearly supports a strong positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:06:03.201Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

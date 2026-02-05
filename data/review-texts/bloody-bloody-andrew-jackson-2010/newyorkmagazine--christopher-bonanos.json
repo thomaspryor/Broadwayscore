@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Bloody Bloody Andrew Jackson is 90 minutes long, and around minute 70, I began to despair of it. I started to wonder: Surely the whole play couldn't be about just that-facile, glib language mirroring a facile, racist political movement. Or maybe it was simply suffering from the move to Broadway, another show that originated in a small space dying in a big house.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 50,
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "around minute 70, I began to despair of it",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Single excerpt shows critic's growing disappointment and questioning the show's depth, but this is only one moment from a 90-minute show. The excerpt suggests mixed-to-negative feelings but may not represent the full verdict. | GPT-4o: The excerpt expresses disappointment and suggests the play suffers from its Broadway transition. The tone is negative, indicating a lack of recommendation. | Gemini: The excerpt expresses doubt and concern about the play's quality and its suitability for Broadway, suggesting a mixed or neutral stance. | Kimi: The critic expresses despair during the performance, criticizes the writing as facile and glib, and notes the show suffers in its transfer to a larger Broadway venue, comparing it to shows that die in big houses. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:09:46.406Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 60,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

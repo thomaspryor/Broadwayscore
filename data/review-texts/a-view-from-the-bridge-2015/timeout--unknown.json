@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Shatteringly tough revivals such as A View from the Bridge can inspire dueling emotions. First, obviously, there's immense satisfaction and gratitude that Belgian director Ivo van Hove digs down and grabs the pulsing, bloody heart of Arthur Miller's 1956 drama...But then comes anger that similarly audacious visions of the classics are so rare...The head that throbs the hardest is bullet-clean and belongs to Mark Strong, who gives a performance of harrowing intensity as doomed Eddie Carbone...Van Hove stages this elegant and lean tale with almost perverse understatement...Earlier I promised angry words about New York's 'classics problem'...Our directors need to study how [van Hove] strips away anything inessential to the text and lasers in on breathing, moving bodies in space.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Van Hove digs down and grabs the pulsing, bloody heart of Arthur Miller's 1956 drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Despite single excerpt warning, the language is consistently superlative - 'shatteringly tough', 'immense satisfaction', 'harrowing intensity', 'elegant and lean' - with the critic using this production as a model for how classics should be done. | GPT-4o: The excerpt praises the revival as 'shatteringly tough' and expresses 'immense satisfaction and gratitude' for the director's vision, indicating a strong recommendation. The single excerpt warning suggests using the upper end of the bucket. | Gemini: The review praises the direction and Mark Strong's performance, describing the production as a \"shatteringly tough revival\" and highlighting the director's ability to strip away inessential elements and focus on the core of the play. | Kimi: The excerpt offers enthusiastic praise for the director's 'shatteringly tough' vision and the lead's 'harrowing intensity,' suggesting this is a standard-setting production, though as a single curated quote it may not capture the full review's nuance. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:56:58.885Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

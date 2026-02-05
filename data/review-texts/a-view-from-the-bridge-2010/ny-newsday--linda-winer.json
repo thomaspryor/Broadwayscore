@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Over a decade of New York theater, Liev Schreiber has coolly skinned the layers of darkness off some of its most thrilling and complex tough guys. He has been sleaze triumphant in David Mamet and Eric Bogosian, silken menace in Harold Pinter, crumbling evil as Shakespeare's Macbeth and Iago. Even so, nothing prepares us for the shattering grandeur of his Eddie Carbone - the Brooklyn longshoreman...\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-A-VIEW-FROM-THE-BRIDGE-Review-Roundup-20100124",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nothing prepares us for the shattering grandeur of his Eddie Carbone.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with extremely strong praise ('shattering grandeur') for lead performance. However, only one quote available makes full verdict unclear - could be praising performance while panning production overall. | GPT-4o: The excerpt provides strong praise for Liev Schreiber's performance, describing it as 'shattering grandeur'. Despite the limited text, the language suggests a highly positive evaluation. | Gemini: The excerpt focuses on praising Liev Schreiber's performance, using strong positive language like \"shattering grandeur.\" Given the limited context, I am placing it in the positive bucket with a higher score due to the strong praise. | Kimi: The excerpt offers unambiguous praise for the lead performance ('shattering grandeur'), indicating an enthusiastic recommendation despite the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:51:13.383Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "But although it revolves around the Kimura family, ripped apart by life in the camps, 'Allegiance' gets trapped in the very freneticism of its own storytelling. Relationships are built and fall apart without anyone seeming to take the time to think through the implications of anything. Even the small number of emotionally potent ballads in Kuo's florid, traditional and mostly romantic score are taken at a tempo where you wonder how the singer has any time to emote anything. So go the scenes, designed with retro fluidity, by Donyale Werle. Nobody seems to take the time to think, or to feel.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-George-Takei-Lea-Salonga-Telly-Leung-on-Broadway-in-ALLEGIANCE-20151109"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-George-Takei-Lea-Salonga-Telly-Leung-on-Broadway-in-ALLEGIANCE-20151109",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nobody seems to take the time to think, or to feel.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds fundamental flaws in pacing and emotional development, describing the show as 'trapped' and lacking time for genuine emotion. However, single excerpt limits full assessment. | GPT-4o: The review criticizes the show for its frenetic storytelling and lack of emotional depth, suggesting a negative view. However, due to the single excerpt, the confidence is low. | Gemini: The review excerpt criticizes the frenetic storytelling and lack of emotional depth, suggesting a negative overall experience. Given the single excerpt, confidence is low. | Kimi: Single excerpt criticizes the show's frenetic pacing, rushed relationships, and failure to allow emotional depth, suggesting fundamental storytelling flaws despite acknowledging the score's potential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:23:12.474Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

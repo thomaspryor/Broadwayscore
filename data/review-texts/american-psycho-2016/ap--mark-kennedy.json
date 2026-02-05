@@ -12,5 +12,60 @@
   "bwwExcerpt": "The gloriously gory, sleek, over-the-top musical that opened Thursday at the Gerald Schoenfeld Theatre is a darkly wonderful adaptation of the once-controversial novel by Bret Easton Ellis...Walker, who is a Patrick Bateman both superficial and a critic of superficiality, is built like an Adonis - hard not to notice since he spends most of the show in his underwear - and has a detached, menacing air. He manages to make his Bateman charming, evil and funny...Credit story writer Roberto Aguirre-Sacasa, songwriter Duncan Sheik and director Rupert Goold for going whole hog...Sheik's electronic- and choral-based score is marvelously varied... the cast includes a deliciously airheaded Heléne Yorke as Bateman's girlfriend and a sweet, beautifully voiced Jennifer Damiano as Bateman's secretary. Alice Ripley plays several parts and is great in all but we'd love to see more.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The gloriously gory, sleek, over-the-top musical is a darkly wonderful adaptation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language throughout ('gloriously gory,' 'darkly wonderful,' 'marvelously varied') with praise for all elements - lead performance, direction, score, and cast. However, single excerpt warning requires caution about overall verdict. | GPT-4o: The review excerpt is filled with superlatives and praise, describing the musical as 'gloriously gory' and 'darkly wonderful.' The critic credits the creative team for their work and praises the performances, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"darkly wonderful adaptation,\" praising the lead actor, the score, and the supporting cast. The critic clearly enjoyed the show. | Kimi: The excerpt offers enthusiastic praise for the musical's adaptation, direction, score, and performances using words like 'gloriously,' 'wonderful,' and 'marvelously,' indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:46:02.871Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

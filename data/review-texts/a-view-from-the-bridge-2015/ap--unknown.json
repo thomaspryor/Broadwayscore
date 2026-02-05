@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "If you think you've seen Arthur Miller's dark classic 'A View From the Bridge' enough times, think again. The muscular production that opened Thursday night at Broadway's Lyceum Theatre is a stunning, imaginative theatrical experience, an impassioned interpretation that really brings the heat to Miller's gripping drama...van Hove has stripped it down to a stark set that resembles a boxing ring. During nearly two tense hours without intermission, the barefoot cast members warily circle one another under bright lights, while a dissonant soundtrack increases the tension and unease. Anti-hero Eddie Carbone is embodied with driven intensity by hawk-browed Mark Strong, also making his Broadway debut. Strong is a brooding, glowering force as the flawed longshoreman...Eventually all the actors enfold one another in a haunting, anguished tableau, a brilliant visual summation by van Hove of how people in this close-knit community must stand or fall together.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The muscular production that opened Thursday night at Broadway's Lyceum Theatre is a stunning, imaginative theatrical experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language throughout ('stunning,' 'imaginative,' 'brilliant') with praise for direction, performances, and overall concept. Single excerpt warning noted, but consistent enthusiasm suggests upper Positive range. | GPT-4o: The review describes the production as 'stunning' and 'imaginative,' with strong praise for the direction and performances, indicating a highly positive reception. | Gemini: The review uses strong positive language such as \"stunning\", \"imaginative\", and \"impassioned\" to describe the production, indicating a positive recommendation. The description of the performances and staging further supports this assessment. | Kimi: Single excerpt contains consistent superlatives ('stunning,' 'brilliant,' 'impassioned') and promises a powerful theatrical experience with no caveats, indicating a rave verdict. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:53:06.641Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

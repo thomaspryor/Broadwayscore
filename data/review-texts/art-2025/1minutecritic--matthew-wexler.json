@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "bwwThumb": "Meh",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "David Rockwell's minimalist scenic design in muted grey, punctuated by swift scene changes and Jen Schriever's equally crisp lighting, nudges Art toward entertaining.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt praises design elements that 'nudge' the show 'toward entertaining' but immediately undercuts this with a comparison suggesting audiences might be equally satisfied watching a video instead. Single excerpt with BroadwayWorld 'Flat' context suggests lukewarm reception. | GPT-4o: The excerpt highlights some positive elements like the scenic design and lighting but concludes with a comparison suggesting that viewers might find more satisfaction elsewhere. The mixed signals and lack of a full review lead to a low confidence score. | Gemini: The review acknowledges some positive aspects (scenic design, lighting) but also suggests that some might find other activities more appealing, indicating a mixed overall impression. The single excerpt and aggregator verdict of \"Flat\" contribute to the low confidence. | Kimi: The excerpt offers faint praise for design elements calling the show 'entertaining,' but undercuts this with a wry comparison to a shredded Banksy painting suggesting the show has questionable value. With only one curated excerpt available and a 'Flat' aggregator verdict, the overall impression is mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:17:38.252Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

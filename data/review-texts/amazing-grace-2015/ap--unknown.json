@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "A serious musical with epic themes doesn't come to Broadway that often. The refreshing new show 'Amazing Grace' admirably covers slavery, abolition, sedition and spiritual themes in 1740s England and Africa, complete with spirited acting and inspirational ballads and anthems...A charismatic Josh Young opens the show strongly...Erin Mackey sings captivatingly, wearing a sweet, saintly air as Mary Catlett...It's a long time coming, but the title song is performed in the beautiful and emotional finale. By then we've been on quite a journey with these characters, and the hymn resonates with relevance and hope, both for their personal stories and the still-uneasy state of racial relations today.'",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The refreshing new show 'Amazing Grace' admirably covers slavery, abolition, sedition and spiritual themes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'refreshing' and says it 'admirably covers' serious themes, praises performances as 'charismatic' and 'captivating,' and describes the finale as 'beautiful and emotional' with resonant relevance. Single excerpt warning suggests this is likely cherry-picked positive content, so scoring in upper Positive range. | GPT-4o: The excerpt praises the show for its ambitious themes and execution, highlighting spirited acting and inspirational music. The use of 'refreshing' and 'admirably' suggests a strong positive impression, though the single excerpt limits confidence. | Gemini: The review uses positive language such as \"refreshing\", \"spirited acting\", \"inspirational ballads\", and \"captivatingly\", indicating a positive recommendation, but the lack of a clear, strong concluding statement keeps the score in the middle of the positive range. | Kimi: The excerpt offers unambiguous praise, describing the show as 'refreshing' and 'admirable' with 'spirited acting' and 'inspirational' music, indicating a clear recommendation despite the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:24:30.350Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "And then there's Arianda, the play's animating ambrosia and, without a doubt, the most exciting find of the Broadway season. To my regret, I missed her in last season's Venus in Fur, but seeing her now, I understand the already radiant reputation this absurdly talented performer has quickly and justly earned. Channeling just a dram of Judy Holliday's legendary performance-her original Billie's strangled Betty Boop soprano, her ditzy-like-a-fox scene pivots-Arianda takes the physical comedy further, but never too far: Whether she's trying to outrun the train of her peignoir or pouring herself a brimming water glass of gin, she invests everything she touches with comic energy.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Arianda, the play's animating ambrosia and, without a doubt, the most exciting find of the Broadway season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: High praise for the lead performance calling it 'the most exciting find of the Broadway season' with detailed appreciation of her craft. Single excerpt warning applies but the enthusiasm is clear and strong. | GPT-4o: The excerpt offers high praise for Arianda's performance, describing her as 'the play's animating ambrosia' and 'the most exciting find of the Broadway season.' This suggests a strong positive evaluation, but the single excerpt limits confidence. | Gemini: The review excerpt focuses almost entirely on Amanda Arianda's performance, calling her the \"most exciting find\" and praising her talent. Given the single excerpt warning, I'm scoring it as positive, but with low confidence. | Kimi: The excerpt offers unqualified praise for Nina Arianda's performance using superlatives like 'animating ambrosia' and 'most exciting find,' indicating a clearly positive assessment. However, as a single curated excerpt focused primarily on one performance element, confidence is reduced regarding the overall show verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:21:37.734Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

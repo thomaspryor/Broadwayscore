@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Their fates will be familiar to anyone who has  seen Hair and  its progeny: Johnny embraces drugs; Will gets his  girlfriend pregnant;  Tunny goes off to war. The point here isn’t story  but style, and American  Idiot delivers its predictable message  (life, especially its US  variety, can sometimes suck) in spectacular  fashion. The  poster-plastered, video-monitored set of Christine Jones  and the driving  orchestrations of Tom Kitt keep everything in visc",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-AMERICAN-IDIOT-Review-Roundup-20100420",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "American Idiot delivers its predictable message in spectacular fashion.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite calling the story predictable, the critic praises the 'spectacular fashion' of delivery and highlights excellent production values (set design, orchestrations). Single excerpt warning applies - this sounds clearly positive about the production's execution. | GPT-4o: The excerpt suggests a positive view on the style and presentation of the show, despite noting the predictability of its message. The use of 'spectacular fashion' indicates a recommendation based on style rather than substance. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review acknowledges a predictable message but praises the spectacular fashion in which it's delivered. Given the single excerpt and the phrase 'spectacular fashion,' I'm placing it in the positive bucket with a score of 75. | Kimi: While acknowledging the familiar, predictable plotline, the critic praises the 'spectacular' execution, 'driving orchestrations,' and impressive set design, indicating a clear recommendation based on technical and stylistic merits rather than narrative innovation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:40:36.967Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

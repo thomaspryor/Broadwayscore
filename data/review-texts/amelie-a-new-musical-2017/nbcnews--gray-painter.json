@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "True, the movie was not a musical, but prepare to enjoy ditties from Daniel Messé, Nathan Tysen, and a book by Craig Lucas. If you dug the flick but long for an added dimension of sound and story, the on-stage spectacular could be just the whipped cream you've longed for to top this dessert-like story. But \"dessert-like story\" shouldn't imply that \"Amélie, a New Musical\" is frothy with no nutritional value. Au contraire: The show's message of reaching out, of connection, and of taking meaningful",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMELIE-A-NEW-MUSICAL-Opens-at-the-Ahmanson-Theatre-UPDATED-20161220",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the on-stage spectacular could be just the whipped cream you've longed for",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear enthusiasm with 'spectacular' and 'prepare to enjoy', plus meaningful thematic praise. However, text is truncated mid-sentence and may not represent full verdict. | GPT-4o: The excerpt suggests an enthusiastic recommendation, highlighting the added dimension of sound and story as a positive enhancement to the original movie. The use of 'spectacular' and 'whipped cream' implies a delightful experience. | Gemini: The review suggests that the musical enhances the original movie and offers a meaningful message, indicating a positive but not overwhelmingly enthusiastic recommendation. The phrase \"dessert-like story\" implies it's enjoyable but not necessarily profound, suggesting a reservation. | Kimi: Despite the limitation of a single curated excerpt, the language is clearly positive ('prepare to enjoy', 'whipped cream you've longed for', 'spectacular') with an enthusiastic recommendation to see the musical adaptation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:32:11.927Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -12,5 +12,59 @@
   "bwwExcerpt": "Joseph may be a gifted young playwright but he has pretty much hit the jackpot by landing the 59-year-old Williams, who stalks this fascinating, ambitious play about war as a restless tiger's ghost in human clothing, all bushy-bearded and sarcastic. The range of emotions Moayed conveys over the course of the play is stunning, while Titizian is nightmarishly good as the murderous Hussein. Williams sinks his teeth into his meaty part, sometimes bending the script to serve his voice, not the other way around.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BENGAL-TIGER-AT-THE-BAGHDAD-ZOO-20110331"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BENGAL-TIGER-AT-THE-BAGHDAD-ZOO-20110331",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Williams sinks his teeth into his meaty part, sometimes bending the script to serve his voice, not the other way around.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for multiple performances (Williams described as 'hitting the jackpot,' Moayed's 'stunning' range, Titizian 'nightmarishly good'). The play is called 'fascinating' and 'ambitious.' Single excerpt warning suggests this positive assessment may represent the overall verdict, scoring in upper Positive range. | GPT-4o: The excerpt provides high praise for the performances, describing them as 'stunning' and 'nightmarishly good.' Despite the limited text, the positive tone suggests a strong recommendation. | Gemini: The review excerpt praises the play as \"fascinating, ambitious\" and highlights the strong performances of the actors, suggesting a positive experience overall. Given the single excerpt, I'm placing it at the higher end of the positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:44:40.631Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 81,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

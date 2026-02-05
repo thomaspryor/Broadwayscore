@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The \"Baby\" players make the most of their threadbare parts. Leavel elevates the enterprise with pitch-perfect singing, acting and bouffant, her Florence blowzy and vulnerable. Near the end, Greenberg concedes that the Shirelles sound needs updating. The women record the resplendent title number, co-written by the then-up-and-coming Burt Bacharach. For a fleeting instant, the first major girl group of the rock era and the show about them seem to be going somewhere new.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BABY-ITS-YOU-Updating-Live-20010101",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For a fleeting instant, the first major girl group of the rock era and the show about them seem to be going somewhere new.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: This excerpt praises individual performances (Leavel's 'pitch-perfect' work) but describes parts as 'threadbare' and suggests the show only briefly achieves its potential. The final line implies promise that isn't fully realized. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises individual performances, particularly Leavel, but suggests limitations in the material ('threadbare parts'). The mention of a 'fleeting instant' of novelty implies mixed feelings about the show's overall impact. | Gemini: The review praises Leavel's performance and notes a resplendent title number, but the overall tone suggests a qualified recommendation due to the 'threadbare parts' and fleeting moment of novelty. Given the single excerpt, confidence is low. | Kimi: While praising Beth Leavel's performance as 'pitch-perfect' and the title number as 'resplendent,' the critic describes the material as 'threadbare' and suggests the show only fleetingly succeeds.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:07:29.609Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

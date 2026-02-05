@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "Those who associate Coward with sophisticated couples gliding glibly through dry repartee may be surprised by the depths of sensuality and tenderness reached in this adaptation of his work, which opened Tuesday at Roundabout Theatre Company's Studio 54. Initially performed at London's Kneehigh Theatre, Encounter draws on both Coward's screenplay of the same title and his one-act play Still Life, on which the film was based.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those who associate Coward with sophisticated couples gliding glibly through dry repartee may be surprised by the depths of sensuality and tenderness reached in this adaptation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single excerpt with mildly positive language about being 'surprised by the depths' suggests appreciation, but limited text and lack of clear recommendation language warrants lower end of Positive range. | Gemini: The excerpt suggests a positive surprise and depth beyond expectations, indicating a recommendation. However, due to the limited text, confidence is low. | Kimi: The excerpt offers clear praise for the production's emotional resonance and sensuality, warranting an upper Positive score per guidelines for clearly positive single excerpts. Confidence is low due to limited available context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:27:59.530Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

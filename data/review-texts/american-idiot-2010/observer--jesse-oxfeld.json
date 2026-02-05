@@ -12,5 +12,60 @@
   "bwwExcerpt": "American Idiot—the rock opera version of Green Day’s 2004 pop-punk album, which opened at the St. James Theatre yesterday—is an energetic and entertaining 95 minutes. It’s fun. But it’s also, amid all the booming rock, a little dull. You’re diverted, but you’re not moved. There are archetypes and themes, but there aren’t really characters or a plot. American Idiot is a concert; it’s not a play.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-AMERICAN-IDIOT-Review-Roundup-20100420"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-AMERICAN-IDIOT-Review-Roundup-20100420",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You're diverted, but you're not moved.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show is 'energetic and entertaining' but finds it fundamentally lacking as theater - 'a little dull,' without real characters or plot. This suggests qualified entertainment value but significant artistic reservations. | GPT-4o: The review describes the show as 'energetic and entertaining' but also 'a little dull' and lacking in characters or plot. It suggests the show is more of a concert than a theatrical play, indicating a mixed reception. | Gemini: The review calls the show \"energetic and entertaining\" but also \"a little dull\" and lacking in characters or plot, ultimately describing it as more of a concert than a play. This suggests a mixed reaction. | Kimi: The reviewer acknowledges the show is energetic and fun but criticizes its lack of plot, character development, and emotional resonance, concluding it functions as a concert rather than a play.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:41:50.703Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

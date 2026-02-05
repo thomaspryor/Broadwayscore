@@ -12,5 +12,60 @@
   "bwwExcerpt": "As you'd probably expect, the show's potty-mouth creators do not refrain from using explicit language. But in spite of the curse words, 'The Book of Mormon' is an upbeat, even sentimental musical that combines Rodgers & Hammerstein, 'Les Miz'-style powerhouse ballads and tap dancing.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'The Book of Mormon' is an upbeat, even sentimental musical that combines Rodgers & Hammerstein, 'Les Miz'-style powerhouse ballads and tap dancing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show positively as 'upbeat, even sentimental' with favorable comparisons to classic musicals. However, with only one curated quote available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt describes the show as 'upbeat' and 'sentimental' with positive comparisons to classic musicals, suggesting a strong recommendation. However, the single excerpt warning reduces confidence. | Gemini: The excerpt describes the show as \"upbeat\" and \"sentimental\" and compares it to well-regarded musicals, indicating a positive, but not overwhelmingly enthusiastic, recommendation. The single excerpt and lack of a clear verdict lower the confidence. | Kimi: The excerpt offers clear praise, describing the show as 'upbeat' and 'sentimental' while favorably comparing its musical elements to revered classics like Rodgers & Hammerstein and Les Misérables, indicating a strong recommendation despite acknowledging the explicit language.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:16:36.008Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

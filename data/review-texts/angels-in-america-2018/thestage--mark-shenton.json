@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This is a bit like taking coals to Newcastle - the equivalent of an American company bringing a David Hare state-of-the-nation play to the West End - but this is a production of Broadway-style scale and ambition. \"Very Steven Spielberg!\", says a dying young man at the end of the first part, as an angel arrives in his dreams.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a bit like taking coals to Newcastle - the equivalent of an American company bringing a David Hare state-of-the-nation play to the West End",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt with mixed signals - the 'coals to Newcastle' comparison suggests redundancy/questioning the need, but acknowledges 'Broadway-style scale and ambition.' With only one curated quote available, the overall verdict remains unclear. | GPT-4o: The excerpt suggests a positive view of the production's scale and ambition, but the single excerpt limits confidence. The tone is mildly positive, warranting a score at the lower end of the Positive range. | Gemini: The review excerpt is descriptive and doesn't offer a clear recommendation. It notes the production's scale and ambition but lacks a definitive positive or negative assessment. | Kimi: The critic employs the idiom 'coals to Newcastle' to suggest the production may be redundant or unnecessary, but counters that it possesses 'Broadway-style scale and ambition'. Given only a single excerpt is available, the overall recommendation remains ambiguous, landing in mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:07:31.430Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

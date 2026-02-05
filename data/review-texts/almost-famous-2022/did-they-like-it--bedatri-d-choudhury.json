@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Like a good old friend, Almost Famous takes you on a trip and brings you home safely. For two hours, I sat back, humming along, grateful I chose to share a profession with greats like Bangs, Fong-Torres, and Miller.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like a good old friend, Almost Famous takes you on a trip and brings you home safely.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic expresses clear appreciation with the warm metaphor of a 'good old friend' and describes being 'grateful' for the experience. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more nuanced review. | GPT-4o: The excerpt conveys a positive sentiment, likening the show to a comforting experience and expressing gratitude. However, with only one excerpt available, the confidence is low. | Gemini: The critic describes the show as a comforting and enjoyable experience, expressing gratitude for sharing a profession with the characters depicted. | Kimi: Single excerpt expresses warm appreciation and clear enjoyment without reservations, placing it in the upper Positive range per guidelines for clearly positive isolated excerpts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:24:59.597Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

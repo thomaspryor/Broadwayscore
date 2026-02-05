@@ -11,5 +11,60 @@
   "bwwExcerpt": "I rated the show as a middling musical but by the cheers and whoops from others in the theater, the audience had a great time.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I rated the show as a middling musical but by the cheers and whoops from others in the theater, the audience had a great time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic explicitly calls it 'middling' while acknowledging audience enthusiasm. Single excerpt with unclear overall recommendation warrants low confidence and mid-Mixed score. | GPT-4o: The critic describes the show as 'middling,' indicating a mixed review. The audience's positive reaction suggests some redeeming qualities, but the critic's own assessment is not strongly positive. | Gemini: The critic calls the show a \"middling musical\" but acknowledges the audience enjoyed it, resulting in a mixed assessment. | Kimi: The critic explicitly labels the show as 'middling,' indicating an average, unexceptional assessment that falls squarely in the mixed category—neither recommending nor discouraging attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:29:16.124Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 61,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

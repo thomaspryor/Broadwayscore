@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "In Noah Haidle's thin and drippy Birthday Candles, the earnest Ernestine (Debra Messing) prepares and bakes a cake in 90 minutes of real time, as 90 years of her life pass by. A smell of baking thus wafts through the theatre, providing one of the production's few whiffs of reality. Haidle means to suggest that the specific is universal- Christine Jones's set is a kitchen that floats in the vastness of the cosmos, with household objects hanging over it like stars- but he forgets to be specific. It's Thornton Wilder without the wildness or the thorns.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Haidle means to suggest that the specific is universal but he forgets to be specific.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the play 'thin and drippy' and notes it lacks the qualities that make Thornton Wilder work. However, this is only one excerpt from a longer review, so the full verdict may differ. | GPT-4o: The review excerpt criticizes the play as 'thin and drippy' and suggests it lacks specificity, comparing it unfavorably to Thornton Wilder. The tone is negative, but due to the single excerpt, confidence is low. | Gemini: The review uses negative descriptors like \"thin and drippy\" and \"Thornton Wilder without the wildness or the thorns,\" indicating a negative assessment. Given the single excerpt warning, confidence is low. | Kimi: The critic describes the play as 'thin and drippy,' criticizes its lack of specificity, and unfavorably compares it to Thornton Wilder, indicating a disappointing production that fails to achieve its thematic ambitions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:03:37.440Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

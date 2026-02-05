@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Williams is venomous, fragile and, finally, stripped bare as she narrates a spellbinding account of Una's last encounter with Ray, at a beach-side hotel in a town far away enough from where they both lived that they wouldn't be recognized...In [Daniels] hands, it's apparent Ray knows what he did was wrong, but also clear that he doesn't believe he was one of \"them\" -- the kind of man who belongs on a sex-offender registry...After Una tells Ray her father died some years back, Ray moves to comfor",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Williams is venomous, fragile and, finally, stripped bare as she narrates a spellbinding account",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows strong praise for performances with vivid, appreciative language like 'spellbinding' and detailed character analysis, but as a single curated quote from a truncated review, confidence must be low. | GPT-4o: The excerpt praises Williams' performance as 'spellbinding,' suggesting a positive view. However, the single excerpt and lack of a full verdict lead to a low confidence score. | Gemini: The excerpt describes a 'spellbinding account' and praises Williams' performance. Given the single excerpt and lack of a clear recommendation, I'm scoring it as positive but with low confidence. | Kimi: The excerpt offers enthusiastic praise for the lead performances, describing them as 'spellbinding' and emotionally raw, suggesting the production is worthwhile for the acting alone despite the limited available context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:04:46.544Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

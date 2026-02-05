@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“If you feel even the slightest hint of a migraine coming on, you might want to skip venturing into this funhouse/madhouse...It’s an incredibly noisy experience aimed primarily at scaring the living. And it’s done with a riotous score...The show has been directed with what feels like unhinged imagination...Coherence is thrown to the winds...What remains pretty constant is the playful obnoxiousness and energy of Brightman as Beetlejuice. It’s a monumental performance.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you feel even the slightest hint of a migraine coming on, you might want to skip venturing into this funhouse/madhouse.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Opens with explicit advice to skip the show, describes it as incoherent chaos, but praises Brightman's 'monumental performance.' Single excerpt warning applies - mixed signals without clear overall verdict. | GPT-4o: The review highlights both positive and negative aspects: the show is described as 'incredibly noisy' and 'unhinged,' suggesting a chaotic experience, but also praises Brightman's performance as 'monumental.' The mixed signals and lack of a clear recommendation lead to a mixed classification. | Gemini: The review describes the show as a \"funhouse/madhouse\" and \"incredibly noisy\", suggesting a potentially overwhelming experience. While praising Brightman's performance, the lack of coherence and focus on scaring the audience indicates a mixed to negative experience overall. | Kimi: Single excerpt shows qualified praise: warns sensitive viewers away with migraine caveat and notes incoherence, but praises 'monumental' lead performance, 'riotous' score, and 'unhinged imagination' of direction, suggesting a mildly positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:37:23.970Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

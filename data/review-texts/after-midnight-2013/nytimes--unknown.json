@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "'After Midnight' does not make much of an attempt to impart any of the Cotton Club history. As the evening's nominal host, Mr. Hill sprinkles the evening with a few snippets of Langston Hughes's poetry, but it's incidental. Instead the focus remains squarely on music and its interpretation, by those amazing musicians, under the snappy baton of the conductor Daryl Waters, and the performers who sing, slide, scat, cartwheel and generally raise a ruckus in front of them.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Instead the focus remains squarely on music and its interpretation, by those amazing musicians.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the musicians as 'amazing' and describes energetic performances that 'raise a ruckus,' but notes the show lacks historical context. Single excerpt limits confidence and suggests qualified recommendation. | GPT-4o: The excerpt highlights the strong musical performances and lively atmosphere, suggesting a positive experience despite the lack of historical context. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review focuses on the music and performances, calling the musicians \"amazing\" and the conductor's baton \"snappy.\" While it notes the lack of historical context, the overall tone is positive, suggesting it's worth seeing for the music and performances. | Kimi: The critic notes the show fails to deliver historical context but praises the 'amazing' musicians and energetic performers, suggesting solid entertainment value despite educational shortcomings. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:03:46.409Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

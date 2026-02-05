@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "How do you describe admiration for a display of such sad and stark emotional vulnerability without it feeling like objectification of the fictional characters who have gone through the experience, and those who are confronted by similar ones in real life?...In varying degrees, Williams and Daniels, both excellent, effectively confront the audience to feel sympathy for their characters as it becomes increasingly clear what emotions are for each other. On top of that, you can admire the actors for",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Williams and Daniels, both excellent, effectively confront the audience to feel sympathy for their characters",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises both lead performances as 'excellent' and acknowledges the emotional effectiveness of their work. However, this is a single truncated excerpt that appears cut off mid-sentence, making it difficult to assess the full verdict. The thoughtful tone suggests qualified appreciation rather than enthusiastic endorsement. | GPT-4o: The excerpt praises the performances of Williams and Daniels as excellent and highlights their ability to evoke sympathy, suggesting a positive view of the production. However, the single excerpt and lack of full context limit confidence. | Gemini: The review praises the performances of Williams and Daniels and their ability to evoke sympathy for their characters. However, due to the limited excerpt, the confidence is low. | Kimi: The excerpt offers strong praise for the lead actors, calling them 'excellent' and highlighting their effective emotional impact on the audience, indicating a positive recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:04:16.711Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

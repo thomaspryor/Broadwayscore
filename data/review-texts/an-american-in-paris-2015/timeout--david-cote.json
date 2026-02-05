@@ -12,5 +12,60 @@
   "bwwExcerpt": "The arrival of two big musicals derived from classic 1950s movies located in the City of Light (see Gigi) indicates either a resurgent interest in the early film oeuvre of Leslie Caron or a lack of producer imagination. Or maybe it's just random, unintentionally reflected in the patchwork-if also lavish and classy-quality of An American in Paris. There's much gorgeous ballet to admire in director-choreographer Christopher Wheeldon's Broadway debut, set against attractive, painterly backdrops by Bob Crowley, but the overall effect is of a dance concert with a semiserious musical squeezed into the cracks.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-AMERICAN-IN-PARIS-Opens-on-Broadway-Updating-LIVE-20150412"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-AMERICAN-IN-PARIS-Opens-on-Broadway-Updating-LIVE-20150412",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's much gorgeous ballet to admire but the overall effect is of a dance concert with a semiserious musical squeezed into the cracks.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the ballet and design ('gorgeous', 'lavish and classy') but describes the show as 'patchwork' and having a fragmented quality. Single excerpt warning applies - this mixed assessment may not represent the full verdict. | GPT-4o: The review highlights the visual and choreographic strengths but suggests the musical aspect feels secondary, indicating a mixed reception. The single excerpt limits confidence in the overall verdict. | Gemini: The review acknowledges the beautiful ballet and backdrops, but ultimately finds the musical aspect lacking, resulting in a mixed impression. The single excerpt and lack of explicit recommendation lead to low confidence. | Kimi: The critic praises the lavish ballet and design highly, but ultimately describes the show as 'patchwork' and dismisses the musical elements as 'semiserious' and 'squeezed into the cracks,' suggesting impressive visuals cannot redeem flawed storytelling integration.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:53:56.303Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The show has been updated to include a few new zingers. For instance, God announces that he knows full well that the crowd is only there because they couldn't get tickets to \"Hamilton.\" In fact, God can't snag a ticket, either. Even at just 90 minutes, \"An Act of God\" (directed by the prolific Joe Mantello) is long-winded and full of unoriginal jabs at easy targets, but it is cute and occasionally witty . Hayes, who appeared on Broadway six years ago in the musical \"Promises, Promises\" and is be",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even at just 90 minutes, 'An Act of God' is long-winded and full of unoriginal jabs at easy targets, but it is cute and occasionally witty.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges some positive qualities ('cute and occasionally witty') but emphasizes significant flaws ('long-winded', 'unoriginal jabs at easy targets'). The structure suggests qualified criticism rather than recommendation. Single excerpt warning applies - setting confidence to low. | GPT-4o: The review highlights both negative aspects (long-winded, unoriginal) and some positive ones (cute, occasionally witty), indicating a mixed reception. The single excerpt and lack of a full review text lower the confidence. | Gemini: The review excerpt describes the show as \"cute and occasionally witty\" but also \"long-winded and full of unoriginal jabs.\" This suggests a mixed reaction, so I chose the Mixed bucket. Confidence is low due to the limited excerpt. | Kimi: The critic finds significant flaws (long-winded, unoriginal material) but acknowledges modest redeeming qualities (cute, occasionally witty), resulting in a balanced, non-committal assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:50:08.568Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

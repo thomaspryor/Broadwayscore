@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A clear example of an audience show -- if you're the right audience -- & Juliet is more of a teenage dream than an adult entertainment. This cheeky musical squib on Shakespearean tragedy is the theatrical equivalent of YA fiction, dressing up its message of female and queer self-assertion with plenty of wisecracks and a playlist of Max Martin chartbusters. Is this progressive, family-friendly fun package likely to be a smash hit? Yea, verily. Is it a hit-or-miss proposition, its fleeting pleasures sometimes trampled under a hit parade of bombastic pop tunes? Only a varlet would say so.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Is this progressive, family-friendly fun package likely to be a smash hit? Yea, verily.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic clearly recommends the show as 'likely to be a smash hit' and calls it a 'fun package,' but qualifies it as 'more of a teenage dream than an adult entertainment' and acknowledges it as 'hit-or-miss.' Single excerpt warning applies - this appears selectively positive. | GPT-4o: The excerpt suggests a positive view, highlighting the show's appeal to its target audience and its likely success. However, it also notes that the enjoyment may depend on audience fit, indicating some reservations. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review suggests it's enjoyable for a specific audience, calling it a \"family-friendly fun package\" likely to be a hit, but also acknowledges it might be \"hit-or-miss.\" Given the limited excerpt, I'm scoring it as positive with reservations. | Kimi: Despite noting the show's primary appeal is to younger demographics rather than adults, the critic enthusiastically predicts a 'smash hit' and dismisses criticisms about its hit-or-miss nature or bombastic score as something 'only a varlet would say.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:03:41.372Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

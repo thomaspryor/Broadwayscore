@@ -11,5 +11,59 @@
   "bwwExcerpt": "A seemingly crowd-pleasing, high-energy, sensory-overloaded Beetlejuice was resurrected at the Ohio Theatre on Tuesday night to a devoted cult fan following. While slapstick jokes, disturbing references, and visual diversions dominate much of the show, there are also moments of heart-warming tenderness, much thanks to the incredible performance of Isabella Esler who plays Lydia.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While slapstick jokes, disturbing references, and visual diversions dominate much of the show, there are also moments of heart-warming tenderness",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single excerpt describes a show dominated by sensory overload and diversions but acknowledges heart-warming moments and strong performance. Mixed signals with no clear recommendation. Aggregator context suggests 'Flat' verdict supports mixed classification. | GPT-4o: The review describes a mix of high-energy, crowd-pleasing elements with slapstick and visual diversions, but also notes moments of tenderness. The overall tone suggests a mixed experience with both positive and negative aspects. | Gemini: The review acknowledges both positive and negative aspects of the show, with no clear recommendation. The praise for Isabella Esler is noted, but the overall impression is mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:25:06.053Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

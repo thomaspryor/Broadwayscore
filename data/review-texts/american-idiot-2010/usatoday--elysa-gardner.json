@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Few could have predicted that American Idiot, the new adaptation of the band's massively popular, starkly disenchanted album of the same name, would be the feel-good musical of the season. But in the hands of director Michael Mayer, who also co-wrote the libretto with Green Day frontman Billie Joe Armstrong, Idiot has become just that — as well as a case study in the power of teamwork in musical theater.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Idiot has become just that — as well as a case study in the power of teamwork in musical theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Calls it 'the feel-good musical of the season' and 'a case study in the power of teamwork' - clearly positive language. However, confidence is low due to single excerpt warning and potential for cherry-picking. | GPT-4o: The excerpt presents the show as unexpectedly positive and successful, highlighting the effective collaboration in its creation. The tone suggests strong enthusiasm, but the single excerpt limits confidence. | Gemini: The review excerpt states that the show is the \"feel-good musical of the season\" and a \"case study in the power of teamwork in musical theater.\" This suggests a positive recommendation. Confidence is low due to the single excerpt. | Kimi: Despite the dark source material, the critic praises this adaptation as the 'feel-good musical of the season' and highlights the effective creative collaboration, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:41:34.006Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

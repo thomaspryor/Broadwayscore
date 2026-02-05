@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Superbly performed by Laurence Fishburne, Sam Rockwell and Darren Criss, with director (and longtime Mamet collaborator) Neil Pepe finding every comic beat and threatening glare, American Buffalo - opening tonight on Broadway at the Circle in the Square Theatre - retains a vitality that eluded some recent equally starry revivals of works by Mamet's bad-boy contemporaries (here's looking at you, True West).",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Superbly performed by Laurence Fishburne, Sam Rockwell and Darren Criss, with director Neil Pepe finding every comic beat and threatening glare.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for performances ('superbly performed') and direction ('finding every comic beat'), plus favorable comparison to other recent revivals. However, confidence is low due to single excerpt warning - this may not represent the full review verdict. | GPT-4o: The excerpt praises the performances and direction, highlighting the show's vitality compared to other revivals. The tone is clearly positive, but the single excerpt limits confidence. | Gemini: The review excerpt praises the performances and direction, suggesting a positive experience. The comparison to other revivals further strengthens the positive sentiment. | Kimi: The excerpt offers strong praise for the performances ('superbly performed') and direction, favorably comparing this production's vitality to recent starry revivals that failed to achieve the same effect. The clearly positive tone warrants the upper range of the Positive bucket despite limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:30:20.933Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

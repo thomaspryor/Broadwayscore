@@ -12,5 +12,60 @@
   "bwwExcerpt": "It's an interesting piece of writing that has opened at the Booth Theatre. The four characters are less fully-fleshed out humans than they are representations of types created to express four sides of what is arguably the most controversial issue facing America today; the combination of social media and cell phones with video recorders increasing the country's visibility of black men being killed by police officers.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The four characters are less fully-fleshed out humans than they are representations of types created to express four sides of what is arguably the most controversial issue facing America today.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic describes the work as 'interesting' but notes significant dramatic limitations (characters as 'types' rather than 'fully-fleshed out humans'). This suggests intellectual merit but theatrical shortcomings. Single excerpt warning requires caution - this could be setup for either direction. | GPT-4o: The excerpt describes the play as 'interesting' but focuses on the characters being more symbolic than fully developed, suggesting a mixed evaluation. The single excerpt limits confidence in the overall sentiment. | Gemini: The review excerpt describes the play as an \"interesting piece of writing\" but doesn't offer a clear recommendation. The description of the characters as \"representations of types\" suggests a lack of depth, which leans towards a mixed assessment. | Kimi: The excerpt offers faint praise ('interesting') paired with criticism that characters are schematic 'representations of types' rather than fully developed humans, suggesting a mixed reception with significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:46:43.494Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

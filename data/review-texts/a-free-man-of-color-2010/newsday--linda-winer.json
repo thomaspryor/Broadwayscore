@@ -10,7 +10,7 @@
   ],
   "bwwExcerpt": "Somewhere very far away - as far, say, as the final 15 minutes - 'A Free Man of Color' becomes an important play. Finally, after 2 ½ hours of brain-blurring historical asides, strenuously costumed artifice and luxuriously overpopulated incoherence, the point and resonance of this crazy-ambitious collaboration between playwright John Guare and director George C. Wolfe fall deeply into place.",
   "bwwScore": 4,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "assignedScore": 62,
   "llmScore": {
     "score": 62,
@@ -65,5 +65,54 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 62,
+  "fullText": "Jeffrey Wright stars in John Guare's \"A Free Man of Color\" at the Vivian Beaumont Theater at Lincoln Center through Jan. 9, 2011. CREDIT: T. Charles Erickson Credit: T. Charles Erickson Photo/\n\nSomewhere very far away - as far, say, as the final 15 minutes - \"A Free Man of Color\" becomes an important play. Finally, after 2 ½ hours of brain-blurring historical asides, strenuously costumed artifice and luxuriously overpopulated incoherence, the point and resonance of this crazy-ambitious collaboration between playwright John Guare and director George C. Wolfe fall deeply into place.\n\nIt is, of course, far too late for saving. The eccentric and wearying epic, to which the Lincoln Center Theater has contributed 26 of the city's finest actors and perhaps all the king's men, ultimately hardwires the fates of New Orleans and Haiti to the whims, bigotries and greed of Spain, France and Thomas Jefferson's America from 1801-1803. For me, at least, the Louisiana Purchase can never again seem like a neutral blip of geographical nationalism.\n\nBut Guare, the luscious poet of such woozy tragic-comedies as \"Six Degrees of Separation\" and \"The House of Blue Leaves,\" is clearly not content to teach a history lesson. \"Free Man\" is rhapsodically overwritten - sometimes in verse - as a bawdy, sprawling mess of a Restoration comedy, set in New Orleans during a kind of racially liberated utopia.\n\nWolfe works hard to move us around meta-theatrical scenes from Europe to the Caribbean (imaginatively suggested by designer David Rockwell). Zany, however, appears not to be the director's comfort zone.\n\nJeffrey Wright musters a zesty grace as the main fop, Jacques Cornet, a sybaritic, fashion-loving Don Juan and former slave (grand costumes by Ann Hould-Ward) who, according to the rules before the oppressive Louisiana Purchase, bought his freedom and inherited his fortune from his white father. He also thinks he's writing a play and declares, no kidding, \"I need to play a role in this Hobbesian juggernaut called history!\"\n\nMos, the rapper/actor named Mos Def when he co-starred with Wright in Wolfe's smashing production of \"Topdog/Underdog,\" sweetly grounds the story as Cornet's slave. Two dozen other actors portray 40-odd - and odder - characters, including Napoleon, King Carlos, Haitian revolutionary Toussaint L'Ouverture, unhappy wives, whores and slaves. Most touching is Paul Dano as Jefferson's secretary, who realizes that America's undiscovered terrain is \"inside our head.\"\n\nUltimately, the sober racial history and the frivolous period stylization feel like incompatible systems, straining against each other while juggling too much information and not enough justification.",
+  "isFullReview": true,
+  "textWordCount": 419,
+  "archivePath": "data/archives/reviews/a-free-man-of-color-2010/newsday--linda-winer_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T18:24:19.456Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Insufficient text: 183 chars"
+    },
+    {
+      "tier": 3.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20210411072617",
+  "archiveOrgUrl": "http://web.archive.org/web/20210411072617/https://www.newsday.com/entertainment/theater/a-free-man-of-color-too-much-of-a-good-thing-1.2471097",
+  "wordCount": 419,
+  "tierReason": "Full review text"
 }

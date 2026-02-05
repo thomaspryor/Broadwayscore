@@ -12,5 +12,60 @@
   "bwwExcerpt": "Beetlejuice, the rowdy, raunchy musical adapted from Tim Burton's 1988 horror-comedy, openly embraces the theme park-y aspects of an enterprise like the one it's engaged in. True to its source material, it's loud, it's cheeky, and it's all about excess. It's also-thanks in large part to Alex Brightman's spot-on performance as the incorrigible titular ghoul-a pretty fun time. Roma Torre, NY1: The score by Eddie Perfect isn't exactly perfect but it's plenty jaunty, though \"The Banana Boat Song\" an",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
   "contentTier": "excerpt",
-  "playbillVerdictUrl": "https://www.vulture.com/2019/04/review-beetlejuice-is-best-when-its-at-its-most-antic.html"
+  "playbillVerdictUrl": "https://www.vulture.com/2019/04/review-beetlejuice-is-best-when-its-at-its-most-antic.html",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's also-thanks in large part to Alex Brightman's spot-on performance as the incorrigible titular ghoul-a pretty fun time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows qualified positivity ('pretty fun time', 'spot-on performance') but with caveats about excess and imperfect score. Single excerpt warning applies - this appears mildly positive so scored at lower end of Positive bucket. | GPT-4o: The excerpt describes the show as 'pretty fun' and praises Alex Brightman's performance, indicating a positive but not overwhelmingly enthusiastic recommendation. The text quality warning and single excerpt availability lower confidence. | Gemini: The review excerpt indicates that the show is \"a pretty fun time,\" which suggests a positive but not overwhelmingly enthusiastic recommendation. The presence of reservations is implied by the \"theme park-y aspects\" comment. | Kimi: The excerpt offers qualified praise, acknowledging the show's 'theme park-y' commercial nature but ultimately endorsing it as 'a pretty fun time' thanks to Brightman's performance. Single excerpt and truncation warrant low confidence and lower-end Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:24:21.427Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
