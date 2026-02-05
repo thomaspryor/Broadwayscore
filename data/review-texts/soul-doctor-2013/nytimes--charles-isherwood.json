@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "Given this unusual blend of elements, it should be no surprise that 'Soul Doctor' is a bizarre and at times bewildering musical. Carlebach's life certainly makes for a fascinating story...But 'Soul Doctor'...lays out Carlebach's journey in mostly blunt, often hoary strokes...Carlebach's music, much of which was written to accompany traditional Jewish songs and prayers, is often beautiful and blends folk instrumentation with more recognizably traditional liturgical sounds. Mr. Anderson sings with a soft, captivating intensity, and the orchestrations often appealingly evoke Carlebach's original recordings. But Mr. Anderson's performance is limited by the superficiality of Mr. Wise's book.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's earnest intentions are admirable, but 'Soul Doctor' never quite finds its theatrical footing, despite some rousing musical moments.",
   "contentTier": "truncated",
@@ -21,7 +21,8 @@
   "textQuality": "truncated",
   "sources": [
     "web-search",
-    "playbill-verdict"
+    "playbill-verdict",
+    "bww-reviews"
   ],
   "playbillVerdictUrl": "http://theater.nytimes.com/2013/08/16/theater/reviews/soul-doctor-a-musical-about-rabbi-shlomo-carlebach.html?ref=theater&pagewanted=all",
   "llmScore": {
@@ -78,5 +79,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
-  }
+  },
+  "bwwScore": 6
 }

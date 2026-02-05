@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "Rylance is also the comic engine of Richard III, but the success of that unusual choice is more equivocal. Certainly Richard is amused by his own depravity; after murdering Lady Anne’s husband and father, and prettily getting her to marry him anyway, he instantly gloats: “Was ever woman in this humour woo’d? / Was ever woman in this humour won?” But Rylance takes from such cues an idea of Richard as a grotesque glad-hander, an audience whisperer of Al Jolson proportions. He grubs for laughter, plays up his self-pitying streak as a ruse we are all in on. He’s perfectly happy to pimp his deformity, here rendered as a slightly warped leg and a tiny withered hand hanging from a palsied wrist like a brace of deflated balloons. You may think of Kristen Wiig’s demented Dooneese Boylan character.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Kevin Spacey's Richard III is a performance of such calculated, chilling precision that it makes you forget how often this play has been done badly.",
   "contentTier": "truncated",
@@ -22,12 +22,14 @@
   "playbillVerdictUrl": "http://www.vulture.com/2013/11/theater-review-richard-iii.html",
   "sources": [
     "web-search",
-    "playbill-verdict"
+    "playbill-verdict",
+    "bww-reviews"
   ],
   "wrongProduction": true,
   "rejectedAt": "2026-02-04T13:31:00.367Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
   "rejectionReasoning": "openai: The review is about Kevin Spacey's performance in Richard III, which is not part of the current Broadway run.; gemini: This review is for a production starring Kevin Spacey, which is not the current Broadway production of Richard III.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwScore": 9
 }
