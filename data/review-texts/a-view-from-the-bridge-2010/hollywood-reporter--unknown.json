@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "\"Bottom Line: Scarlett Johansson makes a fine stage debut and Liev Schreiber delivers another titanic performance in this revival of Miller's classic tragedy.\"",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-A-VIEW-FROM-THE-BRIDGE-Review-Roundup-20100124"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-A-VIEW-FROM-THE-BRIDGE-Review-Roundup-20100124",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scarlett Johansson makes a fine stage debut and Liev Schreiber delivers another titanic performance in this revival of Miller's classic tragedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises both lead performances with strong language ('fine stage debut', 'titanic performance') and calls it a 'revival of Miller's classic tragedy' without criticism. Single excerpt warning means this could be cherry-picked positive language, but the tone suggests solid recommendation. | GPT-4o: The excerpt praises the performances of the lead actors, suggesting a positive reception of the production. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt praises the performances of the two leads, suggesting a positive experience overall, but without more context, it's difficult to gauge the strength of the recommendation. | Kimi: The Bottom Line verdict offers clear praise for both leads, with 'titanic' indicating particularly strong commendation for Schreiber. However, as a single curated excerpt, the overall assessment confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:50:22.526Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

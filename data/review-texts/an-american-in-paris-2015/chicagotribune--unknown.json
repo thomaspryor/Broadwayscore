@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Had this ambitious new musical fully committed to telling its story through the love, pain, rush and insecurity of movement, especially movement that does not have to compete with digitized scenery drawing pictures of its own, and had it more overtly abandoned the usual way of musicals, then 'American in Paris' would have touched the heart and soul more than currently is possible. The expanded narrative, penned by Craig Lucas for this first legitimate staging of the 1951 movie, has resulted in an overly complex and less-than-involving story, exploring the residue of the Nazi occupation of Paris.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-AMERICAN-IN-PARIS-Opens-on-Broadway-Updating-LIVE-20150412"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-AMERICAN-IN-PARIS-Opens-on-Broadway-Updating-LIVE-20150412",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Had this ambitious new musical fully committed... then 'American in Paris' would have touched the heart and soul more than currently is possible.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic sees potential in the show's ambitious concept but finds it doesn't deliver emotionally due to overly complex narrative and competing visual elements. Single excerpt warning applies - this could be from a longer mixed review. | GPT-4o: The review criticizes the musical for not fully committing to its storytelling approach and describes the narrative as overly complex and less-than-involving. The excerpt suggests disappointment with the execution, indicating a negative review. | Gemini: The review suggests the musical has potential but ultimately falls short due to an overly complex narrative and reliance on digitized scenery. It neither fully recommends nor discourages seeing it. | Kimi: The critic praises the show's ambition but delivers a significant critique of the expanded narrative as 'overly complex and less-than-involving,' suggesting it failed to achieve its full potential. Single excerpt availability limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:53:24.369Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

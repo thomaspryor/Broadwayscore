@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "You may as well call this 'The Motel New Orleans,' so clearly does it emulate -- in theme if not execution -- Lanford Wilson's Hotel Baltimore...I don't know how the great Wilson play would hold up today; it was so firmly rooted in the culture of another time and place. But D'Amour, while clearly sympathetic to her characters, conjures a world too neatly balanced, too eccentric, too oddly wholesome. They're types, not people. Under Joe Mantello's expert direction (no one is better at ensemble staging), Airline Highway never reaches the status of powerful Katrina post-mortem it seems to be striving for.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They're types, not people.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises Mantello's direction but finds the characters lack depth and the play fails to achieve its ambitious goals, indicating disappointment despite some positive elements. | GPT-4o: The review expresses disappointment that the play doesn't achieve its intended impact, despite acknowledging the director's expertise. The excerpt suggests a lack of strong recommendation or discouragement. | Gemini: The review compares the play unfavorably to another work, praises the direction but ultimately finds the characters unconvincing and the play falling short of its potential. The overall tone is mixed. | Kimi: The critic offers high praise for Mantello's direction but criticizes D'Amour's characters as 'types, not people' and finds the play fails to achieve its goal of being a 'powerful Katrina post-mortem,' indicating significant disappointment in the overall execution despite technical strengths.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:09:06.033Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

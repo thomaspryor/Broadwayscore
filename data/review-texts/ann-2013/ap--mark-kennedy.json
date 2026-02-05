@@ -14,5 +14,60 @@
   "bwwScore": 8,
   "contentTier": "excerpt",
   "playbillVerdictUrl": "http://hosted.ap.org/dynamic/stories/U/US_THEATER_REVIEW_SYLVIA_BAOL-?SITE=AP&SECTION=HOME&TEMPLATE=DEFAULT",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Taylor's Richards is a hoot yet she almost gets upstaged by another character, which is hard to do in a one-woman show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the lead performance as 'a hoot' and highlights specific moments as 'highlights,' suggesting an entertaining show. However, with only one curated excerpt available, confidence is low and the score reflects cautious positive territory. | GPT-4o: The excerpt praises Taylor's performance as entertaining ('a hoot') and highlights specific enjoyable moments ('some of the play's highlights'). However, the mention of being 'upstaged' introduces a slight reservation. Given the single excerpt and lack of full context, the score is on the lower end of Positive. | Gemini: The review excerpt is positive, highlighting the performance of Taylor's Richards and the humor in the show. However, it also mentions another character almost upstaging her, suggesting a potential reservation. Given that it is a single excerpt, I am scoring it as positive with reservations and low confidence. | Kimi: The excerpt offers enthusiastic praise for the lead performance ('a hoot') and identifies specific scenes as 'highlights,' indicating a strong recommendation. However, as a single curated excerpt, confidence is reduced due to potential cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:08:00.024Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

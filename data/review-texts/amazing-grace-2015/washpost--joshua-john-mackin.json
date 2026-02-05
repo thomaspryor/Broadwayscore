@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "With a feel-good ending, you might call 'Amazing Grace' a triumphalist view on advancement in persons and politics. Culture is a bolt that ratchets in only one direction in the play: toward greater freedom and compassion. But the musical is not just soothing and includes clear depictions of the horrors of slavery. The show opens with the audience immediately implicated as eager auctioneers at a brutal slave auction. There are several on-stage whippings of black characters by white characters. And the destruction slavery caused to black families is highlighted multiple times.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With a feel-good ending, you might call 'Amazing Grace' a triumphalist view on advancement in persons and politics.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: This excerpt is purely analytical, describing the show's structure and content without any evaluative language or recommendation. The critic discusses the 'triumphalist view' and brutal depictions but offers no opinion on quality or whether to see it. | GPT-4o: The excerpt highlights both positive aspects (feel-good ending, triumphalist view) and serious content (depictions of slavery's horrors). The lack of a clear recommendation or strong praise suggests a mixed verdict. | Gemini: The review acknowledges both the positive aspects (feel-good ending, advancement) and the negative aspects (horrors of slavery, brutal depictions). Given the single excerpt, it leans slightly positive, but with reservations. | Kimi: Single excerpt shows mild approval for the show's handling of serious historical material alongside its uplifting message, though limited evaluative language about artistic execution keeps the score conservative. Single-excerpt warning necessitates low confidence. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:27:10.854Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "Sadly, a complete showbiz neophyte decided to turn it into a Les Miz-style melodrama, and the crude result has been buffed to a high sheen by a talented cast and crew with $16 million at their disposal. If only some of that filthy lucre had gone to script doctors and ghostwriters instead...As Newton, Josh Young has a sterling, ringing tenor, but his character is annoyingly passive and shrill. The majestic Chuck Cooper brings every ounce of humor and dignity to bear on his invented role, the servant Thomas, steering it a hairsbreadth away from Magical Negro territory. Amazing Grace may be based on historical persons and events, but but in this case, truth is more compelling than fiction...Personally, I expect poetic license in the theater, but I expect it to serve a strong artistic or political vision. Amazing Grace has neither.",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Amazing Grace may be based on historical persons and events, but but in this case, truth is more compelling than fiction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict calling the result 'crude' despite talented cast and $16 million budget, criticizing weak script and lack of artistic vision. Praises individual performers but condemns the overall production. | GPT-4o: The review criticizes the show as a 'Les Miz-style melodrama' with a 'crude result' and lacks a 'strong artistic or political vision'. Despite some praise for individual performances, the overall tone is strongly negative. | Gemini: The review praises the cast but criticizes the script and artistic vision, ultimately finding the show lacking. The overall tone is negative despite acknowledging some positive elements. | Kimi: While acknowledging the talented cast and high production values, the critic deems the material crude and lacking artistic vision, ultimately advising against the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:26:28.601Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

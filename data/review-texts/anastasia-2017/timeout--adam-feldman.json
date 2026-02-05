@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "As Anastasia piles discovery upon discovery, the happiest surprise is how consistently good the musical turns out to be. Smartly adapted by Terrence McNally from the 1997 animated film and the 1956 Ingrid Bergman movie-with Stephen Flaherty and Lynn Ahrens impressively expanding their score from the former-Anastasia is a sweeping adventure, romance and historical epic whose fine craftsmanship will satisfy musical-theater fans beyond the show's ideal audience of teenage girls. (When I saw it, a second-act kiss was greeted with deafening shrieks of approval.)",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the happiest surprise is how consistently good the musical turns out to be",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('consistently good', 'fine craftsmanship', 'will satisfy') with enthusiasm about the production quality. Single excerpt warning applied - using upper end of Positive bucket. | GPT-4o: The excerpt praises the musical's adaptation and craftsmanship, suggesting it exceeds expectations and appeals to a broad audience. Given the single excerpt and lack of a full review, confidence is low but the tone is clearly positive. | Gemini: The review expresses surprise at how good the musical is, calling it a \"sweeping adventure, romance and historical epic\" with \"fine craftsmanship.\" The critic clearly enjoyed the show. | Kimi: Single curated excerpt offers strong praise for the adaptation, craftsmanship, and score with enthusiastic language ('happiest surprise', 'sweeping adventure'), warranting the upper Positive range per excerpt guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:04:51.387Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

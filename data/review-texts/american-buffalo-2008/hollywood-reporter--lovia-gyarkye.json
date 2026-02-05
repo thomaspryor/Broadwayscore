@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"David Mamet’s 'American Buffalo' is now on Broadway, buttressed by a starry cast. Laurence Fishburne, Sam Rockwell and Darren Criss are sharp and lithe in this revival of the caustic 1975 play about three hustlers planning a heist. They stalk across Scott Pask’s ornate set as they hurl Mamet’s signature terse prose at one another. Their speech moves rhythmically — a sonorous medley. They maneuver their bodies with precision and intention. This critic stared, entranced by their dance.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This critic stared, entranced by their dance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for the performances ('sharp and lithe', 'entranced') and production design ('ornate set'). However, low confidence due to limited text and potential cherry-picking of positive moments. | GPT-4o: The excerpt praises the cast's performance and the production's set design, describing it as entrancing. The positive tone and strong language suggest a solid recommendation. | Gemini: The review excerpt is overwhelmingly positive, praising the cast, set, and Mamet's writing. The critic states they were \"entranced by their dance.\" | Kimi: The excerpt offers enthusiastic praise for the cast's physicality and rhythmic delivery, with the critic describing themselves as 'entranced.' Following the single-excerpt guidance for clearly positive quotes, this scores at the upper end of Positive, though confidence is low given the potential for cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:31:10.829Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

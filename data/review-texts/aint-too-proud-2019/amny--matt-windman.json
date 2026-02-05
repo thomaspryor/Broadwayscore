@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Jersey Boys\" meets \"Motown\" in \"Ain't Too Proud: The Life and Times of The Temptations,\" the latest biographical/backstage rock and roll jukebox musical to hit Broadway and market itself to the baby-boomer demographic. And while not exactly profound or original, it makes for slick, straightforward, tuneful and altogether pleasant entertainment.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And while not exactly profound or original, it makes for slick, straightforward, tuneful and altogether pleasant entertainment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges limitations (not profound or original) but still recommends it as pleasant entertainment. Single excerpt warning applies - this reads as qualified positive recommendation. | GPT-4o: The excerpt describes the show as 'pleasant entertainment' and uses positive adjectives like 'slick' and 'tuneful'. However, it also notes that the show is 'not exactly profound or original', indicating mild positivity. Due to the single excerpt warning, the confidence is low. | Gemini: The review calls the show \"slick, straightforward, tuneful and altogether pleasant entertainment.\" While not a rave, it's a positive assessment. Given the single excerpt, confidence is low. | Kimi: The critic offers a qualified recommendation, praising the show as 'slick' and 'tuneful' 'pleasant entertainment' while explicitly noting it lacks profundity and originality, suggesting a mild rather than enthusiastic endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:05:37.472Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

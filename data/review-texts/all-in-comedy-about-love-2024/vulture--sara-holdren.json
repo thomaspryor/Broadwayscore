@@ -13,5 +13,59 @@
   ],
   "showScoreExcerpt": "\"It’s got a simple center, with some fun and some heart to it\"\n\nRead more",
   "bwwExcerpt": "I hate to be a Grinch at Christmas, but it’s not a good sign when your Broadway show has more than one Reddit thread asking if it’s a scam. So things currently stand for Simon Rich’s All In: Comedy About Love. Bothered by the lack of indefinite article there? I hear you, but alas, for All In to qualify as a comedy about love, it would actually have to be a play. Instead, it’s an expensive staged reading with a rotating cast of celebrities.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It’s got a simple center, with some fun and some heart to it",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt suggests a positive view with mentions of 'fun' and 'heart', indicating a recommendation. However, the lack of a full review and the text quality warning necessitate a low confidence rating. | Gemini: The quote suggests a positive but not overwhelmingly enthusiastic review. Due to the limited text, confidence is low. | Kimi: The excerpt offers qualified, lukewarm praise using diminutive qualifiers ('some' rather than 'much' or 'deep'), suggesting the show is pleasant but slight and unambitious. Without the full review context, the tone appears neither enthusiastic enough for a recommendation nor critical enough to discourage attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:12:30.891Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 74,
+    "geminiScore": 72,
+    "kimiScore": 62,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

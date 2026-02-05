@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Of course, this isn't the first time McAnuff and his team tried to recapture that old Jersey magic. (See Summer, last year's ode to disco diva Donna Summer.) But ATP had four chances-out-of-town runs in Berkeley, Calif., Washington, D.C., Los Angeles, and Toronto (curiously, not the Tempts' hometown, Detroit)-to, as Otis says of famous, and famously ego-driven, lead singer David Ruffin (Ephraim Sykes), catch \"lightning in a bottle.\" Sadly, there are few sparks at the Imperial.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sadly, there are few sparks at the Imperial.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt ends with a clear negative assessment ('Sadly, there are few sparks'), suggesting disappointment despite multiple attempts to get the show right. However, with only one excerpt available, the full verdict may be unclear. | GPT-4o: The excerpt indicates disappointment with the production, mentioning 'few sparks' despite multiple opportunities to improve. However, the single excerpt warning suggests caution, so a lower confidence level is appropriate. | Gemini: The review excerpt states that there are \"few sparks\" at the Imperial, suggesting a negative assessment of the show. Given the single excerpt warning, confidence is low. | Kimi: The critic expresses clear disappointment that the production failed to capture necessary energy or magic ('lightning in a bottle'), finding the Broadway transfer sadly lacking in sparks despite multiple out-of-town tryouts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:07:31.160Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

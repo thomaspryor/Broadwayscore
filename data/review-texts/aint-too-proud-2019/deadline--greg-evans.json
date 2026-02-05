@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Ain't Too Proud - The Life and Times of The Temptations is further proof, as if we need it, that the term \"jukebox musical\" just isn't fair - to jukeboxes. Feed a juke some cash and it delivers music, free of the blunt exposition that passes for librettos in so many of these stage biographies. Even with source material as glorious as \"My Girl,\" \"Just My Imagination,\" \"Papa Was A Rolling Stone\" and the song that gives this production its title, the result feels less celebratory than ruthlessly ef",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the result feels less celebratory than ruthlessly ef",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic dismissively criticizes jukebox musicals and describes this show as having 'blunt exposition' and feeling 'less celebratory than ruthlessly' (text cuts off). The tone is clearly negative despite acknowledging great source material. Low confidence due to truncated text that may cut off the full verdict. | GPT-4o: The review criticizes the musical for its blunt exposition and suggests that it fails to celebrate its source material effectively, indicating a negative verdict. However, due to the single excerpt, confidence is low. | Gemini: The review excerpt is negative, criticizing the show's libretto and overall feeling despite the strength of the source material. The truncated text makes the confidence low, but the tone is clearly critical. | Kimi: The critic unfavorably compares the show to a jukebox, criticizing the 'blunt exposition' of the libretto and finding the result 'less celebratory than ruthlessly' mechanical, despite acknowledging the glorious source material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:06:35.720Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

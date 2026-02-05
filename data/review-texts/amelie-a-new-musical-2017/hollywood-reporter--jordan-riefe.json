@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "After trying out to encouraging reviews at Berkeley Repertory Theatre last year, Amelie, a New Musical has undergone an overhaul before arriving at the Ahmanson Theatre in Los Angeles en route to Broadway in the spring. The result is a lovingly crafted confection, impressive in its execution and endearing in its simplicity...Phillipa Soo leads the cast in her first role since her Tony-nominated breakout performance as Eliza in Hamilton...Carrying a show on her shoulders for the first time, she d",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMELIE-A-NEW-MUSICAL-Opens-at-the-Ahmanson-Theatre-UPDATED-20161220",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a lovingly crafted confection, impressive in its execution and endearing in its simplicity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear positive language with 'lovingly crafted,' 'impressive,' and 'endearing.' However, confidence is low due to truncated text and single excerpt warning - the full verdict may differ from this curated quote. | GPT-4o: The excerpt praises the show as 'lovingly crafted' and 'impressive,' suggesting a strong positive sentiment. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is positive, calling the show a \"lovingly crafted confection\" and praising its execution and simplicity. Given the limited text, I'm placing it at the higher end of the positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:27:44.706Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

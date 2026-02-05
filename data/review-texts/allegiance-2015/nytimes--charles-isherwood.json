@@ -12,5 +12,60 @@
   "bwwExcerpt": "'Allegiance,' a new musical about the internment of Japanese-Americans in camps during World War II, could be said to suffer from a problem of divided loyalties, and I'm not referring to its characters. The show wants to illuminate a dark passage in American history with complexity and honesty, but the first requirement of any Broadway musical is to entertain. While well-intentioned and polished, 'Allegiance' struggles to balance both ambitions, and doesn't always find an equilibrium.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-George-Takei-Lea-Salonga-Telly-Leung-on-Broadway-in-ALLEGIANCE-20151109"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-George-Takei-Lea-Salonga-Telly-Leung-on-Broadway-in-ALLEGIANCE-20151109",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While well-intentioned and polished, 'Allegiance' struggles to balance both ambitions, and doesn't always find an equilibrium.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges positive qualities ('well-intentioned and polished') but identifies fundamental structural problems with the show struggling to balance entertainment and historical illumination. Single excerpt limits full verdict assessment. | GPT-4o: The review acknowledges the show's well-intentioned and polished nature but highlights its struggle to balance entertainment with its historical message, suggesting a mixed reception. | Gemini: The review acknowledges good intentions and polish, but ultimately finds the show struggling to balance its ambitions, suggesting a mixed or lukewarm reception. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The critic acknowledges the show's good intentions and polished production values but emphasizes its fundamental difficulty reconciling serious historical subject matter with Broadway entertainment requirements, indicating an uneven execution without a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:19:59.372Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

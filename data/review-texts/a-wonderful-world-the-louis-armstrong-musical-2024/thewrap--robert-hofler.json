@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Only two of Armstrong’s wives in “A Wonderful World” share a dramatic scene: when Daisy charges Alpha and Louis of bigamy. Otherwise, one actor could play all four female roles, which might give some theatrical flair to a show that’s lacking in panache. Christopher Renshaw directs, and Iglehart and Christina Sajous are credited as co-directors. If there isn’t an adage about too many directors in the theater, there should be.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-WONDERFUL-WORLD-Opens-On-Broadway-20241111",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a show that's lacking in panache",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes the show as 'lacking in panache' and makes a sarcastic comment about 'too many directors,' suggesting structural problems. However, with only one excerpt available, this could be cherry-picked criticism from a more balanced review. | GPT-4o: The excerpt criticizes the show for lacking theatrical flair and suggests that the direction is ineffective. The mention of 'too many directors' implies disorganization. The tone is negative, but due to the single excerpt, confidence is low. | Gemini: The review excerpt indicates the show is lacking in theatrical flair and suggests a gimmick to improve it, implying it's not very good. The comment about too many directors further suggests problems. | Kimi: The critic finds the female roles underwritten and interchangeable, criticizes the muddled direction by multiple credited directors, and notes the production lacks theatrical panache, suggesting a show that fails to deliver theatrically.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:57:32.415Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

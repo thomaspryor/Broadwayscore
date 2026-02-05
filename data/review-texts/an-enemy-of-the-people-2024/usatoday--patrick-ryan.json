@@ -12,5 +12,60 @@
   "bwwExcerpt": "Strong is astounding as Thomas, resisting easy histrionics even as tensions reach their boiling point. Soft-spoken and even-keeled, he imbues the character with a deep well of sadness, not only for his late wife Katherine, but for the willful ignorance that’s afflicted his community.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-Starring-Jeremy-Strong-Opens-On-Broadway-20240318"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-Starring-Jeremy-Strong-Opens-On-Broadway-20240318",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong is astounding as Thomas, resisting easy histrionics even as tensions reach their boiling point.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance as 'astounding' with detailed appreciation for the acting choices. However, confidence is low due to limited text that only addresses one performance aspect. | GPT-4o: The excerpt praises Strong's performance as 'astounding' and highlights his ability to convey deep emotion. However, due to the single excerpt warning and lack of broader context, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt focuses on a strong performance, suggesting a positive overall experience. Given the single excerpt, I am placing it at the higher end of the positive bucket, but with low confidence. | Kimi: The single available excerpt offers enthusiastic praise for the lead performance using superlatives like 'astounding,' indicating a clearly positive assessment of this aspect of the production. Per instructions for clearly positive single excerpts, this falls in the upper range of the Positive bucket (80-84), though confidence is low given the limited text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:01:24.684Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

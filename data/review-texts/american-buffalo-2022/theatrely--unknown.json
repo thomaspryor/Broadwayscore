@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Am I spending too much time on the casting choices? Maybe, but it's not like Pepe's direction commanded my attention anywhere else throughout the hour-forty play. Apparently disinterested in the text, or in showing his directorial hand, he lets the cast wander about Scott Pask's purposely messy set without any ambition, or even pointed aimlessness. He also permits what few moments the script provides for contemporary contemplation - Rockwell's character angrily calling Fishburne's a racial epithet, for example - to go uncommented. This laissez-faire directing doesn't allow the second act's mounting troubles to build or release; a fight breaks out, sort of, it gets resolved, sort of, the play ends.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He lets the cast wander about Scott Pask's purposely messy set without any ambition, or even pointed aimlessness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds the direction disinterested and aimless, with mounting problems that fail to build or resolve. However, this is only one excerpt focused on direction, so confidence is low as the overall verdict may differ. | GPT-4o: The excerpt criticizes the direction as lacking ambition and failing to engage with the text or provide meaningful commentary, leading to a disjointed and unresolved experience. The tone suggests a negative impression overall. | Gemini: The review is negative, focusing on the director's lack of engagement and ambition, leading to a lack of build-up and release in the play's events. The single excerpt focuses on a key element of the production, the direction, and finds it lacking. | Kimi: The critic condemns the director's laissez-faire approach for failing to build dramatic tension, allowing important moments to go uncommented, and delivering an unsatisfying theatrical experience that never commands attention.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:36:49.222Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 44,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

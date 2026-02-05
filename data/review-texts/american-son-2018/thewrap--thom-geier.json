@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Director Kenny Leon keeps the action taut during the 90-minute running time, perhaps too taut. There isn't much breathing room in the production - and the ending is so abrupt that it's a wonder the curtain drop doesn't give the actors whiplash. This is the rare show that would benefit from a longer running time, from more scenes exploring the characters in greater depth.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is the rare show that would benefit from a longer running time, from more scenes exploring the characters in greater depth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises the director's pacing as 'taut' but immediately critiques it as 'perhaps too taut' with no breathing room and an abrupt ending. The critic suggests structural improvements are needed, indicating mixed feelings without a clear recommendation. | GPT-4o: The review highlights issues with pacing and depth, suggesting the production is too taut and abrupt. The excerpt lacks a clear positive or negative recommendation, indicating a mixed verdict. | Gemini: The review notes the fast pace and abrupt ending, suggesting a lack of depth. It neither recommends nor discourages seeing the show, indicating a mixed reaction. | Kimi: While the excerpt credits the director with keeping the action taut, it immediately undercuts this with criticism that the production is 'perhaps too taut,' featuring an abrupt ending and insufficient breathing room for character development. The wish for additional scenes suggests the show feels incomplete, placing this in Mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:49:17.885Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 61,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "'Ain't Too Proud,\" the new Temptations jukebox biomusical, is a Broadway musical for people who don't like Broadway musicals-or maybe for people who like only jukebox biomusicals. The score, which includes such chart-topping hits of the '60s and '70s as \"My Girl\" and \"Papa Was a Rollin' Stone,\" is terrific, as are the singing and pit band, but Sergio Trujillo's choreography is way too slick-the real-life Temptations moved like street-corner kids from Detroit, not glammed-up 42nd Street gypsies-a",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a Broadway musical for people who don't like Broadway musicals",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises the music and performances but criticizes the choreography as inauthentic. The opening line suggests it's not quite a proper Broadway musical. Single excerpt with apparent truncation makes full verdict unclear. | GPT-4o: The excerpt praises the score and performances but criticizes the choreography as being too slick. The mixed elements suggest a balanced view without a clear recommendation. | Gemini: The review praises the score, singing, and pit band, but criticizes the choreography. The overall tone suggests a mixed experience, leaning slightly positive due to the emphasis on the music. | Kimi: Single excerpt offers strong praise ('terrific') for the score and singing but levels significant criticism at the choreography; truncated text and cherry-picking risk warrant low confidence and a conservative score at the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:08:27.288Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

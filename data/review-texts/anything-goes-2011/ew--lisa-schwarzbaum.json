@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "At the same time, with no LuPone-prone camp to her capers, Foster stars - yet generously blends - with the rest of the assured cast. As the lovelorn Billy Foster, Donnell suggests a somewhat more compact Jon Hamm as a much less agonized Don Draper. Laura Osnes brings a crystalline grace to the role of debutante Hope Harcourt, pressured by her status-conscious mother (hooray for Jessica Walter) to marry into class - and money. Mama's quarry, the audience knows, is Lord Oakleigh, a prime specimen of an upper-class twit, all foppish, repressed postures. What the audience doesn't know is that British theater regular Adam Godley will, by the time he busts loose with Foster in 'The Gypsy in Me,' steal his crucial bit of the show and utterly delight the cheering house with his brilliant comic timing.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What the audience doesn't know is that British theater regular Adam Godley will steal his crucial bit of the show and utterly delight the cheering house with his brilliant comic timing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with consistent praise for cast performances, particularly highlighting stellar comic work that 'delights the cheering house.' The positive language suggests strong recommendation despite limited text. | GPT-4o: The excerpt highlights strong performances and a positive audience reaction, suggesting an overall positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt praises the performances of the cast, including Sutton Foster, Donnell, Laura Osnes, Jessica Walter, and Adam Godley. While there's no explicit recommendation, the positive tone suggests a favorable review, but the lack of a clear verdict and the single excerpt lowers the confidence. | Kimi: The excerpt delivers enthusiastic praise for multiple cast members with superlatives like 'crystalline grace' and 'brilliant comic timing,' indicating a strong recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:11:31.542Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

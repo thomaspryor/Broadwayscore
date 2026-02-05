@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Still, punk nihilism and showbiz spirit-fingers are uneasy  bedfellows.  And at times, Idiot’s efforts to meld the two are  jarring. In  that sense, Billie Joe Armstrong and director/co-writer  Michael Mayer’s  decision to emphasize songs over story may have  actually done them a  favor; it keeps the action moving swiftly and  leaves little time to  linger on narrative weakness. Purists on either  side of the  punk/Broadway divide will likely feel under-s",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-AMERICAN-IDIOT-Review-Roundup-20100420",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, punk nihilism and showbiz spirit-fingers are uneasy bedfellows.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt highlights fundamental issues with the show's concept and execution, noting 'jarring' efforts to blend elements and 'narrative weakness.' The text appears cut off mid-sentence but suggests neither strong recommendation nor outright dismissal. | GPT-4o: The excerpt highlights a tension between punk and Broadway elements, describing the melding as 'jarring'. While it notes a benefit in emphasizing songs over story, the overall tone suggests mixed feelings about the production's success in balancing its elements. | Gemini: The review excerpt indicates a mixed reception, with some jarring elements but also swift movement. The truncated ending makes it difficult to determine the overall recommendation, but the tone suggests a 'Mixed' classification. | Kimi: While noting that the show's blend of punk and Broadway is jarring and narratively weak, the critic finds that emphasizing music over plot keeps the production moving swiftly enough to offer a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:39:13.669Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

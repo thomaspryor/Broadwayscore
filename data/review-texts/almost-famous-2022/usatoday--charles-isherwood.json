@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Cameron Crowe's beloved 2000 film about a teenage rock journalist has heart and soul, even if it doesn't quite capture the movie's magic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of Cameron Crowe's beloved 2000 film about a teenage rock journalist has heart and soul, even if it doesn't quite capture the movie's magic.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation has heart and soul, even if it doesn't quite capture the movie's magic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Acknowledges positive qualities ('heart and soul') but notes it falls short of expectations. Single excerpt warning applies - this sounds like qualified praise typical of lower Positive range. | GPT-4o: The excerpt indicates a generally positive view, highlighting 'heart and soul,' but also notes it doesn't fully capture the original film's magic. The single excerpt and text quality warning suggest caution, leading to a low confidence score at the lower end of the Positive range. | Gemini: The review excerpt indicates a positive sentiment, noting the show has \"heart and soul,\" but also suggests it doesn't fully capture the movie's magic. Given the limited text, a score on the lower end of the positive range is appropriate. | Kimi: Single excerpt offers qualified praise, acknowledging the show's 'heart and soul' while noting it falls short of the original film's magic, suggesting a mild recommendation in the 70-74 range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:22:39.251Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

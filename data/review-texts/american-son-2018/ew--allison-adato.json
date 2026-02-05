@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "American Son is most affecting when it is personal, not political: When we understand that Jamal, a prep school kid off to West Point in the fall, has recently cornrowed his hair, started wearing baggy jeans, and adopted what Scott calls, 'that stupid, loping, surly walk' not merely as an exploration of identity, but as a way of differentiating himself from his father, who has let the family down by moving out. Was this reactionary change in Jamal's attitude and appearance a factor in the trouble he found himself in that night?",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "American Son is most affecting when it is personal, not political",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows nuanced analysis of character dynamics but lacks clear recommendation. Excerpt appears analytical rather than evaluative, making overall verdict unclear. | GPT-4o: The excerpt highlights a specific aspect of the show as 'most affecting', suggesting a mixed review with some positive elements. However, without a full review or clear positive language, the overall recommendation is unclear, leading to a mixed classification. | Gemini: The excerpt focuses on a specific aspect of the play (the personal vs. the political) and its impact, but doesn't offer a clear recommendation for or against seeing it. The limited text makes it difficult to gauge the overall sentiment, resulting in a 'Mixed' classification with low confidence. | Kimi: The excerpt offers genuine praise for the show's emotional impact in personal moments, though the qualification 'when it is personal, not political' suggests unevenness. As a single curated excerpt, the overall verdict is uncertain, warranting the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:47:25.214Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

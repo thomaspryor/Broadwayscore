@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Director Rupert Goold, songwriter Duncan Sheik and book-writer Roberto Aguirre-Sacasa persuasively capture the designer chic milieu, materialistic attitude and dance club sound of 1980s Manhattan while adding a pervading sense of eerie unease...Benjamin Walker's Bateman brings to mind a Ken doll with a dirty mind and a butcher knife. He captures the character's crisp, cocky demeanor and the lost, twisted psyche underneath the impeccable exterior. The strong cast also includes Heléne Yorke as Bateman's high-strung girlfriend, Jennifer Damiano as his sweet young secretary and Tony winner Alice Ripley as his heavily medicated mother...Notwithstanding all this, the piece has serious structural problems...It also ends on an unapologetically depressing note.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Notwithstanding all this, the piece has serious structural problems.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt praises the creative team's work capturing the milieu, lauds Walker's performance and the strong cast, but concludes with significant structural criticisms and notes the depressing ending. Single excerpt with mixed signals requires low confidence. | GPT-4o: The review praises the direction, atmosphere, and performances but notes serious structural problems and a depressing ending. The excerpt suggests a mixed verdict with both positive and negative elements. | Gemini: The review praises the direction, songwriting, cast, and performances, but also notes \"serious structural problems\" and a depressing ending, leading to a mixed assessment. | Kimi: While the excerpt praises the production design, atmosphere, and cast performances—particularly Benjamin Walker's turn as Bateman—it pivots to significant criticism with 'serious structural problems' and a 'depressing' ending, suggesting a mixed verdict rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:42:30.943Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

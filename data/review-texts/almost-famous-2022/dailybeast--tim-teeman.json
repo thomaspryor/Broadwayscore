@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Rarely has rock 'n' roll looked and sounded as boring and tedious as it does in the strange Broadway mess that is Almost Famous (Bernard B. Jacobs Theatre, booking to April 9, 2023). This is odd, as the musical is based on the popular Oscar-winning film, written and directed by Cameron Crowe, who also wrote the book and lyrics for the stage show (music and other lyrics by Tom Kitt). Semi-autobiographical, it features teenage journalist William Miller (Casey Likes) as he wheedles his way, by faking being much older on the phone, into following a dysfunctional rock band called Stillwater to make his writing debut in Rolling Stone in 1973. The result, on stage, is wince-inducing-a leaping, sing-songy, wishy-washy, toothless, sanitized, and humorless version of what that era of rock 'n' roll was.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103",
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rarely has rock 'n' roll looked and sounded as boring and tedious as it does in the strange Broadway mess that is Almost Famous.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: The critic uses devastating language: 'boring and tedious,' 'strange Broadway mess,' 'wince-inducing,' 'toothless, sanitized, and humorless.' This is a clear negative recommendation with no redeeming qualities mentioned. | GPT-4o: The excerpt describes the show as 'boring and tedious' and 'wince-inducing,' with negative descriptors like 'toothless' and 'humorless,' indicating a strongly negative review. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses extremely negative language such as \"boring and tedious\", \"wince-inducing\", \"wishy-washy, toothless, sanitized, and humorless\". This clearly indicates a pan. | Kimi: The excerpt describes the show as a 'mess' that is 'boring,' 'tedious,' and 'wince-inducing,' with no redeeming qualities mentioned. While the single-excerpt warning necessitates low confidence, the unambiguously harsh language indicates a pan.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:21:09.393Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 18,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

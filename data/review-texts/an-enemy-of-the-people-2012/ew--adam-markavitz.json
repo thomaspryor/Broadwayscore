@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Never mind that it takes place in 19th-century Norway. The battle between two brothers in An Enemy of the People, Henrik Ibsen's spitting-mad screed against political hypocrisy among polite small-towners, tackles more hot-button election-year issues than an average hour of MSNBC.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "tackles more hot-button election-year issues than an average hour of MSNBC",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows appreciation for the play's contemporary relevance and political urgency ('spitting-mad screed'), suggesting positive engagement, but limited text prevents higher confidence or score. | GPT-4o: The excerpt highlights the relevance of the play's themes to contemporary issues, suggesting a positive view of its engagement with political topics. However, the single excerpt warning and lack of a clear rating reduce confidence. | Gemini: The excerpt suggests the play is relevant and engaging, but it's a single quote, so confidence is low. I am assuming the critic recommends seeing it. | Kimi: The excerpt praises the play's contemporary relevance and passionate political stance, suggesting it resonates with current election-year tensions, though it focuses on thematic content rather than production specifics.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:57:08.169Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

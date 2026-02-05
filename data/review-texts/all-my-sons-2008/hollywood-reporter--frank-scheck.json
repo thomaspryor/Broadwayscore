@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Reminiscent of Greek tragedy in its depiction of its central character's inexorable fall from grace, All My Sons can feel overly mechanistic at times. Some scenes, such as George's confrontation with Joe, the man he blames for his father's imprisonment, don't quite ring true in their quicksilver emotional shifts, and the play's symbolism can be heavy-handed (a downed tree is not just a downed tree). But the classically structured drama nonetheless still exerts a tremendous raw power that is fully realized in this rendering.",
   "bwwScore": 10,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the classically structured drama nonetheless still exerts a tremendous raw power that is fully realized in this rendering.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows mixed assessment with notable criticisms ('overly mechanistic', 'don't quite ring true') but concludes positively with 'tremendous raw power' and praise for this production. Given single excerpt limitation and qualified tone, scored at lower end of Positive range. | GPT-4o: The excerpt acknowledges some flaws in the play's execution but ultimately praises the production's ability to realize the drama's raw power. The single excerpt and lack of a full review text suggest a cautious approach, leading to a lower-end Positive score. | Gemini: The review acknowledges flaws but concludes that the drama still exerts tremendous power, indicating a positive, though not rave, recommendation. The single excerpt and lack of explicit recommendation lowers confidence. | Kimi: While the excerpt notes significant flaws in the play's mechanics and symbolism, the critic's ultimate verdict emphasizes that this production 'fully realizes' the drama's 'tremendous raw power,' indicating a clear recommendation for the current Broadway rendering.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:12:59.350Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

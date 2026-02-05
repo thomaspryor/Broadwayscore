@@ -12,5 +12,60 @@
   "bwwExcerpt": "When theater veteran Moss Hart published his bestselling Act One in 1959, he packed a lot into it about his impoverished childhood and neophyte playwriting years with the already famous, successful and legendarily acerbic George S. Kaufman. James Lapine, who's adapted the chockfull memoir at the Vivian Beaumont, packs just as much into it--and what can seem like even more--on Beowulf Boritt's magnificent three-story revolving set.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Beowulf Boritt's magnificent three-story revolving set.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with clear praise for the set design ('magnificent'), but limited content makes overall verdict unclear. The positive language suggests recommendation but confidence is low due to excerpt-only nature. | GPT-4o: The excerpt praises the adaptation and the set design, suggesting a positive view. However, without a full review or clear verdict, the confidence is low, and the score is on the lower end of the Positive range. | Gemini: The excerpt focuses on the adaptation and set design, but doesn't offer a clear recommendation. The phrase \"what can seem like even more\" suggests a potential issue with pacing or content overload, leading to a mixed assessment. | Kimi: The excerpt offers clear praise for the set design ('magnificent') and indicates the adaptation successfully translates the dense memoir to the stage. Following single-excerpt protocol, the clearly positive language warrants the upper end of the Positive bucket, though confidence is reduced due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:59:31.192Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 60,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
