@@ -8,6 +8,7 @@ import {
   getAllBrowseSlugs,
 } from '@/lib/data-core';
 import { getAllGuideSlugs, parseGuideSlug } from '@/config/guide-pages';
+import { getAllComparisonSlugs } from '@/config/comparisons';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -185,5 +186,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    // Compare pages - programmatic SEO goldmine
+    {
+      url: `${BASE_URL}/compare`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    ...getAllComparisonSlugs().map((slug) => ({
+      url: `${BASE_URL}/compare/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
   ];
 }
