@@ -11464,42 +11464,6 @@
     "timestamp": "2026-02-04T17:25:14.813Z"
   },
   {
-    "reviewId": "act-one-2014/hollywood-reporter--unknown.json",
-    "showId": "act-one-2014",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/act-one-theater-review-697276",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): hamilton, mamma mia!, english, frozen, my fair lady...",
-    "textLength": 7640,
-    "timestamp": "2026-02-04T17:31:08.060Z"
-  },
-  {
-    "reviewId": "after-midnight-2013/hollywood-reporter--unknown.json",
-    "showId": "after-midnight-2013",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/midnight-theater-review-652788",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): mamma mia!, parade, the color purple, rocky, the performers...",
-    "textLength": 7878,
-    "timestamp": "2026-02-04T17:32:56.861Z"
-  },
-  {
-    "reviewId": "after-midnight-2013/vulture--unknown.json",
-    "showId": "after-midnight-2013",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2013/11/theater-review-after-midnight.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): parade, company, bandstand, the color purple, once...",
-    "textLength": 6965,
-    "timestamp": "2026-02-04T17:36:22.775Z"
-  },
-  {
     "reviewId": "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
     "showId": "aint-no-mo-2022",
     "outlet": "New York Theater",
@@ -15098,5 +15062,41 @@
     "garbageReason": "Multiple shows mentioned (9): chicago, aladdin, tina, torch song, hello, dolly!...",
     "textLength": 8832,
     "timestamp": "2026-02-05T04:53:17.958Z"
+  },
+  {
+    "reviewId": "act-one-2014/hollywood-reporter--unknown.json",
+    "showId": "act-one-2014",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/act-one-theater-review-697276",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): hamilton, mamma mia!, english, frozen, my fair lady...",
+    "textLength": 7640,
+    "timestamp": "2026-02-05T04:53:46.941Z"
+  },
+  {
+    "reviewId": "after-midnight-2013/hollywood-reporter--unknown.json",
+    "showId": "after-midnight-2013",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/midnight-theater-review-652788",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): mamma mia!, parade, the color purple, rocky, the performers...",
+    "textLength": 7878,
+    "timestamp": "2026-02-05T04:55:56.717Z"
+  },
+  {
+    "reviewId": "after-midnight-2013/vulture--unknown.json",
+    "showId": "after-midnight-2013",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2013/11/theater-review-after-midnight.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): parade, company, bandstand, the color purple, once...",
+    "textLength": 6965,
+    "timestamp": "2026-02-05T04:57:35.809Z"
   }
 ]
