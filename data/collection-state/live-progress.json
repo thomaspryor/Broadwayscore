@@ -1,62 +1,56 @@
 {
-  "updatedAt": "2026-02-05T05:35:25.102Z",
-  "processed": 47,
-  "failed": 283,
-  "successRate": "14.2%",
+  "updatedAt": "2026-02-05T05:42:07.949Z",
+  "processed": 69,
+  "failed": 301,
+  "successRate": "18.6%",
   "tierBreakdown": {
-    "playwright": 5,
-    "browserbase": 2,
+    "playwright": 4,
+    "browserbase": 3,
     "scrapingbee": 11,
-    "brightdata": 18,
-    "archive": 21
+    "brightdata": 25,
+    "archive": 32
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-05T00:53:18.248Z",
+      "t": "2026-02-05T00:55:29.767Z",
       "event": "bb-session",
-      "session": "eb78a2e4",
-      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
+      "session": "35d2802e",
+      "url": "https://www.vulture.com/2019/12/theater-review-a-christmas-carol-on-broadway.htm"
     },
     {
-      "t": "2026-02-05T00:55:00.346Z",
-      "event": "bb-session",
-      "session": "73175745",
-      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
-    },
-    {
-      "t": "2026-02-05T00:55:43.893Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252910697\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMACk0TC7gZCxAALPe1oA==&cid=3Cv8NrzjcLw1W7YCjkQ5Q3yJoycUAvTB87GgzINB5q0unvCmD8AlCIkpgTCzGCWulZD3xcXo8NL7HFL6GfUwb0EMksE4BoSOtoD19INT4HQBQxAu~fL2TFwOSJCjoALJ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252910697\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252910697\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMACk0TC7gZCxAALPe1oA==&cid=3Cv8NrzjcLw1W7YCjkQ5Q3yJoycUAvTB87GgzINB5q0unvCmD8AlCIkpgTCzGCWulZD3xcXo8NL7HFL6GfUwb0EMksE4BoSOtoD19INT4HQBQxAu~fL2TFwOSJCjoALJ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252910697\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    26 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252910697\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMACk0TC7gZCxAALPe1oA==&cid=3Cv8NrzjcLw1W7YCjkQ5Q3yJoycUAvTB87GgzINB5q0unvCmD8AlCIkpgTCzGCWulZD3xcXo8NL7HFL6GfUwb0EMksE4BoSOtoD19INT4HQBQxAu~fL2TFwOSJCjoALJ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252910697\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
-    },
-    {
-      "t": "2026-02-05T00:59:42.741Z",
-      "event": "bb-session",
-      "session": "d32b6b11",
-      "url": "http://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html"
-    },
-    {
-      "t": "2026-02-05T00:59:42.748Z",
-      "event": "bb-session",
-      "session": "c17692e8",
-      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
-    },
-    {
-      "t": "2026-02-05T00:59:44.811Z",
+      "t": "2026-02-05T00:55:31.846Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
     },
     {
-      "t": "2026-02-05T01:01:56.728Z",
+      "t": "2026-02-05T00:56:04.862Z",
       "event": "bb-session",
-      "session": "ab3876d1",
-      "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html"
+      "session": "69122a91",
+      "url": "http://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-1256271"
     },
     {
-      "t": "2026-02-05T01:02:03.085Z",
+      "t": "2026-02-05T00:56:37.918Z",
+      "event": "bb-session",
+      "session": "3fe3b6e5",
+      "url": "https://variety.com/2019/legit/reviews/christmas-carol-review-broadway-campbell-"
+    },
+    {
+      "t": "2026-02-05T00:58:23.128Z",
+      "event": "bb-session",
+      "session": "0d32c0ce",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-christmas-carol-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-05T00:58:25.186Z",
       "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-05T01:00:12.173Z",
+      "event": "bb-session",
+      "session": "0c9798c2",
+      "url": "http://www.hollywoodreporter.com/review/a-raisin-sun-theater-review-693457"
     }
   ]
 }
