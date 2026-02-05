@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2011/legit/reviews/man-and-boy-1117946742/",
   "publishDate": "November 9, 2011",
-  "fullText": "Frank Langella gives a commanding performance as the ruthless business tycoon Gregor Antonescu in Terence Rattigan's 'Man and Boy,' but even this powerhouse actor can't breathe life into a creaky 1963 melodrama that feels hopelessly dated.",
-  "isFullReview": false,
+  "fullText": "John Hurt's lived-in and existentially stepped-on face is so familiar from films (currently \"Tinker Tailor Soldier Spy\"), it's a shock to realize this great British actor has never appeared on an American stage.\n\nJohn Hurt’s lived-in and existentially stepped-on face is so familiar from films (currently “Tinker Tailor Soldier Spy”), it’s a shock to realize this great British actor has never appeared on a New York stage. He has, however, been inhabiting “Krapp’s Last Tape,” Samuel Beckett’s searing meditation on the regrets of old age, since 1999, in a production that originated at the Gate theater under the direction of Michael Colgan and over the years has had a couple of go-rounds on the West End. At this point, Hurt not only owns the role, he appears to be living it.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Trevor Noah Roasts Nicki Minaj at Grammys for Going MAGA: 'She's Still at the White House With Donald Trump' \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Spotify Is Raising U.S. Subscription Prices in the Next Month\n\nBefore thesp opens his mouth, his riveting stage presence keeps the house completely hushed for several long minutes of silence while his character gathers his thoughts — giving BAM auds plenty of time to contemplate what a perfect setting the artfully decayed Harvey Theater makes for this bleak theater piece.\n\nWhatever Krapp is thinking as he leans over his huge empty desk, every worry line on his craggy face accentuated under the glare of James McConnell’s unforgiving lighting, it’s obvious the private meditations of this thought-out and talked-out writer are not happy ones.\n\nIt isn’t until this old wreck shuffles offstage to sneak a drink and to get an ancient tape recorder and stacks of audio tapes that the cause of his discontent becomes clear. It’s Krapp’s 69th birthday, an occasion that he ritualistically observes by making a tape recording of his thoughts about the year just passed and by listening to his taped thoughts on years gone by.\n\nBut this year he stalls on the tape he made when he was a cocky fellow of 39, full of ambition and triumphant in his sexual conquests. Again and again, Krapp returns to the vibrant voice of his dissolute youth, savagely contemptuous of his own hubris, but gradually succumbing to the memory of his youthful aspirations and promise — and to the despairing realization of what he has lost.\n\nHurt uses the lyrical instrument of his own voice to follow the old man’s emotional trajectory. He sounds like a gravel pit when Krapp rumbles his scorn for the “stupid bastard” that was his younger self. But his voice takes on a musical lilt when he picks up the cadences of his own language. (How he loves the sound of the word “spool,” or, as he rolls it around in his mouth like a piece of candy, “spooool.”)\n\nBut when it comes time for Krapp to use his last remaining tape to record his thoughts on the life he now leads, he gives up in despair, hurling his books aside and violently knocking all the tapes to the floor. “Nothing to say — not a squeak,” he admits, in what may well be the most devastating line in the whole play.\n\nIn a performance that is a tour de force from beginning to end, two things stand out about this “Krapp.” Hurt makes us realize that Krapp is, indeed, an old man with physical infirmities as enfeebling as his mental deterioration. Shoulders stooped, chest caved in, he forces us to feel the effort it takes for this aged recluse to haul himself up from his chair and shuffle over to hunt for a banana in his desk drawer, and the sheer agony it is for him to drag his bones offstage to steal a drink and cough his guts out.\n\nThe other thing that impresses about this performance is what’s missing from it — the rage. Krapp is still an angry man, but it’s a melancholy anger, tinged with self-recrimination and regret for a life not fully realized, his own unspeakably sad and empty life.",
+  "isFullReview": true,
   "dtliExcerpt": "Frank Langella gives a commanding performance as the ruthless business tycoon Gregor Antonescu in Terence Rattigan's 'Man and Boy,' but even this powerhouse actor can't breathe life into a creaky 1963 melodrama that feels hopelessly dated.",
   "originalScore": null,
   "assignedScore": 43,
@@ -16,7 +16,7 @@
   "bwwExcerpt": "Frank Langella was born to play fabulous monsters like Richard Nixon, Count Dracula, and now, Gregor Antonescu, the international financier beset by ruinous scandal in Terence Rattigan's 1963 drama, 'Man and Boy.' Play is set during the Great Depression, but feels eerily contemporary in its cynical portrayal of industry barons who think nothing of robbing the innocent and endangering the economy with their reckless power games. Secondary roles are exceptionally well cast in Maria Aitken's well-oiled production, providing solid support for Langella's suave and superbly nuanced perf of a towering figure teetering on the edge of a moral precipice.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Frank Langella gives a commanding performance as the ruthless business tycoon Gregor Antonescu in Terence Rattigan's 'Man and Boy,' but even this powerhouse actor can't breathe life into a creaky 1963 melodrama that feels hopelessly dated.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (36 words)",
   "llmScore": {
     "score": 43,
@@ -77,5 +77,53 @@
   "sources": [
     "web-search",
     "bww-reviews"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 43,
+  "textWordCount": 675,
+  "archivePath": "data/archives/reviews/man-and-boy-2011/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T04:19:23.793Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 675,
+  "tierReason": "Full review text"
 }

@@ -8752,18 +8752,6 @@
     "timestamp": "2026-02-04T00:01:44.591Z"
   },
   {
-    "reviewId": "mamma-mia-2025/nytimes--elisabeth-vincentelli.json",
-    "showId": "mamma-mia-2025",
-    "outlet": "The New York Times",
-    "critic": "Elisabeth Vincentelli",
-    "url": "https://www.nytimes.com/2025/08/15/theater/abba-mamma-mia-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): wicked, & juliet, chess, appropriate, beetlejuice...",
-    "textLength": 6692,
-    "timestamp": "2026-02-04T00:03:58.667Z"
-  },
-  {
     "reviewId": "mr-saturday-night-2022/nyt-theater--jonathan-mandell.json",
     "showId": "mr-saturday-night-2022",
     "outlet": "New York Theater",
@@ -14786,5 +14774,53 @@
     "garbageReason": "Multiple shows mentioned (9): harry potter and the cursed child, appropriate, the ferryman, 1984, cats...",
     "textLength": 6220,
     "timestamp": "2026-02-05T04:16:33.855Z"
+  },
+  {
+    "reviewId": "mamma-mia-2025/nytimes--elisabeth-vincentelli.json",
+    "showId": "mamma-mia-2025",
+    "outlet": "The New York Times",
+    "critic": "Elisabeth Vincentelli",
+    "url": "https://www.nytimes.com/2025/08/15/theater/abba-mamma-mia-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): wicked, & juliet, chess, appropriate, beetlejuice...",
+    "textLength": 6692,
+    "timestamp": "2026-02-05T04:17:32.423Z"
+  },
+  {
+    "reviewId": "man-and-boy-2011/hollywood-reporter--david-rooney.json",
+    "showId": "man-and-boy-2011",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/man-boy-theater-review-245989",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mamma mia!, english, company, the prom, disgraced...",
+    "textLength": 5992,
+    "timestamp": "2026-02-05T04:17:55.496Z"
+  },
+  {
+    "reviewId": "man-and-boy-2011/vulture--scott-brown.json",
+    "showId": "man-and-boy-2011",
+    "outlet": "New York Magazine",
+    "critic": "Scott Brown",
+    "url": "http://nymag.com/daily/entertainment/2011/10/theater_review_an_overleverage.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): the price, the father, once, elling, high...",
+    "textLength": 6370,
+    "timestamp": "2026-02-05T04:19:26.864Z"
+  },
+  {
+    "reviewId": "maybe-happy-ending-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "maybe-happy-ending-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): company, summer, the present, hair, high...",
+    "textLength": 5182,
+    "timestamp": "2026-02-05T04:22:10.836Z"
   }
 ]
