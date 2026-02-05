@@ -8932,54 +8932,6 @@
     "timestamp": "2026-02-04T00:32:05.343Z"
   },
   {
-    "reviewId": "new-york-new-york-2023/nyt-theater--jonathan-mandell.json",
-    "showId": "new-york-new-york-2023",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2023/04/26/new-york-new-york-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): chicago, english, parade, summer, the present...",
-    "textLength": 9222,
-    "timestamp": "2026-02-04T00:32:58.237Z"
-  },
-  {
-    "reviewId": "new-york-new-york-2023/nytg--amelia-merrill.json",
-    "showId": "new-york-new-york-2023",
-    "outlet": "New York Theatre Guide",
-    "critic": "Amelia Merrill",
-    "url": "https://www.newyorktheatreguide.com/reviews/new-york-new-york-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): appropriate, home, company, the audience, once...",
-    "textLength": 4119,
-    "timestamp": "2026-02-04T00:33:05.632Z"
-  },
-  {
-    "reviewId": "new-york-new-york-2023/variety--aramide-tinubu.json",
-    "showId": "new-york-new-york-2023",
-    "outlet": "Variety",
-    "critic": "Aramide Tinubu",
-    "url": "https://variety.com/2023/legit/reviews/new-york-new-york-review-broadway-musical-1235594752/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): chicago, dear evan hansen, cabaret, evita, rain...",
-    "textLength": 5625,
-    "timestamp": "2026-02-04T00:36:51.328Z"
-  },
-  {
-    "reviewId": "new-york-new-york-2023/variety--naveen-kumar.json",
-    "showId": "new-york-new-york-2023",
-    "outlet": "Variety",
-    "critic": "Naveen Kumar",
-    "url": "https://variety.com/2023/legit/reviews/new-york-new-york-review-broadway-musical-1235595785/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): chicago, dear evan hansen, cabaret, evita, rain...",
-    "textLength": 5625,
-    "timestamp": "2026-02-04T00:37:56.350Z"
-  },
-  {
     "reviewId": "pal-joey-2008/nytimes--ben-brantley.json",
     "showId": "pal-joey-2008",
     "outlet": "The New York Times",
@@ -14690,5 +14642,65 @@
     "garbageReason": "Multiple shows mentioned (12): the outsiders, english, the skin of our teeth, west side story, gigi...",
     "textLength": 6307,
     "timestamp": "2026-02-05T03:55:50.297Z"
+  },
+  {
+    "reviewId": "new-york-new-york-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "new-york-new-york-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/04/26/new-york-new-york-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): chicago, english, parade, summer, the present...",
+    "textLength": 9222,
+    "timestamp": "2026-02-05T04:01:59.097Z"
+  },
+  {
+    "reviewId": "new-york-new-york-2023/nytg--amelia-merrill.json",
+    "showId": "new-york-new-york-2023",
+    "outlet": "New York Theatre Guide",
+    "critic": "Amelia Merrill",
+    "url": "https://www.newyorktheatreguide.com/reviews/new-york-new-york-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): appropriate, home, company, the audience, once...",
+    "textLength": 4119,
+    "timestamp": "2026-02-05T04:02:06.486Z"
+  },
+  {
+    "reviewId": "new-york-new-york-2023/nytimes--elisabeth-vincentelli.json",
+    "showId": "new-york-new-york-2023",
+    "outlet": "New York Times",
+    "critic": "Elisabeth Vincentelli",
+    "url": "https://www.nytimes.com/2023/04/26/theater/new-york-new-york-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): chicago, purpose, company, girl from the north country, what the constitution means to me...",
+    "textLength": 6948,
+    "timestamp": "2026-02-05T04:02:10.121Z"
+  },
+  {
+    "reviewId": "new-york-new-york-2023/variety--aramide-tinubu.json",
+    "showId": "new-york-new-york-2023",
+    "outlet": "Variety",
+    "critic": "Aramide Tinubu",
+    "url": "https://variety.com/2023/legit/reviews/new-york-new-york-review-broadway-musical-1235594752/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): chicago, dear evan hansen, cabaret, evita, rain...",
+    "textLength": 5612,
+    "timestamp": "2026-02-05T04:04:00.863Z"
+  },
+  {
+    "reviewId": "new-york-new-york-2023/variety--naveen-kumar.json",
+    "showId": "new-york-new-york-2023",
+    "outlet": "Variety",
+    "critic": "Naveen Kumar",
+    "url": "https://variety.com/2023/legit/reviews/new-york-new-york-review-broadway-musical-1235595785/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): chicago, dear evan hansen, cabaret, evita, rain...",
+    "textLength": 5529,
+    "timestamp": "2026-02-05T04:04:12.739Z"
   }
 ]
