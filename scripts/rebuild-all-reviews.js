@@ -1123,6 +1123,8 @@ showDirs.forEach(showId => {
   const seenKeys = new Set();
   // Track seen URLs per outlet to avoid same-URL duplicates with different critic names
   const seenUrlsByOutlet = new Map();
+  // Track seen URLs globally (cross-outlet) to catch same URL filed under different outlets
+  const seenUrlsGlobal = new Map();
 
   files.forEach(file => {
     try {
@@ -1293,6 +1295,14 @@ showDirs.forEach(showId => {
           return;
         }
         seenUrlsByOutlet.set(urlDedupKey, file);
+
+        // Cross-outlet URL dedup: same URL filed under different outlets (e.g., unknown + nytimes)
+        // Files are sorted so real outlet names come before "unknown" — first wins
+        if (seenUrlsGlobal.has(normalizedUrl)) {
+          stats.skippedCrossOutletDuplicateUrl = (stats.skippedCrossOutletDuplicateUrl || 0) + 1;
+          return;
+        }
+        seenUrlsGlobal.set(normalizedUrl, file);
       }
 
       // CHECK: Flag reviews that SHOULD have LLM scores but don't
@@ -1547,6 +1557,7 @@ const output = {
       skippedNoScore: stats.skippedNoScore,
       skippedDuplicate: stats.skippedDuplicate,
       skippedDuplicateUrl: stats.skippedDuplicateUrl || 0,
+      skippedCrossOutletDuplicateUrl: stats.skippedCrossOutletDuplicateUrl || 0,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
       recoveredFromGarbage: stats.recoveredFromGarbage || 0,
       scoreSources: stats.scoreSources
@@ -1565,6 +1576,7 @@ console.log(`Total reviews INCLUDED: ${stats.totalReviews}`);
 console.log(`  Skipped (no valid score): ${stats.skippedNoScore}`);
 console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
+console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
 console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);
