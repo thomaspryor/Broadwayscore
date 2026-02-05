@@ -60,30 +60,31 @@ jobs:
           ISSUE_BODY="$(cat .issue-body.txt)" node scripts/validate-review-submission.js
         continue-on-error: true
 
-      - name: Read validation comment
-        id: read_comment
-        run: |
-          if [ -f .github-comment.md ]; then
-            DELIM="COMMENT_BODY_$(date +%s)"
-            echo "comment_body<<${DELIM}" >> $GITHUB_OUTPUT
-            cat .github-comment.md >> $GITHUB_OUTPUT
-            echo "${DELIM}" >> $GITHUB_OUTPUT
-          fi
-
       - name: Post validation result
-        if: steps.read_comment.outputs.comment_body != ''
+        if: always()
         uses: actions/github-script@v7
         env:
           ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const fs = require('fs');
+            const commentFile = '.github-comment.md';
+            if (!fs.existsSync(commentFile)) {
+              console.log('No validation comment file found');
+              return;
+            }
+            const body = fs.readFileSync(commentFile, 'utf8');
+            if (!body.trim()) {
+              console.log('Validation comment is empty');
+              return;
+            }
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issueNumber,
-              body: `${{ steps.read_comment.outputs.comment_body }}`
+              body: body
             });
 
       - name: Add label - Approved
