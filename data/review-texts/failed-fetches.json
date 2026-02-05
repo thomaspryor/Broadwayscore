@@ -11188,42 +11188,6 @@
     "timestamp": "2026-02-04T15:20:48.417Z"
   },
   {
-    "reviewId": "good-night-and-good-luck-2025/variety--frank-rizzo.json",
-    "showId": "good-night-and-good-luck-2025",
-    "outlet": "Variety",
-    "critic": "Frank Rizzo",
-    "url": "https://variety.com/2025/legit/reviews/good-night-and-good-luck-review-george-clooney-broadway-3-1236354970/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): appropriate, purpose, network, the band's visit, the front page...",
-    "textLength": 5972,
-    "timestamp": "2026-02-04T15:21:18.979Z"
-  },
-  {
-    "reviewId": "good-night-oscar-2023/variety--charles-isherwood.json",
-    "showId": "good-night-oscar-2023",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2023/legit/reviews/good-night-oscar-review-sean-hayes-broadway-1235592711/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, network, an american in paris, once, rain...",
-    "textLength": 5732,
-    "timestamp": "2026-02-04T15:25:42.182Z"
-  },
-  {
-    "reviewId": "good-night-oscar-2023/vulture--unknown.json",
-    "showId": "good-night-oscar-2023",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "https://www.vulture.com/2023/04/theater-review-sean-hayes-levant-good-night-oscar.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): home, purpose, network, an american in paris, hair...",
-    "textLength": 9951,
-    "timestamp": "2026-02-04T15:25:58.656Z"
-  },
-  {
     "reviewId": "grey-gardens-2006/hollywood-reporter--unknown.json",
     "showId": "grey-gardens-2006",
     "outlet": "Hollywood Reporter",
@@ -14342,5 +14306,77 @@
     "garbageReason": "Multiple shows mentioned (12): giant, english, the lehman trilogy, summer, all the way...",
     "textLength": 8014,
     "timestamp": "2026-02-05T03:20:47.478Z"
+  },
+  {
+    "reviewId": "good-night-and-good-luck-2025/variety--frank-rizzo.json",
+    "showId": "good-night-and-good-luck-2025",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2025/legit/reviews/good-night-and-good-luck-review-george-clooney-broadway-3-1236354970/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): appropriate, purpose, network, the front page, the present...",
+    "textLength": 6279,
+    "timestamp": "2026-02-05T03:21:06.292Z"
+  },
+  {
+    "reviewId": "good-night-oscar-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "good-night-oscar-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/04/24/good-night-oscar-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): purpose, cost of living, 1776, company, an american in paris...",
+    "textLength": 7752,
+    "timestamp": "2026-02-05T03:21:38.273Z"
+  },
+  {
+    "reviewId": "good-night-oscar-2023/variety--charles-isherwood.json",
+    "showId": "good-night-oscar-2023",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2023/legit/reviews/good-night-oscar-review-sean-hayes-broadway-1235592711/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, network, an american in paris, once, rain...",
+    "textLength": 5732,
+    "timestamp": "2026-02-05T03:23:10.233Z"
+  },
+  {
+    "reviewId": "good-night-oscar-2023/variety--christian-lewis.json",
+    "showId": "good-night-oscar-2023",
+    "outlet": "Variety",
+    "critic": "Christian Lewis",
+    "url": "https://variety.com/2023/legit/reviews/good-night-oscar-review-sean-hayes-broadway-1235592711/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, network, an american in paris, once, rain...",
+    "textLength": 6245,
+    "timestamp": "2026-02-05T03:23:29.496Z"
+  },
+  {
+    "reviewId": "good-night-oscar-2023/vulture--unknown.json",
+    "showId": "good-night-oscar-2023",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "https://www.vulture.com/2023/04/theater-review-sean-hayes-levant-good-night-oscar.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, purpose, network, an american in paris, hair...",
+    "textLength": 9846,
+    "timestamp": "2026-02-05T03:23:37.048Z"
+  },
+  {
+    "reviewId": "gypsy-2024/hollywood-reporter--unknown.json",
+    "showId": "gypsy-2024",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/gypsy-theater-review-audra-mcdonald-broadway-1236091036/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): hamilton, liberation, company, tina, king lear...",
+    "textLength": 12819,
+    "timestamp": "2026-02-05T03:23:51.495Z"
   }
 ]
