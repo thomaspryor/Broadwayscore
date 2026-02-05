@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://forward.com/culture/207037/disgraced-broadway-drama-tackles-post-911-muslim-i/",
   "publishDate": "October 23, 2014",
-  "fullText": "Ayad Akhtar's 'Disgraced' is a powerful, disturbing play about identity, assimilation and the dangerous assumptions we make about each other in post-9/11 America.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Ayad Akhtar's 'Disgraced' is a powerful, disturbing play about identity, assimilation and the dangerous assumptions we make about each other in post-9/11 America.",
   "originalScore": null,
   "assignedScore": 75,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ayad Akhtar's 'Disgraced' is a powerful, disturbing play about identity, assimilation and the dangerous assumptions we make about each other in post-9/11 America.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (23 words)",
   "llmScore": {
     "score": 75,
@@ -72,5 +72,43 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 75,
+  "textWordCount": 412,
+  "archivePath": "data/archives/reviews/disgraced-2014/forward--jesse-green_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T17:37:07.573Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "By Reuters October 8, 2014 An attack by Hezbollah on Lebanon’s border with Israel which wounded two Israeli soldiers was a message that the group remained ready to confront its old foe despite its engagement in Syria’s civil war, the group’s deputy leader said. The soldiers were wounded by a bomb planted by Lebanese Hezbollah fighters in the Shebaa hills, drawing Israeli artillery fire in response. It was the first time Hezbollah has claimed responsibility for an attack against the Israeli army since 2006, when the two sides fought a 33-day war. “This is a message.. Even though we are busy in Syria and on the eastern front in Lebanon our eyes remain open and our resistance is ready to confront the Israeli enemy,” Sheik Naim Qassem told Lebanese OTV television late on Tuesday. Israel and Lebanon are technically at war but their 80-km (50-mile) border has been largely quiet since the 2006 conflict. Hezbollah members have been fighting alongside forces loyal to President Bashar al-Assad in Syria’s civil war. The move by Hezbollah, which is backed by Shi’ite Iran, has helped turn the tide of the war in Syria against insurgents seeking to oust Assad. The group said it took the decision to fight in Syria to prevent jihadi fighters, like those from Nusra Front and Islamic State which seized parts of Syria and Iraq, from advancing into Lebanon. On Sunday, 10 of the group’s fighters were killed during a battle with hundreds of Nusra Front militants on the border in eastern Lebanon. Thoughtful, balanced reporting from the Forward and around the web, bringing you updated news and analysis each day. 100% of profits support our journalism 100% of profits support our journalism Please read before republishing We’re happy to make this story available to republish for free, unless it originated with JTA, Haaretz or another publication (as indicated on the article) and as long as you follow our guidelines. You must comply with the following: See our full guidelines for more information, and this guide for detail about canonical URLs. To republish, copy the HTML by clicking on the yellow button to the right; it includes our tracking pixel, all paragraph styles and hyperlinks, the author byline and credit to the Forward. It does not include images; to avoid copyright violations, you must add them manually, following our guidelines. Please email us at editorial@forward.com, subject line “republish,” with any questions or to let us know what stories you’re picking up.",
+  "misattributedFullText": true,
+  "extractedByline": "Reuters October",
+  "expectedCritic": "Jesse Green"
 }
