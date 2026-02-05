@@ -13,6 +13,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { track } from '@vercel/analytics';
 import EmailCaptureModal, { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptureModal';
+import { emailCaptureConfig } from '@/config/email-capture';
 
 const STORAGE_KEY = 'bsc_user_data';
 const SUBSCRIBED_KEY = 'bsc_email_subscribed';
@@ -45,7 +46,7 @@ interface ProGateProviderProps {
 // Triggers that block the user from dismissing the modal
 const BLOCKING_TRIGGERS: GateTrigger[] = ['csv_download', 'json_download', 'page_view_limit'];
 
-export function ProGateProvider({ children, pageViewThreshold = 2 }: ProGateProviderProps) {
+export function ProGateProvider({ children, pageViewThreshold = emailCaptureConfig.pageViewGate.threshold }: ProGateProviderProps) {
   const [hasEmail, setHasEmail] = useState(false);
   const [userData, setUserData] = useState<CapturedUserData | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -112,6 +113,7 @@ export function ProGateProvider({ children, pageViewThreshold = 2 }: ProGateProv
 
   // Exit intent detection - fires when mouse leaves viewport toward top
   useEffect(() => {
+    if (!emailCaptureConfig.exitIntent.enabled) return;
     if (!isClient || hasEmail || exitIntentFired) return;
 
     const handleMouseLeave = (e: MouseEvent) => {
