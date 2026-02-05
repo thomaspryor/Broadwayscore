@@ -7672,18 +7672,6 @@
     "timestamp": "2026-02-03T03:51:12.647Z"
   },
   {
-    "reviewId": "wicked-2003/observer--rex-reed.json",
-    "showId": "wicked-2003",
-    "outlet": "Observer",
-    "critic": "Rex Reed",
-    "url": "http://observer.com/2003/11/crowe-is-master-of-briny-boys-domain/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"ad blocker\"",
-    "textLength": 12296,
-    "timestamp": "2026-02-03T03:51:42.390Z"
-  },
-  {
     "reviewId": "wicked-2003/timeout--david-cote.json",
     "showId": "wicked-2003",
     "outlet": "Time Out New York",
@@ -16346,5 +16334,89 @@
     "garbageReason": "Multiple shows mentioned (7): parade, company, cats, november, company...",
     "textLength": 4722,
     "timestamp": "2026-02-05T16:33:39.627Z"
+  },
+  {
+    "reviewId": "wicked-2003/cleveland-jewish-news--sheri-gross.json",
+    "showId": "wicked-2003",
+    "outlet": "Cleveland Jewish News",
+    "critic": "Sheri Gross",
+    "url": "https://www.clevelandjewishnews.com/columnists/sheri_gross/wicked-wows-em-at-playhouse-square/article_53f60a00-5f63-11ec-99a9-477164e59a2b.html",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): the wiz, home, company, summer, the audience...",
+    "textLength": 7413,
+    "timestamp": "2026-02-05T16:34:47.950Z"
+  },
+  {
+    "reviewId": "wicked-2003/guardian--peter-bradshaw.json",
+    "showId": "wicked-2003",
+    "outlet": "The Guardian",
+    "critic": "Peter Bradshaw",
+    "url": "https://www.theguardian.com/film/2025/nov/18/wicked-for-good-review-cynthia-erivo-ariana-grande-jeff-goldblum",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): the wiz, the audience, hair, rain, race...",
+    "textLength": 5854,
+    "timestamp": "2026-02-05T16:35:34.723Z"
+  },
+  {
+    "reviewId": "wicked-2003/indiewire--kate-erbland.json",
+    "showId": "wicked-2003",
+    "outlet": "IndieWire (Kate Erbland)",
+    "critic": "Kate Erbland",
+    "url": "https://www.indiewire.com/criticism/movies/wicked-for-good-review-part-2-1235160567/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): the wiz, home, the audience, the performers, rain...",
+    "textLength": 9601,
+    "timestamp": "2026-02-05T16:36:09.478Z"
+  },
+  {
+    "reviewId": "wicked-2003/newsweek--billie-melissa.json",
+    "showId": "wicked-2003",
+    "outlet": "Newsweek (Billie Melissa)",
+    "critic": "Billie Melissa",
+    "url": "https://www.newsweek.com/entertainment/movies/wicked-for-good-shows-the-magnitude-of-ariana-grande-and-cynthia-erivos-talent-review-11066767",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): the wiz, home, network, the audience, act one...",
+    "textLength": 7319,
+    "timestamp": "2026-02-05T16:36:30.641Z"
+  },
+  {
+    "reviewId": "wicked-2003/nexus-point-news-demet-koc--demet-koc.json",
+    "showId": "wicked-2003",
+    "outlet": "Nexus Point News (Demet Koc)",
+    "critic": "Demet Koc",
+    "url": "https://www.nexuspointnews.com/post/review-wicked-for-good",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): the wiz, betrayal, betrayal, once, elling...",
+    "textLength": 9124,
+    "timestamp": "2026-02-05T16:36:42.006Z"
+  },
+  {
+    "reviewId": "wicked-2003/observer--rex-reed.json",
+    "showId": "wicked-2003",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "http://observer.com/2003/11/crowe-is-master-of-briny-boys-domain/",
+    "method": "browserbase",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): hamilton, the wiz, home, sweeney todd, the nap...",
+    "textLength": 11391,
+    "timestamp": "2026-02-05T16:37:00.304Z"
+  },
+  {
+    "reviewId": "wicked-2003/theatermania--david-gordon.json",
+    "showId": "wicked-2003",
+    "outlet": "TheaterMania",
+    "critic": "David Gordon",
+    "url": "https://www.theatermania.com/news/review-wicked-for-good-flies-to-epic-heights-with-cynthia-and-ariana-at-their-very-best_1812519/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): the wiz, home, purpose, sweeney todd, king lear...",
+    "textLength": 10761,
+    "timestamp": "2026-02-05T16:37:44.868Z"
   }
 ]
