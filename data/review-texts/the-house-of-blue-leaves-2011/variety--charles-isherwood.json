@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://variety.com/2011/legit/reviews/the-house-of-blue-leaves-1118034688/",
   "publishDate": "April 25, 2011",
-  "fullText": "John Guare's 1971 comedy 'The House of Blue Leaves' receives a crackling revival that finds the perfect pitch between pathos and hilarity.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "John Guare's 1971 comedy 'The House of Blue Leaves' receives a crackling revival that finds the perfect pitch between pathos and hilarity.",
   "originalScore": null,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "John Guare's 1971 comedy 'The House of Blue Leaves' receives a crackling revival that finds the perfect pitch between pathos and hilarity.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "llmScore": {
     "score": 85,
     "confidence": "medium",
@@ -73,5 +73,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 85,
+  "textWordCount": 173,
+  "archivePath": "data/archives/reviews/the-house-of-blue-leaves-2011/variety--charles-isherwood_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T06:41:31.020Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 173 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "'Doctors' star won a Daytime Emmy\n\nJames Pritchett, who won a Daytime Emmy in 1978 for his role as Dr. Matt Powers on NBC soap opera “The Doctors,” died March 15 of natural causes in New York. He was 88.\n\nPritchett’s run on the NBC sudser ran from 1963-82, but he also had a long legit career.\n\nOn Broadway, he starred in “Two for the Seesaw” in 1959 and appeared in “Sail Away” in 1961-62. He appeared in national tours of “Auntie Mame” with Sylvia Sydney in 1958 and “Other People’s Money” with Tony Lo Bianco in 1991.\n\nPritchett began his TV career on daytime serial “The Secret Storm,” then moved to “As the World Turns” before his run on “The Doctors.” He also appeared in the 1999 film “The Confession” with Ben Kingsley and Amy Irving.\n\nBefore showbiz, Pritchett served in WWII and then earned a degree in meteorology. He also briefly practiced law in his hometown of Lenoir, N.C.\n\nSurvivors include his wife, Cynthia; two daughters; a son; and three grandchildren."
 }
