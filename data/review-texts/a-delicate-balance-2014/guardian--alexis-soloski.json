@@ -11,7 +11,7 @@
   ],
   "bwwExcerpt": "In A Delicate Balance, an ominous domestic drama of 1966 now revived on Broadway, there's hardly a sentence that isn't meant to scratch or slice or slash...The director, Pam MacKinnon, who superintended the most recent and rather dazzling revival of Who's Afraid of Virginia Woolf, works to ground these seemingly extraordinary events and to temper Albee's penchant for absurdism with a realistic emotional palette...Despite the exertions of director and cast, the play can feel long and talky and the audience was not without its snoozers. Yet nearly half a century on, it hasn't really dated. The sense of menace and threat that underlies the chat - the tenuousness of even the most settled lives - remains immediate and disturbing. Like Who's Afraid of Virginia Woolf (if unlike The Zoo Story), a lot threatens to happen, but not much does....",
   "bwwScore": 7,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120",
   "assignedScore": 63,
   "llmScore": {
@@ -67,5 +67,36 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 63,
+  "fullText": "Glenn Close and John Lithgow endure a quiet evening at home in A Delicate Balance. Photograph: Brigitte Lacombe/SuppliedView image in fullscreenGlenn Close and John Lithgow endure a quiet evening at home in A Delicate Balance. Photograph: Brigitte Lacombe/Supplied This article is more than 11 years oldReviewA Delicate Balance review – Glenn Close and John Lithgow share cocktails and threatsThis article is more than 11 years oldPlaying a well-to-do couple, the stars bring out the lacerating qualities in an Edward Albee play that has barely dated\n\nEdward Albee wrote as though he’d filed every typewriter key down to a fine point and replaced the space bar with a scalpel. In A Delicate Balance, an ominous domestic drama of 1966 now revived on Broadway, there’s hardly a sentence that isn’t meant to scratch or slice or slash.\n\nTobias (John Lithgow) and Agnes (Glenn Close), a well-to-do couple on the cusp of old age, are enjoying a quiet evening at home with Agnes’s bibulous sister, Claire (Lindsay Duncan in a doubtful wig). Well, perhaps enjoying isn’t the right word – call it enduring, suffering or surviving. They’re having drinks and trading upsetting stories in a living room only slightly less ornamented than the average Parthenon when a car pulls up. It’s their close friends Edna (Clare Higgins) and Harry (Bob Balaban), who drove over, it seems, because they “were scared.”\n\n“It was like being lost,” Harry continues, “very young again, with the dark, and lost. There was nothing to be frightened of, but ...”\n\n“We were frightened and there was nothing!” says Edna as she weeps.\n\nThey cloister themselves in an upstairs bedroom, displacing Julia (Martha Plimpton), Tobias and Agnes’s daughter, who’s returned home amid the wreck of her fourth marriage. These unexpected guests and the fear they carry with them tip the household toward a kind of mayhem. Soon there are hysterics and threats of violence and cocktails at very inappropriate hours.\n\nThe director, Pam MacKinnon, who superintended the most recent and rather dazzling revival of Who’s Afraid of Virginia Woolf, works to ground these seemingly extraordinary events and to temper Albee’s penchant for absurdism with a realistic emotional palette. No one actually speaks the way characters in Albee’s plays do – in thorny, eloquent, recursive arrangements of clauses punctuated with the occasional epigram. But the starry cast nearly convinces you that they really might. Lithgow is particularly fine at giving even the most formal lines an air of spontaneity and he’s alarmingly impassioned in a late monologue. Duncan has good fun with Claire’s lacerating commentary and Higgins captures Edna’s jostling between stolidity and terror.\n\nDespite the exertions of director and cast, the play can feel long and talky and the audience was not without its snoozers. Yet nearly half a century on, it hasn’t really dated. The sense of menace and threat that underlies the chat – the tenuousness of even the most settled lives – remains immediate and disturbing. Like Who’s Afraid of Virginia Woolf (if unlike The Zoo Story), a lot threatens to happen, but not much does.\n\nStill, like some cruel magician, the play effects a series of transformations, leaving its characters – who began so assuredly – injured and undefended, bereft of most comforts and illusions. There they droop amid the tasteful furniture, faded and diminished in the morning light.\n\nAt any point, you can opt out of the sale of all of your personal information by pressing",
+  "isFullReview": true,
+  "textWordCount": 571,
+  "archivePath": "data/archives/reviews/a-delicate-balance-2014/guardian--alexis-soloski_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T18:02:34.919Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 571,
+  "tierReason": "Full review text"
 }
