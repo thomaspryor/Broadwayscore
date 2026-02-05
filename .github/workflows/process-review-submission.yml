@@ -64,9 +64,10 @@ jobs:
         id: read_comment
         run: |
           if [ -f .github-comment.md ]; then
-            echo "comment_body<<EOF" >> $GITHUB_OUTPUT
+            DELIM="COMMENT_BODY_$(date +%s)"
+            echo "comment_body<<${DELIM}" >> $GITHUB_OUTPUT
             cat .github-comment.md >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
+            echo "${DELIM}" >> $GITHUB_OUTPUT
           fi
 
       - name: Post validation result
