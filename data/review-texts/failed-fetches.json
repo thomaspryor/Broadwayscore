@@ -12712,30 +12712,6 @@
     "timestamp": "2026-02-04T20:46:52.027Z"
   },
   {
-    "reviewId": "buena-vista-social-club-2025/nyt-theater--jonathan-mandell.json",
-    "showId": "buena-vista-social-club-2025",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2025/03/19/buena-vista-social-club-broadway-review/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (21): the great gatsby, wicked, hamilton, chicago, aladdin...",
-    "textLength": 16842,
-    "timestamp": "2026-02-04T20:48:41.468Z"
-  },
-  {
-    "reviewId": "buena-vista-social-club-2025/nytimes--jesse-green.json",
-    "showId": "buena-vista-social-club-2025",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): the lion king, appropriate, company, betrayal, the present...",
-    "textLength": 7460,
-    "timestamp": "2026-02-04T20:48:45.560Z"
-  },
-  {
     "reviewId": "cabaret-2024/nyt-theater--jonathan-mandell.json",
     "showId": "cabaret-2024",
     "outlet": "New York Theater",
@@ -13634,5 +13610,53 @@
     "garbageReason": "Multiple shows mentioned (7): mamma mia!, home, the present, rocky, once...",
     "textLength": 4413,
     "timestamp": "2026-02-05T01:58:49.676Z"
+  },
+  {
+    "reviewId": "bronx-bombers-2014/vulture--jesse-green.json",
+    "showId": "bronx-bombers-2014",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2014/02/theater-review-bronx-bombers.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, purpose, the audience, magic/bird, lombardi...",
+    "textLength": 7686,
+    "timestamp": "2026-02-05T02:00:09.575Z"
+  },
+  {
+    "reviewId": "buena-vista-social-club-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "buena-vista-social-club-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/03/19/buena-vista-social-club-broadway-review/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (21): the great gatsby, wicked, hamilton, chicago, aladdin...",
+    "textLength": 16842,
+    "timestamp": "2026-02-05T02:00:12.577Z"
+  },
+  {
+    "reviewId": "buena-vista-social-club-2025/nytimes--jesse-green.json",
+    "showId": "buena-vista-social-club-2025",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): the lion king, appropriate, company, betrayal, the present...",
+    "textLength": 7460,
+    "timestamp": "2026-02-05T02:00:15.488Z"
+  },
+  {
+    "reviewId": "cabaret-2014/hollywood-reporter--david-rooney.json",
+    "showId": "cabaret-2014",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/cabaret-theater-review-699204/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): company, rocky, hair, high, race...",
+    "textLength": 7789,
+    "timestamp": "2026-02-05T02:00:55.972Z"
   }
 ]
