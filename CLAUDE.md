@@ -137,7 +137,33 @@ WoW/YoY for capacity and ATP self-computed from `grosses-history.json`.
 
 **Recoupment rules:** Never mark `recouped: true` without trade press citation (Deadline, Variety, Playbill, Broadway Journal, Broadway News). Never infer from grosses math or show designation — The Roommate (2024) was incorrectly listed as recouped due to this. Use `recouped: false` with `estimatedRecoupmentPct`.
 
-**Public exports:** After editing `commercial.json`, run `node scripts/generate-commercial-export.js`. Prebuild handles this on Vercel deploys.
+**Public exports:** After editing `commercial.json`, regenerate with `node /tmp/regen-public.js` or the inline script pattern from commercial expansion sessions. Prebuild handles this on Vercel deploys.
+
+**Designation criteria (applied in practice):**
+
+| Designation | Criteria | Examples |
+|-------------|----------|---------|
+| Miracle | Extraordinary ROI, long-running mega-hit | Hamilton (10 weeks), Phantom |
+| Windfall | Solid hit, recouped in <2 years, profitable | Mean Girls (21 months), Leopoldstadt, Sweeney Todd 2023 |
+| Easy Winner | Limited run, low cap, quick recoup, modest upside | Prima Facie ($4.1M/10 weeks), Into the Woods ($4M), Appropriate ($3.75M) |
+| Trickle | Recouped slowly (>2 years or with difficulty) | Ain't Too Proud (recouped after COVID gap), Funny Girl (16 months, cast change needed) |
+| Fizzle | Did not recoup, but recovered ~30%+ of investment | Shucked, Kimberly Akimbo (~50%), Frozen ($120M gross but $35M cap) |
+| Flop | Did not recoup, recovered <30% | KPOP (17 perf), Paradise Square, King Kong |
+| Nonprofit | LCT, Roundabout, MTC, Second Stage — no commercial investors | Doubt, Uncle Vanya, Mary Jane, Camelot 2023 |
+| Tour Stop | National tour engagement on Broadway | Beetlejuice 2025, Mamma Mia 2025 |
+| TBD | Still running, too early to call | Currently open commercial shows |
+
+**ChatGPT Deep Research workflow:** User sends financial profiles to Claude Code in batches of 5-8 shows. Template prompt saved in `data/audit/deep-research-raw.md`. Raw research data archived there too. Process: verify slugs exist in shows.json → add to commercial.json → validate → regenerate exports → push.
+
+**Slug matching pitfall:** The `batch-commercial-research.js` script sometimes creates entries with `-YYYY` suffixed slugs that don't match shows.json (e.g., `illinoise-2024` when shows.json uses `illinoise`). Always verify the commercial.json key matches the show's actual slug in shows.json. Run the sense-check after bulk additions.
+
+**Commercial expansion status (Feb 2026):** 120 shows with commercial data. Coverage: 2024-2025 season ~70%, 2023-2024 ~65%, 2022-2023 ~45%. Remaining gaps are mostly plays (often nonprofit) and shows where financial data isn't publicly available. Tools: `scripts/batch-commercial-research.js` (automated), `scripts/apply-commercial-pending.js`, ChatGPT Deep Research (manual, higher quality).
+
+**Validation gotchas discovered:**
+- `deepResearch.verifiedFields` cannot be an empty array — omit the `deepResearch` block entirely for nonprofits
+- `recoupedDate` must be YYYY or YYYY-MM format (not YYYY-MM-DD)
+- `originalProductionId` must reference an existing key in commercial.json
+- Always run `node scripts/validate-data.js` before pushing
 
 ## Key Files
 
@@ -328,7 +354,7 @@ WSJ/NYT untestable in CI (anti-bot blocks headless Chrome). Use Browserbase tier
 
 ### LLM Ensemble Scoring Constraints
 
-- ~0.66 min/review (4-model), **max safe batch: ~400** (6hr GitHub Actions timeout, NO checkpointing)
+- ~0.66 min/review (4-model), checkpoints every 100 reviews in CI (git commit+push), safe to run batches of 300-500
 - Full rescore: `--rescore --limit=400` then repeated `--outdated --limit=400` batches
 - Cost: ~$0.045/review (~$80 full corpus)
 - **Human review queue:** `data/audit/needs-human-review.json`. Set `humanReviewScore` + `humanReviewNote` on source file. Auto-adjudication daily at 5 AM UTC via Claude Sonnet (3 uncertain attempts → auto-accepts).

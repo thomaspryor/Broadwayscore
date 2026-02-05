@@ -77,7 +77,7 @@ export default function SubmitReviewPage() {
           </section>
 
           {/* Review Submission Form */}
-          <SubmitReviewForm endpoint={process.env.NEXT_PUBLIC_FORMSPREE_REVIEW_ENDPOINT || ''} />
+          <SubmitReviewForm endpoint={process.env.NEXT_PUBLIC_FORMSPREE_REVIEW_ENDPOINT || 'https://formspree.io/f/mpqjawag'} />
         </div>
 
         {/* FAQ Section */}

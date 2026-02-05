@@ -6,9 +6,51 @@
   "url": "https://www.nytimes.com/2017/04/26/theater/bandstand-review-broadway.html?_r=0&mtrref=www.broadwayworld.com&gwh=6F4F95CB9A1DBC96200B22B3AE4F88F3&gwt=pay",
   "source": "bww-reviews",
   "sources": [
-    "bww-reviews"
+    "bww-reviews",
+    "bww-roundup"
   ],
   "bwwExcerpt": "'Bandstand,' an openhearted, indecisive new musical, wants you clapping your hands and clenching your fists, tapping your toes and blinking back tears. It is both a peppy celebration of can-do spirit and a more somber exploration of what American servicemen experienced when they marched home from World War II. Directed and choreographed by Andy Blankenbuehler, the Tony Award-winning choreographer of 'Hamilton,' with book and lyrics by the Broadway newcomers Richard Oberacker and Rob Taylor, and a 1940s pastiche score by Mr. Oberacker, 'Bandstand' is an undercooked slice of apple pie, served with a dollop of anguish.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "truncated",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "fullText": "“Bandstand,” an openhearted, indecisive new musical, wants you clapping your hands and clenching your fists, tapping your toes and blinking back tears. It is both a peppy celebration of can-do spirit and a more somber exploration of what American servicemen experienced when they marched home from World War II.\n\nDirected and choreographed by Andy Blankenbuehler, the Tony Award-winning choreographer of “Hamilton,” with book and lyrics by the Broadway newcomers Richard Oberacker and Rob Taylor, and a 1940s pastiche score by Mr. Oberacker, “Bandstand” is an undercooked slice of apple pie, served with a dollop of anguish.\n\nPfc. Donny Novitski (Corey Cott) saw action in the Solomon Islands and saw hell on Bougainville. Back home in Cleveland in 1945, he wants to pick up life just where he let it fall. Big dreams for a guy who can’t even sleep through the night.\n\nA hunky pianist with restless fingers and floppy hair, Donny can’t book gigs at the nightclubs he used to play, as their piano benches are now filled with new talent, mostly men who didn’t serve. Haunted by a bad conscience and tempted by the bottle, he gets a reprieve when he hears about a Tribute to the Troops! contest. Bands from all 48 state will compete to write and perform the next great swing song “in honor of our boys in uniform.”\n\nFirst, Donny has to put together a group, which he does in the lilting, satisfying “I Know a Guy.” His lineup: bass, drums, trumpet, trombone, sax — with a twist. As Donny sings, “Every horn and clarinet/Will be a military vet.” All of the musicians he recruits have served. Not one came through the war unscathed. Which means they can really cook. And ache. And seethe.\n\nA theater review on Thursday about “Bandstand,” a new Broadway musical, misstated the number of states in the United States during the period in which the show is set. There were 48 states in 1945, not 50.\n\nWhen we learn of a mistake, we acknowledge it with a correction. If you spot an error, please let us know at corrections@nytimes.com.Learn more",
+  "isFullReview": true,
+  "textWordCount": 351,
+  "archivePath": "data/archives/reviews/bandstand-2017/nytimes--alexis-soloski_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T01:13:51.169Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 351,
+  "tierReason": "Missing proper ending or other signals"
 }

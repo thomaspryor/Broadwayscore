@@ -91,13 +91,14 @@ const OUTLET_ALIASES = {
   ],
   'vulture': [
     'vulture', 'new york magazine / vulture', 'new york magazine/vulture',
-    'ny mag', 'nymag', 'new york magazine', 'vult', 'vu'
+    'ny mag', 'nymag', 'new york magazine', 'vult', 'vu', 'vulturecom'
   ],
   'variety': [
     'variety', 'variety magazine'
   ],
   'hollywood-reporter': [
-    'hollywood reporter', 'the hollywood reporter', 'thr', 'hollywoodreporter'
+    'hollywood reporter', 'the hollywood reporter', 'thr', 'hollywoodreporter',
+    'hollywoodwood-reporter'
   ],
   'deadline': [
     'deadline', 'deadline hollywood', 'deadline.com'
@@ -107,15 +108,15 @@ const OUTLET_ALIASES = {
     'time out ny', 'timeout ny', 'timeout-ny', 'time-out-new-york'
   ],
   'guardian': [
-    'guardian', 'the guardian', 'theguardian'
+    'guardian', 'the guardian', 'theguardian', 'the-gaurdian'
   ],
   'washpost': [
     'washpost', 'washington post', 'the washington post', 'wapo',
-    'wash post', 'washingtonpost'
+    'wash post', 'washingtonpost', 'washingtion-post'
   ],
   'wsj': [
     'wsj', 'wall street journal', 'the wall street journal',
-    'wallstreetjournal', 'wall-street-journal'
+    'wallstreetjournal', 'wall-street-journal', 'wall-street-jounal'
   ],
   'nypost': [
     'nypost', 'new york post', 'ny post', 'nyp', 'newyorkpost', 'new-york-post'
@@ -134,7 +135,8 @@ const OUTLET_ALIASES = {
     'broadwaynews', 'broadway news', 'broadway-news', 'bwaynews'
   ],
   'broadwayworld': [
-    'broadwayworld', 'broadway world', 'bww', 'broadway-world'
+    'broadwayworld', 'broadway world', 'bww', 'broadway-world',
+    'broadwayworldcom', 'broadwayworld.com'
   ],
   'playbill': [
     'playbill', 'play bill', 'playbill.com'
@@ -174,13 +176,14 @@ const OUTLET_ALIASES = {
     'new-york-theater'
   ],
   'cititour': [
-    'cititour', 'citi tour', 'city tour'
+    'cititour', 'citi tour', 'city tour', 'cititourcom'
   ],
   'stageandcinema': [
     'stageandcinema', 'stage and cinema', 'stage & cinema', 'stage-and-cinema'
   ],
   'talkinbroadway': [
-    'talkinbroadway', 'talkin broadway', "talkin' broadway", 'talkin-broadway'
+    'talkinbroadway', 'talkin broadway', "talkin' broadway", 'talkin-broadway',
+    'talkin-boradway'
   ],
   'frontmezzjunkies': [
     'frontmezzjunkies', 'front mezz junkies', 'front-mezz-junkies', 'fmj'
@@ -213,7 +216,7 @@ const OUTLET_ALIASES = {
     'whatsonstage', "what's on stage", 'whats on stage', 'whatson', 'whats-on-stage'
   ],
   'telegraph': [
-    'telegraph', 'the telegraph', 'daily telegraph'
+    'telegraph', 'the telegraph', 'daily telegraph', 'the-telegraphy'
   ],
   'financialtimes': [
     'financialtimes', 'financial times', 'ft', 'the financial times'
@@ -222,7 +225,8 @@ const OUTLET_ALIASES = {
     'billboard', 'bill board'
   ],
   'amny': [
-    'amny', 'amnewyork', 'am new york', 'am-new-york', 'amnewsyork', 'amny-matt-windman'
+    'amny', 'amnewyork', 'am new york', 'am-new-york', 'amnewsyork', 'amny-matt-windman',
+    'amnew-york', 'am-newyork'
   ],
   'culturesauce': [
     'culturesauce', 'culture sauce', 'culture-sauce'
@@ -246,7 +250,7 @@ const OUTLET_ALIASES = {
     'vox', 'vox media'
   ],
   'huffpost': [
-    'huffpost', 'huffington post', 'the huffington post', 'huff post'
+    'huffpost', 'huffington post', 'the huffington post', 'huff post', 'huffingtion-post'
   ],
   'nbcnews': [
     'nbcnews', 'nbc news', 'nbc', 'nbc-news'

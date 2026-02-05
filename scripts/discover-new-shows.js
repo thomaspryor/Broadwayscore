@@ -146,6 +146,9 @@ async function discoverShows() {
   try {
     discoveredShows = await fetchShowsFromBroadwayOrg();
     console.log(`Found ${discoveredShows.length} shows on Broadway.org`);
+    if (discoveredShows.length === 0) {
+      console.warn('WARN: Broadway.org returned 0 shows. Possible scraper breakage (DOM structure may have changed).');
+    }
     console.log('');
   } catch (e) {
     console.error('Error fetching Broadway.org:', e.message);

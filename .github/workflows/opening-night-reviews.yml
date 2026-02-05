@@ -1,0 +1,84 @@
+name: Opening Night Reviews
+
+on:
+  schedule:
+    # 5 AM UTC = midnight EST — reviews published ~10-11 PM, aggregators indexed by midnight
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: 'How many days back to check for openings (default 2)'
+        required: false
+        type: number
+        default: 2
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  check-and-trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Find recently opened shows
+        id: find
+        run: |
+          LOOKBACK=${{ inputs.lookback_days || 2 }}
+          SHOWS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const now = new Date();
+            const cutoff = new Date(now);
+            cutoff.setDate(cutoff.getDate() - $LOOKBACK);
+            cutoff.setHours(0,0,0,0);
+
+            const opened = shows.filter(s => {
+              if (s.status !== 'open' || !s.openingDate) return false;
+              const d = new Date(s.openingDate);
+              d.setHours(0,0,0,0);
+              return d >= cutoff && d <= now;
+            });
+
+            if (opened.length > 0) {
+              console.log(opened.map(s => s.id).join(','));
+            }
+          ")
+
+          if [ -z "$SHOWS" ]; then
+            echo "No recently opened shows found"
+            echo "has_shows=false" >> $GITHUB_OUTPUT
+          else
+            echo "Recently opened shows: $SHOWS"
+            echo "has_shows=true" >> $GITHUB_OUTPUT
+            echo "shows=$SHOWS" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if gather-reviews already running
+        if: steps.find.outputs.has_shows == 'true'
+        id: guard
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RUNNING=$(gh run list --workflow="Gather Review Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "Gather reviews already running ($RUNNING active). Skipping."
+            echo "should_trigger=false" >> $GITHUB_OUTPUT
+          else
+            echo "should_trigger=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Trigger gather-reviews
+        if: steps.find.outputs.has_shows == 'true' && steps.guard.outputs.should_trigger == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SHOWS="${{ steps.find.outputs.shows }}"
+          echo "Triggering gather-reviews for opening night: $SHOWS"
+          gh workflow run "Gather Review Data" \
+            -f shows="$SHOWS" \
+            -f parallel_jobs=1
+          echo "Gather reviews triggered for: $SHOWS"

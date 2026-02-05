@@ -5,7 +5,7 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2010/legit/reviews/come-fly-away-1117942188/",
   "publishDate": "March 25, 2010",
-  "fullText": "This ambitious Broadway dance musical built around the music of Frank Sinatra is a gorgeous spectacle that's heavy on style but light on substance.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "This ambitious Broadway dance musical built around the music of Frank Sinatra is a gorgeous spectacle that's heavy on style but light on substance.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This ambitious Broadway dance musical built around the music of Frank Sinatra is a gorgeous spectacle that's heavy on style but light on substance.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (24 words)",
   "llmScore": {
     "score": 63,
@@ -72,5 +72,52 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 63,
+  "textWordCount": 205,
+  "archivePath": "data/archives/reviews/come-fly-away-2010/variety--david-rooney_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T01:48:51.713Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 205 (min: 300)"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "An older man finds resemblance between a teen on the neo-Nazi fringes and the lover he betrayed.\n\nAn older gay man is struck by the resemblance between a conflicted teen on the neo-Nazi fringes and the lover he betrayed back in his Hitler Youth days in cult figure Peter Kern’s kitschy, screamingly ill-conceived piece of nonsense, “Initiation.” Putting aside the ham-fisted Nazi-era re-creations, clumsy editing and poor staging, the helmer can’t muster the combination of raw emotion and camp luridness he witnessed in his years thesping for Rainer Werner Fassbinder. Star Helmut Berger will draw in some devotees, but even most gay fest auds will pass.\n\nDifficulties at home send teen Axel (Harry Lampl) into the orbit of violent neo-Nazis, though all he really wants is a spliff. Following a bungled initiation in which he stabs a social worker, Axel stumbles into the house of dry cleaner Gustav (Berger), who immediately has flashbacks to his long-lost love, Hannes (Valentin Frais). Will Axel fall into skinhead clutches or become part of Gustav’s inner circle? One ludicrous scene follows another, including truncated musical numbers that never take off. Berger mostly looks blank or glassy-eyed, and it’s impossible to tell whether eye-catching Lampl has an acting career ahead."
 }

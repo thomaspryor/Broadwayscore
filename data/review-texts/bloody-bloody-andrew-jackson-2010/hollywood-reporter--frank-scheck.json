@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "Bottom Line: Snarky rock musical about 'Old Hickory' is more sophomoric than satiric.",
   "bwwScore": 2,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "fullText": null,
+  "isFullReview": false,
+  "textWordCount": 128,
+  "archivePath": "data/archives/reviews/bloody-bloody-andrew-jackson-2010/hollywood-reporter--frank-scheck_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T01:37:47.363Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Insufficient text: 53 chars"
+    },
+    {
+      "tier": 3.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20120315171200",
+  "archiveOrgUrl": "http://web.archive.org/web/20120315171200/http://www1.hollywoodreporter.com/hr/film-reviews/bloody-bloody-andrew-jackson-theater-review-1004121072.story",
+  "textIssues": [
+    "Word count too low: 128 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Advertisement\n\n \n \n\nTop Stories\n\n \n\nMarion Ross cast in Hallmark Channel movie\n\nMegan Fox joins Jon Hamm, Kristen Wiig film\n\nJames Tupper, Clark Gregg in Jim Carrey film\n\nDisney nabs comedy spec 'Father Figures'\n\nEXCLUSIVE: Ed Asner joins CMT sitcom\n\n \nMore Top Stories &raquo;\n\n \n\nPhotos\n\nPhoto Galleries &raquo;\n\n \n\nLatest Reviews\n\n \n\n \nMore Latest Reviews &raquo;\n\n \n Advertisement\n\nHollywood Reporter Home | Film News and Reviews | Entertainment and Technology News | Digital Media and Widgets | Box Office Finance | Music and Entertainment News | World Film News | Subscriptions | Editions | Newsletter | Movie and Entertainment Video | Celebrity and Movie News | About Us | Advertising Opportunities | FAQ | Sitemap | Entertainment News RSS\n\n© 2010 The Hollywood Reporter. All rights reserved. Terms of Use | Privacy Policy"
 }

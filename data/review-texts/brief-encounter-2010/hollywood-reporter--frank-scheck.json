@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "Upon entering the theater, you're greeted by ushers in period garb who regale you with comic banter and musical numbers. This immersion continues with the show proper, which ingeniously incorporates old-style film images and projections into which the characters pop in and out. The overall effect is visually dazzling, but the neatest trick is that the technological gimmickry never overwhelms the simple emotionality of the tale.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "fullText": null,
+  "isFullReview": false,
+  "textWordCount": 181,
+  "archivePath": "data/archives/reviews/brief-encounter-2010/hollywood-reporter--frank-scheck_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T01:45:50.784Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Insufficient text: 53 chars"
+    },
+    {
+      "tier": 3.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20101001215209",
+  "archiveOrgUrl": "http://web.archive.org/web/20101001215209/http://www.hollywoodreporter.com:80/hr/film-reviews/brief-encounter-theater-review-1004117319.story",
+  "textIssues": [
+    "Word count too low: 181 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Advertisement\n\n \n \n\nTop Stories\n\n \n\nBeach Boys film project picked up by Fox\n\n'Jersey Shore' posts series high\n\nIrving Azoff tapped to join Clear Channel board\n\nCAA sells 35% stake to TPG Capital\n\nABC's 'My Generation' Drops 31%\n\n \nMore Top Stories &raquo;\n\n \n\nPhotos\n\nPhoto Galleries &raquo;\n\n \n\nLatest Reviews\n\n \n\nThey're Playing Our Song -- Theater Review\n\nNuremberg -- Film Review\n\nThe Pitmen Painters -- Theater Review\n\nThe Hungry Ghosts -- Film Review\n\nSpeed-Dating -- Film Review\n\nChicogrande -- Film Review\n\nAll the Night Long -- Film Review\n\nMysteries of Lisbon -- Film Review\n\nJerry Lee Lewis -- Concert Review\n\nSara Bareilles -- Concert Review\n\n \nMore Latest Reviews &raquo;\n\n \n Advertisement\n\nHollywood Reporter Home | Film News and Reviews | Entertainment and Technology News | Digital Media and Widgets | Box Office Finance | Music and Entertainment News | World Film News | Subscriptions | Editions | Newsletter | Movie and Entertainment Video | Celebrity and Movie News | About Us | Advertising Opportunities | FAQ | Sitemap | Entertainment News RSS\n\n© 2010 The Hollywood Reporter. All rights reserved. Terms of Use | Privacy Policy"
 }

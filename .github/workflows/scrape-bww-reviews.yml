@@ -31,6 +31,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   scrape:
@@ -167,3 +168,49 @@ jobs:
           done
           echo "Failed to push after $MAX_RETRIES attempts"
           exit 1
+
+      - name: Auto-trigger text collection if needed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEEDS_COLLECTION=$(node -e '
+            const fs = require("fs"), path = require("path");
+            const base = "data/review-texts";
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), "utf8"));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (r.url && (!r.fullText || r.fullText.length < 50)) n++;
+                } catch {}
+              });
+            });
+            console.log(n);
+          ')
+
+          echo "Reviews needing text collection: $NEEDS_COLLECTION"
+
+          THRESHOLD=20
+          if [ "$NEEDS_COLLECTION" -lt "$THRESHOLD" ]; then
+            echo "Below threshold ($THRESHOLD). Skipping."
+            exit 0
+          fi
+
+          RUNNING=$(gh run list --workflow="Collect Review Texts" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "Text collection already running. Skipping."
+            exit 0
+          fi
+
+          echo "Triggering text collection for $NEEDS_COLLECTION reviews..."
+          gh workflow run "Collect Review Texts" \
+            -f max_reviews=300 \
+            -f browserbase_enabled=true \
+            -f retry_failed=true \
+            -f archive_first=true
+
+          echo "Text collection auto-triggered."

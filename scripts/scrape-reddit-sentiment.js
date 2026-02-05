@@ -16,7 +16,16 @@
  *   ANTHROPIC_API_KEY - Claude API key for sentiment analysis
  *
  * Usage:
- *   node scripts/scrape-reddit-sentiment.js [--show=hamilton-2015] [--dry-run] [--limit=5] [--verbose]
+ *   node scripts/scrape-reddit-sentiment.js [--show=hamilton-2015] [--dry-run] [--limit=5] [--verbose] [--all]
+ *
+ * Flags:
+ *   --show=ID     Process a single show by ID or slug
+ *   --shows=X,Y   Process comma-separated show IDs, or "missing" for shows without Reddit data
+ *   --all         Include closed shows (default: open shows only)
+ *   --dry-run     Don't write results
+ *   --limit=N     Process at most N shows
+ *   --verbose     Extra logging
+ *   --shard=N --total-shards=M   Parallel shard mode
  */
 
 const fs = require('fs');
@@ -67,9 +76,9 @@ function sanitizeText(text) {
 }
 
 /**
- * Fetch URL through ScrapingBee proxy
+ * Fetch URL through ScrapingBee proxy (single attempt)
  */
-function fetchViaScrapingBee(url) {
+function fetchViaScrapingBeeSingle(url) {
   return new Promise((resolve, reject) => {
     if (!SCRAPINGBEE_KEY) {
       reject(new Error('SCRAPINGBEE_API_KEY must be set'));
@@ -102,6 +111,27 @@ function fetchViaScrapingBee(url) {
 
 function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
+}
+
+/**
+ * Fetch URL through ScrapingBee with retry logic
+ * Retries up to maxRetries times with exponential backoff
+ */
+async function fetchViaScrapingBee(url, maxRetries = 2) {
+  let lastError;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fetchViaScrapingBeeSingle(url);
+    } catch (e) {
+      lastError = e;
+      if (attempt < maxRetries) {
+        const delay = 5000 * (attempt + 1); // 5s, 10s
+        if (verbose) console.log(`    Retry ${attempt + 1}/${maxRetries} after ${delay / 1000}s: ${e.message}`);
+        await sleep(delay);
+      }
+    }
+  }
+  throw lastError;
 }
 
 /**
@@ -324,7 +354,7 @@ Content to analyze:
 
     try {
       const response = await client.messages.create({
-        model: 'claude-opus-4-20250514',
+        model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
         messages: [
           {
@@ -342,22 +372,38 @@ Be generous with "positive" - enjoyed it overall, would recommend.`
       });
 
       const text = response.content[0].text.trim();
-      // Extract JSON array - be more flexible with regex to handle extra text around it
-      const match = text.match(/\[\s*\{[\s\S]*?\}\s*\]/);
+      // Extract JSON array - greedy match to capture all objects
+      const match = text.match(/\[\s*\{[\s\S]*\}\s*\]/);
       if (match) {
         let parsed;
         try {
           parsed = JSON.parse(match[0]);
         } catch (parseErr) {
-          // Try to clean up the JSON and parse again
-          const cleaned = match[0]
-            .replace(/,\s*]/g, ']')  // Remove trailing commas
-            .replace(/}\s*{/g, '},{'); // Fix missing commas between objects
+          // Try progressively aggressive cleanup
+          let cleaned = match[0]
+            .replace(/,\s*]/g, ']')       // Remove trailing commas before ]
+            .replace(/,\s*}/g, '}')       // Remove trailing commas before }
+            .replace(/}\s*{/g, '},{')     // Fix missing commas between objects
+            .replace(/'\s*:/g, '":')      // Single-quoted keys
+            .replace(/:\s*'/g, ': "')     // Single-quoted values start
+            .replace(/'(\s*[,}\]])/g, '"$1'); // Single-quoted values end
           try {
             parsed = JSON.parse(cleaned);
           } catch (e) {
-            console.error('  JSON parse failed even after cleanup, skipping batch');
-            continue;
+            // Last resort: extract individual objects and rebuild array
+            const objMatches = match[0].matchAll(/\{[^{}]*\}/g);
+            const objects = [];
+            for (const m of objMatches) {
+              try {
+                objects.push(JSON.parse(m[0]));
+              } catch (_) { /* skip malformed object */ }
+            }
+            if (objects.length > 0) {
+              parsed = objects;
+            } else {
+              console.error('  JSON parse failed even after cleanup, skipping batch');
+              continue;
+            }
           }
         }
         if (!Array.isArray(parsed)) continue;
@@ -672,34 +718,39 @@ async function main() {
     process.exit(1);
   }
 
-  let shows = showsData.shows.filter(s => s.status === 'open' || s.status === 'closed');
+  // All active shows (open + closed, excludes previews)
+  const allActiveShows = showsData.shows.filter(s => s.status === 'open' || s.status === 'closed');
+  let shows;
 
-  // Handle single show filter
+  // Explicit show selection: search all active shows regardless of --all flag
   if (showFilter) {
-    shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
+    shows = allActiveShows.filter(s => s.id === showFilter || s.slug === showFilter);
     if (shows.length === 0) {
       console.error(`Show not found: ${showFilter}`);
       process.exit(1);
     }
-  }
-
-  // Handle multiple shows (comma-separated) or special keywords
-  if (showsArg) {
-    if (showsArg === 'missing') {
-      // Filter to shows without Reddit sentiment data
-      shows = shows.filter(s => {
-        const b = (audienceBuzz.shows || {})[s.id];
-        return !(b && b.sources && b.sources.reddit);
-      });
-      console.log(`Found ${shows.length} shows missing Reddit sentiment data`);
-    } else {
-      const showIds = showsArg.split(',').map(s => s.trim()).filter(Boolean);
-      shows = showsData.shows.filter(s => showIds.includes(s.id) || showIds.includes(s.slug));
-      if (shows.length === 0) {
-        console.error(`No shows found matching: ${showsArg}`);
-        process.exit(1);
-      }
-      console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
+  } else if (showsArg && showsArg !== 'missing') {
+    // Explicit comma-separated list: search all active shows
+    const showIds = showsArg.split(',').map(s => s.trim()).filter(Boolean);
+    shows = allActiveShows.filter(s => showIds.includes(s.id) || showIds.includes(s.slug));
+    if (shows.length === 0) {
+      console.error(`No shows found matching: ${showsArg}`);
+      process.exit(1);
+    }
+    console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
+  } else if (showsArg === 'missing') {
+    // Missing: use all active shows if --all, otherwise open only
+    const base = includeAll ? allActiveShows : showsData.shows.filter(s => s.status === 'open');
+    shows = base.filter(s => {
+      const b = (audienceBuzz.shows || {})[s.id];
+      return !(b && b.sources && b.sources.reddit);
+    });
+    console.log(`Found ${shows.length} shows missing Reddit sentiment data${includeAll ? ' (all statuses)' : ' (open only)'}`);
+  } else {
+    // Default: open shows only (~29). Use --all to include closed shows.
+    shows = includeAll ? allActiveShows : showsData.shows.filter(s => s.status === 'open');
+    if (!includeAll) {
+      console.log(`Processing open shows only (${shows.length}). Use --all for all shows.`);
     }
   }
 
@@ -756,6 +807,18 @@ async function main() {
     }
 
     await sleep(3000);
+  }
+
+  // Validation guard: check success rate for full runs (not single-show or shard mode)
+  if (!showFilter && !showsArg && !shardMode && shows.length > 5) {
+    const successRate = processed > 0 ? successful / processed : 0;
+    if (successRate < 0.3) {
+      console.error(`\nWARN: Only ${Math.round(successRate * 100)}% success rate (${successful}/${processed}). Possible scraper issue.`);
+      if (successful === 0) {
+        console.error('ABORT: Zero shows scored. Not writing results to avoid data loss.');
+        process.exit(1);
+      }
+    }
   }
 
   console.log(`\nDone! Processed ${processed} shows, ${successful} with Reddit data.`);
