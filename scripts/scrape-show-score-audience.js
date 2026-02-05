@@ -40,58 +40,19 @@ const urlData = JSON.parse(fs.readFileSync(urlsPath, 'utf8'));
 const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
 const showScoreData = JSON.parse(fs.readFileSync(showScorePath, 'utf8'));
 
-// Show Score URL mapping (our ID -> Show Score slug)
-const SLUG_MAP = {
-  'mj-2022': 'mj',
-  'operation-mincemeat-2025': 'operation-mincemeat-broadway',
-  'two-strangers-bway-2025': 'two-strangers-carry-a-cake-across-new-york-broadway',
-  'bug-2026': 'bug',
-  'marjorie-prime-2025': 'marjorie-prime',
-  'hells-kitchen-2024': 'hells-kitchen',
-  'the-outsiders-2024': 'the-outsiders',
-  'maybe-happy-ending-2024': 'maybe-happy-ending-broadway',
-  'oh-mary-2024': 'oh-mary',
-  'the-great-gatsby-2024': 'the-great-gatsby',
-  'wicked-2003': 'wicked',
-  'hamilton-2015': 'hamilton',
-  'the-lion-king-1997': 'the-lion-king',
-  'chicago-1996': 'chicago',
-  'moulin-rouge-2019': 'moulin-rouge-the-musical',
-  'aladdin-2014': 'aladdin',
-  'hadestown-2019': 'hadestown',
-  'six-2021': 'six',
-  'book-of-mormon-2011': 'the-book-of-mormon',
-  'and-juliet-2022': 'juliet',
-  'harry-potter-2021': 'harry-potter-and-the-cursed-child',
-  'stranger-things-2024': 'stranger-things-the-first-shadow',
-  'death-becomes-her-2024': 'death-becomes-her',
-  'cabaret-2024': 'cabaret-at-the-kit-kat-club',
-  'water-for-elephants-2024': 'water-for-elephants',
-  'the-notebook-2024': 'the-notebook',
-  'stereophonic-2024': 'stereophonic',
-  'suffs-2024': 'suffs',
-  'back-to-the-future-2023': 'back-to-the-future-the-musical',
-  'our-town-2024': 'our-town',
-  'the-roommate-2024': 'the-roommate',
-  'ragtime-2025': 'ragtime',
-  'boop-2025': 'boop-the-musical',
-  'buena-vista-social-club-2025': 'buena-vista-social-club',
-  'just-in-time-2025': 'just-in-time',
-  'liberation-2025': 'liberation',
-  'oedipus-2025': 'oedipus',
-  'chess-2025': 'chess',
-  'mamma-mia-2025': 'mamma-mia',
-  'queen-versailles-2025': 'the-queen-of-versailles',
-};
+// Max new URL discoveries per run to avoid rate-limit avalanche
+const MAX_DISCOVERIES = 10;
+// Cooldown before retrying discovery for a show (7 days)
+const DISCOVERY_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
 
 function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
 /**
- * Fetch URL through ScrapingBee
+ * Fetch URL through ScrapingBee (single attempt)
  */
-function fetchViaScrapingBee(url) {
+function fetchViaScrapingBeeSingle(url) {
   return new Promise((resolve, reject) => {
     if (!SCRAPINGBEE_KEY) {
       reject(new Error('SCRAPINGBEE_API_KEY must be set'));
@@ -100,7 +61,7 @@ function fetchViaScrapingBee(url) {
 
     const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&premium_proxy=true&wait=3000`;
 
-    https.get(apiUrl, (res) => {
+    https.get(apiUrl, { timeout: 60000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -110,8 +71,130 @@ function fetchViaScrapingBee(url) {
           reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
-    }).on('error', reject);
+    }).on('error', reject)
+      .on('timeout', () => reject(new Error('Request timeout')));
   });
+}
+
+/**
+ * Fetch URL through ScrapingBee with retry logic
+ */
+async function fetchViaScrapingBee(url, retries = 2) {
+  for (let attempt = 1; attempt <= retries + 1; attempt++) {
+    try {
+      return await fetchViaScrapingBeeSingle(url);
+    } catch (error) {
+      if (attempt > retries) throw error;
+      const delay = 5000 * attempt;
+      if (verbose) console.log(`  Retry ${attempt}/${retries} in ${delay / 1000}s: ${error.message}`);
+      await sleep(delay);
+    }
+  }
+}
+
+/**
+ * Slugify a show title for Show Score URL patterns
+ */
+function slugifyTitle(title) {
+  return title
+    .toLowerCase()
+    .replace(/&/g, '')           // Drop ampersand
+    .replace(/['']/g, '-')       // Apostrophes → hyphen
+    .replace(/[:.!?,()]/g, '')   // Drop punctuation
+    .replace(/\s+/g, '-')        // Spaces → hyphens
+    .replace(/-+/g, '-')         // Collapse multiple hyphens
+    .replace(/^-|-$/g, '');      // Trim leading/trailing hyphens
+}
+
+/**
+ * Generate candidate Show Score URLs for a show
+ */
+function generateCandidateUrls(show) {
+  const titleSlug = slugifyTitle(show.title);
+  const titleNoColon = show.title.replace(/:.*$/, '').trim();
+  const titleNoColonSlug = slugifyTitle(titleNoColon);
+  const showSlug = (show.slug || show.id).replace(/-\d{4}$/, '');
+  const isMusical = show.type === 'musical' ||
+    (show.tags && show.tags.some(t => /musical/i.test(t)));
+
+  const candidates = [
+    `${titleSlug}-broadway`,
+    `${titleNoColonSlug}-broadway`,
+    `${showSlug}-broadway`,
+  ];
+
+  if (isMusical) {
+    candidates.push(
+      `${titleSlug}-the-musical-broadway`,
+      `${titleNoColonSlug}-the-musical-broadway`,
+    );
+  }
+
+  candidates.push(titleSlug, showSlug);
+
+  // Deduplicate while preserving order
+  return [...new Set(candidates)].map(
+    slug => `https://www.show-score.com/broadway-shows/${slug}`
+  );
+}
+
+/**
+ * Validate that HTML is a valid Show Score Broadway show page with audience data
+ */
+function isValidShowScorePage(html, url) {
+  if (!html) return false;
+  // Not a 404
+  if (html.includes('Page not found') || html.includes('404 -')) return false;
+  // Not the homepage
+  if (html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>')) return false;
+  // Not off-broadway
+  if (url.includes('/off-broadway-shows/') || url.includes('/off-off-broadway-shows/')) return false;
+  if (html.includes('/off-broadway-shows/') && !html.includes('/broadway-shows/')) return false;
+  // Must have JSON-LD with numeric aggregateRating
+  const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
+  if (jsonLdMatch) {
+    for (const match of jsonLdMatch) {
+      try {
+        const content = match.replace(/<script[^>]*>/, '').replace(/<\/script>/, '');
+        const data = JSON.parse(content);
+        if (data.aggregateRating && typeof data.aggregateRating.ratingValue === 'number') {
+          return true;
+        }
+      } catch (e) { /* skip */ }
+    }
+  }
+  return false;
+}
+
+/**
+ * Discover Show Score URL for a show by trying candidate patterns
+ */
+async function discoverShowScoreUrl(show) {
+  const candidates = generateCandidateUrls(show);
+  if (verbose) console.log(`  Trying ${candidates.length} URL patterns...`);
+
+  for (const url of candidates) {
+    try {
+      if (verbose) console.log(`  Trying: ${url}`);
+      const html = await fetchViaScrapingBee(url, 0); // No retries during discovery
+      if (isValidShowScorePage(html, url)) {
+        console.log(`  ✓ Discovered: ${url}`);
+        return url;
+      }
+    } catch (error) {
+      if (verbose) console.log(`    ${error.message}`);
+    }
+    await sleep(2000); // Rate limit between discovery attempts
+  }
+  return null;
+}
+
+/**
+ * Save URL cache to disk (incremental persist)
+ */
+function saveUrlCache() {
+  urlData._meta.lastUpdated = new Date().toISOString().split('T')[0];
+  fs.writeFileSync(urlsPath, JSON.stringify(urlData, null, 2) + '\n');
 }
 
 /**
@@ -164,46 +247,39 @@ function extractAudienceData(html, showId) {
 }
 
 /**
- * Get Show Score URL for a show
+ * Get cached Show Score URL for a show (cache-only, no discovery)
  */
-function getShowScoreUrl(showId) {
-  // Check URL mapping first
+function getCachedUrl(showId) {
   if (urlData.shows && urlData.shows[showId]) {
     return urlData.shows[showId];
   }
-
-  // Use slug mapping
-  const slug = SLUG_MAP[showId];
-  if (slug) {
-    return `https://www.show-score.com/broadway-shows/${slug}`;
-  }
-
-  // Try to derive from show ID
-  const derivedSlug = showId.replace(/-\d{4}$/, '').replace(/-/g, '-');
-  return `https://www.show-score.com/broadway-shows/${derivedSlug}`;
+  return null;
 }
 
 /**
- * Process a single show
+ * Process a single show (cache-only — URL must already be in show-score-urls.json)
  */
 async function processShow(show) {
-  console.log(`\nProcessing: ${show.title}`);
+  const url = getCachedUrl(show.id);
+  if (!url) {
+    if (verbose) console.log(`\n  SKIP: ${show.title} — no cached URL`);
+    return null;
+  }
 
-  const url = getShowScoreUrl(show.id);
+  console.log(`\nProcessing: ${show.title}`);
   console.log(`  URL: ${url}`);
 
   try {
     const html = await fetchViaScrapingBee(url);
 
-    // Check if we got a valid page
-    if (!html.includes('show-score.com') && !html.includes('Show Score')) {
-      console.log(`  SKIP: Page doesn't appear to be Show Score`);
+    // Validate page
+    if (!html || html.includes('Page not found') || html.includes('404 -')) {
+      console.log(`  SKIP: Show not found on Show Score`);
       return null;
     }
 
-    // Check for 404 or "not found" pages
-    if (html.includes('Page not found') || html.includes('404')) {
-      console.log(`  SKIP: Show not found on Show Score`);
+    if (!html.includes('show-score.com') && !html.includes('Show Score')) {
+      console.log(`  SKIP: Page doesn't appear to be Show Score`);
       return null;
     }
 
@@ -356,12 +432,12 @@ async function main() {
     process.exit(1);
   }
 
-  // Get shows to process
-  let shows = showsData.shows.filter(s => s.status === 'open' || s.status === 'closed');
+  // Get shows to process — open shows only by default
+  let shows = showsData.shows.filter(s => s.status === 'open');
 
-  // Handle single show filter
+  // Handle single show filter (can target any status)
   if (showFilter) {
-    shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
+    shows = showsData.shows.filter(s => s.id === showFilter || s.slug === showFilter);
     if (shows.length === 0) {
       console.error(`Show not found: ${showFilter}`);
       process.exit(1);
@@ -371,12 +447,12 @@ async function main() {
   // Handle multiple shows (comma-separated) or special keywords
   if (showsArg) {
     if (showsArg === 'missing') {
-      // Filter to shows without Show Score data
+      // Filter to open shows without Show Score data
       shows = shows.filter(s => {
         const b = (audienceBuzz.shows || {})[s.id];
         return !b || !b.sources || !b.sources.showScore;
       });
-      console.log(`Found ${shows.length} shows missing Show Score data`);
+      console.log(`Found ${shows.length} open shows missing Show Score data`);
     } else {
       const showIds = showsArg.split(',').map(s => s.trim()).filter(Boolean);
       shows = showsData.shows.filter(s => showIds.includes(s.id) || showIds.includes(s.slug));
@@ -392,36 +468,124 @@ async function main() {
     shows = shows.slice(0, showLimit);
   }
 
-  console.log(`Processing ${shows.length} shows...\n`);
+  // ── Phase A: Discovery pass (uncached shows only, capped) ──
+  const uncachedShows = shows.filter(s => !getCachedUrl(s.id));
+  if (uncachedShows.length > 0) {
+    // Filter out shows we attempted recently
+    const now = Date.now();
+    const discoveryTargets = uncachedShows.filter(s => {
+      const meta = urlData._discoveryAttempts && urlData._discoveryAttempts[s.id];
+      if (!meta) return true;
+      return (now - new Date(meta).getTime()) > DISCOVERY_COOLDOWN_MS;
+    }).slice(0, MAX_DISCOVERIES);
+
+    if (discoveryTargets.length > 0) {
+      console.log(`\n── Discovery Phase: ${discoveryTargets.length} uncached shows (max ${MAX_DISCOVERIES}) ──\n`);
+
+      for (const show of discoveryTargets) {
+        console.log(`Discovering: ${show.title} (${show.id})`);
+        const url = await discoverShowScoreUrl(show);
+
+        // Track attempt timestamp
+        if (!urlData._discoveryAttempts) urlData._discoveryAttempts = {};
+        urlData._discoveryAttempts[show.id] = new Date().toISOString();
+
+        if (url) {
+          // Cache immediately
+          if (!urlData.shows) urlData.shows = {};
+          urlData.shows[show.id] = url;
+          if (!dryRun) saveUrlCache();
+          console.log(`  ✓ Cached URL for ${show.id}`);
+        } else {
+          console.log(`  ✗ No Show Score page found for ${show.title}`);
+          if (!dryRun) saveUrlCache(); // Save attempt timestamp
+        }
+
+        await sleep(3000);
+      }
+      console.log('');
+    } else if (uncachedShows.length > 0) {
+      console.log(`\n${uncachedShows.length} uncached shows skipped (discovery cooldown)\n`);
+    }
+  }
+
+  // ── Phase B: Score scraping (cached URLs only) ──
+  const showsWithUrls = shows.filter(s => getCachedUrl(s.id));
+  console.log(`Processing ${showsWithUrls.length} shows with cached URLs...\n`);
+
+  // Snapshot existing scores for guard comparison
+  const previousScores = {};
+  let previousScoredCount = 0;
+  for (const show of showsWithUrls) {
+    const existing = audienceBuzz.shows && audienceBuzz.shows[show.id];
+    if (existing && existing.sources && existing.sources.showScore && existing.sources.showScore.score != null) {
+      previousScores[show.id] = existing.sources.showScore.score;
+      previousScoredCount++;
+    }
+  }
 
   let processed = 0;
   let successful = 0;
+  const scoreDrops = [];
 
-  for (const show of shows) {
+  for (const show of showsWithUrls) {
     try {
       const data = await processShow(show);
       processed++;
 
-      if (data && !dryRun) {
-        updateAudienceBuzz(show.id, show.title, data);
-        successful++;
+      if (data) {
+        // Check for score drops
+        if (previousScores[show.id] != null && data.score == null) {
+          scoreDrops.push(show.id);
+        }
 
-        // Save incrementally after each successful show
-        audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
-        audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
-        audienceBuzz._meta.notes = 'Dynamic weighting: Reddit fixed 20%, Show Score & Mezzanine split remaining 80% by sample size';
-        fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
-        console.log(`  ✓ Saved to audience-buzz.json (${successful}/${shows.length} complete)`);
+        if (!dryRun) {
+          updateAudienceBuzz(show.id, show.title, data);
+          successful++;
+
+          // Save incrementally after each successful show
+          audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
+          audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
+          audienceBuzz._meta.notes = 'Dynamic weighting: Reddit fixed 20%, Show Score & Mezzanine split remaining 80% by sample size';
+          fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
+          console.log(`  ✓ Saved (${successful}/${showsWithUrls.length})`);
+        } else {
+          successful++;
+        }
+      } else if (previousScores[show.id] != null) {
+        scoreDrops.push(show.id);
       }
     } catch (e) {
       console.error(`Error processing ${show.title}:`, e.message);
     }
 
-    // Rate limiting - Show Score may rate limit aggressive scraping
+    // Rate limiting
     await sleep(3000);
   }
 
+  // ── Validation guards ──
+  if (showsWithUrls.length > 0) {
+    const successRate = successful / showsWithUrls.length;
+    if (successRate < 0.5) {
+      console.error(`\nGUARD: Only ${successful}/${showsWithUrls.length} shows returned scores (${(successRate * 100).toFixed(0)}% < 50% minimum)`);
+      console.error('Possible systemic failure. Check ScrapingBee and Show Score status.');
+    }
+  }
+
+  if (scoreDrops.length > 0) {
+    console.warn(`\n⚠ ${scoreDrops.length} shows lost their score this run:`);
+    for (const id of scoreDrops) {
+      console.warn(`  - ${id} (was: ${previousScores[id]})`);
+    }
+  }
+
+  if (previousScoredCount > 0 && successful < previousScoredCount - 5) {
+    console.warn(`\n⚠ Score count dropped: ${successful} (was ${previousScoredCount}, delta: -${previousScoredCount - successful})`);
+  }
+
   console.log(`\nDone! Processed ${processed} shows, ${successful} with Show Score data.`);
+  console.log(`  Cached URLs: ${Object.keys(urlData.shows || {}).length}`);
+  console.log(`  Uncached shows: ${uncachedShows.length}`);
 }
 
 main().catch(console.error);
