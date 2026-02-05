@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "In a move in line with increased efforts for better representation in the arts, two young disabled actors play Tiny Tim, Sebastian Ortiz and Jai Ram Srinivasan, both of whom have cerebral palsy. Dashiell Eaves (The Lieutenant of Inishmore, The Sound of Music) is particularly memorable as the ever-optimistic Bob Cratchit, and the rest of the ensemble captivates with powerful, often musical, performances. The production subtly incorporates literal Christmas carols throughout, with the cast singing and sometimes playing instruments - most notably handbells - for a serene, film-score-like effect.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the rest of the ensemble captivates with powerful, often musical, performances",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on praising cast performances and production elements ('memorable', 'captivates with powerful performances', 'serene effect'). However, with only one curated quote available, this could be cherry-picked from a more mixed review, so scoring conservatively in lower Positive range. | GPT-4o: The excerpt highlights memorable performances and a captivating ensemble, suggesting a positive experience. The mention of serene, film-score-like effects further supports a strong recommendation. Given the single excerpt, the confidence is low. | Gemini: The review excerpt highlights positive aspects of the production, including the performances and incorporation of Christmas carols. Given it's a single excerpt, I'm scoring it as positive but with low confidence. | Kimi: The excerpt praises specific performances as 'memorable' and 'captivating' and commends the production's musical integration, indicating a clear positive recommendation despite the limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:07:42.306Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -24,10 +24,10 @@
     "web-search",
     "playbill-verdict"
   ],
-  "rejectedAt": "2026-02-05T09:09:22.660Z",
+  "rejectedAt": "2026-02-05T15:13:20.714Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about retrieving article content and enabling JavaScript; openai: The text is interrupted with a technical error message about enabling JavaScript, indicating incomplete content.",
+  "rejectionReasoning": "claude: The review is cut off mid-sentence and ends with a JavaScript error message indicating content retrieval problems; openai: The text includes a technical error message indicating trouble retrieving the article content, making it not scoreable.",
   "promptVersion": "5.2.0",
   "previousUrl": "https://www.nytimes.com/2015/03/09/theater/review-helen-mirren-returns-to-the-audience-on-broadway.html",
   "urlDiscoveredAt": "2026-02-04T17:32:09.459Z",

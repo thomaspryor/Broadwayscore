@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This stripped-down revival of the 1969 musical about the Continental Congress feels both timely and timeless, with an all-female, nonbinary and trans cast bringing fresh perspective to the founding fathers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This stripped-down revival of the 1969 musical about the Continental Congress feels both timely and timeless, with an all-female, nonbinary and trans cast bringing fresh perspective to the founding fathers.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This stripped-down revival of the 1969 musical about the Continental Congress feels both timely and timeless, with an all-female, nonbinary and trans cast bringing fresh perspective to the founding fathers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the production as 'timely and timeless' with 'fresh perspective' - positive language but limited to one curated quote. Given single excerpt warning and mildly positive tone, scoring at lower end of Positive range. | GPT-4o: The excerpt praises the revival as 'timely and timeless' with a 'fresh perspective,' suggesting a strong positive reception. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt indicates a positive reception, highlighting the timeliness and timelessness of the revival. However, due to the limited text, the confidence is low. | Kimi: The excerpt offers clear praise ('timely and timeless,' 'fresh perspective') indicating a favorable recommendation, though the single-excerpt limitation warrants caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:43:51.783Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

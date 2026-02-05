@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "A Strange Loop is profanely funny and courageously raw, but on a second viewing (I reviewed its world premiere Off Broadway in 2019), it's also claustrophobically fixated on the wounds of youth, a howl of rage at gay lookism, white gatekeepers, and toxic Christianity. All those targets deserve to be howled down to hell. But Jackson is 41 years old; his avatar is identified as 26. That's a telling gap, one that permits a rebel's outrage rather than a middle-aged artist's mellower view. The lack of self-awareness combined with merciless self-examination comes to a bathetic head when Thought #1 says, '[it's not about] Tyler or your parents or anybody else. And as scary as this world might seem, all of this ugliness ... this pain and anger...is about you. So how about you focus on yourself?' Which is rich after 90 minutes of Usher running screaming around his hall of mirrors.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Strange Loop is profanely funny and courageously raw, but on a second viewing it's also claustrophobically fixated on the wounds of youth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Opens with praise ('profanely funny and courageously raw') but pivots to significant criticism about self-awareness and artistic maturity. The 'but' construction and detailed critique suggest mixed feelings rather than recommendation. | GPT-4o: The review acknowledges the show's humor and rawness but criticizes its focus and lack of self-awareness, suggesting a mixed reception. The excerpt's tone is ambivalent, leading to a mixed classification. | Gemini: The review acknowledges the show's strengths (profanely funny, courageously raw) but also criticizes its lack of self-awareness and focus on youthful wounds. Given the single excerpt, it's hard to gauge the overall recommendation, but the tone suggests a mixed reaction. | Kimi: The excerpt offers strong praise ('profanely funny,' 'courageously raw') but significant criticism ('claustrophobically fixated,' 'bathetic'), suggesting the critic has mixed feelings about the production's maturity and perspective.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:43:54.139Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Mamet wrote the play more than 33 years ago — a bold move for a 30-year-old. He would go on to stunning, explosive work, but left behind a work that shows a very different side to one of America's greatest playwrights: a sentimental one.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "left behind a work that shows a very different side to one of America's greatest playwrights: a sentimental one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt provides context about Mamet's career arc but offers no clear recommendation. The tone suggests this early work is less impressive than his later 'stunning, explosive work,' implying modest assessment without explicit verdict. | GPT-4o: The excerpt highlights the play's age and describes it as 'sentimental,' which suggests a departure from Mamet's more 'stunning, explosive work.' The lack of clear praise or criticism indicates a mixed view, but the excerpt's limited nature reduces confidence. | Gemini: The excerpt suggests the play is worthwhile, showing a different side of the playwright, but the lack of a clear recommendation and the single excerpt makes it a low confidence positive score. | Kimi: The excerpt offers respectful, mildly positive analysis of the play as an interesting early 'sentimental' work from a major playwright, but lacks the exuberance of a rave. Single excerpt limitation necessitates low confidence. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:23:59.425Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

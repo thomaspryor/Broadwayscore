@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20251029085757",
   "archiveOrgUrl": "http://web.archive.org/web/20251029085757/https://www.nytimes.com/2018/10/25/theater/review-waverly-gallery-elaine-may-kenneth-lonergan.html?smid=tw-nyttheater&smtyp=cur",
   "wordCount": 1095,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 90,
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At 86, Ms. May turns out to be just the star to nail the rhythms, the comedy and the pathos of a woman who's talking as fast as she can.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Brantley uses superlative language throughout ('wonderful play', 'dream cast', 'near perfect performances') and praises both the writing and performances extensively. Despite minor technical criticisms about set design, the overall assessment is one of strong enthusiasm and recommendation. | GPT-4o: The review is filled with praise for the performances, direction, and writing, describing the play as 'wonderful' and 'a work of such hard, compassionate clarity.' The critic's language is enthusiastic and unreserved, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and writing, with only minor reservations about the set design and scene transitions. The critic clearly recommends seeing the play. | Kimi: Despite minor criticisms of the physical production, the critic praises the play as 'wonderful,' the direction as 'fine-tuned,' and the cast as 'near perfect' and a 'dream cast,' noting that such objections 'dissolve' against the emotional impact of the performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:28:47.798Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 89,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

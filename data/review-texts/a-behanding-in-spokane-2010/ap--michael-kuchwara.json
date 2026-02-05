@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Far more interesting is the hotel's receptionist (Sam Rockwell), a peculiar man whose strangeness matches Carmichael's. Rockwell effectively channels this man, a fellow who eventually forms a bond with the one-handed guest. The actor gets his own showy monologue in the middle of this short play, which barely runs 90 minutes. But it's quirky for quirk's sake, entertaining but not really helpful in expanding the plot. Still, there is Walken to take up the slack when the weirdness threatens to spin out of control. His performance will haunt you even if the play does not.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, there is Walken to take up the slack when the weirdness threatens to spin out of control.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt shows mixed feelings - praises Rockwell and especially Walken's haunting performance, but criticizes the play as 'quirky for quirk's sake' and notes the plot isn't expanded helpfully. Single excerpt limits confidence. | GPT-4o: The review highlights strong performances, particularly by Walken, but criticizes the play for being 'quirky for quirk's sake' and not expanding the plot. The overall tone suggests mixed feelings, with notable strengths in acting but weaknesses in the play's substance. | Gemini: The review praises Walken's performance and Rockwell's character, but notes the play's quirkiness doesn't expand the plot. The final sentence suggests a positive but not overwhelming experience. | Kimi: While the excerpt praises Rockwell and Walken's performances strongly, it criticizes the play as 'quirky for quirk's sake' and ultimately dismissive of the work's lasting impact, suggesting the production is entertaining but flawed and forgettable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:58:25.047Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The musical is handsome and reasonably well performed, especially by Bobby Conte Thornton as Calogero and Nick Cordero as Sonny. And it still has, in précis, that timely and timeless set of concerns. In a corrupt society, is the working man \"a sucker,\" as Sonny maintains? How do we make moral sense of the good qualities of bad people - and vice versa? That A Bronx Tale, as a musical, never answers these questions is fair enough; that it lacks the subtlety to raise them seriously is very nearly a",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is handsome and reasonably well performed, but lacks the subtlety to raise questions seriously.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges positive elements (performances, themes) but the incomplete sentence appears to be leading to significant criticism about the show's lack of subtlety. Single excerpt warning applies - this sounds like a mixed-to-negative verdict being cut off mid-sentence. | GPT-4o: The review acknowledges reasonable performances but criticizes the musical for lacking subtlety and not seriously raising its thematic questions. The excerpt suggests a mixed impression, with some positive elements but significant reservations. | Gemini: The review praises the performances but suggests the musical lacks depth and subtlety. The excerpt ends abruptly, but the overall tone leans towards mixed, with positive aspects offset by shortcomings. | Kimi: The excerpt offers qualified praise for the production values and performances ('handsome', 'reasonably well performed') but delivers significant criticism regarding the show's lack of subtlety in dramatizing its themes, ending on a truncated negative clause ('very nearly a...').",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:06:48.023Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

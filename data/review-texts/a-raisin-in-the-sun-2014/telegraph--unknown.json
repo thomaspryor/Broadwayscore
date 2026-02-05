@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Would Washington bring the energy and intensity required to play the dreamy, often feckless Chicago chauffeur? The answer, for the most part, is yes. So much so that early on you cease to worry about the age gap of only five years between Washington and the formidable LaTanya Richardson Jackson (wife to Samuel L), who plays Walter Lee's God-fearing mother, Lena. 'That's acting,' Washington said in a recent interview, speaking of the challenges posed by the casting. And if the double Oscar-winner is no longer quite the 'lean' presence indicated in the text, he fully inhabits the self-described 'volcano' that is Walter Lee, waiting to erupt.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The answer, for the most part, is yes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for Washington's performance ('fully inhabits', 'waiting to erupt'). However, this is one curated quote that may not represent the full review verdict, so confidence is low. | GPT-4o: The excerpt suggests a positive view of Washington's performance, indicating he meets the role's demands. However, the single excerpt and lack of a full review limit confidence in the overall sentiment. | Gemini: The review excerpt indicates a positive assessment of Denzel Washington's performance, stating he brings the required energy and intensity. However, it also mentions some concerns about the age gap, suggesting a recommendation with reservations. | Kimi: Single excerpt offers qualified but solid praise for Washington's lead performance, noting he overcomes age concerns and fully inhabits the role; limited context and minor reservations warrant conservative score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:36:19.412Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But the bigger question is what took Jane Fonda 46 years to come back to Broadway, where she's giving a robust and confident performance in the play that opened last night. Fonda plays Katherine Brandt, a music scholar with a progressive, degenerative condition who's determined to understand Beethoven's fixation before her time is up.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-33-Variations-Review-Roundup-and-More-20090310",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fonda's giving a robust and confident performance in the play that opened last night.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Fonda's performance as 'robust and confident' suggests positive reception, but limited text and lack of broader show evaluation requires cautious scoring at lower end of Positive range. | GPT-4o: The excerpt highlights Jane Fonda's 'robust and confident performance,' suggesting a positive view of her role. However, the lack of a full review and the single excerpt warning necessitate a cautious, lower-end score within the Positive bucket. | Gemini: The review excerpt focuses on Jane Fonda's performance and the play's premise, describing her performance as \"robust and confident.\" While limited, this suggests a positive, though not overwhelmingly enthusiastic, assessment. | Kimi: The excerpt provides clear, enthusiastic praise for Jane Fonda's performance as 'robust and confident,' suggesting a positive recommendation. However, as a single curated excerpt, confidence is reduced due to the risk of cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:49:20.605Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

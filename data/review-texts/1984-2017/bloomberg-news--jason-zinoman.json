@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Yet the most forceful theatrical response to the administration is now on Broadway, with a nerve-jangling adaptation of George Orwell's classic novel 1984, which just opened at the Hudson Theatre. This harrowing production stages what might be the most famous picture of a totalitarian future, one that's penetrated the lexicon (\"Big Brother,\" \"double-think\") and subconscious of generations of readers because of its vision of perpetual war, constant surveillance, and state-sponsored lies.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yet the most forceful theatrical response to the administration is now on Broadway, with a nerve-jangling adaptation of George Orwell's classic novel 1984.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls this 'the most forceful theatrical response' and describes it as 'nerve-jangling' and 'harrowing' - strong positive language. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt describes the production as 'harrowing' and 'nerve-jangling,' indicating a strong emotional impact. However, the single excerpt and lack of a full review make the overall sentiment unclear, leading to a low confidence score. | Gemini: The review excerpt describes the production as a \"forceful theatrical response\" and \"nerve-jangling adaptation,\" indicating a positive, but not overwhelmingly enthusiastic, assessment. Given that it is a single excerpt, confidence is low. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:45:18.885Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

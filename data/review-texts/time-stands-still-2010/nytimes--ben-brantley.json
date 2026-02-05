@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Margulies has created characters who feel genuinely three-dimensional, flawed and searching, and she lets them argue their cases with equal conviction.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -49,5 +49,60 @@
   "archiveOrgTimestamp": "20150918180231",
   "archiveOrgUrl": "http://web.archive.org/web/20150918180231/http://www.nytimes.com:80/2010/01/29/theater/reviews/29time.html",
   "wordCount": 1188,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "handily Mr. Margulies's finest play since the Pulitzer Prize-winning 'Dinner With Friends.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Brantley delivers consistent praise throughout - calling it Margulies's 'finest play' since his Pulitzer winner, praising the 'flawless' production and 'performances of complementary sensitivity and richness,' and describing it as a 'quietly powerful drama.' The review shows strong appreciation for the writing, direction, and all four performances with only minor reservations. | GPT-4o: The review is filled with high praise for the performances, direction, and writing, describing the production as 'flawless' and the play as Margulies's finest since a Pulitzer-winning work. The critic's tone is enthusiastic and unreservedly positive. | Gemini: The review is overwhelmingly positive, praising the performances, writing, and direction. The critic calls it Margulies' finest play since his Pulitzer winner and highlights the play's depth and emotional resonance. | Kimi: Brantley delivers unqualified praise for the Manhattan Theater Club production, calling it 'flawless' and the playwright's best work in years, while commending the 'crackling' dialogue and superb performances from the entire cast with no significant caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:30:48.557Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

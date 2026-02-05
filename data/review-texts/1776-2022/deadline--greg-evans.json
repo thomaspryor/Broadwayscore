@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At its best, the Roundabout's production of '1776' ... shakes off any undue weight of expectation, treating the audience to classic musical theater songs sung by voices that have never before been given access.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The phrase 'at its best' suggests qualified praise, and the critic appreciates the fresh casting approach and vocal performances. However, this is only an excerpt with very limited text, so confidence is low. | GPT-4o: The excerpt suggests a positive view of the production, highlighting its ability to meet expectations and provide a fresh experience. However, the lack of full context and the text quality warning necessitate a lower confidence and score within the Positive range. | Gemini: The quote suggests a positive experience, highlighting the singing and freshness of the production. However, due to the truncated text, the confidence is low. | Kimi: The excerpt praises the musical delivery and inclusive casting concept as successful, though the 'At its best' framing suggests possible reservations elsewhere in the full review. Scored as qualified positive based on available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:41:02.114Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

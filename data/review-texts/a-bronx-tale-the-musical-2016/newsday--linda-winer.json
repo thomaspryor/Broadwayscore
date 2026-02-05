@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"A Bronx Tale: The New Musical,\" Chazz Palminteri's semi-autobiographical theatrical coming-of-age story, has been told and retold so many times that it has the ritualized feel of a folk myth - and not in a good way.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has the ritualized feel of a folk myth - and not in a good way",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly states the show feels ritualized 'and not in a good way,' indicating clear disappointment. However, with only one excerpt available, this could be setup rather than final verdict, requiring lower confidence. | GPT-4o: The excerpt suggests a negative sentiment, indicating that the show feels overly familiar and not in a positive manner. However, due to the single excerpt warning, there's low confidence in the overall verdict. | Gemini: The excerpt expresses a negative sentiment about the show being overdone and not in a positive way, suggesting a lack of originality or freshness. | Kimi: The single excerpt explicitly criticizes the show for feeling ritualized and overdone, stating this is 'not in a good way,' which indicates the critic does not recommend this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:05:57.216Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

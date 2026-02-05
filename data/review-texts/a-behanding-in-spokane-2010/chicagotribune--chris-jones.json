@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The latest Broadway play from Martin McDonagh lands somewhere between 'Pulp Fiction' and an extended star-driven sketch from 'Saturday Night Live.' We already knew that McDonagh ('The Beauty Queen of Leenane,' 'Pillowman') writes with remarkable facility in the self-aware, neo-gothic, Tarantino-esque style. But the formative devil has become more formatively devilish. 'A Behanding in Spokane' reveals a more comic and happily anarchic side of this irreverent Irish writer, who consumed American noir as a youth in far greater quantity than Kerrygold butter.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "reveals a more comic and happily anarchic side of this irreverent Irish writer",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt shows appreciation for McDonagh's evolution and comic development, but with only one curated quote available, the full verdict is unclear. The positive language about revealing a 'more comic' side suggests approval, but this could be setup rather than final recommendation. | GPT-4o: The excerpt praises McDonagh's writing style and highlights the play's comic and anarchic qualities, suggesting a positive reception. However, the single excerpt warning and lack of full context necessitate a low confidence level. | Gemini: The review excerpt describes the play's style and influences but doesn't offer a clear recommendation. The comparison to 'Saturday Night Live' suggests a mixed quality. | Kimi: The excerpt offers clear praise for McDonagh's 'remarkable facility' and the play's 'happily anarchic' tone, indicating a positive assessment. As a single curated excerpt, confidence is reduced despite the favorable language.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:59:26.045Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 62,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

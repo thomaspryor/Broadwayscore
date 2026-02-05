@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The matchup of Walken, unpredictably creepy American actor, and Martin McDonagh, virtuosically gruesome Irish playwright, has finally occurred. And it's as perfect a frisson as it always was meant to be - except for one problem. The play is really not good. 'A Behanding in Spokane,' the 90-minute McDonagh world premiere that lured Walken back for a rare stage appearance, is so thin, trivial and underdeveloped that the humor depends on two separate scenes of characters throwing severed hands at one another.",
   "bwwScore": 3,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is really not good.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising the Walken-McDonagh pairing as 'perfect,' the critic clearly states the play is 'really not good' and criticizes it as 'thin, trivial and underdeveloped.' This is a negative recommendation where performer appeal doesn't redeem fundamental flaws. | GPT-4o: The excerpt criticizes the play as 'thin, trivial and underdeveloped,' indicating a negative assessment. The presence of Walken and McDonagh is noted but does not redeem the play's shortcomings. | Gemini: Despite the positive setup regarding Walken and McDonagh, the review explicitly states \"the play is really not good\" and describes it as \"thin, trivial, and underdeveloped.\" This indicates a negative assessment. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:00:53.465Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

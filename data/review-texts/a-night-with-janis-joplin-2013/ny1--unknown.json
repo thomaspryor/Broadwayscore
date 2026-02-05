@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Davies' physical resemblance is limited to hair and costume, but none of it matters once she opens up that glorious sandpaper voice. And fans who never saw Joplin in concert, wondering what they missed, should find an instant jolt in this, the next best thing.",
-  "bwwScore": 7
+  "bwwScore": 7,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And fans who never saw Joplin in concert, wondering what they missed, should find an instant jolt in this, the next best thing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance ('glorious sandpaper voice') and clear recommendation for fans, calling it 'the next best thing' to seeing Joplin live. However, single excerpt warning applies - this could be cherry-picked positive content from a more mixed review. | GPT-4o: The excerpt praises Davies' performance as an 'instant jolt' and 'the next best thing' to seeing Joplin live, indicating a strong positive recommendation. However, the single excerpt warning and lack of full context reduce confidence. | Gemini: The review excerpt strongly suggests a positive recommendation, particularly for fans of Janis Joplin. The phrase \"the next best thing\" indicates high praise. Confidence is low due to the single excerpt. | Kimi: The excerpt offers clear praise for the lead's 'glorious sandpaper voice' and explicitly recommends the show as 'the next best thing' for fans, indicating a clearly positive verdict despite minor reservations about physical resemblance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:33:35.961Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

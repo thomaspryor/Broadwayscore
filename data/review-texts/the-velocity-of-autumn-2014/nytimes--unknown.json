@@ -59,5 +59,59 @@
   "promptVersion": "5.2.0",
   "bwwExcerpt": "Now 86, Ms. Parsons has lost little, if any, of her energy, and absolutely none of her ability to bring sustained, animated life to a well-drawn character...While the conversation occasionally strays into unprofitable byways, the play passes by breezily because Ms. Parsons is such fun to watch...'What the world is taking away from me, what time is taking away from me, what God is taking away from me - is me!' she says with a wail of despair at one point. In these moments, and in Ms. Parsons's more than capable hands, Mr. Coble's play rises above its slightly formulaic structure to become a dry-eyed, moving rumination on the hard fact that the progress of human life being what it is, truly happy endings are rare indeed.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-VELOCITY-OF-AUTUMN-Opens-on-Broadway-Updating-LIVE-20140421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-VELOCITY-OF-AUTUMN-Opens-on-Broadway-Updating-LIVE-20140421",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's possible to enjoy the testy give-and-take between Alexandra and Chris",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite calling the play's premise 'artificial whimsy' and noting structural weaknesses, the critic clearly recommends seeing it for Parsons' exceptional performance and finds the production 'amiable' and 'breezy' entertainment. | Gemini: The review praises Estelle Parsons's performance and finds the play amiable, though it notes some artificial whimsy and less successful aspects of the writing. Overall, it leans towards a positive recommendation. | Kimi: While describing the script as 'wispy' with 'artificial whimsy,' the critic finds the production enjoyable and amiable due to Estelle Parsons' captivating, energetic performance that carries the 90-minute show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:27:55.289Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

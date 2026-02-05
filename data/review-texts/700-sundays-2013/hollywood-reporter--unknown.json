@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "It can't be said that Billy Crystal doesn't know his audience. They eat up his menu of Jews, jazz and baseball, wrapped in Catskills-inspired comedy and heartfelt Mom-and-Pop sentiment. Back on Broadway with 700 Sundays almost a decade after the solo stage memoir broke box office records and landed him a special Tony Award, Crystal again shows his gift for taking an Eisenhower-era childhood that was both ordinary and exceptional, and rendering it universal for a nostalgic public. Whether or not our experience overlaps with that of the hardworking performer, his family reminiscences strike chords.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Crystal again shows his gift for taking an Eisenhower-era childhood that was both ordinary and exceptional, and rendering it universal for a nostalgic public.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises Crystal's ability to connect with audiences and render his story universal, noting his 'gift' and that audiences 'eat up' his performance. However, with only one excerpt available, confidence is low as the full verdict may not be represented. | GPT-4o: The excerpt praises Billy Crystal's ability to connect with his audience through universal themes and nostalgia, suggesting a positive reception. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The review highlights Crystal's talent for connecting with his audience and making his personal experiences relatable. While not a rave, it's a positive assessment of his performance and storytelling abilities. The single excerpt and smaller outlet lower confidence. | Kimi: The excerpt praises Crystal's performance skills and the show's emotional resonance, using phrases like 'shows his gift' and 'strike chords' to indicate a solid recommendation, though the single-excerpt format limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:50:44.384Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

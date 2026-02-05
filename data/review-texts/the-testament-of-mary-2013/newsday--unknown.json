@@ -56,5 +56,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "For more secular theater lovers, however, the peril comes in missing 'The Testament of Mary,' adapted by Colm Tóibín from his own novella. With both enormous audacity and bottomless grief, Tóibín's 90-minute stunner imagines a version of the Christ story 'from the silent woman we pray to.'",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-TESTAMENT-OF-MARY-Opens-on-Broadway-Updating-LIVE-20130422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-TESTAMENT-OF-MARY-Opens-on-Broadway-Updating-LIVE-20130422",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tóibín's 90-minute stunner imagines a version of the Christ story 'from the silent woman we pray to.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls it a 'stunner' and warns secular theater lovers risk 'missing' this show, suggesting strong recommendation. However, with only one curated excerpt available, confidence is low as this may not represent the full review sentiment. | GPT-4o: The excerpt describes the show as a '90-minute stunner' with 'enormous audacity and bottomless grief,' suggesting a highly positive view. The warning about the peril of missing it implies a strong recommendation. | Gemini: The excerpt uses strong positive language like \"enormous audacity,\" \"bottomless grief,\" and \"stunner,\" indicating a positive recommendation. Given that it is a single excerpt, the confidence is low. | Kimi: The critic calls the show a '90-minute stunner' and warns that missing it would be a 'peril,' indicating strong enthusiasm, though the single curated excerpt warrants cautious confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:26:14.389Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

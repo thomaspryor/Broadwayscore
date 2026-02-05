@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"The duo gave a tight, nuanced performance, complete with convincing Chicago accents. Jackman, who won a Tony Award for his 2004 Broadway debut in The Boy From Oz, was enthralling as the big hearted but corrupt cop.By turns humorous, dark and tense, the actors handled Keith Huff's evenly paced drama, directed by John Crowley, with a skill and subtlety which rarely gets chance to shine in Hollywood.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-Review-Roundup-A-STEADY-RAIN-20090929",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jackman was enthralling as the big hearted but corrupt cop.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for performances ('enthralling', 'tight, nuanced', 'skill and subtlety') and production values, but single excerpt warning means full verdict unclear. | GPT-4o: The excerpt praises the performances as 'tight, nuanced' and 'enthralling', with skillful handling of the drama. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review uses positive language such as \"tight, nuanced performance\", \"enthralling\", and praises the actors' skill and subtlety. Given the single excerpt warning, I'm placing it at the higher end of the positive bucket. | Kimi: The excerpt contains strong praise for the lead performances ('enthralling', 'skill and subtlety') and direction. Following the instructions for single clearly positive excerpts, this is scored at the upper end of the Positive bucket; confidence is low due to the risk of cherry-picking with only one curated quote available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:40:29.511Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

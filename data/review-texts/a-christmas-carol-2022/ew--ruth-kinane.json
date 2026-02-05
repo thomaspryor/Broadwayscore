@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In a move in line with increased efforts for better representation in the arts, two young disabled actors play Tiny Tim, Sebastian Ortiz and Jai Ram Srinivasan, both of whom have cerebral palsy. Dashiell Eaves (The Lieutenant of Inishmore, The Sound of Music) is particularly memorable as the ever-optimistic Bob Cratchit, and the rest of the ensemble captivates with powerful, often musical, performances. The production subtly incorporates literal Christmas carols throughout, with the cast singing and sometimes playing instruments - most notably handbells - for a serene, film-score-like effect.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the rest of the ensemble captivates with powerful, often musical, performances",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on praising cast performances and production elements with terms like 'memorable', 'captivates', and 'powerful'. However, this is clearly a curated positive quote that may not represent the full review's verdict, so scoring conservatively in lower Positive range. | GPT-4o: The excerpt highlights memorable performances and a captivating ensemble, suggesting a positive reception. The use of 'captivates' and 'powerful' indicates strong praise, placing it in the upper range of the Positive bucket. | Gemini: The review excerpt highlights positive aspects of the production, including the performances of the cast and the incorporation of Christmas carols. While it's a single excerpt, the language suggests a positive overall experience. | Kimi: The excerpt offers clear praise for the cast's performances and the production's inclusive casting choices and musical integration. However, as a single curated excerpt without the full review context, confidence must remain low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:08:40.305Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

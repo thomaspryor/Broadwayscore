@@ -32,5 +32,11 @@
   "textStatus": "truncated",
   "sourceMethod": "playwright",
   "wordCount": 743,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T15:35:23.114Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This is a review of Shakespeare in the Park at the Delacorte Theater, not a Broadway production; openai: The review is about the Free Shakespeare in the Park production of Twelfth Night, not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

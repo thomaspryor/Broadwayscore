@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"'The art of variation is transforming something into its better self,' explains Jane Fonda as Dr. Katherine Brandt, the musicologist at the center of Moisés Kaufman's muddled play 33 Variations. Kaufman, who also directs, attempts to transform a subject of academic interest -- Beethoven's obsession with a simple waltz, upon which he based the titular project -- into a theatrical event. But he layers the story of the elderly genius with the melodrama of Dr. Brandt, and",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-33-Variations-Review-Roundup-and-More-20090310",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 46,
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kaufman attempts to transform a subject of academic interest into a theatrical event.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic describes the play as 'muddled' and suggests the director's attempt to create a theatrical event is unsuccessful, indicating a negative assessment. However, with only one excerpt available and text appearing truncated mid-sentence, confidence is low. | GPT-4o: The excerpt suggests an attempt to create a theatrical event but describes the play as 'muddled,' indicating a mixed assessment. The lack of a clear positive or negative verdict and the single excerpt warning lead to a low confidence mixed score. | Gemini: The review excerpt uses the word \"muddled\" to describe the play, indicating a negative assessment. Given the truncated text and single excerpt, confidence is low. | Kimi: The excerpt explicitly labels the play 'muddled' and criticizes the director's attempt to combine academic material with melodrama, suggesting a failed execution. Confidence is low due to the single excerpt warning and truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:48:49.497Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

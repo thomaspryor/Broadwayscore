@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "I won't flatter Billy Crystal by saying he hasn't aged a bit: He's a little older and slower than when he debuted this theatrical memoir on Broadway nine years ago. True, the 65-year-old looks amazingly young (how he avoids aging is one area not mined for humor). But what really stands the test of time is 700 Sundays itself, an unabashedly sentimental but laugh-filled portrait of the artist as family clown, nerd and Jewish everykid. While most comedians revel in tortured childhoods or horrid parents, Crystal proudly lets his normal flag fly.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But what really stands the test of time is 700 Sundays itself, an unabashedly sentimental but laugh-filled portrait of the artist as family clown, nerd and Jewish everykid.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the show as standing 'the test of time' and describes it as 'laugh-filled,' indicating clear appreciation. However, with only one excerpt available, confidence is low as this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the show as 'laugh-filled' and 'stands the test of time', indicating a positive recommendation. However, the text quality warning and single excerpt caution suggest using the lower end of the Positive bucket. | Gemini: The review is generally positive, describing the show as \"laugh-filled\" and highlighting Crystal's performance. However, it also notes that Crystal is \"a little older and slower,\" indicating some reservations. Given that this is a single excerpt, confidence is low. | Kimi: The excerpt provides clear praise for the show's enduring quality and humor, describing it as 'laugh-filled' and praising Crystal's performance, though the limited context requires low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:51:39.435Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

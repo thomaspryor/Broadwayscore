@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -41,5 +41,60 @@
   "textStatus": "truncated",
   "sourceMethod": "playwright",
   "wordCount": 811,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The beauty of Hansberry's play almost makes up for Anne Kauffman's production, which feels too unsure of itself to linger or make demands.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises Hansberry's writing and material throughout but finds significant fault with the production, direction, and lead performances. The review expresses disappointment with Kauffman's direction and calls the lead performances 'one-note' that 'gradually deflate,' resulting in a qualified mixed assessment. | GPT-4o: The review acknowledges the strengths of the play itself but criticizes the production and performances as lacking differentiation and confidence. The overall tone suggests a mixed experience with some redeeming qualities. | Gemini: The review praises the play itself but criticizes the production and performances, resulting in a mixed assessment. It highlights both strengths and weaknesses without a clear recommendation. | Kimi: While the critic praises Hansberry's text as beautiful and acknowledges strong supporting performances, they criticize the direction as 'unsure' and the star performances as 'one-note' and deflating, resulting in a qualified, ambivalent assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:24:22.529Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -32,5 +32,60 @@
   "archiveOrgTimestamp": "20110117051346",
   "archiveOrgUrl": "http://web.archive.org/web/20110117051346/http://nymag.com:80/daily/entertainment/2011/01/stage_dive_an_absolutely_perfe.html",
   "wordCount": 458,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Each jewel of wit is polished apple-bright, and every performer is playing in the same key.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'glorious gift', 'uniformly brilliant cast', 'great damned musicianship', and 'delightful surprise'. No reservations expressed. | GPT-4o: The review is filled with superlatives and unqualified praise, describing the production as a 'glorious gift' and highlighting the 'joy of sheer comic virtuosity.' The critic's enthusiasm and lack of reservations place this firmly in the Rave category. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and overall production quality. The critic uses strong language like \"glorious gift\" and highlights the \"sheer comic virtuosity.\" | Kimi: The review offers unqualified praise for the production's direction, ensemble performances, and comic timing, using superlatives like 'glorious,' 'brilliant,' and 'virtuosity' with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:20:09.889Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

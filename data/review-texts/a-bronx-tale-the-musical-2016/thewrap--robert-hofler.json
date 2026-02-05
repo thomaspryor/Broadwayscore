@@ -39,5 +39,59 @@
     "Word count too low: 70 (min: 300)"
   ],
   "wordCount": 64,
-  "tierReason": "Short text (64 words)"
+  "tierReason": "Short text (64 words)",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cordero is good and sleazy enough so that we never miss the original too much.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Review praises key performances (Cordero, DeBose, Loverro) and notes the musical has 'solid foundation,' but opens with concern about the show growing 'softer' as it evolved from one-man play. Overall positive assessment of cast and production. | Gemini: The review praises Cordero's performance and highlights other strong performances, indicating a positive experience despite some reservations about missing the original. | Kimi: While the critic notes the musical is softer than Palminteri's original one-man play, the review praises the principal cast (Cordero, DeBose, and Loverro) as solid, understated, and gifted, suggesting the performances provide a worthy foundation despite the show's diluted toughness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:52:56.021Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

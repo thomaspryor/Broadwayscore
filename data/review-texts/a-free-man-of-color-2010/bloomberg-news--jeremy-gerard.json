@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Lucky for Guare, then, that director George C. Wolfe has convened an astonishing creative team and an equally gifted ensemble (26 actors!). Designer David Rockwell and lighting masters Jules Fisher and Peggy Eisenhauer make the Vivian Beaumont Theater feel intimate, with sets that are at once minimalist and lavish. Adding to the semiclassical atmosphere is Jeanine Tesori’s insinuating incidental music, with its quotes from Haydn and other composers.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lucky for Guare, then, that director George C. Wolfe has convened an astonishing creative team and an equally gifted ensemble.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for director, creative team, and ensemble as 'astonishing' and 'equally gifted.' However, confidence is low due to limited text and potential cherry-picking of positive quote. | GPT-4o: The excerpt praises the creative team and ensemble as 'astonishing' and 'gifted,' and highlights the effective design and music, suggesting a strong positive impression. However, due to the single excerpt, confidence is low. | Gemini: The excerpt praises the creative team and ensemble, suggesting a positive experience, but without a clear overall recommendation, confidence is low. Given the single excerpt, I'm placing it at the lower end of the positive range. | Kimi: The excerpt contains strong, unqualified praise for the creative team, design, and music ('astonishing', 'gifted', 'lavish'), indicating a clear recommendation based on production quality. As a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:18:47.612Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

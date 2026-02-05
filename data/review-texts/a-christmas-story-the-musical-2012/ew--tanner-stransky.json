@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "...the stage adaptation plays like a heart-tugging, best-of version of the movie, with a saccharine score by Benj Pasek and Justin Paul and a book by Joseph Robinette that desperately panders for laughs...The musicals pleasures are far and wide: Dan Lauria is steady as an older version of Ralphie, who narrates the story. Johnny Rabe, who played Ralphie at my performance, did a nice job of wrangling the curmudgeonly, hopeful nature of his character. Zac Ballard, as younger brother Randy, is a del",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-STORY-THE-MUSICAL-Opens-on-Broadway-Updating-LIVE-20121119",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the stage adaptation plays like a heart-tugging, best-of version of the movie, with a saccharine score...that desperately panders for laughs",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt shows mixed signals - acknowledging 'pleasures are far and wide' and praising individual performances, but criticizing the score as 'saccharine' and book as 'desperately panders.' Single excerpt limits confidence in overall verdict. | GPT-4o: The review mentions both positive elements (pleasures, steady performances) and criticisms (saccharine score, pandering book). The excerpt suggests mixed sentiments, with some enjoyment but also significant reservations. | Gemini: The review uses phrases like \"desperately panders for laughs\" and \"saccharine score\" which indicates a mixed reception. However, it also praises some performances, suggesting it's not entirely negative. Given the limited excerpt, confidence is low. | Kimi: The excerpt offers mixed-to-positive signals: while criticizing the 'saccharine' score and book that 'desperately panders,' the critic acknowledges 'pleasures are far and wide' and praises the performances, indicating a qualified recommendation. Single excerpt and truncation warrant low confidence and lower-end Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:11:38.300Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }
