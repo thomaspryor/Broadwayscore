@@ -8944,18 +8944,6 @@
     "timestamp": "2026-02-04T00:54:48.180Z"
   },
   {
-    "reviewId": "the-little-mermaid-2008/variety--peter-debruge.json",
-    "showId": "the-little-mermaid-2008",
-    "outlet": "Variety",
-    "critic": "Peter Debruge",
-    "url": "https://variety.com/2023/film/reviews/the-little-mermaid-review-halle-bailey-melissa-mccarthy-1235620560/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): chicago, aladdin, giant, smash, company...",
-    "textLength": 7421,
-    "timestamp": "2026-02-04T00:55:49.285Z"
-  },
-  {
     "reviewId": "the-price-2017/hollywood-reporter--david-rooney.json",
     "showId": "the-price-2017",
     "outlet": "The Hollywood Reporter",
@@ -15422,5 +15410,77 @@
     "garbageReason": "Multiple shows mentioned (7): appropriate, sweeney todd, hair, once, high...",
     "textLength": 7750,
     "timestamp": "2026-02-05T05:17:10.115Z"
+  },
+  {
+    "reviewId": "the-iceman-cometh-2018/vulture--sara-holdren.json",
+    "showId": "the-iceman-cometh-2018",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "http://www.vulture.com/2018/04/theater-review-the-iceman-cometh-needeth-rethinking.html",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): oedipus, company, carousel, noises off, rocky...",
+    "textLength": 16593,
+    "timestamp": "2026-02-05T05:19:56.994Z"
+  },
+  {
+    "reviewId": "the-little-foxes-2017/hollywood-reporter--david-rooney.json",
+    "showId": "the-little-foxes-2017",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/little-foxes-theater-review-995267",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, company, betrayal, betrayal, once...",
+    "textLength": 8972,
+    "timestamp": "2026-02-05T05:20:24.621Z"
+  },
+  {
+    "reviewId": "the-little-foxes-2017/nytimes--alexis-soloski.json",
+    "showId": "the-little-foxes-2017",
+    "outlet": "New York Times",
+    "critic": "Alexis Soloski",
+    "url": "http://www.nytimes.com/2017/04/19/theater/little-foxes-review-cynthia-nixon-laura-linney.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (6): giant, home, race, time stands still, rabbit hole...",
+    "textLength": 2234,
+    "timestamp": "2026-02-05T05:20:27.917Z"
+  },
+  {
+    "reviewId": "the-little-mermaid-2008/variety--peter-debruge.json",
+    "showId": "the-little-mermaid-2008",
+    "outlet": "Variety",
+    "critic": "Peter Debruge",
+    "url": "https://variety.com/2023/film/reviews/the-little-mermaid-review-halle-bailey-melissa-mccarthy-1235620560/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): chicago, aladdin, giant, smash, company...",
+    "textLength": 7385,
+    "timestamp": "2026-02-05T05:21:53.678Z"
+  },
+  {
+    "reviewId": "the-lyons-2012/hollywood-reporter--david-rooney.json",
+    "showId": "the-lyons-2012",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/the-lyons-theater-review-315077",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): wicked, mamma mia!, rocky, hair, follies...",
+    "textLength": 5563,
+    "timestamp": "2026-02-05T05:22:13.431Z"
+  },
+  {
+    "reviewId": "the-lyons-2012/nytimes--ben-brantley.json",
+    "showId": "the-lyons-2012",
+    "outlet": "New York Times",
+    "critic": "Ben Brantley",
+    "url": "http://theater.nytimes.com/2012/04/24/theater/reviews/the-lyons-with-linda-lavin-at-the-cort-theater.html?adxnnl=1&ref=theater&adxnnlx=1335281201-3TBN6uVBrLvqyLJiPtPdyg&gwh=A51120CE459186D8026E3FBFBE17B3EF",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, company, once, rain, high...",
+    "textLength": 6711,
+    "timestamp": "2026-02-05T05:23:26.511Z"
   }
 ]
