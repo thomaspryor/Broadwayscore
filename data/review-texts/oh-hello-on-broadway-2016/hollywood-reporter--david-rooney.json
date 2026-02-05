@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show is essentially a feature-length expansion of a sketch that might have struggled to fill even a half-hour slot, but the committed goofiness of Mulaney and Kroll makes it surprisingly sustainable.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (32 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 73,
+    "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 77
+      "low": 68,
+      "high": 78
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "the committed goofiness of Mulaney and Kroll makes it surprisingly sustainable",
+        "quote": "The committed goofiness of Mulaney and Kroll makes it surprisingly sustainable.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite calling it a stretched sketch, the critic finds it 'surprisingly sustainable' due to the lead performances, indicating a qualified but positive recommendation. | GPT-4o: The review acknowledges the show's limited premise but credits the performers' energy for making it work, suggesting a mixed but not strongly positive or negative view. | Gemini: The review acknowledges the show's thin premise but ultimately finds it enjoyable due to the performers' commitment. This makes it a positive, but qualified, recommendation. | Kimi: While the critic criticizes the thin material stretched to feature length, the verdict credits the performers' committed goofiness with making the show 'surprisingly sustainable,' indicating a guarded but positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Acknowledges major structural weakness (sketch stretched too thin) but finds the performances make it work. Single excerpt with qualified positive verdict warrants lower end of Positive range. | GPT-4o: The excerpt acknowledges the show's potential limitations but ultimately praises the performers' ability to make it work. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review acknowledges the show's thin premise but praises the performers' commitment, suggesting a mildly positive experience. Due to the single excerpt, confidence is low. | Kimi: While criticizing the thin premise that might have struggled to fill a half-hour slot, the reviewer credits the performers' goofiness with making the expanded show work, indicating a qualified but genuine recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,33 +51,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T19:41:17.839Z",
+    "scoredAt": "2026-02-05T05:29:07.125Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 72,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 65,
-    "geminiScore": 72,
-    "kimiScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "previousUrl": "https://www.hollywoodreporter.com/news/general-news/oh-hello-broadway-theater-review-942743/",
   "urlDiscoveredAt": "2026-02-05T05:10:20.604Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 72,
   "textWordCount": 605,
@@ -100,5 +100,6 @@
   "archiveOrgTimestamp": "20221004072105",
   "archiveOrgUrl": "http://web.archive.org/web/20221004072105/https://www.hollywoodreporter.com/news/general-news/hello-broadway-theater-review-936822/",
   "wordCount": 605,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T05:29:07.125Z"
 }

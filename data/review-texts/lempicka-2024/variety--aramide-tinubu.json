@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Despite Eden Espinosa's powerhouse performance as the titular artist, this Broadway musical about painter Tamara de Lempicka feels more like a paint-by-numbers affair than a vivid portrait.",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 44,
-    "confidence": "medium",
+    "score": 64,
+    "confidence": "high",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "this Broadway musical about painter Tamara de Lempicka feels more like a paint-by-numbers affair than a vivid portrait.",
+        "quote": "a long-in-development but still uneven musical",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising Espinosa's 'powerhouse performance,' the critic dismisses the musical itself as formulaic ('paint-by-numbers affair'). Single excerpt warning requires caution, but the metaphor clearly criticizes the show's lack of artistic depth. | GPT-4o: The review acknowledges a strong performance by Espinosa but criticizes the musical as lacking originality and depth, suggesting it is formulaic. The single excerpt limits confidence in the overall verdict. | Gemini: The review praises Espinosa's performance but criticizes the musical as a whole, suggesting a mixed experience. Given the single excerpt, confidence is low. | Kimi: While the critic acknowledges Espinosa's powerhouse performance, the 'despite' construction and 'paint-by-numbers' description indicate the show itself is formulaic and unsatisfying, matching patterns of negative reviews where performer praise does not redeem the production.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges strong performances and production elements but repeatedly emphasizes the show is 'uneven' and 'all but brushstrokes.' Praises the second act and featured numbers while noting structural issues with the book and character development. | GPT-4o: The review acknowledges strong performances and some engaging elements, particularly in the second act, but criticizes the uneven book and lack of clarity in the titular character. The overall tone suggests a mixed reception with notable strengths and weaknesses. | Gemini: The review praises Espinosa's performance and some musical numbers, but criticizes the book and unevenness of the show. It doesn't strongly recommend or discourage seeing it. | Kimi: While praising Eden Espinosa's luminous performance and the stronger second act, the critic finds the book uneven and the central character too contradictory, ultimately concluding the show fails to fully capture its subject despite moments of appeal.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T12:03:06.758Z",
+    "scoredAt": "2026-02-05T05:26:17.500Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 44,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "geminiScore": 62,
-    "kimiScore": 42,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
-    "scoreDelta": 20,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 44,
   "textWordCount": 882,
@@ -117,5 +117,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 882,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T05:26:17.500Z"
 }

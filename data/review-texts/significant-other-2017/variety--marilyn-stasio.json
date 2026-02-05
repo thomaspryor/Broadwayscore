@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Gideon Glick gives a performance of such raw honesty and emotional transparency that he makes you believe in the reality of his character's pain, even when the writing doesn't always support him.",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,14 +20,14 @@
   "contentTierReason": "Short text (32 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 69,
+    "score": 81,
     "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 76,
+      "high": 86
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Gideon Glick gives a performance of such raw honesty and emotional transparency that he makes you believe in the reality of his character's pain, even when the writing doesn't always support him.",
+        "quote": "Harmon strikes the perfect balance between comedy and pathos — with the emphasis on comedy — in this good-natured meditation on love and friendship.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: High praise for Glick's performance but explicit criticism that 'the writing doesn't always support him.' This suggests issues with the material despite the strong acting. Very brief excerpt limits confidence. | GPT-4o: The review praises Gideon Glick's performance but notes that the writing doesn't always support him, indicating a mixed review with both positive and negative elements. | Gemini: The review praises the performance of Gideon Glick, but notes that the writing doesn't always support him, indicating a positive but qualified recommendation. | Kimi: The critic offers superlative praise for the lead actor's performance, suggesting he transcends the material, but explicitly notes weaknesses in the writing, indicating a qualified recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistently positive review praising the playwright's balance of comedy and pathos, strong performances (especially Glick), smart production adjustments for Broadway, and universal appeal of the humor. No significant reservations expressed. | GPT-4o: The review praises the play's balance of comedy and pathos, the performances, and the production's adjustments for Broadway. It highlights the humor and emotional impact, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the humor and performances, but it doesn't reach the level of a rave. The critic acknowledges the bittersweet nature of the play, indicating some reservations. | Kimi: The critic consistently praises the playwright's deft blend of humor and emotion, the strong ensemble performances, and the smart production adjustments for Broadway, offering an enthusiastic recommendation without reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,28 +51,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:52:10.606Z",
+    "scoredAt": "2026-02-05T05:32:37.637Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 69,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 60,
-    "geminiScore": 75,
-    "kimiScore": 76,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 16,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "playbillVerdictUrl": "http://variety.com/2017/legit/reviews/significant-other-review-broadway-1202001337/http://variety.com/2017/legit/reviews/significant-other-review-broadway-1202001337/",
   "sources": [
@@ -82,7 +83,6 @@
   "previousUrl": "https://variety.com/2017/legit/reviews/significant-other-review-broadway-gideon-glick-1202015584/",
   "urlDiscoveredAt": "2026-02-05T04:49:32.337Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,
   "textWordCount": 487,
@@ -103,5 +103,6 @@
   "archiveOrgTimestamp": "20240203205821",
   "archiveOrgUrl": "http://web.archive.org/web/20240203205821/https://variety.com/2017/legit/reviews/significant-other-review-broadway-1202001337/",
   "wordCount": 487,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-05T05:32:37.637Z"
 }

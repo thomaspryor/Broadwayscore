@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This production of Harold Pinter's masterpiece about adultery and friendship features superb performances from Tom Hiddleston, Zawe Ashton and Charlie Cox that make the familiar feel fresh.",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
-    "score": 81,
-    "confidence": "medium",
+    "score": 93,
+    "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "features superb performances from Tom Hiddleston, Zawe Ashton and Charlie Cox that make the familiar feel fresh",
+        "quote": "This is the most merciless and empathic interpretation of this much performed work I've seen.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for 'superb performances' and making 'the familiar feel fresh' indicates strong positive recommendation, though brief excerpt limits full assessment. | GPT-4o: The review uses strong praise ('superb performances') and suggests the production revitalizes a classic ('make the familiar feel fresh'), indicating a highly positive recommendation. | Gemini: The review uses the word \"masterpiece\" and describes the performances as \"superb\" making it a positive review. | Kimi: The review calls Pinter's play a 'masterpiece' and praises the performances as 'superb' with a fresh take on familiar material. However, the brevity limits confidence in the full scope of the recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Green calls this production 'resplendent' and 'the most merciless and empathic interpretation' he's seen, describing it as 'one of those rare shows I seem destined to think about forever.' Despite the truncated ending, his superlative praise throughout indicates a rave review. | Gemini: The review is overwhelmingly positive, calling it a \"resplendently spare new production\" and \"one of those rare shows I seem destined to think about forever.\" The critic praises the direction and acting with \"surgical precision.\" | Kimi: Despite the truncated ending, the review delivers unqualified superlatives for this production, calling it the finest interpretation of the work the critic has encountered and 'one of those rare shows I seem destined to think about forever,' with exceptional praise for the direction and lead performances.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T14:47:27.297Z",
+    "scoredAt": "2026-02-05T05:14:30.244Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 81,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 90,
-    "geminiScore": 81,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 9,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "previousUrl": "https://www.nytimes.com/2019/09/05/theater/betrayal-review-broadway.html",
   "urlDiscoveredAt": "2026-02-03T16:27:18.101Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 81,
   "textWordCount": 385,
@@ -109,5 +108,6 @@
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text is cut off mid-sentence and ends with a technical error message about retrieving article content and enabling JavaScript; openai: The text includes navigation issues and a request to enable JavaScript, indicating it is not a complete review.",
   "promptVersion": "5.2.0",
-  "duplicateTextOf": "nytimes--ben-brantley.json"
+  "duplicateTextOf": "nytimes--ben-brantley.json",
+  "rescoreCompletedAt": "2026-02-05T05:14:30.244Z"
 }
