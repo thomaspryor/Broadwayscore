@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2012/legit/reviews/once-1117947129/",
   "publishDate": "March 18, 2012",
-  "fullText": "This small, simple musical about the power of music to heal broken hearts and inspire artistic collaboration is so irresistibly charming that it practically seduces you into loving it.",
-  "isFullReview": false,
+  "fullText": "Handsome, fact-based historical drama \"Xingu\" from helmer Cao Hamburger (\"The Year My Parents Went on Vacation\") is a stirring, broad-strokes account of the founding of Brazil's Xingu National Park.\n\nHandsome, fact-based historical drama “Xingu” from helmer Cao Hamburger (“The Year My Parents Went on Vacation”) is a stirring, broad-strokes account of the founding of Brazil’s Xingu National Park, a milestone in the recognition of rights for indigenous people, and of the legendary Villas-Boas brothers who made the creation of the park their mission. Boasting breathtaking cinematography, remote, rarely seen locations and charismatic thesping, this high-minded epic will roll out on home turf in April. Further fest play is assured, with niche arthouse sales likely in most territories.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n The 2026 Ambies Podcast Awards Nominations Announced \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Trevor Noah to Host World Cup Watch Party on YouTube\n\nWith action spanning nearly three decades, the pic opens as the adventure-seeking Villas-Boas brothers, Orlando (Felipe Camarago), Claudio (Joao Miguel, particularly good as the film’s increasingly tortured conscience) and Leonardo (Caio Blat), join the 1943 Roncador-Xingu expedition to build airstrips and roads in the forests of Central Brazil. However, as Claudio’s voiceover narration points out, what the government calls unoccupied lands are actually inhabited by numerous Indian tribes, many of which have never encountered a white man.\n\nDuring their first tense contact with the natives, the brothers quickly make friends, taking the time to learn some of their language and coming to appreciate the indigenous culture. Nevertheless, they employ the Indians to help in what is essentially the government’s bid to colonize and usurp their land, something that will forever change their way of life.\n\nThe brothers acknowledge this paradox and display a paternalistic concern for the indigenous population. When the expedition accidentally causes a flu epidemic that nearly wipes out an Indian village, they bring in doctors and nurses to carry out a vaccination program. “We are the poison and the antidote,” Claudio muses.\n\nBefore long, the brothers decide that the best remedy would be a closed reservation, a safe haven where the Indians’ traditional way of life would be preserved so that they could integrate into Brazilian society at their own speed. But in the long years before the government approves this idealistic plan — which was finally legislated in 1961 — we witness the toxic side of what politicians and the military view as progress, as well as the entrenched prejudice and discrimination with which they regard indigenous peoples.\n\nMoving from the intimate scale of his prize-winning “Parents” to this sweeping epic with ease, Hamburger proves that he has the chops to helm big-budget material with a large cast, and keep it hitting an emotional target. The product of in-depth research and cooperation with Indian tribes, the film incorporates archival footage and photos, and draws from diaries and publications by the brothers.\n\nImpeccable period styling and bushy facial hair make Miguel and Blat appear dead ringers for the visionary Claudio and callow Leonardo. Camarago may not physically resemble Orlando, but he nails the warmth and charm that the eldest Villas-Boas was known for, as well as his ability to negotiate with power brokers on all sides. Meanwhile, the naturalistic work from the extensive non-pro native cast, repping multiple tribes, impresses.\n\nLeading the prestige craft package, Adriano Goldman’s thrilling camerawork makes the mystery and menace of the Brazilian interior palpable, Cassio Amarante’s production design incorporates awe-inspiring native architecture and ceremonies, and Beto Villares’ pleasing, ethnic flavored score underlines key moments.",
+  "isFullReview": true,
   "dtliExcerpt": "This small, simple musical about the power of music to heal broken hearts and inspire artistic collaboration is so irresistibly charming that it practically seduces you into loving it.",
   "originalScore": null,
   "assignedScore": 86,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This small, simple musical about the power of music to heal broken hearts and inspire artistic collaboration is so irresistibly charming that it practically seduces you into loving it.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "textQuality": "truncated",
   "llmScore": {
@@ -73,5 +73,49 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 86,
+  "textWordCount": 578,
+  "archivePath": "data/archives/reviews/once-2012/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T04:02:36.563Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "wordCount": 578,
+  "tierReason": "Full review text"
 }
