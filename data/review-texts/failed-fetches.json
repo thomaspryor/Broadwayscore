@@ -11452,54 +11452,6 @@
     "timestamp": "2026-02-04T17:18:01.492Z"
   },
   {
-    "reviewId": "a-strange-loop-2022/nytg--unknown.json",
-    "showId": "a-strange-loop-2022",
-    "outlet": "New York Theatre Guide",
-    "critic": "Unknown",
-    "url": "https://www.newyorktheatreguide.com/reviews/a-strange-loop-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): hamilton, company, oklahoma!, the audience, high...",
-    "textLength": 4269,
-    "timestamp": "2026-02-04T17:21:32.728Z"
-  },
-  {
-    "reviewId": "a-strange-loop-2022/nytimes--maya-phillips.json",
-    "showId": "a-strange-loop-2022",
-    "outlet": "New York Times",
-    "critic": "Maya Phillips",
-    "url": "https://www.nytimes.com/2022/04/26/theater/a-strange-loop-review-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): wicked, hamilton, the lion king, redwood, company...",
-    "textLength": 8403,
-    "timestamp": "2026-02-04T17:24:47.310Z"
-  },
-  {
-    "reviewId": "a-strange-loop-2022/vulture--helen-shaw.json",
-    "showId": "a-strange-loop-2022",
-    "outlet": "Vulture",
-    "critic": "Helen Shaw",
-    "url": "https://www.vulture.com/2022/04/theater-review-a-strange-loop-broadway.html?utm_source=flipboard.com&utm_medium=social_acct&utm_campaign=feed-part",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): the lion king, smash, company, the prom, carousel...",
-    "textLength": 10488,
-    "timestamp": "2026-02-04T17:24:51.144Z"
-  },
-  {
-    "reviewId": "a-strange-loop-2022/vulture--jesse-green.json",
-    "showId": "a-strange-loop-2022",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "https://www.vulture.com/2022/04/theater-review-a-strange-loop-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): the lion king, smash, company, the prom, carousel...",
-    "textLength": 8200,
-    "timestamp": "2026-02-04T17:24:55.602Z"
-  },
-  {
     "reviewId": "a-streetcar-named-desire-2012/hollywood-reporter--david-rooney.json",
     "showId": "a-streetcar-named-desire-2012",
     "outlet": "The Hollywood Reporter",
@@ -11510,30 +11462,6 @@
     "garbageReason": "Multiple shows mentioned (8): appropriate, home, company, rain, race...",
     "textLength": 3589,
     "timestamp": "2026-02-04T17:25:14.813Z"
-  },
-  {
-    "reviewId": "a-tale-of-two-cities-2008/nytimes--ben-brantley.json",
-    "showId": "a-tale-of-two-cities-2008",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2008/09/19/theater/reviews/19tale.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): english, purpose, les misérables, the performers, jekyll & hyde...",
-    "textLength": 8004,
-    "timestamp": "2026-02-04T17:25:18.538Z"
-  },
-  {
-    "reviewId": "a-tale-of-two-cities-2008/variety--david-rooney.json",
-    "showId": "a-tale-of-two-cities-2008",
-    "outlet": "Variety",
-    "critic": "David Rooney",
-    "url": "https://variety.com/2008/legit/reviews/a-tale-of-two-cities-1200472041/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): company, carousel, the visit, the visit, once...",
-    "textLength": 3339,
-    "timestamp": "2026-02-04T17:25:46.246Z"
   },
   {
     "reviewId": "a-view-from-the-bridge-2010/hollywood-reporter--unknown.json",
@@ -12290,18 +12218,6 @@
     "garbageReason": "Multiple shows mentioned (8): harry potter and the cursed child, purpose, the present, misery, the audience...",
     "textLength": 4413,
     "timestamp": "2026-02-05T00:56:50.163Z"
-  },
-  {
-    "reviewId": "a-time-to-kill-2013/hollywood-reporter--unknown.json",
-    "showId": "a-time-to-kill-2013",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/a-time-kill-theater-review-649686",
-    "method": "browserbase",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): summer, the audience, once, elling, high...",
-    "textLength": 6989,
-    "timestamp": "2026-02-05T00:58:16.124Z"
   },
   {
     "reviewId": "a-touch-of-the-poet-2005/nytimes--ben-brantley.json",
@@ -15038,5 +14954,113 @@
     "garbageReason": "Multiple shows mentioned (9): harry potter and the cursed child, appropriate, the ferryman, 1984, cats...",
     "textLength": 5800,
     "timestamp": "2026-02-05T04:45:20.664Z"
+  },
+  {
+    "reviewId": "a-strange-loop-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "a-strange-loop-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/04/26/a-strange-loop-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): the skin of our teeth, macbeth, macbeth, hair, once...",
+    "textLength": 5634,
+    "timestamp": "2026-02-05T04:47:49.035Z"
+  },
+  {
+    "reviewId": "a-strange-loop-2022/nytg--unknown.json",
+    "showId": "a-strange-loop-2022",
+    "outlet": "New York Theatre Guide",
+    "critic": "Unknown",
+    "url": "https://www.newyorktheatreguide.com/reviews/a-strange-loop-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): hamilton, company, oklahoma!, the audience, high...",
+    "textLength": 4269,
+    "timestamp": "2026-02-05T04:47:57.299Z"
+  },
+  {
+    "reviewId": "a-strange-loop-2022/nytimes--maya-phillips.json",
+    "showId": "a-strange-loop-2022",
+    "outlet": "New York Times",
+    "critic": "Maya Phillips",
+    "url": "https://www.nytimes.com/2022/04/26/theater/a-strange-loop-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): wicked, hamilton, the lion king, redwood, company...",
+    "textLength": 8403,
+    "timestamp": "2026-02-05T04:49:10.886Z"
+  },
+  {
+    "reviewId": "a-strange-loop-2022/vulture--helen-shaw.json",
+    "showId": "a-strange-loop-2022",
+    "outlet": "Vulture",
+    "critic": "Helen Shaw",
+    "url": "https://www.vulture.com/2022/04/theater-review-a-strange-loop-broadway.html?utm_source=flipboard.com&utm_medium=social_acct&utm_campaign=feed-part",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): the lion king, smash, company, the prom, carousel...",
+    "textLength": 10488,
+    "timestamp": "2026-02-05T04:49:14.094Z"
+  },
+  {
+    "reviewId": "a-strange-loop-2022/vulture--jesse-green.json",
+    "showId": "a-strange-loop-2022",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2022/04/theater-review-a-strange-loop-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): the lion king, smash, company, the prom, carousel...",
+    "textLength": 8200,
+    "timestamp": "2026-02-05T04:49:18.162Z"
+  },
+  {
+    "reviewId": "a-streetcar-named-desire-2012/vulture--sara-holdren.json",
+    "showId": "a-streetcar-named-desire-2012",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/theater-review-streetcar-named-desire-williams-frecknall-mescal-ferran.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, company, summer, cats, sweat...",
+    "textLength": 9806,
+    "timestamp": "2026-02-05T04:49:21.799Z"
+  },
+  {
+    "reviewId": "a-tale-of-two-cities-2008/nytimes--ben-brantley.json",
+    "showId": "a-tale-of-two-cities-2008",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2008/09/19/theater/reviews/19tale.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): english, purpose, les misérables, the performers, jekyll & hyde...",
+    "textLength": 8004,
+    "timestamp": "2026-02-05T04:49:29.699Z"
+  },
+  {
+    "reviewId": "a-tale-of-two-cities-2008/variety--david-rooney.json",
+    "showId": "a-tale-of-two-cities-2008",
+    "outlet": "Variety",
+    "critic": "David Rooney",
+    "url": "https://variety.com/2008/legit/reviews/a-tale-of-two-cities-1200472041/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, carousel, the visit, once, november...",
+    "textLength": 3320,
+    "timestamp": "2026-02-05T04:49:47.668Z"
+  },
+  {
+    "reviewId": "a-time-to-kill-2013/hollywood-reporter--unknown.json",
+    "showId": "a-time-to-kill-2013",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/a-time-kill-theater-review-649686",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): mamma mia!, summer, the audience, once, elling...",
+    "textLength": 7215,
+    "timestamp": "2026-02-05T04:50:07.074Z"
   }
 ]
