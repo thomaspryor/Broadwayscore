@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "Are you ready? The splashy new Broadway musical SpongeBob SquarePants, whose arrival was greeted in some circles with sneers of anticipatory derision, turns out to be a joy. Like its irrepressible yellow hero, played by the peppy and limber-limbed Ethan Slater, the show is unabashedly committed to imagination and dorky enthusiasm. As SpongeBob and his squirrel friend, Sandy (Lilli Cooper), labor to save their undersea town-the cheekily named Bikini Bottom-from a local volcano, the wonders of Tina Landau's production pour from the stage in a ravishing stream of color and invention that sucks you into its merry, silly currents.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The SpongeBob musical is a triumph of theatrical imagination that transforms Nickelodeon's cartoon into something genuinely moving and spectacular.",
   "contentTier": "truncated",
@@ -22,7 +22,8 @@
   "playbillVerdictUrl": "https://www.timeout.com/newyork/theater/spongebob-squarepants",
   "sources": [
     "web-search",
-    "playbill-verdict"
+    "playbill-verdict",
+    "bww-reviews"
   ],
   "llmScore": {
     "score": 85,
@@ -78,5 +79,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
-  }
+  },
+  "bwwScore": 8
 }

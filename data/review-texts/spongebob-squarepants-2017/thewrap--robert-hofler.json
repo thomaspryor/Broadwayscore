@@ -7,7 +7,8 @@
   "playbillVerdictUrl": "https://www.thewrap.com/spongebob-squarepants-broadway-review-bouncy-tunes-keep-soggy-book-afloat/",
   "source": "playbill-verdict",
   "sources": [
-    "playbill-verdict"
+    "playbill-verdict",
+    "bww-reviews"
   ],
   "fullText": "The 2008 Broadway musical “Shrek” required its star Brian d’Arcy James to spend at least two hours in makeup to turn himself into the spitting image of the famed green ogre. To director Tina Landau’s credit, actor Ethan Slater never resembles a yellow sponge that lives in a pineapple at the bottom of the sea in the new musical “SpongeBob SquarePants,” which opened Monday at the Palace Theatre.",
   "isFullReview": false,
@@ -43,5 +44,7 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be just the opening paragraph of a review that sets up context about makeup/costumes, with no evaluative content about the show's quality or recommendation.; openai: The text is about the musical 'SpongeBob SquarePants,' not the target show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwExcerpt": "What keeps 'SpongeBob' afloat are the original songs by Sara Bareilles, Cyndi Lauper, John Legend and others. They range from gospel lite to ersatz heavy metal, and a few capture the infectious bounce of Joe Raposo's tunes for the early episodes of 'Sesame Street.'",
+  "bwwScore": 8
 }
