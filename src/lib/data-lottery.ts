@@ -50,3 +50,35 @@ export function hasLotteryOrRush(showId: string): { hasLottery: boolean; hasRush
 export function getLotteryRushLastUpdated(): string {
   return lotteryRush.lastUpdated;
 }
+
+/**
+ * Get all show IDs that have lottery programs
+ */
+export function getAllLotteryShowIds(): string[] {
+  return Object.entries(lotteryRush.shows)
+    .filter(([_, data]) => data.lottery || data.specialLottery)
+    .map(([id]) => id);
+}
+
+/**
+ * Get all show IDs that have rush programs
+ */
+export function getAllRushShowIds(): string[] {
+  return Object.entries(lotteryRush.shows)
+    .filter(([_, data]) => data.rush || data.digitalRush || data.studentRush)
+    .map(([id]) => id);
+}
+
+/**
+ * Get count of shows with lottery programs
+ */
+export function getLotteryShowCount(): number {
+  return getAllLotteryShowIds().length;
+}
+
+/**
+ * Get count of shows with rush programs
+ */
+export function getRushShowCount(): number {
+  return getAllRushShowIds().length;
+}
