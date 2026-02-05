@@ -9016,42 +9016,6 @@
     "timestamp": "2026-02-04T01:18:23.941Z"
   },
   {
-    "reviewId": "9-to-5-2009/nydailynews--unknown.json",
-    "showId": "9-to-5-2009",
-    "outlet": "New York Daily News",
-    "critic": "Unknown",
-    "url": "http://www.nydailynews.com/entertainment/music-arts/sunshine-theater-review-article-1.1516197",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): patriots, home, tina, mean girls, falsettos...",
-    "textLength": 8287,
-    "timestamp": "2026-02-04T01:20:12.329Z"
-  },
-  {
-    "reviewId": "9-to-5-2009/nypost--unknown.json",
-    "showId": "9-to-5-2009",
-    "outlet": "New York Post",
-    "critic": "Unknown",
-    "url": "http://nypost.com/2013/11/14/little-miss-sunshine-musical-mistakes-sucrose-for-sweetness/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): sunset boulevard, prince of broadway, falsettos, sunset boulevard, the mystery of edwin drood...",
-    "textLength": 3072,
-    "timestamp": "2026-02-04T01:20:35.436Z"
-  },
-  {
-    "reviewId": "9-to-5-2009/theatermania--david-rooney.json",
-    "showId": "9-to-5-2009",
-    "outlet": "TheaterMania",
-    "critic": "David Rooney",
-    "url": "https://www.theatermania.com/broadway/reviews/9-to-5_23456.html",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): ragtime, sweeney todd, company, king lear, ragtime...",
-    "textLength": 5037,
-    "timestamp": "2026-02-04T01:21:57.362Z"
-  },
-  {
     "reviewId": "9-to-5-2009/wsj--unknown.json",
     "showId": "9-to-5-2009",
     "outlet": "The Wall Street Journal",
@@ -15880,18 +15844,6 @@
     "timestamp": "2026-02-05T06:18:40.406Z"
   },
   {
-    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nydailynews--chris-jones.json",
-    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-    "outlet": "New York Daily News",
-    "critic": "Chris Jones",
-    "url": "https://www.nydailynews.com/entertainment/broadway/ny-beautiful-noise-review-broadway-neil-diamond-20221205-fwrth5cfbrdu3a3eslcaqwl7hi-story.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (4)",
-    "textLength": 5227,
-    "timestamp": "2026-02-05T06:22:15.030Z"
-  },
-  {
     "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/observer--david-cote.json",
     "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
     "outlet": "Observer",
@@ -16754,5 +16706,101 @@
     "garbageReason": "Multiple shows mentioned (10): smash, company, hair, once, evita...",
     "textLength": 6384,
     "timestamp": "2026-02-05T17:19:17.649Z"
+  },
+  {
+    "reviewId": "9-to-5-2009/nydailynews--unknown.json",
+    "showId": "9-to-5-2009",
+    "outlet": "New York Daily News",
+    "critic": "Unknown",
+    "url": "http://www.nydailynews.com/entertainment/music-arts/sunshine-theater-review-article-1.1516197",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): mean girls, falsettos, hair, once, elling...",
+    "textLength": 2058,
+    "timestamp": "2026-02-05T17:20:13.878Z"
+  },
+  {
+    "reviewId": "9-to-5-2009/nypost--unknown.json",
+    "showId": "9-to-5-2009",
+    "outlet": "New York Post",
+    "critic": "Unknown",
+    "url": "http://nypost.com/2013/11/14/little-miss-sunshine-musical-mistakes-sucrose-for-sweetness/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): sunset boulevard, falsettos, sunset boulevard, the mystery of edwin drood, hands on a hardbody...",
+    "textLength": 2871,
+    "timestamp": "2026-02-05T17:20:17.347Z"
+  },
+  {
+    "reviewId": "9-to-5-2009/theatermania--david-rooney.json",
+    "showId": "9-to-5-2009",
+    "outlet": "TheaterMania",
+    "critic": "David Rooney",
+    "url": "https://www.theatermania.com/broadway/reviews/9-to-5_23456.html",
+    "method": "browserbase",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): ragtime, company, ragtime, company, well",
+    "textLength": 1700,
+    "timestamp": "2026-02-05T17:20:41.196Z"
+  },
+  {
+    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/broadwaynews--brittani-samuel.json",
+    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+    "outlet": "Broadway News",
+    "critic": "Brittani Samuel",
+    "url": "https://broadwaynews.com/2022/12/04/in-broadways-a-beautiful-noise-the-music-is-more-interesting-than-the-man/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): home, parade, company, hair, once...",
+    "textLength": 5777,
+    "timestamp": "2026-02-05T17:23:07.471Z"
+  },
+  {
+    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
+    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-broadway-reviews-1235188689/",
+    "method": "browserbase",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): appropriate, home, parade, slave play, tina...",
+    "textLength": 13195,
+    "timestamp": "2026-02-05T17:23:21.503Z"
+  },
+  {
+    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/ew--dave-quinn.json",
+    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+    "outlet": "Entertainment Weekly",
+    "critic": "Dave Quinn",
+    "url": "https://ew.com/theater/theater-reviews/a-beautiful-noise-review-neil-diamond/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): proof, company, funny girl, tina, spring awakening...",
+    "textLength": 6963,
+    "timestamp": "2026-02-05T17:23:25.115Z"
+  },
+  {
+    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/new-york-sun--elysa-gardner.json",
+    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+    "outlet": "New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/neil-diamond-on-broadway-sequins-kitsch-and-above-all-talent",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, hair, once, high, company...",
+    "textLength": 5054,
+    "timestamp": "2026-02-05T17:23:59.430Z"
+  },
+  {
+    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nydailynews--chris-jones.json",
+    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+    "outlet": "New York Daily News",
+    "critic": "Chris Jones",
+    "url": "https://www.nydailynews.com/entertainment/broadway/ny-beautiful-noise-review-broadway-neil-diamond-20221205-fwrth5cfbrdu3a3eslcaqwl7hi-story.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (4)",
+    "textLength": 5227,
+    "timestamp": "2026-02-05T17:24:02.306Z"
   }
 ]
