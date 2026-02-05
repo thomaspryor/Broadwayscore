@@ -415,9 +415,9 @@ async function scrapeNYCTheatreRoundups() {
     return opening >= new Date('2023-01-01');
   });
 
-  // Apply --shows filter if provided
+  // Apply --shows filter if provided (check both slug and id)
   if (targetShowIds) {
-    recentShows = recentShows.filter(s => targetShowIds.includes(s.slug || s.id));
+    recentShows = recentShows.filter(s => targetShowIds.includes(s.id) || targetShowIds.includes(s.slug));
   }
 
   console.log(`Processing ${recentShows.length} shows from 2023+\n`);

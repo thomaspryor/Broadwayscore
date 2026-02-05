@@ -150,10 +150,15 @@ function updateShowStatuses() {
   console.log(`Updates applied: ${updates.length}`);
 
   // GitHub Actions output
-  if (process.env.GITHUB_OUTPUT && updates.length > 0) {
+  if (process.env.GITHUB_OUTPUT) {
     const outputFile = process.env.GITHUB_OUTPUT;
     fs.appendFileSync(outputFile, `updates_count=${updates.length}\n`);
     fs.appendFileSync(outputFile, `updated_shows=${updates.map(u => u.title).join(', ')}\n`);
+
+    // Separate output for shows transitioning previews→open (for downstream triggers)
+    const openedShows = updates.filter(u => u.changes.status?.from === 'previews' && u.changes.status?.to === 'open');
+    fs.appendFileSync(outputFile, `opened_count=${openedShows.length}\n`);
+    fs.appendFileSync(outputFile, `opened_slugs=${openedShows.map(u => u.id).join(',')}\n`);
   }
 
   return updates;
