@@ -73,14 +73,14 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 function ScoreBadge({ score, reviewCount }: { score?: number | null; reviewCount?: number }) {
   if (reviewCount !== undefined && reviewCount < 5) {
     return (
-      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-bold text-xs sm:text-sm rounded-lg sm:rounded-xl">
+      <div className="w-14 h-14 sm:w-16 sm:h-16 bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-bold text-sm sm:text-base rounded-xl">
         TBD
       </div>
     );
   }
   if (score === undefined || score === null) {
     return (
-      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-base sm:text-lg rounded-lg sm:rounded-xl">
+      <div className="w-14 h-14 sm:w-16 sm:h-16 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-xl sm:text-2xl rounded-xl">
         -
       </div>
     );
@@ -94,7 +94,7 @@ function ScoreBadge({ score, reviewCount }: { score?: number | null; reviewCount
   else colorClass = 'score-skip';
 
   return (
-    <div className={`w-10 h-10 sm:w-12 sm:h-12 ${colorClass} flex items-center justify-center font-bold text-base sm:text-lg rounded-lg sm:rounded-xl`}>
+    <div className={`w-14 h-14 sm:w-16 sm:h-16 ${colorClass} flex items-center justify-center font-bold text-xl sm:text-2xl rounded-xl`}>
       {roundedScore}
     </div>
   );
@@ -244,7 +244,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
           <div className="space-y-4">
             {shows.map((show, index) => {
               const consensus = getCriticConsensus(show.id);
-              const ticketLink = show.ticketLinks?.[0];
+              const ticketLinks = show.ticketLinks?.filter(Boolean) || [];
 
               return (
                 <div key={show.id} className="card p-4 sm:p-5">
@@ -252,7 +252,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                     <RankBadge rank={index + 1} />
 
                     {/* Thumbnail */}
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
                       {show.images?.thumbnail ? (
                         <img
                           src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
@@ -262,7 +262,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <span className="text-xl">🎭</span>
+                          <span className="text-2xl">🎭</span>
                         </div>
                       )}
                     </div>
@@ -271,7 +271,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                     <div className="flex-1 min-w-0">
                       <Link
                         href={`/show/${show.slug}`}
-                        className="font-bold text-white text-sm sm:text-base hover:text-brand transition-colors"
+                        className="font-bold text-white text-base sm:text-lg hover:text-brand transition-colors"
                       >
                         {show.title}
                       </Link>
@@ -291,25 +291,28 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
 
                   {/* Critic Consensus */}
                   {consensus && (
-                    <p className="text-gray-400 text-sm leading-relaxed mt-3 pl-11 sm:pl-12">
+                    <p className="text-gray-400 text-sm leading-relaxed mt-3 pt-1">
                       {consensus}
                     </p>
                   )}
 
-                  {/* Ticket CTA */}
-                  {ticketLink && show.status === 'open' && (
-                    <div className="mt-3 pl-11 sm:pl-12">
-                      <a
-                        href={ticketLink.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-brand hover:bg-brand-hover text-white font-medium rounded-lg text-sm transition-colors min-h-[44px]"
-                      >
-                        Get Tickets{ticketLink.priceFrom ? ` from $${ticketLink.priceFrom}` : ''}
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </a>
+                  {/* Ticket Links */}
+                  {ticketLinks.length > 0 && show.status === 'open' && (
+                    <div className="mt-3 pt-1 flex flex-wrap gap-2">
+                      {ticketLinks.map((link, i) => (
+                        <a
+                          key={i}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                          </svg>
+                          {link.platform}{link.priceFrom ? ` from $${link.priceFrom}` : ''}
+                        </a>
+                      ))}
                     </div>
                   )}
                 </div>
