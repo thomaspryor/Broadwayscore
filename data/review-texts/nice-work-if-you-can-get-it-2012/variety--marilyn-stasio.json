@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2012/legit/reviews/nice-work-if-you-can-get-it-1117947298/",
   "publishDate": "April 24, 2012",
-  "fullText": "This old-fashioned musical comedy has all the right ingredients — a witty book, gorgeous Gershwin songs and a company of Broadway pros who know how to put over both the jokes and the melodies.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "This old-fashioned musical comedy has all the right ingredients — a witty book, gorgeous Gershwin songs and a company of Broadway pros who know how to put over both the jokes and the melodies.",
   "originalScore": null,
   "assignedScore": 81,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This old-fashioned musical comedy has all the right ingredients — a witty book, gorgeous Gershwin songs and a company of Broadway pros who know how to put over both the jokes and the melodies.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (34 words)",
   "llmScore": {
     "score": 81,
@@ -72,5 +72,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 81,
+  "textWordCount": 612,
+  "archivePath": "data/archives/reviews/nice-work-if-you-can-get-it-2012/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T04:15:32.841Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "More magic begins creeping into the second season of \"Game of Thrones,\" literally speaking, but the magic conjured by season one continues virtually unabated: a dizzying array of characters, splendid performances, and a scope and grandeur like nothing else on television.\n\nMore magic begins creeping into the second season of “Game of Thrones,” literally speaking, but the magic conjured by season one continues virtually unabated: a dizzying array of characters, splendid performances, and a scope and grandeur like nothing else on television. Combine that with the handful of warring factions vying for the Iron Throne, and pervasive ruthlessness that leaves no one — including children — safe, and HBO has the ingredients for a series that puts nearly every other genre offering to shame. “Winter is coming” is the show’s catchphrase, but it was worth the wait till spring to receive it.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Spotify Is Raising U.S. Subscription Prices in the Next Month \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Trevor Noah Mocks Donald Trump's Friendship With Jeffrey Epstein During Grammys: 'What Are You Going to Do About It?'\n\nSeries creators David Benioff and D.B. Weiss deserve enormous credit for tackling George R.R. Martin‘s popular novels with all the unflinching intensity they require, even if that means re-jiggering a few pieces for cinematic purposes. And while the characters lost during the first campaign leave a mark, the season’s first four episodes make clear the narrative hasn’t retreated, but merely reloaded.\n\nHaving arranged the death of the former king, the Lannister family now controls the seat of power, with sadistic teenager Joffrey (Jack Gleeson) — the incestuous progeny of his mother, Queen Cersei (Lena Headey), and her brother Jamie (Nikolaj Coster-Waldau) — ruling like a pubescent Nero.\n\nFortunately, Joffrey’s uncle Tyrion (Emmy winner Peter Dinklage) is now serving as the Hand of the King, which has a way of elevating every scene he’s in, as well as sprinkling the festivities with disarming humor.\n\nThat helps, since so much else of what transpires is grim and bloody, in a world where the term “power corrupts” has never appeared more apt. Indeed, when the plotting whore-master Baelish (Aidan Gillen) tells the queen, “Knowledge is power,” she quickly corrects him. “Power is power,” she says, providing a brutal example to illustrate her point.\n\nThe Lannisters remain under siege from northern forces led by Robb Stark (Richard Madden), who is still smarting, understandably, over the little matter of his father’s beheading. But a handful of other factions are also massing to capture the throne, which not only takes the show to a staggering assortment of locations but sets up such an intricate web that casual observers are to be forgiven if they ask for a scorecard.\n\nNot that you really need one to savor “Thrones” on any number of levels, starting with the easily overlooked assortment of topnotch talent, mostly British, holding down key roles. Among the new faces are Stephen Dillane (who played Thomas Jefferson in “John Adams”) as the late king’s brother, and Gwendoline Christie as Brienne, a towering female warrior.\n\n“Thrones” creates such a rich visual feast — replete with plenty of gratuitous nudity and blood-letting — as to almost obscure its fundamental storytelling pleasures, which are as much a mob drama as anything else, having traded bullets for broadswords. By that measure, this really might the closest spiritual heir to “The Sopranos” HBO has delivered since the show’s notorious whiteout.\n\n“Game of Thrones” will always face an extra hurdle in that some will resist its fantasy elements, but under a niche-oriented business model, who cares? For an army of loyalists, HBO will be must-have TV each time the show raises its banner.\n\nAnd in pay-TV terms, that is power."
 }
