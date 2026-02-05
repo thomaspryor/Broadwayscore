@@ -11344,18 +11344,6 @@
     "timestamp": "2026-02-04T17:52:37.702Z"
   },
   {
-    "reviewId": "all-my-sons-2008/variety--david-rooney.json",
-    "showId": "all-my-sons-2008",
-    "outlet": "Variety",
-    "critic": "David Rooney",
-    "url": "https://variety.com/2008/legit/reviews/all-my-sons-1200472666/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): purpose, king lear, the audience, hair, elling...",
-    "textLength": 7353,
-    "timestamp": "2026-02-04T17:52:54.294Z"
-  },
-  {
     "reviewId": "allegiance-2015/variety--marilyn-stasio.json",
     "showId": "allegiance-2015",
     "outlet": "Variety",
@@ -12170,54 +12158,6 @@
     "garbageReason": "Multiple shows mentioned (7): appropriate, the elephant man, hair, once, high...",
     "textLength": 7443,
     "timestamp": "2026-02-05T01:16:49.577Z"
-  },
-  {
-    "reviewId": "all-my-sons-2019/hollywood-reporter--david-rooney.json",
-    "showId": "all-my-sons-2019",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/culture-news/all-my-sons-broadway-review-1205449/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (6): home, english, disgraced, hair, high...",
-    "textLength": 1603,
-    "timestamp": "2026-02-05T01:17:05.825Z"
-  },
-  {
-    "reviewId": "all-my-sons-2019/hollywood-reporter--frank-scheck.json",
-    "showId": "all-my-sons-2019",
-    "outlet": "Hollywood Reporter",
-    "critic": "Frank Scheck",
-    "url": "http://www.hollywoodreporter.com/review/all-my-sons-theater-review-1203756",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): company, high, race, august: osage county, company...",
-    "textLength": 4746,
-    "timestamp": "2026-02-05T01:17:25.896Z"
-  },
-  {
-    "reviewId": "all-my-sons-2019/nytg--mark-shenton.json",
-    "showId": "all-my-sons-2019",
-    "outlet": "New York Theatre Guide",
-    "critic": "Mark Shenton",
-    "url": "https://www.newyorktheatreguide.com/reviews/review-of-all-my-sons-starring-annette-bening-tracy-letts-on-broadway",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): company, evita, high, august: osage county, company...",
-    "textLength": 5831,
-    "timestamp": "2026-02-05T01:17:32.985Z"
-  },
-  {
-    "reviewId": "all-my-sons-2019/vulture--sara-holdren.json",
-    "showId": "all-my-sons-2019",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "http://www.vulture.com/2019/04/theater-review-annette-bening-on-broadway-in-all-my-sons.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): betrayal, summer, betrayal, once, elling...",
-    "textLength": 10709,
-    "timestamp": "2026-02-05T01:17:44.300Z"
   },
   {
     "reviewId": "amazing-grace-2015/vulture--jesse-green.json",
@@ -17318,5 +17258,89 @@
     "garbageReason": "Multiple article boundaries detected (3)",
     "textLength": 5304,
     "timestamp": "2026-02-05T18:41:52.044Z"
+  },
+  {
+    "reviewId": "all-my-sons-2008/variety--david-rooney.json",
+    "showId": "all-my-sons-2008",
+    "outlet": "Variety",
+    "critic": "David Rooney",
+    "url": "https://variety.com/2008/legit/reviews/all-my-sons-1200472666/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): purpose, king lear, the audience, hair, elling...",
+    "textLength": 7041,
+    "timestamp": "2026-02-05T18:44:56.621Z"
+  },
+  {
+    "reviewId": "all-my-sons-2019/hollywood-reporter--david-rooney.json",
+    "showId": "all-my-sons-2019",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/culture-news/all-my-sons-broadway-review-1205449/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (6): home, english, disgraced, hair, high...",
+    "textLength": 1327,
+    "timestamp": "2026-02-05T18:45:31.034Z"
+  },
+  {
+    "reviewId": "all-my-sons-2019/hollywood-reporter--frank-scheck.json",
+    "showId": "all-my-sons-2019",
+    "outlet": "Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/all-my-sons-theater-review-1203756",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, high, race, august: osage county, company...",
+    "textLength": 4837,
+    "timestamp": "2026-02-05T18:45:43.885Z"
+  },
+  {
+    "reviewId": "all-my-sons-2019/nytg--mark-shenton.json",
+    "showId": "all-my-sons-2019",
+    "outlet": "New York Theatre Guide",
+    "critic": "Mark Shenton",
+    "url": "https://www.newyorktheatreguide.com/reviews/review-of-all-my-sons-starring-annette-bening-tracy-letts-on-broadway",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, evita, high, august: osage county, company...",
+    "textLength": 5831,
+    "timestamp": "2026-02-05T18:45:50.221Z"
+  },
+  {
+    "reviewId": "all-my-sons-2019/vulture--sara-holdren.json",
+    "showId": "all-my-sons-2019",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "http://www.vulture.com/2019/04/theater-review-annette-bening-on-broadway-in-all-my-sons.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): betrayal, summer, betrayal, once, elling...",
+    "textLength": 10709,
+    "timestamp": "2026-02-05T18:46:12.830Z"
+  },
+  {
+    "reviewId": "all-out-2025/nytg--joe-dziemianowicz.json",
+    "showId": "all-out-2025",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/the-25th-annual-putnam-county-spelling-bee-off-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, kimberly akimbo, hair, once, elling...",
+    "textLength": 4751,
+    "timestamp": "2026-02-05T18:46:19.989Z"
+  },
+  {
+    "reviewId": "all-out-2025/nytimes--elisabeth-vincentelli.json",
+    "showId": "all-out-2025",
+    "outlet": "New York Times",
+    "critic": "Elisabeth Vincentelli",
+    "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-bee-review.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): boop! the musical, home, kimberly akimbo, tootsie, falsettos...",
+    "textLength": 4473,
+    "timestamp": "2026-02-05T18:47:30.960Z"
   }
 ]
