@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"We've seen characters like the men in \"A Steady Rain\" before -- frustrated city patrolmen dreaming about making detective, maybe bending the law a little yet convinced they're doing an honest job. And we've seen variations on their downward spiral and partner conflict in gritty cop shows from \"NYPD Blue\" through \"The Wire\" to \"Southland.\" But playwright Keith Huff recharges those familiar elements by approaching events usually outlined in action terms with the probing eye",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-Review-Roundup-A-STEADY-RAIN-20090929",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But playwright Keith Huff recharges those familiar elements by approaching events usually outlined in action terms with the probing eye",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows mild praise for the playwright's fresh approach to familiar material, but truncated text and potential cherry-picking warrants lower confidence and cautious positive score. | GPT-4o: The excerpt suggests a positive view of the playwright's ability to refresh familiar elements, indicating a mild recommendation. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The review states that the playwright \"recharges\" familiar elements, which suggests a positive assessment. However, due to the limited excerpt, confidence is low. | Kimi: Single excerpt indicates the playwright successfully revitalizes familiar genre conventions with an intelligent approach, though the text is truncated and represents only a curated selection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:26:38.802Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 73,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

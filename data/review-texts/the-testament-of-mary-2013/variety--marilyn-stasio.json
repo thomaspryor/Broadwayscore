@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Fiona Shaw's performance as Mary is magnificent, a tour de force of theatrical power that transforms Colm Toibin's spare prose into a living, breathing portrait of grief.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -50,5 +50,60 @@
   "previousUrl": "https://variety.com/2013/legit/reviews/the-testament-of-mary-1200334859/",
   "urlDiscoveredAt": "2026-02-04T18:20:23.254Z",
   "urlDiscoveryMethod": "show-not-mentioned-recovery",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shaw such a master at the art of creative shock, that in the process of delivering her testimony, one traditional legend after another is smashed to bits.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Enthusiastic praise throughout with superlatives like 'powerhouse', 'matchless', 'thrilling', 'soul-baring', describing Shaw as 'a master' and the work as hugely imaginative. No reservations expressed about recommending the show. | GPT-4o: The review is filled with superlatives and praises Fiona Shaw's performance as 'matchless' and 'soul-baring,' describing the production as 'hugely imaginative' and 'thrilling.' The critic's language indicates an enthusiastic, must-see recommendation. | Gemini: The review is overwhelmingly positive, praising Fiona Shaw's performance as a 'powerhouse' and highlighting the production's imaginative and impactful staging. The critic clearly recommends seeing the show. | Kimi: The review offers unqualified praise for Fiona Shaw's 'matchless' performance and the 'hugely imaginative' production, declaring 'you've never seen anything like it' with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:08:52.849Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

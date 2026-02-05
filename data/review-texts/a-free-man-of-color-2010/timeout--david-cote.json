@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Wright can hold an audience with a cock of the head and his low, raspy voice, but here he’s surrounded by some of the city’s finest stage actors, whipped into a frenzy by director George C. Wolfe. Among others, we savor Veanne Cox as one of Cornet’s several married conquests; Mos (formerly Mos Def) as his sly manservant Murmur; and Reg Rogers as Cornet’s white half-brother, a whinnying simp desperate to reclaim his birthright. John McMartin and Paul Dano contribute nicely shaded portraits of the diffident President Thomas Jefferson and Western explorer Meriwether Lewis, respectively.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wright can hold an audience with a cock of the head and his low, raspy voice, but here he's surrounded by some of the city's finest stage actors, whipped into a frenzy by director George C. Wolfe.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead actor, director, and ensemble as 'some of the city's finest stage actors.' Given single excerpt warning and clear praise throughout, scoring upper end of Positive bucket. | GPT-4o: The excerpt praises the performances and direction, suggesting a positive view of the production. However, the single excerpt warning and lack of a clear overall verdict lead to a lower confidence and a score at the lower end of the Positive range. | Gemini: The review excerpt praises the performances and direction, indicating a positive experience. However, due to the limited text, the confidence is low. | Kimi: The excerpt offers enthusiastic praise for the cast and direction, using admiring verbs like 'savor' and 'nicely shaded' to describe the performances; however, as a single curated quote, it may not capture the full critical verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:02:09.289Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "If “Saturday Night Live” allowed foul language, and Christopher Walken happened to be the guest host one week, I could easily imagine the writers brainstorming the idea for a send-up of a Martin McDonagh play. They'd call it 'A Behanding in Spokane' and it would feature McDonagh's signature elements: violence, body parts, and ghoulish humor. Of course 'Behanding...' is actually McDonagh's latest work to open on Broadway. And while I can't exactly say it's a bad play, it's just not a play at all.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "while I can't exactly say it's a bad play, it's just not a play at all",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic dismisses the work as 'not a play at all' and compares it to an SNL parody sketch. Despite saying it's 'not exactly bad,' the overall assessment is negative. Single excerpt limits confidence. | GPT-4o: The review suggests that the play lacks substance or coherence, implying a negative verdict despite not being outright dismissive. The comparison to a parody and the statement that it's 'just not a play at all' indicates a lack of recommendation. | Gemini: The critic states that the play is \"not a play at all\", which indicates a negative assessment. Given the single excerpt, confidence is medium. | Kimi: The critic compares the work to an SNL sketch parody and fundamentally denies it qualifies as a play, suggesting it lacks dramatic substance and seriousness despite featuring the playwright's signature elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:43:56.396Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

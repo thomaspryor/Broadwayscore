@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"B+ Jane Fonda shares the stage with Ludwig van Beethoven in Moisés Kaufman's satisfying, musically astute Broadway brainteaser 33 Variations. Both of them acquit themselves nicely. But under the circumstances, I'd say Fonda has the harder job - and it's a kick to watch her work out her timing as a stage actor, a half century after the Actors Studio alumna first performed in live theater\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-33-Variations-Review-Roundup-and-More-20090310",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Moisés Kaufman's satisfying, musically astute Broadway brainteaser 33 Variations.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: B+ grade with positive descriptors ('satisfying', 'musically astute') and praise for Fonda's performance ('kick to watch her work'). Single excerpt limits confidence but clear positive recommendation. | GPT-4o: The excerpt describes the show as 'satisfying' and 'musically astute', indicating a positive reception. However, the single excerpt warning suggests caution, leading to a lower score within the Positive range. | Gemini: The review excerpt states the show is \"satisfying\" and that both Fonda and Beethoven \"acquit themselves nicely.\" The B+ grade also indicates a positive, but not rave, review. | Kimi: The excerpt assigns a B+ grade and uses clearly positive descriptors ('satisfying,' 'musically astute,' 'kick to watch'), indicating a solid recommendation in the 80-84 range, though the single-excerpt format warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:29:05.338Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -44,5 +44,60 @@
   ],
   "wordCount": 799,
   "tierReason": "Full review text",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-IMPORTANCE-OF-BEING-EARNEST-20110113"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-IMPORTANCE-OF-BEING-EARNEST-20110113",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bedford's every line in this entertaining revival is a jewel.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite truncation warning, the review consistently praises the production with phrases like 'entertaining revival,' 'delectable characterizations,' and 'comedy at its most sublime.' The BWW excerpt confirms the positive assessment, calling it an 'entertaining revival' where every line 'is a jewel.' | GPT-4o: The review is filled with praise for the performances, particularly Bedford's, and describes the production as 'entertaining' and 'comedy at its most sublime.' Despite the truncation warning, the tone is overwhelmingly positive, suggesting a strong recommendation. | Gemini: The review is mostly positive, highlighting the brilliance of the play and the accomplishments of the cast, especially Bedford. While there are some reservations about pacing and casting, the overall tone is favorable, suggesting an enjoyable experience. | Kimi: The review consistently praises the accomplished cast and Brian Bedford's direction and star performance, calling the revival 'entertaining' and 'ageless' with only minor reservations about initial pacing, though the truncated text warrants cautious confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:03:06.749Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

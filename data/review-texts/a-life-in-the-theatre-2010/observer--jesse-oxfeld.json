@@ -55,5 +55,60 @@
   "archiveOrgTimestamp": "20110301100055",
   "archiveOrgUrl": "http://web.archive.org/web/20110301100055/http://www.observer.com:80/2010/culture/mo-mamet-mo-problems-david-mamets-early-work-life-theater-more-exercise-play",
   "wordCount": 525,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's also insubstantial and unfulfilling, more an exercise than a play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds the production technically well-executed with good visual elements but fundamentally lacking substance and clarity. Called 'insubstantial and unfulfilling' with praise only for design elements, placing it in mixed territory leaning negative. | GPT-4o: The review describes the production as 'breezy, jokey and quick' but ultimately 'insubstantial and unfulfilling'. The critic finds the play lacking in depth and coherence, though there are some enjoyable elements. This suggests a mixed review. | Gemini: The review acknowledges some positive aspects (breezy, jokey, quick, well-executed mockery) but ultimately finds the production insubstantial and unfulfilling. The lack of clarity in the relationship between the characters and the absence of a clear point contribute to a mixed assessment. | Kimi: While praising the visual design and costumes as 'brilliant' and 'fun to watch,' the critic ultimately finds the production dramatically hollow, criticizing the direction for unclear character relationships and concluding the play is an 'empty life' that fails to cohere.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:55:25.126Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

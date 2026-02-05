@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In all of its shades, Emily Mann's production mines the rich humor in the play (yes, Williams wanted you to laugh a lot) while also going for a grounded, conversational approach that avoids hokey mannerisms...Mann takes [the cast] (and Daphne Rubin-Vega as the conflicted Stella and Wood Harris as the disillusioned Mitch) through a Streetcar whose straightforward approach deprives us of a central battle royale but whose admirable affection for the text still merits t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STREETCAR-NAMED-DESIRE-Returns-to-Broadway-Updating-LIVE-20120422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mann's production mines the rich humor while going for a grounded, conversational approach that avoids hokey mannerisms.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the director's approach and notes 'admirable affection for the text' that 'merits' something (text cuts off). However, it also mentions the production 'deprives us of a central battle royale,' suggesting some disappointment. Single excerpt with apparent truncation requires low confidence. | GPT-4o: The excerpt highlights a positive aspect of the production's humor and approach, but the lack of a full review and the single excerpt warning suggest a cautious, lower-end Positive score. | Gemini: The review praises the production's humor and grounded approach, but notes the lack of a central conflict. The final phrase \"still merits t\" suggests a recommendation, but the truncated text makes it uncertain. Confidence is low due to the excerpted nature of the review. | Kimi: The excerpt offers clear praise for the direction and performances while noting one drawback (loss of 'central battle royale'), but concludes that the production's 'admirable affection for the text still merits' seeing it. Single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:35:00.483Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

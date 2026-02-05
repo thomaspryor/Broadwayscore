@@ -11,5 +11,60 @@
   "bwwExcerpt": "\"A Beautiful Noise\" isn't a perfect musical, but it is a pretty fantastic concert experience. Despite the structural unevenness, the show succeeds where it matters most — delivering the exuberant spectacle of a Neil Diamond concert. By the time the company launches into a final, soaring rendition of \"Sweet Caroline,\" you'll be out of your seat and singing along.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite the structural unevenness, the show succeeds where it matters most — delivering the exuberant spectacle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict - calls it 'pretty fantastic' and says it 'succeeds where it matters most.' Acknowledges flaws but recommends for the concert experience. Single excerpt warning applied with lower positive score. | GPT-4o: The review acknowledges structural unevenness but emphasizes the show's success in delivering an engaging concert experience. The positive tone and vivid imagery of audience engagement suggest a strong recommendation. | Gemini: The review acknowledges imperfections but ultimately recommends the show as a worthwhile concert experience, indicating a positive but not rave review. The single excerpt and \"flat\" aggregator verdict suggest a score on the lower end of the positive range. | Kimi: While acknowledging the musical has structural unevenness and isn't perfect, the critic praises it as a 'pretty fantastic concert experience' that succeeds in delivering exuberant spectacle and audience engagement, ending on a high note with enthusiastic participation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:37:53.351Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "When Crystal comes onstage, he begins with an edge: Audiences like him. They've been responding for years to his quick wit and aura of wholesomeness tinged with a bit of boyish naughtiness. To his great credit, he doesn't coast on his credentials. In '700 Sundays,' he delivers the full measure of his talent.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "To his great credit, he doesn't coast on his credentials. In '700 Sundays,' he delivers the full measure of his talent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this curated quote praises Crystal's performance and commitment ('delivers the full measure of his talent'). Since it's clearly positive but only one excerpt, scored in upper Positive range but with low confidence due to limited text. | GPT-4o: The excerpt praises Billy Crystal's performance, emphasizing his full display of talent. The positive tone suggests a strong recommendation, but the single excerpt limits confidence in the overall review sentiment. | Gemini: The excerpt praises Crystal's performance and talent, indicating a positive review. Given the single excerpt, confidence is low, but the positive language suggests a score in the upper end of the positive range. | Kimi: The excerpt offers unqualified praise for Crystal's performance, noting he doesn't coast on his reputation and delivers his full talent. Following the single-excerpt guidance for clearly positive quotes, this scores at the upper end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:31:27.254Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

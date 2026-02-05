@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "I have an unusual Christmas wish this year: I want fewer Christmas musicals going forward...In “A Christmas Story,” which is extremely faithful to the film, 9-year-old bespectacled Ralphie (played by the big-voiced Johnny Rabe) longs to receive a Red Ryder BB gun for Christmas in 1940s Indiana The central problem in mounting a stage version lies with depicting the adult Ralphie, who serves as the film’s off-screen narrator. Here, Dan Lauria wanders aimlessly around the stage and speaks directly ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-STORY-THE-MUSICAL-Opens-on-Broadway-Updating-LIVE-20121119",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The central problem in mounting a stage version lies with depicting the adult Ralphie, who serves as the film's off-screen narrator.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic opens with wanting 'fewer Christmas musicals' and identifies a 'central problem' with the adaptation's structure. However, this is only a single excerpt that may not represent the full verdict, so confidence is low. | Gemini: The review excerpt identifies a central problem with the stage adaptation, suggesting a mixed or lukewarm reception. The lack of a clear recommendation and the focus on a specific issue lead to a \"Mixed\" classification. | Kimi: Single excerpt reveals significant criticism of the narrator device and Dan Lauria's performance, though the child lead receives mild praise and the adaptation is noted as faithful to the film. Text is truncated, preventing assessment of final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:53:05.122Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

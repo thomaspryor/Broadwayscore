@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Fluidly directed by Stephen Brackett, with Raja Feather Kelly's clever choreography punctuating Jackson's delightfully brash score, A Strange Loop grabs hold of us the moment Usher concludes that funny introduction. If the show begins to lose a little steam - but just a little - towards the end, it's only because Jackson has already made his points so clearly, pointedly and winningly.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Strange Loop grabs hold of us the moment Usher concludes that funny introduction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction, choreography, and score with words like 'delightfully brash' and 'winningly.' Only minor caveat about losing steam near the end, but overall assessment is clearly positive and enthusiastic. | GPT-4o: The review excerpt praises the direction, choreography, and score, with a minor reservation about losing steam towards the end. The overall tone is positive, recommending the show despite a small critique. | Gemini: The review is mostly positive, highlighting the direction, choreography, and score. The phrase 'begins to lose a little steam' indicates a minor reservation, but overall the tone is positive. | Kimi: The excerpt delivers enthusiastic praise for the fluid direction, clever choreography and 'delightfully brash' score, noting the show 'grabs hold of us' immediately. While mentioning minor pacing issues at the end, the caveat is heavily qualified ('just a little') and attributed to the clarity of the writing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:27:30.683Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

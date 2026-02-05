@@ -11,5 +11,60 @@
   "bwwExcerpt": "Overall, A BEAUTIFUL NOISE—after the lights have dimmed and the last bits of confetti have fallen—comes off as guaranteed musical candy for Neil Diamond devotees—especially in its current form as a polished, tidy, nostalgia-baiting jukebox musical loaded with familiar hits, sprinkles of sparkle, and enough vocal authenticity to make fans of his music swoon. The impressive performances—from the lead vocals to the \"Beautiful Noise\" ensemble's hypnotic, lyrical dance moves—bring a measurable level ",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "comes off as guaranteed musical candy for Neil Diamond devotees",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows qualified praise ('impressive performances', 'vocal authenticity') but limits the recommendation primarily to fans ('Neil Diamond devotees'). However, text is clearly truncated mid-sentence and represents only one excerpt, requiring low confidence. | GPT-4o: The excerpt describes the show as 'musical candy' for Neil Diamond fans, with 'impressive performances' and 'vocal authenticity'. While the tone is positive, the focus on fan appeal and nostalgia suggests a mild recommendation. Given the single excerpt, confidence is low. | Gemini: The review is positive, calling the show \"guaranteed musical candy\" for fans. However, the \"nostalgia-baiting jukebox musical\" description suggests reservations. | Kimi: The excerpt provides clearly positive evaluation with praise for 'impressive performances' and 'hypnotic' choreography, specifically recommending the show as polished entertainment for fans despite 'nostalgia-baiting' connotations. Single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:34:24.694Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

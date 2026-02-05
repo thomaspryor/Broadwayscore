@@ -30,7 +30,12 @@
   "archiveOrgTimestamp": "20250426203857",
   "archiveOrgUrl": "http://web.archive.org/web/20250426203857/https://www.nytimes.com/2017/03/16/theater/review-the-price-mark-ruffalo-arthur-miller.html?_r=0",
   "duplicateTextOf": "nytimes--alexis-soloski.json",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 308,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T15:06:55.740Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The text cuts off mid-article with a JavaScript error message and access verification notice - this is incomplete technical content, not a complete review.; openai: The text is incomplete and includes technical instructions and errors, indicating it is not a full review.",
+  "promptVersion": "5.2.0"
 }

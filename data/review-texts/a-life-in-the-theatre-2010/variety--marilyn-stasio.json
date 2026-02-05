@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Despite getting off on the wrong emotional foot, the production recovers once these hard-working thesps begin to throw themselves into their roles for the execrable shows in the company repertory. Mamet displays malicious glee in trotting out all the old chestnuts, from the World War I battlefield play ('Those dirty bastards, they stuck him on the wire and left him there for target practice!') and the Chekhovian social drama ('If we could leave this afternoon ... if we could just call, bring the carriage round, just leave this afternoon ...') to a definitive spoof of an English shipwreck drama, performed in thick lower-class accents ('Kid, we haven't got a chance in hell. But you shouldn't let it get you down, 'cause that's what life on the sea is about').",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite getting off on the wrong emotional foot, the production recovers once these hard-working thesps begin to throw themselves into their roles",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows initial problems followed by recovery and praise for actors' commitment. 'Recovers' suggests overall positive verdict but qualified nature and rough start warrant lower end of Positive bucket. | GPT-4o: The excerpt suggests a mixed review, noting initial issues but some recovery due to the actors' performances. The mention of 'malicious glee' in Mamet's work hints at some enjoyment, but the overall tone is not clearly positive or negative. | Gemini: The review acknowledges a weak start but praises the actors' commitment and the overall recovery of the production. Given the single excerpt and the initial negative, a score on the lower end of positive is appropriate. | Kimi: While acknowledging an initial misstep, the critic praises the cast's commitment and the playwright's wit, suggesting the show improves significantly as it progresses.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:09:29.689Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
