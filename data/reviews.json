@@ -5,9 +5,9 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 5694,
-      "skippedNoScore": 8853,
-      "skippedDuplicate": 9,
-      "skippedDuplicateUrl": 212,
+      "skippedNoScore": 8833,
+      "skippedDuplicate": 8,
+      "skippedDuplicateUrl": 213,
       "skippedWrongProduction": 124,
       "recoveredFromGarbage": 82,
       "scoreSources": {
@@ -17,9 +17,9 @@
         "explicit-letterGrade": 2,
         "human-review": 59,
         "originalScore-priority0": 878,
-        "llmScore": 3040,
+        "llmScore": 3041,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 1491,
+        "llmScore-lowconf": 1490,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
@@ -3213,7 +3213,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Trish Deitch",
@@ -3223,7 +3223,7 @@
       "pullQuote": "In this revival, what's left is a beautiful, spacious clarity about what this oft-produced play is about.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "a-dolls-house-2023",
@@ -21041,13 +21041,13 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2012/09/11/theater/reviews/chaplin-musical-at-the-ethel-barrymore-theater.html",
+      "url": "https://www.nytimes.com/2012/09/11/theater/reviews/chaplin-the-musical-at-the-ethel-barrymore-theater.html",
       "publishDate": "September 10, 2012",
       "originalRating": null,
       "pullQuote": "The problem with 'Chaplin' is that it never finds a theatrical language that matches the cinematic poetry of its subject.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "chaplin-2012",
@@ -21098,7 +21098,7 @@
       "pullQuote": "Rob McClure gives a knockout performance as the Little Tramp in this earnest but overstuffed biomusical",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "chaplin-2012",
@@ -94176,7 +94176,7 @@
       "pullQuote": "What ultimately makes Two Strangers such a winning Broadway arrival is its belief that tenderness is still theatrical currency.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "invalid"
     },
     {
       "showId": "two-strangers-bway-2025",
