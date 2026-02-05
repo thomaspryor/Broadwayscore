@@ -11224,42 +11224,6 @@
     "timestamp": "2026-02-04T15:33:45.324Z"
   },
   {
-    "reviewId": "gypsy-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "gypsy-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/12/19/gypsy-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): maybe happy ending, wicked, chicago, death becomes her, just in time...",
-    "textLength": 9219,
-    "timestamp": "2026-02-04T15:38:28.129Z"
-  },
-  {
-    "reviewId": "gypsy-2024/nytg--austin-fimmano.json",
-    "showId": "gypsy-2024",
-    "outlet": "New York Theatre Guide",
-    "critic": "Austin Fimmano",
-    "url": "https://www.newyorktheatreguide.com/reviews/gypsy-broadway-review-audra-mcdonald",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): west side story, the audience, once, high, race...",
-    "textLength": 6038,
-    "timestamp": "2026-02-04T15:38:35.946Z"
-  },
-  {
-    "reviewId": "gypsy-2024/vulture--sara-holdren.json",
-    "showId": "gypsy-2024",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "https://www.vulture.com/article/theater-review-audra-mcdonald-gypsy-momma-rose.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): king lear, sweat, eclipsed, the audience, act one...",
-    "textLength": 13867,
-    "timestamp": "2026-02-04T15:41:38.117Z"
-  },
-  {
     "reviewId": "harvey-2012/hollywood-reporter--david-rooney.json",
     "showId": "harvey-2012",
     "outlet": "The Hollywood Reporter",
@@ -14378,5 +14342,89 @@
     "garbageReason": "Multiple shows mentioned (15): hamilton, liberation, company, tina, king lear...",
     "textLength": 12819,
     "timestamp": "2026-02-05T03:23:51.495Z"
+  },
+  {
+    "reviewId": "gypsy-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "gypsy-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/12/19/gypsy-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): maybe happy ending, wicked, chicago, death becomes her, just in time...",
+    "textLength": 9219,
+    "timestamp": "2026-02-05T03:24:12.389Z"
+  },
+  {
+    "reviewId": "gypsy-2024/nytg--austin-fimmano.json",
+    "showId": "gypsy-2024",
+    "outlet": "New York Theatre Guide",
+    "critic": "Austin Fimmano",
+    "url": "https://www.newyorktheatreguide.com/reviews/gypsy-broadway-review-audra-mcdonald",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): west side story, the audience, once, high, race...",
+    "textLength": 6038,
+    "timestamp": "2026-02-05T03:24:21.041Z"
+  },
+  {
+    "reviewId": "gypsy-2024/nytimes--unknown.json",
+    "showId": "gypsy-2024",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2024/12/20/theater/gypsy-review-audra-mcdonald.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): west side story, race, guys and dolls, west side story, rent",
+    "textLength": 1835,
+    "timestamp": "2026-02-05T03:25:26.570Z"
+  },
+  {
+    "reviewId": "gypsy-2024/vulture--sara-holdren.json",
+    "showId": "gypsy-2024",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/theater-review-audra-mcdonald-gypsy-momma-rose.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): king lear, sweat, eclipsed, the audience, act one...",
+    "textLength": 13798,
+    "timestamp": "2026-02-05T03:27:31.037Z"
+  },
+  {
+    "reviewId": "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "showId": "hamilton-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton-theater-813145/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): redwood, smash, 1776, spring awakening, something rotten!...",
+    "textLength": 6046,
+    "timestamp": "2026-02-05T03:27:33.942Z"
+  },
+  {
+    "reviewId": "hands-on-a-hardbody-2013/hollywood-reporter--david-rooney.json",
+    "showId": "hands-on-a-hardbody-2013",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/hands-a-hardbody-theater-review-430291",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, the present, once, race, grey gardens...",
+    "textLength": 7316,
+    "timestamp": "2026-02-05T03:28:19.039Z"
+  },
+  {
+    "reviewId": "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json",
+    "showId": "hands-on-a-hardbody-2013",
+    "outlet": "New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://theater.nytimes.com/2013/03/22/theater/reviews/hands-on-a-hardbody-at-the-brooks-atkinson-theater.html?pagewanted=all&_r=1&",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, parade, once, evita, rain...",
+    "textLength": 7298,
+    "timestamp": "2026-02-05T03:29:28.031Z"
   }
 ]
