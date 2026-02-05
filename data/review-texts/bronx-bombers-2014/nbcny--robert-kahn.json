@@ -12,5 +12,60 @@
   "bwwExcerpt": "Sharpened, but still dubiously crafted, 'Bronx Bombers' is a jock drama that will appeal to any Yankees fanatic, but leave others restless in the bleachers...But most important, the script has been tightened, lending needed clarity to its simple message: The Yankees organization has churned with personal drama since before the days of intrusive media and free agency, but ultimately, the team will thrive and the fans will maintain their bond...There are colorful performances from the committed ensemble, many doing double duty...'Damn Yankees' this is not, but it may keep sports fans distracted until spring training.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "will appeal to any Yankees fanatic, but leave others restless in the bleachers",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges improvements and colorful performances but clearly states it will only appeal to Yankees fans while leaving others 'restless.' The lukewarm conclusion 'may keep sports fans distracted' suggests qualified, limited appeal rather than a general recommendation. | GPT-4o: The review suggests the show has limited appeal, mainly to Yankees fans, and may not engage a broader audience. The script improvements are noted, but the overall sentiment is mixed, with some performances praised but not enough to elevate the show beyond a niche audience. | Gemini: The review suggests it's only for Yankees fans, and the phrase 'dubiously crafted' indicates reservations. It's not a strong recommendation, but not entirely negative either. | Kimi: The excerpt acknowledges improvements ('sharpened,' 'tightened') and colorful performances, but emphasizes limited appeal ('dubiously crafted,' 'leave others restless') and faint praise ('may keep sports fans distracted'), indicating a qualified, niche recommendation rather than a broad endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:34:39.453Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

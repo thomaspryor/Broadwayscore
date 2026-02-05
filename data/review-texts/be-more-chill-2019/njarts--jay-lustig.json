@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "One of the best things about Tracz's book and Iconis' lyrics is that while most of the characters seem one-dimensional at first, they are given more sides, some quite surprising, in the course of the musical's two acts. Every one of the play's characters, in fact - except, perhaps, for Mr. Reyes and the unhuman Squip - becomes more than what he or she initially seems to be. Maybe that's why this play seems to resonate so well with young audiences. The misfits triumph. Putting up a smooth, assure",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "One of the best things about Tracz's book and Iconis' lyrics is that while most of the characters seem one-dimensional at first, they are given more sides, some quite surprising",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for character development and writing, mentions audience resonance and 'misfits triumph', but text is truncated mid-sentence making full verdict unclear. | GPT-4o: The excerpt highlights positive aspects of character development and suggests the play resonates well with young audiences. However, due to the single excerpt warning, the confidence is low and the score is at the lower end of the Positive range. | Gemini: The excerpt suggests a positive message and character development, indicating a generally favorable view, but the limited text makes it difficult to assess the overall strength of the recommendation. | Kimi: The excerpt offers clear praise for the writing and character development, noting how the misfits triumph and resonate with audiences, though the single truncated excerpt limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:16:56.112Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

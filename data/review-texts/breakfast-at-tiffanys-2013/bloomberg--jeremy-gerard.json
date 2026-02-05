@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Greenberg's -- and Clarke's -- Holly comes off as a cold-eyed construct of a country girl on the lam from suffocating rural life. She's determined to pass as an urbane sophisticate no matter how much she's trembling underneath her chic dresses and silk robes. In this she's kin to Scarlett Johansson's unorthodox, tough Catherine a few blocks away in \"Cat on a Hot Tin Roof.\" But Clarke lacks Johansson's feral stage charisma, let alone the dangerous chemistry between Holly and pretty much anyone wh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BREAKFAST-AT-TIFFANYS-Opens-on-Broadway-Updating-LIVE-20130320",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But Clarke lacks Johansson's feral stage charisma, let alone the dangerous chemistry between Holly and pretty much anyone",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Single excerpt shows measured criticism of lead performance, comparing unfavorably to another Broadway star. Text cuts off mid-sentence making full verdict unclear. | GPT-4o: The excerpt suggests a mixed assessment, highlighting a lack of charisma and chemistry in Clarke's performance compared to Johansson. The tone is neither strongly positive nor negative, indicating a mixed review. | Gemini: The review excerpt compares the lead actress unfavorably to Scarlett Johansson, suggesting a lack of charisma and chemistry. This indicates a negative assessment of the performance, and thus, the show. | Kimi: Single available excerpt criticizes the lead performance as lacking charisma and chemistry, comparing it unfavorably to a nearby production. Text truncation prevents assessment of full verdict. | Buckets: claude=Mixed, openai=Mixed, gemini=Negative, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:22:46.281Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

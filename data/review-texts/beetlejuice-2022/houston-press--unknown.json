@@ -11,5 +11,60 @@
   "bwwExcerpt": "Natalie De La Garza, Houston Press: That said, there’s still plenty of nostalgia here, with the production hitting on the film’s most iconic characters, looks, and sounds which, yes, include the Harry Belafonte tunes. I know I, for one, would be rioting if the show didn’t include some bit of “Day-O (The Banana Boat Song)” and “Jump in the Line (Shake, Señora).” Eddie Perfect wrote the original music and lyrics for the show and, while the songs certainly serve the story and aren’t bad, per se, th",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "while the songs certainly serve the story and aren't bad, per se",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single truncated excerpt with qualified praise ('aren't bad, per se') suggests mixed assessment. Low confidence due to incomplete text cutting off mid-sentence. | GPT-4o: The review excerpt is mildly positive, noting that the production captures nostalgia and iconic elements from the film. The music is described as serving the story and not being bad, which suggests a positive but not enthusiastic recommendation. Given the single excerpt warning, the confidence is low. | Gemini: The review excerpt indicates a positive experience due to nostalgia and iconic elements, but the comment about the new music being 'not bad, per se' suggests reservations. Given the single excerpt, confidence is low. | Kimi: The excerpt offers mild appreciation for nostalgic elements and iconic film adaptations, while providing only faint praise ('aren't bad, per se') for the original music. As a single truncated excerpt, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:31:35.004Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

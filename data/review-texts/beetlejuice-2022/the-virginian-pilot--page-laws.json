@@ -11,5 +11,59 @@
   "bwwExcerpt": "Is 'Beetlejuice: The Musical. The Musical. The Musical' — at Chrysler Hall through Sunday — worth a see? Depends.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Is 'Beetlejuice: The Musical. The Musical. The Musical' — at Chrysler Hall through Sunday — worth a see? Depends.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly frames the recommendation as conditional with 'Depends,' which is classic mixed review language - neither recommending nor discouraging attendance. However, confidence is low due to having only one excerpt that may not represent the full verdict. | GPT-4o: The excerpt presents an ambiguous recommendation, suggesting it may appeal to some but not others. The lack of a clear positive or negative stance places it in the Mixed bucket. | Gemini: The review excerpt states that whether the show is \"worth a see\" depends, indicating a mixed or neutral stance. Given the limited text, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:34:21.682Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

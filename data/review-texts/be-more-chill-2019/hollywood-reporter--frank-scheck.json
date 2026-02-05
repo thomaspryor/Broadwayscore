@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Be More Chill doesn't benefit from a repeat viewing for anyone who's already gone through adolescence. Iconis' pop/rock score, augmented for its Broadway debut with an additional, inconsequential song, 'Sync Up,' is catchy enough. It features some fun, upbeat numbers, including the title tune and 'Upgrade,' while another, 'Michael in the Bathroom,' is a terrific showcase for Salazar, who gets a huge ovation when he first walks onstage, signifying how familiar many audience members already are with the show.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Be More Chill doesn't benefit from a repeat viewing for anyone who's already gone through adolescence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Opens with a negative verdict that the show doesn't merit repeat viewing, but acknowledges catchy score and standout moments. Single excerpt makes full assessment difficult. | GPT-4o: The review acknowledges catchy and fun elements in the score but suggests the show doesn't benefit from repeat viewing, indicating a mixed sentiment. The single excerpt limits confidence in the overall verdict. | Gemini: The review notes catchy songs and a terrific showcase for a performer, but also suggests the show doesn't benefit from repeat viewing. This indicates a mixed, rather than positive, assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The review acknowledges the catchy score and standout performance by Salazar, but the opening dismissal of the show's appeal for adult audiences and the 'inconsequential' new material suggest significant limitations. With only one excerpt available, the mixed signals—praising individual elements while questioning overall maturity—place this in the Mixed bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:16:25.933Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

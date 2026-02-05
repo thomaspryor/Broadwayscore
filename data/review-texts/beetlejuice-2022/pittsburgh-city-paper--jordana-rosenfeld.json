@@ -11,5 +11,60 @@
   "bwwExcerpt": "Esler, making her professional debut, has just recently graduated high school, and soars through a very demanding score with apparent effortlessness. Collette's goofy, obnoxious Beetlejuice provides most, but not all, of the comic relief in this show that purports to be about death but is more accurately described as being about the challenges of navigating life’s emotions.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Esler, making her professional debut, has just recently graduated high school, and soars through a very demanding score with apparent effortlessness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with performance praise ('soars with apparent effortlessness') suggests positive assessment, but limited text and lack of overall verdict language keeps score in lower positive range. | GPT-4o: The excerpt praises Esler's performance and notes Collette's contribution to the comic relief, suggesting a positive view of the performances. However, the single excerpt and lack of a clear overall verdict lead to a low confidence score. | Gemini: The review excerpt praises Esler's performance and describes Beetlejuice as providing comic relief. While it also mentions the show is about navigating life's emotions, the overall tone suggests a positive, though possibly qualified, recommendation. Given the single excerpt, confidence is low. | Kimi: The excerpt provides enthusiastic praise for the lead performances, describing the actor as soaring through the score with effortlessness and the comic lead as providing effective humor, indicating a favorable recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:33:08.333Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

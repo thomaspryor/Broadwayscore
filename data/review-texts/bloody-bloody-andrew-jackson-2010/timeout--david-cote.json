@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Songwriter Friedman has always had an uncanny knack for the catchy hook and the clever lyric that rises to philosophical wistfulness. And here, he works in the surly emo-rock mode, finding exhilaration in the pent-up rage and nihilism that both demands center stage and shrinks from scrutiny. Not since Stephen Sondheim played bitter variations on “Hail to the Chief” for Assassins (1991) has a Broadway musical so starkly and brutally examined the underside of the American Dream. Particularly in the subdued penultimate number “Second Nature,” Friedman moves past the Sontag and Foucault namechecking to offer a hushed, plangent elegy for this land of strip malls over killing fields.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Not since Stephen Sondheim played bitter variations on 'Hail to the Chief' for Assassins (1991) has a Broadway musical so starkly and brutally examined the underside of the American Dream.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive comparison to Sondheim's Assassins with praise for the songwriter's craft and the show's unflinching examination of American themes. The excerpt emphasizes artistic merit and philosophical depth, suggesting clear recommendation despite challenging subject matter. | GPT-4o: The excerpt praises the songwriter's skill and compares the musical's examination of themes to Sondheim's work, indicating a strong positive reception. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt praises the songwriter's ability and the musical's examination of the American Dream, but due to the limited text, the confidence is low. | Kimi: The critic compares the show favorably to Sondheim's masterpiece Assassins, praising the songwriter's clever, philosophical lyrics and the production's exhilarating examination of American nihilism.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:10:21.866Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

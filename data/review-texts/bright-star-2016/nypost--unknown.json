@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Steve Martin and Edie Brickell's 'Bright Star' is a Broadway oddity -- and not just because it has a bluegrass score. No, the weird thing about 'Bright Star' is the way it juxtaposes an over-the-top plot with a low-key production and mild-tempered music...The show ambles along, alternating between lively hootenannies and lovely ditties -- the title song is especially wonderful, performed by Shively and the ensemble with hopeful joy...The show's droll, earnest tone does have its appeal...As a gentle fable, 'Bright Star' has a quirky charm, but its stubborn refusal to face up to its dark side diminishes it.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As a gentle fable, 'Bright Star' has a quirky charm, but its stubborn refusal to face up to its dark side diminishes it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges positive elements (wonderful title song, quirky charm, droll appeal) but concludes that significant flaws diminish the overall experience. The final verdict suggests qualified interest rather than a clear recommendation. | GPT-4o: The review describes 'Bright Star' as having 'quirky charm' and 'lovely ditties' but also notes its 'stubborn refusal to face up to its dark side,' indicating a mixed reception. The single excerpt and lack of full context suggest a balanced view with both positive and negative elements. | Gemini: The review acknowledges both positive and negative aspects, calling it an 'oddity' with 'quirky charm' but also noting that its refusal to face its dark side 'diminishes it.' This suggests a mixed reaction. | Kimi: The review praises specific musical numbers as 'wonderful' and acknowledges the show's 'quirky charm' and appeal, but ultimately finds the production diminished by its refusal to engage with darker themes and its odd tonal juxtapositions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:31:01.924Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

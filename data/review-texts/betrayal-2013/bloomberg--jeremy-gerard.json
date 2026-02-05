@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Craig is suave and collegial as Robert, a London book publisher. Spall is hungry and rough-edged in a sexually magnetic way as his best friend Jerry, a writers' agent. Rachel Weisz is extraordinary as Robert's wife and Jerry's lover, her face registering with exquisite exactitude every conflicted emotion Emma feels over the course of the seven-year affair well. Mike Nichols's devastating production is above all a showcase for this terrific actress...Nichols has calibrated each of those 100 minu",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BETRAYAL-Opens-on-Broadway-Updating-Live-20131027",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mike Nichols's devastating production is above all a showcase for this terrific actress",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for all three leads with superlatives ('extraordinary', 'exquisite exactitude') and calls Nichols's production 'devastating' in a positive context. However, confidence is low due to truncated text and single excerpt warning. | GPT-4o: The excerpt highlights strong performances, particularly Rachel Weisz, and praises Mike Nichols's production as 'devastating'. The use of 'showcase' and 'terrific' suggests a highly positive view, placing it in the Rave bucket. However, only one excerpt is available, so confidence is low. | Gemini: The review excerpt praises the performances, especially Rachel Weisz, and calls the production \"devastating\" and a \"showcase\" for the actress. Given the limited text, I'm scoring it as positive with high end of the range, but with low confidence. | Kimi: The excerpt delivers enthusiastic praise for the lead performances and direction, describing Rachel Weisz as 'extraordinary' with 'exquisite exactitude' and the production as 'devastating,' indicating strong approval despite the limited single-excerpt format.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:46:25.029Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

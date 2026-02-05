@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Billy Elliot is by no means perfect. Like the original London production, it is still too long (with a seemingly endless curtain call). Some numbers are less melodically compelling ('He Could Go and He Could Shine'), and some scenes are awkwardly staged. But the ideas that work here — and there are many — work magnificently, whether it's presenting the striking miners and the police as opposing choruses or the moving second-act pas de deux with Billy and his older self (New York City Ballet vet Stephen Hanna). In such moments, the potential of Billy Elliot, both character and show, seems both boundless and fully realized. In tough economic times that seem eerily similar to 1980s Britain, in fact, it's easy to imagine projecting all of our recession-weary hopes onto the slender shoulders of a precociously gifted pre-teen boy.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the ideas that work here — and there are many — work magnificently.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opens with clear flaws ('by no means perfect', 'too long', 'less melodically compelling') but concludes the show has 'many' ideas that 'work magnificently' and finds it resonant for current times. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt acknowledges flaws such as length and awkward staging but highlights many elements that work 'magnificently'. The overall tone suggests a positive recommendation with some reservations, fitting the lower end of the Positive bucket due to the single excerpt warning. | Gemini: The review points out flaws like length and staging, but ultimately praises the ideas that work and their magnificent execution, leading to a positive but reserved recommendation. | Kimi: While the excerpt opens with significant criticisms (length, uneven songs, awkward staging), the pivot to 'magnificent' successes and the powerful closing endorsement about the show's recession-era resonance indicate a clear recommendation. The single excerpt suggests strong praise for the production's best elements, placing it in the upper range of Positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:00:54.730Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

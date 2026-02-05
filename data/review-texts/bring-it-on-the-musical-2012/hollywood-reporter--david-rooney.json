@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Is the show destined for a place in the musical-theater pantheon? Unlikely. But it scores points by reinventing rather than replicating the source material, sampling from a tasty selection of pop-cultural favorites. And the sheer athleticism of the event numbers – with whirling cheerleaders catapulted into the air and then caught in gasp-inducing basket tosses – provides enough genuine thrills to compensate for the stop-start storytelling. When the girls are airborne, the show soars.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRING-IT-ON-Opens-on-Broadway-Updating-Live-20120801",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "provides enough genuine thrills to compensate for the stop-start storytelling",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Qualified positive recommendation - acknowledges the show won't be a classic but finds enough to recommend, particularly the athletic spectacle. Single excerpt warning suggests caution about overall verdict. | GPT-4o: The review acknowledges that the show is unlikely to become a classic but praises its reinvention of source material and thrilling athleticism. The positive elements are highlighted, but there are reservations about storytelling. | Gemini: The review states that the show is unlikely to be a classic, but it does score points for originality and provides genuine thrills, suggesting a positive but not rave recommendation. Confidence is low due to the limited excerpt. | Kimi: The critic expresses skepticism about the show's classic potential and criticizes the pacing, but ultimately praises the inventive adaptation and finds the thrilling stunt work compensates for the uneven book, recommending it on the strength of its spectacle.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:32:15.139Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

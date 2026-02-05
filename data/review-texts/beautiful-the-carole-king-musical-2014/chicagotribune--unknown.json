@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "\"Mueller shows us a reluctant star, a woman who only really starting singing out of necessity and would always have been happier with a few hit songs, a nice home and a man she really could trust. At the end of \"Beautiful,\" she's not that different from how she is at the start. Most jukebox shows swing on that obscurity-fame-meltdown-comeback-maturity axis. \"Beautiful,\" in its best moments, manages to suggest that the life of our artist is really just small moments that fall together, unknowingl",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Beautiful, in its best moments, manages to suggest that the life of our artist is really just small moments that fall together.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with qualified praise ('in its best moments') suggests positive assessment but with reservations. Text appears truncated mid-sentence, limiting confidence in full verdict. | GPT-4o: The excerpt provides a nuanced view of the show, highlighting a lack of significant character development and a deviation from typical jukebox musical arcs. The praise is mild and suggests a more subdued experience, leading to a mixed classification. | Gemini: The review excerpt suggests a positive but not overwhelmingly enthusiastic assessment of the show. The phrase \"in its best moments\" implies some reservations, and the description of the protagonist's journey suggests a more nuanced portrayal than a typical jukebox musical. | Kimi: The excerpt offers qualified praise for Jessie Mueller's performance and the show's thematic approach ('in its best moments'), while noting the protagonist's lack of change. The single-excerpt format and truncated ending limit confidence, but the tone leans appreciative rather than negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:18:55.547Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

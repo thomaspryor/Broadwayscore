@@ -12,5 +12,60 @@
   "bwwExcerpt": "Wholesomeness gets a bad rap on Broadway these days, usually regarded as the kind of unbearably sweet and inoffensive entertainment that sophisticated theatergoers must endure while taking their conservative grandmas out for a night on the town...But Big Fish, the new musical that tattoos its heart on its arm, displays no fear in plopping its unabashed wholesomeness right in your lap. Its spirit is steeped in Rodgers and Hammerstein decency that propels an evening that's adventurous, romantic and, yeah, kinda hip. That said, the work of Andrew Lippa (score) and John August (book, based on his own screenplay of Daniel Wallace's novel) is not exactly top shelf musical theatre (although on paper Big Fish easily outclasses any original-run Broadway musical currently on the boards) but director/choreographer Susan Stroman, at the top of her game, whips this warmhearted story into a supremely imaginative and heart-tugging entertainment.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stroman whips this warmhearted story into a supremely imaginative and heart-tugging entertainment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic praises the show's spirit, calls it 'adventurous, romantic and kinda hip,' and lauds Stroman's direction as creating 'supremely imaginative and heart-tugging entertainment.' However, acknowledges the material is 'not exactly top shelf musical theatre.' Single excerpt limits confidence in capturing full verdict. | GPT-4o: The excerpt praises the show's wholesomeness and imaginative direction. Despite noting it's not 'top shelf', the overall tone is positive with strong praise for the direction and emotional impact. | Gemini: The review praises the show's wholesomeness and Stroman's direction, calling it a \"supremely imaginative and heart-tugging entertainment.\" However, it also notes that the score and book are not \"top shelf,\" indicating some reservations. | Kimi: Despite noting the score and book are 'not exactly top shelf,' the critic delivers a clear recommendation based on Stroman's direction and the show's warmhearted, adventurous spirit, calling it 'supremely imaginative and heart-tugging.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:56:19.550Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

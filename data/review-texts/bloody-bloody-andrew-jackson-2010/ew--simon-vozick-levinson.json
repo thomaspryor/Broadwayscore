@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Aside from the change in venue and a few minor tweaks to the supporting cast and staging, though, Bloody Bloody Andrew Jackson is presented more or less exactly as it was at the Public. That is not a complaint. Many of those who have already discovered this unique show will no doubt jump at the chance to experience it all over again. If you haven't seen it yet, what are you waiting for? Shows this weird and wonderful don't make it to Broadway every day.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shows this weird and wonderful don't make it to Broadway every day.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear recommendation with 'what are you waiting for?' and praise as 'weird and wonderful'. Strong positive language despite being a single excerpt. | GPT-4o: The excerpt is highly positive, encouraging audiences to see the show with enthusiasm. The phrase 'weird and wonderful' and the rhetorical question suggest a strong recommendation. | Gemini: The review strongly encourages seeing the show, calling it \"weird and wonderful\" and implying it's a unique Broadway experience. The rhetorical question emphasizes the recommendation. | Kimi: The critic uses enthusiastic language ('weird and wonderful', 'unique') and issues a direct call to action for readers to see the show, indicating a strong positive recommendation despite the limitations of a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:08:51.202Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

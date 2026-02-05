@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "isRoundupArticle": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Coon, who hasn't been on Broadway since her debut in 2012, is the real deal and will keep you on your toes",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Carrie Coon as 'the real deal' with engaging performance promise. Given single excerpt limitation and clear performer praise, scoring upper Positive range, but low confidence due to incomplete review text. | GPT-4o: The excerpt praises Coon's performance, indicating a positive view of her role in the production. However, due to the single excerpt warning and lack of broader context, the confidence is low and the score reflects a mildly positive sentiment. | Gemini: The excerpt focuses on a strong positive assessment of Carrie Coon's performance, indicating a positive recommendation. Given it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the lead performance ('real deal,' 'keep you on your toes'), but as a single curated quote, it may not represent the full review's assessment of the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:38:38.037Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

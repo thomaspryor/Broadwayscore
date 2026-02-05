@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Arriving on Broadway after several out-of-town tryouts, Bright Star is still suffering some issues of scale. The story it tells is a small and tender one and the staging and the music, playful and lovely, sometimes struggle to fill the house. The most emblematic aspect: a toy train that trundles on a trestle above the stage to suggest the journeys that characters take, an effect both charming and chintzy.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The staging and the music, playful and lovely, sometimes struggle to fill the house.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed assessment - praises story as 'tender' and music as 'playful and lovely' but identifies significant issues with scale and staging that detract from the experience. The 'charming and chintzy' description epitomizes the ambivalence. | GPT-4o: The review acknowledges the charm and loveliness of the show but highlights issues with scale and effectiveness in the Broadway setting. The excerpt suggests a balance of positive and negative elements, leading to a mixed verdict. | Gemini: The review notes positive aspects like the story, staging, and music, but also points out issues with scale and a 'chintzy' effect. This suggests a mixed experience. | Kimi: Single excerpt presents conflicting signals: acknowledges 'playful and lovely' music and 'charming' elements, but emphasizes fundamental issues with scale and a 'chintzy' quality that undermines the Broadway production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:30:16.127Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

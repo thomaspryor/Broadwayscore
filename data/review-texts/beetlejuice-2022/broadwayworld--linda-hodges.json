@@ -11,5 +11,60 @@
   "bwwExcerpt": "This cheering and adoring audience (there's nothing better than a San Francisco audience) took no notice of the very thin plot and inconsistencies in the story, and instead focused on the over-the-top, high energy slapstick comedy stylings of the hilarious Justin Collette as the millennia-old demon 'Beetlejuice.' With clever songs by Eddie Perfect and a book by Scott Brown & Anthony King, this is one show you should be dying to see (ba-dum tsh).",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is one show you should be dying to see",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation with enthusiastic language despite acknowledging plot issues. The critic focuses on positives (hilarious lead, clever songs, high energy) and ends with a direct recommendation to see it. | GPT-4o: The excerpt highlights the audience's enthusiasm and praises the comedic performance and songs, ending with a strong recommendation to see the show. Despite noting plot issues, the overall tone is clearly positive. | Gemini: The review states \"this is one show you should be dying to see\" which is a strong positive recommendation. The reviewer also praises the lead actor and the songs. | Kimi: The critic issues a direct recommendation ('you should be dying to see') and praises the lead performance ('hilarious') and songs ('clever'), though notes significant plot flaws that the audience overlooked. Confidence is low due to single excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:26:09.821Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

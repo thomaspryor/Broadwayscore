@@ -10,5 +10,54 @@
   ],
   "bwwExcerpt": "\"Definitely a play of its time, \"Born Yesterday\" moves at a more leisurely pace than contemporary works and is unembarrassed by its idealized political message concerning a democracy's need for an informed citizenry. I hope that won't stop younger audiences from enjoying it. Me, I had a ball.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BORN-YESTERDAY-Updating-LIVE-20110424",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic explicitly states 'I had a ball' which is enthusiastic personal endorsement. Despite noting the play's leisurely pace and idealized message, the overall verdict is clearly positive enjoyment. | GPT-4o: The critic expresses personal enjoyment ('I had a ball') despite the play's leisurely pace and idealized message, suggesting a strong positive experience. | Gemini: The critic states they \"had a ball\" which indicates a positive experience. However, the reservations about the play being \"of its time\" and moving at a \"more leisurely pace\" suggest a score in the middle of the positive range. | Kimi: The critic expresses unambiguous personal enjoyment ('had a ball') and actively encourages attendance, while acknowledging the play's dated pacing and political idealism. The enthusiastic tone warrants the upper range of the Positive bucket despite caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:18:34.880Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But it's a messy matter, the business of governing: Jackson's expansionist agenda, the musical tells us, mandated the brutal booting of Indian tribes from their ancestral lands. So, too, does 'Bloody Bloody Andrew Jackson' feel at times sort of scattered. Though the magnetic Benjamin Walker is an exhilarating force in the title role, some ensemble members come across as a bit green on an imposing Broadway stage. And intermittently, Michael Friedman's score and Alex Timbers's book can seem better suited to a night of college skits. Slickness is not a desirable attribute on this occasion, but a consistent polish is.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though the magnetic Benjamin Walker is an exhilarating force in the title role, some ensemble members come across as a bit green on an imposing Broadway stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows mixed assessment - praises lead performance as 'magnetic' and 'exhilarating' but criticizes ensemble as 'green', calls show 'scattered' and compares unfavorably to 'college skits'. No clear recommendation either way. | GPT-4o: The review highlights both strengths and weaknesses, noting the lead's strong performance but also issues with the ensemble and the score. The mixed elements suggest a balanced view without a clear recommendation. | Gemini: The review has both positive and negative aspects. It praises Benjamin Walker's performance but criticizes the score and book as being better suited for college skits. The overall sentiment is mixed, leaning slightly negative. | Kimi: The excerpt offers unqualified praise for the lead actor while raising qualified concerns about the ensemble, writing, and direction, suggesting a recommendation based primarily on the central performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:11:27.945Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

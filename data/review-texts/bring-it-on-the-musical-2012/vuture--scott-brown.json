@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "I braced, I flinched, and then, to my surprise and delight ... I applauded. Repeatedly. Bring It On certainly gives fierce face, but it also backs up that glittering grill with just enough sinew and substance — musical, physical and textual — to put it in trophy contention as a worthy, weightless delight, a guilty pleasure you needn't feel too guilty about.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRING-IT-ON-Opens-on-Broadway-Updating-Live-20120801",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I applauded. Repeatedly.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict with enthusiastic language ('delight', 'applauded repeatedly', 'trophy contention', 'worthy') despite initial skepticism. Single excerpt warning applies - this sounds clearly positive so scored in upper Positive range. | GPT-4o: The excerpt expresses surprise and delight, applauding the show repeatedly. It describes the show as a 'worthy, weightless delight' and a 'guilty pleasure you needn't feel too guilty about,' indicating a strong positive recommendation despite the text quality warning. | Gemini: The critic expresses surprise and delight, applauding repeatedly and calling it a 'worthy, weightless delight' and a 'guilty pleasure you needn't feel too guilty about,' indicating a strong positive recommendation. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:34:08.796Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "Dame Angela's first return to the London stage for 40 years provokes applause at her entrances and exits. One usually tends to associate that sort of thing with American theatres. A man in the stalls whooped her for completing her first scene. Had he expected her to keel over mid-line? Instead of patronising her for making it to 88, let us hail her vocal projection (in the stalls I had no trouble hearing her, despite much scuttlebutt on the internet that she is inaudible).",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-West-Ends-BLITHE-SPIRIT-with-Angela-Lansbury-20140319",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Instead of patronising her for making it to 88, let us hail her vocal projection.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Single excerpt focuses on Lansbury's audibility and age rather than evaluating the show itself. The defensive tone suggests mixed reception, but insufficient context for clear verdict. | GPT-4o: The excerpt praises Dame Angela's vocal projection and dismisses concerns about her audibility, suggesting a positive view of her performance. However, the single excerpt warning and lack of a full review text make the overall sentiment unclear, resulting in a low confidence score. | Gemini: The review praises Angela Lansbury's performance and vocal projection, but the limited excerpt makes it difficult to determine the overall strength of the recommendation. The tone is generally positive, but with some reservations implied by the mention of 'scuttlebutt'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:07:43.134Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

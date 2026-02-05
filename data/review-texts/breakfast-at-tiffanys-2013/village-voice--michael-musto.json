@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Richard Greenberg's adaptation of Truman Capote's classic novella Breakfast at Tiffany's turns out to be earnest, talky, and rather lifeless despite its good intentions. Telling the story of a chirpy socialite/hooker in 1943 New York and her interaction with a writer who isn't exactly straight, this production stays faithful to the book without turning it into a persuasive piece of theater.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BREAKFAST-AT-TIFFANYS-Opens-on-Broadway-Updating-LIVE-20130320",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Richard Greenberg's adaptation turns out to be earnest, talky, and rather lifeless despite its good intentions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the adaptation 'lifeless' and fails to be 'persuasive theater' despite acknowledging good intentions. This is a clear negative assessment with no recommendation implied. | GPT-4o: The excerpt describes the production as 'earnest, talky, and rather lifeless,' indicating a negative assessment. The lack of persuasion in turning the book into theater suggests a lack of recommendation. | Gemini: The review uses negative descriptors like \"talky\" and \"lifeless\" and states that the production doesn't turn the book into a persuasive piece of theater, indicating a negative assessment. | Kimi: The excerpt criticizes the adaptation as 'lifeless' and failing to be persuasive theater, indicating a negative verdict despite its faithfulness to the source material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:24:48.845Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }
