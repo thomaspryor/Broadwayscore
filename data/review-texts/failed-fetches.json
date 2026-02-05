@@ -11488,54 +11488,6 @@
     "timestamp": "2026-02-04T17:01:22.802Z"
   },
   {
-    "reviewId": "a-dolls-house-2023/hollywood-reporter--david-rooney.json",
-    "showId": "a-dolls-house-2023",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-dolls-house-review-jessica-chastain-1235347184/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (20): hamilton, mamma mia!, mary jane, home, company...",
-    "textLength": 10240,
-    "timestamp": "2026-02-04T17:01:40.846Z"
-  },
-  {
-    "reviewId": "a-dolls-house-2023/nyt-theater--jonathan-mandell.json",
-    "showId": "a-dolls-house-2023",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2023/03/16/a-dolls-house-review-jessica-chastain-escapes-her-chair/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): hamilton, mary jane, macbeth, the humans, the audience...",
-    "textLength": 8120,
-    "timestamp": "2026-02-04T17:01:49.310Z"
-  },
-  {
-    "reviewId": "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
-    "showId": "a-dolls-house-2023",
-    "outlet": "New York Theatre Guide",
-    "critic": "Joe Dziemianowicz",
-    "url": "https://www.newyorktheatreguide.com/reviews/a-dolls-house-broadway-review-jessica-chastain",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): mary jane, tammy faye, betrayal, the audience, betrayal...",
-    "textLength": 3793,
-    "timestamp": "2026-02-04T17:01:56.463Z"
-  },
-  {
-    "reviewId": "a-dolls-house-2023/nytimes--jesse-green.json",
-    "showId": "a-dolls-house-2023",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2023/03/09/theater/a-dolls-house-review-jessica-chastain.html",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): liberation, giant, home, english, betrayal...",
-    "textLength": 7264,
-    "timestamp": "2026-02-04T17:03:15.474Z"
-  },
-  {
     "reviewId": "a-dolls-house-2023/variety--trish-deitch.json",
     "showId": "a-dolls-house-2023",
     "outlet": "Variety",
@@ -11546,30 +11498,6 @@
     "garbageReason": "Multiple shows mentioned (7): liberation, the prom, the audience, scandalous, hair...",
     "textLength": 7167,
     "timestamp": "2026-02-04T17:04:20.862Z"
-  },
-  {
-    "reviewId": "a-dolls-house-part-2-2017/hollywood-reporter--david-rooney.json",
-    "showId": "a-dolls-house-part-2-2017",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/a-dolls-house-part-2-theater-998160",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): giant, appropriate, purpose, the present, the price...",
-    "textLength": 9625,
-    "timestamp": "2026-02-04T17:05:27.006Z"
-  },
-  {
-    "reviewId": "a-dolls-house-part-2-2017/nytimes--ben-brantley.json",
-    "showId": "a-dolls-house-part-2-2017",
-    "outlet": "New York Times",
-    "critic": "Ben Brantley",
-    "url": "http://www.nytimes.com/2017/04/27/theater/a-dolls-house-part-2-review-laurie-metcalf.html?_r=0",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (5): the humans, the audience, once, high, well",
-    "textLength": 2312,
-    "timestamp": "2026-02-04T17:05:33.770Z"
   },
   {
     "reviewId": "a-free-man-of-color-2010/nytimes--ben-brantley.json",
@@ -14822,5 +14750,89 @@
     "garbageReason": "Multiple shows mentioned (8): company, summer, the present, hair, high...",
     "textLength": 5182,
     "timestamp": "2026-02-05T04:22:10.836Z"
+  },
+  {
+    "reviewId": "a-dolls-house-2023/hollywood-reporter--david-rooney.json",
+    "showId": "a-dolls-house-2023",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-dolls-house-review-jessica-chastain-1235347184/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): hamilton, mary jane, home, company, betrayal...",
+    "textLength": 9986,
+    "timestamp": "2026-02-05T04:23:48.188Z"
+  },
+  {
+    "reviewId": "a-dolls-house-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "a-dolls-house-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/03/16/a-dolls-house-review-jessica-chastain-escapes-her-chair/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): hamilton, mary jane, macbeth, the humans, the audience...",
+    "textLength": 8120,
+    "timestamp": "2026-02-05T04:23:55.642Z"
+  },
+  {
+    "reviewId": "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
+    "showId": "a-dolls-house-2023",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/a-dolls-house-broadway-review-jessica-chastain",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mary jane, tammy faye, betrayal, the audience, betrayal...",
+    "textLength": 3793,
+    "timestamp": "2026-02-05T04:24:04.523Z"
+  },
+  {
+    "reviewId": "a-dolls-house-2023/nytimes--jesse-green.json",
+    "showId": "a-dolls-house-2023",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2023/03/09/theater/a-dolls-house-review-jessica-chastain.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): liberation, giant, home, english, betrayal...",
+    "textLength": 6858,
+    "timestamp": "2026-02-05T04:24:08.787Z"
+  },
+  {
+    "reviewId": "a-dolls-house-part-2-2017/hollywood-reporter--david-rooney.json",
+    "showId": "a-dolls-house-part-2-2017",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/a-dolls-house-part-2-theater-998160",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): giant, appropriate, purpose, the present, the price...",
+    "textLength": 9625,
+    "timestamp": "2026-02-05T04:24:39.898Z"
+  },
+  {
+    "reviewId": "a-dolls-house-part-2-2017/nytimes--ben-brantley.json",
+    "showId": "a-dolls-house-part-2-2017",
+    "outlet": "New York Times",
+    "critic": "Ben Brantley",
+    "url": "http://www.nytimes.com/2017/04/27/theater/a-dolls-house-part-2-review-laurie-metcalf.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): the humans, the audience, once, high, well",
+    "textLength": 2312,
+    "timestamp": "2026-02-05T04:24:44.127Z"
+  },
+  {
+    "reviewId": "a-dolls-house-part-2-2017/nytimes--unknown.json",
+    "showId": "a-dolls-house-part-2-2017",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2017/04/27/theater/a-dolls-house-part-2-review-laurie-metcalf.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): the humans, the audience, once, high, well",
+    "textLength": 2312,
+    "timestamp": "2026-02-05T04:25:52.496Z"
   }
 ]
