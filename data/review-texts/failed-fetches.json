@@ -8980,30 +8980,6 @@
     "timestamp": "2026-02-04T00:37:56.350Z"
   },
   {
-    "reviewId": "outside-mullingar-2014/hollywood-reporter--unknown.json",
-    "showId": "outside-mullingar-2014",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/mullingar-theater-review-673675",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): mamma mia!, home, rocky, hair, rain...",
-    "textLength": 6307,
-    "timestamp": "2026-02-04T00:46:14.744Z"
-  },
-  {
-    "reviewId": "outside-mullingar-2014/vulture--unknown.json",
-    "showId": "outside-mullingar-2014",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2014/01/theater-review-outside-mullingar.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): the prom, cats, hair, once, rain...",
-    "textLength": 6397,
-    "timestamp": "2026-02-04T00:47:59.048Z"
-  },
-  {
     "reviewId": "pal-joey-2008/nytimes--ben-brantley.json",
     "showId": "pal-joey-2008",
     "outlet": "The New York Times",
@@ -9026,42 +9002,6 @@
     "garbageReason": "Multiple shows mentioned (15): wicked, gypsy, company, tina, network...",
     "textLength": 9658,
     "timestamp": "2026-02-04T00:48:38.624Z"
-  },
-  {
-    "reviewId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/hollywood-reporter--lovia-gyarkye.json",
-    "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
-    "outlet": "Hollywood Reporter",
-    "critic": "Lovia Gyarkye",
-    "url": "https://www.hollywoodreporter.com/lifestyle/arts/rachel-dratch-julianne-hough-and-vanessa-williams-potus-theater-review-1235136833/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): mamma mia!, appropriate, the audience, rocky, once...",
-    "textLength": 7053,
-    "timestamp": "2026-02-04T00:52:11.314Z"
-  },
-  {
-    "reviewId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/nyt-theater--jonathan-mandell.json",
-    "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2022/04/28/potus-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): the outsiders, lempicka, home, parade, the skin of our teeth...",
-    "textLength": 6303,
-    "timestamp": "2026-02-04T00:52:18.042Z"
-  },
-  {
-    "reviewId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/nytg--diep-tran.json",
-    "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
-    "outlet": "New York Theatre Guide",
-    "critic": "Diep Tran",
-    "url": "https://www.newyorktheatreguide.com/reviews/potus-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): the price, the audience, once, rain, high...",
-    "textLength": 5289,
-    "timestamp": "2026-02-04T00:52:36.653Z"
   },
   {
     "reviewId": "the-heidi-chronicles-2015/vulture--jesse-green.json",
@@ -14534,5 +14474,113 @@
     "garbageReason": "Multiple shows mentioned (10): home, company, network, hair, once...",
     "textLength": 5968,
     "timestamp": "2026-02-05T03:40:31.808Z"
+  },
+  {
+    "reviewId": "outside-mullingar-2014/hollywood-reporter--unknown.json",
+    "showId": "outside-mullingar-2014",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/mullingar-theater-review-673675",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): mamma mia!, home, rocky, hair, rain...",
+    "textLength": 6307,
+    "timestamp": "2026-02-05T03:43:21.978Z"
+  },
+  {
+    "reviewId": "outside-mullingar-2014/vulture--unknown.json",
+    "showId": "outside-mullingar-2014",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2014/01/theater-review-outside-mullingar.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): the prom, cats, hair, once, rain...",
+    "textLength": 6397,
+    "timestamp": "2026-02-05T03:43:29.835Z"
+  },
+  {
+    "reviewId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/hollywood-reporter--lovia-gyarkye.json",
+    "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+    "outlet": "Hollywood Reporter",
+    "critic": "Lovia Gyarkye",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/rachel-dratch-julianne-hough-and-vanessa-williams-potus-theater-review-1235136833/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): mamma mia!, appropriate, the audience, rocky, once...",
+    "textLength": 7053,
+    "timestamp": "2026-02-05T03:43:42.616Z"
+  },
+  {
+    "reviewId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/04/28/potus-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): the outsiders, lempicka, home, parade, the skin of our teeth...",
+    "textLength": 6303,
+    "timestamp": "2026-02-05T03:43:49.392Z"
+  },
+  {
+    "reviewId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/nytg--diep-tran.json",
+    "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+    "outlet": "New York Theatre Guide",
+    "critic": "Diep Tran",
+    "url": "https://www.newyorktheatreguide.com/reviews/potus-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): the price, the audience, once, rain, high...",
+    "textLength": 5289,
+    "timestamp": "2026-02-05T03:43:57.050Z"
+  },
+  {
+    "reviewId": "present-laughter-2010/hollywood-reporter--david-rooney.json",
+    "showId": "present-laughter-2010",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/present-laughter-theater-review-991396",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): english, hand to god, harvey, cyrano de bergerac, once...",
+    "textLength": 7813,
+    "timestamp": "2026-02-05T03:44:17.669Z"
+  },
+  {
+    "reviewId": "present-laughter-2010/nytimes--ben-brantley.json",
+    "showId": "present-laughter-2010",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2010/01/22/theater/reviews/22present.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): english, company, hair, elling, race...",
+    "textLength": 7532,
+    "timestamp": "2026-02-05T03:44:21.079Z"
+  },
+  {
+    "reviewId": "present-laughter-2010/variety--marilyn-stasio.json",
+    "showId": "present-laughter-2010",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "http://variety.com/2017/legit/reviews/present-laughter-review-kevin-kline-broadway-1202023306/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): appropriate, company, hand to god, master class, race...",
+    "textLength": 4865,
+    "timestamp": "2026-02-05T03:44:29.226Z"
+  },
+  {
+    "reviewId": "present-laughter-2010/vulture--jesse-green.json",
+    "showId": "present-laughter-2010",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2017/04/theater-nol-cowards-present-laughter-is-ever-modern.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): liberation, proof, harvey, hair, rain...",
+    "textLength": 13487,
+    "timestamp": "2026-02-05T03:44:32.680Z"
   }
 ]
