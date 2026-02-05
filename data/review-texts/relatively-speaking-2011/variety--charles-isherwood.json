@@ -72,5 +72,51 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
-  }
+  },
+  "textWordCount": 143,
+  "archivePath": "data/archives/reviews/relatively-speaking-2011/variety--charles-isherwood_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T04:31:07.885Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 143 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Five student writers take prizes\n\nUCLA student Robin Rudenberg has picked up the 2011 Samuel Goldwyn Writing Award, scoring $15,000 for her script “Reckoning.”\n\nThe 56th annual kudo, established by the Samuel Goldwyn Foundation and awarded to aspiring scribes enrolled in any school in the U. of California system, also hands out second and third place prizes as well as an honorable mention laurel.\n\nSecond place went to Devin Fearn, nabbing $7,500 for screenplay “Wendigo,” while Amy Aniobi and Georgia Lin Sundling tied for third place, taking $4,000 each for Aniobi’s “Blame Candy” and Sundling’s “The Long Short Drop.” Fearn, Aniobi and Sundling are all enrolled at UCLA.\n\nUC Santa Barbara’s Cameron Lund picked up honorable mention and a $2,000 prize for her script “Practice Makes Perfect.”\n\nDavid Hoberman, Paul Mazursky and Melanie Marnich selected this year’s winners, announced Wednesday evening in L.A."
 }
