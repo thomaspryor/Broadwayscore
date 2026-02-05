@@ -120,8 +120,17 @@ jobs:
               break
             fi
             echo "Push failed (attempt $i), pulling and rebasing..."
-            git pull --rebase origin main
-            sleep $((RANDOM % 5 + 2))
+            # Clean unstaged changes (build artifacts, etc.) before rebase
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              echo "Rebase succeeded, retrying push..."
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+              git pull --no-rebase -X ours origin main
+            fi
+            sleep $((RANDOM % 10 + 5))
           done
 
       - name: Summary
