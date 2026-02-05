@@ -53,7 +53,7 @@ export const COMPARISON_PAIRS: [string, string][] = [
 
   // === DRAMATIC PLAYS ===
   ['harry-potter', 'stranger-things'],
-  ['stereophonic-2024', 'appropriate'],
+  ['stereophonic', 'appropriate'],
   ['death-of-a-salesman', 'oedipus'],
 
   // === REVIVALS & CLASSICS ===

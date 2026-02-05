@@ -344,10 +344,11 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     filter: (show) => {
       if (show.status !== 'open') return false;
       if (!show.runtime) return false;
-      const match = show.runtime.match(/(\d+)\s*(?:hr|hour)/i);
-      const hours = match ? parseInt(match[1], 10) : 0;
-      const minMatch = show.runtime.match(/(\d+)\s*(?:min)/i);
-      const mins = minMatch ? parseInt(minMatch[1], 10) : 0;
+      // Runtime format: "2h 15m" or "1h 40m"
+      const match = show.runtime.match(/(\d+)h\s*(\d+)?m?/i);
+      if (!match) return false;
+      const hours = parseInt(match[1], 10) || 0;
+      const mins = parseInt(match[2], 10) || 0;
       const totalMins = hours * 60 + mins;
       return totalMins > 0 && totalMins <= 120;
     },

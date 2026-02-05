@@ -490,84 +490,20 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     relatedPages: ['new-broadway-shows-2025', 'new-broadway-shows-2026', 'best-broadway-show-right-now'],
   },
 
-  'pulitzer-prize-plays': {
-    slug: 'pulitzer-prize-plays',
-    title: 'Pulitzer Prize-Winning Plays on Broadway',
-    h1: 'Pulitzer Prize-Winning Plays on Broadway',
-    metaTitle: 'Pulitzer Prize Plays on Broadway (2026)',
-    metaDescription: 'See Pulitzer Prize-winning plays currently on Broadway. The most celebrated works of American drama you can experience live.',
-    intro: 'The Pulitzer Prize for Drama recognizes distinguished plays by American playwrights, preferably dealing with American life. These productions currently on Broadway have either won the Pulitzer or been written by Pulitzer Prize-winning playwrights. Seeing a Pulitzer winner is experiencing some of the most important American theater ever written.',
-    filter: (show) => {
-      if (show.status !== 'open') return false;
-      const tags = show.tags?.map(t => t.toLowerCase()) || [];
-      return tags.includes('pulitzer') || tags.includes('pulitzer-winner');
-    },
-    sort: 'score',
-    relatedPages: ['tony-winners-on-broadway', 'best-broadway-plays', 'best-broadway-dramas'],
-  },
-
   'long-broadway-shows': {
     slug: 'long-broadway-shows',
-    title: 'Epic Broadway Shows (3+ Hours)',
-    h1: 'Epic Broadway Shows (3+ Hours)',
-    metaTitle: 'Long Broadway Shows Over 3 Hours (2026)',
-    metaDescription: 'Broadway\'s epic theatrical experiences running 3+ hours. Immersive productions that demand and reward your full evening.',
-    intro: 'Some stories need more time to tell. These epic Broadway productions run three hours or more, offering immersive theatrical experiences that transport you into fully realized worlds. From sweeping historical dramas to elaborate musical extravaganzas, these shows reward your time investment with unforgettable journeys. Plan for a full evening — these aren\'t shows to rush through.',
+    title: 'Long Broadway Shows (2.5+ Hours)',
+    h1: 'Long Broadway Shows (2.5+ Hours)',
+    metaTitle: 'Long Broadway Shows Over 2.5 Hours (2026)',
+    metaDescription: 'Broadway\'s epic theatrical experiences running 2.5+ hours. Immersive productions that demand and reward your full evening.',
+    intro: 'Some stories need more time to tell. These Broadway productions run two and a half hours or more, offering immersive theatrical experiences that transport you into fully realized worlds. From sweeping historical dramas to elaborate musical extravaganzas, these shows reward your time investment with unforgettable journeys. Plan for a full evening — these aren\'t shows to rush through.',
     filter: (show) => {
       if (show.status !== 'open') return false;
       const runtime = parseRuntime(show.runtime);
-      return runtime >= 180;
+      return runtime >= 150; // 2.5 hours
     },
     sort: 'score',
     relatedPages: ['short-broadway-shows', 'best-broadway-musicals', 'best-broadway-dramas'],
-  },
-
-  'broadway-one-person-shows': {
-    slug: 'broadway-one-person-shows',
-    title: 'One-Person Broadway Shows',
-    h1: 'One-Person Shows on Broadway',
-    metaTitle: 'One-Person Shows on Broadway (2026)',
-    metaDescription: 'Solo performances on Broadway. See extraordinary artists command the stage alone in intimate, powerful theatrical experiences.',
-    intro: 'One-person shows represent the ultimate test of theatrical skill — a single performer commanding the stage for an entire evening. These solo productions showcase extraordinary talent, whether a legendary actor sharing their life story, a comedian working the crowd, or a dramatic performer inhabiting multiple characters. Intimate yet powerful, these shows offer a unique connection between performer and audience.',
-    filter: (show) => {
-      if (show.status !== 'open') return false;
-      const tags = show.tags?.map(t => t.toLowerCase()) || [];
-      return tags.includes('solo') || tags.includes('one-person') || tags.includes('solo-show');
-    },
-    sort: 'score',
-    relatedPages: ['best-broadway-plays', 'short-broadway-shows', 'best-broadway-comedies'],
-  },
-
-  'limited-engagement-broadway': {
-    slug: 'limited-engagement-broadway',
-    title: 'Limited Engagement Broadway Shows',
-    h1: 'Limited Engagement Broadway Shows',
-    metaTitle: 'Limited Engagement Broadway Shows (2026)',
-    metaDescription: 'Broadway shows with set closing dates. Don\'t miss these limited engagement productions before they\'re gone.',
-    intro: 'These Broadway shows have announced end dates from the start — they\'re limited engagements that won\'t run forever. Whether it\'s a star with a finite commitment, a theater with another booking, or a production designed for a specific run, these shows require advance planning. Check the closing dates and book early to avoid missing out on these time-limited productions.',
-    filter: (show) => {
-      if (show.status !== 'open') return false;
-      const tags = show.tags?.map(t => t.toLowerCase()) || [];
-      return tags.includes('limited-engagement') || tags.includes('limited');
-    },
-    sort: 'closing-date',
-    relatedPages: ['broadway-shows-closing-soon', 'upcoming-broadway-shows', 'best-broadway-show-right-now'],
-  },
-
-  'broadway-standing-room': {
-    slug: 'broadway-standing-room',
-    title: 'Broadway Shows with Standing Room',
-    h1: 'Broadway Shows with Standing Room Tickets',
-    metaTitle: 'Broadway Standing Room Tickets (2026)',
-    metaDescription: 'Broadway shows offering standing room tickets. The cheapest way to see sold-out shows, available day-of at the box office.',
-    intro: 'Standing room tickets are the theater\'s best-kept secret for seeing sold-out shows on a budget. Available only when a show is sold out (or nearly so), these tickets let you stand at the back of the orchestra for a fraction of the regular price. It\'s not for everyone — you\'ll be on your feet for the whole show — but for die-hard fans, it\'s the ultimate way to see that hot ticket you couldn\'t otherwise afford.',
-    filter: (show) => {
-      if (show.status !== 'open') return false;
-      const tags = show.tags?.map(t => t.toLowerCase()) || [];
-      return tags.includes('standing-room') || tags.includes('sro');
-    },
-    sort: 'score',
-    relatedPages: ['broadway-lottery-shows', 'broadway-rush-tickets', 'broadway-shows-closing-soon'],
   },
 };
 
