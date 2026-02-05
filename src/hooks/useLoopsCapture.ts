@@ -45,16 +45,11 @@ export function useLoopsCapture(options: LoopsCaptureOptions): LoopsCaptureResul
     setStatus('submitting');
     setErrorMessage('');
 
-    // If no Form ID configured, still save locally
     if (!FORM_ID) {
-      try {
-        localStorage.setItem(SUBSCRIBED_KEY, 'true');
-        window.dispatchEvent(new Event('bsc_subscribed'));
-      } catch { /* noop */ }
-      setIsSubscribed(true);
-      setStatus('success');
-      track('email_captured', { source: options.source, userGroup: options.userGroup });
-      return true;
+      console.error('useLoopsCapture: NEXT_PUBLIC_LOOPS_FORM_ID is not configured. Email was NOT sent.');
+      setStatus('error');
+      setErrorMessage('Email subscription is not available right now.');
+      return false;
     }
 
     try {
