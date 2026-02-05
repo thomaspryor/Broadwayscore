@@ -21,6 +21,11 @@ on:
         required: false
         default: '5'
         type: string
+      search_all:
+        description: 'Search ALL shows in era (not just gap shows — use to fill DTLI/Show Score blind spots)'
+        required: false
+        default: false
+        type: boolean
       dry_run:
         description: 'Dry run (audit only, no gathering)'
         required: false
@@ -99,24 +104,36 @@ jobs:
           TRULY_MISSING=$(node -e "const d=require('./data/audit/aggregator-coverage.json'); console.log(d._meta.totalTrulyMissing)")
           echo "truly_missing=$TRULY_MISSING" >> $GITHUB_OUTPUT
 
-          # Extract gap show IDs, filtered by era
+          # Extract show IDs to process
           ERA_SHOWS="${{ steps.filter.outputs.show_ids }}"
-          GAP_SHOWS=$(node -e "
-            const gapLine = require('fs').readFileSync('/tmp/audit-output.txt','utf8')
-              .split('\n').find(l => l.includes(',') && !l.includes(':') && l.match(/^[a-z0-9,-]+$/));
-            if (!gapLine) { console.log(''); process.exit(0); }
-            const eraSet = new Set('$ERA_SHOWS'.split(','));
-            const filtered = gapLine.split(',').filter(id => eraSet.has(id));
-            console.log(filtered.join(','));
-          ")
+          SEARCH_ALL="${{ inputs.search_all }}"
 
-          GAP_COUNT=0
-          if [ -n "$GAP_SHOWS" ]; then
+          if [ "$SEARCH_ALL" = "true" ]; then
+            # Process ALL shows in the era (fills DTLI/Show Score blind spots)
+            GAP_SHOWS="$ERA_SHOWS"
             GAP_COUNT=$(echo "$GAP_SHOWS" | tr ',' '\n' | grep -c . || echo "0")
+            echo "gap_shows=$GAP_SHOWS" >> $GITHUB_OUTPUT
+            echo "gap_count=$GAP_COUNT" >> $GITHUB_OUTPUT
+            echo "search_all mode: Processing ALL $GAP_COUNT shows in era"
+          else
+            # Only process shows with identified gaps
+            GAP_SHOWS=$(node -e "
+              const gapLine = require('fs').readFileSync('/tmp/audit-output.txt','utf8')
+                .split('\n').find(l => l.includes(',') && !l.includes(':') && l.match(/^[a-z0-9,-]+$/));
+              if (!gapLine) { console.log(''); process.exit(0); }
+              const eraSet = new Set('$ERA_SHOWS'.split(','));
+              const filtered = gapLine.split(',').filter(id => eraSet.has(id));
+              console.log(filtered.join(','));
+            ")
+
+            GAP_COUNT=0
+            if [ -n "$GAP_SHOWS" ]; then
+              GAP_COUNT=$(echo "$GAP_SHOWS" | tr ',' '\n' | grep -c . || echo "0")
+            fi
+            echo "gap_shows=$GAP_SHOWS" >> $GITHUB_OUTPUT
+            echo "gap_count=$GAP_COUNT" >> $GITHUB_OUTPUT
+            echo "Truly missing: $TRULY_MISSING reviews across $GAP_COUNT shows in this era"
           fi
-          echo "gap_shows=$GAP_SHOWS" >> $GITHUB_OUTPUT
-          echo "gap_count=$GAP_COUNT" >> $GITHUB_OUTPUT
-          echo "Truly missing: $TRULY_MISSING reviews across $GAP_COUNT shows in this era"
 
       - name: Write gap shows to artifact
         run: |
