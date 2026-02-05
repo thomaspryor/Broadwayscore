@@ -13,7 +13,10 @@
     "33-variations-2009/nydailynews--joe-dziemianowicz.json",
     "33-variations-2009/nypost--elisabeth-vincentelli.json",
     "700-sundays-2013/ew--unknown.json",
-    "700-sundays-2013/newsday--unknown.json"
+    "700-sundays-2013/newsday--unknown.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/nypost--johnny-oleksinski.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
+    "a-behanding-in-spokane-2010/bloomberg-news--john-simon.json"
   ],
   "failed": [
     "110-in-the-shade-2007/theatermania--david-finkle.json",
@@ -51,7 +54,14 @@
     "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/ew--dave-quinn.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/new-york-sun--elysa-gardner.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nydailynews--chris-jones.json"
+    "a-beautiful-noise-the-neil-diamond-musical-2022/nydailynews--chris-jones.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/observer--david-cote.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--david-gordon.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--jesse-green.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/thewrap--thom-geier.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/timeout--adam-feldman.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/wsj--charles-isherwood.json",
+    "a-behanding-in-spokane-2010/ew--thom-geier.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -61,7 +71,9 @@
       "data/review-texts/1984-2017/deadline--jeremy-gerard.json",
       "1984-2017/deadline--jeremy-gerard.json",
       "data/review-texts/9-to-5-2009/theatermania--david-rooney.json",
-      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json"
+      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
+      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/nypost--johnny-oleksinski.json",
+      "a-beautiful-noise-the-neil-diamond-musical-2022/nypost--johnny-oleksinski.json"
     ],
     "scrapingbee": [
       "1776-2022/thewrap--robert-hofler.json",
@@ -69,9 +81,12 @@
       "1984-2017/guardian--adrian-horton.json",
       "1984-2017/thewrap--thom-geier.json",
       "1984-2017/thewrap--thorn-geier.json",
-      "33-variations-2009/bloomberg-news--john-simon.json"
+      "33-variations-2009/bloomberg-news--john-simon.json",
+      "a-behanding-in-spokane-2010/bloomberg-news--john-simon.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json"
+    ],
     "archive": [
       "1776-2022/nydailynews--unknown.json",
       "1776-2022/nypost--johnny-oleksinski.json",
@@ -83,7 +98,7 @@
     ]
   },
   "startTime": "2026-02-05T16:54:28.001Z",
-  "lastProcessed": "a-beautiful-noise-the-neil-diamond-musical-2022/nydailynews--chris-jones.json",
+  "lastProcessed": "a-behanding-in-spokane-2010/ew--thom-geier.json",
   "log": [
     {
       "t": "2026-02-05T16:54:43.907Z",
@@ -219,6 +234,18 @@
       "event": "bb-session",
       "session": "8eb10502",
       "url": "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-bro"
+    },
+    {
+      "t": "2026-02-05T17:24:19.125Z",
+      "event": "bb-session",
+      "session": "2ef0d0eb",
+      "url": "https://nypost.com/2022/12/05/a-beautiful-noise-the-neil-diamond-musical-broadwa"
+    },
+    {
+      "t": "2026-02-05T17:26:25.642Z",
+      "event": "bb-session",
+      "session": "ab867887",
+      "url": "https://nypost.com/2022/12/04/neil-diamond-musical-review-awful-broadway-show-is"
     }
   ]
 }
