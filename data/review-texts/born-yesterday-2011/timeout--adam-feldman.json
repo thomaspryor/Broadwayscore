@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Directed with an elegant touch by Doug Hughes, Arianda’s Billie Dawn is a take-charge dame, carnally aggressive and self-delighted. Clomping around in Catherine Zuber’s exuberant costumes, on John Lee Beatty’s beauty of a set, she’s a sex toy by way of Shirley Booth; this braying, unapologetic bimbo—“I’m stupid and I like it!”—may be a cousin of Jennifer Tilly’s sour Olive in Bullets Over Broadway, but she’s utterly adorable instead of appalling. This is the part that made Judy Holliday’s career, and Arianda claims it all to herself. She succeeds where many would-be Billies, such as Madeline Kahn and Melanie Griffith, have failed: This is the era of a new Dawn.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She succeeds where many would-be Billies, such as Madeline Kahn and Melanie Griffith, have failed: This is the era of a new Dawn.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise throughout - 'elegant touch', 'utterly adorable', 'claims it all to herself', plus the triumphant final declaration. However, this is a single curated excerpt so confidence is medium rather than high. | GPT-4o: The excerpt praises the direction, set, and costumes, and highlights Arianda's performance as a standout success. The tone is enthusiastic, suggesting a strong positive recommendation. | Gemini: The review is overwhelmingly positive, praising Arianda's performance and the production's design. The critic explicitly states that Arianda 'claims it all to herself,' indicating a strong endorsement. | Kimi: The excerpt offers enthusiastic praise for Nina Arianda's star performance and the elegant production design, calling her utterly adorable and successful where others failed. As a single curated excerpt, it suggests strong approval but warrants reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:21:09.585Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

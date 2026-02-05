@@ -11,5 +11,60 @@
   "bwwExcerpt": "But this is really Beetlejuice's show, and while it never lags or lacks energy when the bio-exorcist is not around, whenever Justin Collette appears under that green wig the show explodes off the stage as he banters with the audience. Determined to use any manner of tricks and schemes to get back into the land of the living, this Beetlejuice absorbs the side-splitting asides of the pantomime dame in a performance that doesn't need the giant props or chorus line of Beetlejuices to engulf the enti",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "whenever Justin Collette appears under that green wig the show explodes off the stage as he banters with the audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance with vivid language ('explodes off the stage', 'side-splitting'), but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt praises Justin Collette's performance as Beetlejuice, describing it as energetic and engaging. The show is described as not lagging or lacking energy, suggesting a positive experience overall. However, with only one excerpt available, confidence is low. | Gemini: The review excerpt focuses on the strength of the Beetlejuice character and the actor playing him, suggesting a positive experience. Given the single excerpt, I'm placing it at the higher end of the positive range, but with low confidence due to the limited text. | Kimi: Single excerpt demonstrates strong enthusiasm for the lead performance and production energy ('explodes off the stage,' 'side-splitting'), warranting an upper Positive score, though limited context necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:33:28.781Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

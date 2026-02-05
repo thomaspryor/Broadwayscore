@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Arcelus exudes decency without losing charm, but more notable is Thompson as the unrepentant vigilante. Hailey could have been indigestibly dignified and tragic, but thanks to Thompson's gruff yet light touch, he's richly human: neither fully innocent nor guilty.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Arcelus exudes decency without losing charm, but more notable is Thompson as the unrepentant vigilante.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focusing on strong performer praise, particularly Thompson's nuanced portrayal. However, with only one curated quote available, the overall review sentiment is unclear, warranting lower-end Positive scoring. | GPT-4o: The excerpt praises the performances, particularly Thompson's portrayal, indicating a positive view of the acting. However, the limited text and single excerpt warning suggest caution, leading to a lower score within the Positive range. | Gemini: The review excerpt praises Thompson's performance and describes the character as \"richly human.\" Given the single excerpt, I'm placing it in the lower end of the positive bucket. | Kimi: The excerpt offers enthusiastic praise for the lead performances, particularly Thompson's nuanced portrayal, though the limited scope prevents a full assessment of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:48:55.634Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

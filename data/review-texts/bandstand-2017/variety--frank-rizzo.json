@@ -12,5 +12,60 @@
   "bwwExcerpt": "There's a different 'band of brothers' on stage in 'Bandstand,' the earnest and often-entertaining musical that, set immediately following WWII, never quite achieves its noble ambitions. Despite the fluid staging and evocative choreography by Andy Blankenbuehler ('Hamilton'), an uneven book, undistinguished dialogue and only-serviceable tunes keep the show from meeting its deeper, darker and good-intentioned aspirations.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite the fluid staging and evocative choreography by Andy Blankenbuehler ('Hamilton'), an uneven book, undistinguished dialogue and only-serviceable tunes keep the show from meeting its deeper, darker and good-intentioned aspirations.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic calls it 'earnest and often-entertaining' but concludes it 'never quite achieves its noble ambitions' due to fundamental flaws in book and music. Single excerpt warning applies - setting confidence to low. | GPT-4o: The review acknowledges some positive elements like staging and choreography but highlights significant issues with the book and music, indicating a mixed reception. The single excerpt limits confidence. | Gemini: The review acknowledges positive aspects like staging and choreography, but ultimately states that the show doesn't fully achieve its ambitions due to an uneven book and undistinguished dialogue, indicating a mixed assessment. | Kimi: The excerpt acknowledges strong staging and choreography but finds significant flaws in the book, dialogue, and music, concluding the show falls short of its deeper ambitions despite being entertaining.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:15:14.699Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

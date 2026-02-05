@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "There are times when director Vivienne Benesch's production, staged on a single setting from Christine Jones, does not fully exploit the epic, metaphysical sense of the writing; transitions are marked by annoying sound cues when we'd be fully aware of what transpires without them. Some moments are rushed, others too broad. But those really are minor quibbles in a truly must-see show that is fully successful when it comes to everything that really matters. Messing didn't pick some revival or obvious showcase for her comedic chops: she strives mightily and beautifully to find her way through a wise and sad drama, just like the character she plays.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But those really are minor quibbles in a truly must-see show that is fully successful when it comes to everything that really matters.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite listing several production criticisms (transitions, pacing, broadness), the critic explicitly calls it a 'truly must-see show' and says it's 'fully successful' on what matters most. The 'must-see' language puts this in strong Positive territory. | GPT-4o: Despite noting some minor issues, the critic describes the show as 'must-see' and 'fully successful,' indicating a strong recommendation. However, with only a single excerpt available, confidence is low. | Gemini: Despite some minor issues, the critic calls the show \"truly must-see\" and praises Messing's performance, indicating a strong positive recommendation. | Kimi: While the excerpt notes specific flaws in direction and sound design, it explicitly calls the show 'truly must-see' and 'fully successful' where it matters, with strong praise for Debra Messing's dramatic performance. As a single excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:02:00.161Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 86,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

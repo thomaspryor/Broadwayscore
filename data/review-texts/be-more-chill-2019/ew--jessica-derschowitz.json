@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Despite that perma-frenzied tone and the musical's underwhelming book, it's not surprising that Be More Chill has taken the journey it has. Iconis' pop-rock songs are catchy and the show channels the angst and insecurities many young people experience, particularly in this social-media-driven age. I just wish there was more beneath all that neon, high-intensity surface. But then again, if you're already one of the many, many fans of Be More Chill, my opinion probably isn't going to matter anyway.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I just wish there was more beneath all that neon, high-intensity surface.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show's appeal and catchy songs but criticizes the 'underwhelming book' and lack of substance. The dismissive ending suggests indifference rather than recommendation. | GPT-4o: The review acknowledges the show's catchy songs and appeal to its fanbase but criticizes the 'underwhelming book' and lack of depth. The tone suggests a mixed reception, with some positive elements but overall reservations. | Gemini: The review acknowledges catchy songs and relatable themes, but also criticizes the \"underwhelming book\" and lack of depth. The final sentence suggests it's primarily for existing fans, indicating a mixed recommendation. | Kimi: The critic acknowledges the show's catchy pop-rock songs and relatable themes but criticizes the underwhelming book and superficial nature, ultimately suggesting it will only satisfy existing fans rather than offering a clear recommendation for general audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:17:21.000Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

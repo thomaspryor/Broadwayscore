@@ -12,5 +12,60 @@
   "bwwExcerpt": "And the show anchored by a tour-de-force, star-is-born performance by Walker, whose Patrick is much more human and oddly endearing than either Christian Bale's smirky, scenery-chewing version in the 2000 film adaptation, or Ellis' wholly vile original creation. 'American Psycho' still has ice in its veins - Patrick spews his venom at gays, women and pretty much anyone who didn't go to Harvard - but Walker (best known for 'Bloody Bloody Andrew Jackson' and the film 'Abraham Lincoln: Vampire Hunter') also allows you to feel the faint stirrings of a beating heart within. He makes the convincing case that Patrick is as much a victim in this story as the people he brutalizes.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And the show anchored by a tour-de-force, star-is-born performance by Walker, whose Patrick is much more human and oddly endearing than either Christian Bale's smirky, scenery-chewing version in the 2000 film adaptation, or Ellis' wholly vile original creation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Walker's 'tour-de-force, star-is-born performance' with detailed analysis of how he improves upon previous versions. However, single excerpt warning applies - confidence low due to limited text. | GPT-4o: The excerpt praises Walker's performance as 'tour-de-force' and 'star-is-born', suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt focuses heavily on praising the lead performance as a 'tour-de-force' and 'star-is-born', indicating a strong positive sentiment. Given the single excerpt, confidence is low, but the praise is strong. | Kimi: The excerpt offers strong praise for the lead performance ('tour-de-force,' 'star-is-born') and finds emotional depth in the production, but as a single curated excerpt, the overall verdict requires caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:44:57.568Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -11,5 +11,60 @@
   "bwwExcerpt": "Instead of characters and story, “Beetlejuice” offers an onslaught of bells and whistles: Kenneth Posner’s lighting design has enough strobes for an all-night rave. Peter Nigrini’s dizzying projections whirl and blink like fractured kaleidoscopes. There are myriad afterworldly creatures, including some gigantic sandworms (from puppet designer Michael Curry). David Korins’ purposefully off-kilter set is like a Lewis Carroll fever dream. William Ivey Long’s eye-popping costumes are delightfully fl",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Instead of characters and story, \"Beetlejuice\" offers an onslaught of bells and whistles",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt critiques the show for prioritizing spectacle over substance ('Instead of characters and story'), though it acknowledges the technical achievements. The text cuts off mid-sentence and represents only one excerpt, requiring low confidence. | GPT-4o: The review excerpt focuses on the production's visual elements rather than characters and story, suggesting a mixed experience. The lack of a clear recommendation or discouragement indicates a mixed verdict. | Gemini: The review excerpt focuses on the overwhelming technical aspects rather than the substance of the story and characters, suggesting a negative experience. The aggregator verdict also suggests a negative assessment. | Kimi: The excerpt praises the visual and design elements ('eye-popping costumes,' 'delightfully,' 'Lewis Carroll fever dream') but explicitly criticizes the lack of characters and story, suggesting style over substance. With only one truncated excerpt available and 'Flat' aggregator context, the assessment remains mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:28:48.944Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

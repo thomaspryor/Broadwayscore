@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This new musical inspired by the 2000 Kirsten Dunst film about competitive high school cheerleaders...is obviously more likely to appeal to teens weaned on \"High School Musical\" and \"Glee\" than the majority of adult theatergoers. As you'd expect, it features unbelievable displays of acrobatics and gymnastic abilities, including but not limited to young girls being flipped high in the air. But it also proves to be a surprisingly well-crafted, highly enjoyable, feel-good musical with appealing cha",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRING-IT-ON-Opens-on-Broadway-Updating-Live-20120801",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But it also proves to be a surprisingly well-crafted, highly enjoyable, feel-good musical with appealing cha",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening demographic caveat, critic finds the show 'surprisingly well-crafted, highly enjoyable' - clear positive verdict. Low confidence due to single truncated excerpt that cuts off mid-sentence. | GPT-4o: The excerpt describes the musical as 'well-crafted', 'highly enjoyable', and 'feel-good', indicating a positive recommendation. The single excerpt warning suggests using the upper end of the Positive range. | Gemini: The review states the show is \"surprisingly well-crafted, highly enjoyable, feel-good musical\" which indicates a positive recommendation. The caveat about appealing to teens suggests some reservations. | Kimi: While the single excerpt notes the show appeals more to teens than adults, it describes the production as 'surprisingly well-crafted' and 'highly enjoyable,' indicating a qualified positive recommendation. The demographic limitation and excerpt format warrant a lower-positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:31:37.224Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

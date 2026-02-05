@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "It could be observed in terms of the physical production that nothing succeeds like excess. The drop dead gorgeous costumes are by Linda Cho. It is a good thing that the Russian court ensemble featured in the opening of the musical are brought back multiple times in ghostly re-enactments because we needed more than one look at them. This excellent ensemble variously deployed as members of The Ballet Russe, White Russian society and revolutionary thugs execute choreography by Peggy Hickey that is",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The drop dead gorgeous costumes are by Linda Cho.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt praises the physical production and costumes, indicating a positive view. However, the single excerpt and lack of a full verdict make the confidence low, suggesting a mildly positive score. | Gemini: The review excerpt focuses on the positive aspects of the production, specifically the costumes and ensemble work. The phrase \"drop dead gorgeous\" indicates strong praise, suggesting a positive recommendation, although the truncated nature of the text lowers confidence. | Kimi: The excerpt provides strong praise for the production elements, calling the costumes 'drop dead gorgeous' and the ensemble 'excellent,' indicating clear enthusiasm for the physical production. However, with only one curated excerpt available and the final sentence truncated, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:02:00.860Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 72,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

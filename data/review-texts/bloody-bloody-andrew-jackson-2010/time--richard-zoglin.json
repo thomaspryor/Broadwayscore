@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Between the buffoonish antics (Jackson foes like John Quincy Adams and Henry Clay played as cartoon twits) and almost total lack of dramatic fluidity (key events like Jackson's loss of the 1924 presidential election through backroom Senate dealing are simply announced by a narrator), the revisionism just looks like a lame high school prank.",
   "bwwScore": 2,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 34,
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 29,
+      "high": 39
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the revisionism just looks like a lame high school prank",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The excerpt harshly criticizes the show's dramatic structure and characterization, calling it 'buffoonish' and comparing it to 'a lame high school prank.' However, with only one excerpt available, the full critical verdict may not be represented. | GPT-4o: The excerpt is strongly negative, criticizing the show for its lack of dramatic fluidity and cartoonish portrayal of historical figures. The language suggests a dismissive view of the production. | Gemini: The review excerpt describes the show negatively, citing \"buffoonish antics,\" a \"lack of dramatic fluidity,\" and calling the revisionism a \"lame high school prank.\" Given the negative tone, I've classified it as negative and assigned a score of 45. Confidence is low due to the single excerpt. | Kimi: The excerpt employs dismissive language ('buffoonish antics,' 'cartoon twits,' 'lame high school prank') and criticizes fundamental elements like dramatic structure and character portrayal, indicating a strongly negative assessment. Confidence is low due to the single-excerpt limitation. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:10:36.297Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 30,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

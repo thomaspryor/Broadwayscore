@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"There are very few shows in which the set earns more applause than its top-billed TV stars, but the breezy Broadway revival of the 1946 comedy Born Yesterday is one of them. John Lee Beatty has designed a radiant art deco gem of a hotel suite with gilded fixtures, glimmering onyx woodwork, ruby-red upholstery, and satiny sapphire walls. Topped off by fat swirls of curlicue chalk-white molding, it is - just as playwright Garson Kanin dictated in his s",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BORN-YESTERDAY-Updating-LIVE-20110424",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There are very few shows in which the set earns more applause than its top-billed TV stars, but the breezy Broadway revival of the 1946 comedy Born Yesterday is one of them.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with backhanded praise - calling it 'breezy' is positive but noting the set outshines the stars suggests performance issues. Truncated mid-sentence limits full verdict assessment. | GPT-4o: The excerpt highlights the set design as the standout feature, implying that the performances may not be as impressive. The lack of praise for the actors suggests a mixed review, but the positive note on the set design prevents it from being negative. | Gemini: The review excerpt focuses heavily on the set design, suggesting it's a highlight of the production. The phrase \"breezy Broadway revival\" indicates a positive, but not overwhelmingly enthusiastic, sentiment. Given the single excerpt and focus on set, I'm scoring it as mildly positive with low confidence. | Kimi: The critic describes the revival as 'breezy' and lavishes praise on the Art Deco set design as a 'radiant gem,' indicating a clearly positive if design-focused reception.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:18:56.472Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

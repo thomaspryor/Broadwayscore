@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Michelle Williams tears up the stage, literally and figuratively, in \"Blackbird\"...the \"Brokeback Mountain\" actress lurches from defiance to pleading, sputtering rage to romantic desperation, offering up an unforgettable portrait of a doomed soul who has long since lost agency over her own emotions. It's a half-terrifying, half-thrilling high-wire act that leaves the actress visibly exhausted -- and the audience in awe...directed here by Joe Mantello (\"The Humans\"), \"Blackbird\" is an unrelenting",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a half-terrifying, half-thrilling high-wire act that leaves the actress visibly exhausted -- and the audience in awe.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Williams' performance with vivid language ('tears up the stage', 'unforgettable', 'audience in awe'). Text cuts off mid-sentence so full verdict unclear, but tone suggests positive recommendation based on the lead performance. | GPT-4o: The excerpt provides high praise for Michelle Williams' performance, describing it as 'unforgettable' and leaving the audience 'in awe'. This suggests a strong recommendation, placing it in the Rave bucket. | Gemini: The excerpt focuses on Michelle Williams's outstanding performance and the overall impact of the play, suggesting a strong positive recommendation despite the limited text. | Kimi: The excerpt offers effusive praise for Michelle Williams' performance and the production's intensity, describing an 'unforgettable' and 'thrilling' experience that leaves the audience 'in awe.' However, as a single truncated excerpt, the overall verdict may not be fully represented.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:07:29.690Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

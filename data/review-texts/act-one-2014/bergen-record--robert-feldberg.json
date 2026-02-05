@@ -12,5 +12,60 @@
   "bwwExcerpt": "Moss Hart's autobiography 'Act One' was big news in 1959. But are people interested in a man whose fame on Broadway happened well over a half-century ago? If they're not, it's hard to see what they'll find to savor - other than a delightful performance by Tony Shalhoub - in James Lapine's stage adaptation of the book, which opened Thursday night at the Vivian Beaumont Theater.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If they're not, it's hard to see what they'll find to savor - other than a delightful performance by Tony Shalhoub",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic questions the show's relevance and appeal to modern audiences, suggesting little to recommend except one performance. However, this is only one excerpt so confidence is low. | GPT-4o: The review suggests that the show may not appeal to those uninterested in the historical subject, with the only highlight being Tony Shalhoub's performance. This indicates a negative overall impression, despite some praise for an individual performance. | Gemini: The review questions the show's appeal beyond Shalhoub's performance, suggesting it may not resonate with everyone. This indicates a mixed recommendation. | Kimi: The critic suggests that beyond Shalhoub's performance, the show offers little of interest to audiences not already invested in Moss Hart's legacy. This qualifies as a negative recommendation despite the single positive note.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:58:44.806Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

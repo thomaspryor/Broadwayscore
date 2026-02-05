@@ -11,5 +11,59 @@
   "bwwExcerpt": "Design to the rescue! However you might react to the film's storytelling, which also implicated Robert Goulet and Dick Cavett in cameo visits, Burton's comedy-horror stew was a visual wow, with touches of Disney, Dali, Hitchcock, and Edward Gorey. Onstage at Belk Theater, we behold an orgy of scenic, costume, lighting, makeup, wig, and projection design - augmented by magic, SFX, a special illuminated edition of The Handbook for the Recently Deceased, and puppets. Fear not, the pinhead guy we en",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Design to the rescue! However you might react to the film's storytelling, Burton's comedy-horror stew was a visual wow.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Text is truncated mid-sentence and provides only one excerpt. The 'Design to the rescue!' suggests production issues being compensated by strong technical elements. BroadwayWorld aggregator verdict is 'Flat' which supports mixed classification. | GPT-4o: The review excerpt highlights the impressive design elements of the production, suggesting a positive experience based on its visual spectacle. However, the lack of a full review and the single excerpt warning necessitate a cautious approach. | Gemini: The review excerpt focuses heavily on the design elements, calling it an \"orgy\" of visual delights. While the beginning mentions potential issues with the film's storytelling, the overall tone of the excerpt leans positive due to the emphasis on the impressive design.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:26:26.526Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

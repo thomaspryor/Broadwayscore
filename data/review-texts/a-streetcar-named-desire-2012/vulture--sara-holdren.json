@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "What makes Mescal’s performance so riveting is that, without ever blunting or apologizing for Stanley’s cruelty, he also reveals the soft belly of the role, the vulnerability and hurt that, for a man in his world with his upbringing, can naturally lead to violence. 'When we first met, me and you, you thought I was common,' he reminds Stella, who was raised with Blanche as part of the fading Southern aristocracy, at a former plantation called Belle Reve. 'How right you was, baby. I was common as dirt. You showed me the snapshot of the place with the columns. I pulled you down off them columns and how you loved it… And wasn’t we happy together, wasn’t it all okay till she showed here?",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes Mescal's performance so riveting is that, without ever blunting or apologizing for Stanley's cruelty, he also reveals the soft belly of the role",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for lead performance ('riveting') and sophisticated analysis of the acting choices. However, this is only one curated quote focusing on performance, so confidence is low as the overall verdict is unclear. | GPT-4o: The excerpt praises Mescal's performance as 'riveting' and highlights his ability to reveal depth in the character. However, the single excerpt and lack of full context limit confidence in the overall review sentiment. | Gemini: The excerpt focuses on praising Mescal's performance, highlighting its complexity and depth. While it doesn't offer a comprehensive verdict on the entire production, the positive tone suggests a recommendation, albeit with potential reservations given the limited text. | Kimi: The excerpt provides strong praise for Paul Mescal's performance, describing it as 'riveting' and nuanced in its exploration of Stanley's vulnerability. Following the single excerpt protocol for clearly positive language, it scores in the upper Positive range, though confidence is low due to limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:47:42.578Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -11,5 +11,60 @@
   "bwwExcerpt": "I do hope that last night was a one-off, opening night glitch. This really is such a great show and the cast looked like they were having a phenomenal time, so it would be nice if the audience could too. A word of advice would be to listen to the Broadway cast recording before attending the show if you are not already familiar with the lyrics, just in case.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 67,
+  "llmScore": {
+    "score": 67,
+    "confidence": "medium",
+    "range": {
+      "low": 62,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This really is such a great show and the cast looked like they were having a phenomenal time, so it would be nice if the audience could too.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic praises the show itself and cast enthusiasm but clearly indicates technical problems that prevented audience enjoyment, suggesting conditional recommendation dependent on fixes. | GPT-4o: The excerpt praises the show and cast, suggesting a positive view despite some reservations about the opening night performance. The advice to listen to the cast recording implies potential issues with clarity or understanding, resulting in a mildly positive score. | Gemini: The review expresses hope for improvement after an opening night glitch, suggesting the show has potential but didn't fully deliver. The advice to listen to the cast recording indicates some reservation about audience understanding. | Kimi: While the critic explicitly calls the show 'great' and praises the cast's 'phenomenal' energy, significant caveats about technical glitches and sound issues requiring pre-show preparation indicate a qualified rather than enthusiastic recommendation. The single-excerpt format and 'Flat' aggregator rating warrant low confidence. | Buckets: claude=Mixed, openai=Positive, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:23:40.976Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 62,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

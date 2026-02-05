@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "...\"Bring It On\" is basically inconsequential. I know that cheerleaders and their nearest will disagree, but for most of us, a story about kids from an urban high school vying for a national cheerleading title against kids from a privileged one is not such a compelling issue, even with helpings of intrigue. At intermission, I was thinking, gee, the dancing is fabulous and the cast, outstanding, but I don't frankly care if these characters live or die. By the end of the show, at least I was curio",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRING-IT-ON-Opens-on-Broadway-Updating-Live-20120801",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At intermission, I was thinking, gee, the dancing is fabulous and the cast, outstanding, but I don't frankly care if these characters live or die.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic calls the show 'basically inconsequential' and admits not caring about the characters, despite praising dancing and cast. Text appears cut off mid-sentence, limiting confidence in final verdict. | GPT-4o: The review acknowledges the quality of the dancing and cast but expresses a lack of engagement with the story, indicating a mixed sentiment. The excerpt is limited, so the confidence is low. | Gemini: The review praises the dancing and cast but ultimately finds the story inconsequential and uncompelling. The critic's ambivalence suggests a mixed reaction. | Kimi: The critic offers strong praise for the technical elements ('fabulous' dancing, 'outstanding' cast) but dismisses the story as 'inconsequential' and admits complete emotional detachment from the characters. The text is truncated and represents only a single excerpt, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:32:52.041Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

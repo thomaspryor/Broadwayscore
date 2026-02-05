@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "\"Beautiful,\" a sentimental and sympathetic biography led by a poignant, extremely winning performance from breakout star Jessie Mueller, is slickly staged, genuinely touching and very enjoyable...It lacks the sin and sex appeal in \"Jersey Boys,\" or the restless momentum of \"Motown,\" and relies on feel-good nostalgia. Nevertheless, \"Beautiful\" is unusually coherent, character-driven and sincere for a jukebox musical. And who can resist those songs? So how can this not be a hit?\"",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Beautiful is unusually coherent, character-driven and sincere for a jukebox musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict calling it 'very enjoyable' and 'genuinely touching' with praise for the lead performance, though acknowledges it lacks some qualities of other musicals. Ends with rhetorical question implying success. | GPT-4o: The review excerpt praises the show as 'genuinely touching and very enjoyable,' highlighting a strong performance and coherent staging. While noting some missing elements compared to other shows, it ends on a positive note, suggesting it will be a hit. | Gemini: The review is overwhelmingly positive, using terms like \"beautiful\", \"sympathetic\", \"poignant\", \"winning\", \"genuinely touching\", and \"very enjoyable\". The critic also predicts it will be a hit. | Kimi: The critic praises Jessie Mueller's performance as 'extremely winning' and calls the show 'genuinely touching' and 'unusually coherent,' concluding it will be a hit despite lacking the edge of similar musicals.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:17:59.796Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

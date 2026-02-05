@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Early in the 20th century, a group of extraordinary men came together, devoted to providing lesser mortals constant examples of physical and spiritual excellence. In the years that followed, they endured all manner of tragedy and adversity to stick together, so that we, too, could survive as a nation. This is not a reference to some elite military unit or civil-service organization, but to the New York Yankees, the subject of Bronx Bombers (* * out of four stars), the new play/hagiography that opened Thursday at Broadway's Circle in the Square Theatre.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the new play/hagiography that opened Thursday at Broadway's Circle in the Square Theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic describes the show as a 'hagiography' (overly reverent biography) rather than a balanced play, suggesting critical distance. However, with only one excerpt from the opening setup and no clear verdict statement, confidence is low. | GPT-4o: The review uses the term 'hagiography', suggesting a lack of critical depth or balance, and assigns a 2 out of 4 stars rating, indicating a negative assessment. | Gemini: The review excerpt describes the subject matter but doesn't offer a clear recommendation. The star rating suggests a mixed assessment, but without more text, it's hard to be certain. | Kimi: The critic employs sarcasm comparing baseball players to military heroes, explicitly labels the work a 'hagiography' (uncritical worship), and assigns 2/4 stars, indicating a below-average production that fails to offer critical perspective on its subject. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:38:11.659Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

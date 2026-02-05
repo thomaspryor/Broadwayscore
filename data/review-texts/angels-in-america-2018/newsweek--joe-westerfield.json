@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The Angel's introduction is as grand as the come, and that's fitting for such a grand revival of Angels in America. Twenty-five years ago, the play was important and relevant-and in the age of Trump, it might be moreso, on both counts, today. But the reason it persists, the reason companies will stage this work for decades to come, is that it's first and foremost great, riveting drama. And its time has come-again.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the reason it persists, the reason companies will stage this work for decades to come, is that it's first and foremost great, riveting drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'grand revival' and 'great, riveting drama' with enthusiastic endorsement. Single excerpt warning noted - using upper positive range due to clearly enthusiastic tone. | GPT-4o: The excerpt praises the revival as 'great, riveting drama' and emphasizes its enduring importance and relevance, suggesting a strong recommendation. | Gemini: The review excerpt uses strong positive language like \"grand revival\", \"great, riveting drama\", and \"its time has come-again\", indicating a positive recommendation. Given the single excerpt, I'm placing the score at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the revival, calling it 'grand' and the drama 'great' and 'riveting,' which warrants a high Positive score. However, confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:06:40.422Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

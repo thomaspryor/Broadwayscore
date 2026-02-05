@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "When the show hits — does it hit. Serotonin from tip to taint. But there are a few lulls, most often when the dance isn't the main focus. The spoken parts can feel awkward at times and because Fosse's movements are so distinctive they can also become a bit repetitive. Jackson McHenry, Vulture: Dancin’, as revived and revised, softens that edge while remaining charged. The new lineup is intentionally more inclusive and edits some of Fosse’s inherent chauvinism. The dancers of the 'Female Star Spo",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "When the show hits — does it hit. Serotonin from tip to taint.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows enthusiasm ('When the show hits — does it hit. Serotonin from tip to taint') but acknowledges significant flaws ('lulls', 'awkward', 'repetitive'). However, only one curated excerpt is available and text appears truncated, reducing confidence in the overall verdict. | GPT-4o: The excerpt highlights strong moments ('when the show hits') but notes issues with spoken parts and repetition. The positive elements are emphasized, but the review acknowledges some drawbacks, suggesting a mildly positive verdict. | Gemini: The review excerpt is mostly positive but mentions lulls and awkwardness. Given the single excerpt, I'm scoring it as positive with reservations. | Kimi: The critic offers ecstatic praise for the show's dance sequences ('serotonin from tip to taint') but notes significant weaknesses in the spoken portions and repetitiveness. As a single excerpt with mixed signals, this falls in the lower Positive range per the guidance for mildly positive curated quotes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:12:55.282Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

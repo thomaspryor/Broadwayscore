@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Almost Famous\" almost always works better with such winking gestures than it does with sappier ones. You'll definitely want to stick around for the exuberant curtain call, an affirmation that rock music has definitely not taken its last gasp - not on Broadway, certainly.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "\"Almost Famous\" almost always works better with such winking gestures than it does with sappier ones.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows qualified praise (\"almost always works\") and recommends staying for the curtain call, but single excerpt warning applies and tone suggests some reservations about sappier moments. | GPT-4o: The excerpt suggests a positive experience with enthusiasm for the curtain call and affirmation of the show's vitality. Despite the single excerpt warning, the tone is clearly positive. | Gemini: The review excerpt suggests a positive experience, particularly highlighting the curtain call. However, the phrase \"almost always works better with such winking gestures than it does with sappier ones\" indicates some reservations. Given it's a single excerpt, confidence is low, and the score is in the lower-middle of the positive range. | Kimi: The critic explicitly recommends staying for the 'exuberant curtain call' and praises the show's rock energy, though notes the material works better with ironic 'winking' moments than sentimental ones.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:22:02.608Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

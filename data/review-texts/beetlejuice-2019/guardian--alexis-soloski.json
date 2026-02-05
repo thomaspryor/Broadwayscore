@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "But happily and improbably Beetlejuice, directed by Alex Timbers, lays those problems to rest. (A pretty hectic rest, but still.) Where the show falters is in the more ordinary stuff of musical theater, story and song. But when the conductor rises from the orchestra pit with a shrunken head above the shoulders of his natty suit, you can forgive a lot.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But happily and improbably Beetlejuice, directed by Alex Timbers, lays those problems to rest.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the show 'falters' in story and song but uses positive language like 'happily' and says 'you can forgive a lot' for the spectacle. Single excerpt warning applies - this appears to be a qualified positive recommendation but confidence is low due to limited text. | GPT-4o: The review acknowledges issues with the story and song but ultimately forgives them due to the show's entertaining elements. The excerpt suggests a mildly positive impression, but the single quote and lack of full context reduce confidence. | Gemini: The review states that the show \"lays those problems to rest\" and that you can forgive a lot when the conductor rises from the orchestra pit. However, it also mentions that the show falters in story and song, indicating a mixed but overall positive review. | Kimi: While the critic notes significant weaknesses in the fundamental elements of musical theater (story and song), the verdict is that the visual spectacle and direction provide enough entertainment value to warrant a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:20:49.499Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

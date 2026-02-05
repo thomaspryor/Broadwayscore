@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Director Jamie Lloyd's production, the play's third Broadway revival in 18 years, is capably acted but spare, gray and chilly; there is no set but two wooden chairs, a small folding table and a back wall that sometimes moves forward or backward. In each of the two-person scenes, the absent character lingers onstage like a gloomy ghost, sometimes nursing a drink. Everything seems intended to suggest the very English repression of great passions that the play never actually conveys. At the performance I attended, Hiddleston's icy facade cracked-during the scene in which he discovers his wife's adultery-to release a physical outpouring of fluid so profuse that it seemed like a magic trick, as though the actor had swiftly turned on and off a faucet that was hidden in his face. It was a strange and incongruous moment, and it provided a welcome burst of surprise in a production that is otherwise a chic and dreary affair.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Everything seems intended to suggest the very English repression of great passions that the play never actually conveys.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review describes the production as 'capably acted' but 'spare, gray and chilly' and concludes it's 'a chic and dreary affair.' The critic finds one memorable moment but overall suggests the production fails to convey the play's intended passions. | GPT-4o: The review describes the production as 'chic and dreary' with a 'welcome burst of surprise,' indicating a mixed impression. The single excerpt suggests a lack of strong recommendation or discouragement. | Gemini: The review describes the production as \"capably acted but spare, gray and chilly\" and \"otherwise a chic and dreary affair,\" but also notes a \"welcome burst of surprise.\" This suggests a mixed reaction, neither strongly recommending nor discouraging. | Kimi: The critic describes the production as 'spare, gray and chilly,' a 'chic and dreary affair' that despite capable acting fails to convey the emotional weight of the material, offering only one incongruous moment of interest.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:50:26.031Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 44,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

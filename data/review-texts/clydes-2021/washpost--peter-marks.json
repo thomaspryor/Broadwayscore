@@ -11,7 +11,7 @@
   "originalScore": null,
   "assignedScore": 80,
   "source": "web-search",
-  "dtliThumb": null,
+  "dtliThumb": "UP",
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
@@ -73,5 +73,9 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "sources": [
+    "web-search",
+    "dtli"
+  ]
 }

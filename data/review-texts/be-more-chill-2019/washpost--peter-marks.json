@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "I couldn't be less chill, not after sitting through the insipid 'Be More Chill' for the second time. I saw it last year off-Broadway, a perch on which it landed by virtue of the mad crush many young folk developed for a cast recording that streamed online long before a New York engagement was ever in the works. It is, in that sense, the first musical to click its way onto Broadway, where it had its official opening at the Lyceum Theatre on Sunday. And, boy, were my misgivings from my initial encounter confirmed. 'Be More Shrill' would be a better title for director Stephen Brackett's heinously overamplified and overacted production, built on the story of a nerd played by the intrepid Will Roland, who takes a magic pill to become popular with the high school 'in' crowd.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
+  "assignedScore": 19,
+  "llmScore": {
+    "score": 19,
+    "confidence": "medium",
+    "range": {
+      "low": 14,
+      "high": 24
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Be More Shrill' would be a better title for director Stephen Brackett's heinously overamplified and overacted production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Devastatingly negative language throughout: 'insipid', 'heinously overamplified', creating a mocking alternate title. The critic's 'misgivings were confirmed' after seeing it twice, indicating strong rejection. | GPT-4o: The excerpt is strongly negative, criticizing the production as 'heinously overamplified and overacted' and confirming misgivings from a previous viewing. The tone suggests a deep pan, but confidence is low due to the single excerpt warning. | Gemini: The review uses very negative language such as \"insipid\", \"misgivings\", and \"heinously overamplified and overacted\". The critic clearly does not recommend the show. | Kimi: The excerpt expresses strong disappointment with the production, using harsh language like 'insipid' and 'heinously overamplified,' and suggests the mocking title 'Be More Shrill.' Despite faint praise for the lead actor, the overall verdict is clearly negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:19:51.444Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 38,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

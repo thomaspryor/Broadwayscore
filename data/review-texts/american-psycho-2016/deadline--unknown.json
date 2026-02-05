@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Unlike Bale, who brought a scary chill to the role, Walker is more of a man-child, his ambition and his malice subdued by a vaguely goofy smile; in his CKs he recalls not so much Jack the Ripper as Tom Cruise in Risky Business...The musical has an awkward book by Roberto Aguirre-Sacasa...and Duncan Sheik, who wrote the beautiful score for Spring Awakening and here delivers confident, well-crafted numbers...choreographer is Lynne Page; the dances are the most frightening thing about American Psycho, as the actors contort and distort themselves in jagged, angular paroxysms of stoned lust and raw hunger. I feared the sound of snapping limbs throughout...I no more enjoyed the mass slaughter depicted on stage than I would seeing a dramatization of Jonathan Swift...Aguirre-Sacasa and director Goold (and possibly Walker as well) have conspired to defang Patrick somewhat, embellishing his back story (the great Alice Ripley is wasted playing, among other roles, Bateman's mom) and the possibility of redemption...Didn't do much for me.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Didn't do much for me.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite acknowledging some positives like Sheik's 'confident, well-crafted numbers' and effective choreography, the critic finds fundamental flaws in the adaptation, calls the book 'awkward,' and concludes with clear dismissal. | GPT-4o: The review expresses disappointment with the musical, noting an awkward book, wasted performances, and a lack of enjoyment. The overall tone is negative, though some elements like the score are acknowledged positively. | Gemini: The review has mixed opinions. It praises the choreography and music but criticizes the book and character portrayal. The final line, \"Didn't do much for me,\" suggests a lukewarm overall experience. | Kimi: While the critic praises Sheik's score and Page's choreography, the review criticizes the 'awkward' book, the defanged protagonist, a wasted supporting performance, and ends with the dismissive verdict 'Didn't do much for me.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:43:40.268Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

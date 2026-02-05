@@ -11,5 +11,60 @@
   "bwwExcerpt": "Let’s talk talent. Everything about this show is over-the-top, and the cast has to be as well. Justin Colette, who plays Beetlejuice, is outrageous and obnoxious, which is exactly right for the crazy role. Megan McGinnis and Will Burton are perfect as the straight-laced new ghosts Barbara and Adam, while Sara Litzinger is brilliant as Delia. But the big kudos here go to Isabella Esler, a recent high school graduate making her professional debut as Lydia. Watch out, Broadway! We will be seeing a ",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Everything about this show is over-the-top, and the cast has to be as well.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistently praises cast performances with superlatives ('brilliant', 'perfect', 'exactly right'). However, text is clearly truncated mid-sentence and represents only one excerpt, requiring reduced confidence despite positive tone. | GPT-4o: The excerpt praises the cast's performances, especially highlighting Isabella Esler's debut. The positive tone and strong praise for the cast suggest a positive recommendation. Given the single excerpt warning, the score is set at the lower end of the positive range. | Gemini: The excerpt is overwhelmingly positive about the cast and the show's overall energy. Given the limited text, I'm placing it in the upper end of the positive range with low confidence. | Kimi: The excerpt delivers enthusiastic praise for multiple performances using superlatives like 'brilliant' and 'perfect,' with an excited tone about the production's casting, though the single-excerpt format limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:26:44.173Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

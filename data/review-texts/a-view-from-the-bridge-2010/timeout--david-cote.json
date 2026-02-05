@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Shatteringly tough revivals such as A View from the Bridge can inspire dueling emotions. First, obviously, there's immense satisfaction and gratitude that Belgian director Ivo van Hove digs down and grabs the pulsing, bloody heart of Arthur Miller's 1956 drama...But then comes anger that similarly audacious visions of the classics are so rare...The head that throbs the hardest is bullet-clean and belongs to Mark Strong, who gives a performance of harrowing intensity as doomed Eddie Carbone...Van Hove stages this elegant and lean tale with almost perverse understatement...Earlier I promised angry words about New York's 'classics problem'...Our directors need to study how [van Hove] strips away anything inessential to the text and lasers in on breathing, moving bodies in space.",
   "bwwScore": 10,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shatteringly tough revivals such as A View from the Bridge can inspire dueling emotions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Despite the single excerpt warning, this contains overwhelmingly positive language: 'immense satisfaction and gratitude', 'harrowing intensity', 'elegant and lean', praising the director's vision as exemplary for other directors to study. The critic uses superlatives and positions this as a model production. | GPT-4o: The excerpt praises the director's vision and execution with strong language like 'shatteringly tough' and 'harrowing intensity'. The critic expresses immense satisfaction and gratitude, indicating a highly positive response. | Gemini: The review is overwhelmingly positive, praising the direction, the lead performance, and the overall impact of the production. The critic uses strong language like \"shatteringly tough\" and \"harrowing intensity.\" | Kimi: The excerpt offers unqualified praise for the direction ('elegant and lean') and lead performance ('harrowing intensity'), with strong enthusiasm throughout. However, per the single-excerpt warning, the score is capped at the upper end of Positive rather than Rave due to limited context. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:52:05.172Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

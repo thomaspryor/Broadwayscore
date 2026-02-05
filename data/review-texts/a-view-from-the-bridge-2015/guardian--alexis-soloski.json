@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Van Hove is a genius at revealing and actualising the emotional currents that run underneath dialogue, of giving subtext a visceral and violent expression. So it wasn't a given that he would succeed with Miller. More than one character explicitly states Eddie's predicament, a deeply felt but dangerously unacknowledged desire for his niece, so this text isn't exactly sub. But Miller can be mealy mouthed about desire itself, which he always seems to treat as something at least a little distasteful",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Van Hove is a genius at revealing and actualising the emotional currents that run underneath dialogue.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The excerpt praises Van Hove as a 'genius' but raises questions about fit with Miller's work. Single excerpt warning applies - this appears mildly positive but may not represent full verdict. | GPT-4o: The excerpt praises Van Hove's ability to reveal emotional currents but suggests that Miller's treatment of desire is problematic. The single excerpt provides a mixed impression, leading to a cautious score in the Mixed range. | Gemini: The review praises the director's ability but also notes Miller's writing can be \"mealy mouthed about desire itself\". This suggests a mixed assessment, leaning towards neither recommending nor discouraging. | Kimi: Despite being a limited excerpt, the critic employs the strong superlative 'genius' to describe the director's skill at realizing emotional subtext, indicating clear admiration for the production's execution, even while noting the challenges of applying this approach to Miller's more explicit text. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:53:43.295Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

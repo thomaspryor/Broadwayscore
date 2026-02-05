@@ -12,5 +12,60 @@
   "bwwExcerpt": "That depends on what you're in the mood for. If topping your list of requirements is a stunning enterprise, you're advised to speed yourself-not necessarily on speed-to the Gerald Schoenfeld Theatre, where Es Devlin has constructed a sleek white-and-grey set that instantly announces the film-noirish treatment director Rupert Goold has committed to make of Bret Easton Ellis's 1991 American Psychonovel.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If topping your list of requirements is a stunning enterprise, you're advised to speed yourself to the Gerald Schoenfeld Theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses 'stunning enterprise' and actively advises readers to 'speed yourself' to see it, praising the set design and direction. However, confidence is low due to single excerpt warning - this may not represent the full review verdict. | GPT-4o: The excerpt suggests a positive recommendation, highlighting the impressive set design and film-noir treatment. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt suggests a positive experience, particularly highlighting the set design. However, due to the limited text, the confidence is low, and the score is placed at the lower end of the positive range. | Kimi: The excerpt explicitly advises audiences to attend if they appreciate visual spectacle, praising the 'sleek' set and 'film-noirish' direction as a 'stunning enterprise'. While the recommendation opens with a conditional caveat, the evaluative language is clearly positive and enthusiastic about the production values.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:44:18.087Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

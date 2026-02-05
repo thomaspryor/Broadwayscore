@@ -12,5 +12,60 @@
   "bwwExcerpt": "There could not possibly be a more relevant time for 'Bloody Bloody Andrew Jackson' - a relentlessly silly rock musical about the first unofficial Tea Party candidate in American political history - to premiere on Broadway.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There could not possibly be a more relevant time for 'Bloody Bloody Andrew Jackson' to premiere on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic emphasizes perfect timing and relevance for Broadway, suggesting strong recommendation despite limited excerpt. Single quote warning requires caution but the superlative 'could not possibly be more relevant' indicates enthusiasm. | GPT-4o: The excerpt suggests a positive view of the show's timing and relevance, but lacks strong evaluative language about the production itself. Given the single excerpt warning, this indicates a mildly positive sentiment. | Gemini: The excerpt suggests the show's relevance is a positive aspect, but without more context, it's difficult to gauge the overall recommendation strength. I'm scoring it as mildly positive due to the limited information. | Kimi: The excerpt expresses enthusiastic praise for the show's political relevance ('could not possibly be a more relevant time') and approvingly describes its tone as 'relentlessly silly,' indicating a strong positive recommendation despite the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:07:02.292Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

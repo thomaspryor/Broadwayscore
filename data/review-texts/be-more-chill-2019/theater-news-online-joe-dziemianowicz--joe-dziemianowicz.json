@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Through it all, the actors are game and winning as they channel inner teens, while the terrific scenic and lighting designs lend loads of atmosphere and polish. In the end, Be More Chill reminds that friendship is a mighty force. That's not groundbreaking like a high-tech pill, but it's easy enough to swallow.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Through it all, the actors are game and winning as they channel inner teens, while the terrific scenic and lighting designs lend loads of atmosphere and polish.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows positive elements (praise for actors, design) but the conclusion is lukewarm ('easy enough to swallow'). Limited text requires cautious scoring in lower positive range. | GPT-4o: The excerpt praises the actors and design, and concludes with a positive note about the show's message. However, the lack of groundbreaking elements and the single excerpt warning suggest a mild recommendation. | Gemini: The review praises the actors, scenic design, and lighting. The conclusion is positive, but the overall tone is slightly reserved, thus a score in the middle of the positive range. | Kimi: The critic offers qualified praise for the 'game and winning' performances and 'terrific' design, but ultimately deems the show 'not groundbreaking' though 'easy enough to swallow,' indicating a mild, reserved recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:18:56.818Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 77,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

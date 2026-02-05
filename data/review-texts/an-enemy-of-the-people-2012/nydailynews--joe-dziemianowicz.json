@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "One word comes up more than a dozen times in the new Broadway revival of “An Enemy of the People”: “restraint.” Ironically, it’s exactly what’s lacking in this amped-up production of the Henrik Ibsen classic, which is broader than the Otra River.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ironically, it's exactly what's lacking in this amped-up production of the Henrik Ibsen classic, which is broader than the Otra River.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic identifies a key flaw (lack of restraint) and uses dismissive language ('amped-up', 'broader than the river'), but with only one excerpt available, the full verdict remains unclear. | GPT-4o: The excerpt criticizes the production for lacking restraint and being overly broad, suggesting a negative view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses negative language like \"lacking restraint\" and \"amped-up\" to describe the production, suggesting a negative review. Given the single excerpt, confidence is low. | Kimi: The excerpt explicitly criticizes the production for lacking restraint and being excessively broad, indicating disappointment with the revival's amped-up approach. With only one excerpt available, the confidence is low, but the sentiment is clearly negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:57:49.324Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 44,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

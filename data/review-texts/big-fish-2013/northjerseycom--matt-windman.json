@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The rich, gothic mise-en-scène and seamless transitions of the film are replaced with poor quality songs, a slow pace, excessive sentimentality, one-liners that consistently fail to land, a clumsy structure and an ugly set where video imagery is projected onto what look like barn doors.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The rich, gothic mise-en-scène and seamless transitions of the film are replaced with poor quality songs, a slow pace, excessive sentimentality, one-liners that consistently fail to land, a clumsy structure and an ugly set where video imagery is projected onto what look like barn doors.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The excerpt delivers a litany of criticisms - poor songs, slow pace, failed comedy, clumsy structure, ugly set. While only one excerpt is available, the comprehensive nature of these criticisms suggests a clearly negative assessment. | GPT-4o: The excerpt is strongly negative, criticizing multiple aspects of the production including songs, pacing, structure, and set design. Given the lack of any positive remarks and the harsh language, it suggests a pan. However, confidence is low due to the single excerpt warning. | Gemini: The excerpt is overwhelmingly negative, citing poor quality songs, slow pace, and an ugly set. Given the single excerpt and negative tone, I placed it in the negative bucket. | Kimi: The critic enumerates multiple significant flaws including poor songs, failed one-liners, and ugly design, indicating clear disappointment with the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:57:38.412Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 41,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 21,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

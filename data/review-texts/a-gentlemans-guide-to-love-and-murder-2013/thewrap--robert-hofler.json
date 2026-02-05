@@ -10,10 +10,39 @@
   ],
   "bwwExcerpt": "\"Cinephiles will know that Horniman's \"Israel Rank: The Autobiography of a Criminal\" is also the basis for the 1949 British film \"Kind Hearts and Coronets\" in which Alec Guinness famously plays the eight murdered victims of a distant relative who feels he deserves to be the Duke of D'Ascoyne...Bryce Pinkham in \"Gentleman's Guide,\" on the other hand, is a stage animal who defines the term \"handsome devil.\" As Monty Navarro, he has more than a bit of the imp in him - as if he were Marty Feldman's ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-GENTLEMANS-GUIDE-TO-LOVE-AND-MURDER-Opens-on-Broadway-Updating-Live-20131117",
-  "contentTier": "needs-rescrape",
+  "contentTier": "truncated",
   "rejectedAt": "2026-02-05T16:06:50.339Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a truncated excerpt that cuts off mid-sentence and provides only plot/casting context without any clear evaluative content about the show; openai: The text provided is more of a plot summary and historical context rather than an evaluative review of the current production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "fullText": "The producers of the wickedly witty new musical “A Gentleman’s Guide to Love & Murder” use the tiniest type possible to credit the source material: “based on a novel by Roy Horniman.”\n\nCinephiles will know that Horniman’s “Israel Rank: The Autobiography of a Criminal” is also the basis for the 1949 British film “Kind Hearts and Coronets” in which Alec Guinness famously plays the eight murdered victims of a distant relative who feels he deserves to be the Duke of D’Ascoyne.",
+  "isFullReview": false,
+  "textWordCount": 81,
+  "archivePath": "data/archives/reviews/a-gentlemans-guide-to-love-and-murder-2013/thewrap--robert-hofler_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T18:27:28.111Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 87 (min: 300)"
+  ],
+  "wordCount": 81,
+  "tierReason": "Short text (81 words)"
 }

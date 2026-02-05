@@ -12,5 +12,60 @@
   "bwwExcerpt": "The whole thing is just plain odd: This show walks a fine line between parody and sincerity, between mocking musicals and yet embracing them, between promoting stereotypes and yet laughing at them, between respect for history and having none at all, and between making fun of rock stars and yet producing one. It sometimes falters, yet never loses it's swagger - unlike that hogtied horse dangling from the balcony.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It sometimes falters, yet never loses it's swagger",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review describes the show as walking fine lines between opposing elements and 'sometimes falters,' indicating an uneven experience without a clear recommendation either way. | GPT-4o: The review describes the show as 'odd' and notes it 'sometimes falters' but maintains 'swagger'. This suggests a mixed reception with both positive and negative elements. | Gemini: The review highlights the show's conflicting elements and inability to fully commit to one direction, resulting in a mixed assessment. | Kimi: While acknowledging the show is 'odd' and occasionally falters, the critic praises its confident 'swagger' and ambitious tonal balancing act, suggesting a qualified but genuine recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:08:27.442Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

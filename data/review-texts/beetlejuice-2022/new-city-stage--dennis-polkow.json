@@ -11,5 +11,60 @@
   "bwwExcerpt": "Gut that story, take away all the heart and soul of the property and fill the evening with overblown songs that stop the action rather than advance it and you have “Beetlejuice” the musical. Substitute an in-your-face Beetlejuice as a relentlessly present emcee full of gags, one-liners, smoke and mirrors. And strobe lights. Oh, and let’s be self-referential throughout, vulgar and sophomoric. And regularly ridicule the very genre that the show aspires to rise to, i.e., the musical—“fuck ‘Brigadoo",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "high",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Gut that story, take away all the heart and soul of the property and fill the evening with overblown songs that stop the action rather than advance it and you have 'Beetlejuice' the musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: The critic savagely attacks the show's core elements - gutted story, heartless execution, songs that stop action, vulgar content that ridicules the musical genre itself. This is a devastating pan despite being only an excerpt. | GPT-4o: The excerpt is highly critical, describing the show as lacking heart and soul, with overblown songs and negative elements like vulgarity and self-referential humor. The tone suggests a strong negative verdict. | Gemini: The review is overwhelmingly negative, describing the show as lacking heart and soul, filled with overblown songs, and vulgar. The critic clearly does not recommend it. | Kimi: The excerpt delivers a scathing critique, accusing the show of gutting the source material's heart, substituting overblown songs that halt the action, and delivering vulgar, sophomoric humor. While the language suggests a deep pan, confidence is low given only one curated excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:31:40.246Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 20,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The family drama's Broadway revival, starring Sarah Paulson and Corey Stoll, is a masterclass in tension and discomfort that builds to a devastating crescendo.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The family drama's Broadway revival, starring Sarah Paulson and Corey Stoll, is a masterclass in tension and discomfort that builds to a devastating crescendo.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The family drama's Broadway revival, starring Sarah Paulson and Corey Stoll, is a masterclass in tension and discomfort that builds to a devastating crescendo.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Calls the production a 'masterclass' and describes it building to a 'devastating crescendo' - strong superlatives indicating high artistic achievement. However, confidence is medium due to single excerpt warning. | GPT-4o: The excerpt uses strong positive language ('masterclass', 'devastating crescendo') suggesting a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"masterclass\" and \"devastating crescendo,\" suggesting a highly favorable review. Given it is a single excerpt, I am scoring on the higher end of the positive range but with low confidence. | Kimi: The excerpt uses superlatives ('masterclass,' 'devastating crescendo') indicating clear enthusiasm, but with only one curated excerpt available, confidence is reduced and score placed at the upper end of the Positive bucket per guidance. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:13:57.390Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

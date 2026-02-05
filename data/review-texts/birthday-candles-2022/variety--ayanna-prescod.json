@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The impressive acting, practical set and tailored direction blend well to tell a story that could easily feel flat and predictable. Vivienne Benesch's direction readily elevates Haidle's script, exploring the emotional and unpredictable time-lapse tale of Ernestine's birthdays over the course of 90 years.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The impressive acting, practical set and tailored direction blend well to tell a story that could easily feel flat and predictable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for performances and direction, noting the production elevates potentially problematic source material. However, confidence is low due to limited text from curated excerpt only. | GPT-4o: The excerpt praises the acting, set, and direction, suggesting a strong production that elevates the material. The positive tone and lack of reservations suggest a solid recommendation. | Gemini: The review excerpt praises the acting, set, and direction, indicating a positive experience. However, the single excerpt and lack of an explicit recommendation lead to a 'medium' confidence level. | Kimi: The excerpt offers strong praise for the acting, set design, and direction, specifically noting how they elevate material that could otherwise feel predictable. As a clearly positive single excerpt, it scores in the upper range of Positive, though confidence is reduced due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:05:32.034Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

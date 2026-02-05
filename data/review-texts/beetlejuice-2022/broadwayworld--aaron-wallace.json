@@ -11,5 +11,60 @@
   "bwwExcerpt": "If you came for spookish vibes and special effects, then, as the title character says… “It’s showtime!” BEETLEJUICE is a full-fledged haunted house on stage, and that makes for an undeniably fun night. But if you’re looking for memorable music or clever comedy, I’m afraid this review reads more like an obituary. As a musical rather than a magic show, BEETLEJUICE is dead on arrival.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As a musical rather than a magic show, BEETLEJUICE is dead on arrival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the show delivers spectacle and 'undeniably fun' effects but delivers a harsh verdict on the core musical elements, calling it 'dead on arrival' as a musical and comparing the review to 'an obituary.' | GPT-4o: The review highlights the fun aspect of the show but criticizes the music and comedy, indicating a mixed reception. The single excerpt suggests a balance of positive and negative elements without a clear recommendation. | Gemini: The review states the show is fun but lacks memorable music or clever comedy, indicating a mixed experience. The 'dead on arrival' comment tempers the positive aspects. | Kimi: The excerpt presents a sharply divided verdict: it praises the show's spectacular effects and 'undeniably fun' haunted house atmosphere, but declares it 'dead on arrival' as a musical due to weak music and comedy. With the aggregator noting a 'Flat' verdict and only one excerpt available, this represents a genuinely mixed assessment that recommends the production only for spectacle-seekers, not theatergoers seeking quality writing or memorable songs.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:22:53.627Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The show occasionally jolts but it generally fails to electrify viewers or inspire much pity for its hard-luck protagonists. Perhaps a full-blown operatic treatment is the only way to illuminate a story as dark as this one.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 46,
+  "llmScore": {
+    "score": 46,
+    "confidence": "high",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show occasionally jolts but it generally fails to electrify viewers or inspire much pity for its hard-luck protagonists.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic acknowledges some moments ('occasionally jolts') but concludes the show 'generally fails to electrify' and doesn't inspire audience connection. However, this is a single excerpt so confidence is low. | GPT-4o: The excerpt suggests the show is largely ineffective in engaging the audience emotionally, with a lack of electrifying moments or sympathy for the characters. The mention of a potential operatic treatment implies the current production falls short. | Gemini: The review states that the show \"generally fails to electrify viewers or inspire much pity,\" indicating a negative assessment. The suggestion of an operatic treatment implies the current production is lacking. | Kimi: The critic finds the production ineffective at delivering emotional impact or audience engagement, noting it only occasionally works but generally falls short of illuminating its dark subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:14:09.790Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

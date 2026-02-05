@@ -11,5 +11,60 @@
   "bwwExcerpt": "While this version is directed by Alex Timbers, with choreography from Connor Gallagher, with the exception of a few diversions, particularly in the second act, it stays mostly loyal to the subject matter of the original.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it stays mostly loyal to the subject matter of the original",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt provides only descriptive context about fidelity to source material with no clear evaluative stance. The phrase 'with the exception of a few diversions' could imply minor criticism, but overall tone is neutral/descriptive rather than recommendatory. | GPT-4o: The excerpt suggests a neutral stance, noting loyalty to the original with some diversions. Without clear positive or negative language, it falls into the Mixed bucket. The single excerpt and lack of strong evaluative language lead to a low confidence score. | Gemini: The excerpt suggests a neutral stance, noting the production's faithfulness to the original material with some diversions. Given the limited text, it's hard to gauge a strong recommendation, so I've classified it as mixed with low confidence. | Kimi: Single excerpt indicates the production is faithful to source material with only minor deviations, suggesting mild approval. Following the single-excerpt warning for mildly positive quotes, scoring at the lower end of the Positive bucket (70-74). Aggregator context supports a positive classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:29:50.753Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

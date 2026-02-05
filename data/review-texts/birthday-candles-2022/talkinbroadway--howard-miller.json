@@ -12,5 +12,60 @@
   "bwwExcerpt": "Still, much of the play consists of a ticking off of biographical events. By necessity or by design, it is incumbent on members of the audience to find a personal connection to the ups and downs of Ernestine's life. Debra Messing generally has too little to work with, only coming into her own as Ernestine herself comes into her own. The rest of the cast, playing multiple roles, all do what they can with their parts, but mostly they are stuck with one-dimensional attributes, and neither they nor director Vivienne Benesch are able bring them fully to life.",
   "bwwScore": 3,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Debra Messing generally has too little to work with, only coming into her own as Ernestine herself comes into her own.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Criticizes fundamental structural issues (biographical checklist format), limited material for lead actor, one-dimensional supporting roles, and directorial shortcomings. However, single excerpt warning requires caution about overall verdict. | GPT-4o: The review highlights significant issues with the play, such as a lack of depth in the characters and the performances. Despite some effort from the cast, the overall impression is negative, suggesting the production falls short of expectations. | Gemini: The review excerpt suggests that the play has some issues with its biographical structure and character development, but also indicates that Debra Messing's performance improves as the play progresses. The overall tone is mixed, with reservations about the material and direction. | Kimi: The excerpt criticizes the play's structure as a 'ticking off of biographical events' and finds the supporting cast stuck with 'one-dimensional attributes' that the director cannot bring to life. While noting Messing eventually finds her footing, the overall assessment of the material is clearly unfavorable. Confidence is low due to single-excerpt limitation and the opening 'Still' suggesting missing context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:04:16.463Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 58,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

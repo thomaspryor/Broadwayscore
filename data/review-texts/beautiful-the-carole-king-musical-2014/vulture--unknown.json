@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "\"Everything in Beautiful sounds better on Jessie Mueller. Or, for that matter, on Jake Epstein as Goffin, Jarrod Spector as Mann, and Anika Larsen as Weil. To the extent the show remains bizarrely enjoyable despite its essential hackishness, it's this central quartet of performers who make it happen. (The musical arrangements by Steve Sidwell are also good - and bonus points for hiring Dillon Kondor, King's grandson, on guitar.) Of course, there are the songs themselves, which excuse many faults",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "To the extent the show remains bizarrely enjoyable despite its essential hackishness, it's this central quartet of performers who make it happen.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the show's flaws ('essential hackishness') but finds it 'bizarrely enjoyable' due to strong performances. The phrase 'excuse many faults' suggests qualified approval. Single excerpt warning applies - scoring conservatively in lower Positive range. | GPT-4o: The review praises the performances and musical arrangements, acknowledging faults but finding the show 'bizarrely enjoyable'. The single excerpt limits confidence, but the tone suggests a mildly positive view. | Gemini: The review states the show is \"bizarrely enjoyable\" despite its \"essential hackishness,\" indicating a positive but qualified recommendation. The focus on the performers and songs as redeeming qualities suggests a score in the lower-middle of the Positive range. Confidence is low due to the single excerpt. | Kimi: The critic calls the show 'bizarrely enjoyable' and praises the central quartet of performers, but heavily qualifies this with criticism of the show's 'essential hackishness' and 'many faults,' suggesting the cast and songs redeem an otherwise flawed production. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:22:06.542Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

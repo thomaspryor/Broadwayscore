@@ -12,5 +12,60 @@
   "bwwExcerpt": "In a Broadway season that is shaping up as one to feature far more diversity on stage than what is typically seen, it's wonderful to see a new, original and daring musical drama like Allegiance come to town in a high-profile production with a predominantly Asian cast playing out a history lesson about institutionalized racism in America.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-George-Takei-Lea-Salonga-Telly-Leung-on-Broadway-in-ALLEGIANCE-20151109"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-George-Takei-Lea-Salonga-Telly-Leung-on-Broadway-in-ALLEGIANCE-20151109",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's wonderful to see a new, original and daring musical drama like Allegiance come to town",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear positivity ('wonderful', 'daring') but focuses heavily on the show's cultural significance rather than artistic merit. With only one curated quote available, this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt expresses enthusiasm for the show's originality and daring nature, as well as its diverse casting and important themes. The positive tone suggests a strong recommendation. | Gemini: The excerpt expresses a positive sentiment towards the show, highlighting its originality and the diversity of its cast. However, without the full review, it's difficult to gauge the extent of the recommendation, so confidence is low. | Kimi: The excerpt offers strong praise, calling the show 'wonderful,' 'original,' and 'daring,' and commends its diverse casting and high-profile production, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:19:33.779Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

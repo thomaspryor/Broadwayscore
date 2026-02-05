@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Supporting actors double as a small band, providing jaunty tunes that express the characters' repressed emotions. (The cast—mostly unchanged since St. Ann's—is multitalented and very hardworking.) Crashing waves—a metaphor for surging emotion and unattainable freedom—are projected on the upstage wall. There's ingenious 39 Steps-style stagecraft—dummies for children; an actress with a long stick moving a windblown newspaper across the stage; the full cast bobbing rapidly in unison to suggest an express train rumbling past. Characters jump in and out of the movie itself, a live Purple Rose of Cairo. This Brief Encounter is vibrantly theatrical and totally absorbing.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Brief Encounter is vibrantly theatrical and totally absorbing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The concluding sentence delivers an unqualified positive verdict with strong praise ('vibrantly theatrical and totally absorbing'). The excerpt consistently praises the production's creativity, performances, and stagecraft without reservations. | GPT-4o: The excerpt describes the show as 'vibrantly theatrical and totally absorbing,' indicating strong praise. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt is overwhelmingly positive, using terms like \"jaunty,\" \"multitalented,\" \"ingenious,\" and \"vibrantly theatrical.\" Given the single excerpt and positive tone, I've placed it at the higher end of the positive range. | Kimi: The excerpt offers unqualified praise for the production's ingenious stagecraft and multitalented cast, with a final verdict calling it vibrantly theatrical and totally absorbing. Per the single excerpt warning, confidence is set to low despite the clearly positive tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:25:40.745Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

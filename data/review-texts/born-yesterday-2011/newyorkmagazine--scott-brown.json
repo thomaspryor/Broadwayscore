@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"And then there's Arianda, the play's animating ambrosia and, without a doubt, the most exciting find of the Broadway season. To my regret, I missed her in last season's Venus in Fur, but seeing her now, I understand the already radiant reputation this absurdly talented performer has quickly and justly earned. Channeling just a dram of Judy Holliday's legendary performance-her original Billie's strangled Betty Boop soprano, her ditzy-like-a-fox scene pivots-Arianda take",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BORN-YESTERDAY-Updating-LIVE-20110424",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Arianda, the play's animating ambrosia and, without a doubt, the most exciting find of the Broadway season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Extremely enthusiastic praise for lead performer ('most exciting find of the season', 'absurdly talented'), but single excerpt warning applies - confidence low due to incomplete context. | GPT-4o: The excerpt praises Arianda's performance highly, calling her the 'most exciting find of the Broadway season.' However, due to the single excerpt and lack of full context, the overall tone is unclear, warranting a lower score within the Positive range. | Gemini: The excerpt focuses on high praise for the actress Arianda, calling her the \"most exciting find\" of the season. Given the single excerpt and strong positive tone, I'm scoring it as positive, near the top of the range. | Kimi: The single available excerpt offers effusive praise for Nina Arianda's performance, calling her 'the most exciting find of the Broadway season' and the 'play's animating ambrosia,' indicating a strong recommendation to see the show for her performance alone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:19:48.854Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 72,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

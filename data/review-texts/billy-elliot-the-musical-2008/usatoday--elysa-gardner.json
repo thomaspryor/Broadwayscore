@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Luckily, neither original screenwriter Lee Hall's libretto nor the lyrics he wrote to accompany Elton John's unapologetically sentimental score require us to hear every word. The characters are drawn in broad strokes, with good humor but little nuance; their function is more to serve a larger message than to relay compelling idiosyncrasies.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The characters are drawn in broad strokes, with good humor but little nuance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows significant criticisms (characters lack nuance, function over personality) tempered by acknowledgment of 'good humor' and accepting tone about not needing to hear every word. Mixed bucket with low confidence due to limited text. | GPT-4o: The excerpt suggests a mixed review, noting the lack of nuance and compelling idiosyncrasies in the characters, but acknowledges good humor. The single excerpt and lack of full context result in low confidence. | Gemini: The excerpt suggests a lack of depth in character development, indicating a mixed assessment. Only one excerpt is available, so confidence is low. | Kimi: While the critic criticizes the libretto and characterization as lacking nuance, the 'luckily' framing suggests these weaknesses are forgivable and the show succeeds on the merits of Elton John's score and its larger message, indicating a guarded but positive assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:02:25.705Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The book fails to develop these characters beyond their initial conflicts, and it wouldn't hurt to have more than a few diary entries from Johnny to guide us. Nevertheless, the dynamic score—the jagged lyrics are by Armstrong, who also composed the driving music, with Mike Dirnt and Trè Cool—leads us into the frazzled psyches of an aimless portion of America's Generation Y. Tom Kitt, credited with musical supervision, arrangements, and orchestrations, builds a bridge between the worlds of rock and Broadway by making the songs accessible to general audiences without losing the chest-slamming intensity.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The book fails to develop these characters beyond their initial conflicts, and it wouldn't hurt to have more than a few diary entries from Johnny to guide us.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows significant criticism of the book while praising the score. The critic finds fundamental flaws in character development but acknowledges the music's strength. Given only one excerpt available, this appears mixed with reservations. | GPT-4o: The review excerpt indicates issues with character development but praises the dynamic score and musical arrangements. The overall tone suggests a mixed review with notable strengths in the music. | Gemini: The review praises the score and its ability to connect with the audience, but criticizes the book's character development. The overall sentiment is mixed, leaning slightly positive due to the emphasis on the music's impact. Confidence is low due to the single excerpt. | Kimi: The critic finds significant fault with the book's character development but ultimately recommends the show based on the powerful, 'chest-slamming' score and orchestrations that successfully bridge rock and Broadway.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:38:04.189Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

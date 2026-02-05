@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Like several shows this season, “Book of Mormon” is too long and comes close to wearing out its welcome before redeeming itself with a strong second act. And like most 12-year-old-boys, it isn’t nearly as nasty as it would have us believe. Not that there’s anything wrong with that.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "comes close to wearing out its welcome before redeeming itself with a strong second act",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic notes pacing issues in the first act but says the show 'redeems itself' with a strong second act, suggesting overall recommendation despite flaws. Single excerpt limits confidence in full verdict assessment. | GPT-4o: The review acknowledges issues with the show's length but notes a redeeming second act. The tone is ambivalent, suggesting a mixed impression overall. | Gemini: The review notes the show is too long and almost wears out its welcome, but it is redeemed by a strong second act. The final comment, \"Not that there's anything wrong with that,\" suggests a mixed but ultimately acceptable experience. | Kimi: The critic notes significant flaws—the show is too long and nearly wears out its welcome—but ultimately praises the strong second act and delivers a gently approving verdict with the final defensive shrug. As a single excerpt, this represents a qualified positive recommendation. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:16:03.454Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

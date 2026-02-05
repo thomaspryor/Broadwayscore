@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It's Hiddleston's poise and sensitivity that impress the most. There's a brilliant scene that demonstrates his usually under-exploited flair for comedy: toying with Jerry over lunch in an Italian restaurant, he humiliates the feckless waiter, attacks his prosciutto as though fighting a duel, and gulps white wine like a bandit. Yet he's also genuinely moving, and when he weeps his eyes and cheeks glisten with tears.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-Hiddleston-and-Co-in-BETRAYAL-20190314",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's Hiddleston's poise and sensitivity that impress the most.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance with specific detailed appreciation ('brilliant scene', 'genuinely moving'), but single excerpt warning requires caution about overall show verdict. | GPT-4o: The excerpt highlights Hiddleston's impressive performance, noting both his comedic flair and emotional depth. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt focuses on Hiddleston's performance, highlighting his poise, sensitivity, and comedic flair. While it doesn't give a comprehensive overview of the entire production, the positive emphasis on the lead performance suggests a positive, but not rave, recommendation. | Kimi: Single excerpt offers strong praise for the lead actor's performance, describing it as 'brilliant,' 'genuinely moving,' and exhibiting flair for comedy, which indicates a positive recommendation, though the limited context prevents a higher confidence assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:52:51.482Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

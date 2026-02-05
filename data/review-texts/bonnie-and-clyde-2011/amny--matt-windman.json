@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This really had the potential to be an entertaining, action-packed musical. Yet in spite of a mostly pleasant country-and-blues score and strong, sexy performances from the doll-faced Laura Osnes and heartthrob Jeremy Jordan, this remains a problematic show that lacks focus and tends to pause and meander too often.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This remains a problematic show that lacks focus and tends to pause and meander too often.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Despite praising the score as 'pleasant' and performances as 'strong, sexy,' the critic finds the show 'problematic,' lacking focus, and meandering. The phrase 'had the potential' suggests disappointment with execution. | GPT-4o: The review acknowledges potential and praises performances and music, but criticizes the show for lacking focus and meandering. The single excerpt provides a mixed impression, and the lack of full context reduces confidence. | Gemini: The review acknowledges positive elements (score, performances) but ultimately finds the show \"problematic\" and lacking focus, indicating a mixed assessment. The single excerpt and lack of a clear recommendation lower the confidence. | Kimi: While the excerpt praises the lead performances and score, the critic's ultimate verdict is that the show 'remains problematic' with structural issues, using 'in spite of' to indicate these elements don't redeem the production. The single excerpt suggests a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:14:04.590Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

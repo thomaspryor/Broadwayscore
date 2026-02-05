@@ -12,5 +12,60 @@
   "bwwExcerpt": "“American Idiot,” directed by Michael Mayer and performed with galvanizing intensity by a terrific cast, detonates a fierce aesthetic charge in this ho-hum Broadway season. A pulsating portrait of wasted youth that invokes all the standard genre conventions — bring on the sex, drugs and rock ’n’ roll, please! — only to transcend them through the power of its music and the artistry of its execution, the show is as invigorating and ultimately as moving as anything I’ve seen on Broadway this season. Or maybe for a few seasons past.",
   "bwwScore": 10,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-AMERICAN-IDIOT-Review-Roundup-20100420"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-AMERICAN-IDIOT-Review-Roundup-20100420",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is as invigorating and ultimately as moving as anything I've seen on Broadway this season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Enthusiastic praise with superlatives ('galvanizing intensity', 'fierce aesthetic charge', 'as moving as anything...this season'). Single excerpt warning noted, but language is unambiguously celebratory with no reservations expressed. | GPT-4o: The excerpt provides strong praise for the production, describing it as 'invigorating' and 'moving' with a 'fierce aesthetic charge.' The language suggests a highly positive evaluation, fitting the Rave bucket. | Gemini: The review uses strong positive language such as \"galvanizing intensity\", \"terrific cast\", \"fierce aesthetic charge\", \"invigorating\", and \"moving\", indicating a rave review. | Kimi: The excerpt offers superlative praise calling it the best of the season and highlighting galvanizing performances, though the single-excerpt format warrants reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:40:59.170Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

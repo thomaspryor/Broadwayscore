@@ -12,5 +12,60 @@
   "bwwExcerpt": "If you're looking for a tidy and traditional show, or an irony-free slice of history, this new take on Old Hickory isn't it. But for something lightweight, fresh and fun, 'Andrew Jackson' is worth the Benjamins.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But for something lightweight, fresh and fun, 'Andrew Jackson' is worth the Benjamins.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation ('worth the Benjamins') but with significant caveats about what the show isn't. Single excerpt warning applies - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt suggests a positive recommendation for those seeking a fresh and fun experience, though it acknowledges the show is not traditional or irony-free. The single excerpt and lack of full context lowers confidence. | Gemini: The review recommends the show as \"worth the Benjamins\" if you're looking for something \"lightweight, fresh and fun\", but not if you want something \"tidy and traditional\". | Kimi: Explicit recommendation to see the show ('worth the Benjamins') with unambiguous positive descriptors ('fresh and fun'), though qualified by noting it's not for those seeking traditional or tidy theater. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:09:21.486Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
