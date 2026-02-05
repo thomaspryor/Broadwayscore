@@ -131,6 +131,8 @@ jobs:
         run: npm ci
 
       - name: Rebuild reviews.json
+        env:
+          ALLOW_DRIFT: 'true'
         run: node scripts/rebuild-all-reviews.js
 
       - name: Commit and push rebuilt reviews.json
