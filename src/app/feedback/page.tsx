@@ -64,7 +64,7 @@ export default function FeedbackPage() {
           </section>
 
           {/* Feedback Form */}
-          <FeedbackForm endpoint={process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || ''} />
+          <FeedbackForm endpoint={process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || 'https://formspree.io/f/mojdjwqo'} />
         </div>
 
         {/* Additional Info */}
