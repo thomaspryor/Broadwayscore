@@ -1,19 +1,79 @@
 {
   "showId": "macbeth-2022",
   "outletId": "nytimes",
-  "outlet": "New York Times",
+  "outlet": "The New York Times",
   "criticName": "Unknown",
-  "url": "http://www.nytimes.com/2013/11/22/theater/reviews/macbeth-with-ethan-hawke-at-the-vivian-beaumont.html",
-  "playbillVerdictUrl": "http://www.nytimes.com/2013/11/22/theater/reviews/macbeth-with-ethan-hawke-at-the-vivian-beaumont.html",
-  "source": "playbill-verdict",
+  "url": "https://www.nytimes.com/2022/04/29/theater/macbeth-review-broadway.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 42,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Despite the star power of Daniel Craig and Ruth Negga, the overthought production that opened on Thursday at the Longacre Theater seems unsure of its welcome, as if a classic that has enjoyed nearly 50 Broadway revivals since 1768 might no longer find an audience willing to meet it halfway.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
   "sources": [
-    "playbill-verdict",
-    "bww-reviews",
-    "bww-roundup"
+    "show-score-playwright"
   ],
-  "wrongProduction": true,
-  "wrongProductionReason": "URL/date from 2013 but show opened 2022 (year gap: 9)",
-  "bwwExcerpt": "Though the production too often feels as if it were designed for the company’s own edification — an endless rehearsal rather than a Broadway revival — it is not without its outward-facing qualities, especially after the initial throat-clearing. There are beautiful, quietly observed moments: a glance between Craig and Negga, for instance, that says more about marriage than some entire plays on the subject. There are smaller characters crystallized in a flash: Lazar’s Duncan dainty and handsy, Maria Dizzia’s Lady Macduff heartbreakingly resolute.",
-  "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MACBETH-Opens-On-Broadway-Starring-Daniel-Craig-and-Ruth-Negg-20220429"
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite the star power of Daniel Craig and Ruth Negga, the overthought production seems unsure of its welcome.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic describes the production as 'overthought' and 'unsure of its welcome' despite praising the star power. This suggests significant reservations about the production's execution, placing it in mixed territory. Single excerpt warning applies - this appears to be criticism of the production approach. | GPT-4o: The excerpt suggests a negative view of the production, describing it as 'overthought' and 'unsure of its welcome'. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt indicates that the production is \"overthought\" and \"unsure of its welcome\", suggesting a negative assessment. Given the limited text, the confidence is low. | Kimi: The excerpt explicitly criticizes the production as 'overthought' and 'unsure of its welcome,' suggesting it alienates audiences despite its star power and classic source material. The single-excerpt limitation requires low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:44:09.703Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }
