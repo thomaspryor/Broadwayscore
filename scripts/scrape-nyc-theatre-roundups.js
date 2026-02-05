@@ -34,7 +34,7 @@ const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 // HTTP helper — fetch page via ScrapingBee
 // ---------------------------------------------------------------------------
 
-async function fetchHtml(url, renderJs = true) {
+async function fetchHtmlSingle(url, renderJs = true) {
   if (!SCRAPINGBEE_KEY) {
     throw new Error('SCRAPINGBEE_API_KEY required');
   }
@@ -56,6 +56,22 @@ async function fetchHtml(url, renderJs = true) {
     req.on('error', reject);
     req.setTimeout(60000, () => { req.destroy(); reject(new Error('Timeout')); });
   });
+}
+
+async function fetchHtml(url, renderJs = true, maxRetries = 2) {
+  let lastError;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fetchHtmlSingle(url, renderJs);
+    } catch (e) {
+      lastError = e;
+      if (attempt < maxRetries) {
+        const delay = 3000 * (attempt + 1);
+        await sleep(delay);
+      }
+    }
+  }
+  throw lastError;
 }
 
 // Stats
