@@ -27,7 +27,7 @@ jobs:
 
       - name: Fetch Formspree submissions and create issues
         env:
-          FORMSPREE_TOKEN: ${{ secrets.FORMSPREE_TOKEN }}
+          FORMSPREE_REVIEW_TOKEN: ${{ secrets.FORMSPREE_REVIEW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node scripts/process-review-formspree.js
