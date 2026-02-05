@@ -18,59 +18,7 @@
   "showScoreExcerpt": "\"Wildly entertaining...You just have to sit back and be surprised, tickled, and over-joyed with ghoulish glee. That’s all because of the energetic dynamo Alex Brightman...'Beetlejuice' does everything that it needs to do 'Invisible'-y in about the first ten minutes, surprising and knocking us down with its wit and darkly fun play. And that’s quite the feat when you know the source material...Your heart won’t be twisted, but your funny bone will get worked out until death.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 82,
-    "confidence": "high",
-    "range": {
-      "low": 77,
-      "high": 87
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Wildly entertaining...You just have to sit back and be surprised, tickled, and over-joyed with ghoulish glee.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('wildly entertaining', 'over-joyed', 'surprising and knocking us down with its wit') with praise for lead performance and overall execution. However, confidence is low due to single excerpt warning - this may be cherry-picked positivity. | GPT-4o: The excerpt provides strong praise for the show, highlighting its entertainment value and the performance of Alex Brightman. The tone is enthusiastic, suggesting a solid recommendation. However, the single excerpt warning lowers confidence in the overall sentiment. | Gemini: The excerpt uses very positive language such as \"wildly entertaining\", \"surprised, tickled, and over-joyed with ghoulish glee\", and \"darkly fun play\". Given the single excerpt warning, I am scoring it at the higher end of the positive bucket. | Kimi: Single excerpt demonstrates strong enthusiasm with phrases like 'wildly entertaining' and 'over-joyed with ghoulish glee,' praising the lead performance and effective staging. Scored at upper end of Positive bucket per single-excerpt guidance, though confidence is reduced due to potential cherry-picking.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:36:39.955Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 82,
-    "geminiScore": 82,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

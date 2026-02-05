@@ -18,53 +18,7 @@
   "showScoreExcerpt": "“’Beetlejuice’ is a ghoulishly good time that pays loving homage to the mythology of the movie while fundamentally reorienting the story and lending it an unexpected punch of pathos amid its crass and crude mania. Gorgeously designed with a Tim Burton aesthetic, and featuring a relentless series of bawdy jokes and entertaining songs, this hyperactive musical comedy might not meet the elevated aesthetic standards of some, but I had a blast.”\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 82,
-    "confidence": "high",
-    "range": {
-      "low": 77,
-      "high": 87
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict ('ghoulishly good time', 'I had a blast') but acknowledges it 'might not meet elevated aesthetic standards of some'. Single excerpt warning requires caution - this sounds genuinely positive but qualified. | GPT-4o: The excerpt describes the show as a 'ghoulishly good time' with 'entertaining songs' and 'gorgeously designed', indicating a strong positive recommendation. The critic acknowledges it may not meet all aesthetic standards but personally had a blast, suggesting an enthusiastic endorsement. | Gemini: The review excerpt is overwhelmingly positive, calling the show a \"ghoulishly good time\" and saying the critic \"had a blast.\" Despite the caveat about elevated aesthetic standards, the overall tone is enthusiastic. | Kimi: The critic explicitly states 'I had a blast' and praises the 'gorgeous' design, 'entertaining songs,' and 'ghoulishly good time' while offering only a minor caveat about aesthetic standards, indicating a strong recommendation.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:41:39.991Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 82,
-    "geminiScore": 82,
-    "kimiScore": 83,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

@@ -22,5 +22,8 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a truncated excerpt or navigation text ('Read more') with no actual critical evaluation or verdict about the show.; openai: The provided text is a fragment that lacks evaluative content or a clear verdict about the show. It appears to be a partial sentence without context.; gemini: This is a single sentence fragment that lacks any evaluative content or recommendation. It's plot summary, not a review.; kimi: The excerpt contains only plot description ('the fissures in the fabric the Dahl family begin to appear') with no evaluative language about the production quality, performances, or recommendation. It describes narrative events rather than offering critical assessment.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "show-score-playwright"
+  ]
 }

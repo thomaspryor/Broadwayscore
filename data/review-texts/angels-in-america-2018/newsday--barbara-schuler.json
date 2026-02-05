@@ -8,63 +8,10 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "\"Angels\" presents a complicated story that covers nearly eight hours in two parts, a major commitment requiring audiences to maintain deep concentration just to keep up. But it's time well spent, if only to revel in the glories of Ian MacNeil's futuristic set and the spectacular performances of each actor, all of whom play multiple characters. Lane reverts to his comedic roots, portraying one of Prior's deceased relatives. In one of her several roles, Susan Brown becomes a spectral vision of Eth",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "assignedScore": 77,
-  "llmScore": {
-    "score": 77,
-    "confidence": "medium",
-    "range": {
-      "low": 72,
-      "high": 82
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "But it's time well spent, if only to revel in the glories of Ian MacNeil's futuristic set and the spectacular performances",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt acknowledges the show's demanding nature ('major commitment requiring deep concentration') but concludes it's 'time well spent' with praise for design and 'spectacular performances.' However, confidence is low due to truncated text and only one excerpt available. | GPT-4o: The excerpt praises the set and performances, suggesting a positive recommendation. However, the single excerpt and lack of full context reduce confidence. | Gemini: The review excerpt praises the set design and performances, indicating a positive experience. Given the single excerpt, confidence is low, but the enthusiasm suggests a score in the upper end of the positive range. | Kimi: The excerpt offers a qualified recommendation that the demanding eight-hour commitment is 'time well spent' primarily to experience the glorious set design and spectacular performances, despite the narrative complexity. As a single curated excerpt that appears truncated, confidence is reduced.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:56:09.093Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "geminiScore": 81,
-    "kimiScore": 73,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 9,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"Kushner’s masterwork gets a high-impact revival...Lane gives an emotional, fierce portrayal of Cohn...'Angels' presents a complicated story that covers nearly eight hours in two parts, a major commitment requiring audiences to maintain deep concentration just to keep up. But it’s time well spent, if only to revel in the glories of Ian MacNeil’s futuristic set and the spectacular performances...My most significant takeaway is that the triumph of 'Angels' is its subliminal call to action.\"\n\nRead more"
 }

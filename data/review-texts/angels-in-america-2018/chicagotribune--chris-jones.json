@@ -6,64 +6,13 @@
   "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-angels-broadway-review-0326-story.html",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup"
+    "bww-roundup",
+    "web-search",
+    "show-score-playwright"
   ],
   "bwwExcerpt": "Andrew Garfield, the other excellent American star in a mostly British cast, takes theatrical command of Prior in a way that initially jars, but ultimately elevates the character, away from bitterness and immediate disappointment, more toward narrative omnipotence. By \"Perestroika,\" it actually feels like Prior has stepped away from his own body and time. Lane may have the most dominant performance, but Garfield's revisionist and ennobling work is perhaps the most conceptually successful element",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
   "contentTier": "excerpt",
-  "assignedScore": 82,
-  "llmScore": {
-    "score": 82,
-    "confidence": "high",
-    "range": {
-      "low": 77,
-      "high": 87
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Garfield's revisionist and ennobling work is perhaps the most conceptually successful element",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt shows strong praise for Garfield's 'excellent' and 'most conceptually successful' performance, suggesting positive assessment, but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises Andrew Garfield's performance as conceptually successful and elevating, suggesting a strong recommendation for his portrayal. However, with only a single excerpt available, confidence is low. | Gemini: The excerpt praises Garfield's performance as \"conceptually successful\" and notes that he \"elevates the character\". Given the limited text, I am placing it in the positive bucket with a high score. | Kimi: The excerpt offers strong praise for Andrew Garfield's performance, calling it 'excellent' and 'ennobling' and identifying it as the production's 'most conceptually successful element,' indicating a clear positive assessment despite limited context.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:55:09.729Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 82,
-    "geminiScore": 81,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 1,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"Lane is extraordinary in a staging that, in some other ways, too badly wants to pull a text that still demands to be at the center of the political discourse in the direction of the theatrically quixotic...Garfield takes theatrical command of Prior in a way that initially jars, but ultimately elevates the character...Lane may have the most dominant performance, but Garfield’s revisionist and ennobling work is perhaps the most conceptually successful element of this new production.\"\n\nRead more",
+  "publishDate": "March 26, 2018"
 }

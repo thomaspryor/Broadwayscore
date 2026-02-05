@@ -7,65 +7,12 @@
   "source": "bww-reviews",
   "sources": [
     "bww-reviews",
+    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "Generally, though, the performances are powerful -- Michael Gould's gritty, heartfelt take on Alfieri, a local lawyer who predicts Eddie's doom, is another standout -- and van Hove holds us rapt throughout, even when his flourishes feel overstated. While Miller's dialogue hardly requires such added fuss, the director should be commended for offering a fresh take that sacrifices none of its sting.",
   "bwwScore": 8,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
-  "assignedScore": 79,
-  "llmScore": {
-    "score": 79,
-    "confidence": "medium",
-    "range": {
-      "low": 74,
-      "high": 84
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "While Miller's dialogue hardly requires such added fuss, the director should be commended for offering a fresh take that sacrifices none of its sting.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with mixed signals - praises performances as 'powerful' and commends director's 'fresh take,' but criticizes 'overstated flourishes' and 'added fuss.' Overall positive but qualified recommendation. | GPT-4o: The excerpt praises the performances as powerful and commends the director for a fresh take, despite some overstated flourishes. The overall tone is strongly positive, indicating a solid recommendation. | Gemini: The review praises the performances and direction, but notes that some flourishes feel overstated. This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The excerpt offers clear praise for the powerful performances and direction, noting van Hove holds the audience rapt and commending his fresh approach, though with minor caveats about overstated flourishes.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T16:52:08.761Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 82,
-    "geminiScore": 79,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 8,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"Strong delivers a fearless, riveting performance…Strong also affects a more convincing Brooklyn accent than some of his fellow Brits -- among them Fox, who seems a less-than-ideal fit for Catherine in other respects...Van Hove holds us rapt throughout, even when his flourishes feel overstated. While Miller's dialogue hardly requires such added fuss, the director should be commended for offering a fresh take that sacrifices none of its sting.\"\n\n\nRead more"
 }

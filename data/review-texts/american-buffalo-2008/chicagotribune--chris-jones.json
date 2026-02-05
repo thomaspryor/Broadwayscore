@@ -18,59 +18,7 @@
   "showScoreExcerpt": "\"The play’s three characters roar at each other in sparse patriarchal metaphor, demanding verbal submission and claiming victory, even though nothing they are actually saying or doing or achieving matters a jot in the grand scheme of things. These are small-time hustlers, masters of a universe of nothing.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 41,
-    "confidence": "medium",
-    "range": {
-      "low": 36,
-      "high": 46
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "These are small-time hustlers, masters of a universe of nothing.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The excerpt shows clear dismissal of the characters and story as meaningless ('nothing they are saying matters a jot', 'universe of nothing'), but as a single curated quote, it may not represent the full review verdict. | GPT-4o: The excerpt describes the characters and their actions as inconsequential and unimportant, suggesting a negative view of the play's impact. However, the single excerpt warning and lack of full context reduce confidence. | Gemini: The review excerpt describes the characters and their actions as meaningless, suggesting a negative assessment of the play's substance and impact. Given the single excerpt, confidence is low. | Kimi: The excerpt emphasizes the emptiness and meaninglessness of the characters' conflicts ('universe of nothing,' 'matters a jot'), suggesting the play lacks substance or stakes. However, with only one curated quote available, the overall verdict and whether this constitutes criticism of the production or mere description remains unclear.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:23:55.448Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 40,
-    "geminiScore": 45,
-    "kimiScore": 58,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 20,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

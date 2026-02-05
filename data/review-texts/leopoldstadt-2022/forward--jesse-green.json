@@ -24,39 +24,7 @@
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with enough evaluative content to score; openai: The text provided is a brief statement about the play's subject matter and scope, not an evaluative review of the Broadway production.",
   "promptVersion": "5.2.0",
-  "textWordCount": 1331,
-  "archivePath": "data/archives/reviews/leopoldstadt-2022/forward--jesse-green_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T18:12:26.699Z",
-  "fetchMethod": "playwright",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "No CDX snapshots found"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": true
-    }
-  ],
-  "fetchTier": 1,
-  "truncationSignals": [],
-  "textStatus": "incomplete",
-  "sourceMethod": "playwright",
-  "textIssues": [
-    "Show title not found in text"
-  ],
-  "misattributedFullText": true,
-  "extractedByline": "Michael Barrie",
-  "expectedCritic": "Jesse Green",
-  "wordCount": 1331,
-  "tierReason": "Full review text"
+  "sources": [
+    "web-search"
+  ]
 }

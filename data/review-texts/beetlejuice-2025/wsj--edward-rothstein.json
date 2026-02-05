@@ -18,59 +18,7 @@
   "showScoreExcerpt": "“This self-described ‘show about death’ bombards us with every piece of theatrical weaponry Timbers and numerous other imagineers could devise...Perfect’s score sounds like a simulacrum of Broadway show music, the cloth cut to fit each occasion, with rising modulations and drawn-out cadences simulating drama...The major impression, ultimately, is not that of a clever romp wickedly testing the limits of the tasteless, but of a repetitive refrain of disgust and disdain.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 40,
-    "confidence": "medium",
-    "range": {
-      "low": 35,
-      "high": 45
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "The major impression, ultimately, is not that of a clever romp wickedly testing the limits of the tasteless, but of a repetitive refrain of disgust and disdain.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the show repetitive and disgusting rather than cleverly provocative, criticizes the score as simulacrum, and describes it as bombarding rather than engaging audiences. Single excerpt warning requires caution, but the language is clearly negative. | GPT-4o: The excerpt describes the show as bombarding and repetitive, with a score that simulates drama rather than genuinely delivering it. The overall impression is negative, focusing on disgust and disdain rather than cleverness or entertainment. | Gemini: The review excerpt describes the show as a \"repetitive refrain of disgust and disdain,\" and the score as a \"simulacrum\" of Broadway music. This indicates a negative assessment, despite the truncated text. | Kimi: Single excerpt presents a clear negative verdict, criticizing the score as imitative and the overall effect as bombastic and filled with disgust rather than clever entertainment.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:53:44.858Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 20,
-    "geminiScore": 45,
-    "kimiScore": 38,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Pan",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 25,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

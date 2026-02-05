@@ -18,59 +18,7 @@
   "showScoreExcerpt": "\"Plot-wise, 'American Buffalo' is pretty thin stuff. Indeed, almost nothing happens in the first act, which serves largely as a set-up for Act II. That's a pretty risky gamble for a play that, without its intermission, runs about 90 minutes. So you better believe that a lot is riding on Act II and what absolutely has to be a thrilling performance by whoever plays the tightly wound character of Teach.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 61,
-    "confidence": "high",
-    "range": {
-      "low": 56,
-      "high": 66
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Plot-wise, 'American Buffalo' is pretty thin stuff.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows structural criticism ('thin stuff', 'almost nothing happens') but acknowledges potential ('thrilling performance'). With only setup criticism available and 'Read more' truncation, this appears mixed with low confidence due to incomplete text. | GPT-4o: The excerpt highlights a lack of plot development and suggests that the success of the play hinges on a strong performance in the second act. This indicates a mixed review, as it neither strongly recommends nor discourages seeing the show. | Gemini: The review excerpt suggests the play is slow-paced and relies heavily on the second act and a specific performance. This indicates a mixed assessment, as it highlights potential weaknesses but also implies the possibility of redemption through strong acting and a compelling second act. Given the limited text, confidence is low. | Kimi: The excerpt criticizes the plot as 'thin' and the first act as lacking content, noting the production's success depends entirely on Act II and the performance of Teach. With only one curated excerpt available and the verdict truncated, confidence is low.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:22:06.631Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
-    "geminiScore": 60,
-    "kimiScore": 60,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 5,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

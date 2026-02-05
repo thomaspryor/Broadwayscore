@@ -18,59 +18,7 @@
   "showScoreExcerpt": "\"This early Mamet work is revived frequently because it offers opportunities for big laughs and volcanic eruptions (and it still should be done in spite of the playwright’s recent offensive remarks about teachers). This 'Buffalo' has plenty of chuckles, but little of its potential emotional impact.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 62,
-    "confidence": "medium",
-    "range": {
-      "low": 57,
-      "high": 67
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "This 'Buffalo' has plenty of chuckles, but little of its potential emotional impact.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review acknowledges the production delivers laughs but criticizes it for missing the play's emotional depth. The 'but' construction suggests significant disappointment with the overall execution despite some positive elements. | GPT-4o: The excerpt indicates that while the production has humor, it lacks emotional depth. The single excerpt warning suggests caution, leading to a mixed classification with low confidence. | Gemini: The review notes the play offers opportunities for laughs and volcanic eruptions, and this production has chuckles, but lacks emotional impact. This suggests a mixed experience, not strongly positive or negative. | Kimi: The excerpt praises the entertainment value ('plenty of chuckles') but criticizes the production for failing to deliver the emotional intensity expected of Mamet's work ('little of its potential emotional impact'), suggesting a mixed assessment.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:31:33.438Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "kimiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

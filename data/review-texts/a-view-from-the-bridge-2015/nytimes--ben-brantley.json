@@ -76,50 +76,10 @@
   "playbillVerdictUrl": "http://www.nytimes.com/2015/11/13/theater/review-a-view-from-the-bridge-bears-witness-to-the-pain-of-fate.html?_r=0",
   "sources": [
     "web-search",
+    "show-score-playwright",
     "playbill-verdict",
     "bww-reviews",
     "bww-roundup"
   ],
-  "bwwScore": 10,
-  "previousUrl": "https://www.nytimes.com/2015/11/13/theater/review-a-view-from-the-bridge-starring-mark-strong.html",
-  "urlDiscoveredAt": "2026-02-05T18:16:36.094Z",
-  "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
-  "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 76,
-  "textWordCount": 399,
-  "archivePath": "data/archives/reviews/a-view-from-the-bridge-2015/nytimes--ben-brantley_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T18:16:36.098Z",
-  "fetchMethod": "scrapingbee",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "timeout of 60000ms exceeded"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": true
-    }
-  ],
-  "fetchTier": 2,
-  "truncationSignals": [],
-  "textStatus": "complete",
-  "sourceMethod": "scrapingbee",
-  "wordCount": 399,
-  "tierReason": "Full review text"
+  "bwwScore": 10
 }

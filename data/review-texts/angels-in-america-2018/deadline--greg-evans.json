@@ -8,62 +8,10 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "Angels in America, that winged masterwork of Tony Kushner and the 20th Century, is back on Broadway in a revival weighed with expectations as heavy as the angel Bethesda in Central Park. With marquee-name stars - Andrew Garfield, Nathan Lane, Lee Pace - and the halo of approval from London audiences, the two-part, 7-hour-plus, gloriously subtitled \"Gay Fantasia On National Themes\" remains as rich a theatrical experience as when Kushner won the Pulitzer back in '93 and his eccentric, visionary fe",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "assignedScore": 81,
-  "llmScore": {
-    "score": 81,
-    "confidence": "medium",
-    "range": {
-      "low": 76,
-      "high": 86
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "remains as rich a theatrical experience as when Kushner won the Pulitzer back in '93",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt calls it a 'winged masterwork' and 'rich theatrical experience' with praise for the cast, but text is clearly truncated mid-sentence. Single excerpt warning applies - scoring in upper-positive range due to clear praise language. | GPT-4o: The excerpt praises the revival as a 'rich theatrical experience' and compares it favorably to its original, Pulitzer-winning run. The tone suggests a strong recommendation, but confidence is low due to the single excerpt warning. | Gemini: The excerpt is highly positive, calling the show a \"winged masterwork\" and \"rich a theatrical experience.\" Given the limited text, I'm scoring it as positive with high confidence within that bucket.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:08:22.391Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 90,
-    "geminiScore": 82,
-    "kimiScore": null,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 10,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"As rich a theatrical experience as when Kushner won the Pulitzer back in ’93...The up-is-down mendacity of Roy Cohn’s right-wing school of power-broking literally eulogized in 'Angels' has proven more tenacious than even Kushner’s all-seeing seraphim might have imagined...This revival pulses with Kushner’s explosive imagination and a cast that comes thrillingly close to the emotional power of the original cast...Chief among them being Lane.\"\n\nRead more"
 }
