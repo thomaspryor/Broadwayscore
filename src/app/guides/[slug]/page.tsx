@@ -23,6 +23,8 @@ import {
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBrowsePageConfig } from '@/config/browse-pages';
 import { getLotteryRush } from '@/lib/data-lottery';
+import { ScoreBadge, StatusBadge, FormatPill } from '@/components/show-cards';
+import ShowImage from '@/components/ShowImage';
 
 export function generateStaticParams() {
   return getAllGuideSlugs().map((slug) => ({ slug }));
@@ -71,36 +73,6 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-function ScoreBadge({ score, reviewCount }: { score?: number | null; reviewCount?: number }) {
-  if (reviewCount !== undefined && reviewCount < 5) {
-    return (
-      <div className="w-14 h-14 sm:w-16 sm:h-16 bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-bold text-sm sm:text-base rounded-xl">
-        TBD
-      </div>
-    );
-  }
-  if (score === undefined || score === null) {
-    return (
-      <div className="w-14 h-14 sm:w-16 sm:h-16 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-xl sm:text-2xl rounded-xl">
-        -
-      </div>
-    );
-  }
-  const roundedScore = Math.round(score);
-  let colorClass: string;
-  if (roundedScore >= 85) colorClass = 'score-must-see';
-  else if (roundedScore >= 75) colorClass = 'score-great';
-  else if (roundedScore >= 65) colorClass = 'score-good';
-  else if (roundedScore >= 55) colorClass = 'score-tepid';
-  else colorClass = 'score-skip';
-
-  return (
-    <div className={`w-14 h-14 sm:w-16 sm:h-16 ${colorClass} flex items-center justify-center font-bold text-xl sm:text-2xl rounded-xl`}>
-      {roundedScore}
-    </div>
-  );
-}
-
 function RankBadge({ rank }: { rank: number }) {
   const isTop3 = rank <= 3;
   return (
@@ -127,6 +99,9 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
   // H1
   const h1 = interpolateTemplate(config.h1Template, vars);
 
+  // Breadcrumb title (include year for year pages)
+  const breadcrumbTitle = year ? `${config.title} ${year}` : config.title;
+
   // Related content
   const relatedGuides = config.relatedGuides
     .map(slug => GUIDE_PAGES[slug])
@@ -140,7 +115,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
     { name: 'Guides', url: `${BASE_URL}/guides` },
-    { name: config.title, url: `${BASE_URL}/guides/${params.slug}` },
+    { name: breadcrumbTitle, url: `${BASE_URL}/guides/${params.slug}` },
   ]);
 
   const itemListSchema = shows.length > 0
@@ -199,7 +174,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
             <li className="text-gray-500">/</li>
             <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
             <li className="text-gray-500">/</li>
-            <li className="text-gray-300">{config.title}</li>
+            <li className="text-gray-300">{breadcrumbTitle}</li>
           </ol>
         </nav>
 
@@ -257,27 +232,31 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
               const consensus = getCriticConsensus(show.id);
               const ticketLinks = show.ticketLinks?.filter(Boolean) || [];
               const lotteryRush = getLotteryRush(show.id);
+              const displayText = consensus || show.synopsis;
 
               return (
                 <div key={show.id} className="card p-4 sm:p-5">
                   <div className="flex items-start gap-3 sm:gap-4">
                     <RankBadge rank={index + 1} />
 
-                    {/* Thumbnail */}
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
-                      {show.images?.thumbnail ? (
-                        <img
-                          src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
-                          alt={`${show.title} Broadway ${show.type}`}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <span className="text-2xl">🎭</span>
-                        </div>
-                      )}
-                    </div>
+                    {/* Thumbnail — clickable, with ShowImage fallback */}
+                    <Link href={`/show/${show.slug}`} className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0 block">
+                      <ShowImage
+                        sources={[
+                          show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
+                          show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,
+                          show.images?.hero,
+                        ]}
+                        alt={`${show.title} Broadway ${show.type}`}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        fallback={
+                          <div className="w-full h-full flex items-center justify-center bg-surface-overlay text-gray-600 text-3xl font-bold">
+                            {show.title.charAt(0)}
+                          </div>
+                        }
+                      />
+                    </Link>
 
                     {/* Info */}
                     <div className="flex-1 min-w-0">
@@ -287,9 +266,19 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                       >
                         {show.title}
                       </Link>
-                      <p className="text-gray-400 text-xs sm:text-sm truncate">
+                      {/* Pills */}
+                      <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                        <StatusBadge status={show.status} />
+                        <FormatPill type={show.type} />
+                      </div>
+                      <p className="text-gray-400 text-xs sm:text-sm truncate mt-1">
                         {show.venue} {show.runtime && `\u00B7 ${show.runtime}`}
                       </p>
+                      {show.status === 'previews' && show.openingDate && (
+                        <p className="text-purple-400 text-xs mt-0.5">
+                          Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        </p>
+                      )}
                       {show.closingDate && show.status === 'open' && (
                         <p className="text-rose-400 text-xs mt-0.5">
                           Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -297,14 +286,19 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                       )}
                     </div>
 
-                    {/* Score */}
-                    <ScoreBadge score={show.criticScore?.score} reviewCount={show.criticScore?.reviewCount} />
+                    {/* Score — shared component, large size */}
+                    <ScoreBadge
+                      score={show.criticScore?.score}
+                      size="lg"
+                      reviewCount={show.criticScore?.reviewCount}
+                      status={show.status}
+                    />
                   </div>
 
-                  {/* Critic Consensus */}
-                  {consensus && (
+                  {/* Critic Consensus or Synopsis fallback */}
+                  {displayText && (
                     <p className="text-gray-400 text-sm leading-relaxed mt-3 pt-1">
-                      {consensus}
+                      {displayText}
                     </p>
                   )}
 
