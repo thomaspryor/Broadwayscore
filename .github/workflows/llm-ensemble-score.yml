@@ -81,6 +81,10 @@ on:
         required: false
         default: ''
 
+permissions:
+  contents: write
+  actions: write
+
 env:
   ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -279,6 +283,23 @@ jobs:
 
           echo "All push attempts failed"
           exit 1
+
+      - name: Auto-trigger rebuild for non-chain runs
+        if: ${{ github.event.inputs.chain != 'true' && github.event.inputs.dry_run != 'true' && steps.check-changes.outputs.has_changes == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RUNNING=$(gh run list --workflow="Rebuild Reviews Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "Rebuild already running. Skipping."
+            exit 0
+          fi
+
+          echo "Triggering rebuild to incorporate new scores..."
+          gh workflow run "Rebuild Reviews Data" \
+            -f reason="Auto-triggered after LLM scoring"
+
+          echo "Rebuild auto-triggered."
 
       - name: Count remaining unscored reviews
         if: ${{ github.event.inputs.chain == 'true' && github.event.inputs.dry_run != 'true' }}
