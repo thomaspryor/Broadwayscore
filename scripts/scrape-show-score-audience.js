@@ -24,6 +24,12 @@ const limitArg = args.find(a => a.startsWith('--limit='));
 const showLimit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 const dryRun = args.includes('--dry-run');
 const verbose = args.includes('--verbose');
+const includeAll = args.includes('--all');
+const shardArg = args.find(a => a.startsWith('--shard='));
+const totalShardsArg = args.find(a => a.startsWith('--total-shards='));
+const shard = shardArg ? parseInt(shardArg.split('=')[1]) : null;
+const totalShards = totalShardsArg ? parseInt(totalShardsArg.split('=')[1]) : null;
+const shardMode = shard !== null && totalShards !== null;
 
 // Config
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
@@ -41,9 +47,10 @@ const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
 const showScoreData = JSON.parse(fs.readFileSync(showScorePath, 'utf8'));
 
 // Max new URL discoveries per run to avoid rate-limit avalanche
-const MAX_DISCOVERIES = 10;
-// Cooldown before retrying discovery for a show (7 days)
-const DISCOVERY_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
+// In shard mode (bulk backfill), raise cap significantly
+const MAX_DISCOVERIES = shardMode ? 100 : 10;
+// Cooldown before retrying discovery for a show (7 days, disabled in shard mode)
+const DISCOVERY_COOLDOWN_MS = shardMode ? 0 : 7 * 24 * 60 * 60 * 1000;
 
 function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
@@ -432,36 +439,44 @@ async function main() {
     process.exit(1);
   }
 
-  // Get shows to process — open shows only by default
-  let shows = showsData.shows.filter(s => s.status === 'open');
+  // Get shows to process — open shows only by default, --all includes closed
+  const allActiveShows = showsData.shows.filter(s => s.status === 'open' || s.status === 'closed');
+  let shows = includeAll ? allActiveShows : showsData.shows.filter(s => s.status === 'open');
 
   // Handle single show filter (can target any status)
   if (showFilter) {
-    shows = showsData.shows.filter(s => s.id === showFilter || s.slug === showFilter);
+    shows = allActiveShows.filter(s => s.id === showFilter || s.slug === showFilter);
     if (shows.length === 0) {
       console.error(`Show not found: ${showFilter}`);
       process.exit(1);
     }
-  }
-
-  // Handle multiple shows (comma-separated) or special keywords
-  if (showsArg) {
+  } else if (showsArg) {
+    // Handle multiple shows (comma-separated) or special keywords
     if (showsArg === 'missing') {
-      // Filter to open shows without Show Score data
-      shows = shows.filter(s => {
+      // Filter to shows without Show Score data
+      const base = includeAll ? allActiveShows : showsData.shows.filter(s => s.status === 'open');
+      shows = base.filter(s => {
         const b = (audienceBuzz.shows || {})[s.id];
         return !b || !b.sources || !b.sources.showScore;
       });
-      console.log(`Found ${shows.length} open shows missing Show Score data`);
+      console.log(`Found ${shows.length} shows missing Show Score data${includeAll ? ' (all statuses)' : ' (open only)'}`);
     } else {
       const showIds = showsArg.split(',').map(s => s.trim()).filter(Boolean);
-      shows = showsData.shows.filter(s => showIds.includes(s.id) || showIds.includes(s.slug));
+      shows = allActiveShows.filter(s => showIds.includes(s.id) || showIds.includes(s.slug));
       if (shows.length === 0) {
         console.error(`No shows found matching: ${showsArg}`);
         process.exit(1);
       }
       console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
     }
+  } else if (!includeAll) {
+    console.log(`Processing open shows only (${shows.length}). Use --all for all shows.`);
+  }
+
+  // Shard mode: partition shows across parallel workers
+  if (shardMode) {
+    shows = shows.filter((_, i) => i % totalShards === shard);
+    console.log(`Shard ${shard}/${totalShards}: processing ${shows.length} shows`);
   }
 
   if (showLimit) {
@@ -581,6 +596,28 @@ async function main() {
 
   if (previousScoredCount > 0 && successful < previousScoredCount - 5) {
     console.warn(`\n⚠ Score count dropped: ${successful} (was ${previousScoredCount}, delta: -${previousScoredCount - successful})`);
+  }
+
+  // In shard mode, write shard output file with discovered URLs + scores
+  if (shardMode && !dryRun) {
+    const shardDir = path.join(__dirname, '../data/show-score-shards');
+    if (!fs.existsSync(shardDir)) fs.mkdirSync(shardDir, { recursive: true });
+    const shardOutput = {
+      discoveredUrls: {},
+      scores: {}
+    };
+    // Collect any URLs we discovered in this shard
+    for (const show of shows) {
+      const url = getCachedUrl(show.id);
+      if (url) shardOutput.discoveredUrls[show.id] = url;
+      const entry = audienceBuzz.shows && audienceBuzz.shows[show.id];
+      if (entry && entry.sources && entry.sources.showScore) {
+        shardOutput.scores[show.id] = entry.sources.showScore;
+      }
+    }
+    const shardPath = path.join(shardDir, `shard-${shard}.json`);
+    fs.writeFileSync(shardPath, JSON.stringify(shardOutput, null, 2));
+    console.log(`\nShard ${shard} output: ${Object.keys(shardOutput.scores).length} scores, ${Object.keys(shardOutput.discoveredUrls).length} URLs`);
   }
 
   console.log(`\nDone! Processed ${processed} shows, ${successful} with Show Score data.`);
