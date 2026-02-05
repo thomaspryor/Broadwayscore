@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "While the premise of 'McNeal' is intriguing and certainly timely, the play ultimately feels more like a lecture than a fully realized theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -46,5 +46,60 @@
   "archiveOrgTimestamp": "20241011093622",
   "archiveOrgUrl": "http://web.archive.org/web/20241011093622/https://variety.com/2024/legit/reviews/mcneal-review-robert-downey-jr-broadway-1236160088/",
   "wordCount": 776,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McNeal is a dull and garbled play that says very little about ethics and artificial intelligence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict calling the play 'dull and garbled' with 'confusing and meaningless' narrative. While praising the visual production as 'stunning,' the critic finds the writing, character development, and thematic execution fundamentally flawed. | GPT-4o: The review criticizes the play for being unfocused and failing to deliver a meaningful message, despite its visual appeal. The negative assessment of the narrative and characters outweighs the praise for the production design. | Gemini: The review is overall negative, describing the play as \"dull and garbled\" and criticizing its lack of focus and meaningful message. While praising the staging and production, the core critique is that the play fails to deliver on its themes and presents an unlikeable protagonist. | Kimi: The critic acknowledges the visual staging as stunning but ultimately finds the play itself dull, garbled, and meaningless, with an unbearable protagonist and incoherent narrative that falters thematically.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:01:15.037Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 44,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

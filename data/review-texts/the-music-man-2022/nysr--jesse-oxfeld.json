@@ -18,5 +18,59 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "The charming Jackman plays the salesman, who goes by Prof. Hill, and the beloved (if somewhat underutilized) Sutton Foster is the librarian, Marion. They are aided by a supporting cast of Broadway greats nearly sufficient to staff a mansion on The Gilded Age. (When you've got Jefferson Mays as the consistently befuddled Mayor Shinn and Jayne Houdyshell as his hilariously preening wife, Eulalie Mackechnie Shinn, plus Shuler Hensley as Hill's good-natured henchman, who even needs a movie-star lead",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundups-THE-MUSIC-MAN-Opens-On-Broadway--Updating-Live-20220210"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundups-THE-MUSIC-MAN-Opens-On-Broadway--Updating-Live-20220210",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The proudly old-fashioned new production of The Music Man that opened at the Winter Garden Theatre last night is proof that trouble isn't the only word to start with a T, capital or otherwise. Terrific comes to mind.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: 5/5 stars with consistent superlative praise throughout. Calls it 'terrific,' 'delightfully cast and staged,' praises the 'near-perfect script,' and describes performances as 'charming' and 'beloved.' Even acknowledges this is a 'blockbuster staging of a blockbuster classic' with unqualified enthusiasm. | GPT-4o: The review is overwhelmingly positive, praising the cast, direction, choreography, and overall production. The critic's original 5/5 star rating and the use of superlatives like 'terrific' indicate a strong recommendation. Despite the truncation warning, the available text suggests a rave review. | Gemini: The review is overwhelmingly positive, using terms like \"terrific\" and highlighting the delightful cast and staging. Despite being truncated, the overall tone suggests a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:04:14.260Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": null,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

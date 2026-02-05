@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Collaboration is a play about two artists making art together, but it's also about the impossibility of truly knowing another person, even when you're working intimately with them.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,60 @@
   "archiveOrgTimestamp": "20230921162408",
   "archiveOrgUrl": "http://web.archive.org/web/20230921162408/https://www.vulture.com/2022/12/theater-review-ollaboration-warhol-basquiat-broadway.html",
   "wordCount": 1189,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is really pretty meh",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic consistently criticizes the play as 'static,' 'conventional,' and lacking depth, calling it 'pretty meh' and comparing it unfavorably to a simple commodity purchase. While acknowledging the actors' talents, she finds the overall execution disappointing. | GPT-4o: The review criticizes the play for being static and conventional, with performances limited to predictable choices. The overall tone is dismissive, indicating a lack of recommendation. | Gemini: The review is largely negative, describing the play as \"static\", \"conventional\", and \"pretty meh\". While acknowledging the actors' talent, the critic finds the production ultimately disappointing and lacking depth. | Kimi: While acknowledging the talent of leads Paul Bettany and Jeremy Pope, the critic finds the play itself 'meh,' conventional, and two-dimensional, offering only surface-level insights into its subjects. The review consistently criticizes the predictable writing and static nature of the bio-drama, ultimately suggesting ticket buyers receive only 'the most basic coloring of the details.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:17:46.476Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -24,5 +24,60 @@
   "showScoreExcerpt": "\"The production still manages to be highly effective, thanks to the brilliance of Wilson’s writing and the many first-rate performances.\"\n\nRead more",
   "bwwExcerpt": "Whether or not to preserve the legacy of the past, however horrific, is the compelling theme of this elemental drama which showcases Wilson's prodigious gifts for poetical dialogue and richly drawn characterizations. It's filled with emotionally resonant moments, the quieter of which are the best rendered in this production. Perhaps the highlight is the scene in which the eager Lymon, newly clad in a resplendent if far too small silk suit and fancy shoes that he's purchased from Doaker's comically blustery brother Wining Boy (Michael Potts, terrific), nearly manages to break down Berniece's emotional defenses by gifting her with a bottle of fancy perfume. Brooks and Fisher play the delicate scene perfectly, thoroughly winning over the audience which practically swoons. Unfortunately, the production falters in its more explosive moments, with Washington, apparently making his stage acting debut, maintaining such a high energy and decibel level throughout that his unmodulated performance becomes monotonous. Boy Willie is supposed to be the volcanic center of the drama, but here he comes across as more irritating than a force of nature.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Visit-THE-PIANO-LESSON-Samuel-L-Jackson-Danielle-Brooks-and-More-20221013"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Visit-THE-PIANO-LESSON-Samuel-L-Jackson-Danielle-Brooks-and-More-20221013",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production still manages to be highly effective, thanks to the brilliance of Wilson's writing and the many first-rate performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with clear praise for the cast and Wilson's writing, but significant reservations about Washington's performance and Richardson's direction. The critic finds it 'highly effective' overall despite being 'imperfect' and 'uneven.' | GPT-4o: The review acknowledges the production's imperfections, particularly in pacing and some performances, but ultimately recommends it for its effective moments and strong cast. The original 4/5 star rating aligns with a positive bucket, despite noted reservations. | Gemini: 4/5 stars. The review praises the writing and many performances, but notes unevenness in the production and direction, leading to a positive but not rave score. | Kimi: 4/5 star review praising Wilson's writing and supporting performances as highly effective, while noting significant flaws in the lead actor's modulation and directorial pacing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:13:09.116Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

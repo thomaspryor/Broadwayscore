@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Daniel Radcliffe gives a performance of surprising depth and complexity as Billy Claven, the disabled dreamer at the heart of Martin McDonagh's dark comedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -28,5 +28,60 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or pull quote, not a complete review with sufficient evaluative content to determine a recommendation.; openai: This text is a single sentence focusing on a performance, not a full review with an evaluative verdict of the show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Daniel Radcliffe gives a performance of surprising depth and complexity as Billy Claven, the disabled dreamer at the heart of Martin McDonagh's dark comedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Radcliffe's performance with 'surprising depth and complexity' suggests positive reception, but with only one excerpt about the lead performance, the overall show verdict remains unclear. | GPT-4o: The excerpt praises Radcliffe's performance, indicating a positive view of his role. However, without more context, it's unclear if the overall production is similarly praised. The single excerpt and lack of full review text limit confidence. | Gemini: The excerpt praises Daniel Radcliffe's performance, suggesting a positive aspect of the show. However, without more context, it's difficult to determine the overall recommendation strength. | Kimi: Single excerpt provides strong praise for Radcliffe's performance ('surprising depth and complexity'), placing it in the upper Positive range per instructions for clearly positive isolated quotes, though limited context prevents higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:19:42.271Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

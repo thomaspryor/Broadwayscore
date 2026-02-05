@@ -65,5 +65,60 @@
   "extractedByline": "Film Review",
   "expectedCritic": "Frank Scheck",
   "wordCount": 180,
-  "tierReason": "Short text (180 words)"
+  "tierReason": "Short text (180 words)",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this wildly entertaining show wonderfully captures the spirit of these seminal figures who would go on to change the course of popular music.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('wildly entertaining', 'wonderfully captures') indicates clear enthusiasm. Single excerpt warning noted - positioning in upper Positive range due to unqualified praise, but medium confidence given limited text. | GPT-4o: The excerpt describes the show as 'wildly entertaining' and praises its ability to capture the spirit of iconic musicians, indicating a strong positive impression. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The review excerpt is positive, calling the show \"wildly entertaining\" and praising its capture of the spirit of the musicians. Given it's a single excerpt, confidence is low, but the strong positive language warrants a score in the upper end of the positive range. | Kimi: While the critic notes the show takes liberties with historical accuracy, they describe it as 'wildly entertaining' and praise how it 'wonderfully captures the spirit' of the musicians, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:09:39.621Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

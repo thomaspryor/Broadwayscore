@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Midway through the tale as self-besotted Dorian plunges into a hedonistic rave of cocaine, disco music and fuchsia lighting, Snook raises on high a mobile phone and wildly whirls around the stage, grabbing selfies that light up all of the screens. The camera filters soon blow up Dorian’s features with grotesque lips and eyes; images initially comical and then growing monstrous, especially when projected across multiple surfaces. It is a disturbing, brilliant sequence reflecting the mad narcissism at the heart of the dark tale.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Sarah-Snook-Stars-In-THE-PICTURE-OF-DORIAN-GRAY-On-Broadway-20250327"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Sarah-Snook-Stars-In-THE-PICTURE-OF-DORIAN-GRAY-On-Broadway-20250327",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is a disturbing, brilliant sequence reflecting the mad narcissism at the heart of the dark tale.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: 3/5 stars indicates solid positive territory. The excerpt praises a specific sequence as 'brilliant' and 'disturbing' in an appreciative way, but with only one curated quote available, this could be cherry-picked from a more mixed overall review. | GPT-4o: The excerpt describes a 'brilliant sequence' which suggests a positive view of the production's creativity and execution. However, the original 3/5 star rating indicates some reservations overall. Given the single excerpt and the original rating, a score at the lower end of the Positive range is appropriate. | Gemini: The excerpt describes a \"brilliant sequence\" and uses positive language. Given the single excerpt and positive tone, I'm placing it in the positive bucket with a score of 81. | Kimi: The 3/5 star rating indicates a middle-of-the-road assessment, and while the excerpt praises a specific staging sequence as 'brilliant,' the single curated quote limitation prevents determining the overall recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:15:40.197Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "kimiScore": 65,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

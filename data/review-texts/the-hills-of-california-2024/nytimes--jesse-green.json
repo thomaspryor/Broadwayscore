@@ -16,7 +16,7 @@
   "bwwExcerpt": "This is not the kind of play that brandishes a singular sharp point; it is the kind that swaddles you in innumerable impressions. Like Butterworth’s previous Broadway outings — the mythopoetic “Jerusalem” in 2011, the brawny Hugh Jackman vehicle “The River” in 2014 and especially the Irish fable “The Ferryman” in 2018 — “The Hills of California” is a yarn, not a lesson; a tale, not a tract. It resists interpretation, possibly as a way of resisting criticism, which, despite its flaws, it clearly does with great success.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Jez-Butterworths-THE-HILLS-OF-CALIFORNIA-Opens-on-Broadway-Updating-Live-20240929",
   "showScoreExcerpt": "Jez Butterworth's new play is a memory palace of extraordinary detail and emotional power, anchored by Laura Donnelly's magnificent performance as a woman confronting her past.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (26 words)",
   "textQuality": "partial",
   "sources": [
@@ -47,5 +47,10 @@
   "archiveOrgTimestamp": "20250507133945",
   "archiveOrgUrl": "http://web.archive.org/web/20250507133945/https://www.nytimes.com/2024/09/29/theater/the-hills-of-california-review.html",
   "wordCount": 300,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T09:39:09.157Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text cuts off mid-article with a technical error message about retrieving content and enabling JavaScript, making it unscoreable.; openai: The text is incomplete and contains a message about trouble retrieving the article content, indicating it is not a full review.; gemini: The review is cut off mid-sentence, so the final verdict is missing.",
+  "promptVersion": "5.2.0"
 }

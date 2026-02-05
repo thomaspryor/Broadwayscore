@@ -32,5 +32,59 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 985,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Between its robust score, showcase moments for the cast, and evergreen resonance, Ragtime is easy to heartily recommend.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging the show's tendency toward 'power-anthem overload' and some pacing issues, the critic explicitly states it's 'easy to heartily recommend' and praises the performances as 'uniformly topflight' with strong contemporary relevance. | Gemini: The review is generally positive, highlighting the strong performances and relevant themes, but notes the show's length and tendency to be overwhelming. The critic ultimately recommends it. | Kimi: The critic praises the uniformly excellent cast, stirring direction by Lear deBessonet, and striking scenic design, while acknowledging the show's exhausting three-hour length and power-anthem overload. Despite reservations about the material's sprawl, the review delivers an explicit and enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:47:15.536Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": null,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

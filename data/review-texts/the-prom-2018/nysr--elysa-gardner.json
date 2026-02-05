@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2018/11/15/the-prom-bringing-red-and-blue-together-with-song-and-dance/",
   "bwwExcerpt": "Indeed, it's hard to imagine a show fueled by more extravagant good will than Prom, which Nicholaw put together with old friends and collaborators Chad Beguelin, Bob Martin and Matthew Sklar, with Martin and Beguelin co-writing the book and the latter crafting lyrics for Sklar's music. They devised the show in part as a vehicle for a group of veteran performers whose talents are well-known among theater fans, including Brooks Ashmanskas, Beth Leavel and Christopher Sieber.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Have-A-Night-To-Remember-At-THE-PROM-20181115"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Have-A-Night-To-Remember-At-THE-PROM-20181115",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Prom may not change your life, but the buoyant respite it offers from naysaying and gloom are not unsubstantial things.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: 3/5 stars with consistent praise for performances, choreography, and production values. Acknowledges flaws in social commentary but ultimately recommends the show for its energy and optimism. | GPT-4o: The review highlights the show's exuberant showmanship, talented cast, and energetic choreography, while acknowledging some awkward or simplistic moments. The original 3/5 stars suggests a positive but not unqualified recommendation. | Gemini: The review is generally positive, highlighting the show's exuberance and good will, though noting some awkwardness in its social commentary. The 3/5 star rating and the truncated text suggest a recommendation with reservations. | Kimi: While the critic praises the energetic choreography, strong performances, and extravagant good will, the 3/5 star rating and specific criticisms about awkward social commentary and dropped plot threads indicate a qualified, middle-of-the-road assessment rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:20:22.700Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 77,
+    "kimiScore": 68,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

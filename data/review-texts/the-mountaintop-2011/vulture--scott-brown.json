@@ -6,8 +6,7 @@
   "url": "http://nymag.com/daily/entertainment/2011/10/theater_review_regarding_the_m.html",
   "source": "bww-reviews",
   "sources": [
-    "bww-reviews",
-    "bww-roundup"
+    "bww-reviews"
   ],
   "bwwExcerpt": "Thunderclaps shake the theater; the deluge outside the window is practically Biblical. But for all the Abrahamic ominousness, not too much actually transpires, emotionally or counterhistorically, in The Mountaintop, Katori Hall’s giddy and insouciant yet strangely weightless fantasy about the last night of Dr. Martin Luther King Jr. (Samuel L. Jackson)...Hall loses her resolve and retreats into magic and omen.",
   "bwwScore": 4,
@@ -34,5 +33,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20120210122948/http://nymag.com/daily/entertainment/2011/10/theater_review_regarding_the_m.html",
   "wordCount": 978,
   "tierReason": "Full review text",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Samuel-L-Jackson-and-Angela-Bassett-in-THE-MOUNTAINTOP-All-the-Reviews-20111014"
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What takes place between them is, I think, intended to rattle our fixed-in-pewter notion of the martyred King while ultimately reinforcing the reverence that history and pop culture have accorded him.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds individual moments of brilliance and acknowledges the promising setup, but repeatedly emphasizes that the play 'goes absolutely nowhere' and fails to deliver on its potential. The review balances appreciation for performances with fundamental disappointment in execution. | GPT-4o: The review acknowledges some promising elements and moments of engagement, particularly with the performances, but ultimately finds the play lacking in emotional depth and impact. The critic describes the experience as 'pleasantly diverted' but not intimate or profound, indicating a mixed reception. | Gemini: The review acknowledges some interesting moments and performances but ultimately finds the play weightless and unsatisfying. The critic expresses a sense of pleasant diversion but no greater intimacy than a theme park exhibit. | Kimi: While the critic acknowledges a few stunning moments and committed performances from Jackson and Bassett, the overall verdict is that the play is 'strangely weightless' and fails to deliver on its premise. The review emphasizes that the setup 'goes absolutely nowhere,' the dramatic stakes feel like 'molehills,' and the production ultimately leaves no lasting impact, comparing it to sanitized theme park entertainment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:02:52.289Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

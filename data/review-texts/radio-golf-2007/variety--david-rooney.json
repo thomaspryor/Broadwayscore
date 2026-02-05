@@ -56,9 +56,9 @@
   "sourceMethod": "scrapingbee",
   "wordCount": 938,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-05T03:46:12.340Z",
+  "rejectedAt": "2026-02-05T08:46:30.167Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This appears to be a website navigation menu, ad content, and repeated promotional text about various entertainment topics, not a coherent theater review; openai: The text provided is a mix of unrelated content, including navigation menus, unrelated articles, and promotional material, with no discernible review of a Broadway show.; gemini: This is a roundup of various movies, TV shows, and music, not a review of a specific Broadway show.; kimi: The provided text is a corrupted scrape containing jumbled headlines and snippets from multiple unrelated Variety articles (including film reviews, album reviews, and potentially multiple different theater reviews), not a coherent review of a single Broadway show. The Aggregator Context references 'Radio Golf' by August Wilson, but the actual review text contains no mention of that play or its content.",
+  "rejectionReasoning": "claude: This appears to be a website navigation menu or aggregated content feed from Variety's homepage, not a theater review. It contains fragments about Super Bowl ads, Disney executives, SNL casting, and various unrelated entertainment topics, but no actual review of a Broadway show.; openai: The text provided is a mix of unrelated content, including ads, trailers, and other media topics, with no discernible review of the target show.; gemini: This is a roundup of various movies, TV shows, and music. There is no single review of a play.; kimi: The text is a corrupted concatenation of multiple unrelated Variety headlines, navigation menus, and article fragments (covering Super Bowl ads, TV casting announcements, film reviews, and music albums), not a coherent review of a single Broadway show. It contains no evaluative content about 'Radio Golf' or any identifiable target production.",
   "promptVersion": "5.2.0"
 }

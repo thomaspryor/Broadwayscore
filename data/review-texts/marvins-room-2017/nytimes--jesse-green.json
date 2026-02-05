@@ -41,5 +41,60 @@
   "duplicateTextOf": "nytimes--ben-brantley.json",
   "wordCount": 1182,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"Thoughtfully directed by Kauffman; keenly performed by Taylor, Garofalo and especially Weston; a pleasure to watch throughout...But it is somehow, also, fatally mild. How can this be when nothing has been altered?...Without that heightened and emotional context some of the play’s flaws are more evident now...This production of 'Marvin’s Room' languishes in the gap between the powerful, absurdist comedy Mr. Rich saw and the histrionic excess of the three-hanky film.\" \n\nRead more"
+  "showScoreExcerpt": "\"Thoughtfully directed by Kauffman; keenly performed by Taylor, Garofalo and especially Weston; a pleasure to watch throughout...But it is somehow, also, fatally mild. How can this be when nothing has been altered?...Without that heightened and emotional context some of the play’s flaws are more evident now...This production of 'Marvin’s Room' languishes in the gap between the powerful, absurdist comedy Mr. Rich saw and the histrionic excess of the three-hanky film.\" \n\nRead more",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Thoughtfully directed by Anne Kauffman; keenly performed by Lili Taylor, Janeane Garofalo and especially Celia Weston; a pleasure to watch throughout — it is all of these. But it is somehow, also, fatally mild.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Green praises the performances and direction but finds the revival 'fatally mild' compared to the original's power. He acknowledges it's well-crafted but argues it lacks the emotional urgency that made the play significant, calling it a smart production that doesn't fully justify its existence. | GPT-4o: The review acknowledges strong performances and thoughtful direction but ultimately finds the production lacking in impact, describing it as 'fatally mild' and 'languishing.' The critic appreciates certain elements but does not offer a strong recommendation. | Gemini: The review acknowledges the quality of the direction and performances but ultimately finds the production to be \"fatally mild\" and lacking the emotional impact it once had. It neither recommends nor discourages seeing the show. | Kimi: While praising the direction, performances, and design as 'perfect' and a 'pleasure to watch,' the critic finds the production emotionally flat compared to the 1991 original, describing it as 'fatally mild' and lacking theatrical fire.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:53:35.028Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

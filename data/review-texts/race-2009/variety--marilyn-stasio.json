@@ -19,10 +19,10 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "textQuality": "partial",
-  "rejectedAt": "2026-02-04T02:08:29.688Z",
+  "rejectedAt": "2026-02-05T08:45:35.357Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be a single descriptive sentence about the play's themes, not an actual review with critical evaluation or recommendation; openai: The text is a brief description of the play's themes without any evaluative content or critique.; gemini: This is a plot summary with no evaluation of the production's quality.",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a film review of 'Underworld: Rise of the Lycans' (2009), not a Broadway theater review.; openai: The text is a review of the film 'Underworld: Rise of the Lycans', not a Broadway show.; gemini: This is a review for the film 'Underworld: Rise of the Lycans', not a Broadway show.; kimi: This is a film review of the movie 'Underworld: Rise of the Lycans', not a review of a Broadway theatrical production.",
   "promptVersion": "5.2.0",
   "playbillVerdictUrl": "http://variety.com/2014/legit/reviews/broadway-review-disgraced-josh-radnor-1201337499/",
   "sources": [
@@ -68,5 +68,6 @@
     "Show title not found in text"
   ],
   "wordCount": 608,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true
 }

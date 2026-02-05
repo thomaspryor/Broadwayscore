@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "No, The Nap is not quite as broad as One Man; it would be unreasonable to expect it to be, wouldn't it? But it is easily the funniest new play on Broadway. So go get snookered.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THE-NAP-on-Broadway-20180927"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THE-NAP-on-Broadway-20180927",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Get snookered, go see The Nap.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic opening recommendation and consistent praise for Bean's 'wild, fantastic and at times insane' comic sense, Sullivan's direction, and design elements throughout. | GPT-4o: The review is generally positive, highlighting the comedic elements and effective direction. The 4/5 star rating indicates a strong recommendation, though not without minor reservations. | Gemini: The review is positive, highlighting the comedic elements and the director's flair for comedy. The 4/5 star rating supports a positive classification. | Kimi: The critic awards 4/5 stars and offers an enthusiastic recommendation ('go see The Nap'), praising the comedy, direction, and design without significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:07:23.672Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

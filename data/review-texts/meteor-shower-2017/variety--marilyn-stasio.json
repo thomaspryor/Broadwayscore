@@ -38,5 +38,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 557,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Clever lines and canny body language only get you so far, and there comes a point when this lightweight comedy just gives up and implodes on itself from lack of thought and direction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Stasio praises individual performances (Schumer's 'exuberant' and 'buoyant' work, Key as 'riveting', Benanti as 'divine') and acknowledges Martin's comic thesis, but concludes the play 'implodes on itself from lack of thought and direction' and 'could use a few more scenes to get its head together.' Mixed verdict with clear structural criticisms. | GPT-4o: The review praises performances and some comedic elements but criticizes the play for lacking substance and direction, leading to a mixed recommendation. | Gemini: The review praises the performances and some of the comedic elements, but ultimately finds the play lightweight and lacking in thought and direction, leading to a mixed assessment. | Kimi: The critic offers enthusiastic praise for the performances (Schumer's 'exuberant' turn, Key as 'riveting,' Benanti as 'divine') and direction, but ultimately finds Steve Martin's play slight and underdeveloped, stating it 'implodes on itself from lack of thought and direction' and needs more scenes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:08:10.064Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 68,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

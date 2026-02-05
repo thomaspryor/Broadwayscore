@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "The Nap, which opens tonight in a Manhattan Theatre Club production at the Samuel J. Friedman, is the staged version of those not-quite-right British sitcoms. It is funny, but less funny than you'd like it to be. It entertains, but it is instantly forgotten. You can't shake the feeling that you're missing something.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THE-NAP-on-Broadway-20180927"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THE-NAP-on-Broadway-20180927",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is funny, but less funny than you'd like it to be. It entertains, but it is instantly forgotten.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The 2/5 star rating and consistent criticism throughout make this clearly negative. The critic calls it 'stubbornly, mildly amusing' with 'nothing laugh-out-loud funny' and concludes whoever thought it would be a Broadway hit was 'snookered.' Despite acknowledging decent performances, the overall recommendation is against seeing it. | GPT-4o: The review consistently describes the show as mildly amusing but ultimately forgettable and not suited for American audiences. The critic's original 2/5 stars supports a negative classification. However, due to the truncated text warning, the confidence is set to medium. | Gemini: The review is mixed, stating that the show is funny but not as funny as it could be, and entertaining but instantly forgotten. The critic also mentions that it remains consistently, stubbornly, mildly amusing. | Kimi: The critic's 2/5 star rating and assessment that the show is 'instantly forgotten,' 'mildly amusing' but never 'laugh-out-loud funny,' and the final verdict that producers were 'snookered' into bringing this provincial British diversion to Broadway indicate a clear negative recommendation, despite acknowledging competent performances and staging.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:06:38.643Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

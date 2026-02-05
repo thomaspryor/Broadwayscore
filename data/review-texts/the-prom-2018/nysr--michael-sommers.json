@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2018/11/15/the-prom-plenty-of-showbiz-gagging-over-some-serious-issues/",
   "bwwExcerpt": "Everyone gamely and capably projects their characters, especially Leavel and Ashmanskas, who probably spit out nails after chewing so much scenery in their outsized roles as Dee Dee and Barry. Their fearlessly over-the-top performances, along with an assortment of showbiz gags in the amusing script and Beguelin's lyrics, propelled by Sklar's mostly upbeat tunes and plenty of fast-moving flurries of athletic dancing choreographed by Nicholaw, represent Broadway musical comedy in full-flowered fri",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Have-A-Night-To-Remember-At-THE-PROM-20181115"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Have-A-Night-To-Remember-At-THE-PROM-20181115",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Everyone gamely and capably projects their characters, especially Leavel and Ashmanskas, who probably spit out nails after chewing so much scenery in their outsized roles as Dee Dee and Barry.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The 2/5 star rating indicates a negative review. While the excerpt praises individual performers and some production elements, a 2-star rating places this firmly in the Negative bucket despite the positive language about the cast. | GPT-4o: Despite praise for performances and elements of the production, the original 2/5 star rating indicates a negative overall verdict. The excerpt highlights over-the-top performances and some entertaining aspects, but the low star rating suggests these do not redeem the show. | Gemini: The review excerpt focuses on the positive aspects of the performances and choreography, but the overall rating is 2/5 stars, indicating a negative assessment despite the praise for individual elements. Given the limited text, I'm scoring it as negative but with low confidence. | Kimi: The 2/5 star rating firmly places this in the Negative range. While the excerpt acknowledges capable performances and amusing elements, phrases like 'chewing so much scenery' criticize overacting, and the low rating confirms an overall unfavorable verdict despite isolated bright spots.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:21:19.551Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

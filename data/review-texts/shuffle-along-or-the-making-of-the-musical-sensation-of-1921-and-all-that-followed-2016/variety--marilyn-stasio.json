@@ -44,5 +44,60 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 946,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But an incoherent book seems a small price to pay for the joy of watching Audra McDonald cut loose.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite criticizing the show's structural issues and 'incoherent book,' the critic calls it 'to die for,' praises the performances extensively (especially McDonald), and finds the flaws worth tolerating for the show's joys and achievements. | GPT-4o: The review opens with a strong positive statement ('to die for') and praises performances, choreography, and the show's energy. While noting structural issues, the overall tone is highly enthusiastic, especially about the performances. | Gemini: The review is mostly positive, highlighting the performances and choreography, but notes issues with the book. The critic seems to recommend seeing it despite the flaws. | Kimi: The review opens with effusive praise ('to die for') and celebrates the choreography and performances as transcendent, dismissing the baggy structure and second-act problems as minor setbacks compared to the theatrical joys on display.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:52:00.944Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

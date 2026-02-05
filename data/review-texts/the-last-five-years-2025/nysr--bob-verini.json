@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Well, The Last Five Years has suffered underwhelming Jamies and powerhouse Cathys before (and vice versa, cf. the 2014 film version with Jeremy Jordan and Anna Kendrick). Yet its depth of feeling and universality always manage somehow to click. This Broadway incarnation is well worth taking in, but its fulfillment – just like that of the connection between Cathy and Jamie itself – remains tantalizingly, yet undeniably, just out of reach.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-LAST-FIVE-YEARS-Starring-Nick-Jonas-and-Adrienne-Warren-20250406"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-LAST-FIVE-YEARS-Starring-Nick-Jonas-and-Adrienne-Warren-20250406",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Broadway incarnation is well worth taking in, but its fulfillment remains tantalizingly just out of reach.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear recommendation ('well worth taking in') but significant qualifications about unfulfilled potential. 3/5 stars with single excerpt limits confidence. | GPT-4o: The critic acknowledges the show's depth of feeling and universality, recommending it as 'well worth taking in', but notes it doesn't fully achieve its potential. The 3/5 stars and the excerpt suggest a positive but reserved recommendation. | Gemini: The review states the production is \"well worth taking in,\" but also notes that it remains \"just out of reach,\" indicating a positive but not overwhelmingly enthusiastic recommendation. The single excerpt and 3/5 stars rating also contribute to the positive bucket, but the lack of full text reduces confidence. | Kimi: The 3/5 star rating and qualified recommendation ('well worth taking in' tempered by 'just out of reach') place this in the Mixed bucket, indicating appreciation for the production's merits but reservation about its ultimate emotional impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:49:07.212Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 68,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

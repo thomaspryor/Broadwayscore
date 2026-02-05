@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This handsome revival of Chekhov's 'The Seagull' at the Walter Kerr Theater boasts a sterling cast headed by Carey Mulligan and Peter Sarsgaard, but the production never quite finds its emotional center.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -59,5 +59,59 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 786,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dianne Wiest, actually, who is pretty damned dazzling as Arkadina, but not alone in an ensemble that seems to understand the capricious Russian soul.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic consistently praises the director's vision, Wiest's 'dazzling' performance, the ensemble's understanding, and the production design. While analytical in tone, the review celebrates the production's artistic choices and performances throughout. | Gemini: The review is generally positive, highlighting the ensemble's understanding of the characters and the production's unique approach to Chekhov. While noting some potential drawbacks, the overall tone suggests a worthwhile experience. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:28:56.141Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

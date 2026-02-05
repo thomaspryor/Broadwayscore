@@ -32,5 +32,60 @@
   "archiveOrgTimestamp": "20250721152945",
   "archiveOrgUrl": "http://web.archive.org/web/20250721152945/https://www.vulture.com/2020/01/theater-review-my-name-is-lucy-barton.html",
   "wordCount": 1163,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yet My Name Is Lucy Barton flops.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict with explicit non-recommendation. Critic states 'flops,' calls it 'dull,' 'gelid work,' and directly says 'this show that I'm not recommending.' Despite acknowledging Linney's talent, the overall assessment is decisively negative. | GPT-4o: The review consistently criticizes the production's lack of adaptation from book to stage, describing it as 'plodding' and 'static'. The critic explicitly states they do not recommend the show. | Gemini: The review is largely negative, stating that the show \"flops\" and is a \"dull lesson.\" The critic explicitly states that they are \"not recommending\" the show. | Kimi: The critic explicitly states 'I’m not recommending' the show, calling it a 'flop' that 'collapses' and labeling the production 'static,' 'plodding,' and a 'show-killer' for failing to translate the source material into engaging theater.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:16:45.648Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -22,5 +22,60 @@
   "wordCount": 0,
   "showScoreExcerpt": "\"We’re completely rapt, and by the end, we see the piano for what it really is: the embodiment of three generations of family history, and the physical representation of their slave narrative.\"\n\nRead more",
   "bwwExcerpt": "Boy Willie is, by definition, insolent and impetuous, and Washington-so captivating as an undercover cop in Spike Lee's Oscar-winning drama BlacKkKlansman-captures both with ease, and has presence to spare. Unfortunately, he's also pretty much at full volume, and full speed, from the jump. To be fair, Charles S. Dutton's performance at Yale Rep and on Broadway received some of the same criticism-too big, too loud, too fast. And if Boy Willie didn't drive at 55 mph, the play could easily be 20 minutes longer. That's how massive the part is. One suspects, however, that Washington will be dynamite in the Netflix Piano Lesson adaptation.",
-  "bwwScore": 6
+  "bwwScore": 6,
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's an ambitious but discordant new revival with magnificent performances but pacing issues.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars indicates mixed reception. Review praises individual performances (Brooks as 'magnificent', Jackson's 'sermon') and Wilson's material, but criticizes Washington's performance as 'too big, too loud, too fast' and calls the production 'discordant' and 'frenetic.' | GPT-4o: The review highlights strong performances and emotional moments but also notes issues with the production's pacing and discordant elements. The original 3/5 star rating suggests a mixed reception. | Gemini: The review highlights both strengths (Jackson's performance, the piano's history) and weaknesses (Washington's performance, frenetic pace). The 3/5 star rating suggests a mixed assessment. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:14:38.731Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

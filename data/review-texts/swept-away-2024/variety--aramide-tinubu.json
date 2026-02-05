@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Despite its flaws, 'Swept Away' is a passionate and deeply felt musical that showcases the power of folk music to tell stories of human resilience in the face of unimaginable tragedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -60,5 +60,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--peter-marks.json",
   "wordCount": 606,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's so much to recommend 'Swept Away' that it seems unkind, or even unfair, to call it a misfire.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises multiple elements extensively (music, performances, choreography, design) but finds the story fundamentally lacking. The opening acknowledges it's 'unfair to call it a misfire' yet concludes audiences 'will leave hungry' for satisfying story. | GPT-4o: The review praises the music, performances, and design elements, but criticizes the story for lacking depth and a satisfying narrative. The overall recommendation is mixed, with strong elements but significant narrative shortcomings. | Gemini: The review praises the music, acting, choreography, set design, and lighting, but criticizes the story as lacking depth and not adequately exploring its themes. The final sentence suggests disappointment with the narrative. | Kimi: While praising the music, performances, and design as beautiful and masterful, the critic finds John Logan's story lacking and insufficiently explored, creating a divided experience where audiences will enjoy the elements but feel unsatisfied by the narrative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:06:43.462Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

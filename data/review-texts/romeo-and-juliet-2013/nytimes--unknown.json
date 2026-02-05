@@ -52,5 +52,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 406,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It never acquires the fiery, all-consuming urgency that 'Romeo and Juliet' should deliver.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the leads' beauty and chemistry, calling it 'luminous' and 'beguiling,' but finds the production fundamentally lacking in urgency and emotion. The second half is described as an 'anticlimactic blur' where the tragic ending fails to create impact. | GPT-4o: The review praises the performances and aesthetic qualities but criticizes the lack of urgency and anticlimactic second half. The mixed evaluation suggests a balanced view with notable strengths and weaknesses. | Gemini: The review praises the leads and some visual elements, but criticizes the production for lacking urgency and anticlimactic tragic events. This indicates a mixed assessment. | Kimi: The critic offers high praise for the lead performances ('first-rate Broadway debut,' 'gifted') and the first half's aesthetic beauty, but delivers a devastating critique of the second half as an 'anticlimactic blur' where the tragic ending fails to move the audience, resulting in a 'lopsided production' that never achieves necessary urgency.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:49:12.052Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2018/11/11/the-new-one-and-papa-makes-three-with-nonstop-laughter/",
   "bwwExcerpt": "This week on Broadway, each and every reference to \"the new one\" no doubt referred to a gargantuan animatronic ape. Now we can wipe that out with Birbiglia's The New One. Not as big and spectacular as King Kong, needless to say, but gargantuanuously more entertaining. Roma Torre, NY1: But the biggest surprise is Birbiglia's ability to fill the stage with little more than the wit and wisdom of someone who understands that humor is the bitterest truth refusing to take itself seriously.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Mike-Birbiglias-THE-NEW-ONE-Updating-Live-20181111"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Mike-Birbiglias-THE-NEW-ONE-Updating-Live-20181111",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gargantuanuously more entertaining",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic praise ('gargantuanuously more entertaining', 'biggest surprise') and positive assessment of Birbiglia's stage presence. Single excerpt limits confidence but tone is clearly positive. | GPT-4o: The excerpt praises the show as 'gargantuanuously more entertaining' than King Kong and highlights Birbiglia's wit and wisdom. The original 4/5 stars rating supports a strong positive classification. | Gemini: The review excerpt clearly states that Birbiglia's show is \"gargantuanuously more entertaining\" than King Kong, indicating a strong positive sentiment. The 4/5 star rating also supports this classification. | Kimi: The 4/5 star review enthusiastically praises the show as vastly more entertaining than spectacle-driven alternatives, highlighting Birbiglia's wit and wisdom, though the single excerpt limits confidence in the full assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:10:13.364Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

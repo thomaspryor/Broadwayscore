@@ -50,5 +50,60 @@
   "promptVersion": "5.2.0",
   "bwwExcerpt": "...Wasserstein clearly sees TV as a big sell-out for her lead character, a revered art historian teaching at Columbia University. So why has Pam MacKinnon directed most of the supporting players around Moss as if they're on a 1980's sitcom? This approach might have worked on Broadway years ago, but in 2015 cable TV turns out far edgier fare on a weekly basis than the theater, on or off Broadway...Moss succeeds in making Heidi's dilemma vivid and crucial, even though here's an art history major who gets tons of grants, can pick between teaching at Columbia or Carleton College, and is offered a TV gig that she never pitched and rejects because it's too insignificant in light of her research on female artists of the 18th Century...Wasserstein must have known she'd turned her heroine into a whiner...",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEIDI-CHRONICLES-Opens-on-Broadway-Updating-Live-20150319"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEIDI-CHRONICLES-Opens-on-Broadway-Updating-Live-20150319",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Moss succeeds in making Heidi's dilemma vivid and crucial",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows praise for Moss's performance but criticism of direction, writing, and character development. Limited text makes full verdict unclear. | GPT-4o: The review criticizes the direction as outdated and the lead character as a 'whiner,' suggesting a negative view. However, the excerpt is limited, so the confidence is low. | Gemini: The review praises Moss's performance but criticizes the direction and the character's portrayal, suggesting a mixed experience overall. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt offers specific praise for Elisabeth Moss's central performance but criticizes the sitcom-style direction and finds the protagonist unsympathetic and whiny, resulting in a balanced but lukewarm assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:34:27.702Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

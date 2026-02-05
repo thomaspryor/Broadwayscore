@@ -50,5 +50,60 @@
   "promptVersion": "5.2.0",
   "bwwExcerpt": "Beyond the successful recycling of 14-year-old jokes, the other good news about Fey and Richmond's first joint Broadway effort is that her characters need to sing. The angst, joy and fear on display are big in a very hormonal teenager kind of way. 'Mean Girls,' unlike its first cousin 'Legally Blonde,' finds the necessary volume to justify breaking into song, whether those songs are about the despair of being an outsider or falling in love with a photo of the Wham!-era George Michael. These are the early traumatic experiences of life that stick in your memory much longer than passing the bar exam or applying for social security. If only Fey's springboard of a book had inspired more memorable, distinctive songs. A few hit the mark: 'I See Stars' delivers chewable bubblegum and 'What's Wrong With Me?' is a poignant lament from Gretchen, the most insecure of the Plastics. And when the group's nasty leader, Regina, seeks revenge on her new turncoat friend Cady, 'Watch the World Burn' turns up the heat.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-Think-MEAN-GIRLS-Was-Fetch-All-the-Reviews-Updating-Live-20180408"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-Think-MEAN-GIRLS-Was-Fetch-All-the-Reviews-Updating-Live-20180408",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If only Fey's springboard of a book had inspired more memorable, distinctive songs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review praises the concept and emotional content but criticizes the songwriting quality. With only one excerpt available, the mixed tone suggests qualified appreciation rather than clear recommendation. | GPT-4o: The review highlights the successful adaptation of the story into a musical format, noting the emotional impact of the songs. However, it also mentions that not all songs are memorable, indicating some reservations. The single excerpt and lack of a clear rating suggest a mildly positive verdict. | Gemini: The review is generally positive, highlighting the successful integration of songs and some standout numbers, but it also notes that the songs could be more memorable. Given the single excerpt and the mixed praise, a score of 75 seems appropriate. | Kimi: The excerpt validates the musical adaptation as justified ('finds the necessary volume') and notes successful comedic elements, but criticizes the songs as largely unmemorable and not distinctive enough, suggesting a qualified recommendation rather than enthusiastic praise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:06:23.479Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

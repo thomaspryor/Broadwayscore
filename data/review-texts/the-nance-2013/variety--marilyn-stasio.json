@@ -24,10 +24,10 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "http://variety.com/2013/legit/reviews/legit-review-the-nance-1200369817/",
-  "rejectedAt": "2026-02-04T06:23:51.701Z",
+  "rejectedAt": "2026-02-05T10:05:39.570Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This is a timeline of Rome's cinematic history with no evaluation of any theatrical production - it's informational content about film industry milestones, not a theater review.; openai: The text is about the history of Rome's cinematic industry and not a review of a Broadway show.; gemini: This is a historical timeline of cinema in Rome, not a review of a specific theatrical production.; kimi: This text is a historical overview of Rome's cinema industry and the Rome Film Festival, not a review of a Broadway theatrical production.",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This text is about Rome's cinematic history and film industry, not a review of a Broadway show; openai: The text is about the history of Rome's cinematic industry and not a review of a Broadway show.; gemini: This is a historical timeline of Rome's cinematic history, not a review of a theatrical production.; kimi: This text is a historical overview of Italian cinema and Rome's film industry milestones, not a review of any Broadway theatrical production.",
   "promptVersion": "5.2.0",
   "textWordCount": 512,
   "archivePath": "data/archives/reviews/the-nance-2013/variety--marilyn-stasio_2026-02-04.html",
@@ -69,5 +69,6 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 512,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true
 }

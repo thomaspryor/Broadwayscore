@@ -34,10 +34,15 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 360,
   "tierReason": "Full review text",
   "bwwExcerpt": "'The Nap' is less frenetically funny than 'One Man,' and more modest in scale. But it shares with its predecessor a fondness for the subterfuges and archetypes of classic farce, which Mr. Bean translates fluently into modern-day terms.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THE-NAP-on-Broadway-20180927"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THE-NAP-on-Broadway-20180927",
+  "rejectedAt": "2026-02-05T10:08:41.653Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about retrieving content and enabling JavaScript; openai: The text is a mix of partial review content and technical issues, indicating a problem with retrieving the full article. It is not a complete or coherent review.",
+  "promptVersion": "5.2.0"
 }

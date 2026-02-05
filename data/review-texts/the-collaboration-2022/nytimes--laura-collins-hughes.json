@@ -33,5 +33,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250818015901/https://www.nytimes.com/2022/12/20/theater/the-collaboration-review.html",
   "duplicateTextOf": "nytimes--jesse-green.json",
   "wordCount": 1075,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels emptily formulaic — less like an insider's view of its famous subjects' lives than a kind of biographical tourism",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the play 'emptily formulaic' with a 'blunt instrument of a script,' praising only Pope's performance while criticizing Bettany's one-dimensional portrayal and the overall lack of insight into the relationship. Despite acknowledging some positives, the overall assessment is clearly negative with no recommendation to see it. | GPT-4o: The review criticizes the play as 'emptily formulaic' and lacking insight, suggesting it doesn't deliver on its premise. Despite some praise for performances, the overall tone is negative. | Gemini: The review praises Jeremy Pope's performance as Basquiat but criticizes the script and Paul Bettany's portrayal of Warhol. The overall assessment is that the play feels formulaic and doesn't offer deep insight into the artists' relationship, resulting in a mixed recommendation. | Kimi: While praising Jeremy Pope's radiant performance as Basquiat, the critic condemns McCarten's script as a 'blunt instrument' and the production as 'emptily formulaic' biographical tourism, ultimately advising readers to visit an art exhibition instead for genuine insight into the artists.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:15:07.720Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

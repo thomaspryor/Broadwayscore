@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Kite Runner is a story about guilt and redemption, about the weight of the past and the possibility of atonement. It's also a story about Afghanistan, about friendship, about fathers and sons.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 47,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -43,5 +43,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230609154004/https://www.vulture.com/2022/07/theater-review-kite-runner-broadway-hayes.html",
   "duplicateTextOf": "vulture--helen-shaw.json",
   "wordCount": 1224,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 42,
+      "high": 52
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Spangler has not conceived The Kite Runner to function theatrically, and the production cannot overcome the foundational shortfall.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising Arison's commitment and some design elements, the critic finds fundamental flaws in the adaptation that make it 'more of a vivid recitation than fully realized drama' and concludes it cannot overcome its theatrical shortcomings. | GPT-4o: The review criticizes the adaptation for being more of a recitation than a drama, with tonal dissonance and emotional climaxes that buckle under their weight. The text is truncated, so the final verdict is missing, but the overall tone is negative. | Gemini: The review identifies a core problem: the adaptation doesn't work theatrically. While acknowledging some positive elements (staging, performances), the overall assessment is negative, stating the production can't overcome the play's shortcomings. | Kimi: The review consistently criticizes the adaptation for being more recitation than drama, with tonal dissonance and overwrought plotting, despite praising the lead actor's effort. Given the truncation warning, the score reflects the clearly negative visible text while remaining cautious about a potentially missing final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:47:53.899Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 48,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

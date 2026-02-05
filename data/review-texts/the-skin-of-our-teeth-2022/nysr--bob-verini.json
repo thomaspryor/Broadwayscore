@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Lincoln Center takes its one intermission here, with time to reflect on the excellences thus far: the puppetry for sure, credited to James Ortiz; Adam Rigg's flashy yet seedy boardwalk setting; spectacular sound effects from Palmer Hefferan; and the sturdy performances by the principals, notably Gabby Beans as Sabina. That part has to carry both acts on her slim shoulders, and in 1943 the larger-than-life diva Tallulah Bankhead triumphed, director Elia Kazan having cast her famously against type. Beans, in her Broadway debut, is an Eartha Kitt rather than a Tallulah: seductive and sensible by turns, a tiger who can turn pussycat at will. I don't know whether a leading role in a Lincoln Center revival can carry the oomph necessary to be a star-maker, but I have a hunch Beans' future star status is pretty secure.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SKIN-OF-OUR-TEETH-Opens-On-Broadway-20220425"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SKIN-OF-OUR-TEETH-Opens-On-Broadway-20220425",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the most creative, most emotionally connected, and most urgent staging of the 1943 Pulitzer Prize winner I have ever encountered",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: The critic gives 5/5 stars and declares this the best staging they've ever seen, with superlative praise throughout ('never falters,' 'majestic,' 'indomitability') and no meaningful reservations. | GPT-4o: The review is overwhelmingly positive, praising the creativity, emotional connection, and urgency of the production. The critic's original 5/5 star rating and the strong language used throughout indicate a rave review, despite the text being truncated. | Gemini: The review opens with extremely high praise and uses superlatives to describe the production. Despite being truncated, the overall tone and initial statement strongly suggest a 'Rave' classification. | Kimi: The critic awards 5/5 stars and unreservedly praises this as the 'most creative, most emotionally connected, and most urgent' production of the play they have encountered, citing superb performances, innovative direction, and powerful design elements throughout.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:32:40.593Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

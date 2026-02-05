@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Mulligan and Mr. Nighy achieve something miraculous here: They make you feel as if you're eavesdropping on a real conversation between two people with a tangled history, not watching actors deliver lines.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -31,5 +31,59 @@
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a brief excerpt or quote fragment, not a complete review with sufficient evaluative content to determine a recommendation; openai: The review text is about a different show featuring Ms. Mulligan and Mr. Nighy, not the target Broadway show.",
   "promptVersion": "5.2.0",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They make you feel as if you're eavesdropping on a real conversation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | GPT-4o: The review praises the performances of Mulligan and Nighy as 'miraculous,' suggesting a highly immersive and authentic experience, indicating a strong recommendation. | Gemini: The review praises the performances of the leads, suggesting a positive experience, but the brevity of the text indicates a score on the lower end of the 'Positive' bucket. | Kimi: The critic employs superlative language ('miraculous') to praise the lead performances as achieving transcendent naturalism, indicating unqualified enthusiasm despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:53:44.370Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 92,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

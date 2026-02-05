@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "There's no denying that Jackman throws himself into the dancing Carlyle has him do with Foster and the large chorus of dancers, featuring the athletic Gino Cosculluela. Jackman's even learned to tap dance and merrily shows off the newly acquired skill in the breathtaking final number. Yet, it remains that his Harold Hill could use some of the fire he lit in The Boy From Oz and has repeatedly spread as Wolverine.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundups-THE-MUSIC-MAN-Opens-On-Broadway--Updating-Live-20220210"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundups-THE-MUSIC-MAN-Opens-On-Broadway--Updating-Live-20220210",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it can't be said that this return is of the day-to-day garden variety",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with mixed-to-positive assessment. Praises the production team, supporting cast, and technical elements while noting some questionable star choices. Overall tone is appreciative with reservations rather than truly negative. | GPT-4o: The review gives a 4/5 star rating and praises the cast and production elements, despite noting some questionable choices in performances. The overall tone is positive, recommending the show with some reservations. | Gemini: The review is mostly positive, with praise for the direction, choreography, and some performances, but it also expresses reservations about the leads' choices and a missed opportunity with the footbridge scene. The 4/5 star rating supports a positive classification. | Kimi: The critic awards 4/5 stars and praises the supporting cast, choreography, and design, while offering specific reservations about the lead performances and a staging choice. The overall assessment is favorable but acknowledges flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:03:46.797Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

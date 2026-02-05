@@ -45,5 +45,60 @@
   "wordCount": 473,
   "tierReason": "Full review text",
   "bwwExcerpt": "\"Wrong\" isn't interested in the relationship between its characters and the ones they portray in the play-within-a-play. It's more lowbrow, interested in the gag and shameless in how it gets it: sometimes incredibly inventively, but sometimes going for the low-hanging fruit. (A special nod goes to sound designer Andrew Johnson who created the various bonks, splats, and crashes.)...It's clear from the beginning - even before the beginning with its pre-show shtick - that wrong will be just right. ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-PLAY-THAT-GOES-WRONG-Attempts-to-Open-on-Broadway-Updating-Live-20170402"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-PLAY-THAT-GOES-WRONG-Attempts-to-Open-on-Broadway-Updating-Live-20170402",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Its high-energy cast is comic gold and manages to sustain, with a never-ending series of diversionary tactics, its one-joke concept.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the cast as 'comic gold,' calls it an 'idiot's delight,' and suggests it will be successful ('boon when it hits the provinces'). While noting it's less elegant than 'Noises Off!' and could use cutting, the overall tone is enthusiastic recommendation. | GPT-4o: The review praises the show as 'comic gold' and 'deliciously demented,' indicating a strong positive recommendation despite some minor reservations about its elegance compared to 'Noises Off!'. | Gemini: The review is generally positive, calling the show \"deliciously demented\" and the cast \"comic gold.\" While it acknowledges some flaws, it ultimately recommends the production as an \"idiot's delight.\" | Kimi: The critic praises the high-energy cast as 'comic gold' and the inventive staging while acknowledging it is less sophisticated than comparable farces and occasionally relies on easy gags, but ultimately deems the show a successful, entertaining comedy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:19:08.669Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

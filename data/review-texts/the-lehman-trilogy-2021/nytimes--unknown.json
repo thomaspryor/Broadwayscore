@@ -36,5 +36,60 @@
   "bwwExcerpt": "Much of what happens in 'The Lehman Trilogy' is invisible to the eye, which is not the way prestige drama usually works onstage. Directed by Sam Mendes, this British import, which reaches across 164 years of American history to trace the family saga behind the fallen powerhouse Lehman Brothers, was a scalding-hot ticket during a brief prepandemic run at the Park Avenue Armory. Yet it offers almost nothing in the way of spectacle, and only the slightest of costume changes: a top hat here, a pair of glasses there. In the captivating production that opened on Thursday night at the Nederlander Theater, it relies largely on an unspoken agreement between actors and audience - to imagine together, and let fancy crowd out fact.",
   "bwwScore": 9,
   "archiveOrgTimestamp": "20251001163408",
-  "archiveOrgUrl": "http://web.archive.org/web/20251001163408/https://www.nytimes.com/2021/10/14/theater/the-lehman-trilogy-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251001163408/https://www.nytimes.com/2021/10/14/theater/the-lehman-trilogy-review.html",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the captivating production that opened on Thursday night at the Nederlander Theater, it relies largely on an unspoken agreement between actors and audience - to imagine together, and let fancy crowd out fact.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it a 'captivating production' and describes it as a 'scalding-hot ticket,' indicating strong positive reception. However, with only one excerpt available, confidence is reduced despite the clearly positive language. | GPT-4o: The excerpt describes the production as 'captivating' and highlights its imaginative approach, indicating a positive reception. However, due to the single excerpt warning, the confidence is low. | Gemini: The review describes the production as \"captivating\" and highlights its reliance on imagination, suggesting a positive experience despite the lack of spectacle. However, due to the limited excerpt, confidence is low. | Kimi: The excerpt describes the show as a 'captivating production' and references its previous run as a 'scalding-hot ticket,' praising the imaginative theatrical approach despite the minimal spectacle. The clearly positive language warrants the upper end of the Positive bucket, though confidence is reduced due to the single excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:54:58.863Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

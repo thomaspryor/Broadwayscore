@@ -6,8 +6,7 @@
   "url": "http://www.hollywoodreporter.com/review/mountaintop-theater-review-248274",
   "source": "bww-reviews",
   "sources": [
-    "bww-reviews",
-    "bww-roundup"
+    "bww-reviews"
   ],
   "bwwExcerpt": "While it begins as a deceptively simple fictionalized account of Martin Luther King Jr.’s final night on Earth, Katori Hall’s The Mountaintop literally explodes into metaphysical magic realism, ruminating on race and politics, life and death in ways that connect King’s legacy to every person in the audience. Bottom line: Samuel L. Jackson and Angela Bassett ignite this provocative play, which is slow to reveal itself but ultimately packs a punch.",
   "bwwScore": 9,
@@ -38,5 +37,59 @@
   "sourceMethod": "scrapingbee",
   "wordCount": 891,
   "tierReason": "Full review text",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Samuel-L-Jackson-and-Angela-Bassett-in-THE-MOUNTAINTOP-All-the-Reviews-20111014"
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Such bold writing requires actors with inarguable authority, and Kenny Leon's supple production has them in Samuel L. Jackson and Angela Bassett.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the performances extensively, particularly Bassett's 'fiery poetry slam' and Jackson's 'final, solemn address,' while acknowledging some structural issues with pacing. The critic finds the writing 'bold' and the production 'supple,' recommending it primarily for the star power and theatrical craftsmanship despite reservations about the first half's pacing. | GPT-4o: The review praises the writing, performances, and production, highlighting the boldness of the play and the standout performances of Jackson and Bassett. The critic's language is enthusiastic and recommends the show strongly. | Gemini: The review is mostly positive, praising the writing, direction, and performances, especially Bassett's. While noting some issues with pacing and subtlety, the overall assessment is favorable, leading to a positive score. | Kimi: While the critic finds the first half's prolonged tease excessive and some anachronisms too easy, they praise the bold, deft writing, virtuoso direction, and powerful performances—particularly Bassett's—ultimately hailing the play's bracing conclusion and universal reflection on mortality as engrossing theatrical storytelling.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:01:55.490Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

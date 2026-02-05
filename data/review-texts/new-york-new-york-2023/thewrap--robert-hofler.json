@@ -46,5 +46,60 @@
   "rejectionReasoning": "claude: This appears to be a plot summary or description of the show's themes rather than an evaluative review with the critic's opinion or recommendation.; openai: The text provides a thematic description and context but lacks evaluative content or a clear verdict on the production.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "Its love letter to the city often doesn’t set well on its target board of the city, especially in the confused first act. But “New York, New York,” under the savvy direction and choreography of Susan Stroman and featuring a score by John Kander and the late Fred Ebb, additional lyrics by Lin-Manuel Miranda and a book by David Thompson and Sharon Washington, ultimately delivers its melting-pot message with intelligence, style and, yes, good old-fashioned razzle-dazzle.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-NEW-YORK-NEW-YORK-Opens-On-Broadway-20230426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-NEW-YORK-NEW-YORK-Opens-On-Broadway-20230426",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "ultimately delivers its melting-pot message with intelligence, style and, yes, good old-fashioned razzle-dazzle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging a 'confused first act' and mixed execution of the love letter concept, the critic concludes positively, praising the ultimate delivery with 'intelligence, style and razzle-dazzle' and crediting the creative team's work. | GPT-4o: The review acknowledges issues with the first act but praises the direction, choreography, and overall message delivery, indicating a positive recommendation with some reservations. | Gemini: The review acknowledges a confused first act but concludes with a positive assessment of the show's message, style, and entertainment value. The phrase \"ultimately delivers\" indicates a positive recommendation, albeit with reservations. | Kimi: While the critic criticizes the confused first act and uneven tone, the final verdict clearly recommends the show for its savvy direction, strong score, and successful delivery of its message with style and razzle-dazzle.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:17:46.687Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

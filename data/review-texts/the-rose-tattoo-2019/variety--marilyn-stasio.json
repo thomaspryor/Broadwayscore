@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Marisa Tomei brings a feral intensity to the role of Serafina, the Sicilian widow whose passionate nature is both her blessing and her curse.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -72,5 +72,60 @@
     "bww-reviews",
     "bww-roundup"
   ],
-  "bwwScore": 7
+  "bwwScore": 7,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strange, if not exactly lovely.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds positive elements (Tomei's quiet moments, design touches, Elliott's energy) but has significant reservations about casting choices, production design hazards, and ethnic stereotyping. The overall tone is ambivalent without a clear recommendation either way. | GPT-4o: The review provides a mix of positive and negative observations, noting the strangeness of the production and Tomei's performance as 'lovely if lost.' While there are some commendable elements, the overall tone suggests a lack of strong recommendation. | Gemini: The review is mixed, praising Tomei's quiet moments but noting her miscasting and the production's strangeness. It acknowledges some moving aspects but ultimately finds the play slender and the production lacking environmental support. | Kimi: While acknowledging isolated strong performances, the critic fundamentally criticizes the directorial concept as 'strange, if not exactly lovely,' finds the casting mismatched, deems the minimalist set a physical hazard, and concludes with sarcastic remarks about the suffering required to endure the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:24:32.158Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

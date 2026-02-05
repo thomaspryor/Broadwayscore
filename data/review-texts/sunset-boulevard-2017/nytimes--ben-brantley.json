@@ -9,12 +9,12 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Close doesn't just embody Norma; she inhabits her so completely that when she's onstage, you can't imagine the character being played by anyone else.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": "The scenery may have shrunk, but that face - oh, that face - looms larger than ever. So does the ego that animates it, both indomitable and irreparably broken. \"With one look,\" indeed, to borrow a song lyric that describes such unsettling presence. That outrageous, over-the-top, desperate old lady shedding sanity on the stage of the Palace Theater still has the poetry in her gaze to break every heart.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Glenn-Close-Returns-to-SUNSET-BOULEVARD--Updating-Live-20170209",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Close doesn't just embody Norma; she inhabits her so completely that when she's onstage, you can't imagine the character being played by anyone else.",
   "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
@@ -63,7 +63,60 @@
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review that can be properly evaluated for a recommendation; openai: This is a single sentence about Glenn Close's performance, not a full review of the Broadway show.",
   "promptVersion": "5.2.0",
   "sources": [
-    "web-search",
-    "bww-roundup"
-  ]
+    "web-search"
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You have to (and I mean have to) see it in person.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley delivers an enthusiastic recommendation built entirely around Glenn Close's 'dazzling' performance, calling it potentially 'one of the great stage performances of this century' despite acknowledging the musical's weaknesses. The imperative 'have to see it' signals strong endorsement. | Gemini: The review is overwhelmingly positive, especially regarding Glenn Close's performance, which the critic calls one of the great stage performances. Despite some reservations about the music and lyrics, the recommendation is strong. | Kimi: Despite substantial criticism of the thin musical material, weak lyrics, and dull supporting characters, Brantley delivers an unambiguous recommendation based on Glenn Close's transcendent performance, which he calls one of the great stage performances of this century and insists is essential viewing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:02:51.414Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Royal Family is a play that demands performers who can convincingly portray the larger-than-life characters that populate the Cavendish clan, and this revival boasts a cast that's more than up to the task.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,59 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be just an opening sentence or excerpt, not a complete review with any critical evaluation or recommendation; openai: The text is a brief statement about the cast's capability without a clear evaluative judgment or recommendation about the production as a whole.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this revival boasts a cast that's more than up to the task",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review text praises the cast's ability to meet the demands of the play, suggesting a positive recommendation. However, the text is very brief, limiting confidence in the score. | Gemini: The review explicitly states that the cast is up to the task, which is a positive recommendation. | Kimi: The critic praises the cast as fully capable of meeting the play's demands, indicating a solid recommendation based on performance quality, though the brevity limits certainty about the overall production verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:25:35.464Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

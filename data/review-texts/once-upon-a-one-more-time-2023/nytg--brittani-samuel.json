@@ -32,5 +32,60 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 879,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The dance is truly what makes Once Upon a One More Time worth the price of admission.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Four-star review with enthusiastic praise for performances, choreography, and entertainment value. Despite acknowledging feminist storyline limitations, critic clearly recommends seeing it for the spectacle and fun factor. | GPT-4o: The review praises the show as a fun and engaging spectacle, highlighting the music and choreography as standout elements. The critic's tone is enthusiastic, with no significant reservations, aligning with a strong positive recommendation. | Gemini: The review acknowledges the show's flaws but ultimately recommends it, highlighting the fun and the dancing as reasons to see it. The critic states it's \"worth the price of admission.\" | Kimi: The review explicitly identifies itself as four stars and delivers consistent praise for the performances, choreography, and fun factor, while acknowledging minor flaws in the feminist messaging that don't detract from the overall entertainment value.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:29:13.657Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

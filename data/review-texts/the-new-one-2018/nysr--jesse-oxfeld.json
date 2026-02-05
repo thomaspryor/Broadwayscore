@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2018/11/11/the-new-one-public-radio-onstage-exactly-as-exciting-as-it-sounds/",
   "bwwExcerpt": "This piece would be a pleasant few minutes on the radio. Apparently it was well-received off-Broadway at the Cherry Lane over the summer. Designer Beowulf Boritt has created an elegantly simple set (and provides the single theatrical moment that I'm not supposed to talk about). The director Seth Barrish, a frequent Birbiglia collaborator, does nothing (beyond that stool, and that mum's-the-word moment) to interfere with the writer and star doing his thing. (Would that he had.)",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Mike-Birbiglias-THE-NEW-ONE-Updating-Live-20181111"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Mike-Birbiglias-THE-NEW-ONE-Updating-Live-20181111",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This piece would be a pleasant few minutes on the radio.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The 2/5 star rating clearly indicates a negative review. The excerpt shows dismissive criticism - calling it suitable for 'a few minutes on the radio' suggests it's insufficient for theatrical treatment, and '(Would that he had.)' implies the director should have intervened to improve it. | GPT-4o: The review is largely negative, with a 2/5 star rating and criticism of the direction. The positive mention of the set and a 'pleasant' piece is outweighed by the overall negative tone. | Gemini: The review is negative, indicated by the 2/5 star rating and phrases like \"does nothing to interfere\" (implying a lack of direction) and the parenthetical \"Would that he had.\" The excerpt suggests the reviewer is unimpressed. | Kimi: The 2/5 star rating and dismissive comparison to 'radio' content indicate a negative verdict, with specific criticism that the production lacks theatrical intervention and direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:09:39.643Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -46,5 +46,60 @@
   "rejectionReasoning": "claude: This text only provides background context about the play's history and communication themes, with no critical evaluation or recommendation about the current Broadway production.; openai: The text provided is a plot summary and historical context with no evaluative content or critique of the current production.; gemini: This is a plot summary with no evaluation or recommendation.; kimi: Text contains only plot summary and historical context about the play's premise (characters reading letters aloud), with no evaluation of performances, direction, production quality, or recommendation to see the show. Appears to be an excerpt lacking critical assessment.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "Aside from being prescient, Gurney is not a subtle playwright. Melissa and Andrew's childhood exchanges are as cute as they are dull...She's born rich, he services the rich. So what's their problem? Unlike Farrow, Dennehy doesn't affect a kid-like sing song voice for his early readings. But this actor could read the phone book and be engaging. Instead, he's performing 'Love Letters,' so we don't have a choice. Farrow has the far juicier part...Farrow gets to show evidence of alcoholism, substance abuse, artistic failure, and the pressures of being the Other Woman to a well-known politician. Gurney may have written a caricature, but Farrow colors it with a heartfelt performance...Hopefully Farrow's month-long stint in 'Love Letters' leads to future Broadway assignments.",
-  "bwwScore": 6
+  "bwwScore": 6,
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Gurney may have written a caricature, but Farrow colors it with a heartfelt performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises both lead performances, particularly Farrow's, but criticizes the playwright as 'not subtle' and calls early scenes 'cute as they are dull.' Mixed assessment with no clear recommendation either way. | GPT-4o: The review acknowledges the prescient nature of the play and praises Farrow's performance, but also criticizes the play's lack of subtlety and the dullness of the exchanges. The tone is mixed, with positive notes on performances but no strong recommendation for the show itself. | Gemini: The review praises the actors, particularly Dennehy, but is critical of the play itself, describing it as unsubtle and dull. It doesn't strongly recommend or discourage seeing it. | Kimi: While the critic praises both lead actors—calling Dennehy engaging and Farrow's performance heartfelt—these compliments are delivered as concessions against the play's weaknesses. The script is described as 'dull,' 'not subtle,' and a 'caricature,' with the reviewer noting Dennehy is wasted on such material. Without a clear recommendation to attend, the review balances good acting against disappointing writing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:47:47.924Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

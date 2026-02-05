@@ -6,8 +6,7 @@
   "url": "http://www.variety.com/review/VE1117948755?refCatId=33",
   "source": "bww-reviews",
   "sources": [
-    "bww-reviews",
-    "bww-roundup"
+    "bww-reviews"
   ],
   "bwwExcerpt": "Picking up where 'Leap of Faith' left off, 'Scandalous' is another big-budget, evangelist-with-feet-of-clay tale from the hinterlands, and despite various prior incarnations, it looks woefully out of place on a Broadway stage. Thesp Carolee Carmello ('Parade') does everything she can to breathe life into this bio-musical of forgotten celeb Aimee Semple McPherson, aka Sister Aimee, but no amount of proselytizing is likely to convert Gothamites. The composer, lyricist, librettist, director, choreographer and producers are all Broadway first-timers; so much for beginner's luck.",
   "bwwScore": 6,
@@ -44,5 +43,59 @@
   "sourceMethod": "brightdata",
   "wordCount": 652,
   "tierReason": "Full review text",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SCANDALOUS-Opens-on-Broadway-Updating-LIVE-20121115"
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "no amount of proselytizing is likely to convert Gothamites",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative recommendation with criticism of book, lyrics, and overall production quality. Praises lead performer but finds the show 'woefully out of place on Broadway' with facile writing. | GPT-4o: The review is overwhelmingly negative, criticizing the production's suitability for Broadway, the writing, and the creative team's lack of experience. The critic uses phrases like 'woefully out of place' and 'no amount of proselytizing is likely to convert Gothamites', indicating a strong recommendation against seeing the show. | Gemini: The review is largely negative, criticizing the book, lyrics, and overall production despite praising the lead actress's efforts. The critic clearly states that the show looks \"woefully out of place on a Broadway stage.\" | Kimi: While acknowledging the lead actress's committed performance, the critic finds the show woefully out of place on Broadway, criticizing the book, lyrics, and overall execution as unimpressive and unlikely to win over audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:50:58.542Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

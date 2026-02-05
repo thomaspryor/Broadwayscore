@@ -42,5 +42,60 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 703,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stubbornly lacking in dramatic tension, the uneventful narrative features a mean-spirited woman who may or may not be on her deathbed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds fundamental flaws in the play itself ('lazy play', 'lacking in dramatic tension', 'without plot or purpose') while praising the production values and Lavin's performance. The overall recommendation is clearly against seeing it. | GPT-4o: The review criticizes the play as 'lazy' and 'stubbornly lacking in dramatic tension,' despite acknowledging the quality of the production and cast. The overall tone is negative, focusing on the play's shortcomings and lack of engagement. | Gemini: The review is overwhelmingly negative, describing the play as \"lazy,\" \"uneventful,\" and lacking dramatic tension. Despite praising the production design and cast, the critic ultimately finds the play itself deeply flawed and unpleasant. | Kimi: While the critic praises the production design, lighting, and committed performances (particularly Linda Lavin's), the review consistently condemns the play itself as 'lazy,' 'clumsy,' and 'lacking in dramatic tension,' concluding it has no plot or purpose. Performer praise does not redeem the overall negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:34:28.401Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 44,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

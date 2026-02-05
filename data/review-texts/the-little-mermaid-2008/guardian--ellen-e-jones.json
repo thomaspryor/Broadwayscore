@@ -38,5 +38,11 @@
   "contentTier": "truncated",
   "wordCount": 492,
   "tierReason": "Missing proper ending or other signals",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2023 outside valid range 2005–2010 for show opening 2008"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2023 outside valid range 2005–2010 for show opening 2008",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-05T10:00:11.212Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "openai: The text is a review of the film 'The Little Mermaid' and not a Broadway show.; kimi: This is a review of the 2023 live-action film adaptation of The Little Mermaid, not the Broadway stage production. The text references director Rob Marshall, underwater cinematography, CGI effects, and Halle Bailey's performance in the film medium.",
+  "promptVersion": "5.2.0"
 }

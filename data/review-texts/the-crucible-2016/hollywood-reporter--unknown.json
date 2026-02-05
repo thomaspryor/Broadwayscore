@@ -46,5 +46,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 948,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Van Hove knows how to channel that heat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for van Hove's direction, Ronan's performance, and the production's power to leave audiences 'agitated and uncomfortable' in the intended way. While acknowledging some potentially divisive choices, the overall tone is enthusiastically recommending. | GPT-4o: The review is filled with superlatives and praises the production's intensity, acting, and direction without reservations. It describes the show as a powerful and chilling account, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the director's skill and the strong performances, but it also notes potentially divisive elements, leading to a recommendation with reservations. | Kimi: The critic consistently praises the direction as 'mesmerizing' and 'almost operatic,' while hailing performances as 'superb,' 'wonderful,' and 'icy and commanding.' Despite noting one potentially divisive staging choice, the review offers enthusiastic endorsement without significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:25:52.857Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 92,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

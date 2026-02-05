@@ -22,5 +22,60 @@
   "playbillVerdictUrl": "http://nystagereview.com/2019/10/15/the-rose-tattoo-love-aint-sweeter-the-second-time-around/",
   "bwwExcerpt": "But with Tomei, the Williams heartbreak is elusive. She looks the neighborhood scourge in costume designer Clint Ramos's slips and robes and Tom Watson's wigs, but the debilitating weight of her loss and the fear that it won't be regained is not in her eyes or in the effortful way she carries herself. Tomei is effective as far as she goes, and it's likely she has it in her to go much farther. But she hasn't been guided that way.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Marisa-Tomei-Stars-In-Tennessee-Williams-THE-ROSE-TATTOO-See-What-The-Critics-Are-Saying-20191015"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Marisa-Tomei-Stars-In-Tennessee-Williams-THE-ROSE-TATTOO-See-What-The-Critics-Are-Saying-20191015",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Without the deep grieving that penetrates Serafina and emanates from her, this Rose Tattoo falls short of its potential impact.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The 3/5 rating and mixed assessment places this in the Mixed bucket. Critic praises some elements (humor flows well, performances make the most of it) but finds fundamental flaws in direction and lead performance that prevent the play from achieving its potential impact. | GPT-4o: The review acknowledges some effective elements, such as humor in certain scenes, but ultimately finds the production lacking in emotional depth and impact. The truncated nature of the text suggests caution, but the overall tone and 3/5 star rating indicate a mixed reception. | Gemini: The review acknowledges some positive aspects, particularly the humor and performances in certain scenes, but ultimately finds the production lacking in depth and emotional impact. The truncated text makes the final verdict less clear, but the overall tone suggests a mixed assessment. | Kimi: The 3/5 star rating and significant criticisms—including that Tomei's performance misses the requisite heartbreak, the set design 'registers as a mistake,' and the production 'skims the text's surface'—outweigh the qualified praise for the humor and effective moments, placing this firmly in Mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:23:47.199Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

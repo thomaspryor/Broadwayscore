@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "The supercharged secret weapon of the evening is Kerry Butler, playing three adult roles. Well remembered from Bat Boy and Hairspray, Butler is altogether uproarious here. (While one assumes that no dogs were harmed in the production of Mean Girls, Butler might make your mind momentarily flash to Edward Albee's The Goat.) The rest of the cast is terrific, with Cheech Manohar and Mathlete buddies Ben Cook and Nikhil Saboo meriting special mention. Mean Girls does not apparently aspire to be an in",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-Think-MEAN-GIRLS-Was-Fetch-All-the-Reviews-Updating-Live-20180408"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-Think-MEAN-GIRLS-Was-Fetch-All-the-Reviews-Updating-Live-20180408",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mean Girls succeeds as an exuberantly mirthful crowd-pleaser.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic gives 4/5 stars and uses enthusiastic praise throughout ('fetch,' 'pretty damn funny,' 'altogether nifty production'). Despite noting some songs feel repetitive, the overall verdict is strongly positive, comparing favorably to Book of Mormon and praising performances, direction, and production values. | GPT-4o: The review praises the performances, production, and humor of the show, describing it as a 'mirthful crowd-pleaser.' The 4/5 stars rating and positive tone indicate a strong recommendation despite acknowledging it may not reach classic status. | Gemini: The review is overwhelmingly positive, praising the book, direction, score, design, and cast. The critic uses terms like \"fetch,\" \"raucous reign,\" \"amusing,\" \"cheery and spirited,\" and concludes that it \"succeeds as an exuberantly mirthful crowd-pleaser.\" | Kimi: Awarded 4/5 stars with enthusiastic praise for the cast, direction, and humor, though noting the score occasionally repeats itself and falls short of classic status.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:05:41.654Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

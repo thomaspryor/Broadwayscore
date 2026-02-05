@@ -45,5 +45,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 676,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A crowdpleaser that mixes jukebox and story into a satisfying whole.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it a 'crowdpleaser' and 'satisfying whole' with praise for performances, direction, and entertainment value. Some technical issues noted (muddy sound) but overall enthusiastic. | GPT-4o: The review praises the show as a 'crowdpleaser' with 'knockout performances' and 'high entertainment value'. The critic highlights the effective blend of story and music, strong performances, and overall satisfying experience, indicating a strong positive recommendation. | Gemini: The review is generally positive, calling the show a \"crowdpleaser\" and noting its \"high entertainment value.\" While acknowledging some issues with sound quality, the overall recommendation is positive. | Kimi: The reviewer consistently praises the production's entertainment value, calling it a 'crowdpleaser' with 'knockout performances' and 'electrifying' turns, while commending the direction and design. Despite a note about muddy sound, the overall verdict strongly recommends the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:11:57.900Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

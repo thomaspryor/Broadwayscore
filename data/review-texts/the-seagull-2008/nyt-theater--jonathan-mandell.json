@@ -30,5 +30,59 @@
   "contentTier": "complete",
   "wordCount": 978,
   "tierReason": "Full review text",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2023 outside valid range 2005–2010 for show opening 2008"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2023 outside valid range 2005–2010 for show opening 2008",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "occasionally seems fresh and intriguing, but more often feels like an exercise in transposition",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges some standout performances and moments where the adaptation feels reimagined, but repeatedly questions the point of the exercise and finds it mostly unchanged from the original. The critic's assessment is balanced but leans toward disappointment. However, confidence is low due to truncated text that may be missing the final verdict. | GPT-4o: The review highlights some standout performances and moments of reimagining but overall suggests the adaptation is not significantly different from the original, leading to a mixed assessment. The text is truncated, so the final verdict may be missing, resulting in low confidence. | Gemini: The review acknowledges standout performances and intriguing moments, but ultimately finds the production uneven and more of an exercise in transposition than a fully realized reimagining. The truncated text makes the final verdict somewhat unclear, but the overall tone suggests a mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:27:18.268Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This stirring revival of the 1998 Tony winner for best musical proves that Lynn Ahrens and Stephen Flaherty's adaptation of E.L. Doctorow's novel has lost none of its emotional power or social relevance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "tierReason": "Full review text",
   "previousUrl": "https://variety.com/2009/legit/reviews/ragtime-1200476227/",
   "urlDiscoveredAt": "2026-02-05T04:29:12.570Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is big-brain, bold-strokes musical-theater storytelling at its most vibrant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'masterfully,' 'vibrant,' 'superb,' and 'transporting sensory experience.' Critic praises all elements - direction, performances, design, orchestrations - with no meaningful reservations. | GPT-4o: The review is filled with superlatives and praises the production's direction, performances, and overall impact, describing it as 'masterful' and 'a transporting sensory experience'. | Gemini: The review is overwhelmingly positive, praising the direction, cast, and overall impact of the show. It highlights the emotional immediacy and fresh clarity of this revival. | Kimi: Unreserved praise for the revival's direction, performances, and emotional clarity, with only minor quibbles about the source material's score that are immediately outweighed by the production's achievements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:48:12.487Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 91,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

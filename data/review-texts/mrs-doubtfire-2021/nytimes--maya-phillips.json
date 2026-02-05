@@ -34,5 +34,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250804213922/https://www.nytimes.com/2021/12/05/theater/mrs-doubtfire-review-broadway.html",
   "contentTier": "complete",
   "wordCount": 1014,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show only ends up cowering in the original film's shadow.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Phillips delivers sustained criticism of the adaptation's failure to meaningfully update problematic source material, calling Daniel 'more irritating than entertaining' and the production 'unsure of what notes to hit.' While acknowledging some laughs and strong technical elements, the overall verdict is clearly negative. | GPT-4o: The review highlights significant issues with the adaptation, including its failure to update the story effectively and reliance on outdated humor. While there are some positive notes about performances and certain comedic elements, the overall tone is critical, focusing on the production's shortcomings and lack of confidence. | Gemini: The review points out several flaws in the musical, including its outdated story, unnecessary additions, and generic set. While there are some laughs and vivacious performances, the overall impression is mixed. | Kimi: While acknowledging Rob McClure's energetic performance and some humorous moments, the critic finds the production tonally confused, inferior to the original film, and unsuccessful in its attempts to modernize the outdated premise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:15:49.059Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

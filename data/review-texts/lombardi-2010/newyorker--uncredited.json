@@ -37,5 +37,59 @@
     "Word count too low: 250 (min: 300)"
   ],
   "wordCount": 250,
-  "tierReason": "Short text (250 words)"
+  "tierReason": "Short text (250 words)",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's hard to believe that in 2010 we can still romanticize selfish, abusive bastards, even if they're gifted enough to turn a losing team into winners.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show's potential ('has the potential to be a moving story') and praises specific elements (Light's performance, technical design), but expresses strong reservations about romanticizing the problematic protagonist and criticizes the lead performance. Neither recommends nor discourages seeing it. | Gemini: The review expresses reservations about romanticizing abusive figures, but acknowledges the potential for a moving story. It praises Judith Light's performance and the sound/lighting design, while suggesting the lead actor should tone down his performance. This indicates a mixed assessment. | Kimi: The critic offers qualified praise for the production's 'dazzling' design and Judith Light's 'warm brilliance,' but criticizes Dan Luria's unsubtle performance and questions the show's romanticization of its abusive subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:46:20.537Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

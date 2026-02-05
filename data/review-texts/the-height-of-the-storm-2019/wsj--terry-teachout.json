@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Pryce and Ms. Atkins give performances of such devastating honesty that you may well find yourself looking away from the stage, not because what you're seeing isn't believable but because it's almost too believable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,59 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with sufficient evaluative content to determine an overall recommendation; openai: The review text mentions performances by Mr. Pryce and Ms. Atkins, which does not match the current Broadway production being evaluated.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Pryce and Ms. Atkins give performances of such devastating honesty that you may well find yourself looking away from the stage",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Extremely powerful praise for performances described as 'devastating honesty' and 'almost too believable,' suggesting profound theatrical impact. However, this appears to be an excerpt with limited context about overall recommendation. | Gemini: The review praises the performances as being devastatingly honest and believable, indicating a strong positive recommendation. | Kimi: The excerpt offers high praise for the lead performances ('devastating honesty'), suggesting a strong recommendation, though the brevity prevents assessment of the full production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:35:38.691Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

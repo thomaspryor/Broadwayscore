@@ -38,5 +38,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 632,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's a pity, because the remainder of the play turns out to run cold.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic finds the opening fantasy sequences clever and hilarious but criticizes the therapy portion as losing momentum and feeling like 'a precious school exercise.' Mixed recommendation with clear reservations about the play's structure. | GPT-4o: The review acknowledges some funny and outrageous moments but criticizes the play for not maintaining its initial cleverness and humor throughout. The critic seems to have mixed feelings, appreciating certain elements but ultimately finding the play lacking in consistency. | Gemini: The review acknowledges funny moments and outrageousness but also points out sophomoric humor and a lack of inventive playfulness in the direction. The overall impression is mixed, with both positive and negative aspects. | Kimi: While praising the cast's performances and acknowledging funny moments in the first half, the critic finds the humor sophomoric, the direction uneven, and the second half ultimately disappointing, leaving a mixed impression.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:55:09.197Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

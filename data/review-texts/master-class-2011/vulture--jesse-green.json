@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Patti LuPone's Maria Callas is a force of nature, imperious and vulnerable, demanding perfection from her students while revealing her own artistic insecurities.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -47,5 +47,60 @@
   "archiveOrgTimestamp": "20220808222651",
   "archiveOrgUrl": "http://web.archive.org/web/20220808222651/https://www.vulture.com/2011/07/theater_review_the_diva_parado.html",
   "wordCount": 833,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Patti LuPone's Maria Callas is a force of nature, imperious and vulnerable, demanding perfection from her students while revealing her own artistic insecurities.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for LuPone's performance ('force of nature') suggests positive reception, but limited text makes full verdict unclear. Scored in upper-positive range given the enthusiastic language about the lead performance. | GPT-4o: The excerpt praises Patti LuPone's performance as 'a force of nature,' indicating a strong positive impression. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The excerpt praises Patti LuPone's performance, suggesting a positive aspect of the show. However, without more context, it's difficult to determine the overall recommendation strength, so I've assigned a score in the lower-middle of the positive range with low confidence. | Kimi: The excerpt offers strong, unqualified praise for the lead performance ('force of nature') but, per the single-excerpt warning, limited scope prevents a Rave classification or higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:57:59.673Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

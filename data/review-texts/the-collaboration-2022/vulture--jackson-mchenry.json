@@ -37,5 +37,60 @@
   "duplicateTextOf": "vulture--helen-shaw.json",
   "contentTier": "complete",
   "wordCount": 1189,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is really pretty meh",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling it 'static bio-play that brings two famous figures to the stage and then stalls out' with explicit 'pretty meh' verdict. Praises individual actors but criticizes the play itself as conventional and two-dimensional. | GPT-4o: The review is largely critical, highlighting the play's lack of depth and originality, and describing it as 'meh'. While the actors are praised, the overall production is seen as lacking substance and failing to deliver on its potential. | Gemini: The review is overall negative, describing the play as \"pretty meh\" and criticizing the predictable choices and lack of collaboration between the actors. The critic finds the play two-dimensional and compares it unfavorably to a theme park ride. | Kimi: The critic consistently pans the play as 'meh,' 'two-dimensional,' and 'conventional,' finding that despite talented actors, the production stalls out and offers only surface-level insights into its subjects. While acknowledging brief bright moments from the cast, the overall verdict warns that the show fails to deliver meaningful collaboration or depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:18:26.900Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -31,5 +31,11 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250426203841/https://www.nytimes.com/2018/06/28/theater/review-on-a-clear-day-you-can-see-forever-irish-rep.html",
   "contentTier": "complete",
   "wordCount": 405,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T08:26:05.626Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is of an Irish Repertory Theater production, not a Broadway show. The text explicitly states it 'opened at the Irish Repertory Theater on Thursday' and describes it as a small-scale production with reduced cast and orchestra.; openai: The review is about a production at the Irish Repertory Theater, not the current Broadway run.; kimi: This review covers a production at the Irish Repertory Theater, which is an off-Broadway venue, not a Broadway production.",
+  "promptVersion": "5.2.0"
 }

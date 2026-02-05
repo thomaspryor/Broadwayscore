@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,60 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 877,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The score, as ever, is jammed with gems. But like a troubled couple, the production has issues.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises Brown's score as 'jammed with gems' but criticizes the performances as overdone and the staging as 'less-than-ideal.' The 66% Show-Score ranking and mixed assessment of strong material with execution problems places this in the mixed category. | GPT-4o: The review praises the score but criticizes the performances and staging, indicating a mixed reception. The text is truncated, so the final verdict is unclear, leading to low confidence. | Gemini: The review praises the score but criticizes the staging and performances, resulting in a mixed assessment. The truncated text makes the final verdict unclear, but the overall tone leans towards a qualified recommendation. | Kimi: The review praises Jason Robert Brown's score as 'jammed with gems' and calls the concept 'engrossing,' but heavily criticizes the lead performances by Warren and Jonas as overdone and the staging as 'less-than-ideal.' The truncated text prevents certainty about the final verdict, but the visible content shows significant reservations about this production despite the strong material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:50:44.650Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

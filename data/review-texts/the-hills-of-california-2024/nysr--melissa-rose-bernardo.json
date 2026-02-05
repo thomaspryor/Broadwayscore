@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "But this is no standard-issue dysfunctional family drama; it’s also a meticulously crafted, emotion-packed memory play. With one rotation of Rob Howell’s spectacular towering set—anchored by a labyrinthian Escher-like staircase that seems to stretch to the sky—we’re back in 1955, in the Seaview Luxury Guesthouse and Spa, which is not luxurious and almost certainly doesn’t have a spa. Hills toggles between decades with ease—a credit to director Sam Mendes, whose particular gift is taking sprawling stories (see: Butterworth’s The Ferryman; The Lehman Trilogy) and making them feel intimate.",
-  "bwwScore": 10
+  "bwwScore": 10,
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is no standard-issue dysfunctional family drama; it's also a meticulously crafted, emotion-packed memory play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: 5/5 stars with superlative language ('spectacular', 'meticulously crafted') and praise for direction. Single excerpt but clearly celebratory tone warrants upper Rave range. | GPT-4o: The excerpt praises the show as 'meticulously crafted' and 'emotion-packed', highlighting the set and direction. The original 5/5 star rating strongly suggests a rave review. | Gemini: The review excerpt describes a \"spectacular\" set and praises the director's ability to make sprawling stories feel intimate. Given the 5/5 star rating and the positive tone, I'm scoring this as positive, but with low confidence due to the limited text. | Kimi: The excerpt delivers strong praise for the production's craftsmanship, set design, and direction, supported by the critic's 5/5 star rating, though the single-excerpt format necessitates low confidence. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:38:15.622Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

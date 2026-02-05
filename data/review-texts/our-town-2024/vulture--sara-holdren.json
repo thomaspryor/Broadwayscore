@@ -37,5 +37,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251128211538/https://www.vulture.com/article/theater-review-jim-parsons-kenny-leon-our-town.html",
   "duplicateTextOf": "vulture--helen-shaw.json",
   "wordCount": 1367,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not painful, but it's far from revelatory.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds the production competent but uninspired, praising some performances (Thomas, Jones, Parsons) while criticizing the directorial choices as 'tentative' and 'hodgepodge-y.' The overall assessment is of a safe, middle-of-the-road production that lacks the revelatory power needed for this canonical play. | GPT-4o: The review describes the production as lacking the 'questing clarity' of previous interpretations, with mixed execution and no strong recommendation. The tone is balanced but not enthusiastic. | Gemini: The review acknowledges some positive aspects, particularly the performances of Jones, Thomas and Parsons, but ultimately finds the production lacking in depth and originality. The critic uses phrases like \"safely down the middle of the road\" and \"tentative or hodgepodge-y\" to describe the direction, indicating a mixed overall impression. | Kimi: While acknowledging strong performances from Richard Thomas, Billy Eugene Jones, and Jim Parsons, the critic fundamentally disagrees with Kenny Leon's directorial concept, calling it a 'misreading' of Wilder's vision, 'hodgepodge-y,' and inferior to previous productions, ultimately finding the production conceptually muddled and unremarkable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:35:32.648Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

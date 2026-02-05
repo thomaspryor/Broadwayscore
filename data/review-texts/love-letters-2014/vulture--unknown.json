@@ -50,5 +50,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 302,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Starve a play and you don't have a play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic acknowledges some effective elements ('Most moving are the holes') but ultimately finds the play fundamentally limited by its structure and ending. The metaphor 'starve a play and you don't have a play' suggests the format doesn't work theatrically. | GPT-4o: The review criticizes the play's limited structure and unsatisfying conclusion, suggesting it fails to deliver a compelling theatrical experience. While it acknowledges some compensatory elements, the overall tone is negative. | Gemini: The review points out both strengths and weaknesses of the play's structure and writing, without a clear recommendation. The critic acknowledges moving moments but also criticizes the ending. | Kimi: The critic finds the epistolary format theatrically inert and the dramaturgy self-defeating, criticizing the minimal staging and unsatisfying conclusion while offering only faint praise for isolated moments. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:49:00.550Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

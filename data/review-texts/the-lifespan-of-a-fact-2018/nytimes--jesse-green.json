@@ -36,5 +36,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250801011407/https://www.nytimes.com/2018/10/18/theater/lifespan-of-a-fact-review-daniel-radcliffe-bobby-cannavale.html",
   "contentTier": "complete",
   "wordCount": 1118,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's what you call a good time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Green finds the play 'terrifically engaging' with 'terrific comic staging' and calls it 'a good time,' but notes significant flaws including that it's 'not as smart as it thinks' and ends 'with a shrug.' Clear positive recommendation despite reservations. | GPT-4o: The review praises the production's comic staging, cast, and design, calling it a 'good time.' However, it notes the play's limitations in depth and resolution, suggesting a positive but qualified recommendation. | Gemini: The review is generally positive, calling the show \"terrifically engaging\" and a \"good time\", but notes that it isn't as smart as it thinks it is. This suggests a recommendation with reservations. | Kimi: While criticizing the play's structural issues and intellectual pretensions, the reviewer strongly praises the performances by Radcliffe, Cannavale, and Jones, the 'terrific comic staging,' and technical elements, concluding that the production's excellence overcomes the script's flaws to deliver 'a good time.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:55:37.679Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

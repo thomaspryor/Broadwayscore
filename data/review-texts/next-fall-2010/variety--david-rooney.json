@@ -56,5 +56,60 @@
   "archiveOrgTimestamp": "20100323121049",
   "archiveOrgUrl": "http://web.archive.org/web/20100323121049/http://www.variety.com:80/review/VE1117942385.html?categoryid=33&cs=1&nid=2580",
   "wordCount": 798,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nauffts' play is genuinely affecting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the emotional effectiveness, writing quality, and performances while acknowledging some overwriting and sitcom elements. The critic calls it 'genuinely affecting' and notes the 'laughter and sobs' from audiences, indicating a solid positive recommendation despite minor flaws. | GPT-4o: The review praises the play's emotional effectiveness, character writing, and performances, highlighting its balance of humor and insight. The critic's tone is positive throughout, with no significant reservations. | Gemini: The review is positive, noting the play's emotional effectiveness and thoughtful writing, while also pointing out some minor flaws. The critic finds it genuinely affecting. | Kimi: The critic praises the emotional effectiveness, strong ensemble performances, and skillful writing, while noting only minor flaws in some dialogue. The warm, appreciative tone constitutes a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:19:29.164Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

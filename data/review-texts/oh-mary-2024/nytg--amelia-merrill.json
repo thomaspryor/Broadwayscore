@@ -18,10 +18,10 @@
   "showScoreExcerpt": "\"The crux of Oh, Mary! is Todd’s realization that the men in her life seek to undermine her, even when they claim to have her best interests at heart.\"\n\nRead more",
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
-  "rejectedAt": "2026-02-04T12:44:23.439Z",
+  "rejectedAt": "2026-02-05T08:22:01.003Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This is just a single plot summary sentence with no critical evaluation or verdict, followed by a 'Read more' prompt; openai: The provided text is a plot summary without any evaluative content or opinion about the production.; kimi: The provided excerpt is a single sentence describing the plot/theme ('The crux of Oh, Mary! is Todd's realization...') with no evaluative language regarding production quality, performances, or the critic's recommendation. It is a plot summary with no evaluation.",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about 'Oh, Mary!' at the Lortel Theatre, which is an off-Broadway production, not a Broadway show.; kimi: The text explicitly reviews the Off-Broadway production at the Lucille Lortel Theatre ('Read our review of Oh, Mary! off Broadway'), not the current Broadway run.",
   "promptVersion": "5.2.0",
   "textWordCount": 585,
   "archivePath": "data/archives/reviews/oh-mary-2024/nytg--amelia-merrill_2026-02-05.html",
@@ -42,5 +42,6 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 585,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true
 }

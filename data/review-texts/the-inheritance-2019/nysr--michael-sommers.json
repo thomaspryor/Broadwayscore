@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "If some of The Inheritance is surprisingly glib, it nevertheless remains a mostly well-written and observant work that successfully studies contrasts in generational attitudes-and socio-political awareness-even as it features several deeply poignant sequences. The concluding scene of the first play, which cannot be described here but is the finest episode in the entire production, is genuinely moving through the breathtaking simplicity of its evocation of a lost generation.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-INHERITANCE-Opens-on-Broadway-Updating-Live-20191117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-INHERITANCE-Opens-on-Broadway-Updating-Live-20191117",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Inheritance an important event of the Broadway season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for writing, direction, and performances. Despite calling it 'exceedingly overlong' and 'high-grade soap opera,' the critic concludes it's an 'important event' worth seeing for its ambition and execution. | GPT-4o: The review is generally positive, highlighting the skillful writing, strong performances, and effective staging, despite noting the play's length as a potential issue. The original 4/5 star rating aligns with a strong positive recommendation. | Gemini: The review is mostly positive, highlighting the skillful writing, scope, and staging. Despite reservations about the length and some glibness, the critic concludes it's an important event, earning a positive score. | Kimi: The 4/5 star rating and strong praise for performances, direction, and writing place this in the Positive bucket, though significant reservations about the six-hour length and 'soap opera' quality keep it from the Rave category.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:44:11.330Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

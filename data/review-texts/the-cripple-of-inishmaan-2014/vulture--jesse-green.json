@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Daniel Radcliffe gives a performance of such startling maturity and skill that you forget he was ever Harry Potter — and even that he's acting at all.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -71,5 +71,59 @@
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is primarily plot summary and character descriptions with no critical evaluation or verdict about the production's quality or whether it's worth seeing; openai: The text provided is a plot summary of 'The Cripple of Inishmaan' with no evaluative content or critical assessment of the production.",
   "promptVersion": "5.2.0",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's hilarious — unless, I suppose, you're drunk, damp, deformed, demented, Irish, or human.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Jesse Green calls this a 'near-perfect revival' and finds it 'hilarious,' praising both McDonagh's writing and Grandage's direction. The detailed plot summary demonstrates engagement with the material, and the overall tone is appreciative of the production's theatrical craft. | Gemini: The review uses the phrase \"near-perfect revival\" and describes the play as \"hilarious\" which indicates a strong positive sentiment. | Kimi: The critic praises the direction as 'near-perfect,' calls the production 'hilarious' with 'astonishing narrative thrift,' and shows unqualified enthusiasm throughout the review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:23:32.479Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -34,5 +34,11 @@
   "wordCount": 794,
   "tierReason": "Full review text",
   "publishDate": "December 7, 2007",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2018 outside valid range 2004–2009 for show opening 2007"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2018 outside valid range 2004–2009 for show opening 2007",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T10:26:04.374Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about an off-Broadway production at the Irish Repertory Theater, not the current Broadway run.; kimi: This review covers the 2018 Irish Repertory Theater production, which is an Off-Broadway revival (the theater has ~130 seats and is located in Chelsea). The text explicitly contrasts this with the 2007 Broadway staging starring Ciaran Hinds, confirming this is not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

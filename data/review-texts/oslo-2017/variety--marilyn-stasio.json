@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "J.T. Rogers has written a gripping political thriller that reads like a John le Carré novel, but one based on real events that changed the course of Middle East diplomacy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -31,5 +31,59 @@
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single promotional sentence or excerpt describing the playwright's work, not a full review with critical evaluation of the Broadway production.; openai: This text is a brief description of the play's genre and style, not an evaluative review of the Broadway production.",
   "promptVersion": "5.2.0",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rogers' clever dialogue really is that witty. You get the facts, but you get them delivered with intelligence and humor by this dream of a cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise throughout with terms like 'unequivocally fascinating,' 'dream of a cast,' and 'impeccable casting.' The critic acknowledges the 3-hour length but says it 'fly by like time spent at the circus,' indicating high entertainment value despite potential concerns. | Gemini: The review is positive, calling the play \"unequivocally fascinating\" and praising the dialogue, cast, and design. The opening acknowledges the difficulty of getting people to see a political drama, but ultimately recommends it. | Kimi: The reviewer offers unqualified praise, calling the play 'unequivocally fascinating' and 'gripping' with 'impeccable casting' and a 'dream of a cast,' while noting that the three hours 'fly by like time spent at the circus.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:31:17.689Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

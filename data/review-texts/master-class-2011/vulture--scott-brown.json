@@ -35,5 +35,60 @@
     "Word count too low: 151 (min: 300)"
   ],
   "wordCount": 151,
-  "tierReason": "Short text (151 words)"
+  "tierReason": "Short text (151 words)",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I sometimes felt her playing less the tragic has-been than the self-deluded never-was.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Critic acknowledges the lead's funny and poignant moments but admits personal disconnection from both the material and diva theatrical tradition, ending with 'maybe that's why I have trouble caring.' Neither recommends nor discourages. | GPT-4o: The review expresses mixed feelings, acknowledging some humor and poignancy in Daly's performance but also a lack of engagement with the production overall. The critic's personal disinterest in the subject matter and the production's impact leads to a mixed verdict. | Gemini: The review expresses mixed feelings. It acknowledges Daly's performance and humor but ultimately finds it difficult to care about the character, suggesting a lack of strong engagement with the production. | Kimi: While acknowledging Tyne Daly is 'wickedly funny' and 'unspeakably poignant' in moments, the critic finds the production lacks stakes and ultimately concludes 'I have trouble caring,' indicating a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:59:57.605Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

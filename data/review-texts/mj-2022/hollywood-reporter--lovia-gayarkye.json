@@ -47,5 +47,60 @@
     "Show title not found in text"
   ],
   "wordCount": 1268,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "MJ, like its subject, is captivating and hard to shake.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opening declares the show 'captivating and hard to shake' with praise for how it chronicles Jackson's life 'with impressive ease' and 'expertly.' Single excerpt warning noted - this sounds clearly positive, so scoring in upper Positive range. | GPT-4o: The excerpt praises the musical as 'captivating and hard to shake' and highlights its impressive storytelling. However, only one excerpt is available, which may not fully represent the review's sentiment. | Gemini: The excerpt uses positive language like \"captivating\" and \"impressive ease\" to describe the musical. Given the single excerpt warning, I'm scoring it as positive, erring on the higher end of the bucket. | Kimi: The excerpt offers strong praise, describing the show as 'captivating,' 'expertly' chronicling Jackson's life with 'impressive ease,' and delivering a 'breathtaking' narrative depth. Given this is a single curated excerpt that sounds clearly positive, it falls in the upper range of Positive, though confidence is low without the full review context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:12:44.969Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

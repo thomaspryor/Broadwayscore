@@ -33,5 +33,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 595,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show suffers from forgettable writing, but there are a few vibrant moments, thanks entirely to the lead performances that are a marvel to witness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review acknowledges significant flaws (forgettable writing, lack of new insights) but praises the exceptional lead performances and creative staging elements. The critic finds value in the performances while being honest about the script's limitations. | GPT-4o: The review highlights strong performances by the lead actors but criticizes the writing as forgettable. It acknowledges vibrant moments but suggests the show is not consistently engaging, leading to a mixed verdict. | Gemini: The review praises the lead performances and some aspects of the staging, but criticizes the writing and lack of insight. It doesn't explicitly recommend or discourage seeing the show, making it a mixed review. | Kimi: While the critic finds the script and plot lacking in insight and structure, they offer enthusiastic praise for the lead performances by Jeremy Pope and Paul Bettany, calling them a 'marvel' and 'couldn't be better.' The recommendation is conditional on the acting, but clearly positive overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:13:51.834Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

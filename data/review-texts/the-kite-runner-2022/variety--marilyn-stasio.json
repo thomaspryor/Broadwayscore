@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -48,5 +48,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--frank-rizzo.json",
   "wordCount": 675,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Playwright Matthew Spangler's adaptation is a heartbreaker – but so uplifting, it's worth the pain.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive recommendation with enthusiastic praise for adaptation, direction, performances, and production design. Despite acknowledging the protagonist's flaws, the critic finds the journey 'beautiful and deeply involving' with no reservations about seeing it. | GPT-4o: The review praises the adaptation as a 'heartbreaker' and 'uplifting,' highlighting the strong performances and production elements. Despite noting the protagonist's flaws, the overall tone is enthusiastic and recommends the show. | Gemini: The review is overwhelmingly positive, calling the play a \"heartbreaker\" but ultimately \"worth the pain.\" While acknowledging flaws in the protagonist, the critic praises the adaptation, direction, and performances. | Kimi: The critic consistently praises the meticulous adaptation, inventive direction, stunning design, and committed performances, deeming the emotional experience 'worth the pain' and the production 'deeply involving' despite the story's difficult themes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:46:38.475Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

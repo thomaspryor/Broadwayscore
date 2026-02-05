@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Theatrical astonishment is back on the Broadway boards. The Lehman Trilogy, which has conquered and enraptured audiences since it first appeared, has finally arrived at the Nederlander after a pandemic pause. New Yorkers who missed the production's instantly sold-out limited engagement at the Park Avenue Armory in 2019 have 12 weeks before it moves on to brief stops in Los Angeles and San Francisco. Miss it at your peril.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-LEHMAN-TRILOGY-Opens-on-Broadway-20211014"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-LEHMAN-TRILOGY-Opens-on-Broadway-20211014",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Theatrical astonishment is back on the Broadway boards.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with superlative language throughout ('theatrical astonishment', 'miss it at your peril', 'finest theatrical experience'). Despite being truncated, the complete text shows unqualified praise and multiple must-see recommendations. | GPT-4o: The review is filled with superlatives and strong praise for the production, direction, and performances. The critic describes it as 'theatrical astonishment' and 'a unique stage experience not to be missed,' indicating a rave review. Despite the text being truncated, the 5/5 star rating supports a high score. | Gemini: The review is overwhelmingly positive, calling the show \"theatrical astonishment\" and \"intriguing, involving, and sparklingly filled with theatrical wizardry.\" The critic explicitly states it is \"not to be missed.\" | Kimi: The critic awards 5/5 stars with unqualified superlatives ('theatrical astonishment', 'wizardry', 'finest theatrical experience since The Ferryman'), praises all production elements, and urges readers not to miss it. Confidence is medium due to truncated text, though the verdict is unambiguously enthusiastic.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:54:23.552Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

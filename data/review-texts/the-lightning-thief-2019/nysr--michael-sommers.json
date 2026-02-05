@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Although the musical is mostly a yawn for adults (and probably smarter kids), sub-par visuals make it even a less attractive event. The production looks so cheap visually that let's be kind and not name the designers. Industrial scaffolding can only go so far to create places effectively, while the cheesy effects for the story's monsters and miracles are heralded by blasts of white lights meant to bedazzle viewers into not seeing the stagecraft. There is not an inch of magic anywhere on the stag",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-LIGHTNING-THIEF-Opens-on-Broadway--The-Critics-Weigh-In-20191016"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-LIGHTNING-THIEF-Opens-on-Broadway--The-Critics-Weigh-In-20191016",
+  "assignedScore": 39,
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 34,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's likely a show that many will want to miss.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: 2/5 stars with consistent negative language throughout ('dud', 'tiresome', 'yawn for adults', 'cheap visually', 'not an inch of magic'). Despite acknowledging some positive elements like lead performers and one catchy song, the overall verdict is clearly against seeing the show. | GPT-4o: The review is overwhelmingly negative, describing the production as 'stinky,' 'a dud,' and 'mostly a yawn for adults.' The critic explicitly states it is a show 'many will want to miss,' aligning with the original 2/5 stars rating, indicating a strong pan. | Gemini: The review is largely negative, citing issues with the production's quality, script, and visuals. The critic explicitly states it's \"likely a show that many will want to miss\" and gives it 2/5 stars. | Kimi: The 2/5 star rating and consistently dismissive language ('dud', 'tiresome', 'stinky', 'sub-par') clearly indicate a negative verdict, despite faint praise for individual performances. The critic explicitly advises audiences to miss the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:57:47.448Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

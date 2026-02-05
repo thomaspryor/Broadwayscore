@@ -58,5 +58,59 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "Maggie Gyllenhaal, making a sensational Broadway debut as Annie, pulls off the especially difficult trick of wrangling all the messy contradictions of her character without losing her glowy sexiness for a minute...Likewise Ewan McGregor, another Broadway debutant, makes a passionate case for Henry the romantic without shortchanging his devastating verbal acuity...That the temperature of the characters is generally a few degrees warmer than in previous productions is surely the deliberate work of the director, Sam Gold, who has also made other choices to melt the ice...most significantly, he has the cast singing between every scene: lovely acoustic harmonizations of pop hits...This warmth has an odd effect though. It's pleasant but seems to undercut the cool brilliance of the writing.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-REAL-THING-Opens-on-Broadway-Updating-LIVE-20141030"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-REAL-THING-Opens-on-Broadway-Updating-LIVE-20141030",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As a roundelay it's delightful, and so is much of the production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Green praises the performances (Gyllenhaal's 'sensational' debut, McGregor's passionate case) and calls the production 'delightful,' but has reservations about Gold's directorial approach that 'undercuts the cool brilliance of the writing.' | Gemini: The review is mostly positive, praising the performances and the play itself. However, it also notes that the production's warmth undercuts the cool brilliance of the writing, suggesting reservations. | Kimi: While praising the cast performances as 'sensational' and 'hilarious' and finding Stoppard's play 'delightful,' the critic argues that director Sam Gold's warm, intimate approach undercuts the script's cool verbal brilliance, preventing this from being an unqualified success.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:21:56.146Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

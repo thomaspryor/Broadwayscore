@@ -16,7 +16,7 @@
   "bwwExcerpt": "A spotlight works like a face-lift on Chauncey Miles, the title character of 'The Nance,' the strained if heartfelt new play by Douglas Carter Beane, set in the twilight of burlesque. As portrayed with shiny expertise and dark conviction by Nathan Lane in a production that opened on Monday night at the Lyceum Theater, Chauncey looks every year of whatever age he may admit to, and then some, whenever he's not onstage...This Janus-faced persona makes Mr. Lane a natural for the divided soul that is Chauncey, and he doesn't disappoint. Moving between his natural and artificial selves in increasingly adverse circumstances, his Chauncey flips the on and off switch so often that it finally short circuits, to devastating effect...But even Mr. Lane can't reconcile all the disparities Mr. Beane's script asks him to weave together.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-NANCE-Opens-on-Broadway-Updating-LIVE-20130415",
   "showScoreExcerpt": "Mr. Lane gives what may be the performance of his career, finding the aching soul within the seemingly debased comic stereotype.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (21 words)",
   "textQuality": "full",
   "sources": [
@@ -70,5 +70,10 @@
   "sourceMethod": "brightdata",
   "wordCount": 306,
   "tierReason": "Full review text",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "rejectedAt": "2026-02-05T10:05:19.266Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text is truncated and ends with a technical error message about retrieving article content and enabling JavaScript, making it impossible to determine the critic's verdict.; openai: The text includes a message about trouble retrieving the article content, indicating it's incomplete and not a full review.",
+  "promptVersion": "5.2.0"
 }

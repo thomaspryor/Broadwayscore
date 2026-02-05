@@ -10,7 +10,7 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "“We need something a little theatrical.” Boy, does excited Bob Newby (Christopher Buckley) get his wish. He’s trying to solve a staging problem in “The Dark of the Moon,” the school play he and the other kids are secretly putting on in Hawkins, Ind., in 1959. But audiences watching “Stranger Things:...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "complete",
@@ -37,5 +37,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251117021751",
-  "archiveOrgUrl": "http://web.archive.org/web/20251117021751/https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251117021751/https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Does that matter? Not at all.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear recommendation despite acknowledging flaws ('not always matched by sustained drama'). Praises spectacular staging, performances, and commercial appeal as 'major hit'. | GPT-4o: The review is filled with superlatives and praise for the production's theatricality, staging, and emotional impact. The critic describes it as a 'major hit' and highlights the effectiveness of the show in delivering a visceral experience. | Gemini: The review is overwhelmingly positive, highlighting the show's theatricality, direction, and performances, despite some reservations about the script. The critic suggests it has the feeling of a major hit. | Kimi: The critic praises the virtuoso stagecraft, Daldry's masterful direction, and Louis McCartney's superb performance, dismissing minor concerns about sustained drama and declaring the show a 'major hit'. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:00:46.532Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

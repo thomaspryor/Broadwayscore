@@ -45,5 +45,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--peter-marks.json",
   "wordCount": 656,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's hard to call this gushing fountain of clever talk a play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises the performances extensively (calling them 'eye-catching' and 'smart') and finds the dialogue 'fascinating,' but fundamentally questions whether it works as theater, noting 'no plot, no event, no conflict, no danger.' This creates a clear mixed verdict - appreciative of elements but disappointed in overall dramatic structure. | GPT-4o: The review praises the performances and character portrayals but criticizes the lack of dramatic structure, plot, and conflict, leading to a mixed assessment. | Gemini: The review praises the acting and character development but notes the lack of plot, conflict, or dramatic shape, resulting in a mixed assessment. | Kimi: While Stasio criticizes the play's lack of dramatic structure and plot, she delivers strong praise for the lead performances (particularly Pope as 'impossible to resist') and finds the shop talk 'fascinating,' ultimately valuing the richly drawn characters enough to recommend the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:17:00.924Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 77,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

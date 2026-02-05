@@ -6,8 +6,7 @@
   "url": "http://www.hollywoodreporter.com/hr/film-reviews/the-addams-family-theater-review-1004081703.story",
   "source": "bww-reviews",
   "sources": [
-    "bww-reviews",
-    "bww-roundup"
+    "bww-reviews"
   ],
   "bwwExcerpt": "The hackneyed plot might have been serviceable if there were enough funny jokes in the mix, but despite Lane and the rest of the cast's best efforts, more often than not the humor falls flat. Where the obviously expensive show does shine, not surprisingly, is in the design elements, from the elaborate gothic scenery and costumes by the Improbable Theatre's ('Shockheaded Peter') Phelim McDermott and Julian Crouch to the wonderfully imaginative and clever puppets designed by Basil Twist.",
   "bwwScore": 5,
@@ -64,5 +63,59 @@
   ],
   "wordCount": 185,
   "tierReason": "Short text (185 words)",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-THE-ADDAMS-FAMILY-Review-Roundup-20100408"
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite Lane and the rest of the cast's best efforts, more often than not the humor falls flat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the plot hackneyed and humor unsuccessful despite the cast's efforts, with only design elements earning praise. This indicates a negative recommendation where strong production values can't overcome fundamental flaws. | GPT-4o: The review criticizes the plot and humor, indicating a negative view despite praising the design elements. The single excerpt suggests a negative overall impression, but the lack of full context lowers confidence. | Gemini: The review praises the design elements but criticizes the plot and humor. This suggests a mixed experience, leaning slightly positive due to the emphasis on the design. | Kimi: The critic describes the plot as hackneyed and the humor as ineffective despite the cast's efforts, offering praise only for the technical design elements. With only a single excerpt available, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:07:39.879Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 44,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

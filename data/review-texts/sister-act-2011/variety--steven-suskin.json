@@ -6,8 +6,7 @@
   "url": "http://www.variety.com/review/VE1117945047",
   "source": "bww-reviews",
   "sources": [
-    "bww-reviews",
-    "bww-roundup"
+    "bww-reviews"
   ],
   "bwwExcerpt": "Whoopi Goldberg looms large over the new musical comedy 'Sister Act,' and that's part of the problem. While she co-produced, Goldberg isn't onstage, and the outsized sense of hilarity mixed with humanity she brought to the 1992 motion picture is sorely missed. Patina Miller makes an altogether impressive Broadway debut as diva-on-the-run Deloris Van Cartier, singing up a veritable storm, but the decision to plaster Goldberg's name on numerous signs outside the theater raises comparisons that flatter neither Miller nor this garish production.",
   "bwwScore": 3,
@@ -44,5 +43,59 @@
   "sourceMethod": "brightdata",
   "wordCount": 599,
   "tierReason": "Full review text",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-SISTER-ACT-Updating-LIVE-20110420"
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "glossy, but seems like a worn set of tires repatched too often",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict with multiple criticisms (garish production, cheesy jokes, unfavorable comparisons) despite acknowledging some performer strengths. The 'worn tires' metaphor and 'nice try, but no sale' ending confirm the negative recommendation. | GPT-4o: The review highlights several issues with the production, including unfavorable comparisons to the original film, lackluster music and lyrics, and cheesy jokes. While there are some positive mentions of performances, the overall tone is negative, suggesting the show is not worth seeing. | Gemini: The review acknowledges some positive aspects, such as Patina Miller's performance and the show's feel-good nature, but also points out flaws like cheesy jokes, uninspired lyrics, and unfavorable comparisons to other musicals. The overall tone suggests a mixed experience. | Kimi: While praising lead performer Patina Miller as 'a find,' the critic heavily criticizes the 'garish' production, 'cheesy' jokes, vulgarized adaptation, and unfavorable comparisons to recent musicals, delivering a clear negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:52:49.114Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

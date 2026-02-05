@@ -65,5 +65,60 @@
   "extractedByline": "Film Review",
   "expectedCritic": "Frank Scheck",
   "wordCount": 175,
-  "tierReason": "Short text (175 words)"
+  "tierReason": "Short text (175 words)",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The best parts of the show, ironically, are the interview segments, in which the erudite and witty composer provides an entertaining running commentary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises the interview segments as entertaining and informative but criticizes the live performances as 'wildly uneven' and specifically calls out songs as 'seriously unfunny' and having 'the blandness of Muzak'. The mixed assessment with no clear recommendation places it in Mixed range. | GPT-4o: The review highlights the interview segments as the best parts, but criticizes the live performances as 'wildly uneven' and specific songs as 'seriously unfunny' and 'bland'. This suggests a mixed verdict with both positive and negative elements. | Gemini: The review praises the interview segments with the composer but criticizes the live performances as \"wildly uneven.\" This suggests a mixed experience, leaning slightly negative due to the performance issues. | Kimi: The critic highly praises the documentary interview segments as 'the best parts' and 'priceless' but delivers strong criticism of the live theatrical performances as 'wildly uneven,' 'seriously unfunny,' and possessing 'the blandness of Muzak.' With only a single excerpt available, the overall verdict is unclear but appears to balance significant praise for the film content against disappointment in the staged elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T08:57:03.569Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

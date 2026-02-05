@@ -48,5 +48,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "Lincoln Center Theater's major new revival of the play, directed by Lileana Blain-Cruz, with additional material by Branden Jacobs-Jenkins and the tireless efforts of an exemplary cast, does, in fact, afford some newfound vitality for a work so often more admired than loved. An exercise in endurance - for the cast, for the audience - The Skin of Our Teeth long ago passed along the novelty of its time-tripping, allegorical flourishes to subsequent (and, frankly, less laborious) heirs, from Caryl Churchill to Tony Kushner to the Wachowskis, so any attempt to meet and rise above the play's inherent challenges would seem to require a vision, maybe a ruthlessness and certainly a firm grasp of the play's continued reason for being.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SKIN-OF-OUR-TEETH-Opens-On-Broadway-20220425"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SKIN-OF-OUR-TEETH-Opens-On-Broadway-20220425",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this Skin of Our Teeth, in fleeting sequences, lifts itself from the play's traditional slog",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges the production's efforts and some effective elements (puppetry, performances) but finds the play itself inherently problematic and 'quaint,' describing it as 'an exercise in endurance' and 'traditional slog' with only fleeting moments of success. | GPT-4o: The review acknowledges the production's strengths in moments but overall suggests it struggles with the play's inherent challenges. The tone is mixed, with some praise for the cast and production elements but also noting the play's dated feel and laborious nature. | Gemini: The review acknowledges the play's challenges and the production's occasional success in overcoming them, but ultimately finds it somewhat quaint and uneven. It praises specific elements like the puppetry and projections, but doesn't offer a strong recommendation. | Kimi: While praising the cast as 'exemplary' and the staging for its impressive puppetry and design, the critic consistently emphasizes that the play itself is an 'exercise in endurance' and a 'slog' that feels dated compared to its successors, suggesting admiration for the production rather than love for the experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T10:31:08.644Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

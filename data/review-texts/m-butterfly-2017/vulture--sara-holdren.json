@@ -33,5 +33,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240415040653/https://www.vulture.com/2017/10/theater-review-m-butterfly-chasing-its-own-reality.html",
   "duplicateTextOf": "vulture--jesse-green.json",
   "wordCount": 1425,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite compelling performances by both leads, both play and production wander into clunkiness and confusion.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges strong performances, especially from Jin Ha, but finds significant flaws in direction and production design. The review is balanced between praise for the actors and criticism of the execution, with no clear recommendation to see or skip it. | GPT-4o: The review acknowledges strong performances but criticizes the production's execution and coherence, leading to a mixed verdict. The critic highlights both strengths and weaknesses, resulting in a balanced assessment. | Gemini: The review praises the performances and the play's relevance but criticizes the execution and clarity of the production, resulting in an overall mixed assessment. | Kimi: While praising the lead performances (particularly Jin Ha) and acknowledging the script's continued relevance, the critic finds Julie Taymor's production uneven, emotionally distancing, and awkwardly executed, ultimately failing to land with the power it promises.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T07:50:05.767Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

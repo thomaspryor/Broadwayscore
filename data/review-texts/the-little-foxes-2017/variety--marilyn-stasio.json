@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Laura Linney and Cynthia Nixon alternate in the roles of scheming sisters Regina and Birdie in this handsome revival that's heavy on star power but light on dramatic revelation.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -70,5 +70,60 @@
   "sourceMethod": "brightdata",
   "wordCount": 775,
   "tierReason": "Full review text",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Sullivan has done brilliant work with this revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for the director's 'brilliant work,' calls casting 'flawless,' and praises both lead actresses' performances extensively. The coup 'pays off' and technical details are 'amazing.' | GPT-4o: The review is filled with superlatives and praises the performances, direction, and production quality. It emphasizes the brilliance of the revival and the effectiveness of the casting choices, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, casting, design, and performances of the two leads. The critic clearly recommends seeing the production. | Kimi: The critic employs unqualified superlatives including 'brilliant,' 'flawless,' 'astonishing,' and 'amazing' to praise every aspect of the production—from the direction and casting to the design and performances—without a single reservation or caveat. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T09:58:58.432Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }
