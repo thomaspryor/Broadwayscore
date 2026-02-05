@@ -65,5 +65,39 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "fullText": null,
+  "isFullReview": true,
+  "textWordCount": 193,
+  "archivePath": "data/archives/reviews/a-free-man-of-color-2010/bloomberg-news--jeremy-gerard_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T18:22:24.833Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "has_footer_text"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 193 (min: 300)"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "XLinkedInEmailLinkGiftFacebookXLinkedInEmailLinkGiftGift this articleContact us:Provide news feedback or report an errorConfidential tip?Send a tip to our reportersSite feedback:Take our SurveyNew Windowfailed to render body of articleBefore it's here, it's on the Bloomberg TerminalBloomberg Terminal LEARN MOREMore From BloombergAnthropic AI Tool Sparks Selloff From Software to Broader Market\n\nTrillion-Dollar Tech Wipeout Ensnares All Stocks in AI’s Path\n\nChina Trader Who Made $3 Billion on Gold Bets Big Against Silver\n\nTata’s Outsider CEO Battles Multiple Crises After Bad Year\n\nTrump Says He Wants $1 Billion From Harvard in New Attack\n\nDivorce, Hedge-Fund Style: Inside the Breakup at Two Sigma\n\nby Hema Parmar and Chris Dolmetsch\n\nUkrainians Defy Russia’s Attempts to Freeze Them Into Submission\n\nby Volodymyr Verbianyi and Daryna Krasnolutska\n\nCardholders Are Mad at Bilt’s CEO. They’re Still Renewing\n\nNYC Real Estate Binge Piles Pressure On a German Pension Plan\n\nby Natalie Wong, Arno Schuetze, Chris Dolmetsch and Karin Matussek\n\nHomeBTV+Market DataOpinionAudioOriginalsMagazineEventsNewsMarketsEconomicsTechnologyPoliticsGreenCryptoAIWork & LifeWealthPursuitsBusinessweekCityLabSportsEqualityManagement & WorkMarket DataStocksCommoditiesRates & BondsCurrenciesFuturesSectorsEconomic CalendarExploreNewslettersExplainersPointed News QuizAlphadots GameThe Big TakeGraphicsSubmit a TipAbout UsTerms of ServiceDo Not Sell or Share My Personal InformationTrademarksPrivacy PolicyCareersAdvertiseAd ChoicesHelp©2026 Bloomberg L.P. All Rights Reserved.\n\nExplore live shows, documentaries, interviews and more – all in one place."
 }
