@@ -4,13 +4,13 @@
     "lastUpdated": "2026-02-05",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 5764,
-      "skippedNoScore": 8669,
+      "totalReviews": 5762,
+      "skippedNoScore": 8630,
       "skippedDuplicate": 11,
       "skippedDuplicateUrl": 271,
-      "skippedCrossOutletDuplicateUrl": 102,
+      "skippedCrossOutletDuplicateUrl": 101,
       "skippedWrongProduction": 185,
-      "recoveredFromGarbage": 101,
+      "recoveredFromGarbage": 102,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 2,
@@ -18,14 +18,14 @@
         "explicit-letterGrade": 1,
         "human-review": 58,
         "originalScore-priority0": 878,
-        "llmScore": 3157,
+        "llmScore": 3155,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 1445,
+        "llmScore-lowconf": 1446,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 212
+        "thumb": 211
       }
     }
   },
@@ -10914,23 +10914,6 @@
       "contentTier": "truncated"
     },
     {
-      "showId": "ann-2013",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 72,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Unknown",
-      "url": "http://variety.com/2015/legit/reviews/sylvia-review-broadway-matthew-broderick-1201626897/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "If you can put such thoughts out of your head, it's a perfectly charming show.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
       "showId": "annie-2012",
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
@@ -18752,23 +18735,6 @@
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "bug-2026",
-      "outletId": "4-columns-david-cote",
-      "outlet": "4Columns",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Cote",
-      "url": "https://www.4columns.org/cote-david/bug",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "A hardworking and very effective Coon is left to maintain dramatic tension. In her TV triumphs as plucky social climbers (Age and The White Lotus), Coon’s fresh beauty and vivacious yet sensible vigor has elevated so-so scripts. She makes a smart and relatable protagonist either in nineteenth-century bustle or Thai resort muumuu.",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "none"
     },
     {
       "showId": "bug-2026",
@@ -59903,7 +59869,7 @@
       "url": "https://www.nytimes.com/2025/12/04/movies/merrily-we-roll-along-review.html",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "“Merrily Along” is an OK movie of a good production of a great musical: on balance, another worthy addition to the Stephen Sondheim canon, which can always stand to be expanded. Matt",
+      "pullQuote": "“Merrily We Roll Along” is an OK movie of a good production of a great musical: on balance, another worthy addition to the Stephen Sondheim canon, which can always stand to be expanded. The history of “Merrily” is perhaps better-known than the play itself.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -87078,17 +87044,17 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 45,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Marilyn Stasio",
-      "url": "https://variety.com/2015/legit/reviews/gin-game-review-cicely-tyson-james-earl-jones-1201618442/",
+      "url": "https://variety.com/2015/legit/reviews/the-gin-game-review-james-earl-jones-cicely-tyson-1201617381/",
       "publishDate": "October 14, 2015",
       "originalRating": null,
       "pullQuote": "James Earl Jones and Cicely Tyson bring their considerable star power and professional expertise to this revival of D.L. Coburn's 1977. Pulitzer Prize-winning play, but even these two seasoned performers can't inject much dramatic urgency into this static two-hander.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-glass-menagerie-2017",
