@@ -45,7 +45,17 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Does:** Updates show statuses (open → closed, previews → open), discovers new shows on Broadway.org, auto-adds new shows with status "previews"
 - **IBDB enrichment:** New shows are enriched with preview/opening/closing dates from IBDB. If IBDB fails, Broadway.org's "Begins:" date is treated as `previewsStartDate` (not `openingDate`)
 - **Timeout:** 10 minutes (to accommodate IBDB lookups with rate limiting)
-- **Triggers for newly opened shows (previews → open):** `gather-reviews.yml`, `update-reddit-sentiment.yml`, `update-show-score.yml`
+- **Triggers for newly opened shows (previews → open):** `gather-reviews.yml`, `update-reddit-sentiment.yml`, `update-show-score.yml`, `update-mezzanine.yml`, `fetch-all-image-formats.yml`
+- **Outputs:** `opened_count`, `opened_slugs` (shows transitioning previews→open), plus discovery outputs
+
+## `opening-night-reviews.yml`
+- **Runs:** Daily at 5 AM UTC (midnight EST), or manually
+- **Does:** Finds shows that opened in the last 2 days (by `openingDate`), triggers `gather-reviews.yml` to catch opening night reviews the same evening they're published
+- **Why:** The morning `update-show-status.yml` (8 AM UTC) fires before reviews exist (~10-11 PM EST). This evening workflow catches reviews after publication.
+- **Options:** `lookback_days` (default 2)
+- **Guards:** Checks if gather-reviews is already running before triggering
+- **No secrets needed** beyond `GITHUB_TOKEN`
+- **Manual trigger:** `gh workflow run "Opening Night Reviews" -f lookback_days=7`
 
 ## `gather-reviews.yml`
 - **Runs:** When new shows discovered (or manually triggered)
@@ -149,10 +159,19 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
   - `force`: Overwrite all dates with IBDB values
 - **Rate limiting:** 1.5s between IBDB requests, 30-minute timeout
 
+## `process-review-formspree.yml`
+- **Runs:** Daily at 6 AM UTC (1 AM EST), or manually
+- **Does:** Polls Formspree review submission form, creates GitHub Issues for each new submission in the format `process-review-submission.yml` expects. Tracks processed IDs to prevent duplicates.
+- **User-facing page:** `/submit-review` (Formspree form)
+- **Script:** `scripts/process-review-formspree.js`
+- **Tracking:** `data/audit/processed-review-submissions.json`
+- **Requires:** `FORMSPREE_TOKEN`, `GITHUB_TOKEN`
+- **Flow:** Formspree form → this workflow creates Issue → `process-review-submission.yml` auto-triggers
+
 ## `process-review-submission.yml`
 - **Runs:** When GitHub issue created/edited with `review-submission` label
 - **Does:** Validates review submission via Claude API, scrapes and adds if approved, closes issue
-- **User-facing page:** `/submit-review`
+- **Triggered by:** `process-review-formspree.yml` (creates issues with `review-submission` label)
 - **Issue template:** `.github/ISSUE_TEMPLATE/missing-review.yml`
 - **Script:** `scripts/validate-review-submission.js`
 
@@ -165,7 +184,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `update-reddit-sentiment.yml`
 - **Runs:** Monthly (1st of month at 10am UTC), on previews → open transition, or manually
-- **Does:** Scrapes r/Broadway for discussions, uses Claude Opus for sentiment analysis, updates `data/audience-buzz.json`
+- **Does:** Scrapes r/Broadway for discussions, uses Claude Sonnet for sentiment analysis, updates `data/audience-buzz.json`. Default: open shows only (use --all for closed).
 - **Options:** `show`, `shows` (comma-separated), `limit` (default 50)
 - **Technical:** Uses ScrapingBee with premium proxy, generic titles use Broadway-qualified searches, 2-hour timeout with `if: always()` commit
 - **Script:** `scripts/scrape-reddit-sentiment.js`

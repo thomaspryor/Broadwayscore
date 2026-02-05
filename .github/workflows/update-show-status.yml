@@ -16,6 +16,7 @@ on:
 permissions:
   contents: write
   issues: write
+  actions: write
 
 jobs:
   update-shows:
@@ -25,6 +26,8 @@ jobs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
       new_shows: ${{ steps.discover.outputs.new_shows }}
       new_slugs: ${{ steps.discover.outputs.new_slugs }}
+      opened_count: ${{ steps.status-update.outputs.opened_count }}
+      opened_slugs: ${{ steps.status-update.outputs.opened_slugs }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -44,6 +47,7 @@ jobs:
 
       # Step 1: Update existing show statuses
       - name: Update show statuses
+        id: status-update
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
@@ -200,7 +204,9 @@ jobs:
   # Note: Only triggers for shows that have opened (not previews)
   trigger-data-agent:
     needs: update-shows
-    if: needs.update-shows.outputs.new_shows_count != '' && needs.update-shows.outputs.new_shows_count != '0'
+    if: |
+      (needs.update-shows.outputs.new_shows_count != '' && needs.update-shows.outputs.new_shows_count != '0') ||
+      (needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to filter previews shows
@@ -208,27 +214,25 @@ jobs:
         with:
           ref: main
 
-      - name: Filter out previews shows
+      - name: Combine discovered and opened shows
         id: filter
         run: |
-          slugs="${{ needs.update-shows.outputs.new_slugs }}"
-          IFS=',' read -ra SHOW_ARRAY <<< "$slugs"
+          new_slugs="${{ needs.update-shows.outputs.new_slugs }}"
+          opened_slugs="${{ needs.update-shows.outputs.opened_slugs }}"
 
-          opened_shows=""
-          for slug in "${SHOW_ARRAY[@]}"; do
-            # Check if show status is not "previews"
-            status=$(node -e "const shows = require('./data/shows.json'); const show = shows.shows.find(s => s.slug === '$slug'); console.log(show?.status || 'unknown');")
-            if [ "$status" != "previews" ]; then
-              if [ -z "$opened_shows" ]; then
-                opened_shows="$slug"
-              else
-                opened_shows="$opened_shows,$slug"
-              fi
+          # Combine both sources, dedup
+          all_slugs=""
+          for slug in $(echo "$new_slugs,$opened_slugs" | tr ',' '\n' | sort -u); do
+            [ -z "$slug" ] && continue
+            # Verify show is open (not previews)
+            status=$(node -e "const shows = require('./data/shows.json'); const show = shows.shows.find(s => s.id === '$slug' || s.slug === '$slug'); console.log(show?.status || 'unknown');")
+            if [ "$status" = "open" ]; then
+              [ -n "$all_slugs" ] && all_slugs="$all_slugs,$slug" || all_slugs="$slug"
             fi
           done
 
-          echo "opened_shows=$opened_shows" >> $GITHUB_OUTPUT
-          echo "Filtered shows for review gathering: $opened_shows"
+          echo "opened_shows=$all_slugs" >> $GITHUB_OUTPUT
+          echo "Combined shows for data pipelines: $all_slugs"
 
       - name: Trigger data agent workflow
         if: steps.filter.outputs.opened_shows != ''
