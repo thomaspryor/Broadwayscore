@@ -3,7 +3,7 @@ import {
   getAllShowSlugs,
   getShowBySlug,
   getAllBestOfCategories,
-  getAllDirectorSlugs,
+  // getAllDirectorSlugs,  // excluded from sitemap for now
   getAllTheaterSlugs,
   getAllBrowseSlugs,
 } from '@/lib/data-core';
@@ -13,7 +13,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.
 export default function sitemap(): MetadataRoute.Sitemap {
   const showSlugs = getAllShowSlugs();
   const bestOfCategories = getAllBestOfCategories();
-  const directorSlugs = getAllDirectorSlugs();
+  // const directorSlugs = getAllDirectorSlugs();  // excluded for now
   const theaterSlugs = getAllTheaterSlugs();
   const browseSlugs = getAllBrowseSlugs();
 
@@ -46,13 +46,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
-  // Director pages - medium priority
-  const directorPages = directorSlugs.map((slug) => ({
-    url: `${BASE_URL}/director/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
+  // Director pages - excluded from sitemap (noindex for now)
+  // const directorPages = directorSlugs.map((slug) => ({
+  //   url: `${BASE_URL}/director/${slug}`,
+  //   lastModified: new Date(),
+  //   changeFrequency: 'monthly' as const,
+  //   priority: 0.7,
+  // }));
 
   // Theater pages - medium priority
   const theaterPages = theaterSlugs.map((slug) => ({
@@ -89,12 +89,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     // Index pages - good for SEO crawling
-    {
-      url: `${BASE_URL}/director`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
+    // Director index - excluded (noindex for now)
     {
       url: `${BASE_URL}/theater`,
       lastModified: new Date(),
@@ -103,8 +98,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     // Show pages - core content
     ...showPages,
-    // Director pages
-    ...directorPages,
+    // Director pages - excluded (noindex for now)
     // Theater pages
     ...theaterPages,
     // Static pages
