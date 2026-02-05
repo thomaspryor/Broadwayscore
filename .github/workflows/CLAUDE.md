@@ -149,10 +149,19 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
   - `force`: Overwrite all dates with IBDB values
 - **Rate limiting:** 1.5s between IBDB requests, 30-minute timeout
 
+## `process-review-formspree.yml`
+- **Runs:** Daily at 6 AM UTC (1 AM EST), or manually
+- **Does:** Polls Formspree review submission form, creates GitHub Issues for each new submission in the format `process-review-submission.yml` expects. Tracks processed IDs to prevent duplicates.
+- **User-facing page:** `/submit-review` (Formspree form)
+- **Script:** `scripts/process-review-formspree.js`
+- **Tracking:** `data/audit/processed-review-submissions.json`
+- **Requires:** `FORMSPREE_TOKEN`, `GITHUB_TOKEN`
+- **Flow:** Formspree form → this workflow creates Issue → `process-review-submission.yml` auto-triggers
+
 ## `process-review-submission.yml`
 - **Runs:** When GitHub issue created/edited with `review-submission` label
 - **Does:** Validates review submission via Claude API, scrapes and adds if approved, closes issue
-- **User-facing page:** `/submit-review`
+- **Triggered by:** `process-review-formspree.yml` (creates issues with `review-submission` label)
 - **Issue template:** `.github/ISSUE_TEMPLATE/missing-review.yml`
 - **Script:** `scripts/validate-review-submission.js`
 
