@@ -40,5 +40,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 820,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She delivers the most remarkable performance in a season of exceptional acting work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for Comer's 'remarkable performance' and 'complete commitment,' calling it the season's best. Despite minor reservations about plot believability, the review is clearly positive with enthusiastic recommendation. | GPT-4o: The review is overwhelmingly positive, praising Jodie Comer's performance as 'remarkable' and 'heart-shattering,' and the production as 'beautifully acted and constructed.' The critic's tone is enthusiastic and full of superlatives, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, focusing on Jodie Comer's performance and the direction. While there are minor reservations about the plot, the overall recommendation is strong. | Kimi: The review lavishes unqualified superlatives on Jodie Comer's performance, comparing it to Olympic Gold Medal-worthy work and calling it the most remarkable of the season, while praising the excellent direction and design, overwhelming minor reservations about the script's first half. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:43:28.844Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

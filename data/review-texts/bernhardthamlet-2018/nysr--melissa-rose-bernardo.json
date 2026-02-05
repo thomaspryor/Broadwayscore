@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2018/09/25/bernhardt-hamlet-what-a-piece-of-work/",
-  "showScoreExcerpt": "\"There’s simply no one better suited to embody Bernhardt than Janet McTeer...As much as Rebeck’s drama deifies ‘Hamlet’—'It’s prayer; it’s incantation. It’s enchantment. It’s a hymn. It’s grace itself,' sighs Rostand dreamily—'Bernhardt/Hamlet’ is less about a great actress playing the Dane than it is about a woman forging her legacy in, put plainly, a man’s world. It may not be the 19th century anymore, but some things never change.”\n\nRead more"
+  "showScoreExcerpt": "\"There’s simply no one better suited to embody Bernhardt than Janet McTeer...As much as Rebeck’s drama deifies ‘Hamlet’—'It’s prayer; it’s incantation. It’s enchantment. It’s a hymn. It’s grace itself,' sighs Rostand dreamily—'Bernhardt/Hamlet’ is less about a great actress playing the Dane than it is about a woman forging her legacy in, put plainly, a man’s world. It may not be the 19th century anymore, but some things never change.”\n\nRead more",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's simply no one better suited to embody Bernhardt than Janet McTeer",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic praise for McTeer's casting and performance, though single excerpt limits full assessment of overall production verdict. | GPT-4o: The excerpt highlights strong praise for Janet McTeer's performance, suggesting a positive view of the production. The original 4/5 star rating supports a Positive classification, but the single excerpt and lack of full context lower confidence. | Gemini: The review excerpt praises Janet McTeer's performance and highlights the play's themes of a woman forging her legacy, indicating a positive assessment. The 4/5 star rating also supports a positive classification. | Kimi: The 4/5 star rating and enthusiastic praise for McTeer's performance ('no one better suited') indicate a solid recommendation. The excerpt appreciates the show's thematic resonance about women forging legacies, though limited text prevents higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:25:03.075Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

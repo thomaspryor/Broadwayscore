@@ -44,5 +44,60 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 816,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A miscast Bobbie aside, there is very little to complain about in this excellent production of one of Sondheim's most dynamic works.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite significant criticism of the lead performance, the critic calls it an 'excellent production' and praises the rest of the cast as 'uniformly fantastic', the direction as 'ingenious', and the gender swap as 'thoughtfully implemented'. | GPT-4o: The review praises the production's direction, design, and cast, but notes a significant issue with the lead's performance. Despite this, the overall tone is positive, recommending the show for its innovative gender swap and strong supporting cast. | Gemini: The review praises many aspects of the production, including the gender swap and the performances of the supporting cast, but criticizes the lead actress. The overall recommendation is positive, but with reservations due to the miscasting. | Kimi: While the critic delivers harsh criticism of Katrina Lenk's lead performance, they uniformly praise the direction, design, and supporting cast as 'uniformly fantastic,' calling the production 'excellent' and 'practically flawless' aside from the miscasting, resulting in a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:27:07.589Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

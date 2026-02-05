@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "...this is the show with which the Montreal-based global franchise plants its standard on Broadway, promising - and, in spades, delivering - a mashup of 42nd Street backstage romance, non-stop Ziegfeld folly and Cirque's brand of acrobatic arts...It's as eye-popping as Christmas at Radio City Music Hall, if not quite as intimate or touching....We've come for the visuals and while it's doubtful that Paramour audiences will come away disappointed in that department, they may wonder why that annoying story kept stopping the action dead in its computer-assisted tracks...did I mention the horrible music? Well, with Cirque that's a given.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Cirque-du-Soleils-PARAMOUR-Opens-on-Broadway-Updating-Live-20160525"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Cirque-du-Soleils-PARAMOUR-Opens-on-Broadway-Updating-Live-20160525",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "We've come for the visuals and while it's doubtful that Paramour audiences will come away disappointed in that department, they may wonder why that annoying story kept stopping the action.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises the visual spectacle ('eye-popping', 'delivering in spades') but criticizes fundamental elements like story ('annoying', 'stopping the action dead') and music ('horrible'). Mixed recommendation focused on visual appeal. | GPT-4o: The review praises the visual spectacle but criticizes the story and music, indicating a mixed reception. The single excerpt limits confidence in the overall sentiment. | Gemini: The review praises the visuals and acrobatics but criticizes the story and music. It neither strongly recommends nor discourages seeing the show, making it a mixed review. | Kimi: The excerpt presents a split verdict: it praises the Cirque acrobatics and visual spectacle as 'eye-popping' and successfully delivered, but strongly criticizes the 'horrible music' and 'annoying story' that stops the action. With strong positives and strong negatives balancing out, and only a single excerpt available, this falls into Mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:50:20.388Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

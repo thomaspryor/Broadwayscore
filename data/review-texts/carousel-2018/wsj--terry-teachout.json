@@ -13,5 +13,59 @@
   ],
   "bwwExcerpt": "Of the musicals by Richard Rodgers and Oscar Hammerstein II that continue to hold the stage, 'Carousel' is-up to a point-the strongest. That point arrives toward the end, when the ghost of Billy Bigelow, the show's romantic antihero, returns to earth, watches his daughter graduate from high school and is escorted back to the Pearly Gates by an angel as the company sings a reprise of 'You'll Never Walk Alone,' the stickiest song that Rodgers and Hammerstein ever wrote (though the competition is stiff).",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Of the musicals by Richard Rodgers and Oscar Hammerstein II that continue to hold the stage, 'Carousel' is-up to a point-the strongest.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Calls Carousel 'the strongest' of the continuing R&H musicals, which is praise, but the key qualifier 'up to a point' suggests significant reservations about the ending. Single excerpt limits full assessment. | Gemini: The review praises the show up to a certain point, but then criticizes the ending. This indicates a mixed opinion. | Kimi: The critic praises Carousel as the strongest of Rodgers and Hammerstein's enduring musicals, though with specific reservations about the sentimental finale featuring 'You'll Never Walk Alone.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:20:02.480Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 19,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

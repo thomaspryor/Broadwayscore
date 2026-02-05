@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The idea of Sorkin revising “Camelot” was intriguing and promising. After all, “The West Wing” was marked by a similar kind of political idealism, and Sorkin’s recent stage adaptation of “To Kill a Mockingbird” was well-received. Unfortunately, his new book (which removes all magical elements, turns Morgan Le Fey as a scientist, and questions how Arthur could have pulled the sword from the stone) is too clumsy and self-conscious in its attempt to draw contemporary parallels and critical viewpoints. Sorkin has also seriously disrupted the integration of the songs and dialogue. There is still much to savor in Sher’s lavish production, including a 30-piece orchestra playing the score and Andrew Burnap’s (“The Inheritance”) deeply-felt performance as Arthur. Phillipa Soo (“Hamilton”) struggles with the high soprano songs but makes for a headstrong Guenevere full of personality. Jordan Donica (“My Fair Lady”) can be stiff but is nevertheless an imposing Lancelot with a robust voice. The period visual design is lean and effective, particularly the suits of armor and cathedral-like arches towering above the stage.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAMELOT-Opens-On-Broadway-Starring-Phillipa-Soo-Jordan-Donica-Andrew-Burnap-More-20230413"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAMELOT-Opens-On-Broadway-Starring-Phillipa-Soo-Jordan-Donica-Andrew-Burnap-More-20230413",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is still much to savor in Sher's lavish production, including a 30-piece orchestra playing the score and Andrew Burnap's deeply-felt performance as Arthur.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows significant criticism of Sorkin's book revisions ('too clumsy and self-conscious') but praises production elements, performances, and design. The balance suggests mixed reception with both flaws and merits acknowledged. | GPT-4o: The review highlights significant issues with the new book and integration of songs, but also notes positive aspects of the production and performances. The single excerpt suggests a mixed experience overall. | Gemini: The review praises the performances and orchestra but criticizes the book and integration of songs and dialogue. This indicates a mixed reaction to the production. | Kimi: While the critic finds Sorkin's book adaptation 'clumsy and self-conscious' and criticizes the disrupted song integration, the phrase 'There is still much to savor' indicates a qualified recommendation based on the production values, orchestrations, and committed performances from the cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:16:01.546Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

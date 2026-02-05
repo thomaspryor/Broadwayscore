@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The underwhelming revival (directed by Kenny Leon, the 2014 Broadway revival of 'A Raisin in the Sun') does the play no favors with a slick, angular and metallic visual design that unnecessarily calls attention to itself. It also suffers from being played on the wide stage of Studio 54 instead of a more intimate venue.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The underwhelming revival does the play no favors with a slick, angular and metallic visual design that unnecessarily calls attention to itself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the revival 'underwhelming' and citing multiple production problems (design, venue), but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt criticizes the revival as 'underwhelming' and highlights issues with the visual design and venue choice, suggesting a negative overall impression. However, the single excerpt warning and lack of full context necessitate a low confidence level. | Gemini: The review uses negative language such as \"underwhelming\" and criticizes the visual design, indicating a negative assessment of the production. | Kimi: The critic explicitly calls the revival 'underwhelming' and criticizes both the visual design and venue choice, finding that the production fails to serve the material effectively.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:38:06.263Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

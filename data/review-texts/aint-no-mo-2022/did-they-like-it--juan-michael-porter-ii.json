@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revolutionary power of Black joy takes center stage in the Broadway debut of Jordan E. Cooper’s ravishing play, Ain’t No Mo.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/aint-no-mo/",
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "dtli"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revolutionary power of Black joy takes center stage in the Broadway debut of Jordan E. Cooper's ravishing play, Ain't No Mo.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt describes the play as 'ravishing' which is strong positive language, but limited text makes full assessment difficult. | GPT-4o: The excerpt uses strong positive language ('revolutionary power', 'ravishing') suggesting a highly enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses the word \"ravishing\" to describe the play, which indicates a strong positive sentiment. Given that it's a single excerpt, I'm scoring it on the higher end of the positive range. | Kimi: The excerpt employs strong positive language ('ravishing,' 'revolutionary power') indicating an enthusiastic recommendation for this Broadway debut. Per the single-excerpt guidance, the score reflects the clearly positive tone while accounting for the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:54:45.531Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

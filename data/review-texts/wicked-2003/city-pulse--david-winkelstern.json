@@ -30,5 +30,11 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 886,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T20:51:38.831Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is of a touring production of 'Wicked' at the Wharton Center, not a Broadway production; openai: The review is about a touring production of 'Wicked' at the Wharton Center, not the current Broadway run.; kimi: This review covers the national touring production of 'Wicked' at the Wharton Center in East Lansing, Michigan, not the current Broadway run. The text explicitly references the 'national touring company' and the venue 'Wharton Center' in Michigan, making it ineligible for Broadway review scoring.",
+  "promptVersion": "5.2.0"
 }

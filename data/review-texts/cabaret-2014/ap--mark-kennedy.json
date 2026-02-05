@@ -12,5 +12,60 @@
   "bwwExcerpt": "Not a revival so much as a revival of a revival, this 'Cabaret' -- again produced by the Roundabout Theatre Company -- opened Thursday night, with only hours to spare before its eligibility expired. Whatever it's called, it's as thrilling as ever, a marvel of staging that hasn't lost its punch...One big change is the woman in the bob: Michelle Williams makes her Broadway debut as Sally Bowles and she does an excellent job, playing both scared and daffy superbly and singing with real heart...Williams starts out a little tentatively but soon roars into the role and her version of the title song has a wrenching, dead-eyed quality that hauntingly undercuts its light lyrics...Cumming is as lascivious as ever -- more playful than Joel Grey-scary in the film version...The addition of Linda Emond as the landlady Fraulein Schneider and Danny Burstein as her Jewish suitor Herr Schultz are strokes of casting genius.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's as thrilling as ever, a marvel of staging that hasn't lost its punch",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language throughout ('thrilling as ever', 'marvel of staging', 'excellent job', 'strokes of casting genius') with no reservations mentioned in the excerpt. Single excerpt warning considered, but consistent praise suggests upper Positive range. | GPT-4o: The review excerpt is highly positive, describing the production as 'thrilling' and a 'marvel of staging'. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The review uses strong positive language like \"thrilling\", \"marvel\", \"excellent job\", and \"strokes of casting genius\", indicating a positive recommendation. The critic praises the staging and performances. | Kimi: The excerpt offers strong enthusiasm for the revival's staging and performances, using words like 'thrilling,' 'marvel,' and 'excellent,' though confidence is reduced due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:12:53.456Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

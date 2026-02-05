@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Sally Bowles ranks right up there as an iconic figure in modern literature. Reckless and carefree, she's a British club singer in Weimar Germany of modest talent. Irresistible to men, she's insecure and must be seen as vulnerable. Natasha Richardson had those qualities in spades. Granted, this is not an easy role, but Michelle Williams, whether miscast or just not up to the challenge, is missing some vital ingredients. Sally talks of allure, but Williams' Sally is largely lacking in that department. And because of this, the entire show is thrown off. Suddenly, the people we care most about are Fraulein Schneider and Herr Schultz. And while Linda Emond and Danny Burstein are marvelous in the roles, they upstage the main plot - Sally's relationship with her American bisexual lover, Clifford Bradshaw.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 46,
+  "llmScore": {
+    "score": 46,
+    "confidence": "high",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Michelle Williams, whether miscast or just not up to the challenge, is missing some vital ingredients.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the lead performance fundamentally flawed, saying Williams lacks the essential qualities for Sally Bowles and that this failure 'throws off the entire show.' However, this is only one excerpt, so the full review verdict may differ. | GPT-4o: The review criticizes Michelle Williams' performance as lacking essential qualities, which negatively impacts the entire show. While there is praise for supporting actors, the main plot is described as being upstaged, indicating a negative overall impression. | Gemini: The review focuses on the miscasting of Michelle Williams as Sally Bowles and how it negatively impacts the entire show. While praising the supporting actors, the critic ultimately finds the production lacking due to the central performance. | Kimi: While praising Linda Emond and Danny Burstein as 'marvelous,' the critic finds Michelle Williams miscast or underwhelming as Sally Bowles, stating this lack of allure throws off the entire production and shifts focus away from the main plot.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:14:01.527Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

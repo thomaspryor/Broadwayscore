@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The play's best scenes, in which Hwang pinpoints the difficulty of conveying nuances and double meanings in the course of translation, are blissfully riotous. The other half of the play, depicting Cavanaugh's uneasy, often deceptive relationships with his Mandarin-speaking Australian translator and a Chinese official with whom he has an affair, is far less captivating.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play's best scenes are blissfully riotous. The other half is far less captivating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review explicitly divides the play into two halves - one 'blissfully riotous' and one 'far less captivating.' This suggests an uneven experience that neither fully recommends nor discourages. Single excerpt warning reduces confidence. | GPT-4o: The review excerpt highlights strong scenes but also notes significant weaknesses in other parts of the play. The mixed assessment suggests neither a clear recommendation nor discouragement. | Gemini: The review excerpt describes the play as having both \"blissfully riotous\" scenes and less captivating ones, indicating a mixed experience. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt presents a starkly divided assessment: praising half the play as 'blissfully riotous' while finding the other half 'far less captivating,' indicating an uneven, hit-or-miss experience without a clear overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:44:32.913Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

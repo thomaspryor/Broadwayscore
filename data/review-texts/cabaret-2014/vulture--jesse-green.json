@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Cabaret is performed with such skill and commitment that it almost makes you forget how often we've seen it before. Almost.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "web-search",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Cabaret is performed with such skill and commitment that it almost makes you forget how often we've seen it before. Almost.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges high-quality performances but expresses fatigue with the familiar material. The repeated 'Almost' suggests the production doesn't quite overcome its overfamiliarity. However, this is only an excerpt so the full verdict may be different. | GPT-4o: The review praises the skill and commitment of the performance but suggests a lack of novelty, indicating a mixed impression. The excerpt is limited, so the confidence is low. | Gemini: The review acknowledges the skill and commitment of the performance, but the word \"almost\" indicates a reservation. Given the limited text, I'm scoring it as a positive with reservations. | Kimi: The excerpt praises the performances as skillful and committed but undercuts this with 'Almost,' suggesting the production cannot overcome the staleness of familiar material. As a curated excerpt, the full verdict is unclear, but the tone is neither enthusiastic nor dismissive—merely acknowledging competence without recommending the revival as essential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:15:31.622Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

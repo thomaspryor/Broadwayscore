@@ -30,5 +30,11 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 511,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T20:47:03.203Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a touring production of The Lion King at the Music Hall at Fair Park, not the current Broadway run.; kimi: This review explicitly covers the touring production at the Music Hall at Fair Park in Dallas ('the tour production of the runaway Broadway hit currently on display at the Music Hall at Fair Park'), not the current Broadway run in New York.",
+  "promptVersion": "5.2.0"
 }

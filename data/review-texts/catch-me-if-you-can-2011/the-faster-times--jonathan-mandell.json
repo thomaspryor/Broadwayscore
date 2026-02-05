@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Yet for all its many charms, \"Catch Me If You Can\" is not the thorough thrill that one might have hoped. The creators truncate the story as presented in the film. They keep probably the most memorable image in the film - DiCaprio escaping detection at the airport surrounded by beautiful women in Pan Am stewardess outfits - but make it part of a production number without the context or the suspense...the very things that held our interest in the film. To fill t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-CATCH-ME-IF-YOU-CAN-Updating-Live-20110410",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yet for all its many charms, 'Catch Me If You Can' is not the thorough thrill that one might have hoped.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges 'many charms' but clearly states it's 'not the thorough thrill that one might have hoped' and criticizes how creators 'truncate the story' and remove 'context' and 'suspense.' This is mixed-to-negative territory, but the text is severely truncated so confidence is low. | GPT-4o: The excerpt acknowledges some charms but expresses disappointment in the adaptation compared to the film. The lack of thrill and suspense suggests a mixed review. Confidence is low due to the single excerpt limitation. | Gemini: The review excerpt acknowledges charms but expresses disappointment that it's not the \"thorough thrill\" hoped for, indicating a mixed assessment. The truncated nature lowers confidence. | Kimi: The excerpt acknowledges 'many charms' but emphasizes disappointment, noting the show fails to deliver the expected thrills and criticizes the truncation of the story. As a single truncated excerpt, the overall verdict remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:28:11.895Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

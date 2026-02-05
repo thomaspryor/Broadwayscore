@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Never underestimate Harvey Fierstein's gift for revealing new worlds within worlds we think we know well...Here he is back without a band with his first nonmusical in decades. And it's moving, beguiling and, yes, again historically significant without lecturing or threatening...The pitch-perfect cast has been directed by Joe Mantello with equal parts joy, anxiety and understanding of just the right handbags... Fierstein wants us to understand the vast spectrum of gender and sexuality. Along the way, bless him, he understands how to entertain.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CASA-VALENTINA-Opens-on-Broadway-Updating-LIVE-20140423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CASA-VALENTINA-Opens-on-Broadway-Updating-LIVE-20140423",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And it's moving, beguiling and, yes, again historically significant without lecturing or threatening.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language throughout - 'moving, beguiling,' 'pitch-perfect cast,' 'bless him' - with praise for both content and entertainment value. Single excerpt warning suggests this represents clear positive sentiment. | GPT-4o: The excerpt praises the show as 'moving, beguiling' with a 'pitch-perfect cast' and effective direction. The positive tone and emphasis on entertainment suggest a strong recommendation, but the single excerpt limits confidence. | Gemini: The review uses very positive language such as \"pitch-perfect cast\", \"joy, anxiety and understanding\", and \"bless him, he understands how to entertain.\" The critic clearly enjoyed the show. | Kimi: The excerpt offers enthusiastic praise for the script ('moving, beguiling'), direction ('equal parts joy'), and performances ('pitch-perfect cast'), indicating a clear recommendation. Given this is a single curated excerpt, confidence is low, but the unambiguously positive tone places it in the upper range of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:20:41.357Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

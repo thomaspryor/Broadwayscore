@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "David Mamet said his new play, written for frequent muse, Al Pacino, would be 'better than oral sex.' Oral sex? 'China Doll' is not even better than oral surgery. At least for that sort of medical procedure you get painkillers. And it's not a complete waste of time and money. 'China Doll' - henceforth 'China Dud' - is both. Pacino is Mickey Ross, who's on his cellphone for three-quarters of the show. Not the stuff of great drama...Director Pam MacKinnon...makes only one discernible contribution. She signed off on one of the clumsiest, least convincing fights ever on stage...Pacino fails to make phone calls anything but drudgery. He lacks authority playing this millionaire and he doesn't get traction from his customary eccentricities. The trademark shrugs, hand gestures, wide eyes and that gravelly voice feel like the same old, same old.",
   "bwwScore": 0,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 14,
+  "llmScore": {
+    "score": 14,
+    "confidence": "medium",
+    "range": {
+      "low": 9,
+      "high": 19
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'China Doll' is not even better than oral surgery.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating pan that calls the show a 'complete waste of time and money,' renames it 'China Dud,' and finds no redeeming qualities in either the writing, direction, or Pacino's performance. | GPT-4o: The review is overwhelmingly negative, using strong language to criticize the play and performances. It describes the show as a 'waste of time and money' and fails to find redeeming qualities, fitting into the Pan bucket. | Gemini: The review is overwhelmingly negative, calling the play a waste of time and money and criticizing Pacino's performance and the direction. The critic's opening line sets a very low bar that the play fails to clear. | Kimi: The critic delivers a scathing verdict, branding the show a 'China Dud' and explicit waste of time and money, while savaging Pacino's performance as 'drudgery' and the direction as one of the 'clumsiest' contributions to Broadway.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:44:01.961Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 12,
+    "openaiScore": 12,
+    "geminiScore": 15,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

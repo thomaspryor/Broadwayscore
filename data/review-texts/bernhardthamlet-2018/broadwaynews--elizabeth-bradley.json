@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“McTeer proves to be a woman not only for all seasons, but particularly and triumphantly for this one...The part gives McTeer not only a potentially career-defining star turn, but one that is uncannily tuned in to the current zeitgeist of traditional gender power dynamics that continue to challenge newly empowered women...Von Stuelpnagel keeps the action moving smoothly and helps illuminate the humor in this deftly constructed and idea-rich play.”\n\nRead more"
+  "showScoreExcerpt": "“McTeer proves to be a woman not only for all seasons, but particularly and triumphantly for this one...The part gives McTeer not only a potentially career-defining star turn, but one that is uncannily tuned in to the current zeitgeist of traditional gender power dynamics that continue to challenge newly empowered women...Von Stuelpnagel keeps the action moving smoothly and helps illuminate the humor in this deftly constructed and idea-rich play.”\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McTeer proves to be a woman not only for all seasons, but particularly and triumphantly for this one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with strong praise for lead performance ('triumphantly', 'career-defining') and positive assessment of direction and writing ('deftly constructed', 'idea-rich'), but low confidence due to limited text availability. | GPT-4o: The excerpt praises McTeer's performance as potentially career-defining and highlights the play's relevance and humor. The language suggests strong enthusiasm, but with only one excerpt, confidence is low. | Gemini: The excerpt praises McTeer's performance as a \"career-defining star turn\" and highlights the play's relevance and humor, suggesting a strong positive recommendation. However, confidence is low due to the limited excerpt. | Kimi: The excerpt offers enthusiastic praise for McTeer's 'career-defining' performance and calls the play 'deftly constructed and idea-rich,' warranting the upper end of the Positive bucket. However, given the single-excerpt warning that such quotes may be cherry-picked, confidence is reduced and the score stays within Positive rather than Rave territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:59:38.741Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

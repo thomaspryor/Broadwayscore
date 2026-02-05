@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "As the play ended, this critic thought about another-sadly invisible-play about desire, grief, need, and sexuality standing somewhere off in the shadows, while center stage Burn This stood shakily on its feet, bursting with energy and completely out of time.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BURN-THIS-Opens-On-Broadway-Starring-Keri-Russell-And-Adam-Driver-20190416"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BURN-THIS-Opens-On-Broadway-Starring-Keri-Russell-And-Adam-Driver-20190416",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Burn This stood shakily on its feet, bursting with energy and completely out of time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic describes the show as 'shakily on its feet' and 'completely out of time' while acknowledging it has energy. The image of a better play 'standing somewhere off in the shadows' suggests disappointment. Single excerpt warning applies - this mixed assessment could represent a broader negative review. | GPT-4o: The excerpt suggests a mixed impression, noting the play's energy but also its instability and outdated feel. The lack of a full review and the single excerpt warning lead to a low confidence assessment. | Gemini: The review seems to have mixed feelings about the play, noting its energy but also feeling that it is 'out of time' and comparing it unfavorably to an 'invisible' play. Given the single excerpt and lack of a clear recommendation, a mixed score is appropriate. | Kimi: The excerpt contains mixed signals: 'bursting with energy' suggests strong performances, but 'shakily on its feet' implies instability and 'completely out of time' suggests the material feels dated or inappropriate for the current moment. With only one excerpt available, the verdict is ambiguous but leans neither strongly positive nor negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:11:09.281Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

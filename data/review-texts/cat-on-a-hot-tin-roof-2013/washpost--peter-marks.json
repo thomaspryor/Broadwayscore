@@ -12,5 +12,60 @@
   "bwwExcerpt": "At least in the new 'Cat,' the sense of menace activated by Hinds's Big Daddy provides a rationale for the mean-spiritedness spreading through his household like an oil slick. The husky-voiced Johansson, who won a Tony for her performance two years ago as the all-too-desirable dockworker's niece in Arthur Miller's 'A View From the Bridge,' holds her own here, managing a persuasive account of Maggie's quick wits and pragmatic focus. What's missing, though, is her drawing a bead on the character's insecurities, the desperation that compels Maggie to cling to a lie - and to a man who reviles her. (Walker, who played a rock star president in the irreverent-history musical 'Bloody Bloody Andrew Jackson,' lives up to his character's name here, imbuing Brick with a stony, one-note sullenness.)",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What's missing, though, is her drawing a bead on the character's insecurities, the desperation that compels Maggie to cling to a lie.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed assessment - praises Hinds and acknowledges Johansson 'holds her own' but identifies significant missing elements in her performance and criticizes Walker as 'one-note.' With only one curated excerpt available, confidence is low. | GPT-4o: The review praises certain performances, particularly Johansson's, but notes significant shortcomings in character portrayal and emotional depth. The excerpt suggests a mixed impression overall. | Gemini: The review praises Johansson's performance but also notes what's missing in her portrayal and criticizes Walker's performance. The overall sentiment is mixed, with both positive and negative aspects highlighted. | Kimi: The excerpt offers qualified praise for Hinds's menace and Johansson's surface-level portrayal, but emphasizes significant shortcomings: Johansson misses the character's desperation and Walker delivers a 'one-note' performance, suggesting an uneven production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:25:28.655Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

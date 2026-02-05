@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Having the biggest ball up there is probably Marshall-Oliver as the heedless troublemaker Beverly, who clearly loves to get under her sister's skin. But as deliciously tangy as her performance is, Marshall-Oliver also exudes a life-giving warmth; Beverly may be reckless and feckless, but her heart is full. As La'Trice, who has clearly inherited not just her mother's dress sense but also her impish personality, Mizzelle is also a vivid presence, not least when she's slyly blackmailing Logan to \"p",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHICKEN-BISCUITS-Opens-on-Broadway-What-Did-the-Critics-Think-20211010"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHICKEN-BISCUITS-Opens-on-Broadway-What-Did-the-Critics-Think-20211010",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But as deliciously tangy as her performance is, Marshall-Oliver also exudes a life-giving warmth",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clear praise for individual performances ('deliciously tangy', 'life-giving warmth', 'vivid presence'), but text is incomplete mid-sentence and may not represent full review sentiment. Conservative positive score given excerpt warning. | GPT-4o: The excerpt praises performances, highlighting warmth and vivid presence. However, with only one curated quote, the overall sentiment is uncertain, suggesting a mildly positive review. | Gemini: The excerpt focuses on praising specific performances, indicating a positive but possibly qualified recommendation. Given the limited text, confidence is low. | Kimi: Single excerpt features enthusiastic praise for cast members using words like 'deliciously tangy,' 'life-giving warmth,' and 'vivid presence.' Following instructions for clearly positive curated excerpts, scoring at upper end of Positive bucket with low confidence due to excerpt-only availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:37:12.685Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

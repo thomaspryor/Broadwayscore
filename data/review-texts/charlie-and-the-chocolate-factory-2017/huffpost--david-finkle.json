@@ -12,5 +12,60 @@
   "bwwExcerpt": "There's enough on-stage pizzazz to keep the pre-teens charged and cheering at the story of chocolate-loving Charlie hoping to tour Willy Wonka's mysterious factory on a hard-to-come-by golden ticket. This recommendation is in large part due to Dahl's understanding that the under-12 contingent gets a big kick out of seeing their fictional peers behaving badly. It's also in large part due to Mark Thompson's imaginative sets that include all sorts of comically menacing apparatus and comically menacing out-sized animals.",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHARLIE-AND-THE-CHOCOLATE-FACTORY-Opens-its-Doors-Updating-Live-20170423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHARLIE-AND-THE-CHOCOLATE-FACTORY-Opens-its-Doors-Updating-Live-20170423",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's enough on-stage pizzazz to keep the pre-teens charged and cheering",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear recommendation ('This recommendation') with praise for the production's appeal to its target audience and design elements, but focuses on children's entertainment value rather than broader theatrical merit. | GPT-4o: The excerpt highlights the show's appeal to its target audience with 'on-stage pizzazz' and imaginative sets, suggesting a positive experience for pre-teens. However, the single excerpt warning and lack of full context necessitate a cautious approach, placing it at the lower end of the Positive range. | Gemini: The review excerpt indicates a positive experience, particularly for pre-teens, and praises the sets. However, it's a single excerpt, so confidence is low. | Kimi: The excerpt offers a qualified recommendation focused on the show's appeal to pre-teens and imaginative design, using language ('enough pizzazz') that suggests it meets the needs of its target audience without being an unqualified rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:35:12.390Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

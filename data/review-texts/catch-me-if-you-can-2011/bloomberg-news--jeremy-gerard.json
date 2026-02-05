@@ -12,5 +12,60 @@
   "bwwExcerpt": "The show itself? An odd duck. The songs are by the 'Hairspray' duo of Marc Shaiman and Scott Wittman, who are very adept at writing and arranging pop songs that fly by effortlessly without leaving much of an impression. They're played by a sensational onstage swing band.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-CATCH-ME-IF-YOU-CAN-Updating-Live-20110410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-CATCH-ME-IF-YOU-CAN-Updating-Live-20110410",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An odd duck... songs that fly by effortlessly without leaving much of an impression.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt describes the show as 'an odd duck' and criticizes the songs as forgettable despite being 'effortless.' Praises the band but overall tone suggests ambivalence. Single excerpt warning requires caution about full verdict. | GPT-4o: The excerpt describes the show as 'an odd duck' and notes the songs 'fly by effortlessly without leaving much of an impression', suggesting a mixed reaction. The positive mention of a 'sensational onstage swing band' does not outweigh the overall lukewarm sentiment. | Gemini: The review excerpt notes the songs are well-crafted but lack lasting impact, and the show is described as an 'odd duck.' The presence of a sensational band is a positive, but overall the sentiment leans towards mixed. | Kimi: The excerpt describes the show as 'an odd duck' and criticizes the songs for lacking lasting impact despite technical proficiency, while offering strong praise for the onstage band. With only one curated excerpt available, the overall verdict remains ambiguous but leans mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:26:21.338Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

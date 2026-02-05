@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "So where did this handsome, but fundamentally inert production of 'Carousel' go wrong? One way is that, instead of approaching the story of Julie Jordan (Mueller) and her doomed romance with Billy Bigelow (Henry) with a fresh, contemporary point-of-view, O'Brien has doubled down on the nostalgia factor, giving us a 'Carousel' that -- save for the darkish lighting scheme and the absence of an actual onstage carousel -- looks and feels like something from 70 years ago. (The set design here is by Santo Loquasto; Brian MacDevitt did the lighting.)",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So where did this handsome, but fundamentally inert production of 'Carousel' go wrong?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the production 'fundamentally inert' and questions where it 'went wrong,' indicating disappointment despite acknowledging it's 'handsome.' However, with only one excerpt available, the full verdict may be more nuanced. | GPT-4o: The excerpt criticizes the production for being 'inert' and overly nostalgic, suggesting a lack of freshness or contemporary relevance. The tone is negative, indicating disappointment with the production's approach. | Gemini: The excerpt describes the production as \"fundamentally inert\" and criticizes the director's reliance on nostalgia, suggesting a negative overall assessment. Given it's a single excerpt, confidence is low. | Kimi: The critic describes the production as 'fundamentally inert' and criticizes the director's nostalgic approach as dated, indicating a failure to recommend despite acknowledging visual appeal. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:19:37.521Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

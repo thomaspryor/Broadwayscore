@@ -36,9 +36,9 @@
   "duplicateTextOf": "nytimes--charles-isherwood.json",
   "wordCount": 457,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-05T15:04:19.494Z",
+  "rejectedAt": "2026-02-05T20:29:18.676Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about JavaScript and retrieving article content, making it impossible to determine the critic's final verdict.; openai: The text is truncated with a message about enabling JavaScript, indicating incomplete content and preventing a full assessment.; gemini: The review is cut off mid-sentence, so the final verdict is unknown.",
+  "rejectionReasoning": "claude: The review text is truncated and ends with an error message about retrieving article content and enabling JavaScript, indicating this is incomplete/corrupted web content rather than a complete review.; gemini: The review is cut off mid-sentence, preventing a clear understanding of the final verdict.",
   "promptVersion": "5.2.0"
 }

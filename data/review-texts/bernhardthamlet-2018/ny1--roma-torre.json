@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Theresa Rebeck is a gutsy playwright. In writing about Sarah Bernhardt's quest to play Hamlet in 1897, she created a nearly impossible challenge for herself, seeking an actress who could live up to Bernhardt's iconic status as the greatest actress alive. Rebeck did get lucky, casting the incomparable Janet McTeer, but while topically resonant, \"Bernhardt/Hamlet\" is dramatically inert. Mixing fact and fiction, Rebeck taps into our contemporary feminist leanings, detailing Bernhardt's determination to take on the role of Shakespeare's most famous protagonist. 19th Century society wasn't ready for a woman — no matter how great an actress — to play a man.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/bernhardthamlet/",
@@ -21,5 +21,60 @@
   "sources": [
     "dtli",
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While topically resonant, 'Bernhardt/Hamlet' is dramatically inert.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic calls the play 'dramatically inert,' 'overlong and muddled,' and concludes 'A better play about Bernhardt will have to wait,' clearly not recommending despite praising McTeer's casting. | GPT-4o: The review criticizes the play as 'dramatically inert' and 'overlong and muddled,' indicating a negative assessment. However, the text is an excerpt, so the full context is missing, leading to low confidence. | Gemini: The review acknowledges intriguing issues and interesting threads, but ultimately finds the play dramatically inert, overlong, and muddled, suggesting a mixed assessment. | Kimi: Though the critic praises the casting and topical ambition, the verdict is clearly negative: the play is described as 'dramatically inert,' 'overlong and muddled,' with the final dismissal that 'a better play about Bernhardt will have to wait,' indicating audiences should skip this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:03:05.531Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

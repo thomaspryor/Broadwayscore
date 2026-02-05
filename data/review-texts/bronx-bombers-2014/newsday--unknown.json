@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Scolari plays Yogi with obvious affection for a legend bent with age but unbowed in team loyalty, a man panicked at the sense of the team ever splitting apart. There is plenty of inside-baseball inside-stuff, explained with relative grace. And for those of us who don't much care, designer David C. Woolard amuses us with the changing styles of the uniforms.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scolari plays Yogi with obvious affection for a legend bent with age but unbowed in team loyalty.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows appreciation for lead performance and production design, but limited positive language and acknowledgment that non-baseball fans need accommodation suggests qualified recommendation. | GPT-4o: The excerpt highlights positive aspects such as the affectionate portrayal by Scolari and the amusing design elements, suggesting a generally positive view but with mild enthusiasm. The lack of a full review and single excerpt warning necessitates a cautious, lower-end positive score. | Gemini: The review excerpt is mildly positive, praising the actor's portrayal and the designer's work. Given the single excerpt, I'm scoring it at the lower end of the positive range. | Kimi: The excerpt offers qualified praise for the performance ('obvious affection'), writing ('relative grace'), and design ('amuses us'), suggesting a gentle, tempered recommendation without enthusiastic endorsement or criticism.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:07:55.455Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

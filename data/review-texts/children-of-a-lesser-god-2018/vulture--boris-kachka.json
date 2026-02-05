@@ -12,5 +12,60 @@
   "bwwExcerpt": "More significant than the dated language or sexual politics is the play's core problem, which is also the problem of its characters. Sarah complains that hearing people who fail to respect her speechlessness 'will never truly be able to come inside my silence and know me.' Well, neither can we - barring some major rewrite that might allow us, for example, to read her words in supertitles instead of pausing the action as James recites them.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-CHILDREN-OF-A-LESSER-GOD-on-Broadway-20180411"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-CHILDREN-OF-A-LESSER-GOD-on-Broadway-20180411",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "More significant than the dated language or sexual politics is the play's core problem, which is also the problem of its characters.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic identifies fundamental structural problems with the play that prevent audience connection with the main character. However, this is only one excerpt and may not represent the full review verdict. | GPT-4o: The excerpt highlights significant issues with the play's core problem and suggests a need for a major rewrite. The lack of full text and single excerpt warning suggest caution, but the critique is clear enough to classify as negative. | Gemini: The excerpt identifies a core problem with the play and expresses a lack of connection with the characters, suggesting a negative overall assessment. Given the single excerpt and lack of full context, confidence is low. | Kimi: The excerpt identifies a fundamental flaw preventing audience connection with the protagonist, noting that only a 'major rewrite' could remedy the issue, indicating the production does not work as staged.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:42:07.879Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 44,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

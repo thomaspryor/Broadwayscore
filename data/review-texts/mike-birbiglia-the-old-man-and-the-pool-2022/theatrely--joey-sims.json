@@ -37,5 +37,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20221114021158/https://www.theatrely.com/post/mike-birbiglia-dives-back-in-to-broadway-with-the-old-man-and-the-pool-review",
   "contentTier": "complete",
   "wordCount": 886,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "His latest solo work is diverting and occasionally hilarious, but ultimately feels a bit tossed-off, an agreeable but flimsy set which washes over you nicely but leaves little lasting impression.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges Birbiglia's comedic skill and finds moments hilarious, but criticizes the show as unfocused, structurally weak, and ultimately insubstantial. The overall assessment is neither positive nor negative recommendation. | GPT-4o: The review notes that while the show is occasionally hilarious and diverting, it lacks a strong narrative focus and leaves little lasting impression, resulting in a mixed overall assessment. | Gemini: The review acknowledges funny moments and Birbiglia's skill, but ultimately finds the show unclear, flimsy, and lacking a strong narrative connection. This leans towards a mixed assessment. | Kimi: While the critic praises Birbiglia's expert timing and specific funny routines, the overall assessment finds the show structurally unfocused ('dangling threads'), thematically unclear, and ultimately forgettable ('leaves little lasting impression'), stopping well short of a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:38:41.320Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

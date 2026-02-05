@@ -34,5 +34,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251116220240/https://www.theatrely.com/post/good-night-oscar-play-it-again-sean-review",
   "contentTier": "complete",
   "wordCount": 566,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like this production, it proves that a gifted performer can lift the spirit against all odds.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review heavily criticizes the script as 'wooden, unoriginal' and direction as 'farcical,' but praises Hayes' 'stellar' performance and the final piano sequence as 'audacious, haunting.' The mixed verdict acknowledges flaws while finding redemption in the lead performance. | GPT-4o: The review praises Sean Hayes' performance as captivating and highlights moments where the play shines, particularly when Hayes is the focus. However, it also criticizes the script and direction as wooden and unoriginal. The overall tone suggests a recommendation based on Hayes' performance, but with notable reservations about other aspects of the production. | Gemini: The review praises Hayes' performance as stellar and a haunting acting coup, but criticizes the script and direction as wooden and farcical. It's recommended for the performance, but with reservations. | Kimi: While criticizing the wooden script and stiff supporting cast, the reviewer ultimately recommends the show for Sean Hayes' 'stellar' and 'radiant' performance, calling the finale an 'acting coup' that proves 'a gifted performer can lift the spirit against all odds.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:31:12.337Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

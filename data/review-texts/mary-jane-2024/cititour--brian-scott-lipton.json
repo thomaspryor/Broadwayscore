@@ -40,5 +40,59 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 583,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "an intelligent yet understated work that nonetheless almost blunts its own power",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the writing, performances (especially McAdams), direction, and supporting cast, calling it 'intelligent' and 'smartly written.' While noting the first half doesn't quite add up to much, the critic finds the second half gains urgency and meaning, with McAdams proving 'up to this daunting task.' | Gemini: The review is generally positive, highlighting McAdams' performance and the play's intelligent approach, but notes that it almost blunts its own power. The critic appreciates the play's delicate understanding of life's challenges. | Kimi: The critic admires the intelligence of the writing and praises Rachel McAdams and the supporting cast highly, but criticizes the first half for failing to coalesce emotionally and finds the matter-of-fact approach leaves the audience thinking rather than feeling, creating a respectful but distant experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:37:52.055Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

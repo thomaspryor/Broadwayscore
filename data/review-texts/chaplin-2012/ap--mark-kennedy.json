@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The new musical 'Chaplin' opens with the sight of the Little Tramp balanced on a tightrope high above the stage. It's a fitting metaphor for the show itself – a wobbly, high stakes attempt to avoid gravity. Guess what happens? Gravity wins…Rob McClure in the title role certainly deserves more than this to work with. He has clearly put his heart and soul into playing Chaplin – he not only sings and acts with feeling, he also tightropes, roller-skates blindfolded, does a backflip without spilling any of his drink, and waddles with a cane like a man who has studied hours of flickering footage. But save for one sublime scene in which the various inspirations behind Chaplin's decision to embody the Little Tramp is revealed, the show McClure leads is equal parts flat, overwrought and tiresome.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show McClure leads is equal parts flat, overwrought and tiresome.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising McClure's committed performance and acknowledging one 'sublime scene,' the critic delivers a clearly negative verdict calling the show 'wobbly,' 'flat, overwrought and tiresome.' The gravity metaphor suggests failure. Single excerpt warning noted - this appears to be the concluding assessment. | GPT-4o: The review describes the show as 'flat, overwrought and tiresome' despite praising McClure's performance. The overall tone suggests a negative verdict, with the show failing to meet expectations. | Gemini: The review praises the lead actor's performance but ultimately finds the show itself to be \"flat, overwrought and tiresome.\" This indicates a negative overall assessment. | Kimi: While the critic praises Rob McClure's committed physical performance, the overall verdict is clearly negative, describing the show as 'wobbly,' 'flat,' and 'tiresome' with only one sublime scene. The metaphor of gravity winning indicates the production fails to achieve its high-stakes aims.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:32:26.748Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Music and movement are central to the production. Camille A Brown's poetic and triumphant choreography and Jason Michael Webb's arrangements of traditional black spirituals provide cultural context and connect these boys to their history. These interludes also permit the characters to express themselves in ways that are not verbal - to move beyond words.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Sing-The-Praises-Of-CHOIR-BOY-On-Broadway-20190108",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Camille A Brown's poetic and triumphant choreography and Jason Michael Webb's arrangements of traditional black spirituals provide cultural context and connect these boys to their history.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt contains clear praise with positive adjectives ('poetic and triumphant') and acknowledges the production's cultural significance. However, with only one curated excerpt available, this may not represent the full review verdict, so confidence is low and score is in upper Positive range. | GPT-4o: The excerpt praises the choreography and musical arrangements as 'poetic and triumphant,' suggesting a strong positive impression. However, the single excerpt warning and lack of a full review text reduce confidence. | Gemini: The excerpt uses words like \"triumphant\" and \"poetic\" to describe the choreography, suggesting a positive experience. Given that it's a single excerpt, I'm placing it in the upper end of the positive range. | Kimi: The excerpt describes the choreography as 'poetic and triumphant' and praises the musical arrangements for providing cultural context, indicating a clearly positive assessment of the production's staging. Following the single-excerpt guidance for clearly positive quotes, this falls in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:48:51.941Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

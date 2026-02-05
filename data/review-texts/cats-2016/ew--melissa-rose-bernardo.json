@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "I have a bone to pick with Andrew Lloyd Webber about Cats. For the past few days, since I saw the first-ever Broadway revival at the Neil Simon Theatre, that's all I've had running through my head. And I'm not talking about 'Memory,' the showstopper made famous by Barbra Streisand before Cats even opened on Broadway in 1982. I mean the almost hypnotically repetitive prologue 'Jellicle Songs for Jellicle Cats'; the jazzy, doo-wop ode to Jennyanydots, 'The Old Gumbie Cat'; and the singsongy 'Magical Mister Mistoffelees' ('Oh! Well I never! Was there ever a cat so clever...'). Will anything - short of the 'It's a Small World' theme song - banish these insistent melodies from my brain?",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Will anything - short of the 'It's a Small World' theme song - banish these insistent melodies from my brain?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic describes songs as 'hypnotically repetitive' and 'insistent melodies' that won't leave their head, framing this as complaint but suggesting the music is memorable and catchy. However, this is only one excerpt and may not represent the full review verdict. | GPT-4o: The excerpt focuses on the repetitive and insistent nature of the melodies, which suggests a mixed sentiment. The critic does not explicitly recommend or discourage seeing the show, and the tone is ambiguous. | Gemini: The reviewer focuses on the earworm quality of the songs, without a clear positive or negative assessment of the show itself. The single excerpt makes it difficult to determine a clear recommendation, so I've classified it as mixed with low confidence. | Kimi: While the critic frames their reaction as a 'bone to pick' about persistent earworms, the description of songs as 'jazzy,' 'doo-wop,' and 'hypnotically repetitive' alongside the acknowledgment of 'Memory' as a 'showstopper' suggests appreciation for the music's effectiveness and catchiness. However, with only one curated excerpt available, the overall verdict remains unclear. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:29:38.971Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

@@ -35,5 +35,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 643,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's pure hilarity watching Broderick's Roy ultimately go to extraordinary physical and emotional lengths.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review clearly recommends the show despite criticizing the age-inappropriate casting in the first two acts. The critic praises both leads' performances, calls it 'often-uproarious and unquestionably crowd-pleasing,' and suggests the final act alone 'might even arguably be worth the extremely high price.' | GPT-4o: The review praises the production as 'uproarious' and 'crowd-pleasing,' highlighting the chemistry and performances of the lead actors. Despite some reservations about casting choices, the overall tone is enthusiastic. | Gemini: The review is generally positive, highlighting the chemistry between Parker and Broderick and their performances, especially in the final act. However, it mentions some issues with casting and the length of certain playlets, indicating reservations. | Kimi: While the critic notes significant suspension of disbelief required for the casting against character descriptions, the performances are praised as 'revelation' and 'perfection,' the production deemed 'uproarious' and 'crowd-pleasing,' and the final verdict suggests it's worth the high ticket price.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:43:00.165Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 77,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

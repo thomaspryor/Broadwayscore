@@ -30,5 +30,11 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 415,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T20:51:29.215Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This is a review of the touring production of Wicked in Orlando, not the current Broadway production in New York; openai: The text reviews a touring production of 'Wicked' in Orlando, not the current Broadway run.; kimi: This review covers the North American tour production of 'Wicked' performing in Orlando, Florida, not the current Broadway run at the Gershwin Theatre.",
+  "promptVersion": "5.2.0"
 }

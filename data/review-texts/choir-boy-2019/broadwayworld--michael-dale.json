@@ -12,5 +12,60 @@
   "bwwExcerpt": "While the play takes place in contemporary times, McCraney and director Trip Cullman's warmly affectionate tone gives it the kind of nostalgic feel that's familiar to the genre. And the issues that arise in the piece do have a touch of familiarity. What isn't familiar, though, is placing a young gay man of color - one who feels he has nothing to hide - at the center of it all, considerably raising the significance of placing a play like Choir Boy in front of Broadway audiences.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Sing-The-Praises-Of-CHOIR-BOY-On-Broadway-20190108"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Sing-The-Praises-Of-CHOIR-BOY-On-Broadway-20190108",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "considerably raising the significance of placing a play like Choir Boy in front of Broadway audiences.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows appreciation for the production's 'warmly affectionate tone' and emphasizes its cultural importance, but as a single curated quote, it may not represent the full review verdict. | GPT-4o: The excerpt praises the tone and significance of the play, indicating a positive view. However, the single excerpt warning suggests caution, leading to a low confidence score at the lower end of the Positive range. | Gemini: The review excerpt uses positive language like \"warmly affectionate tone\" and suggests the play is significant. However, due to the limited excerpt, the confidence is low. | Kimi: The excerpt offers clear praise for the production's warmly affectionate tone and highlights the significance of centering a gay Black protagonist for Broadway audiences, indicating a positive recommendation despite noted familiar elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:47:37.535Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

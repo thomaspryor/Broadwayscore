@@ -12,5 +12,60 @@
   "bwwExcerpt": "The play made stars of two actresses, the late Phyllis Frelich, who won the best actress Tony in 1980, and Marlee Matlin, who won an Oscar for the 1986 film. The same will surely hold true for Ridloff, a former Miss Deaf America who was first hired to familiarize the revival's director, Kenny Leon, with the intricacies of sign language. She plays Sarah with a don't-mess-with-me vengeance, careful to not let vulnerabilities sneak through as she refuses the school's efforts to teach her to speak, explaining, 'I don't do things I can't do well.'",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-CHILDREN-OF-A-LESSER-GOD-on-Broadway-20180411"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-CHILDREN-OF-A-LESSER-GOD-on-Broadway-20180411",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The same will surely hold true for Ridloff, a former Miss Deaf America who was first hired to familiarize the revival's director, Kenny Leon, with the intricacies of sign language.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt strongly praises Lauren Ridloff's performance, predicting she'll become a star like previous actresses in the role. However, with only one curated excerpt available, this could be cherry-picked praise from a more mixed review, warranting reduced confidence. | GPT-4o: The excerpt praises Ridloff's performance, suggesting she will achieve similar acclaim as past stars. The positive tone indicates a recommendation, but the single excerpt limits confidence. | Gemini: The critic predicts Ridloff will become a star, which is a strong endorsement. Given the single excerpt, I'm scoring it high in the positive range. | Kimi: The excerpt offers enthusiastic praise for Lauren Ridloff's performance, predicting it will make her a star, though as a single curated excerpt, the overall show verdict is unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:39:46.986Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

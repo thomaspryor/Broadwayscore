@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Chaplin seems to be dragging some ghostly vestiges of its road self. (Under another title, Limelight, it underwhelmed at La Jolla Playhouse.) The first act relies heavily on a creaky film conceit. (We’re supposed to be on a bare soundstage, watching Chaplin’s film of his own life — though the only meaningful sign of this is a recurring slate boy, calling out scene changes.) This frame feels entirely unnecessary; worse, it means the actors have to wear unevenly applied “silent-film” greasepaint.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chaplin seems to be dragging some ghostly vestiges of its road self.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt focuses entirely on negative aspects: 'underwhelmed' previous production, 'creaky film conceit', 'entirely unnecessary' framing device, and poor makeup application. However, with only one excerpt available, the full review verdict remains unclear. | GPT-4o: The review excerpt criticizes the production for relying on a 'creaky film conceit' and describes the frame as 'entirely unnecessary,' indicating a negative assessment. The mention of 'underwhelmed' at a previous venue suggests continued issues. | Gemini: The excerpt focuses on negative aspects of the production, such as a \"creaky film conceit\" and \"unevenly applied greasepaint.\" Given the single excerpt, I'm scoring it as negative with low confidence. | Kimi: The excerpt criticizes the production's central framing device as 'creaky' and 'unnecessary' while noting technical flaws in the makeup execution, indicating a clear negative assessment of the show's staging.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:32:53.873Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

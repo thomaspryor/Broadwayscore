@@ -29,5 +29,11 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 921,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-05T20:52:16.356Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a review of the Wicked movie sequel, not the Broadway musical production; openai: The text is a review of the film 'Wicked: For Good,' not a Broadway theater production.; gemini: This is a review of the Wicked movie, not the Broadway show.; kimi: This text is a review of the film 'Wicked: For Good' (the movie sequel), not the Broadway stage production. It repeatedly refers to 'the new movie,' 'film's score,' and compares it to other films like 'The Empire Strikes Back.'",
+  "promptVersion": "5.2.0"
 }

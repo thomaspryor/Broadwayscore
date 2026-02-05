@@ -13,5 +13,59 @@
   ],
   "bwwExcerpt": "In the long and ongoing parade of movies-turned-stage musicals, none of Woody Allen's work has made that transition - until now. And of Allen's nearly 50 films to date, it makes sense that Bullets Over Broadway should first reach the destination referred to in its title. The film honours the theatre in all its vainglorious splendour, so why not bring Allen and Douglas McGrath's Oscar-nominated screenplay home, as it were?",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BULLETS-OVER-BROADWAY-Opens-Updating-LIVE-20140410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BULLETS-OVER-BROADWAY-Opens-Updating-LIVE-20140410",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The film honours the theatre in all its vainglorious splendour, so why not bring Allen and Douglas McGrath's Oscar-nominated screenplay home, as it were?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This excerpt is purely contextual setup about the adaptation concept with no evaluative content about the actual Broadway production. With only this non-evaluative text available, cannot determine the critic's recommendation. | Gemini: The excerpt primarily discusses the adaptation's logic rather than providing a clear recommendation. The phrase \"why not bring...home\" suggests mild approval but lacks strong evaluative language, placing it in the mixed category. | Kimi: Single excerpt offers only contextual analysis of why the film suits stage adaptation ('makes sense,' 'why not') without evaluating actual production quality, performances, or direction. Lacks clear evaluative verdict on the show itself, warranting low confidence and a low-end Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:10:03.689Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

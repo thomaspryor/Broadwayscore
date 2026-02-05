@@ -12,5 +12,60 @@
   "bwwExcerpt": "In my nearly half century of Broadway theatergoing, I've never witnessed such a second-act reversal of fortune as what's going on now at the Lunt-Fontanne Theatre, where 'Charlie and the Chocolate Factory' opened Sunday. Only in retrospective can you see glimmers of hope in the musical's desultory first half. Just one song by Marc Shaiman and Scott Wittman hits the mark in this retelling of Roald Dahl's tale of four children who win golden tickets to Willy Wonka's long-shuttered chocolate factory.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHARLIE-AND-THE-CHOCOLATE-FACTORY-Opens-its-Doors-Updating-Live-20170423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHARLIE-AND-THE-CHOCOLATE-FACTORY-Opens-its-Doors-Updating-Live-20170423",
+  "assignedScore": 55,
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Just one song by Marc Shaiman and Scott Wittman hits the mark in this retelling of Roald Dahl's tale.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Despite mentioning a 'second-act reversal of fortune,' the critic describes the first half as 'desultory' and says only one song 'hits the mark.' Single excerpt limits full assessment. | GPT-4o: The excerpt describes a significant issue with the first half of the show, with only one song hitting the mark. The mention of a 'second-act reversal of fortune' suggests some improvement, but overall the tone is mixed, with both positive and negative elements. | Gemini: The review describes a significant improvement in the second act, but the first act is described as \"desultory.\" Given the limited excerpt, it's difficult to determine the overall recommendation, but the mixed signals suggest a score in the Mixed range. | Kimi: The excerpt describes the first half as 'desultory' and notes that only one song hits the mark, indicating significant criticism of the production quality. While the 'second-act reversal' phrase creates some ambiguity about the second half, the overall evaluative language is negative. Given this is a single curated excerpt, confidence is low. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:36:11.295Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

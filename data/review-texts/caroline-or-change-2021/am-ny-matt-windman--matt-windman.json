@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Some of director Michael Longhurst's ideas pay off (displaying the town's statute of a Confederate soldier both before and after it is vandalized, emphasizing the swampy physical environment, a post-climactic rainfall special effect) and others are awkwardly inserted and strained (having many scenes performed on a narrow balcony level, incorporating a turntable). \"Caroline, or Change\" ought to be better appreciated today. Not only have people had more time to absorb its score",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Some of director Michael Longhurst's ideas pay off and others are awkwardly inserted and strained.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt describes mixed directorial choices - some successful, others problematic. Text cuts off mid-sentence about appreciation, suggesting incomplete assessment. Mixed bucket with low confidence due to limited, potentially cherry-picked excerpt. | GPT-4o: The excerpt provides a balanced view, noting both successful and awkward elements of the production. The lack of a clear positive or negative verdict suggests a mixed review. Confidence is low due to the single excerpt warning. | Gemini: The review excerpt presents both positive and negative aspects of the direction, suggesting a mixed overall impression. The lack of a clear recommendation and the limited text contribute to the low confidence. | Kimi: While acknowledging uneven directorial choices—praising some staging effects but finding others awkwardly inserted—the excerpt concludes that the show deserves greater appreciation, suggesting a qualified but genuine recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:16:43.974Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

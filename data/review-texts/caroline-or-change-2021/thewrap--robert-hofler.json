@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Longhurst's revival is strongly sung, led by the astounding vocals of Sharon D. Clarke in the title role. One of the delights of \"Caroline\" is watching household objects come to life in an adult musical, and it's hard to imagine the prominent roles of the Washing Machine (Arica Jackson), the Radio (Nasia Thomas, Nya, and Harper Miles), the Moon (N'Kenge), and the Dryer and the Bus (Kevin S. McAllister) being more robustly impersonated vocally. Sitting through this \"Carol",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Longhurst's revival is strongly sung, led by the astounding vocals of Sharon D. Clarke in the title role.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt contains consistent praise for the vocal performances and staging choices ('strongly sung', 'astounding vocals', 'robustly impersonated vocally'), but the text appears cut off mid-sentence, making the full verdict unclear. | GPT-4o: The excerpt praises the vocal performances, particularly Sharon D. Clarke's, and describes the production as a delight. Given the single excerpt warning, the positive tone suggests a strong recommendation, but confidence is low due to the limited text. | Gemini: The review excerpt praises the vocals and performances, indicating a positive experience. However, due to the limited text, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the vocal performances and revival, using words like 'astounding' and 'delights,' warranting a score in the upper Positive range per instructions for clearly positive excerpts. Confidence is low due to the single-excerpt format and truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:17:56.971Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

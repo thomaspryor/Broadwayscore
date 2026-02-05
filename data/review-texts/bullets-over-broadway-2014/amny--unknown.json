@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "In an ideal universe, the new musical 'Bullets Over Broadway,' based on the 1994 Woody Allen film, would shut down for a few months so that a talented songwriter - perhaps David Yazbek ('Dirty Rotten Scoundrels' or the young team of Benj Pasek and Justin Paul ('A Christmas Story') - could pen an original score for it. To its credit, 'Bullets Over Broadway' is mildly entertaining...Although the show contains flashy design elements, amusing one-liners and generally decent performances, the decision to use jazz standards from the 1920s and 1930s instead of an original, well-integrated score proves to be absolutely fatal. By pigeonholing these familiar tunes into the existing plot, they arrive randomly and have almost nothing to do with the characters or plot...Zach Braff works too hard at portraying the stressed-out playwright. His singing voice is pretty thin as well. On the other hand, Marin Mazzie is ideally cast as the grandly theatrical Sinclair, and Vincent Pastore of 'The Sopranos' is effortlessly effective as Valenti.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BULLETS-OVER-BROADWAY-Opens-Updating-LIVE-20140410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BULLETS-OVER-BROADWAY-Opens-Updating-LIVE-20140410",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "To its credit, 'Bullets Over Broadway' is mildly entertaining.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls the show 'mildly entertaining' and praises some elements (design, one-liners, certain performances), but identifies a 'absolutely fatal' flaw in the score integration. The mixed praise and criticism, combined with the damning assessment of the musical structure, places this in the Mixed range. | GPT-4o: The review highlights significant flaws, particularly with the score, but acknowledges some entertainment value and decent performances. The overall tone suggests a mixed reception, with both positive and negative elements. | Gemini: The review acknowledges some positive aspects (design, one-liners, some performances) but ultimately finds the musical flawed due to the use of jazz standards and some weak performances, leading to a mixed assessment. | Kimi: The critic declares the central concept of using pre-existing songs to be 'absolutely fatal' to the production and suggests the show should shut down to be rewritten, outweighing the faint praise that it is 'mildly entertaining' with decent performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:08:57.558Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

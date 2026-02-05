@@ -33,9 +33,9 @@
   "contentTier": "needs-rescrape",
   "wordCount": 331,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-05T15:25:56.603Z",
+  "rejectedAt": "2026-02-05T20:51:18.100Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about retrieving content and enabling JavaScript; openai: The text is incomplete and contains a technical error message about retrieving the article content, making it unscoreable.",
+  "rejectionReasoning": "claude: The text ends with a technical error message about retrieving article content and enabling JavaScript - this is incomplete/corrupted content, not a complete review; openai: The text is incomplete and contains a technical issue message, indicating it's not a complete review.",
   "promptVersion": "5.2.0"
 }

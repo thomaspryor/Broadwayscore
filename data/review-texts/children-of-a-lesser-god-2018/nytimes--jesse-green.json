@@ -12,5 +12,60 @@
   "bwwExcerpt": "The pungency of sign language is not the subject of Mark Medoff's 'Children of a Lesser God,' which opened on Wednesday at Studio 54 in a mixed bag of a Broadway revival directed by Kenny Leon. But it's a wonderful bonus to the play's fierce rivalry between those who promote spoken English as the highest attainable form of communication and those who are staunch partisans of silence.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-CHILDREN-OF-A-LESSER-GOD-on-Broadway-20180411"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-CHILDREN-OF-A-LESSER-GOD-on-Broadway-20180411",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a mixed bag of a Broadway revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly calls this 'a mixed bag of a Broadway revival,' which directly places it in mixed territory. However, with only one excerpt available, the full verdict remains unclear. | GPT-4o: The excerpt describes the production as a 'mixed bag,' indicating a balance of positive and negative elements. The lack of a full review and the single excerpt warning suggest a cautious approach, leading to a mid-range Mixed score. | Gemini: The review excerpt describes the production as a \"mixed bag.\" Without the full review, it's difficult to determine the overall recommendation, but \"mixed bag\" suggests a score in the Mixed range. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:41:01.623Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 66,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

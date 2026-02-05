@@ -12,5 +12,60 @@
   "bwwExcerpt": "But Driver keeps the show aloft. Turns out Kylo Ren is immensely compelling onstage - a genuine weirdo in the hulking, strangely graceful body of a former Marine, unafraid of huge, ugly displays of emotion, blazing through Pale's aggrieved, hilarious, F-word-peppered rants with the dexterity of a dancer like Robbie. At one point, he gently puts his hand on Russell's breastbone, and it's genuinely unsettling how much of her tiny torso his big human paw covers. He's an unstoppable force and an immovable object. And he's funny as heck. Whether he's steaming over the injustices of the world - 'Half my fuckin' adult life, I swear to Christ, has been spent looking for a place to park!' - or padding around the room wearing one of Anna's little happi coats, struggling to get his enormous limbs through the weird double armholes, Driver's got a keen sense for comedy of multiple sizes, from the subtle background lazzo to the over-the-top tirade. It's fun to watch him interact with Uranowitz's wonderfully wry Larry - who can't help smiling, as if from behind his hand, at such a splattery, honest display of personality - and with Furr's Burton, who's sympathetic despite his many blind spots, and who really doesn't mean to bust out his aikido training on Pale. Pale just has a way of ... bringing things out in people.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BURN-THIS-Opens-On-Broadway-Starring-Keri-Russell-And-Adam-Driver-20190416"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BURN-THIS-Opens-On-Broadway-Starring-Keri-Russell-And-Adam-Driver-20190416",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Driver keeps the show aloft. Turns out Kylo Ren is immensely compelling onstage - a genuine weirdo in the hulking, strangely graceful body of a former Marine.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Driver's performance with vivid, enthusiastic description ('immensely compelling', 'unstoppable force', 'funny as heck'). However, this is only one excerpt focusing on the lead actor, so the overall show verdict may be different. | GPT-4o: The excerpt focuses on Adam Driver's compelling performance, highlighting his ability to keep the show engaging with humor and emotional range. The positive tone and detailed praise for Driver suggest a strong recommendation, though the single excerpt limits confidence. | Gemini: The review excerpt focuses heavily on Adam Driver's performance, praising his comedic timing and stage presence. While it's just one excerpt, the language is strongly positive, suggesting a recommendation. | Kimi: The excerpt enthusiastically praises Adam Driver's performance as 'immensely compelling' and 'funny as heck,' noting he keeps the show 'aloft,' but as a single curated excerpt potentially cherry-picked by aggregators, confidence is low regarding the full review's overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:12:21.602Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

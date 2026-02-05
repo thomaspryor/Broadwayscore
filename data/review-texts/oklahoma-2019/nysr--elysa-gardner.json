@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2019/04/07/oklahoma-back-on-the-farm-but-without-the-bright-golden-haze/",
-  "showScoreExcerpt": "\"While I’m relieved to report that Broadway’s new ‘Oklahoma!’ is not as joyless as its last was, this is, in truth, faint praise...Superb comedic actors, but if they have an affinity for the sense of heightened reality crucial to a form in which characters regularly burst into song and dance, Fish gives them no real showcase for it...I found myself missing the sense of magic and transcendence that comes from seeing life, with all its pleasure and pain, elevated by this particular art form.\"\n\nRead more"
+  "showScoreExcerpt": "\"While I’m relieved to report that Broadway’s new ‘Oklahoma!’ is not as joyless as its last was, this is, in truth, faint praise...Superb comedic actors, but if they have an affinity for the sense of heightened reality crucial to a form in which characters regularly burst into song and dance, Fish gives them no real showcase for it...I found myself missing the sense of magic and transcendence that comes from seeing life, with all its pleasure and pain, elevated by this particular art form.\"\n\nRead more",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fun is not joy, though, and too often in this Oklahoma! I found myself missing the sense of magic and transcendence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with balanced praise (strong women performers, musical arrangements) and significant criticisms (strained vocals, loss of musical theater magic). The critic finds some elements compelling but concludes the production lacks the transcendence essential to the art form. | GPT-4o: The review presents a mix of positive and negative elements, praising some performances and musical arrangements but criticizing the overall lack of magic and transcendence. The original 3/5 star rating supports a mixed classification. | Gemini: The review acknowledges some positive aspects, particularly the performances of the women and the musical arrangements, but ultimately finds the production lacking in magic and transcendence. The critic's overall impression is mixed, leaning slightly towards negative. | Kimi: The 3/5 star rating reflects qualified praise for Rebecca Naomi Jones and the orchestrations, but significant criticism of the lead vocals, staging choices, and a final verdict that the production lacks the 'magic and transcendence' of the art form.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:40:40.594Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

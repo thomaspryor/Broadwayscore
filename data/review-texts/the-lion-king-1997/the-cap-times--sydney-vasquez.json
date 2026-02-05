@@ -30,5 +30,11 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 555,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T20:47:11.597Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is of the national touring production at Overture Hall in Madison, not the current Broadway production.; openai: The review is about a national tour of 'Disney's The Lion King' in Madison, not the current Broadway production.; kimi: This review covers the national tour production in Madison, Wisconsin, not the current Broadway run in New York City.",
+  "promptVersion": "5.2.0"
 }

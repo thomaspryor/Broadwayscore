@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "And even if that Bluetooth device that's stuck in his ear for most of the night has someone cueing him for every line...Pacino's not letting on. He's detailed, committed and always interesting to watch. The play itself is pretty meat-and-potatoes Mamet with the star playing a standard Mametian patriarchal, alpha male son of a slime ball...While Pacino's Mickey is erratic and caustic, speaking in an unpredictable cadence and tone, Christopher Denham's Carson is soft and unobtrusively in control of every potential crisis. Though onstage for nearly the entire play, he spends much of it quietly handling matters in the background, while Mickey is bullying his way through an unseen cast of supporting characters...but the balance he adds to the play is invaluable and the most effective asset of director Pam MacKinnon's production.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He's detailed, committed and always interesting to watch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows measured praise for Pacino's performance and production elements, but describes the play itself as 'pretty meat-and-potatoes Mamet.' Given this is a curated quote that may not represent full verdict, scoring conservatively in lower Positive range. | GPT-4o: The review praises Pacino's performance and highlights Christopher Denham's contribution as invaluable, but describes the play as 'meat-and-potatoes Mamet,' suggesting a standard and unremarkable experience. The single excerpt provides mixed signals, with positive elements but no strong recommendation. | Gemini: The review praises Pacino's performance and Denham's contribution, while noting the play itself is standard Mamet. Given the single excerpt and positive tone, a score in the lower positive range is appropriate. | Kimi: While praising Pacino's committed performance and MacKinnon's direction as invaluable, the critic characterizes the Mamet play as standard 'meat-and-potatoes' fare, indicating a qualified but positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:42:55.170Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

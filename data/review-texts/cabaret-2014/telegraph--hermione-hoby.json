@@ -12,5 +12,60 @@
   "bwwExcerpt": "Michelle Williams, an enormously gifted screen actress, is making her Broadway debut with this role. Doll-like in her blonde bob, she's more girlish than fatale, playing it with an unsteady, skittish desperation and a plummy, naughty accent that seems directly modelled on Renee Zellwegger's Bridget Jones. No bad thing, but occasionally it slips and falters and, like the accent, the spoken parts of her performance sometimes feel wobbly. She becomes more and more compelling, however, as the show goes on, singing and dancing with a furious, madcap quality and by the time she delivers the title number she's at the height of her power...Alan Cumming, made up like an Otto Dix painting, is perfect as the delicious and depraved Master of Ceremonies and he sets the tone for a show that's as riotously risqué as it is ultimately ruthless.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She becomes more and more compelling, however, as the show goes on, singing and dancing with a furious, madcap quality.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed assessment of Williams' performance that acknowledges early shakiness but concludes with praise for her growth and power, plus strong praise for Cumming. Single excerpt limits confidence in overall verdict. | GPT-4o: The review acknowledges some initial performance issues but ultimately praises the compelling nature of the performances, particularly highlighting Michelle Williams' growth and Alan Cumming's role. The single excerpt suggests a positive view with some reservations. | Gemini: The review praises the performances of Williams and Cumming, but notes some wobbliness in Williams' performance. The overall tone is positive, but with reservations, placing it in the lower end of the positive bucket. | Kimi: The excerpt offers enthusiastic praise for both lead performances, describing Cumming as 'perfect' and Williams as reaching 'the height of her power,' despite noting initial wobbliness in her accent. The overall tone is clearly positive, though the single-excerpt format limits confidence in the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:15:07.057Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

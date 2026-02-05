@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The current Broadway production, which opens Thursday night directed by Jack O'Brien, does not stint on the darkness of the source material, and it doesn't resolve or make easy for a modern audience one of its most pronounced storylines-the violence Billy Bigelow (Joshua Henry, who will surely be Tony-nominated for a third time for his excellently sung performance) shows to his wife, Julie Jordan (the Tony-winning Jessie Mueller), and his repeated lack of repentance for it.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Joshua Henry, who will surely be Tony-nominated for a third time for his excellently sung performance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Single excerpt shows praise for lead performance and production choices, but discusses problematic source material without clear overall verdict. Low confidence due to limited text. | GPT-4o: The excerpt highlights the production's commitment to the dark themes of the source material but does not provide a clear recommendation. Praise for Joshua Henry's performance suggests some positive elements, but the focus on unresolved and challenging storylines indicates a mixed reception. The single excerpt limits confidence in the overall verdict. | Gemini: The review excerpt focuses on the show's handling of difficult themes and mentions strong performances, but doesn't offer a clear recommendation. The lack of a definitive verdict and the focus on the show's darkness suggest a mixed assessment. | Kimi: The excerpt offers strong praise for the lead performance ('excellently sung') and commends the production for not stinting on the source material's darkness, indicating a clearly positive assessment of these elements, though the single-quote limitation necessitates low confidence. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:18:53.252Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

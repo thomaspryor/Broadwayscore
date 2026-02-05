@@ -32,5 +32,11 @@
   "textStatus": "truncated",
   "sourceMethod": "playwright",
   "wordCount": 524,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T20:51:55.099Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is about the national touring production of Wicked at Old National Centre/The Murat in Indianapolis, not the current Broadway production.; openai: The text reviews a national touring production of 'Wicked', not the current Broadway run.; kimi: This review covers the National Touring Company production of Wicked at the Old National Centre/The Murat in Indianapolis, not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

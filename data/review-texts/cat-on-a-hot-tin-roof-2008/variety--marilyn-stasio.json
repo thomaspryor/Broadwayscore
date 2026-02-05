@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Nicole Ari Parker, Blair Underwood and Daphne Rubin-Vega, the stars of Emily Mann's striking production of \"A Streetcar Named Desire,\" offer no subtle psychological insights into Blanche, Stanley and Stella. But the physical beauty and sexual magnetism they bring to these iconic characters would surely delight Tennessee Williams -- along with auds who might appreciate some kicks with their culture. The only downside to the production coup of looking good (witness the han",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STREETCAR-NAMED-DESIRE-Returns-to-Broadway-Updating-LIVE-20120422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The physical beauty and sexual magnetism they bring to these iconic characters would surely delight Tennessee Williams.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt describes the production as 'striking' and suggests it would 'delight Tennessee Williams' and audiences seeking entertainment. However, with only one curated excerpt available that appears cut off mid-sentence, confidence is low as the full verdict may differ. | GPT-4o: The excerpt praises the physical and magnetic performances of the cast, suggesting a positive experience for audiences. However, it also notes a lack of subtle psychological insights, indicating some reservations. The single excerpt and lack of full context lower confidence. | Gemini: The review praises the actors' physical beauty and sexual magnetism, suggesting a positive experience for audiences. However, the phrase \"no subtle psychological insights\" indicates a reservation, leading to a score in the lower-middle of the positive range. Confidence is low due to the truncated text. | Kimi: Single excerpt offers qualified praise emphasizing the cast's physical magnetism and 'striking' production values while noting the lack of psychological insight, indicating a lukewarm recommendation typical of the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:23:04.994Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

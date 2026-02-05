@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Williams brings a wicked gleam to the role, her Sally both magnetically seductive and heartbreakingly fragile, with a voice that can purr like velvet or cut like a blade.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "web-search",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this atmospheric revival is a bracing ride",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong superlative language throughout: 'thrilling production', 'even sharper this time', 'shattering', 'bracing ride', 'knockout', 'riveting', 'precision-tooled'. Unqualified praise for all elements with vivid, enthusiastic descriptions. Confidence is medium due to excerpt-only format. | GPT-4o: The review is filled with superlatives and praises the production, performances, and direction. The critic describes it as a 'thrilling production' and highlights the standout performances, indicating a strong recommendation. | Gemini: The review uses positive language such as \"thrilling production\", \"sharper this time around\", \"knockout\", and \"riveting\". While it is an excerpt, the overall tone is clearly positive and recommends seeing the show. | Kimi: The excerpts contain unqualified superlatives calling the production 'thrilling,' 'sharper,' and a 'bracing ride' with 'knockout' and 'shattering' performances, indicating the highest level of recommendation despite the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:13:26.334Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 91,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

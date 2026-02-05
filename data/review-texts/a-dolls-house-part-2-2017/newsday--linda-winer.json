@@ -55,5 +55,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20210302044740/https://www.newsday.com/entertainment/theater/a-doll-s-house-part-2-review-worthy-broadway-sequel-to-ibsen-s-shocker-1.13534478",
   "contentTier": "complete",
   "wordCount": 474,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "closed the door on this remarkable Broadway season with dazzling theatrical fireworks",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'dazzling,' 'magnificent,' 'remarkable,' and 'audacious.' The critic finds no significant flaws and uses enthusiastic language consistently. | GPT-4o: The review is filled with superlatives and praise for the production, performances, and writing, describing it as 'dazzling', 'audacious', and 'magnificent'. The critic strongly recommends the show, indicating a high level of enthusiasm and no significant reservations. | Gemini: The review is overwhelmingly positive, using phrases like \"dazzling theatrical fireworks\" and praising the performances and writing. The critic clearly recommends seeing the show. | Kimi: The review delivers consistent superlatives ('dazzling', 'magnificent', 'daringly acted') across writing, performance, and direction with no reservations expressed, calling it a 'psychologically serious, deliciously amusing tragicomedy' that closes the season with 'theatrical fireworks'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:23:10.425Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 89,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

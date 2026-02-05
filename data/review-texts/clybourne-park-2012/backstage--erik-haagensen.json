@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Director Pam McKinnon keeps things crackling with her sharp direction, and the top-notch cast has further refined its comic timing. The standout remains Frank Wood, who makes the seething Russ into the play’s sole multidimensional character and has found a way to register Dan with greater force than before...Ultimately, “Clybourne Park” entertains without ever unsettling.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ultimately, 'Clybourne Park' entertains without ever unsettling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises direction and cast performances but concludes the show 'entertains without ever unsettling,' suggesting it's enjoyable but doesn't fully achieve its dramatic potential. Single excerpt limits confidence in overall verdict. | GPT-4o: The review praises the direction and cast, particularly Frank Wood, but notes the play entertains without being unsettling. The single excerpt suggests a positive but not strongly enthusiastic verdict. | Gemini: The review praises the direction, cast, and a specific performance, but notes that the play \"entertains without ever unsettling,\" suggesting a lack of deeper impact. Given the single excerpt, I'm scoring it as a positive with reservations. | Kimi: The excerpt praises the sharp direction and top-notch performances but qualifies the recommendation with the final verdict that the production entertains without achieving the play's intended unsettling impact, suggesting a mildly positive assessment based on this single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:51:47.403Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 77,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

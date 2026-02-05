@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rebeck has written a play that is both historically grounded and emotionally urgent, finding in Bernhardt's story a meditation on art, age, and the lengths to which performers will go to keep performing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rebeck has written a play that is both historically grounded and emotionally urgent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the writing as 'historically grounded and emotionally urgent' with meaningful thematic content. However, this is only one curated quote, so confidence is low - the full review verdict could differ significantly. | GPT-4o: The excerpt praises the play as 'historically grounded and emotionally urgent,' suggesting a strong positive impression. Given the single excerpt warning, the score is set at the upper end of the Positive range. | Gemini: The excerpt suggests a positive assessment of the play's writing and themes, but without more context, it's difficult to gauge the overall strength of the recommendation. I'm placing it in the positive bucket, but with low confidence due to the limited information. | Kimi: Single excerpt offers clear praise for the play's writing and thematic depth, indicating a solid positive recommendation, though limited context reduces confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:06:12.269Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

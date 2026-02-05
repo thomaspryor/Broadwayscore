@@ -34,5 +34,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251212025309/https://www.theatrely.com/post/new-york-new-york-its-up-to-you-review",
   "contentTier": "complete",
   "wordCount": 833,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Your mileage will vary on whether New York, New York and it's all singin', all dancin' peppiness is for you.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises the spectacular production values and Stroman's direction but criticizes the weak book, superfluous characters, and especially Ryan's performance as 'a black hole of charisma.' The critic explicitly states 'your mileage will vary' and describes it as pageant rather than proper musical, indicating mixed feelings. | GPT-4o: The review praises the direction, choreography, and some performances, but criticizes the lead actor and the book. It suggests the show may appeal to some but not others, indicating a mixed reception. | Gemini: The review highlights both positive and negative aspects. It praises the direction, choreography, and some performances, but criticizes the book and one of the lead performances. The final verdict suggests a conditional recommendation. | Kimi: The reviewer praises Stroman's choreography, Boritt's set design, and Uzele's vocal performance while criticizing the superficial book, superfluous supporting characters, and a particularly weak lead performance by Colton Ryan, resulting in a qualified recommendation best suited for casual entertainment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:39:43.531Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

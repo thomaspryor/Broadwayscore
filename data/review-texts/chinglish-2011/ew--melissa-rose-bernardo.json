@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "If the whole show were simply about getting a laugh out of bad Chinese-to-English signs, it would get really old really quickly. (Of course, one must devote a certain amount of attention to a placard that reads 'F--- the Certain Price of Goods.' That sign should actually read 'Dry Goods Pricing Department' and the convoluted explanation - concerning Communism, Chairman Mao, and the simplification of writing 'beautiful, arcane, devilishly complicated' Chinese characters - is priceless.) And the mistranslations would be silly if they weren't, in fact, true: The play is inspired by the Asian-American playwright's own business trips to China, where he saw a handicapped restroom labeled 'Deformed Man's Toilet.'",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If the whole show were simply about getting a laugh out of bad Chinese-to-English signs, it would get really old really quickly.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows mixed assessment - finds some elements 'priceless' but warns the concept would 'get really old really quickly.' Without full review context, this suggests qualified appreciation with concerns about sustainability. | GPT-4o: The excerpt highlights a potentially amusing aspect of the show but also suggests it could become tiresome. The lack of a clear positive or negative verdict and the single excerpt warning lead to a mixed classification with low confidence. | Gemini: The excerpt focuses on the inspiration and humor derived from mistranslations, but doesn't offer a clear recommendation. The tone is observational and descriptive, suggesting a mixed or neutral stance. | Kimi: While acknowledging the premise risks becoming one-note, the critic clearly appreciates the show's authentic humor, describing specific comedic explanations as 'priceless.' The qualified tone and single-excerpt limitation warrant a lower Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:45:11.986Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

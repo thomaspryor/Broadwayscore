@@ -12,5 +12,60 @@
   "bwwExcerpt": "Why does this latest production, a production first seen in London, feel too small, too meager, and not magic enough? Charlie and the Chocolate Factory needs to go big, surely, or not at all...The show is far from a disaster, just far too timid. Borle and Flynn are charming flipsides of the same quirky coin, and as compadres are lovely to watch-even if their final glass lift journey, which modestly raises them from the ground before just as modestly bringing back them back down, seems to speak more generally to this cautious, not-outrageous-enough production. There a critically lacking wonder and magic here-and Charlie and Wonka deserve buckets of both.",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHARLIE-AND-THE-CHOCOLATE-FACTORY-Opens-its-Doors-Updating-Live-20170423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHARLIE-AND-THE-CHOCOLATE-FACTORY-Opens-its-Doors-Updating-Live-20170423",
+  "assignedScore": 47,
+  "llmScore": {
+    "score": 47,
+    "confidence": "medium",
+    "range": {
+      "low": 42,
+      "high": 52
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is far from a disaster, just far too timid.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising the lead actors, the critic finds the production fundamentally inadequate - 'too small, too meager,' lacking essential 'wonder and magic.' The overall verdict is disappointment with the production's timid approach. | GPT-4o: The review highlights significant shortcomings in the production's scale and magic, despite some praise for performances. The overall tone suggests a lack of recommendation, but not a complete pan. | Gemini: The review acknowledges some positive aspects (Borle and Flynn) but ultimately finds the production lacking in wonder and magic, suggesting it's not a disaster but also not particularly impressive. | Kimi: While praising the lead performances as charming, the critic finds the production fundamentally lacking in the necessary wonder and scale, calling it meager and timid rather than the outrageous spectacle the material demands.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:34:35.367Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

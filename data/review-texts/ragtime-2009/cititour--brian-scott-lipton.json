@@ -36,5 +36,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 774,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this truly unforgettable production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Enthusiastic praise throughout with superlatives like 'magnificent revival,' 'amazing,' 'stunning,' and 'brilliant.' Concludes with strong recommendation not to 'pass up the chance to witness this truly unforgettable production.' | GPT-4o: The review is filled with superlatives and unqualified praise for the production, performances, and design, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, praising the performances, score, and overall impact of the revival. The critic explicitly states that one should not pass up the chance to see this \"truly unforgettable production.\" | Kimi: The review offers unqualified praise for the revival's direction, performances, and score, calling it 'magnificent,' 'brilliantly' staged, and 'truly unforgettable,' with explicit insistence that audiences should not miss it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:44:14.538Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Butterworth has written what amounts to an extended shaggy-dog story, one that keeps promising revelations that never quite materialize.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Butterworth has written what amounts to an extended shaggy-dog story, one that keeps promising revelations that never quite materialize.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Butterworth has written what amounts to an extended shaggy-dog story, one that keeps promising revelations that never quite materialize.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic describes the work as a 'shaggy-dog story' that fails to deliver on its promises, indicating disappointment. However, with only one excerpt available, confidence is low as the full verdict may be more nuanced. | GPT-4o: The excerpt suggests a lack of fulfillment in the play's narrative, indicating a mixed reception. However, with only one excerpt available, the confidence is low. | Gemini: The excerpt describes the writing as a \"shaggy-dog story\" that doesn't deliver, indicating a negative assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt offers a direct criticism of the play's book as an anticlimactic, unsatisfying narrative that sets up expectations it fails to fulfill, suggesting the production does not work. However, confidence is low given this is a single curated excerpt that may not capture the full verdict or other production elements like performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:54:12.890Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

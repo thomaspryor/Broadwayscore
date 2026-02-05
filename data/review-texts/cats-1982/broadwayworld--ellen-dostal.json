@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Yes, it's dated, (the prominent appearance of a boom box is a not so subtle reminder) and it will never win over fans looking for intellectual fare, but it does a remarkable job of paying homage to the man who owned the genre at a high point in musical theatre's evolution. The original production won seven Tony awards, ran for 18 years on Broadway, and has been seen by more than 73 million people around the world. Say what you will, the CATS phenomenon is nothing to sneeze at.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-CATS-on-Tour-20191030",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it does a remarkable job of paying homage to the man who owned the genre at a high point in musical theatre's evolution",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the show is dated and won't appeal to all audiences, but praises it as doing 'a remarkable job' and emphasizes its historic success. This is a qualified positive recommendation, though the single excerpt warning requires caution about the full review's sentiment. | GPT-4o: The excerpt acknowledges the show is dated and not for those seeking intellectual fare, but praises its homage to the genre's evolution. The positive note about its historical significance suggests a mild recommendation. | Gemini: The review acknowledges the dated nature of the show but praises its homage to the genre and the man who owned it. The phrase \"remarkable job of paying homage\" suggests a positive recommendation, albeit with reservations. | Kimi: While acknowledging the show is dated and lacks intellectual depth, the critic praises its remarkable execution and cultural significance, offering a qualified recommendation. The single excerpt format warrants caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:28:33.271Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

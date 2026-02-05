@@ -40,5 +40,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 572,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite their herculean efforts, though, 'Pictures from Home' works better as a play to discuss over dinner than a fully engrossing viewer experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises the performances as 'incomparable' and 'must-see' but finds the play itself disappointing - 'small-stakes affair' that feels like 'eavesdropping on banal conversations.' The overall assessment is neither a clear recommendation nor discouragement. | GPT-4o: The review acknowledges strong performances but criticizes the play for lacking engagement and stakes, suggesting it's more interesting to discuss than to watch. This indicates a mixed reception. | Gemini: The review praises the actors but finds the play itself less engrossing and ultimately small-stakes. This indicates a mixed reaction, leaning slightly negative. | Kimi: While the critic praises the cast (particularly Lane's 'must-see turn'), the overall verdict is that the play lacks dramatic stakes and compares the experience to watching someone else's boring home movies, ultimately recommending against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T20:42:22.983Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

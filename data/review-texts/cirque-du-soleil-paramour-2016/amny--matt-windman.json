@@ -12,5 +12,60 @@
   "bwwExcerpt": "All things considered, 'Paramour' is a lame, harmless alternative for international tourists who want to see a Broadway show but would prefer something with the Cirque du Soleil imprimatur than a long-running hit like 'Chicago,' 'The Lion King' or 'The Phantom of the Opera.' Frankly, I think they can do better.",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Cirque-du-Soleils-PARAMOUR-Opens-on-Broadway-Updating-Live-20160525"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Cirque-du-Soleils-PARAMOUR-Opens-on-Broadway-Updating-Live-20160525",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Frankly, I think they can do better.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Calls the show 'lame' and suggests audiences would be better served seeing other productions. Clear negative recommendation despite acknowledging it as 'harmless.' | GPT-4o: The review describes the show as 'lame' and suggests that audiences 'can do better,' indicating a lack of recommendation. The tone is dismissive, though not extremely harsh, placing it in the Negative bucket. | Gemini: The review calls the show \"lame\" and suggests that tourists can do better, indicating a negative recommendation. The single excerpt and lack of a clear rating make confidence medium. | Kimi: The critic explicitly advises against seeing the show, dismissing it as 'lame' and directing tourists toward superior Broadway options like 'Chicago' or 'The Lion King' instead.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:49:43.410Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

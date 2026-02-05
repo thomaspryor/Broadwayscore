@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And while the play is not entirely successful at juggling what amounts to three themes, it is eminently entertaining, chock full of humor, heart, and smart and snappy dialog, with fine acting and strong production values.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges significant structural flaws (underwritten romance, unsuccessful theme juggling) but concludes it's 'eminently entertaining' with strong positives. Single excerpt warning suggests caution - placing at lower end of Positive bucket. | GPT-4o: The excerpt praises the play as 'eminently entertaining' with 'fine acting and strong production values,' despite noting some thematic juggling issues. The positive tone and strong praise for various elements suggest a solid recommendation. | Gemini: The review states the play is \"eminently entertaining\" with \"fine acting and strong production values\" despite not being \"entirely successful\" at juggling themes. This suggests a positive but not rave review. | Kimi: While the excerpt notes specific weaknesses (an underwritten romance and difficulty juggling themes), the critic's final assessment is strongly positive, praising the show as 'eminently entertaining' with commendations for the lead performance, humor, dialogue, and production values.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:04:39.260Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

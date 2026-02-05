@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "But even within the new play's sampling of seven cross-dressers, the meaning of the act varies widely. For some it's a hobby, for some a sexual fetish, for some a substitute for the worse sin of gayness, and for some an expression of deep allegiance to the feminine side of their soul. For most, regardless, it's also a jumble...In any case, the way these motives come together, or don't, to advance the cause of liberation for 'self-made women' is the subject of this fascinating if somewhat musty play...Luckily, Joe Mantello's disciplined direction pulls the script swiftly past its punch lines and sops up some of its sentimentality as well. The design and the cast (which also includes John Cullum, Larry Pine, Nick Westrate, and Lisa Emery) are up to the Manhattan Theatre Club's usual high standards. Still, none of these fine attributes can quite disguise the odor of over-ingratiation that clings to Casa Valentina like day-old Prince Matchabelli.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CASA-VALENTINA-Opens-on-Broadway-Updating-LIVE-20140423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CASA-VALENTINA-Opens-on-Broadway-Updating-LIVE-20140423",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, none of these fine attributes can quite disguise the odor of over-ingratiation that clings to Casa Valentina like day-old Prince Matchabelli.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds the play 'fascinating' and praises Mantello's direction and the cast, but ultimately concludes with a negative metaphor about 'over-ingratiation' clinging like stale perfume, suggesting significant reservations outweigh the positives. | GPT-4o: The review describes the play as 'fascinating if somewhat musty' and notes positive aspects like direction and design, but also mentions an 'odor of over-ingratiation.' The mixed signals and lack of a clear recommendation lead to a mixed classification. | Gemini: The review uses phrases like \"fascinating if somewhat musty play\" and acknowledges the high standards of the cast and direction, but also notes an \"odor of over-ingratiation.\" This suggests a mixed reaction, not strongly positive or negative. | Kimi: The critic praises Mantello's disciplined direction and the cast's high standards but ultimately finds the play itself 'musty' and suffering from 'over-ingratiation,' creating an ambivalent assessment where production values can't overcome script issues.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:21:21.307Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

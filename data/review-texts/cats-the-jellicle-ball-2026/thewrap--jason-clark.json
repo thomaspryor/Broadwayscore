@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "...the production's hopes of updating one of Broadway's more maligned hits - and justifying its popularity - seems to have floated up to the Heaviside Layer that these cats so desperately crave. This revival provokes but one response to the show's onetime tagline: now and whatever.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival provokes but one response to the show's onetime tagline: now and whatever.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic dismisses the revival's attempts at updating the show, saying its hopes have 'floated away' and responding with indifference ('now and whatever'). However, with only one excerpt available, confidence is low as this could be cherry-picked. | GPT-4o: The excerpt suggests the revival fails to update or justify the show's popularity, implying a negative verdict. However, with only one excerpt, confidence is low. | Gemini: The review excerpt suggests the revival fails to update the show and justify its popularity, leading to a negative assessment. The phrase \"now and whatever\" implies indifference or disappointment. | Kimi: The critic dismisses the revival's attempt to update the show, suggesting its hopes 'floated up' to the Heaviside Layer (disappeared) and punning on the famous tagline 'now and forever' to deliver an indifferent 'whatever' verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:31:49.746Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

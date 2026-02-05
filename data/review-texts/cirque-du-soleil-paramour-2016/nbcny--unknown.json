@@ -13,5 +13,62 @@
   ],
   "bwwExcerpt": "...The $25 million 'Paramour' goes heavy on the company's signature stunt sequences to our relief, because there isn't much to be extracted from the often eye-glazing book and score...'Paramour' earns props for the ways it employs aerialists and acrobats as doppelgängers for the leads. Thanks to clever costuming conceits, we almost believe we're watching the trio in some blur of elastic trickery...Kushnier...makes the most of his cliché-ridden role, exuding confidence and hubris as needed. Lewis...has a beautiful voice and gamely follows the worn path laid out ahead.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Cirque-du-Soleils-PARAMOUR-Opens-on-Broadway-Updating-Live-20160525"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Cirque-du-Soleils-PARAMOUR-Opens-on-Broadway-Updating-Live-20160525",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there isn't much to be extracted from the often eye-glazing book and score",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: Praises the spectacular Cirque du Soleil elements and some performances, but criticizes the fundamental story and music as 'eye-glazing' and 'cliché-ridden.' Mixed recommendation focusing on spectacle over substance. | GPT-4o: The review highlights issues with the book and score, describing them as 'eye-glazing'. While there is praise for the stunt sequences and some performances, the overall tone suggests more negatives than positives, leading to a negative verdict. | Gemini: The review praises the acrobatics and some performances but criticizes the book and score. The overall tone is mixed, suggesting it has some redeeming qualities but is not a strong recommendation. | Kimi: The critic praises the aerial stunts and performances as impressive and clever, expressing relief that the production emphasizes these elements to compensate for an 'eye-glazing' book and score, indicating a qualified but clear recommendation. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:51:06.709Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 27,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

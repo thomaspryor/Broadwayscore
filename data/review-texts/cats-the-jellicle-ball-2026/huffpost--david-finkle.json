@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "It's undoubtedly coincidence that Cats arrives on cats' feet just after the national political conventions have concluded. Patrons seeing it this week and in the weeks to come may find themselves reminded of those congregations. Truth to tell, they're more likely to see the Democrat Convention echoed rather than the Republican Convention. The diversity of the former outshines the divisiveness of the latter-the many unison dance routines being a visual metaphor for cohesion and promise. And it may be that when Grizabella, a woman, is selected to rise to new heights, more than a few spectators will flash on the Democrat's 2016 nominee ascending to her next vaunted level.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The diversity of the former outshines the divisiveness of the latter-the many unison dance routines being a visual metaphor for cohesion and promise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt uses positive language like 'cohesion and promise' and draws favorable comparisons to a diverse political convention. However, the lack of a clear evaluative statement about the show's quality and the single excerpt warning necessitate a cautious approach. | Gemini: The review excerpt focuses on the show's potential political parallels rather than providing a direct evaluation of its artistic merits. It neither recommends nor discourages seeing the show, but suggests an interesting angle for interpretation. Due to the single excerpt, confidence is low. | Kimi: Single excerpt offers an intellectual observation finding positive metaphorical value in the choreography and narrative, citing 'cohesion and promise,' but lacks direct evaluative language or clear recommendation due to limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:31:31.129Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 72,
+    "geminiScore": 60,
+    "kimiScore": 72,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

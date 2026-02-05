@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Mamet has come up with something that is not quite an extended monologue, but almost so...China Doll is almost exclusively Pacino on the phone having endless conversations with unseen characters. The advantages of this are several...We never hear what the other people are saying, although one imagines that Mickey Ross--in context--doesn't listen to what other people are saying, anyway...In Act Two, though, we fall into a web of plotting that becomes more and more intricate...As the events spin out, we wonder if maybe the playwright is purposely keeping things enigmatic so he doesn't have to do the work of concisely figuring it out. Ultimately, it feels like a stunt; by keeping the other side of the discussion silent, the playwright doesn't have to justify what Mickey is saying...If China Doll has its weaknesses--and it has--it also has Al Pacino. And Al Pacino, on this occasion, is enough.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If China Doll has its weaknesses--and it has--it also has Al Pacino.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic identifies significant structural weaknesses in the play (calling it a 'stunt' and questioning if Mamet is avoiding the work of proper plotting), but concludes that Pacino's performance redeems the experience enough to make it worthwhile. | GPT-4o: The review acknowledges weaknesses in the play's structure and execution, but highlights Al Pacino's performance as a redeeming factor. The excerpt suggests a mixed reception, with Pacino's presence being a significant positive element. | Gemini: The review points out weaknesses in the play's plotting and structure, but acknowledges that Al Pacino's performance is a significant redeeming factor. This suggests a mixed recommendation. | Kimi: The critic criticizes the play's structural gimmickry as a 'stunt' and finds the plotting overly intricate and unresolved, but ultimately concludes that Al Pacino's star performance outweighs these substantial weaknesses and justifies attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:43:16.710Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

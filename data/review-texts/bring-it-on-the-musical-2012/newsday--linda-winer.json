@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This is a harmless entertainment, at least for the audience, cheerfully put together by such offbeat Tony winners as writer Jeff Whitty (\"Avenue Q\") composer-lyricist Lin-Manuel Miranda (\"In the Heights\") and composer Tom Kitt (\"Next to Normal\"). But for all the positive messages and appealing contributions from these new-generation pedigrees, the hero of the show must surely be director-choreographer Andy Blankenbuehler (\"In the Heights\"), who turned theater-trained singers and dancers into con",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRING-IT-ON-Opens-on-Broadway-Updating-Live-20120801",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a harmless entertainment, at least for the audience, cheerfully put together by such offbeat Tony winners",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review calls it 'harmless entertainment' and 'cheerfully put together' with praise for the creative team, but 'harmless' suggests faint praise. However, the text cuts off mid-sentence and appears incomplete, making the full verdict unclear. | GPT-4o: The excerpt describes the show as 'harmless entertainment' with 'positive messages' and 'appealing contributions,' indicating a mildly positive tone. However, the single excerpt warning suggests caution, so a lower score within the Positive range is appropriate. | Gemini: The review calls the show \"harmless entertainment\" and praises the creative team, but the excerpt is truncated, so confidence is low. I am scoring it as positive but with reservations. | Kimi: The critic offers faint but genuine praise, calling the show 'harmless entertainment' that is 'cheerfully put together' with 'appealing contributions,' while singling out the director as the 'hero.' The mild phrasing and single truncated excerpt warrant a lower Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:07:28.149Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

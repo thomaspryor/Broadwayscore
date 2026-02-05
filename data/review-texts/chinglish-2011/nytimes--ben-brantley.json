@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Non-Chinese speakers should have no difficulty interpreting Chinglish...That’s not just because of the helpful supertitles — largely translations of mistranslations, in which English is merrily mutilated, and the principal source of this production’s mirth. Mr. Hwang’s comedy, about a bewildered American businessman hoping to make his fortune in capitalist China, is laid out with the frame-by-frame exactness of a comic strip...Chinglish only rarely achieves the sort of momentum that sends audiences into the ether.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chinglish only rarely achieves the sort of momentum that sends audiences into the ether.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt acknowledges the show's comedic elements and clear structure but concludes it lacks essential momentum. Single excerpt warning applies - this appears to be from a mixed review focusing on structural weaknesses. | GPT-4o: The review highlights some positive aspects, such as the humor from mistranslations, but ultimately notes that the play lacks momentum. The single excerpt suggests a mixed reception, warranting a score in the Mixed bucket. | Gemini: The review describes the play's setup and humor, but ultimately states that it \"only rarely achieves the sort of momentum that sends audiences into the ether,\" suggesting a mixed or lukewarm reception. Given the single excerpt, confidence is low. | Kimi: The excerpt acknowledges the production's humor ('source of this production's mirth') and accessibility, but criticizes its pacing and emotional impact, noting it 'only rarely achieves' transcendent momentum. With only one excerpt available, the mixed signals suggest a middle-ground assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:45:46.348Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
