@@ -11464,18 +11464,6 @@
     "timestamp": "2026-02-04T17:25:14.813Z"
   },
   {
-    "reviewId": "a-view-from-the-bridge-2010/hollywood-reporter--unknown.json",
-    "showId": "a-view-from-the-bridge-2010",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/arthur-millers-a-view-bridge-839854",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (17): mamma mia!, appropriate, home, purpose, betrayal...",
-    "textLength": 9612,
-    "timestamp": "2026-02-04T17:26:28.379Z"
-  },
-  {
     "reviewId": "act-one-2014/hollywood-reporter--unknown.json",
     "showId": "act-one-2014",
     "outlet": "Hollywood Reporter",
@@ -12220,18 +12208,6 @@
     "timestamp": "2026-02-05T00:56:50.163Z"
   },
   {
-    "reviewId": "a-touch-of-the-poet-2005/nytimes--ben-brantley.json",
-    "showId": "a-touch-of-the-poet-2005",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2005/12/09/theater/reviews/09poet.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): appropriate, company, long day's journey into night, once, race...",
-    "textLength": 4665,
-    "timestamp": "2026-02-05T00:58:29.615Z"
-  },
-  {
     "reviewId": "aint-too-proud-2019/hollywood-reporter--david-rooney.json",
     "showId": "aint-too-proud-2019",
     "outlet": "The Hollywood Reporter",
@@ -12494,42 +12470,6 @@
     "garbageReason": "Multiple shows mentioned (17): wicked, appropriate, macbeth, tina, king charles iii...",
     "textLength": 10518,
     "timestamp": "2026-02-05T01:18:03.629Z"
-  },
-  {
-    "reviewId": "a-view-from-the-bridge-2010/variety--charles-isherwood.json",
-    "showId": "a-view-from-the-bridge-2010",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2010/legit/reviews/a-view-from-the-bridge-1117941773/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): betrayal, tina, sweat, betrayal, high...",
-    "textLength": 6087,
-    "timestamp": "2026-02-05T01:18:39.835Z"
-  },
-  {
-    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/11/11/a-wonderful-world-the-louis-armstrong-musical-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): maybe happy ending, chicago, aladdin, buena vista social club, home...",
-    "textLength": 7831,
-    "timestamp": "2026-02-05T01:18:46.776Z"
-  },
-  {
-    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/vulture--jackson-mchenry.json",
-    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-    "outlet": "Vulture",
-    "critic": "Jackson McHenry",
-    "url": "https://www.vulture.com/article/theater-review-a-wonderful-world-louis-armstrong-broadway-musical.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): chicago, aladdin, tina, torch song, hello, dolly!...",
-    "textLength": 8832,
-    "timestamp": "2026-02-05T01:20:04.602Z"
   },
   {
     "reviewId": "airline-highway-2015/hollywood-reporter--unknown.json",
@@ -15062,5 +15002,101 @@
     "garbageReason": "Multiple shows mentioned (9): mamma mia!, summer, the audience, once, elling...",
     "textLength": 7215,
     "timestamp": "2026-02-05T04:50:07.074Z"
+  },
+  {
+    "reviewId": "a-touch-of-the-poet-2005/nytimes--ben-brantley.json",
+    "showId": "a-touch-of-the-poet-2005",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2005/12/09/theater/reviews/09poet.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): appropriate, company, long day's journey into night, once, race...",
+    "textLength": 4665,
+    "timestamp": "2026-02-05T04:50:11.989Z"
+  },
+  {
+    "reviewId": "a-view-from-the-bridge-2010/hollywood-reporter--unknown.json",
+    "showId": "a-view-from-the-bridge-2010",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/arthur-millers-a-view-bridge-839854",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): mamma mia!, appropriate, home, purpose, betrayal...",
+    "textLength": 9612,
+    "timestamp": "2026-02-05T04:50:27.229Z"
+  },
+  {
+    "reviewId": "a-view-from-the-bridge-2010/variety--charles-isherwood.json",
+    "showId": "a-view-from-the-bridge-2010",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2010/legit/reviews/a-view-from-the-bridge-1117941773/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): betrayal, tina, sweat, betrayal, high...",
+    "textLength": 5652,
+    "timestamp": "2026-02-05T04:50:43.775Z"
+  },
+  {
+    "reviewId": "a-view-from-the-bridge-2015/nytimes--unknown.json",
+    "showId": "a-view-from-the-bridge-2015",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2015/11/13/theater/review-a-view-from-the-bridge-bears-witness-to-the-pain-of-fate.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): tina, thérèse raquin, hair, once, rain...",
+    "textLength": 7561,
+    "timestamp": "2026-02-05T04:51:52.468Z"
+  },
+  {
+    "reviewId": "a-view-from-the-bridge-2015/vulture--jesse-green.json",
+    "showId": "a-view-from-the-bridge-2015",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2015/11/theater-review-a-view-from-the-bridge.html#",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): sylvia, act one, hair, once, rain...",
+    "textLength": 7998,
+    "timestamp": "2026-02-05T04:51:56.946Z"
+  },
+  {
+    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/11/11/a-wonderful-world-the-louis-armstrong-musical-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): maybe happy ending, chicago, aladdin, buena vista social club, home...",
+    "textLength": 7831,
+    "timestamp": "2026-02-05T04:52:04.529Z"
+  },
+  {
+    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--unknown.json",
+    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2024/11/11/theater/a-wonderful-world-review-louis-armstrong.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): chicago, redwood, home, company, tina...",
+    "textLength": 8294,
+    "timestamp": "2026-02-05T04:53:10.556Z"
+  },
+  {
+    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/vulture--jackson-mchenry.json",
+    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/article/theater-review-a-wonderful-world-louis-armstrong-broadway-musical.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, aladdin, tina, torch song, hello, dolly!...",
+    "textLength": 8832,
+    "timestamp": "2026-02-05T04:53:17.958Z"
   }
 ]
