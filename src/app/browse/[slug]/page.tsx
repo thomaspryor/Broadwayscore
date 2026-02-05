@@ -6,6 +6,7 @@ import { getShowGrosses } from '@/lib/data-grosses';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBrowsePageConfig, BROWSE_PAGES } from '@/config/browse-pages';
+import { GUIDE_PAGES } from '@/config/guide-pages';
 
 export function generateStaticParams() {
   return getAllBrowseSlugs().map((slug) => ({ slug }));
@@ -114,6 +115,9 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
   const { config, shows } = browseList;
 
+  // Cross-link to guide page if one exists for this browse slug
+  const matchingGuide = GUIDE_PAGES[params.slug];
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
     { name: 'Browse', url: `${BASE_URL}/browse` },
@@ -193,6 +197,21 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
             {shows.length} {shows.length === 1 ? 'show' : 'shows'} | Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </p>
         </div>
+
+        {/* Guide Cross-Link */}
+        {matchingGuide && (
+          <div className="mb-6 p-3 rounded-lg bg-surface-overlay border border-white/5">
+            <Link
+              href={`/guides/${matchingGuide.slug}`}
+              className="flex items-center justify-between text-sm text-gray-300 hover:text-white transition-colors"
+            >
+              <span>Read our in-depth guide: <span className="text-brand font-medium">{matchingGuide.title}</span></span>
+              <svg className="w-4 h-4 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+        )}
 
         {/* Show List */}
         {shows.length > 0 ? (
