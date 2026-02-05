@@ -2,18 +2,16 @@
 
 import { useState, FormEvent } from 'react';
 
-const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || '';
-
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
-export default function FeedbackForm() {
+export default function FeedbackForm({ endpoint }: { endpoint: string }) {
   const [status, setStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!FORMSPREE_ENDPOINT) {
+    if (!endpoint) {
       setStatus('error');
       setErrorMessage('Feedback form is not configured. Please try again later.');
       return;
@@ -26,7 +24,7 @@ export default function FeedbackForm() {
     const data = new FormData(form);
 
     try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
+      const res = await fetch(endpoint, {
         method: 'POST',
         body: data,
         headers: { Accept: 'application/json' },
