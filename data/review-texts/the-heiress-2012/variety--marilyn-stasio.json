@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2012/legit/reviews/the-heiress-1117949136/",
   "publishDate": "November 1, 2012",
-  "fullText": "Jessica Chastain brings her luminous screen presence to Broadway in a revival of Ruth and Augustus Goetz's 'The Heiress' that captures both the cruelty and the compassion of Henry James' source novel.",
-  "isFullReview": false,
+  "fullText": "Jan 31, 2013 4:36pm PT \n\n \n\n \n \n \n\n \n\n \n Mumia: Long Distance Revolutionary\n \n \n\n \n\n \"Mumia: Long Distance Revolutionary\" delivers a political discourse inspired by its subject and espoused by left-wing writers, actors, educators and activists, with the opposition represented only by man-on-the-street grumblings and vituperative Fox News coverage.\n\nStephen Vittoria’s docu about Mumia Abu-Jamal — unrepentant commie cop-killer to some, political martyr to others — makes no bones about its allegiance. “Mumia: Long Distance Revolutionary” delivers a political discourse inspired by its subject and espoused by left-wing writers, actors, educators and activists, with the opposition represented only by man-on-the-street grumblings and vituperative Fox News coverage. Vittoria avoids discussing the crime for which Abu-Jamal spent 29 years in solitary confinement on death row, instead tracing the path of a brilliant journalist whose message cannot be silenced. Opening Feb. 1 in limited release, this passionate advocacy docu should spark debate.\n\nPart of Abu-Jamal’s persuasive power flows from the specificity of his analysis of black history and his ability to see the struggle for freedom in larger, nonexclusive terms. Vittoria attempts to mirror that duality by presenting a contextual biography of Abu-Jamal and a forum for his ideas. For many of the film’s interviewed admirers, like Alice Walker, Mumia’s personal integrity is inseparable from his political acuity.\n\nAt age 15, Abu-Jamal was a founding member and communications secretary of the Philadelphia chapter of the Black Panthers, getting his start in journalism by writing for the organization’s newspaper. Vittoria quotes Frederick Douglass in 1852, denouncing racism in the City of Brotherly Love, and calls on an array of more contemporary interviewees, including former attorney general Ramsey Clark, to attest to Philadelphia’s heightened bigotry and rampant brutality under police chief Frank Rizzo.\n\nIt was under Rizzo’s watch that Abu-Jamal started reporting on radio, his deep, persuasive voice and informed commentary winning devoted listeners; his analyses of current events, including the local war against John Africa’s Philadelphia-based Move enclave, and the federal government’s covert clash with the Black Panthers, attracted the animus of the police and the FBI. An oncamera Peter Coyote wryly fills in the narrative blanks in Abu-Jamal’s story — except as concerns the shooting of policeman Daniel Faulkner.\n\nThe docu doesn’t become fully focused until Abu-Jamal is incarcerated and gains international attention, his trial disputed by organizations such as Amnesty Intl. and Human Rights Watch, his continued imprisonment the subject of protests in France, Germany and beyond. The Republican Party’s attempt to condemn the French town of Saint-Denis for naming a street after Abu-Jamal furnishes some welcome comic relief.\n\nIn prison, a focused, likable Abu-Jamal gave interviews, many of which figure prominently in the docu (along with low-lit re-enactments of an actor portraying him writing in his cell), and penned a series of books on black history, the Black Panthers, jailhouse lawyers and the hell of prison — all of which are lauded here by educators, writers and black activists like Cornel West, Angela Davis, Dick Gregory and Walker, and quoted by Giancarlo Esposito onstage.\n\nVittoria closely follows the government’s desperate efforts to silence Abu-Jamal. His scheduled broadcast with Amy Goodman on NPR’s “All Things Considered” was quashed; the film shows a C-Span clip of an outraged Sen. Bob Dole condemning NPR on the floor of Congress. In order to shut Abu-Jamal up and prohibit him from being contacted by journalists or broadcasters, the state of Pennsylvania denied those rights to all death-row prisoners.\n\nVittoria triumphantly heralds the Abu-Jamal’s return to the political scene as a rallying cry for an alternate political discourse joyously shared by the film’s community of interviewees.",
+  "isFullReview": true,
   "dtliExcerpt": "Jessica Chastain brings her luminous screen presence to Broadway in a revival of Ruth and Augustus Goetz's 'The Heiress' that captures both the cruelty and the compassion of Henry James' source novel.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,9 +16,9 @@
   "bwwExcerpt": "If you can overlook the absurdity of casting the ravishing Jessica Chastain as the plain and clumsy heroine of 'The Heiress,' Ruth and Augustus Goetz's 1947 stage adaptation of 'Washington Square,' then Moises Kaufman's masterfully helmed production is everything you want from a Class A revival. As is proper for a costume drama, the costumes are mouthwatering. The set is just as scrumptious, and the cast seems entirely comfortable speaking the language and thinking the thoughts of people from a bygone era -- David Strathairn so much so, you'd swear he goes up the staircase to bed each night after the show.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jessica Chastain brings her luminous screen presence to Broadway in a revival of Ruth and Augustus Goetz's 'The Heiress' that captures both the cruelty and the compassion of Henry James' source novel.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "llmScore": {
     "score": 76,
     "confidence": "high",
@@ -77,5 +77,46 @@
   "sources": [
     "web-search",
     "bww-reviews"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 593,
+  "archivePath": "data/archives/reviews/the-heiress-2012/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T06:10:49.221Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 593,
+  "tierReason": "Full review text"
 }
