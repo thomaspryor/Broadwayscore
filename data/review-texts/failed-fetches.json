@@ -15926,5 +15926,65 @@
     "garbageReason": "Multiple shows mentioned (8): company, brief encounter, mrs. warren's profession, race, time stands still...",
     "textLength": 4011,
     "timestamp": "2026-02-05T06:01:51.933Z"
+  },
+  {
+    "reviewId": "a-life-in-the-theatre-2010/timeout--adam-feldman.json",
+    "showId": "a-life-in-the-theatre-2010",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "http://newyork.timeout.com/articles/theater/89896/a-life-in-the-theatre-at-gerald-schoenfeld-theatre-theater-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"a life in the theatre\" not mentioned in text; No theater-related keywords in short text",
+    "textLength": 684,
+    "timestamp": "2026-02-05T06:03:26.115Z"
+  },
+  {
+    "reviewId": "a-life-in-the-theatre-2010/wsj--terry-teachout.json",
+    "showId": "a-life-in-the-theatre-2010",
+    "outlet": "Wall Street Journal",
+    "critic": "Terry Teachout",
+    "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?mod=rss_newyork_culture",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2026 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 939,
+    "timestamp": "2026-02-05T06:04:51.419Z"
+  },
+  {
+    "reviewId": "a-time-to-kill-2013/nypost--unknown.json",
+    "showId": "a-time-to-kill-2013",
+    "outlet": "New York Post",
+    "critic": "Unknown",
+    "url": "http://nypost.com/2013/10/21/a-time-to-kill-is-adequate-but-bland/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, waitress, waitress, the audience, the mystery of edwin drood...",
+    "textLength": 4476,
+    "timestamp": "2026-02-05T06:05:51.024Z"
+  },
+  {
+    "reviewId": "a-time-to-kill-2013/timeout--unknown.json",
+    "showId": "a-time-to-kill-2013",
+    "outlet": "Time Out",
+    "critic": "Unknown",
+    "url": "http://www.timeout.com/newyork/theater/a-time-to-kill",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 4350,
+    "timestamp": "2026-02-05T06:08:22.626Z"
+  },
+  {
+    "reviewId": "aint-too-proud-2019/deadline--greg-evans.json",
+    "showId": "aint-too-proud-2019",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2019/03/aint-too-proud-broadway-review-temptations-motown-1202578565/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): becky shaw, proof, the cher show, choir boy, summer...",
+    "textLength": 8710,
+    "timestamp": "2026-02-05T06:08:45.616Z"
   }
 ]
