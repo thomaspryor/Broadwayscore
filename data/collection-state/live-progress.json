@@ -1,57 +1,75 @@
 {
-  "updatedAt": "2026-02-05T17:03:42.331Z",
-  "processed": 5,
-  "failed": 15,
-  "successRate": "25.0%",
+  "updatedAt": "2026-02-05T17:10:08.555Z",
+  "processed": 20,
+  "failed": 70,
+  "successRate": "22.2%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 3,
-    "scrapingbee": 2,
-    "brightdata": 0,
-    "archive": 2
+    "playwright": 14,
+    "browserbase": 5,
+    "scrapingbee": 4,
+    "brightdata": 1,
+    "archive": 1
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
-      "t": "2026-02-05T16:54:43.907Z",
+      "t": "2026-02-05T16:28:03.019Z",
       "event": "bb-session",
-      "session": "61b5cd06",
-      "url": "https://nypost.com/2008/10/06/13-going-on-annoying/"
+      "session": "3c04bddb",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
     },
     {
-      "t": "2026-02-05T16:55:35.909Z",
+      "t": "2026-02-05T16:30:24.821Z",
       "event": "bb-session",
-      "session": "ae240f2d",
-      "url": "https://deadline.com/2022/10/1776-broadway-review-1235136437/"
+      "session": "ac81b853",
+      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
     },
     {
-      "t": "2026-02-05T16:55:56.574Z",
-      "event": "bb-session",
-      "session": "811f4f7e",
-      "url": "https://deadline.com/2022/10/1776-broadway-review-roundabout-theatre-company-ame"
+      "t": "2026-02-05T16:30:27.135Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-05T16:59:05.003Z",
+      "t": "2026-02-05T16:32:23.001Z",
       "event": "bb-session",
-      "session": "444f0d00",
-      "url": "https://www.thewrap.com/1776-broadway-review-musical-diane-paulus/"
+      "session": "8835f46e",
+      "url": "https://variety.com/2025/film/reviews/wicked-for-good-review-1236581742/"
     },
     {
-      "t": "2026-02-05T17:01:26.140Z",
+      "t": "2026-02-05T16:33:47.595Z",
       "event": "bb-session",
-      "session": "3dc0db93",
-      "url": "https://www.wsj.com/articles/1776-review-revolutionary-casting-meets-timeless-sh"
+      "session": "40f0a634",
+      "url": "https://www.charlotteobserver.com/entertainment/arts-culture/article253972728.ht"
     },
     {
-      "t": "2026-02-05T17:02:07.871Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-05T16:35:37.158Z",
+      "event": "bb-session",
+      "session": "7db7fb00",
+      "url": "https://www.indiewire.com/criticism/movies/wicked-for-good-review-part-2-1235160"
     },
     {
-      "t": "2026-02-05T17:03:31.617Z",
+      "t": "2026-02-05T16:36:49.253Z",
       "event": "bb-session",
-      "session": "28b79316",
-      "url": "http://deadline.com/2017/06/broadway-review-1984-olivia-wilde-1202118365/"
+      "session": "f73e81a8",
+      "url": "http://observer.com/2003/11/crowe-is-master-of-briny-boys-domain/"
+    },
+    {
+      "t": "2026-02-05T16:37:12.175Z",
+      "event": "bb-session",
+      "session": "01506e23",
+      "url": "https://www.theatermania.com/news/review-wicked-for-good-flies-to-epic-heights-w"
+    },
+    {
+      "t": "2026-02-05T16:38:14.518Z",
+      "event": "bb-session",
+      "session": "42110b29",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-02-05T16:39:00.248Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770309509038\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAOg8jCtmYGuoANA1qtA==&cid=jVAI7rkLW9Y1zMTlhiGp~yUyrgwrhEPjNh0BZcvryWURwQDPJ~tB9~vza2g8pvaN0CI4pxJazit5~dHDVcMZwzdzx9TC6tA0Db6gjZjUoCrzd5JGLWWZfAZKTv5bo7HI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770309509038\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770309509038\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAOg8jCtmYGuoANA1qtA==&cid=jVAI7rkLW9Y1zMTlhiGp~yUyrgwrhEPjNh0BZcvryWURwQDPJ~tB9~vza2g8pvaN0CI4pxJazit5~dHDVcMZwzdzx9TC6tA0Db6gjZjUoCrzd5JGLWWZfAZKTv5bo7HI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770309509038\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770309509038\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAOg8jCtmYGuoANA1qtA==&cid=jVAI7rkLW9Y1zMTlhiGp~yUyrgwrhEPjNh0BZcvryWURwQDPJ~tB9~vza2g8pvaN0CI4pxJazit5~dHDVcMZwzdzx9TC6tA0Db6gjZjUoCrzd5JGLWWZfAZKTv5bo7HI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770309509038\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
