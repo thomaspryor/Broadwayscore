@@ -4,8 +4,8 @@
     "lastUpdated": "2026-02-05",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 6276,
-      "skippedNoScore": 8845,
+      "totalReviews": 6277,
+      "skippedNoScore": 8865,
       "skippedDuplicate": 38,
       "skippedDuplicateUrl": 341,
       "skippedCrossOutletDuplicateUrl": 160,
@@ -17,10 +17,10 @@
         "explicit-slash": 5,
         "explicit-letterGrade": 1,
         "human-review": 58,
-        "originalScore-priority0": 882,
-        "llmScore": 3385,
+        "originalScore-priority0": 883,
+        "llmScore": 3387,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 1704,
+        "llmScore-lowconf": 1702,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
@@ -1191,7 +1191,7 @@
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 75,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Joe Dziemianowicz",
@@ -1201,14 +1201,14 @@
       "pullQuote": "Fonda's giving a robust and confident performance in the play that opened last night.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "33-variations-2009",
       "outletId": "nypost",
       "outlet": "New York Post",
       "assignedScore": 62,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Elisabeth Vincentelli",
@@ -1218,7 +1218,7 @@
       "pullQuote": "There are quite a few issues with '33 Variations,' written and directed by Moisés Kaufman.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "33-variations-2009",
@@ -34345,6 +34345,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
+    },
+    {
+      "showId": "equus-2008",
+      "outletId": "chicagotribune",
+      "outlet": "Chicago Tribune",
+      "assignedScore": 75,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Chris Jones",
+      "url": "https://www.chicagotribune.com/2008/09/26/daniel-radcliffe-stars-in-equus-revival/",
+      "publishDate": "September 26, 2008",
+      "originalRating": 75,
+      "pullQuote": "Radcliffe, for his part, acquits himself reasonably well in Peter Shaffer's demanding psychological drama, showing both vulnerability and intensity in his portrayal of the troubled Alan Strang.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
     },
     {
       "showId": "equus-2008",
