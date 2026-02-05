@@ -8188,30 +8188,6 @@
     "timestamp": "2026-02-03T19:17:03.886Z"
   },
   {
-    "reviewId": "wicked-2003/village-voice--michael-feingold.json",
-    "showId": "wicked-2003",
-    "outlet": "Village Voice",
-    "critic": "Michael Feingold",
-    "url": "http://www.villagevoice.com/2003-11-04/theater/green-witch-mean-time/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): giant, the wiz, purpose, tina, junk...",
-    "textLength": 6401,
-    "timestamp": "2026-02-03T19:21:06.553Z"
-  },
-  {
-    "reviewId": "wicked-2003/washpost--peter-marks.json",
-    "showId": "wicked-2003",
-    "outlet": "The Washington Post",
-    "critic": "Peter Marks",
-    "url": "https://www.washingtonpost.com/archive/lifestyle/2003/10/31/kristen-chenoweth-good-luck-charm/3701584c-82b3-4610-9220-6fb5662cbc8f/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): chicago, the wiz, home, take me out, parade...",
-    "textLength": 6465,
-    "timestamp": "2026-02-03T19:21:31.072Z"
-  },
-  {
     "reviewId": "the-music-man-2022/unknown--unknown.json",
     "showId": "the-music-man-2022",
     "outlet": "unknown",
@@ -16730,5 +16706,53 @@
     "garbageReason": "Multiple shows mentioned (6): the wiz, home, smash, torch song, mean girls...",
     "textLength": 828,
     "timestamp": "2026-02-05T17:09:47.440Z"
+  },
+  {
+    "reviewId": "wicked-2003/village-voice--michael-feingold.json",
+    "showId": "wicked-2003",
+    "outlet": "Village Voice",
+    "critic": "Michael Feingold",
+    "url": "http://www.villagevoice.com/2003-11-04/theater/green-witch-mean-time/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): giant, the wiz, purpose, tina, junk...",
+    "textLength": 6401,
+    "timestamp": "2026-02-05T17:11:09.028Z"
+  },
+  {
+    "reviewId": "wicked-2003/washpost--peter-marks.json",
+    "showId": "wicked-2003",
+    "outlet": "The Washington Post",
+    "critic": "Peter Marks",
+    "url": "https://www.washingtonpost.com/archive/lifestyle/2003/10/31/kristen-chenoweth-good-luck-charm/3701584c-82b3-4610-9220-6fb5662cbc8f/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, the wiz, home, take me out, parade...",
+    "textLength": 6465,
+    "timestamp": "2026-02-05T17:11:45.165Z"
+  },
+  {
+    "reviewId": "wicked-2003/we-are-green-bay--warren-gerds.json",
+    "showId": "wicked-2003",
+    "outlet": "We Are Green Bay",
+    "critic": "Warren Gerds",
+    "url": "https://www.wearegreenbay.com/critic-at-large/warren-gerds-critic-at-large-review-wicked-luster-radiates-big-time-again-in-appleton/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): giant, the wiz, home, company, network...",
+    "textLength": 16049,
+    "timestamp": "2026-02-05T17:13:01.422Z"
+  },
+  {
+    "reviewId": "wicked-2003/weliveentertainment-aaron-neuwirth--aaron-neuwirth.json",
+    "showId": "wicked-2003",
+    "outlet": "WeLiveEntertainment (Aaron Neuwirth",
+    "critic": "Aaron Neuwirth",
+    "url": "https://weliveentertainment.com/welivefilm/wicked-for-good-review-delivers-in-its-bubble/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): the wiz, the audience, once, evita, high...",
+    "textLength": 6886,
+    "timestamp": "2026-02-05T17:13:10.169Z"
   }
 ]
