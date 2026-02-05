@@ -2,7 +2,11 @@
   "processed": [
     "the-lion-king-1997/socal-thrills--maverick-bohn.json",
     "the-lion-king-1997/kera-news--manuel-mendoza.json",
-    "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
+    "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
+    "the-lion-king-1997/daily-herald--marni-pyke.json",
+    "the-lion-king-1997/fanbolt--emma-loggins.json",
+    "the-lion-king-1997/gephardt-daily--van-valkenburg.json",
+    "the-lion-king-1997/on-stage-colorado--alex-miller.json"
   ],
   "failed": [
     "the-lion-king-1997/newyorker--john-lahr.json",
@@ -31,23 +35,34 @@
     "the-lion-king-1997/broadwayworld--stefani-chudnow.json",
     "the-lion-king-1997/broadwayworld--timothy-shawver.json",
     "the-lion-king-1997/broadwayworld--tyler-hinton.json",
-    "the-lion-king-1997/calgary-herald--louis-b-hobson.json"
+    "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "the-lion-king-1997/columbus-dispatch--michael-grossberg.json",
+    "the-lion-king-1997/denver-post--sandra-brooks-dillard.json",
+    "the-lion-king-1997/milwaukee-journal-sentinel--damien-jaques.json",
+    "the-lion-king-1997/njcom--michael-sommers.json",
+    "the-lion-king-1997/patch--sasso-janis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "the-lion-king-1997/socal-thrills--maverick-bohn.json",
-      "the-lion-king-1997/kera-news--manuel-mendoza.json"
+      "the-lion-king-1997/kera-news--manuel-mendoza.json",
+      "the-lion-king-1997/daily-herald--marni-pyke.json",
+      "the-lion-king-1997/fanbolt--emma-loggins.json",
+      "the-lion-king-1997/gephardt-daily--van-valkenburg.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-lion-king-1997/on-stage-colorado--alex-miller.json"
+    ],
     "brightdata": [],
     "archive": [
       "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
     ]
   },
   "startTime": "2026-02-05T16:28:14.457Z",
-  "lastProcessed": "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
+  "lastProcessed": "the-lion-king-1997/patch--sasso-janis.json",
   "log": [
     {
       "t": "2026-02-05T16:30:02.708Z",
@@ -59,6 +74,12 @@
       "t": "2026-02-05T16:30:04.493Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-05T16:39:49.553Z",
+      "event": "bb-session",
+      "session": "b44c7125",
+      "url": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadwa"
     }
   ]
 }
