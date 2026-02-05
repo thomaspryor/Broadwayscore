@@ -16,7 +16,7 @@
   "bwwExcerpt": "So an anodyne rom-com is for the most part what we get from this play, which opened on Wednesday night at the James Earl Jones Theater. Julianna Margulies stars as Delia, an anxious, bookish denizen of Greenwich Village, still grieving her husband’s death. Peter Gallagher plays the widowed Peter, the calm Californian psychoanalyst for whom Delia falls by email, so suddenly that it feels fated.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEFT-ON-TENTH-Starring-Julianna-Margulies-and-Peter-Gallagher-Opens-On-Broadway-20241023",
   "showScoreExcerpt": "Though the show is beautifully acted and staged, it feels more like a gentle memorial service than a fully realized theatrical experience.",
-  "contentTier": "needs-rescrape",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
     "score": 62,
@@ -88,13 +88,19 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 299,
-  "archivePath": "data/archives/reviews/left-on-tenth-2024/nytimes--jesse-green_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T16:08:47.065Z",
+  "archivePath": "data/archives/reviews/left-on-tenth-2024/nytimes--jesse-green_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T04:34:39.938Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
       "success": true
     }
   ],
@@ -103,8 +109,8 @@
   "truncationSignals": [],
   "textStatus": "incomplete",
   "sourceMethod": "archive",
-  "archiveOrgTimestamp": "20250504200417",
-  "archiveOrgUrl": "http://web.archive.org/web/20250504200417/https://www.nytimes.com/2024/10/23/theater/review-left-on-tenth-delia-ephron.html",
+  "archiveOrgTimestamp": "20241024022740",
+  "archiveOrgUrl": "http://web.archive.org/web/20241024022740/https://www.nytimes.com/2024/10/23/theater/review-left-on-tenth-delia-ephron.html",
   "textIssues": [
     "Word count too low: 299 (min: 300)"
   ],
