@@ -44,6 +44,7 @@ const {
   getOutletDisplayName,
   mergeReviews,
   validateCriticOutlet,
+  resolveOutletFromUrl,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
 const { cleanText } = require('./lib/text-cleaning');
@@ -321,12 +322,37 @@ async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId) 
 
       const pageReviewCount = Math.max(outlets.length, urls.length);
       for (let i = 0; i < pageReviewCount; i++) {
-        const outletRaw = outlets[i] || 'Unknown';
-        const outletId = normalizeOutlet(outletRaw);
-        const outletName = getOutletDisplayName(outletId);
+        const outletRaw = outlets[i] || null;
         const critic = critics[i] || 'Unknown';
         const url = urls[i] || null;
         const date = dates[i] || null;
+
+        // Resolve outlet: try extracted name first, then URL lookup, then domain fallback
+        let outletId, outletName;
+        if (outletRaw) {
+          outletId = normalizeOutlet(outletRaw);
+          outletName = getOutletDisplayName(outletId);
+        } else if (url) {
+          // No outlet extracted from HTML - try resolving from URL
+          const resolved = resolveOutletFromUrl(url);
+          if (resolved) {
+            outletId = resolved.outletId;
+            outletName = resolved.displayName;
+          } else {
+            // Fallback: use domain base as both ID and name
+            try {
+              const hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+              outletId = hostname.split('.')[0];
+              outletName = outletId;
+            } catch {
+              outletId = 'unknown';
+              outletName = 'Unknown';
+            }
+          }
+        } else {
+          outletId = 'unknown';
+          outletName = 'Unknown';
+        }
 
         if (url && !additionalReviews.some(r => r.url === url)) {
           additionalReviews.push({
@@ -859,10 +885,32 @@ function extractShowScoreReviews(html, showId) {
         if (data.review && Array.isArray(data.review)) {
           for (const review of data.review) {
             if (review.author && review.url) {
+              // Resolve outlet: try publisher name first, then URL lookup
+              let outletName, outletId;
+              if (review.publisher?.name) {
+                outletName = review.publisher.name;
+                outletId = slugify(outletName);
+              } else {
+                const resolved = resolveOutletFromUrl(review.url);
+                if (resolved) {
+                  outletId = resolved.outletId;
+                  outletName = resolved.displayName;
+                } else {
+                  // Fallback: use domain base
+                  try {
+                    const hostname = new URL(review.url).hostname.replace(/^www\./, '').toLowerCase();
+                    outletId = hostname.split('.')[0];
+                    outletName = outletId;
+                  } catch {
+                    outletId = 'unknown';
+                    outletName = 'Unknown';
+                  }
+                }
+              }
               reviews.push({
                 showId,
-                outlet: review.publisher?.name || 'Unknown',
-                outletId: slugify(review.publisher?.name || 'unknown'),
+                outlet: outletName,
+                outletId,
                 criticName: review.author?.name || 'Unknown',
                 url: review.url,
                 excerpt: review.reviewBody || null,
@@ -959,19 +1007,31 @@ function extractShowScoreReviews(html, showId) {
     if (!matched && !reviews.some(r => r.url === url)) {
       // Try to get outlet name from image alt text in context
       const imgAltMatch = context.match(/img[^>]*alt="([^"]+)"/i);
-      let outlet = 'Unknown';
-      let outletId = 'unknown';
+      let outlet = null;
+      let outletId = null;
 
       if (imgAltMatch && imgAltMatch[1]) {
         outlet = imgAltMatch[1].trim();
         outletId = slugify(outlet);
-      } else {
-        // Try to infer from URL domain
-        const domainMatch = url.match(/https?:\/\/(?:www\.)?([^\/]+)/);
-        if (domainMatch) {
-          const domain = domainMatch[1].replace(/\.(com|org|net|co\.uk)$/i, '');
-          outlet = domain.charAt(0).toUpperCase() + domain.slice(1);
-          outletId = slugify(domain);
+      }
+
+      // If no outlet from HTML, try resolving from URL
+      if (!outlet) {
+        const resolved = resolveOutletFromUrl(url);
+        if (resolved) {
+          outletId = resolved.outletId;
+          outlet = resolved.displayName;
+        } else {
+          // Fallback: use domain base
+          try {
+            const hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+            const domainBase = hostname.split('.')[0];
+            outletId = domainBase;
+            outlet = domainBase.charAt(0).toUpperCase() + domainBase.slice(1);
+          } catch {
+            outletId = 'unknown';
+            outlet = 'Unknown';
+          }
         }
       }
 
@@ -1679,10 +1739,34 @@ async function gatherReviewsForShow(showId) {
       console.log(`    Playwright extracted ${showScoreResult.reviews.length} reviews directly`);
       for (const review of showScoreResult.reviews) {
         // Map Playwright review to our format
-        const outletId = review.outlet ? slugify(review.outlet) : slugify(new URL(review.url).hostname.replace('www.', ''));
+        // When outlet is missing from Playwright extraction, resolve from URL domain
+        let outletId, outletDisplayName;
+        if (review.outlet) {
+          outletId = slugify(review.outlet);
+          outletDisplayName = review.outlet;
+        } else {
+          // Try to resolve outlet from URL using registry
+          const resolved = resolveOutletFromUrl(review.url);
+          if (resolved) {
+            outletId = resolved.outletId;
+            outletDisplayName = resolved.displayName;
+          } else {
+            // Fallback: use domain base (without TLD) as both ID and display name
+            // Never use literal "Unknown" - use the domain so the review is attributable
+            try {
+              const hostname = new URL(review.url).hostname.replace(/^www\./, '').toLowerCase();
+              const domainBase = hostname.split('.')[0];
+              outletId = domainBase;
+              outletDisplayName = domainBase; // Will be displayed as-is (e.g., "culturesauce")
+            } catch {
+              outletId = 'unknown';
+              outletDisplayName = 'Unknown';
+            }
+          }
+        }
         foundReviews.push({
           showId,
-          outlet: review.outlet || 'Unknown',
+          outlet: outletDisplayName,
           outletId,
           criticName: review.critic || 'Unknown',
           url: review.url,
