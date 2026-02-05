@@ -479,6 +479,16 @@ async function main() {
     console.log(`Shard ${shard}/${totalShards}: processing ${shows.length} shows`);
   }
 
+  // Initialize shard output for incremental writing (survives timeout/crash)
+  let shardOutput = null;
+  let shardPath = null;
+  if (shardMode && !dryRun) {
+    const shardDir = path.join(__dirname, '../data/show-score-shards');
+    if (!fs.existsSync(shardDir)) fs.mkdirSync(shardDir, { recursive: true });
+    shardOutput = { discoveredUrls: {}, scores: {} };
+    shardPath = path.join(shardDir, `shard-${shard}.json`);
+  }
+
   if (showLimit) {
     shows = shows.slice(0, showLimit);
   }
@@ -510,6 +520,11 @@ async function main() {
           if (!urlData.shows) urlData.shows = {};
           urlData.shows[show.id] = url;
           if (!dryRun) saveUrlCache();
+          // Update shard incrementally
+          if (shardOutput) {
+            shardOutput.discoveredUrls[show.id] = url;
+            fs.writeFileSync(shardPath, JSON.stringify(shardOutput, null, 2));
+          }
           console.log(`  ✓ Cached URL for ${show.id}`);
         } else {
           console.log(`  ✗ No Show Score page found for ${show.title}`);
@@ -563,6 +578,16 @@ async function main() {
           audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
           audienceBuzz._meta.notes = 'Dynamic weighting: Reddit fixed 20%, Show Score & Mezzanine split remaining 80% by sample size';
           fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
+          // Update shard incrementally (survives timeout)
+          if (shardOutput) {
+            const entry = audienceBuzz.shows && audienceBuzz.shows[show.id];
+            if (entry && entry.sources && entry.sources.showScore) {
+              shardOutput.scores[show.id] = entry.sources.showScore;
+            }
+            const cachedUrl = getCachedUrl(show.id);
+            if (cachedUrl) shardOutput.discoveredUrls[show.id] = cachedUrl;
+            fs.writeFileSync(shardPath, JSON.stringify(shardOutput, null, 2));
+          }
           console.log(`  ✓ Saved (${successful}/${showsWithUrls.length})`);
         } else {
           successful++;
@@ -598,25 +623,8 @@ async function main() {
     console.warn(`\n⚠ Score count dropped: ${successful} (was ${previousScoredCount}, delta: -${previousScoredCount - successful})`);
   }
 
-  // In shard mode, write shard output file with discovered URLs + scores
-  if (shardMode && !dryRun) {
-    const shardDir = path.join(__dirname, '../data/show-score-shards');
-    if (!fs.existsSync(shardDir)) fs.mkdirSync(shardDir, { recursive: true });
-    const shardOutput = {
-      discoveredUrls: {},
-      scores: {}
-    };
-    // Collect any URLs we discovered in this shard
-    for (const show of shows) {
-      const url = getCachedUrl(show.id);
-      if (url) shardOutput.discoveredUrls[show.id] = url;
-      const entry = audienceBuzz.shows && audienceBuzz.shows[show.id];
-      if (entry && entry.sources && entry.sources.showScore) {
-        shardOutput.scores[show.id] = entry.sources.showScore;
-      }
-    }
-    const shardPath = path.join(shardDir, `shard-${shard}.json`);
-    fs.writeFileSync(shardPath, JSON.stringify(shardOutput, null, 2));
+  // Log shard summary (data already written incrementally above)
+  if (shardOutput) {
     console.log(`\nShard ${shard} output: ${Object.keys(shardOutput.scores).length} scores, ${Object.keys(shardOutput.discoveredUrls).length} URLs`);
   }
 
