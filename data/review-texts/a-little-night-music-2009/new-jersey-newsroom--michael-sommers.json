@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "They are, in a word, bewitching. And they give performances quite unlike their predecessors.\nJust for the record (go look it up), I enjoyed more than some colleagues director Trevor Nunn's leisurely, intimately scaled, darker-toned take on this sophisticated musical affair about former lovers Desiree and Fredrik, now middle-aged, who rekindle their romance in spite of other attachments.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They are, in a word, bewitching.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses strong positive language like 'bewitching' and states they 'enjoyed' the production 'more than some colleagues,' indicating clear recommendation despite being only an excerpt. | GPT-4o: The excerpt praises the performances as 'bewitching' and notes a positive personal reaction to the director's take, suggesting a favorable view. However, as only a single excerpt is available, the confidence is low. | Gemini: The review excerpt praises the performances as \"bewitching\" and enjoyed the production more than some colleagues. Due to the limited text, confidence is low, but the positive sentiment suggests a recommendation. | Kimi: The single available excerpt offers enthusiastic praise for the current cast's performances ('bewitching'), distinguishing them from predecessors. Following the guidance for clearly positive single excerpts, this scores in the upper Positive range (80-84) with low confidence due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:25:45.847Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

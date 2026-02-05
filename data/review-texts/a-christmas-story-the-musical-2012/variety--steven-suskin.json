@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Broadway has recently seen such a steady stream of family musicals devised to rake in Thanksgiving-to-New Year's dollars. \"A Christmas Story,\" as its well-known title indicates, is yet another such specimen, but one that distinguishes itself. Based on a memoir by humorist Jean Shepherd and its revered 1983 film adaptation, this tuner boasts a heartwarming but wise story, an impressive score by Broadway newcomers Benj Pasek and Justin Paul, canny staging and a series of laugh-out-loud production ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-STORY-THE-MUSICAL-Opens-on-Broadway-Updating-LIVE-20121119",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this tuner boasts a heartwarming but wise story, an impressive score by Broadway newcomers Benj Pasek and Justin Paul, canny staging",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise - 'distinguishes itself', 'impressive score', 'canny staging', 'laugh-out-loud' - but is severely truncated mid-sentence. Single excerpt warning suggests upper end of Positive bucket. | GPT-4o: The excerpt praises the show for its heartwarming story, impressive score, and effective staging. The positive tone and specific commendations suggest a strong recommendation, despite the limited excerpt. | Gemini: The review excerpt highlights several positive aspects of the show, including a heartwarming story, impressive score, canny staging, and laugh-out-loud production numbers. This suggests a strong positive recommendation. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:11:20.629Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

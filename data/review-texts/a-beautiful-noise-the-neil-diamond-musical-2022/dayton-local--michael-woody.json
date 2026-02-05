@@ -11,5 +11,60 @@
   "bwwExcerpt": "For a show heavy in music, there’s nobody better to do all the lifting than Nick Fradiani. His voice is stronger than a Kentucky Woman (I hear they are tough). The 2015 winner of American Idol, Fradiani perfectly duplicates the magical sound of Diamond’s voice. He’s as close as you are ever going to get to hearing the real Diamond himself. Fradiani should maybe change his name to Ruby or Sapphire, because he’s a valuable gem himself.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He's as close as you are ever going to get to hearing the real Diamond himself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performer with enthusiastic language ('perfectly duplicates', 'valuable gem'), but single excerpt warning means full verdict unclear. Scored high in Positive bucket given unqualified praise. | GPT-4o: The excerpt praises Nick Fradiani's performance highly, comparing him favorably to Neil Diamond. The single excerpt suggests a strong positive view of Fradiani, but the lack of full context limits confidence. | Gemini: The review excerpt is overwhelmingly positive, praising Nick Fradiani's performance as perfectly duplicating Neil Diamond's voice and calling him a 'valuable gem'. Given the single excerpt, I'm placing it at the higher end of the 'Positive' range. | Kimi: The excerpt offers enthusiastic praise for Nick Fradiani's vocal performance, calling him a 'valuable gem' and 'as close as you are ever going to get to hearing the real Diamond himself.' As a single curated excerpt per the warning, this represents clearly positive sentiment warranting the upper Positive range, though the full review's broader assessment is unavailable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:51:16.835Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This is one excruciating, headache-inducing evening of theater — and a long one at that.",
   "bwwScore": 3,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 19,
+  "llmScore": {
+    "score": 19,
+    "confidence": "high",
+    "range": {
+      "low": 14,
+      "high": 24
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is one excruciating, headache-inducing evening of theater — and a long one at that.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Despite being a single excerpt, this quote is unambiguously negative with harsh language ('excruciating', 'headache-inducing'). However, confidence is low due to limited text availability. | GPT-4o: The excerpt uses strong negative language ('excruciating', 'headache-inducing') indicating a clear pan. The tone suggests a strongly negative experience with no redeeming qualities. | Gemini: The review excerpt uses strong negative language such as \"excruciating\" and \"headache-inducing\", indicating a pan. | Kimi: The single available excerpt uses extreme negative language ('excruciating', 'headache-inducing') to characterize the experience, warranting a pan classification despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:17:03.804Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

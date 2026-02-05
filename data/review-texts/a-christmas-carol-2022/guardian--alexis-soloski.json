@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Its current Broadway incarnation, adapted by Jack Thorne, directed by Matthew Warchus and embellished with a dozen carols, is as gleaming as a Christmas goose. Which is to say, it's no turkey. But in readying the play for Broadway, Thorne has echoed his Harry Potter and the Cursed Child themes - the tension between fathers and sons, the ways we misunderstand the people we love - and borrowed a bit from Dickens's own life, turning a weird ghost story into a thin psychological allegory about a man whose daddy didn't love him enough.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 67,
+  "llmScore": {
+    "score": 67,
+    "confidence": "medium",
+    "range": {
+      "low": 62,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's no turkey. But in readying the play for Broadway, Thorne has echoed his Harry Potter themes and turned a weird ghost story into a thin psychological allegory.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt shows qualified praise ('no turkey') but significant criticism of the adaptation being 'thin' and overly derivative of the playwright's other work. Limited text makes full assessment difficult. | GPT-4o: The excerpt provides a positive assessment with some reservations. The show is described as 'gleaming,' suggesting quality, but also hints at a lack of depth with 'thin psychological allegory.' The single excerpt limits confidence in the overall sentiment. | Gemini: The review states that the show is \"no turkey\" and \"as gleaming as a Christmas goose\", but also criticizes the adaptation as a \"thin psychological allegory\". Given the limited excerpt, I am scoring it as slightly positive. | Kimi: The review praises the production as 'gleaming' and 'no turkey' but criticizes the adaptation as 'thin' and overly focused on psychological allegory rather than the original ghost story elements. With only one excerpt available, the mixed signals suggest a middle-of-the-road assessment. | Buckets: claude=Mixed, openai=Positive, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:07:38.715Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 72,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

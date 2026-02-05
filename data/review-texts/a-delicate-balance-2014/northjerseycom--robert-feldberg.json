@@ -12,5 +12,60 @@
   "bwwExcerpt": ": 'A Delicate Balance' is a long play, and, particularly in Agnes' lengthy speeches, it can slow down, and become gloomy. It's a pitfall that this production, which is mostly rewarding, doesn't completely avoid. Its biggest asset is Lithgow, who gives one of those masterful performances that's entertaining even as it's dramatically potent.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Its biggest asset is Lithgow, who gives one of those masterful performances that's entertaining even as it's dramatically potent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Review calls production 'mostly rewarding' and praises Lithgow's 'masterful performance,' but acknowledges significant pacing issues and gloominess as pitfalls the production doesn't avoid. Single excerpt limits confidence. | GPT-4o: The excerpt praises Lithgow's performance as a major highlight, indicating a positive view of the production. However, it also notes pacing issues and gloominess, suggesting some reservations. Given the single excerpt warning, a lower Positive score is appropriate. | Gemini: The review states the production is \"mostly rewarding\" but also acknowledges it can slow down and become gloomy. Lithgow's performance is highlighted as a major asset. Given the limited text, I'm placing it in the positive bucket with reservations. | Kimi: The critic calls the production 'mostly rewarding' and praises Lithgow's 'masterful' performance as a major asset, but deducts points for the show's slow pace and gloomy atmosphere that the production doesn't fully overcome.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:13:20.732Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

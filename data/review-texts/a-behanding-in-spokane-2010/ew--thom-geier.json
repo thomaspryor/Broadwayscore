@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There is something delightfully, wickedly off about all four characters in Behanding, including Rockwell's Mervyn. 'I always used to hope they'd have one of those shooting massacres at my high school, didn't you?” he says at one point. 'They'd come in, y'know, as they do, dressed like soldiers, just to be different, and then I'd, y'know, do something brave and save everybody. Well, not everybody, else it wouldn't be a high school massacre, but maybe after they got, say, twelve?' And as McDonagh & Co. build the suspense toward what seems to be an inevitably explosive finale, we're forced to ponder why we too seem to be drawn to stories of extreme violence. How much does our collective curiosity about the extreme and the macabre fuel society's nuttiest members to act out their (and our) most out-there fantasies?",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is something delightfully, wickedly off about all four characters in Behanding, including Rockwell's Mervyn.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic uses positive language ('delightfully, wickedly off') and engages thoughtfully with the play's provocative themes, suggesting appreciation for McDonagh's work. However, this is only one excerpt so confidence is low. | GPT-4o: The excerpt highlights the intriguing and unsettling nature of the characters and the suspenseful build-up, but it lacks a clear recommendation or overall evaluation of the production. The tone suggests a mix of fascination and discomfort, leading to a mixed verdict. | Gemini: The excerpt discusses the play's themes and suspense, but doesn't offer a clear recommendation. The tone is analytical rather than evaluative, suggesting a mixed or neutral stance. | Kimi: The critic uses positive descriptors ('delightfully, wickedly off') to praise the characterizations and engages thoughtfully with the play's suspense and themes, suggesting a favorable view, though the single excerpt limits certainty. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:56:16.215Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

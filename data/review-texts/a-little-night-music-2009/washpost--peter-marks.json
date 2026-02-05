@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "With the handiwork of Sondheim and librettist Hugh Wheeler, however, he seems far less clued in. For this elegant Scandinavian roundel of amour, of foolish old lovers and foolish young lovers, of characters who couple for sex or for vanity or for an annuity, Nunn takes us on what feels like a cheap date. (The production's origin is London's Menier Chocolate Factory, supplier of the far superior 'Sunday in the Park With George' on Broadway in 2008.)\nThe physical realm is especially grim: a few desultory walls, a few bland sticks of furniture; only David Farley's frocks, particularly for Zeta-Jones, attempt to bottle the sumptuousness that seems an essential aspect of 'Night Music.' Sure, the rage in musicals these days is to make them quasi-concerts, to bring down the scale and thereby underline what they are really about, the vitality of the words and music. Sometimes, though, the eye wants the stage itself to be a pretty face. You are reminded of this as you watch 'Night Music's' 'A Weekend in the Country,' one of the most satisfying Act 1 finales of all time, and you realize you have only the most physically impoverished notion of where these characters are, and where they are going.",
   "bwwScore": 3,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nunn takes us on what feels like a cheap date.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear criticism of direction, design, and overall production values ('cheap date', 'grim', 'physically impoverished'). However, single excerpt warning applies - this may not represent the full verdict. | GPT-4o: The review criticizes the production's physical elements and direction, describing it as a 'cheap date' and 'physically impoverished.' Despite the quality of the source material, the execution is found lacking. | Gemini: The review is largely negative, describing the production as \"cheap\" and \"physically impoverished.\" While praising the source material, it criticizes the current staging and design choices. | Kimi: The critic criticizes Trevor Nunn's direction as uninspired and the physical production as 'grim' and 'impoverished,' offering only qualified praise for the costumes while finding the overall revival fails to deliver the requisite sumptuousness for the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:28:00.176Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

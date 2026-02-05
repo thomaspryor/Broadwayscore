@@ -43,9 +43,9 @@
   "duplicateTextOf": "nytimes--jesse-green.json",
   "wordCount": 299,
   "tierReason": "Short text (299 words)",
-  "rejectedAt": "2026-02-05T07:34:05.534Z",
+  "rejectedAt": "2026-02-05T15:06:49.501Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text cuts off mid-sentence with a JavaScript error message about retrieving article content, making it impossible to determine the critic's verdict or recommendation.; openai: The text is incomplete and includes a technical error message, indicating it's not a full review.; gemini: The review is incomplete and cuts off mid-sentence due to retrieval issues.",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence with a technical error message about JavaScript and retrieving article content, making it impossible to determine the critic's verdict.; openai: The text provided is incomplete and includes a browser error message, indicating it's not a complete review.; gemini: The review is truncated and incomplete. The text ends abruptly with a message about trouble retrieving the article content.",
   "promptVersion": "5.2.0"
 }

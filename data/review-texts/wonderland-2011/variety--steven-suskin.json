@@ -44,5 +44,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 463,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is a distinct lack of wonder in 'Wonderland,' the new Frank Wildhorn musical at the Marquis.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic consistently criticizes the show as lacking wonder, having poor plotting, unengaging performances, and questions why it was even produced. While acknowledging a few bright spots (Mason's performance, costumes), the overall assessment is clearly negative. | GPT-4o: The review is overwhelmingly negative, highlighting a lack of wonder, unengaging performances, and ineffective production elements. The few positive mentions do not outweigh the overall critical tone. | Gemini: The review expresses disappointment in the production, citing a lack of wonder and uninspired performances. While acknowledging some positive aspects like Karen Mason's performance and costume design, the overall tone is negative, leading to a 'Negative' classification. | Kimi: The critic finds the production utterly devoid of wonder and distinction, with unengaging performances and only isolated bright spots in the costumes and two supporting roles, ultimately questioning why it was brought to Broadway.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:36:55.997Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

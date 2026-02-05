@@ -34,5 +34,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20130123130538/http://theater.nytimes.com/2012/04/26/theater/reviews/john-lithgow-in-the-columnist-at-friedman-theater.html?ref=theater",
   "wordCount": 1246,
   "tierReason": "Full review text",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COLUMNIST-Opens-on-Broadway-All-the-Reviews-20120426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COLUMNIST-Opens-on-Broadway-All-the-Reviews-20120426",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What we have witnessed in that early scene is, according to Mr. Auburn's script, Alsop's moment of greatest vulnerability in his long, prolific and combative years in punditry.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Brantley praises the performances, particularly Lithgow's, and acknowledges the solid craftsmanship, but finds the play 'more informative than illuminating' and compares it to 'an annotated outline' that doesn't feel lived-in. Mixed assessment with clear reservations about the writing despite strong production values. | Gemini: The review praises the acting and design but finds the play itself more informative than illuminating, suggesting a mixed experience overall. | Kimi: While Brantley praises John Lithgow's committed performance and the production's elegance, he finds David Auburn's play too schematic and predictable, describing it as 'more informative than illuminating' with a 'dry rustle of reference materials' that prevents genuine emotional engagement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:13:49.779Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

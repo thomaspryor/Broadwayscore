@@ -12,5 +12,60 @@
   "bwwExcerpt": "The joys of this production are Stone's vibrant book and the fun of seeing the cast play their way through it. Lucas-Perry is a dynamic Adams, Murray sports with the gouty Franklin. Carolee Carmello has swagger for days as John Dickinson, Adams's chief antagonist. If Elizabeth A Davis's Thomas Jefferson feels somewhat removed and empty, Jefferson was described as the American sphinx, so she may be responding to that. Page generates some nice moments, too, as with some under-the-table choreography for the congressmen's feet. But this conception offers something less than a full-throated revival of this musical, if indeed this musical needs to be revived at all. It has remembered the ladies. But it can't make them live.",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this conception offers something less than a full-throated revival of this musical, if indeed this musical needs to be revived at all.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: While the critic praises individual performances and Stone's book, the overall verdict questions whether the show needed revival and finds it lacking full commitment. The final line 'It has remembered the ladies. But it can't make them live' suggests fundamental failure despite good intentions. | GPT-4o: The review praises the vibrant book and some performances but notes that the production falls short of a full-throated revival. The text is an excerpt, so the full verdict is unclear, leading to a low confidence score. | Gemini: The review highlights positive aspects like the book, cast performances, and choreography, but ultimately concludes that the production offers \"something less than a full-throated revival\" and \"can't make them live,\" indicating a mixed assessment. | Kimi: While the excerpt praises the book and several performances as joys, it ultimately questions whether the musical needed reviving at all and finds the central concept fails to fully animate the material, ending on a negative note about the production's limitations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:39:31.485Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -11,5 +11,60 @@
   "bwwExcerpt": "Fradiani has that. His timbre is like an open range studded with tumbleweeds and barbed wire, cowboy ruggedness crossed with Flatbush grit, schmaltz with singed edges. And he knows just how to deploy it: when to purr, when to rawr, when to strum those vocal cords. But “A Beautiful Noise” attempts to be more than just a concert, and in so doing, it creates the clunkiest framing device and the least likable protagonist possibly in the history of jukebox musicals.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But 'A Beautiful Noise' attempts to be more than just a concert, and in so doing, it creates the clunkiest framing device and the least likable protagonist possibly in the history of jukebox musicals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: While praising Fradiani's vocal performance extensively, the critic delivers harsh criticism of the show's fundamental structure, calling it possibly the 'clunkiest' and having the 'least likable protagonist' in jukebox musical history. This follows the pattern of performer praise not redeeming an overall negative verdict. | GPT-4o: The excerpt praises Fradiani's performance but criticizes the show's framing device and protagonist. The single excerpt suggests a mixed review with notable flaws, but the lack of full context and the single excerpt warning reduce confidence. | Gemini: The review praises Fradiani's performance but criticizes the framing device and protagonist, suggesting a mixed experience. The single excerpt and aggregator verdict (Flat) contribute to the low confidence. | Kimi: While the critic enthusiastically praises Nick Fradiani's vocal performance and technique, they simultaneously deliver devastating criticism of the show's book, calling it the 'clunkiest framing device' with the 'least likable protagonist' in jukebox musical history, creating a sharply mixed verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:53:33.434Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

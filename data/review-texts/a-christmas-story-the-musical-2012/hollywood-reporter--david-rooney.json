@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "A cut above the pack, it’s cute, corny, wholesome and sentimental – all basic requirements for family-friendly seasonal stage entertainment. But it also packs ample heart into its wistful glance back to a time when rewards were simpler, communities were closer-knit, and both parental and filial roles were less polluted by the infinite distractions and anxieties of contemporary life. In short, a time when happiness was just a Christmas gift away…Sturdily adapted by Joseph Robinette, it features a",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-STORY-THE-MUSICAL-Opens-on-Broadway-Updating-LIVE-20121119",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A cut above the pack, it's cute, corny, wholesome and sentimental – all basic requirements for family-friendly seasonal stage entertainment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt clearly positions this as recommended family entertainment that exceeds expectations ('cut above the pack') and 'packs ample heart.' However, with only one curated excerpt and truncated text, confidence is low about the full review's verdict. | GPT-4o: The excerpt is clearly positive, describing the show as 'a cut above the pack' and highlighting its heart and nostalgic qualities. The lack of a full review makes the confidence low, but the positive tone suggests a strong recommendation. | Gemini: The review excerpt suggests a positive but not overwhelmingly enthusiastic recommendation, describing the show as \"a cut above the pack\" and fulfilling the requirements for family-friendly entertainment. | Kimi: The excerpt offers clear praise, positioning the show as superior to typical seasonal fare with 'ample heart' and sturdy adaptation. However, given this is a single curated excerpt with the sentence cut off, confidence is reduced despite the unambiguous positive tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:10:45.720Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

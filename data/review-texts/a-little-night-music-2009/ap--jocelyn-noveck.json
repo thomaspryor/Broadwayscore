@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "She and Stritch, a fellow Tony winner, are making a welcome return. When Stritch sings of failing standards in 'Liaisons,' she's not talking about acting (well, not in the traditional sense) but one can't help extrapolating a bit. 'Where is style?' she asks. 'Where is skill?' 'Where's passion in the art, where's craft?' Here's one place you can look: Right at her, onstage at the Walter Kerr Theatre.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Here's one place you can look: Right at her, onstage at the Walter Kerr Theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt strongly praises the lead performance with 'welcome return' and positions the performer as embodying the 'style,' 'skill,' and 'craft' the show seeks. However, this is only a single curated excerpt focused on one performer, so confidence is low and the verdict may not represent the full review. | GPT-4o: The excerpt praises the performance of Stritch, suggesting a strong recommendation to see the show. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt praises Stritch's performance and suggests the audience can find skill and passion in her work, indicating a positive recommendation. Given it's a single excerpt, I'm placing it in the upper range of 'Positive'. | Kimi: The excerpt offers enthusiastic praise for Elaine Stritch's 'welcome return' and identifies her as an exemplar of theatrical craft and passion, clearly recommending attendance specifically for her star turn.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:25:04.943Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

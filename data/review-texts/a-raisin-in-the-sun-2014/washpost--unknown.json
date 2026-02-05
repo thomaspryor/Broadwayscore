@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "After a lukewarm stab at 'A Raisin in the Sun' a decade ago, director Kenny Leon has returned to Lorraine Hansberry's definitive story of African-American aspiration with a potent new Broadway revival starring Denzel Washington and Anika Noni Rose that reaffirms its place in the pantheon of great American drama. In his second crack at Hansberry's 1959 masterwork...Leon in concert with his cast finds the driving rhythm of bitterness that suffuses the work and in particular, the character of Walter Lee Younger. Washington is, in fact, older than Younger by a couple of decades. Nevertheless, the actor gives a sterling account of Walter Lee's careless sourness, an aura of self-defeat that renders utterly credible the decision he makes that all but scuttles the family's rise to middle class security.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Washington gives a sterling account of Walter Lee's careless sourness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls this a 'potent new Broadway revival' that 'reaffirms its place in the pantheon of great American drama' with 'sterling' praise for Washington's performance. Despite only having an excerpt, the language is consistently positive and appreciative. | GPT-4o: The excerpt praises the revival as 'potent' and highlights strong performances, suggesting a positive reception. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses strong positive language such as \"potent new Broadway revival\" and \"reaffirms its place in the pantheon of great American drama\". The critic praises the direction and Washington's performance, indicating a strong recommendation. | Kimi: The excerpt offers strong praise for the revival, calling it 'potent' and placing it in the 'pantheon of great American drama,' with particular commendation for the direction and Washington's 'sterling' performance, though as a single curated excerpt, the full verdict may include additional context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:32:30.526Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

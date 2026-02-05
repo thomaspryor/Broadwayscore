@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Beethoven wrote 33 variations on a simple little waltz by the music publisher Anton Diabelli. Now Moises Kaufman has written \"33 Variations,\" a play in 33 scenes in which Jane Fonda, age 71, returns to the Broadway stage after a 46-year absence. Fonda fans, of whom I am one, will not be disappointed, though they may be surprised. She looks, even from the fifth row, 45 or less and alluring as ever (if alluring in quite a different, more conventional way than the Jane",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-33-Variations-Review-Roundup-and-More-20090310",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fonda fans, of whom I am one, will not be disappointed, though they may be surprised.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows qualified positive sentiment - the critic identifies as a fan and says fans won't be disappointed, but the qualification 'though they may be surprised' suggests some reservations. However, this is only one excerpt from the full review, so confidence is low. | GPT-4o: The excerpt suggests a positive reception, particularly for Jane Fonda's performance, appealing to her fans. However, the single excerpt and lack of a full review limit confidence in the overall sentiment. | Gemini: The review excerpt expresses a positive sentiment towards Jane Fonda's performance and the play, suggesting fans will not be disappointed. Given it's a single excerpt, confidence is low. | Kimi: Single excerpt offers clear praise for Jane Fonda's Broadway return ('will not be disappointed', 'alluring as ever'), warranting upper Positive range per excerpt guidelines, though limited context prevents higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:43:04.578Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

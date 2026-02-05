@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In 90 minutes of short vignettes, two actors run through every backstage story you've ever heard-missed cues, wardrobe malfunctions, dropped lines, broken props-all staged with comic dexterity by Mamet's frequent collaborator Neil Pepe in this fast-paced and fun revival, the show's first production on Broadway.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "all staged with comic dexterity by Mamet's frequent collaborator Neil Pepe in this fast-paced and fun revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('comic dexterity', 'fast-paced and fun') with no caveats. Single excerpt warning suggests this represents positive verdict, scored in upper Positive range. | GPT-4o: The excerpt describes the show as 'fast-paced and fun' with 'comic dexterity,' indicating a positive reception. Given the single excerpt warning, the score is placed in the upper range of Positive. | Gemini: The review uses positive language such as \"comic dexterity\", \"fast-paced\", and \"fun revival\", suggesting a positive experience. Given that it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt praises the staging with 'comic dexterity' and explicitly calls the show 'fast-paced and fun,' indicating a clear recommendation to see this revival despite the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:22:56.293Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "It's next to impossible to experience Billy Crystal's still side-splitting '700 Sundays'without recalling the absurdist characters and hallmark moments of your own youth. The veteran entertainer, a city slicker-turned-awards-show-hosting-juggernaut, has turned the story of his own coming-of-age into such a relatable piece of theater that any one anecdote may start your waterworks flowing, even while you're doubled over in laughter.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's next to impossible to experience Billy Crystal's still side-splitting '700 Sundays' without recalling the absurdist characters and hallmark moments of your own youth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling the show 'side-splitting' and 'relatable piece of theater' that evokes both laughter and emotional response. However, confidence is medium due to single excerpt warning - this could be cherry-picked positive content. | GPT-4o: The excerpt praises the show as 'side-splitting' and 'relatable,' suggesting a strong positive experience. The lack of full text and single excerpt warning lowers confidence, but the language indicates a rave. | Gemini: The review excerpt uses strong positive language such as \"side-splitting\" and \"relatable piece of theater,\" indicating a positive recommendation. Given the single excerpt and lack of full context, confidence is low, but the enthusiastic tone warrants a score on the higher end of the positive range. | Kimi: The excerpt employs strongly positive evaluative language ('side-splitting', 'relatable piece of theater') and promises an emotional, laughter-filled experience, indicating a clear recommendation despite the limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:46:42.169Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

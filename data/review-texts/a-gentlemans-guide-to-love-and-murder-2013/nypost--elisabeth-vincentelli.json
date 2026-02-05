@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"The droll tone and Edwardian setting should lure BBC fans, but this \"Guide\" has nothing on \"The Mystery of Edwin Drood\" - the 1985 caper musical that was successfully revived last year. Problem No. 1 is Freedman and composer Steven Lutvak's score, a collection of innocuous music-hall pastiches. The lyrics can be fun, as in \"I Don't Understand the Poor,\" sung by the fox-hunting blowhard Lord Adalbert: \"Though my politics are purely democratical/I find the species, frankly, problematical.\"...The ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-GENTLEMANS-GUIDE-TO-LOVE-AND-MURDER-Opens-on-Broadway-Updating-Live-20131117",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 53,
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this 'Guide' has nothing on 'The Mystery of Edwin Drood'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Unfavorable comparison to another show, describes score as 'innocuous music-hall pastiches' and identifies 'Problem No. 1', suggesting disappointment. However, single excerpt from truncated text limits confidence in overall verdict. | GPT-4o: The excerpt presents a mixed view, noting some appeal for BBC fans but criticizing the score as 'innocuous'. The comparison to a better-regarded musical suggests a lukewarm reception. However, the single excerpt limits confidence. | Gemini: The review excerpt criticizes the score as \"innocuous\" and compares the show unfavorably to another production. Given the negative tone and lack of positive comments, I'm classifying this as negative, but with low confidence due to the limited text. | Kimi: Single excerpt shows qualified praise for lyrics and setting but identifies major problems with the score and unfavorably compares the show to a superior production. Truncated text and lack of full verdict warrant low confidence. | Buckets: claude=Negative, openai=Mixed, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:21:24.855Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

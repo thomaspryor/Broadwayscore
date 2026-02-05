@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "So, it is richly rewarding to at last get to see this lovely, intelligent show unfold before my eyes on a Broadway stage. Now if only the parts were worthy of this remarkable whole! Unfortunately, this production, directed by Trevor Nunn and based on one he did at the intimate Menier Chocolate Factory in London a year ago, fails to deliver on most fronts. The main failing here is the presentation of the music. Music director Tom Murray leads a tiny band of eight musicians, and they never provide the lush sound that this show needs and deserves. (Check out Lincoln Center's South Pacific if you're not sure what I'm talking about.) Most of the cast sings—well, not poorly, but oddly: words are pronounced strangely and phrased weirdly, and some of the songs are more spoken than sung. And the tempo is disturbingly sluggish.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, this production fails to deliver on most fronts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite opening praise for the show itself as 'lovely, intelligent,' the critic finds the production 'fails to deliver on most fronts' with specific criticism of music direction, casting, and pacing. Single excerpt warning applies - confidence is low as this may not represent the full verdict. | GPT-4o: The review expresses disappointment with the production, particularly criticizing the music and presentation. Despite some appreciation for the show's potential, the overall tone is negative, indicating a failure to meet expectations. | Gemini: Despite calling the show \"lovely\" and \"intelligent,\" the reviewer ultimately finds the production lacking, specifically criticizing the musical presentation and sluggish tempo. Because only an excerpt is available, confidence is medium. | Kimi: While the critic praises the show's material as 'lovely' and 'intelligent,' they heavily criticize the current Broadway production's direction, musical arrangements, and performances, describing the tempo as 'disturbingly sluggish' and finding the presentation fails to meet the show's needs.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:26:31.417Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

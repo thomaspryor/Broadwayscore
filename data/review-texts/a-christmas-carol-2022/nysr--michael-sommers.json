@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "One gets the impression that Thorne invents such dreary business simply so his version of A Christmas Carol is somewhat different than the countless other stage adaptations before it. A high moral tone that infuses the play as several characters chide Scrooge for his behavior stiffens the drama considerably.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "One gets the impression that Thorne invents such dreary business simply so his version of A Christmas Carol is somewhat different.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes the adaptation as 'dreary business' and notes it 'stiffens the drama considerably.' However, with only one excerpt available, the full verdict may be different from this critical assessment. | GPT-4o: The excerpt criticizes the play for being 'dreary' and having a 'stiff' drama due to its moral tone. The lack of positive elements suggests a negative view, but the single excerpt limits confidence. | Gemini: The review excerpt describes the play as \"dreary\" and states that the moral tone \"stiffens the drama considerably,\" indicating a negative assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt clearly criticizes the adapter's creative choices as 'dreary' and finds that the moralizing tone 'stiffens the drama considerably,' indicating the reviewer does not recommend this production. Confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:08:26.320Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

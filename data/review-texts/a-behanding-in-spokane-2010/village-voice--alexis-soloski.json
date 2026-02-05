@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This is McDonagh's first play set in America and his second, after The Pillowman, not located in his native Ireland. He takes to certain of our idioms ('a coon's age,' 'y'know,' 'motherfucker'), but A Behanding lacks the lyricism of his earlier works. It also lacks their substance. That no one dies is not the only reason this amusing, harmless piece proves less affecting than any of his previous works. Instead of making the door to this hotel room one of the 'ten thousand several,' McDonagh has merely hung a metaphorical 'Do Not Disturb' sign on it.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This amusing, harmless piece proves less affecting than any of his previous works.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds the play 'amusing' but criticizes it as lacking substance and lyricism compared to McDonagh's earlier works. The metaphor about a 'Do Not Disturb' sign suggests disappointment with the play's limited ambition. | GPT-4o: The excerpt describes the play as 'amusing' and 'harmless' but lacking the lyricism and substance of McDonagh's earlier works. This suggests a mixed reception, acknowledging some entertainment value but noting significant shortcomings. | Gemini: The review states that the play lacks the lyricism and substance of McDonagh's earlier works and is less affecting. The single excerpt available suggests a negative assessment. | Kimi: The critic offers faint praise ('amusing,' 'harmless') but emphasizes the play lacks the lyricism and substance of McDonagh's previous works, calling it 'less affecting.' This mixed-to-negative assessment without a clear recommendation places it in the Mixed bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:59:15.102Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

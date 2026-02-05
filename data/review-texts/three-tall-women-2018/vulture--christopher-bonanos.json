@@ -36,5 +36,59 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "Although they move around while they do it, there's almost no action, barely a plot, and (apart from some unusual dynamics involving Miriam Buether's tricky, clever set design) little that could be called a special effect. They just stand and deliver, or sometimes sit and deliver, and nearly two hours later you realize that you may not have blinked for minutes at a time while they did it.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THREE-TALL-WOMEN-on-Broadway-20180329"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THREE-TALL-WOMEN-on-Broadway-20180329",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of Three Tall Women really is a staggering example of precisely what a dramatic actor does onstage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout ('staggering example,' 'master class,' 'you may not have blinked for minutes at a time') and provides detailed, enthusiastic praise for all three performances with no reservations or caveats expressed. | Gemini: The review is overwhelmingly positive, praising the performances of the three actresses as a \"master class\" in acting. The critic highlights their ability to command the stage and deliver Albee's dialogue effectively, making it a highly recommended theatrical experience. | Kimi: The reviewer offers unqualified superlatives for all three lead performances, calling them a 'staggering example' of dramatic acting and a 'tour de force,' while praising the production's hypnotic power and clever design. No significant criticisms are offered.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:27:44.370Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 91,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

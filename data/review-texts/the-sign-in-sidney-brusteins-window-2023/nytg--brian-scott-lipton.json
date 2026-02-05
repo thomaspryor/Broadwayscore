@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Oscar Isaac and Rachel Brosnahan deliver powerhouse performances in this revival of Lorraine Hansberry's complex drama about idealism and disillusionment in 1960s Greenwich Village.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "archiveOrgTimestamp": "20251015012404",
   "archiveOrgUrl": "http://web.archive.org/web/20251015012404/https://www.newyorktheatreguide.com/reviews/the-sign-in-sidney-brusteins-window-broadway-review",
   "wordCount": 827,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The beauty of Hansberry's play almost makes up for Anne Kauffman's production, which feels too unsure of itself to linger or make demands.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises Hansberry's writing and the play's substance but finds significant fault with the direction and lead performances, calling them 'one-note' and 'deflating.' This is a classic mixed review - appreciating the material while critiquing the execution. | GPT-4o: The review acknowledges the strengths of Hansberry's play but criticizes the production and performances, indicating a mixed reception with some redeeming qualities. | Gemini: The review praises the play itself but is critical of the production and performances, resulting in a mixed assessment. The third act is noted as stronger, but overall the production is seen as lacking. | Kimi: While the critic deeply admires Hansberry's text and praises supporting performances by Miriam Silverman and Gus Birney, they find Anne Kauffman's direction uncertain and criticize Oscar Isaac and Rachel Brosnahan for delivering one-note performances that deflate over time, resulting in an uneven theatrical experience that neither fully recommends nor rejects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:20:07.770Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 61,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
