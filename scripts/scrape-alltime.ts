@@ -15,12 +15,15 @@
 import { chromium, Browser, Page } from 'playwright';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as https from 'https';
 
 // Use the shared show-matching utility (260+ aliases, multi-level matching)
 const { matchTitleToShow, loadShows: loadShowsFromMatching } = require('./lib/show-matching');
 
 const BASE_URL = 'https://www.broadwayworld.com/grossescumulative.cfm';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
+const BACKUP_DIR = path.join(__dirname, '../data');
+const MIN_SHOWS_MAIN_PAGE = 100; // BWW cumulative page typically lists 500+ shows
 
 interface AllTimeStats {
   gross: number | null;
@@ -74,7 +77,93 @@ function loadGrosses(): GrossesData {
   }
 }
 
-// Scrape a single cumulative page (main page or year-filtered)
+// Create backup of grosses.json before writing
+function createBackup(): void {
+  if (!fs.existsSync(GROSSES_PATH)) return;
+  const timestamp = Date.now();
+  const backupPath = path.join(BACKUP_DIR, `grosses.backup-${timestamp}.json`);
+  fs.copyFileSync(GROSSES_PATH, backupPath);
+  console.log(`[Backup] Saved to ${path.basename(backupPath)}`);
+
+  // Keep only last 5 backups
+  const backups = fs.readdirSync(BACKUP_DIR)
+    .filter(f => f.startsWith('grosses.backup-') && f.endsWith('.json'))
+    .sort()
+    .reverse();
+  for (const old of backups.slice(5)) {
+    fs.unlinkSync(path.join(BACKUP_DIR, old));
+  }
+}
+
+// ScrapingBee CSS extraction for cumulative page
+async function scrapePageWithScrapingBee(url: string): Promise<ScrapedRow[]> {
+  const key = process.env.SCRAPINGBEE_API_KEY;
+  if (!key) {
+    console.log('  SCRAPINGBEE_API_KEY not set, skipping');
+    return [];
+  }
+
+  const extractRules = {
+    rows: {
+      selector: 'table tr',
+      type: 'list',
+      output: {
+        show: 'td:first-child a',  // Show name from anchor (without theater)
+        cells: { selector: 'td', type: 'list', output: 'text' }
+      }
+    }
+  };
+
+  const params = new URLSearchParams({
+    api_key: key,
+    url: url,
+    premium_proxy: 'true',
+    extract_rules: JSON.stringify(extractRules),
+    wait: '5000',
+  });
+
+  const apiUrl = `https://app.scrapingbee.com/api/v1/?${params.toString()}`;
+
+  return new Promise<ScrapedRow[]>((resolve, reject) => {
+    https.get(apiUrl, { timeout: 90000 }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode !== 200) {
+          reject(new Error(`ScrapingBee returned ${res.statusCode}: ${data.slice(0, 200)}`));
+          return;
+        }
+        try {
+          const parsed = JSON.parse(data);
+          const rows: ScrapedRow[] = [];
+
+          for (const row of (parsed.rows || [])) {
+            const cells = row.cells || [];
+            if (cells.length < 6) continue;
+
+            // Use the anchor tag text (clean show name without theater)
+            const showTitle = (row.show || '').trim();
+            if (!showTitle || showTitle === 'Show' || !(cells[1] || '').includes('$')) continue;
+
+            rows.push({
+              showTitle,
+              gross: (cells[1] || '').trim(),
+              attendance: (cells[3] || '').trim(),
+              performances: (cells[6] || '').trim(),
+            });
+          }
+
+          resolve(rows);
+        } catch (e: any) {
+          reject(new Error(`ScrapingBee parse error: ${e.message}`));
+        }
+      });
+    }).on('error', reject)
+      .on('timeout', () => reject(new Error('ScrapingBee timeout')));
+  });
+}
+
+// Scrape a single cumulative page with Playwright (fallback)
 async function scrapePage(page: Page, url: string): Promise<ScrapedRow[]> {
   console.log(`\nFetching: ${url}`);
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
@@ -176,63 +265,96 @@ async function scrapeAllTime(): Promise<void> {
     }
 
     for (const { url, label } of urls) {
-      const page = await context.newPage();
-      const MAX_RETRIES = 3;
+      const MAX_RETRIES = 2;
+      let rows: ScrapedRow[] = [];
+      let scrapeSource = 'unknown';
 
+      // Tier 1: ScrapingBee CSS extraction
       for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
         try {
-          console.log(`\n--- ${label} (attempt ${attempt}/${MAX_RETRIES}) ---`);
-          const rows = await scrapePage(page, url);
-          totalRowsScraped += rows.length;
-
-          let pageMatched = 0;
-          let pageSkipped = 0;
-
-          for (const row of rows) {
-            // Use shared show-matching utility
-            const match = matchTitleToShow(row.showTitle, shows);
-
-            if (match) {
-              const slug = match.show.slug || match.show.id;
-              const stats: AllTimeStats = {
-                gross: parseCurrency(row.gross),
-                performances: parseNumber(row.performances),
-                attendance: parseNumber(row.attendance)
-              };
-
-              // Keep highest values if show appears across multiple year pages
-              const existing = allMatches.get(slug);
-              if (existing) {
-                // Take the maximum of each stat (cumulative should be highest on main page)
-                stats.gross = Math.max(stats.gross || 0, existing.gross || 0) || null;
-                stats.performances = Math.max(stats.performances || 0, existing.performances || 0) || null;
-                stats.attendance = Math.max(stats.attendance || 0, existing.attendance || 0) || null;
-                pageSkipped++;
-              } else {
-                pageMatched++;
-              }
-
-              allMatches.set(slug, stats);
-              unmatchedShows.delete(row.showTitle); // Remove from unmatched if previously unmatched
-            } else {
-              unmatchedShows.add(row.showTitle);
-            }
+          console.log(`\n--- ${label} [Tier 1: ScrapingBee] (attempt ${attempt}/${MAX_RETRIES}) ---`);
+          rows = await scrapePageWithScrapingBee(url);
+          if (rows.length > 0) {
+            scrapeSource = 'scrapingbee-css';
+            console.log(`  Found ${rows.length} shows via ScrapingBee`);
+            break;
           }
-
-          console.log(`  Matched: ${pageMatched} new, ${pageSkipped} updated, ${rows.length - pageMatched - pageSkipped} unmatched`);
-          break; // Success, no retry needed
-
+          console.log('  [ScrapingBee] Empty result');
         } catch (error: any) {
-          if (attempt === MAX_RETRIES) {
-            console.error(`  Failed after ${MAX_RETRIES} attempts: ${error.message}`);
-          } else {
-            console.log(`  Retry ${attempt + 1}/${MAX_RETRIES}...`);
-            await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
-          }
+          console.log(`  [ScrapingBee] ${error.message}`);
+        }
+        if (attempt < MAX_RETRIES) {
+          console.log(`  Retrying in ${3 * attempt}s...`);
+          await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
         }
       }
 
-      await page.close();
+      // Tier 2: Playwright (fallback)
+      if (rows.length === 0) {
+        const page = await context.newPage();
+        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+          try {
+            console.log(`\n--- ${label} [Tier 2: Playwright] (attempt ${attempt}/${MAX_RETRIES}) ---`);
+            rows = await scrapePage(page, url);
+            if (rows.length > 0) {
+              scrapeSource = 'playwright';
+              break;
+            }
+          } catch (error: any) {
+            if (attempt === MAX_RETRIES) {
+              console.error(`  Failed after ${MAX_RETRIES} attempts: ${error.message}`);
+            } else {
+              console.log(`  Retry in ${3 * attempt}s...`);
+              await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
+            }
+          }
+        }
+        await page.close();
+      }
+
+      if (rows.length > 0) {
+        totalRowsScraped += rows.length;
+
+        let pageMatched = 0;
+        let pageSkipped = 0;
+        let pageMedium = 0;
+
+        for (const row of rows) {
+          // Use shared show-matching utility — high confidence only for financial data
+          const match = matchTitleToShow(row.showTitle, shows);
+
+          if (match && match.confidence === 'high') {
+            const slug = match.show.slug || match.show.id;
+            const stats: AllTimeStats = {
+              gross: parseCurrency(row.gross),
+              performances: parseNumber(row.performances),
+              attendance: parseNumber(row.attendance)
+            };
+
+            // Keep highest values if show appears across multiple year pages
+            const existing = allMatches.get(slug);
+            if (existing) {
+              stats.gross = Math.max(stats.gross || 0, existing.gross || 0) || null;
+              stats.performances = Math.max(stats.performances || 0, existing.performances || 0) || null;
+              stats.attendance = Math.max(stats.attendance || 0, existing.attendance || 0) || null;
+              pageSkipped++;
+            } else {
+              pageMatched++;
+            }
+
+            allMatches.set(slug, stats);
+            unmatchedShows.delete(row.showTitle);
+          } else if (match && match.confidence === 'medium') {
+            pageMedium++;
+          } else {
+            unmatchedShows.add(row.showTitle);
+          }
+        }
+
+        const unmatchedCount = rows.length - pageMatched - pageSkipped - pageMedium;
+        console.log(`  Matched: ${pageMatched} new, ${pageSkipped} updated, ${pageMedium} medium (rejected), ${unmatchedCount} unmatched`);
+        console.log(`  Scrape source: ${scrapeSource}`);
+      }
 
       // Brief delay between pages to be polite
       if (urls.length > 1) {
@@ -286,8 +408,15 @@ async function scrapeAllTime(): Promise<void> {
     unmatchedArr.slice(0, 30).forEach(s => console.log(`  - ${s}`));
   }
 
+  // Safety guard: minimum show count (only for main page, not year-filtered)
+  if (!specificYear && allMatches.size < MIN_SHOWS_MAIN_PAGE) {
+    console.error(`\nGUARD: Only ${allMatches.size} shows matched (minimum: ${MIN_SHOWS_MAIN_PAGE}). Aborting write.`);
+    process.exit(1);
+  }
+
   // Write results
   if (!dryRun) {
+    createBackup();
     grossesData.lastUpdated = new Date().toISOString();
     fs.writeFileSync(GROSSES_PATH, JSON.stringify(grossesData, null, 2) + '\n');
     console.log(`\nWrote all-time stats to ${GROSSES_PATH}`);
