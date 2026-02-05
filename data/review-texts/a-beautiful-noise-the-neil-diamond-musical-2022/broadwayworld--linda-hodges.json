@@ -11,5 +11,60 @@
   "bwwExcerpt": "McCarten delivers a beautifully wrought musical about the mega-watt talent that is, and always was, Neil Diamond. It’s a lovefest of sing-along tunes and get-on-your-feet, upbeat favorites. But again, hidden just under the surface of some of his biggest hits, is a lonely man searching for answers through song. His music acts as a break in “the clouds,” his personal term for depression. For Neil, music is what feelings sound like.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McCarten delivers a beautifully wrought musical about the mega-watt talent that is, and always was, Neil Diamond.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this curated quote is clearly positive ('beautifully wrought', 'mega-watt talent', 'lovefest') but may not represent the full review. Given the enthusiastic language and BroadwayWorld 'Up' context, scoring at upper end of Positive bucket, but confidence is low due to limited text. | GPT-4o: The excerpt praises the musical as 'beautifully wrought' and describes it as a 'lovefest' with 'sing-along tunes and get-on-your-feet, upbeat favorites.' Despite the single excerpt warning, the tone is clearly positive and enthusiastic. | Gemini: The review uses positive language like \"beautifully wrought\" and \"lovefest,\" indicating a positive recommendation. The mention of a \"lonely man searching for answers\" suggests some reservations, placing it in the middle of the positive range. | Kimi: The excerpt offers strong praise calling the show 'beautifully wrought' and a 'lovefest' with 'mega-watt talent,' indicating an enthusiastic recommendation, though the single-excerpt limitation prevents a higher confidence rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:49:33.897Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

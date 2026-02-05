@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Legendary blues and soul singer Janis Joplin was an astounding force of nature onstage and off. A new concert musical on Broadway provides a rockin' good time while imaginatively evoking her impassioned, thrilling talent...Soulful and genuine, Davies gives a lively, energetic performance. She captures much of the exuberance and uniquely raspy wailing that made Joplin a musical legend, though she lacks Joplin's raw onstage sexuality and brash, raunchy persona...With dynamic use of lighting, projections, sound design and the choreography of Patricia Wilcox, Johnson creates a high-caliber spectacle around the compelling story of a uniquely talented singer-songwriter who embodied her generation's passionate attitudes.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A new concert musical on Broadway provides a rockin' good time while imaginatively evoking her impassioned, thrilling talent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('rockin' good time', 'high-caliber spectacle', 'soulful and genuine') with specific praise for lead performance and production elements, though notes the performer 'lacks Joplin's raw onstage sexuality.' Single excerpt warning applied - this reads as solidly positive recommendation. | GPT-4o: The review excerpt praises the show as a 'rockin' good time' and highlights the energetic performance and high-caliber spectacle, indicating a strong positive impression despite some minor reservations about capturing Joplin's full persona. | Gemini: The review uses positive language like \"rockin' good time\", \"impassioned, thrilling talent\", \"soulful and genuine\", and \"high-caliber spectacle\" to describe the show, indicating a positive recommendation. | Kimi: The excerpt offers strong praise for the production's spectacle and lead performance, describing it as a 'rockin' good time' and 'high-caliber spectacle,' though the single-excerpt limitation requires cautious confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:28:38.678Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

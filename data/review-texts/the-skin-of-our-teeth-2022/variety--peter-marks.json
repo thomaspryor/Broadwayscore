@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This Broadway revival of Thornton Wilder's 1942 Pulitzer Prize-winning play feels both timely and timeless, with stellar performances that breathe new life into this theatrical classic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -41,5 +41,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250722144021/https://variety.com/2022/legit/reviews/the-skin-of-our-teeth-review-broadway-1235240292/",
   "duplicateTextOf": "variety--ayanna-prescod.json",
   "wordCount": 729,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The events of the play are chaotic, but in this production they connect to the chaos of the here and now in ways that left me bewildered and a little frazzled.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the production's relevance and praises individual elements like Beans' performance and the set design, but finds the overall experience confusing and disjointed. The review expresses frustration with the play's clarity and notes audience confusion, landing in mixed territory without a clear recommendation either way. | GPT-4o: The review acknowledges the relevance of the themes but criticizes the production's clarity and cohesion. The critic felt bewildered and noted audience confusion, indicating a mixed reception. | Gemini: The review acknowledges the play's relevance and the cast's efforts, but ultimately finds the production uneven and bewildering. It neither strongly recommends nor discourages seeing it. | Kimi: While praising the cast (particularly Gabby Beans), the opulent set design, and the play's relevant themes, the critic ultimately describes the production as uneven and confusing, noting it left them 'bewildered' and unable to find resonance with the material despite its timely subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:21:46.346Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

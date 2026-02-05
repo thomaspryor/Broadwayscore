@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "In Adam Rapp's new play, Mary-Louise Parker gives a performance of such quiet intensity that you lean forward to catch every word, every breath.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -50,5 +50,60 @@
     "bww-reviews",
     "bww-roundup"
   ],
-  "bwwScore": 8
+  "bwwScore": 8,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cromer's flawless production of 'The Sound Inside' is even more resonant on Broadway: a tragedy about fiction, both the kind we read and the kind we live.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'flawless,' 'miraculous,' and 'riveting.' Critic calls Parker 'never better in her 30-year stage career' and praises every element of the production without reservation. | GPT-4o: The review is filled with superlatives and praises the production as 'flawless' and 'riveting', highlighting the exceptional performances and direction. It strongly recommends the show as a must-see. | Gemini: The review is overwhelmingly positive, praising the direction, script, and performances. The critic calls it \"flawless\" and states that Parker is \"never better\". | Kimi: The critic hails the production as \"flawless,\" praises Mary-Louise Parker's career-best performance, and describes the show as \"riveting\" and \"even more resonant on Broadway.\"",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:18:41.142Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

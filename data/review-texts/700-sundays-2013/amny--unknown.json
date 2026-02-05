@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Dozens of autobiographical one-person shows have come and gone since Billy Crystal stormed Broadway in 2004 with '700 Sundays,' his Tony-winning tribute to his father, who died of a heart attack when Crystal was just 15 years old, and growing up in Eisenhower-era Long Island with an unshakable desire to become an entertainer. Seeing as few of these shows, if any, have surpassed Crystal's heartwarming and hilarious tour de force, it's a pleasure to have it return for a run before the 'Les Miz' revival takes over the Imperial Theatre.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a pleasure to have it return for a run",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Calls it a 'tour de force' that few shows have surpassed, describes it as 'heartwarming and hilarious', and expresses pleasure at its return. Strong positive language despite being only an excerpt. | GPT-4o: The excerpt praises the show as a 'heartwarming and hilarious tour de force' and expresses pleasure at its return. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt expresses pleasure at the show's return, calling it \"heartwarming and hilarious.\" Given the single excerpt, confidence is low, but the positive language suggests a strong recommendation. | Kimi: The excerpt offers strong praise ('heartwarming and hilarious tour de force') and expresses clear enthusiasm for the show's return, indicating a solid recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:45:37.144Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

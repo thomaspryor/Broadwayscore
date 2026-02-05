@@ -37,5 +37,60 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 1039,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So it is truly surprising that here, the end of the world seems fairly routine.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with consistent criticism of the production's lack of urgency and over-reliance on spectacle. While praising individual performances (Beans, Ruff) and production values, the critic finds the overall experience disappointing and lacking coherence. | GPT-4o: The review acknowledges some positive elements, such as the puppetry and certain performances, but overall criticizes the production for its lack of coherence and tension. The critic's original rating of 2/5 aligns with a negative assessment. | Gemini: Despite praising some performances and design elements, the review ultimately finds the production lacking in tension and coherence, relying too heavily on spectacle and failing to fully realize the play's potential. The 2/5 rating confirms a negative overall assessment. | Kimi: The critic awards 2/5 stars, praising individual performances and puppetry but finding the production lacks tension and coherence, with spectacle overwhelming the urgent themes of the text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:17:50.052Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

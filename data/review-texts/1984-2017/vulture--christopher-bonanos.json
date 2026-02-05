@@ -14,5 +14,60 @@
   "bwwScore": 7,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622",
-  "playbillVerdictUrl": "http://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html"
+  "playbillVerdictUrl": "http://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a legitimate idea for theater-making, inventively and thoughtfully deployed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the production's innovative use of video technology as 'inventively and thoughtfully deployed' and calls it 'a legitimate idea for theater-making,' indicating appreciation for the creative choices despite some reservations about seeing theater on screens. | GPT-4o: The excerpt praises the innovative use of video screens in the production, describing it as a legitimate and thoughtful theatrical idea. Despite the text quality warning and single excerpt limitation, the positive tone suggests a positive verdict. | Gemini: The review focuses on the stagecraft and special effects, highlighting the use of video screens. While acknowledging a potential drawback, the critic ultimately praises the inventiveness and thoughtfulness of the deployment, suggesting a positive but qualified recommendation. | Kimi: The critic praises the show's use of video technology and special effects as legitimate and inventively deployed, offering clear approval of the production values, though this single excerpt provides a limited view of the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:28:36.234Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

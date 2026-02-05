@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This is called \"A Christmas Story,\" not \"The Christmas Story,\" so, parents, please take note. The musical based on the popular 1983 movie is neither candy-cane sweet nor sacred. In fact, not much is sacred in this droll, imaginative, definitely and a bit defiantly off-center tale of a 9-year-old bespectacled kid named Ralphie and a flawed but loving family in Indiana in the 1940s. That is, 9-year-olds (and up) and their flawed, loving parents are probably the target audience for the newest addit",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-STORY-THE-MUSICAL-Opens-on-Broadway-Updating-LIVE-20121119",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This droll, imaginative, definitely and a bit defiantly off-center tale",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt describes the show as 'droll, imaginative' and 'off-center' in positive terms, suggesting mild recommendation. However, with only one truncated excerpt available, confidence is low and the score reflects cautious positivity in the lower Positive range. | GPT-4o: The excerpt describes the show as 'droll, imaginative, definitely and a bit defiantly off-center,' suggesting a positive view. However, the lack of a full review and single excerpt warning necessitates a cautious, low-confidence score. | Gemini: The review describes the show as \"droll, imaginative, definitely and a bit defiantly off-center\", suggesting a positive but not overwhelmingly enthusiastic recommendation. The single excerpt and truncated nature of the text lower the confidence. | Kimi: The excerpt praises the show as 'droll' and 'imaginative' with a 'defiantly off-center' sensibility, clearly recommending it for families with children 9+, though the single curated excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:53:52.024Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

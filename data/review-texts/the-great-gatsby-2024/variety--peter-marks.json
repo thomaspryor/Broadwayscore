@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This Broadway musical adaptation of F. Scott Fitzgerald's novel is a lavish spectacle that prioritizes visual splendor over emotional resonance, resulting in a production that's more pretty than profound.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20260202170326",
   "archiveOrgUrl": "http://web.archive.org/web/20260202170326/https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-jeremy-jordan-1235981841/",
   "wordCount": 1168,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Maybe not entirely, but it does make for a great time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges significant flaws (weak book, missed thematic depth, poor casting choices) but ultimately recommends the show as entertaining spectacle. The final verdict is positive: 'great time,' 'nearly impossible not to be taken in and enjoy,' suggests audiences should 'join in and enjoy the ride.' | GPT-4o: The review acknowledges impressive production design and Jeremy Jordan's performance but criticizes the lack of substance and issues with other cast members. The overall tone is mixed, appreciating the spectacle but noting significant flaws in adaptation. | Gemini: The review acknowledges significant flaws and changes from the source material, but ultimately concludes that the spectacle is enjoyable and worth seeing, albeit with reservations for fans of the novel. | Kimi: While the critic faults the adaptation for sacrificing the novel's substance and criticizes several lead performances, the review strongly recommends the production based on Jeremy Jordan's star turn and the masterful design elements, ultimately concluding it offers a 'great time' and that audiences should 'enjoy the ride.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:11:15.177Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 67,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

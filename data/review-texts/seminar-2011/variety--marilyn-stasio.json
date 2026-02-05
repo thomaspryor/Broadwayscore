@@ -19,15 +19,16 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "textQuality": "partial",
-  "rejectedAt": "2026-02-04T13:42:31.810Z",
+  "rejectedAt": "2026-02-05T15:06:50.352Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This appears to be a brief plot description or promotional blurb rather than an actual review with critical evaluation; openai: The text is a brief description of Alan Rickman's role and does not provide any evaluative content or overall assessment of the production.",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Geffen Playhouse, not a Broadway production.; kimi: This review covers the production at the Geffen Playhouse in Los Angeles (referencing the Philadelphia 'Philly' production), not a current Broadway run. It is a regional/off-Broadway theater review.",
   "promptVersion": "5.2.0",
   "bwwScore": 8,
   "sources": [
     "web-search",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "wrongProduction": true
 }

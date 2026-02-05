@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Everything unfolds with predictably smooth Times Square professionalism, and I can imagine the results appealing to fans of \"Jersey Boys\" (including the dances, which were choreographed by Sergio Trujillo, who worked on that show as well). But for all its slickness, \"A Bronx Tale\" is nothing more than a weightless comic-book adaptation of the movie on which it's based, stripped of the understated yet ever-present sense of threat that gave the film so much of its dramatic force. Here, by contrast",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But for all its slickness, 'A Bronx Tale' is nothing more than a weightless comic-book adaptation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt shows the critic acknowledging professional qualities and potential appeal to certain audiences, but ultimately finding the show 'weightless' and lacking the dramatic force of its source material. However, with only one truncated excerpt available, the full verdict is unclear. | GPT-4o: The review describes the show as 'predictably smooth' and 'slick', which may appeal to some fans, but criticizes it as 'weightless' and lacking the dramatic force of the film. The tone suggests a mixed reception, with neither strong recommendation nor discouragement. | Gemini: The review acknowledges the show's professionalism but ultimately finds it lacking in substance and dramatic force, suggesting a mixed to negative assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: While acknowledging the production's smooth professionalism and potential appeal to 'Jersey Boys' fans, the critic ultimately dismisses the show as a 'weightless' adaptation stripped of dramatic force, offering a clear negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:47:02.055Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 44,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 21,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

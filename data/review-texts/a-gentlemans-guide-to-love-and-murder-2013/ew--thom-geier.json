@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"...This production's secret weapon isn't the poison in Monty's pocket but Lutvak's jaunty score, which sounds both fresh and period-perfect with its echoes of Gilbert and Sullivan and classic British music hall. And the lyrics are as gut-bustingly clever as anything in The Book of Mormon...No one is likely to get sick of the black comedy in A Gentleman's Guide, which remains winsome and charming despite an alarming surfeit of devious and devilish characters. Quite simply, it's a bloody good tim",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-GENTLEMANS-GUIDE-TO-LOVE-AND-MURDER-Opens-on-Broadway-Updating-Live-20131117",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Quite simply, it's a bloody good time",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for score ('jaunty', 'fresh and period-perfect'), lyrics ('gut-bustingly clever'), and overall experience ('winsome and charming', 'bloody good time'). High praise despite single excerpt limitation. | GPT-4o: The excerpt is highly positive, praising the score and lyrics as 'gut-bustingly clever' and describing the show as 'winsome and charming'. The enthusiastic tone suggests a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"jaunty score\", \"fresh and period-perfect\", \"gut-bustingly clever\", and \"bloody good time\". This indicates a strong recommendation. | Kimi: The excerpt offers enthusiastic praise for the score and lyrics, comparing them favorably to The Book of Mormon, and describes the show as 'winsome and charming' with a 'bloody good time' verdict. Score reflects the clearly positive tone of the available excerpt, though confidence is low due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:04:56.419Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

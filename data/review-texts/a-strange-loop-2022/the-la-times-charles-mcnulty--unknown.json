@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "I never thought I'd see anything on Broadway quite like 'A Strange Loop,' Michael R. Jackson's Pulitzer Prize-winning musical that probes the inner reality of a 26-year-old Black, queer artist who's trying against the odds to transform his alienation into art. For much of this triumphant, emotionally lacerating show, which had its official opening Tuesday at the Lyceum Theatre, I sat with my mouth agape, astonished and grateful that something so brutally honest and rigorously constructed had finally broken through to a Broadway stage.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I sat with my mouth agape, astonished and grateful that something so brutally honest and rigorously constructed had finally broken through to a Broadway stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlatives like 'triumphant' and expresses genuine awe ('mouth agape, astonished and grateful'). However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more measured review. | GPT-4o: The excerpt uses strong positive language such as 'triumphant', 'emotionally lacerating', and 'astonished and grateful', indicating a highly enthusiastic recommendation. Despite being a single excerpt, the language suggests a rave review. | Gemini: The review uses strong positive language such as \"triumphant\", \"astonished\", and \"grateful\", indicating a rave review. The critic also emphasizes the show's honesty and construction. | Kimi: The excerpt contains unqualified superlatives ('triumphant') and expresses the critic's astonishment and gratitude for the production's 'brutally honest and rigorously constructed' nature, indicating an enthusiastic rave despite limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:41:50.006Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

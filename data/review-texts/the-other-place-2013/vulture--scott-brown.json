@@ -34,5 +34,60 @@
   "archiveOrgTimestamp": "20241225210808",
   "archiveOrgUrl": "http://web.archive.org/web/20241225210808/https://www.vulture.com/2013/01/theater-review-the-other-place.html",
   "wordCount": 678,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It does, I'm thrilled to report, and a great deal of the credit is due Metcalf herself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive review with enthusiastic praise for Metcalf's performance and the production's successful transfer to Broadway. The critic is 'thrilled to report' the show works on Broadway and calls it 'piercing and tonally on-target' with only minor quibbles. | GPT-4o: The review is filled with superlatives and praises Metcalf's performance and the production's successful transition to Broadway. The critic's enthusiasm and the lack of significant reservations place it firmly in the Rave category. | Gemini: The critic states they are \"thrilled\" that the production scaled up to Broadway and praises Metcalf's performance, indicating a strong positive recommendation. | Kimi: The review offers extensive praise for Laurie Metcalf's performance and Joe Mantello's direction, explicitly stating the critic is 'thrilled' with the Broadway transfer and 'greatly enjoyed' the production, with only minor quibbles about plot compression.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:05:03.289Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

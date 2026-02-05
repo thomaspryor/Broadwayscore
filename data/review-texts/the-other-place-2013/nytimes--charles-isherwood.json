@@ -51,5 +51,59 @@
   "sourceMethod": "scrapingbee",
   "duplicateTextOf": "nytimes--ben-brantley.json",
   "wordCount": 859,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In what is shaping up to be a lousy season for new plays on Broadway, perhaps this alone is worth a cheer or two.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges flaws (comparing it to 'lesser cable-television fare' and calling a plot twist 'too tidy'), but ultimately recommends the play for its construction, performances (especially Metcalf's 'transfixing' work), and direction. The positive verdict emerges clearly despite reservations. | Gemini: The review acknowledges flaws (tidy twist, potential for dismissal) but ultimately praises the entertainment value and Metcalf's performance, leading to a positive but not rave recommendation. | Kimi: While the critic notes the plot relies on a tidy twist and could be dismissed as cable-television fare, he ultimately praises Metcalf's superb, heartbreaking performance and Mantello's nimble direction, recommending the show as a highlight of a weak season.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:17:13.248Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

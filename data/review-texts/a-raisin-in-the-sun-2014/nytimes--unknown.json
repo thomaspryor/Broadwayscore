@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "The spark of rebellion, the kind that makes a man stand up and fight, has almost been extinguished in Walter Lee Younger. As portrayed by Denzel Washington in Kenny Leon's disarmingly relaxed revival of Lorraine Hansberry's 'A Raisin in the Sun' -- which opened on Thursday night at the Ethel Barrymore Theater -- Walter appears worn down, worn out and about ready to crawl into bed for good. Frankly, he looks a whole lot older than you probably remember him...Mr. Washington's more laid-back approach has a persuasive emotional logic, and it adds a different kind of suspense to 'Raisin.' As the play tells its familiar story of the Youngers' attempts to leave the South Side for the suburbs, with the life insurance money left by Lena's husband, we're less worried that Walter is going to erupt into violence than sink into stasis, dragging his family down with him.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Washington's more laid-back approach has a persuasive emotional logic, and it adds a different kind of suspense to 'Raisin.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt praises Washington's performance choice as having 'persuasive emotional logic' and creating 'different kind of suspense,' but the overall tone is measured rather than enthusiastic. Single excerpt warning applies - this appears mildly positive but may not represent the full review verdict. | GPT-4o: The excerpt highlights a unique interpretation by Denzel Washington that adds suspense, but also suggests a lack of energy in the portrayal. The single excerpt provides a mixed impression without clear positive or negative direction. | Gemini: The review describes Washington's performance as having \"persuasive emotional logic\" and adding \"a different kind of suspense.\" While not a rave, it's a positive assessment of the performance and its impact on the play. | Kimi: While noting Washington's worn-down, subdued interpretation differs from traditional fiery portrayals of Walter Lee, the critic validates this choice as having persuasive emotional logic that creates unique dramatic tension. Given this is a single excerpt, the score reflects mild approval at the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:31:34.558Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

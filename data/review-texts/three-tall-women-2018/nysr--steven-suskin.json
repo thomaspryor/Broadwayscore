@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Mantello once again demonstrates his sensitive touch for high drama, as in The Humans and Other Desert Cities. He and set designer Miriam Buether have some tricks up their joint sleeves, about which the less said the better the surprise. (Mantello was very much on my mind entering the Golden, having spent the prior two evenings at Angels in America-in the original Broadway production of which he vibrantly created the role of Louis Ironson.)",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THREE-TALL-WOMEN-on-Broadway-20180329"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THREE-TALL-WOMEN-on-Broadway-20180329",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play—in this new staging by Joe Mantello—seems even more dynamic and brilliant, in the 'luminous' sense of the word",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with superlative praise throughout. Calls the production 'even more dynamic and brilliant' than the acclaimed original, predicts Tony win for Jackson, describes 'masterful performance' from Metcalf, and concludes it's a 'riveting' memorial. Despite biographical context about Albee's relationship with his mother, the verdict is unqualified praise for this production. | GPT-4o: The review is overwhelmingly positive, praising the performances, direction, and set design. The critic describes the production as 'dynamic and brilliant' and gives it a 5/5 star rating, indicating a strong recommendation. | Gemini: Despite the truncated text, the review is overwhelmingly positive, using words like \"dynamic and brilliant\" and praising the performances and direction. The critic also mentions that Albee would have loved it. | Kimi: The critic awards 5/5 stars and delivers unqualified praise for the direction, performances, and design, calling the production 'riveting' and 'masterful' with no significant reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:22:32.538Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 93,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

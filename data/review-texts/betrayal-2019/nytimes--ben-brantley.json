@@ -40,5 +40,59 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about JavaScript and retrieving article content, making it impossible to determine the critic's final verdict.; openai: The text is incomplete and includes navigation prompts and instructions, making it not a scoreable review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is one of those rare shows I seem destined to think about forever.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Brantley uses superlative language throughout ('resplendently spare', 'most merciless and empathic interpretation', 'surgical precision') and explicitly calls it 'one of those rare shows I seem destined to think about forever.' Despite the truncated ending, the enthusiastic tone and exceptional praise clearly indicate a rave review. | Gemini: The review is overwhelmingly positive, using phrases like \"resplendently spare\", \"surgical precision\", and \"one of those rare shows I seem destined to think about forever.\" The critic clearly raves about the production. | Kimi: Brantley uses superlatives ('resplendently spare', 'surgical precision') and declares it one of those 'rare shows I seem destined to think about forever', indicating the highest recommendation despite the truncated ending.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:57:50.301Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

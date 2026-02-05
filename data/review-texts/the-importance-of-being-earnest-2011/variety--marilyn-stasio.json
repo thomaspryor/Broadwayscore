@@ -44,5 +44,60 @@
   "sourceMethod": "brightdata",
   "wordCount": 715,
   "tierReason": "Full review text",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-IMPORTANCE-OF-BEING-EARNEST-20110113"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-IMPORTANCE-OF-BEING-EARNEST-20110113",
+  "assignedScore": 85,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bedford's lifetime commitment to the classics also accounts for the technically assured craftsmanship underpinning this lavishly mounted crowdpleaser.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout for Bedford's performance and direction, calling it a 'crowdpleaser' with 'technically assured craftsmanship' and 'one fine cast.' The enthusiastic tone and unqualified recommendations indicate a solid positive review. | GPT-4o: The review is filled with praise for the production, the performances, and the technical aspects, describing it as a 'lavishly mounted crowdpleaser' and highlighting the strong cast. The tone is enthusiastic with no reservations. | Gemini: The review is overwhelmingly positive, praising Bedford's performance and direction, the design, and the cast as a whole. The critic clearly recommends seeing the show. | Kimi: The review offers unqualified praise for Brian Bedford's star performance and direction, describing the production as a 'lavishly mounted crowdpleaser' with 'technically assured craftsmanship,' 'divine' lead performance, and 'dynamite' supporting cast, with only a minor quibble about one line reading. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:12:35.037Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

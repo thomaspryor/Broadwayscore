@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "At the Imperial Theatre, where Sundays opened Wednesday, Crystal proves an impressively spry senior, even doing a cartwheel at one point. But it isn't youthful energy that seems to propel his rapid-fire delivery as much as a sense of urgency that his story, and the story of his extended family, be shared again...Fortunately, any hints of self-conscious, kumbaya-ish social commentary are folded seamlessly into the comedy, which is gently irreverent, endearingly good-natured and, yes, funny. Your tolerance for Yiddish and penis jokes might be tested, but Crystal and original director Des McAnuff sustain a knowing goofiness that makes it all go down smoothly.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Crystal and original director Des McAnuff sustain a knowing goofiness that makes it all go down smoothly.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises Crystal's performance and finds the show 'endearingly good-natured and, yes, funny' while acknowledging potential audience tolerance issues. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises the show for its humor and delivery, describing it as 'gently irreverent, endearingly good-natured and, yes, funny.' The positive tone and lack of significant reservations suggest a strong recommendation. | Gemini: The review is generally positive, highlighting Crystal's performance and the humor. It acknowledges potential tolerance issues with the jokes but suggests the overall experience is enjoyable. | Kimi: The excerpt offers clear praise for Crystal's physical performance and the show's comedy, describing it as 'endearingly good-natured and, yes, funny' with seamless integration of social commentary, though it notes the humor may test some viewers' tolerance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:48:00.202Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

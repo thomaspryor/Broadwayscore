@@ -58,5 +58,60 @@
   "archiveOrgTimestamp": "20210117155545",
   "archiveOrgUrl": "http://web.archive.org/web/20210117155545/https://www.newsday.com/entertainment/theater/aint-too-proud-temptations-1.28731283",
   "wordCount": 583,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show works best when it relies on great songs",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - acknowledges strengths (great songs, slick choreography) but notes frustrations (songs cut short). Text appears truncated mid-sentence. Low confidence due to limited excerpt and potential cherry-picking. | GPT-4o: The excerpt highlights positive elements such as the memorable Motown catalog and polished choreography, though it notes some frustrations with song interruptions. The single excerpt suggests a mildly positive view, leading to a score at the lower end of the Positive range. | Gemini: The review excerpt praises the use of the Motown catalog and the choreography, but also mentions that many songs are \"frustratingly interrupted or cut short.\" This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The excerpt offers qualified praise, commending the Motown catalog and choreography while criticizing the interruption of songs, suggesting a mild recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:56:56.127Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

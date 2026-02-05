@@ -51,10 +51,10 @@
   ],
   "wordCount": 232,
   "tierReason": "Short text (232 words)",
-  "rejectedAt": "2026-02-05T08:42:29.732Z",
+  "rejectedAt": "2026-02-05T15:08:37.640Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text cuts off mid-article and ends with a technical error message about retrieving content and enabling JavaScript, making it impossible to determine the critic's overall verdict.; openai: The text is incomplete and contains a technical error message about retrieving content, making it unscoreable.",
+  "rejectionReasoning": "claude: The text is truncated with technical error messages about JavaScript and article retrieval, making it impossible to determine the critic's overall verdict; openai: The text is incomplete and includes a technical error message about retrieving content, making it unscoreable.",
   "promptVersion": "5.2.0",
   "bwwScore": 7
 }

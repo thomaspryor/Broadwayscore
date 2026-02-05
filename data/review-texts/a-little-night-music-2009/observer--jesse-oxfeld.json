@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Maybe you liked Hal Prince’s original staging of A Little Night Music better. Fine, you were blown away by Judi Dench’s interpretation of Desirée in London in 1995. But the new revival of Night Music, which opened at the Walter Kerr Sunday night—the first Broadway production since its 1973 premiere, though it has been mounted several times by the City Opera—is a fantastic night at the theater, an entrancing, lovely, delightfully cast production of a Stephen Sondheim classic.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "is a fantastic night at the theater, an entrancing, lovely, delightfully cast production of a Stephen Sondheim classic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('fantastic night at the theater', 'entrancing', 'lovely') despite opening acknowledgment of other productions. Single excerpt limits full context assessment. | GPT-4o: The excerpt uses strong positive language ('fantastic', 'entrancing', 'lovely') to describe the production, indicating a highly favorable opinion. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The review explicitly states the revival is \"a fantastic night at the theater\" and uses other positive adjectives like \"entrancing\" and \"lovely.\" | Kimi: Single excerpt contains strong unequivocal praise ('fantastic,' 'entrancing,' 'lovely') for the revival, though limited context requires conservative scoring within the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:24:46.900Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

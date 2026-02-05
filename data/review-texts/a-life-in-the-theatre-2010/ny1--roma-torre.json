@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "What does emerge is a wonderful character study. Patrick Stewart is a marvel in dumbing down his God-given talents. This Brit playing a mediocre American actor, even manages to mangle Robert's British accent. There’s a poignancy as well when Stewart, through the laughs, reveals the emptiness in Robert’s life. T.R. Knight's role is basically one of second banana but he certainly holds his own especially when the two are botching a scene together.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Patrick Stewart is a marvel in dumbing down his God-given talents.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for Stewart's performance calling him 'a marvel' and noting 'poignancy' and successful comedy. Knight also praised as holding his own. Single excerpt limits confidence but tone is appreciative. | GPT-4o: The excerpt praises Patrick Stewart's performance and describes the show as a 'wonderful character study,' indicating a positive recommendation. However, the single excerpt warning suggests caution, so the score is set at the lower end of the Positive range. | Gemini: The review praises Patrick Stewart's performance as a \"marvel\" and highlights the poignancy and humor in the play. The overall tone is positive, suggesting a strong recommendation despite the limited excerpt. | Kimi: The excerpt offers enthusiastic praise for the lead performances ('marvel', 'wonderful', 'poignancy'), indicating a clear recommendation, though the narrow focus on acting and single-excerpt nature limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:08:17.022Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

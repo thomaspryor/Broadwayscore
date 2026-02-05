@@ -44,9 +44,10 @@
   "contentTier": "complete",
   "wordCount": 733,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T06:31:36.453Z",
+  "rejectedAt": "2026-02-05T15:26:55.239Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "openai: The review is about a production at Central Park's Delacorte Theater, not the current Broadway run.; kimi: This review covers the Public Works production at the Delacorte Theater in Central Park (Shakespeare in the Park), which is an Off-Broadway/outdoor venue, not a Broadway theater.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "openai: The review is about a production at Central Park’s Delacorte Theater, not the current Broadway run.; kimi: This review covers the Public Theater's free Shakespeare in the Park production at the Delacorte Theater in Central Park, which is an Off-Broadway venue, not a Broadway production.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Such hucksterism really is unnecessary, however. The show memorably reinvents one of the most terrifying tales of modern times, one that also happens to be among the best known, not only through the popularity of the 1949 novel, but in films - especially the 1984 version (!) starring John Hurt, Richard Burton and Jan Sterling. And although the import this limited run was prompted by the election of Donald J. Trump, the production makes no pandering attempt at relevance (as was the case with the recently closed Julius Caesar in Central Park). It lets Orwell speak for himself, and he does just fine, thank you, though in a distilled version that must make blatantly visual what the novel takes pains to incite in the consciousness.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show memorably reinvents one of the most terrifying tales of modern times.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls the show a 'memorable reinvention' and praises it for letting 'Orwell speak for himself' without pandering. However, with only one excerpt available, confidence is low as the full verdict may not be represented. | GPT-4o: The excerpt praises the show for its memorable reinvention and effective adaptation of a well-known story, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review states the show \"memorably reinvents\" the story, which is positive. However, due to the limited text and lack of a clear recommendation, the confidence is low and the score is in the lower end of the positive range. | Kimi: While acknowledging the production is a 'distilled version' that trades subtlety for visual bluntness, the critic praises it for avoiding pandering and letting 'Orwell speak for himself,' with the strong endorsement that it 'does just fine, thank you.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:41:47.001Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

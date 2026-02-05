@@ -11,5 +11,60 @@
   "bwwExcerpt": "Mimicking his voice with precision, Fradiani’s charisma propelled the show, especially during a stunning rendition of Sweet Caroline that ends Act One and a pulsating America that rocks Act Two.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fradiani's charisma propelled the show, especially during a stunning rendition of Sweet Caroline that ends Act One and a pulsating America that rocks Act Two.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows strong praise for lead performance with dynamic language ('charisma propelled', 'stunning', 'pulsating', 'rocks'). However, confidence is low due to limited text availability - this could be cherry-picked praise from a mixed review. | GPT-4o: The excerpt highlights strong praise for Fradiani's performance and the show's musical numbers, suggesting an enthusiastic recommendation. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt highlights a strong performance and describes the show as 'stunning' and 'pulsating,' indicating a positive experience. Given the single excerpt and aggregator context, I'm placing it in the upper range of the positive bucket. | Kimi: The excerpt offers enthusiastic praise for the lead's charisma and specific musical numbers, describing them as 'stunning' and 'pulsating,' which indicates a clear recommendation. However, given this is a single curated excerpt, the score is placed in the upper range of Positive rather than Rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:50:22.889Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -38,5 +38,59 @@
   "archiveOrgTimestamp": "20151001165834",
   "archiveOrgUrl": "http://web.archive.org/web/20151001165834/http://www.vulture.com/2012/12/theater-review-the-anarchist.html",
   "wordCount": 894,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm not objecting to a play that feels like work. I'm only objecting to work with no play in it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic consistently criticizes the production as 'gassy,' notes the actresses are 'suffocating,' and concludes with clear rejection. Despite acknowledging the performers' talents, the overall assessment is negative with no recommendation to see it. | Gemini: The review is largely negative, criticizing the writing, direction, and overall impact. While acknowledging the actresses' talents, it ultimately finds the production lacking and unsatisfying. | Kimi: The review consistently criticizes the production as emotionally dry and intellectually rigid, describing the actresses as 'suffocating' and the staging as 'gassy,' with a final verdict that the show is tedious labor devoid of theatrical pleasure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:08:28.818Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

@@ -11,5 +11,60 @@
   "bwwExcerpt": "The show was fantastically entertaining. I and the people around me left the theater singing, humming, and dancing. But we also left with a much deeper understanding of Neil Diamond’s songs and lyrics and a greater appreciation for the man behind the American idol, and of our shared humanity.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show was fantastically entertaining.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('fantastically entertaining') with evidence of audience engagement (singing, dancing) and meaningful takeaways. Single excerpt warning noted, but tone is clearly enthusiastic. | GPT-4o: The excerpt provides a strongly positive impression, describing the show as 'fantastically entertaining' and highlighting the audience's enthusiastic response. However, with only one excerpt available, the confidence is low. | Gemini: The excerpt indicates a very positive experience, with the audience leaving the theater singing and dancing. The critic also mentions a deeper understanding and appreciation, suggesting a strong recommendation. | Kimi: The excerpt uses enthusiastic language ('fantastically entertaining') and describes a highly positive audience response, though as a single curated excerpt, the overall verdict may not be fully represented.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:43:08.436Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 84,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

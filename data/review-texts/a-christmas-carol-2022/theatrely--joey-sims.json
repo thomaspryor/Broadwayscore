@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "\"Marley was dead,\" booms the commanding voice of stage icon Jefferson Mays, here taking on Scrooge, the narrator and every role besides. (Mays wrote the nearly one-man adaptation alongside Arden and Susan Lyons.) He skulks out of total blackness, barely visible at first, seeming an apparition from the beyond in Ben Stanton's masterful lighting. The stage will barely brighten through all the standard Christmas Carol table setting-\"Bah Humbug,\" etc. Mays' Scrooge drifts through these introductory ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Jefferson-Mays-Brings-One-Man-A-CHRISTMAS-CAROL-To-Broadway-20221121",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He skulks out of total blackness, barely visible at first, seeming an apparition from the beyond in Ben Stanton's masterful lighting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single excerpt with positive language ('commanding voice,' 'stage icon,' 'masterful lighting') but text is clearly truncated mid-sentence. Low confidence due to incomplete information and potential for cherry-picking. | Gemini: The review excerpt focuses on Jefferson Mays' performance and the staging, highlighting masterful lighting. While the excerpt is limited, the tone is positive, suggesting a recommendation with reservations due to the truncated nature of the text. | Kimi: The excerpt offers strong praise for Jefferson Mays' commanding performance and the production's masterful lighting design, though as a single truncated excerpt, the complete verdict and any potential reservations remain unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:05:39.331Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

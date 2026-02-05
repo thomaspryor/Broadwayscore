@@ -35,5 +35,59 @@
   "archiveOrgTimestamp": "20130312064721",
   "archiveOrgUrl": "http://web.archive.org/web/20130312064721/http://www.nypost.com:80/p/entertainment/theater/the_tedium_is_the_message_in_tangled_Q0IC1kUiMoTbGmQGPwZDwK",
   "wordCount": 662,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But boy, is the show tedious.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Despite praising Stoppard's writing, the production design, and cast performances, the critic's final verdict is that the show is 'tedious' - a clear negative assessment that outweighs the positive elements. | GPT-4o: The review acknowledges the play's wit and structure, and praises the cast's performance, but ultimately describes the show as tedious, indicating a mixed impression. | Gemini: The review acknowledges positive aspects like the production's appearance and the cast's performance, but ultimately concludes that the show is tedious, indicating a mixed overall impression.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:02:24.807Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": null,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

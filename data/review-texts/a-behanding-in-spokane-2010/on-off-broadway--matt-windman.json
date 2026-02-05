@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Walken is perfectly in synch with McDonagh's disturbed universe, but gives the same kind of ghoulish, monotonic performance that has become his defining trademark. Rockwell makes a lasting impression as a cocky and creepy clerk with nothing to lose or gain. Meanwhile, Mackie and Kazan merely engage in a shouting match and act hysterically. Bottom line: While John Crowley's atmospheric production is well-staged and Walken has chilling stage presence, this slight play feels like a missed opportunity.",
   "bwwScore": 4,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While John Crowley's atmospheric production is well-staged and Walken has chilling stage presence, this slight play feels like a missed opportunity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review offers balanced praise (well-staged production, Walken's presence, Rockwell's impression) but concludes with disappointment, calling it a 'missed opportunity' and 'slight play,' indicating neither recommendation nor strong discouragement. | GPT-4o: The review acknowledges strong performances and production quality but ultimately describes the play as 'a missed opportunity,' indicating a mixed verdict. The single excerpt and lack of a clear original rating suggest caution in interpretation. | Gemini: The review praises Walken and the staging, but criticizes the play itself and some of the performances. It ultimately concludes that it's a 'missed opportunity,' indicating a mixed reaction. | Kimi: The critic acknowledges strong staging and Sam Rockwell's performance, but criticizes Walken's monotonic delivery and the other leads' hysterical acting. The explicit verdict calls the play 'slight' and a 'missed opportunity,' indicating an overall recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:58:29.870Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

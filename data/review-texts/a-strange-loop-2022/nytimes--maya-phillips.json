@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The tricky task I face as a critic is figuring out how to write about a work whose brilliance has already been noted. The New York Times named the show a critic's pick in 2019, and I wrote briefly about the show's Broadway tryout in Washington, D.C., this fall. It's already won the Pulitzer. And yet, it seems as if there is no measure of praise that could be too much; after all, this is a show that allows a Black gay man to be vulnerable onstage without dismissing or fetishizing his trauma, desires and creative ambitions. Now that's some radical theater.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It seems as if there is no measure of praise that could be too much.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The critic states 'no measure of praise could be too much' and calls it 'radical theater' with 'brilliance.' Despite being a single excerpt, the language is unqualifiedly superlative. | GPT-4o: The excerpt expresses unqualified praise, describing the show as 'brilliant' and 'radical theater'. The critic suggests that any amount of praise is justified, indicating a strong recommendation. | Gemini: The critic states that no amount of praise would be too much, and highlights the show's radical nature. Given the single excerpt, I'm scoring it as positive with high end score. | Kimi: The excerpt expresses strong enthusiasm with phrases like 'no measure of praise that could be too much' and 'radical theater,' indicating a clear recommendation despite the limitations of a single excerpt. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:40:20.677Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

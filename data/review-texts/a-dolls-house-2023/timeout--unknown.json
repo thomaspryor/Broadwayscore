@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Lloyd mostly surrounds Chastain with dry, sympathetic performances. Michael Patrick Thornton, a highlight of last year’s Macbeth, plays Nora’s pining confidant, the sickly Dr. Rake, with an affecting mix of Weltschmerz and good humor. Okieriete Onaodowan brings low-key decency and desperation to the role of her secret loan shark and potential blackmailer, and Jesmille Darbouze is believably hard-nosed as her widowed friend; Tasha Lawrence has a sharp scene as the nursemaid who gave up her own ch",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DOLLS-HOUSE-Opens-On-Broadway-Starring-Jessica-Chastain-20230309"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DOLLS-HOUSE-Opens-On-Broadway-Starring-Jessica-Chastain-20230309",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lloyd mostly surrounds Chastain with dry, sympathetic performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt focuses entirely on praising the supporting performances with specific positive descriptors like 'highlight,' 'affecting,' and 'believably.' However, this is a single curated excerpt that appears cut off mid-sentence, so confidence is low. | GPT-4o: The excerpt praises the performances of the supporting cast, describing them as 'sympathetic' and 'affecting'. However, without a clear verdict or more context, the positive tone is mild. The single excerpt and lack of full review text necessitate a low confidence rating. | Gemini: The review excerpt focuses on praising the performances of the supporting cast. While it doesn't give an overall verdict, the positive tone suggests a recommendation, albeit with reservations due to the limited text available. | Kimi: The excerpt offers warm, specific praise for multiple cast members ('affecting,' 'believably hard-nosed,' 'sharp scene') indicating a solid recommendation based on acting quality. However, as a single curated excerpt with no broader verdict visible, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:15:58.060Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

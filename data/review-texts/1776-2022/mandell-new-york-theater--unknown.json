@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The \"1776\" revival has a minimalist design on a muted theme of Americana; the curtain suggests faded fragments of the red, white and blue - as if shying away from overt patriotism. Yet the show retains all 13 of Sherman Edwards' original, often bright and tuneful songs from the 1969 production, and also most of the sometimes goofy humor. At the same time, it makes some half dozen changes that sometimes provide a fresh perspective; most often offer a new emphas",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it makes some half dozen changes that sometimes provide a fresh perspective; most often offer a new emphasis",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The excerpt describes production elements neutrally and notes both positive aspects (retains songs, humor) and changes that 'sometimes' provide fresh perspective. The tentative language and cut-off text suggest mixed reception, but insufficient context for clear verdict. | GPT-4o: The review excerpt highlights both positive elements (retaining bright songs and humor) and changes that offer fresh perspectives, but the minimalist design and muted theme suggest a mixed reception. The lack of a full review and single excerpt warning lower confidence. | Gemini: The review describes the revival as retaining the original songs and humor while making changes. The tone is generally positive, but the limited excerpt and lack of a clear recommendation lead to a lower confidence and score. | Kimi: The excerpt offers qualified praise for the revival's 'bright and tuneful' songs and 'fresh perspective,' though words like 'sometimes' and 'most often' suggest reservations. As a single truncated excerpt, the overall verdict remains uncertain. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:24:30.767Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

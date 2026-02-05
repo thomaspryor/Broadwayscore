@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "The characters are simple, the storytelling is derivative of better-known musicals (\"West Side Story,\" \"Jersey Boys\") and the tone is excessively sentimental and solemn. But \"A Bronx Tale,\" the new Broadway musical based upon actor-writer Chazz Palminteri's coming of age in an Italian-American neighborhood in the Bronx of the 1960s, is nevertheless an entertaining crowd-pleaser and a poignant piece of theater. If it works, it works.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But 'A Bronx Tale' is nevertheless an entertaining crowd-pleaser and a poignant piece of theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opens with significant criticisms (simple characters, derivative storytelling, excessive sentiment) but concludes with clear positive verdict calling it 'entertaining crowd-pleaser' and 'poignant theater.' The 'If it works, it works' suggests qualified but genuine recommendation. | GPT-4o: The review acknowledges derivative storytelling and excessive sentimentality but ultimately describes the show as an 'entertaining crowd-pleaser' and 'poignant,' indicating a positive recommendation despite reservations. The single excerpt warning suggests using the lower end of the Positive range. | Gemini: Despite noting derivative elements, the review concludes that the show is \"entertaining\" and \"poignant,\" indicating a positive, though perhaps not rave, assessment. | Kimi: While the critic notes significant weaknesses (simple characters, derivative plotting, excessive sentimentality), the verdict 'nevertheless an entertaining crowd-pleaser' constitutes a qualified recommendation. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:45:10.724Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

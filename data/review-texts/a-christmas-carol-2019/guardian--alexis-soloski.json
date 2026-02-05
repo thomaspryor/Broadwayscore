@@ -14,5 +14,60 @@
   "bwwScore": 8,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120",
-  "playbillVerdictUrl": "https://www.theguardian.com/stage/2019/nov/20/a-christmas-carol-review-dickens-broadway-lyceum-theatre-new-york"
+  "playbillVerdictUrl": "https://www.theguardian.com/stage/2019/nov/20/a-christmas-carol-review-dickens-broadway-lyceum-theatre-new-york",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's no turkey. But in readying the play for Broadway, Thorne has echoed his Harry Potter and the Cursed Child themes",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows lukewarm praise ('no turkey') followed by criticism of the adaptation turning the story into a 'thin psychological allegory.' Mixed signals with no clear recommendation. | GPT-4o: The excerpt praises the production as 'gleaming' and 'no turkey', suggesting a positive view. However, it also notes a thin psychological allegory, indicating some reservations. Given the single excerpt, confidence is low. | Gemini: The review states it's \"no turkey\" but also describes it as a \"thin psychological allegory,\" suggesting a mixed assessment. The single excerpt and lack of a clear recommendation lead to a 'low' confidence score. | Kimi: The excerpt praises the production as 'gleaming' and 'no turkey' but levels significant criticism at the adaptation, calling it a 'thin psychological allegory' with a dismissive tone. With only one curated excerpt available, the overall verdict remains ambiguous but leans mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:04:23.580Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "In A Delicate Balance, an ominous domestic drama of 1966 now revived on Broadway, there's hardly a sentence that isn't meant to scratch or slice or slash...The director, Pam MacKinnon, who superintended the most recent and rather dazzling revival of Who's Afraid of Virginia Woolf, works to ground these seemingly extraordinary events and to temper Albee's penchant for absurdism with a realistic emotional palette...Despite the exertions of director and cast, the play can feel long and talky and the audience was not without its snoozers. Yet nearly half a century on, it hasn't really dated. The sense of menace and threat that underlies the chat - the tenuousness of even the most settled lives - remains immediate and disturbing. Like Who's Afraid of Virginia Woolf (if unlike The Zoo Story), a lot threatens to happen, but not much does....",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite the exertions of director and cast, the play can feel long and talky and the audience was not without its snoozers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed signals: praises director MacKinnon's work and acknowledges the play's enduring relevance, but notes significant flaws (long, talky, audience sleeping). The 'despite' structure suggests problems outweigh positives. | GPT-4o: The review acknowledges the director's efforts and the play's enduring themes but criticizes its length and pacing, leading to a mixed impression. | Gemini: The review acknowledges the director and cast's efforts but notes the play can feel long and talky. It also mentions the audience having snoozers, suggesting a mixed experience. | Kimi: The excerpt balances praise for the director's past work and the play's undated menace against significant criticism of its length and audience engagement ('snoozers'). The 'Yet' construction suggests qualified appreciation rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:55:26.943Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "A storm rages at the center of the Broadway revival of Edward Albee's A Delicate Balance. Though camouflaged in the elegant, comfortable mufti of the affluent upper classes, it's leveling everyone in its wake while leaving the building intact, like a neutron bomb. Its name is John Lithgow...surveying it all, tolerating it all, the affable Tobias of John Lithgow smolders, bursts into flame and slowly grows cold. It's as rich a performance as I've ever seen, the achievement of a lifetime spent commuting brilliantly between New York stages and Hollywood screens of every size...Nothing in Pam MacKinnon's finely calibrated but emotionally uneven and infrequently unnerving staging measures up to the sheer power of either Albee's dramaturgy or Lithgow's inhabitance of Tobias. There is no better interpreter of Albee today; her revival of Virginia Woolf was nothing less than a revelation, in part because its ensemble was perfectly knit. Such unity is absent here in a stellar cast that nevertheless seems mismatched.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nothing in Pam MacKinnon's finely calibrated but emotionally uneven and infrequently unnerving staging measures up to the sheer power of either Albee's dramaturgy or Lithgow's inhabitance of Tobias.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Extraordinary praise for Lithgow's 'achievement of a lifetime' performance, but significant criticism of the staging as 'emotionally uneven' and the ensemble as 'mismatched.' The review suggests seeing it for Lithgow but acknowledges the production doesn't fully succeed. | GPT-4o: The review praises John Lithgow's performance highly but criticizes the overall staging as emotionally uneven and lacking unity, resulting in a mixed assessment. | Gemini: The review praises Lithgow's performance as exceptional, but finds the overall staging emotionally uneven and the cast mismatched. This suggests a mixed experience, leaning towards positive due to the strong praise for the lead actor. | Kimi: The excerpt offers extraordinary praise for John Lithgow's lead performance but explicitly criticizes the direction as emotionally uneven and the stellar cast as mismatched, resulting in a split verdict that neither fully recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:12:40.146Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

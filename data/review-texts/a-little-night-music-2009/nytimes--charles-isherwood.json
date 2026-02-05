@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But for theater lovers there can be no greater current pleasure than to witness Bernadette Peters perform the show's signature number, 'Send In the Clowns,' with an emotional transparency and musical delicacy that turns this celebrated song into an occasion of transporting artistry. I'm not sure I've ever experienced with such palpable force - or such prominent goose bumps - the sense of being present at an indelible moment in the history of musical theater.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm not sure I've ever experienced with such palpable force the sense of being present at an indelible moment in the history of musical theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The critic describes Peters' performance as 'transporting artistry' and an 'indelible moment in musical theater history' - language indicating exceptional artistic achievement. However, confidence is low due to having only one curated excerpt that may not represent the full review's verdict. | GPT-4o: The excerpt provides high praise for Bernadette Peters' performance, describing it as a 'transporting artistry' and an 'indelible moment' in musical theater history. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The review excerpt focuses on Bernadette Peters' performance and calls it an \"occasion of transporting artistry\", indicating a strong positive sentiment. Given it's a single excerpt, confidence is low, but the praise is strong. | Kimi: While this single excerpt features unambiguously ecstatic praise—citing 'no greater current pleasure' and an 'indelible moment in musical theater history'—the cherry-picking risk inherent to curated excerpts warrants a conservative score at the upper end of the Positive range rather than the Rave bucket. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:13:59.229Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

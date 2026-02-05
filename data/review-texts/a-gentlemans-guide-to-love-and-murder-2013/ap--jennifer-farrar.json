@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"The hilarious satire on Edwardian melodrama, featuring the incomparable and seemingly tireless Jefferson Mays in eight roles, opened Sunday night on Broadway at the Walter Kerr Theatre. A gentle, penniless young man, Monty Navarro (given disarming appeal in a star turn by Bryce Pinkham) learns of his late, downtrodden mother's secret aristocratic past as a disinherited member of the wealthy D'Ysquith clan...The music hall atmosphere is enhanced by Alexander Dodge's colorful scenery and a sumptu",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-GENTLEMANS-GUIDE-TO-LOVE-AND-MURDER-Opens-on-Broadway-Updating-Live-20131117",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The hilarious satire on Edwardian melodrama, featuring the incomparable and seemingly tireless Jefferson Mays in eight roles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance ('incomparable') and production values ('colorful scenery'), but text is heavily truncated making full assessment difficult. | GPT-4o: The excerpt praises the show as 'hilarious' and highlights the performances of Jefferson Mays and Bryce Pinkham, suggesting a strong positive impression. However, the single excerpt warning and lack of full context reduce confidence. | Gemini: The review excerpt praises the performances of Jefferson Mays and Bryce Pinkham, and describes the production as a \"hilarious satire\" with \"colorful scenery.\" While the excerpt is incomplete, the positive language suggests a recommendation, albeit with some reservations due to the limited information. | Kimi: The excerpt contains strongly positive evaluative language ('hilarious,' 'incomparable,' 'star turn,' 'disarming appeal') indicating a clear recommendation, though the single truncated excerpt warrants reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:18:17.425Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

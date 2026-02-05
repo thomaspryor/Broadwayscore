@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Schreiber even manages to look stunned by the violence at the show's climax, as if Miller hadn't been signaling it from the start. Schreiber recognizes it as a moment of Shakespearean grace, as Hecht's Beatrice does-her body folds around his, protectively, like the petals of a flower. But it's not time to go home yet: That noble wet blanket Alfieri is lurking nearby, ready to send us off with a final, mournful monologue. Yet even he brings a delicate touch to Mi",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-A-VIEW-FROM-THE-BRIDGE-Review-Roundup-20100124",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Schreiber recognizes it as a moment of Shakespearean grace, as Hecht's Beatrice does-her body folds around his, protectively, like the petals of a flower.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows appreciation for the performances with poetic language ('Shakespearean grace', 'delicate touch'), but the context suggests some criticism of pacing ('not time to go home yet', 'noble wet blanket'). Single excerpt limits confidence significantly. | GPT-4o: The excerpt highlights a positive moment in the performance, describing it with grace and delicacy. However, the presence of a 'noble wet blanket' and the lack of a full review text make the overall sentiment mildly positive with low confidence. | Gemini: The excerpt praises Schreiber's performance and describes a moment of grace. However, it also mentions a \"noble wet blanket\" and a \"mournful monologue,\" suggesting some reservations. Given the single excerpt and the reservations, I'm scoring it as positive but with a lower score and confidence. | Kimi: The excerpt offers strong praise for the lead performances, describing moments of 'Shakespearean grace' with poetic imagery, indicating a clearly positive reception despite limited text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:39:02.198Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

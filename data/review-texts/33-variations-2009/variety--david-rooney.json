@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"It's been 46 years since Jane Fonda's last role on Broadway but there's no sign of rustiness in the cool command she brings to \"33 Variations.\" Fonda certainly knows her way around characters like musicologist Dr. Katherine Brandt, an impassioned woman hungry for knowledge and reluctant to concede her weaknesses. Playing an emotionally distant parent who finds closeness with her daughter only at the end of her life, the iconic star's work here is also illuminated by perso",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-33-Variations-Review-Roundup-and-More-20090310",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's no sign of rustiness in the cool command she brings to \"33 Variations.\"",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for Fonda's performance with phrases like 'cool command' and 'no sign of rustiness,' but this is only a single excerpt that may be cherry-picked. The positive language suggests upper Positive range. | GPT-4o: The excerpt praises Jane Fonda's performance, highlighting her 'cool command' and ability to portray complex characters. The positive tone suggests a recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt praises Jane Fonda's performance and command in the role, suggesting a positive, though potentially qualified, recommendation. Given the limited text, confidence is low. | Kimi: Single available excerpt offers clear, strong praise for Jane Fonda's lead performance ('no sign of rustiness', 'cool command'), placing it in the upper Positive range per excerpt guidelines, though limited context prevents higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:37:59.045Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

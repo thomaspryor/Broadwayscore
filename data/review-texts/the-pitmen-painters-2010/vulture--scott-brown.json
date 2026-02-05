@@ -32,5 +32,60 @@
   "archiveOrgTimestamp": "20101005034926",
   "archiveOrgUrl": "http://web.archive.org/web/20101005034926/http://nymag.com:80/daily/entertainment/2010/10/theater_review_the_art-appreci.html",
   "wordCount": 572,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's uncynical and forthright, like its subjects, and when Hall finally gets into the sticky question of exploitation he leaves it as a question for the audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review praises individual performances ('often-excellent', 'sparkle', 'deceptively modest', 'unexpected depths') and finds the material worthwhile despite acknowledging it's more 'pedagogical and far less personal' than Billy Elliot. The critic appreciates the play's 'uncynical and forthright' approach and engaging themes, indicating a solid recommendation despite some reservations about its didactic nature. | GPT-4o: The review acknowledges the play's educational tone and lack of personal connection but praises the performances and individual character portrayals. The overall impression is of a play with both strengths and weaknesses, leading to a mixed recommendation. | Gemini: The review praises the individual performances but finds the play somewhat didactic and less personal. It acknowledges the interesting questions raised but doesn't offer a strong recommendation. | Kimi: The critic praises the performances (particularly Connel and Whitaker) and the uncynical tone, but criticizes the play as 'pedagogical,' 'less personal,' and 'undeniably, a slideshow,' suggesting it barely transcends its lecture-like format despite the talented cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:06:09.498Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 63,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

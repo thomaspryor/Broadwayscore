@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "That Mamet wrote this script when he was still, really, a kid, is both indicative of his prescient understanding of the daily grind to come and his astonishingly early powers of observation. Like 'Glengarry Glen Ross,' 'A Life in the Theatre' is a play about work. It just happens to be toil that takes place in the theater. It has the same deadening effect on the soul.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That Mamet wrote this script when he was still, really, a kid, is both indicative of his prescient understanding of the daily grind to come and his astonishingly early powers of observation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt praises Mamet's 'prescient understanding' and 'astonishingly early powers of observation,' comparing it favorably to 'Glengarry Glen Ross.' However, with only one curated excerpt available and no clear verdict on the current production, confidence is low. | GPT-4o: The excerpt acknowledges Mamet's early talent but ultimately describes the play as having a 'deadening effect on the soul,' suggesting a mixed or lukewarm reception. The single excerpt and lack of a clear positive verdict lead to a low confidence score in the Mixed range. | Gemini: The review excerpt praises Mamet's writing and early powers of observation, suggesting a positive view of the play. However, due to the limited excerpt, the confidence is low. | Kimi: The excerpt offers strong praise for Mamet's early writing as 'prescient' and 'astonishing,' favorably comparing the script's thematic weight to 'Glengarry Glen Ross,' indicating a clearly positive assessment of the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:21:44.943Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

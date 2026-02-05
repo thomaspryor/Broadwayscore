@@ -12,5 +12,60 @@
   "bwwExcerpt": "On a set oddly decorated with clusters of small table lamps, she pierces the air with primal, lung-bursting screams and screeches, storming through such Joplin hits as 'Me and Bobby McGee,' 'Mercedes Benz,' 'Piece of My Heart' and 'Ball and Chain,' as well as a deconstruction of Gershwin's 'Summertime' that's deeply emotional, if barely recognizable. Davies' fervent singing italicizes Joplin's role as a rock pioneer, a strong-willed, free-spirited performer who was as tough and distinctive as the most notable male singers.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Davies' fervent singing italicizes Joplin's role as a rock pioneer, a strong-willed, free-spirited performer who was as tough and distinctive as the most notable male singers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Davies' performance with vivid descriptive language ('pierces the air', 'fervent singing', 'deeply emotional'). Single excerpt warning means this could be cherry-picked, but the consistent positive tone throughout suggests genuine recommendation. | GPT-4o: The excerpt highlights the powerful and emotional performance of Davies, emphasizing her role as a rock pioneer. The positive tone and focus on the performance suggest a strong recommendation. | Gemini: The review excerpt focuses on the positive aspects of the performance, highlighting the singer's portrayal of Joplin and her powerful renditions of classic songs. The phrase \"fervent singing italicizes Joplin's role\" suggests a strong and positive interpretation, leading to a positive but not rave recommendation. | Kimi: The excerpt offers enthusiastic praise for the lead performance using words like 'fervent,' 'primal,' and 'deeply emotional,' warranting an upper Positive score, though the single curated excerpt limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:17:37.515Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Julie White, a Tony Award-winner for The Little Dog Laughed, steps into Nora's peacock-brilliant outfit (courtesy of designer David Zinn) and instantly establishes mastery of the role. Yes, Metcalf was a wonder; but White brings full value, thank you very much. She works at a mile a minute, flitting about the stage with inner wheels twirling so fast that she often seems to be racing on to Nora's next thought before quite getting the last line out. It's a race White always wins, until Torvald una",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Check-In-with-the-New-Stars-of-A-DOLLS-HOUSE-PART-2-20170828",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "White brings full value, thank you very much.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance with enthusiastic language ('mastery', 'full value', 'wonder'), but text is truncated mid-sentence limiting full verdict assessment. | GPT-4o: The excerpt praises Julie White's performance highly, suggesting she brings 'full value' and works energetically. Although only one excerpt is available, the language is clearly positive, indicating a strong recommendation. | Gemini: The excerpt focuses on Julie White's performance, praising her 'mastery of the role' and comparing her favorably to Metcalf. Given the limited text, I'm placing it in the positive bucket with a high score due to the strong praise. | Kimi: The excerpt offers enthusiastic praise for Julie White's performance, using words like 'mastery' and 'wonder' and favorably comparing her to Laurie Metcalf. Following the single-excerpt guidance for clearly positive quotes, this warrants an upper Positive score, though confidence is low due to the limited and truncated context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:16:39.806Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

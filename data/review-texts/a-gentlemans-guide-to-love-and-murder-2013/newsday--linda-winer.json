@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"'A Gentleman's Guide to Love & Murder' is, at heart, a clever and jolly 90-minute frolic about a mouse of a disinherited Brit who kills his way up the noble Edwardian family tree until he becomes lord of the manor...Alas, this musical-comedy trifle runs a very leisurely 2-1 / 2 hours, not 90 minutes. This fact should not dissuade patient theatergoers who want to relish Jefferson Mays in one of those performances that people will be talking about all season...composer-lyricist Steven Lutvak and ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-GENTLEMANS-GUIDE-TO-LOVE-AND-MURDER-Opens-on-Broadway-Updating-Live-20131117",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This fact should not dissuade patient theatergoers who want to relish Jefferson Mays in one of those performances that people will be talking about all season",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite criticizing the pacing ('very leisurely 2-1/2 hours, not 90 minutes'), the critic recommends it to 'patient theatergoers' and praises Mays' performance as one 'people will be talking about all season.' However, only one excerpt available limits confidence. | GPT-4o: The excerpt praises Jefferson Mays' performance as a standout element, suggesting it's worth seeing despite the show's length. However, the single excerpt and lack of a full review make the overall sentiment less clear, warranting a lower confidence level. | Gemini: The review highlights a key performance and suggests it's worth seeing, but notes the show's length as a potential drawback. Given the limited excerpt, confidence is low. | Kimi: While criticizing the show's excessive length and calling it a 'trifle,' the reviewer explicitly recommends it for audiences willing to endure the runtime to see Jefferson Mays' standout performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:05:39.103Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

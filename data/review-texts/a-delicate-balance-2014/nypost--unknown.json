@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "This new 'A Delicate Balance' is like a Christmas fruitcake that's been left out too long: It's boozy and loaded with goodies -- Glenn Close! John Lithgow! -- but it's also on the dry side. The booze you can almost taste because Edward Albee's characters are constantly liquoring up, probably to make up for their boredom. It's a feeling you too may share during Pam MacKinnon's bloodless production. She did a much better job with 'Who's Afraid of Virginia Woolf?' two years ago...As the play turns to the absurd, Albee's writing brims with black humor and red-hot loathing. The show, by contrast, is a benign beige. Lithgow is best when Tobias is playing along with the women in his life, but his big letting-it-all-out scene feels forced. And Close's one-note, tight-lipped performance keeps the audience at arms' length, the way Agnes distances herself from family and friends. A delicate balance? By the end of Act 3, it might refer to the one between wakefulness and sleep.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She did a much better job with 'Who's Afraid of Virginia Woolf?' two years ago.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict with vivid metaphors ('Christmas fruitcake left out too long', 'benign beige'), criticism of direction as 'bloodless', performances as 'forced' and 'one-note', ending with joke about audience falling asleep. | GPT-4o: The review criticizes the production as 'bloodless' and suggests the audience may feel bored, indicating a negative verdict. While there is mention of notable actors, their performances are described as lacking, contributing to the overall negative tone. | Gemini: The review praises the writing but criticizes the production as \"bloodless\" and \"benign beige.\" The performances are also described with mixed opinions, leading to a mixed overall assessment. | Kimi: While acknowledging the star power of Glenn Close and John Lithgow, the critic pans the production as 'bloodless,' 'dry,' and dull, with forced performances that fail to capture the play's intensity, ultimately suggesting the show is soporific.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:11:32.460Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -41,5 +41,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 711,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I have to recommend it, even though I don't love it—it's not fun or entertaining or inspiringly good in the way theater can be.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic explicitly states 'I have to recommend it' and calls for 'high praise—even adulation' despite personal reservations about entertainment value. This is a clear positive recommendation based on the show's social importance and Comer's powerful performance in the second half. | GPT-4o: The review expresses mixed feelings, acknowledging the play's importance and Comer's performance while criticizing its lack of entertainment and artfulness. The recommendation is reluctant, indicating a mixed verdict. | Gemini: The critic states they \"have to recommend it, even though I don't love it\" and that it \"deserves high praise.\" While not a rave, the recommendation is clear. | Kimi: The critic explicitly states they must recommend the play for its powerful social message and 'adulation'-worthy impact on addressing sexual assault injustice, despite finding the first half 'tiresome' and the writing 'artless' with 'no poetry.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:05:47.143Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

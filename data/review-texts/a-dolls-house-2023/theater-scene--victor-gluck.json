@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Like Ivo van Hove’s pared-down revival of Arthur Miller’s \"A View from the Bridge,\" Jamie Lloyd’s new Broadway production of Henrik Ibsen’s 1879 \"A Doll’s House\" uses no sets or props and all black costumes for the entire cast. Going even further than van Hove, he has the heroine Nora Helmer played by film star Jessica Chastain seated almost for the entire length of this intermission-less three-act play. Using a new version by Amy Herzog recast in spare modern vernacular, this \"Doll’s House\" proves to be riveting and intense, even if you know the play very well, focusing our attention on the dialogue, the acting and emotion, rather than the décor and the historical trappings of 19th century Norway as we usually do.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this 'Doll's House' proves to be riveting and intense",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the production as 'riveting and intense' with clear praise for the stripped-down approach. However, confidence is low due to limited text availability - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the production as 'riveting and intense,' indicating a strong positive impression. However, the single excerpt warning and lack of full context reduce confidence. | Gemini: The review excerpt praises the production as \"riveting and intense,\" indicating a positive recommendation. The confidence is low due to the limited text available. | Kimi: The excerpt offers strong praise for the stripped-down production as 'riveting and intense' with focus on the acting and dialogue, though limited context from a single excerpt warrants conservative scoring and low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:13:16.642Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "New York gangsters sing and dance successfully in \"Guys and Dolls,\" and uptown street punks do the same in \"West Side Story.\" \"A Bronx Tale\" recalls both if only to illuminate its comparative limitations. Palminteri's semi-autobiographical story at the heart of this show remains compelling, but \"A Bronx Tale\" is ultimately much better (and more inexpensively experienced) as a movie.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Bronx Tale is ultimately much better (and more inexpensively experienced) as a movie.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic explicitly states the show has 'comparative limitations' and recommends the cheaper movie version instead, indicating they don't recommend spending money on the Broadway production. However, confidence is low due to single excerpt warning. | GPT-4o: The excerpt suggests that while the story is compelling, the stage production does not compare favorably to the movie, implying a recommendation against seeing the show. | Gemini: The review acknowledges the compelling story but ultimately finds the stage adaptation limited compared to the movie, suggesting a mixed experience. | Kimi: While acknowledging the source material remains compelling, the critic explicitly recommends the film adaptation over this Broadway production, citing comparative limitations to superior musicals and advising audiences to skip the theater for the cheaper, better movie.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:02:13.767Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

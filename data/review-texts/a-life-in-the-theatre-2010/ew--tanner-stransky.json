@@ -38,5 +38,61 @@
     "Word count too low: 184 (min: 300)"
   ],
   "wordCount": 184,
-  "tierReason": "Short text (184 words)"
+  "tierReason": "Short text (184 words)",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stewart and Knight, both at the top of their game here, embrace the strange spirit of the show and imbue Mamet's 26 madcap vignettes with a feeling of buoyant, urgent comedy that elicits lots of laughs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite the confusing D grade notation, the review text is clearly positive with B+ grade, praising the 'well-executed revival,' strong chemistry between leads, and successful comedy that 'elicits lots of laughs.' The B+ grade and consistent praise place this in solid Positive territory. | Gemini: The critic gives the show a D rating, which indicates a negative review. While they praise the actors' chemistry, the overall assessment is not positive. | Kimi: Despite the metadata note suggesting a 'D' rating, the review text explicitly awards the production a 'B+' and delivers consistent praise for the lead performances and comic timing, calling it a 'well-executed revival' that generates buoyant comedy and frequent laughter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:55:09.888Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Positive",
+    "scoreDelta": 38,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Outlier gemini chose Negative, 2+ buckets from majority"
+    ],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

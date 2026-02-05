@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The songs in the 90-minute show take us from blistering satire to bracing self-discovery, so the evening evinces a profound emotional range; our thoughts turn not so much for sustenance to Usher's Thoughts, though, as to Usher himself. That's activated, under Brackett's guidance, by Spivey's keenly permeable portrayal. Usher affects a superior air about art and is so down on himself that he sabotages his opportunity for meaningful intimacy. Even so, his honesty and pain render him entirely lovable. And the musically gifted Spivey, with his dynamic presence and openheartedness, proves the ideal vessel for docking an audience buoyantly in Jackson's thoughts. The composer-lyricist already has that Pulitzer, but now he deserves the Tony. Spivey should get one, too. Heck, give 'A Strange Loop' a lot of Tonys. That's only just, for the best Broadway musical of the season.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Heck, give 'A Strange Loop' a lot of Tonys. That's only just, for the best Broadway musical of the season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified superlative praise calling it 'the best Broadway musical of the season' with Tony predictions for multiple categories. Despite being a single excerpt, the language is so definitively positive it represents clear Rave territory. | GPT-4o: The excerpt contains strong praise, calling it the best musical of the season and suggesting it deserves multiple Tonys. The critic's enthusiasm and the superlative language indicate a rave review. | Gemini: The review is overwhelmingly positive, calling it the \"best Broadway musical of the season\" and suggesting it should win many Tonys. The praise for the lead performance is also very strong. | Kimi: The excerpt offers unqualified praise and the superlative 'best Broadway musical of the season,' warranting the top of the Positive range, though confidence is tempered by the single-excerpt format.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:31:48.471Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "One can quibble about many other things in this production - can anyone adequately explain the meaning of set designer Scott Pask's final image - but there's no question that '1776' speaks loudly and clearly to audiences in 2022.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's no question that '1776' speaks loudly and clearly to audiences in 2022.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt acknowledges flaws ('can quibble about many other things') but ends with clear praise for the show's relevance and impact. Single excerpt warning requires caution - this sounds mildly positive, so lower end of Positive bucket. | GPT-4o: The excerpt suggests the production effectively communicates with contemporary audiences, indicating a positive reception despite some quibbles. However, the single excerpt and lack of full context warrant a cautious, lower-end positive score. | Gemini: The review acknowledges issues with the production but ultimately states that the show resonates with audiences, suggesting a positive but not rave recommendation. Confidence is low due to the single excerpt. | Kimi: The critic acknowledges minor quibbles with the production but delivers an unambiguous recommendation that the show effectively resonates with contemporary audiences, using strong affirmative language ('no question', 'loudly and clearly').",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:23:42.872Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -37,9 +37,9 @@
   ],
   "wordCount": 376,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-05T05:28:00.442Z",
+  "rejectedAt": "2026-02-05T14:55:08.990Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text is cut off mid-sentence and ends with a technical error message about JavaScript and access verification, making it impossible to determine the critic's final verdict.; openai: The text is interrupted with a technical error message about enabling JavaScript, indicating incomplete content retrieval.",
+  "rejectionReasoning": "claude: The review text ends with a technical error message 'We are having trouble retrieving the article content. Please enable JavaScript in your browser settings' indicating the full review was not properly retrieved.; openai: The review text is truncated with a message about enabling JavaScript, indicating incomplete content.",
   "promptVersion": "5.2.0"
 }

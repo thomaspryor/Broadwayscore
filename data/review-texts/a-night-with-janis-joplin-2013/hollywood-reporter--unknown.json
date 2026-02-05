@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Mary Bridget Davies screeches up a storm as Janis Joplin. When she throws her formidable lungpower and raspy emotional rawness into 'Piece of My Heart,' you could swear the tragic supernova known to her friends as 'Pearl' had been reborn. But if you're after a contextualized bio-musical to provide insight into rock's first undisputed queen, writer-director Randy Johnson's sanitized concert tribute, A Night With Janis Joplin, is not the place to look.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mary Bridget Davies screeches up a storm as Janis Joplin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt warning applies. The review praises Davies' performance as potentially transcendent but clearly criticizes the show itself as 'sanitized' and lacking insight. This creates a mixed verdict where the performance excels but the material disappoints. | GPT-4o: The review praises the lead performance but criticizes the show for lacking depth and context, suggesting it's more of a tribute concert than a meaningful bio-musical. The single excerpt limits confidence in the overall sentiment. | Gemini: The review praises the performance of Mary Bridget Davies but criticizes the show as a \"sanitized concert tribute,\" indicating a mixed overall experience. Given it is a single excerpt, confidence is low. | Kimi: The excerpt offers enthusiastic praise for Mary Bridget Davies' performance ('screeches up a storm,' 'reborn') but strongly criticizes the show itself as a 'sanitized concert tribute' that fails to provide insight, suggesting a divided verdict typical of mixed reviews.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:29:23.650Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

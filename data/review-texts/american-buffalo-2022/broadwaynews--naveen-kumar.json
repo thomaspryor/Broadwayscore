@@ -34,5 +34,60 @@
   "archiveOrgTimestamp": "20230207121100",
   "archiveOrgUrl": "http://web.archive.org/web/20230207121100/https://broadwaynews.com/2022/04/14/review-american-buffalo-proves-another-mans-trash-isnt-always-a-treasure/",
   "wordCount": 879,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Whether they buy it will depend on their investment in shopworn fables of American greed, and their taste for motor-mouthed posturing and misogyny.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges strong performances (particularly praising Rockwell and Fishburne) and excellent design work, but ultimately questions the play's modern relevance and finds Mamet's language 'onerous and inexcusable.' The review neither recommends nor discourages attendance, leaving it up to individual taste. | GPT-4o: The review criticizes the play's outdated themes and offensive language, despite praising the performances and design. The overall tone suggests the production is not recommended due to its problematic content. | Gemini: The review acknowledges strong performances and design but criticizes the play's datedness and misogyny, leading to a mixed assessment. | Kimi: The review praises the performances (especially Rockwell and Fishburne) and design elements, but repeatedly emphasizes the play's dated, misogynistic content and Mamet's problematic public statements. The critic explicitly questions the play's 'lasting value' and 'practical modern-day currency,' calling the bigotry 'onerous and inexcusable.' The lukewarm invitation to 'linger and turn it over' for 'those who are curious' is far from a recommendation—it's a qualified, conditional interest at best.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:57:04.480Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }
