@@ -18,7 +18,7 @@
   "showScoreExcerpt": "Despite a talented cast and admirable ambitions, 'Paradise Square' is a musical that doesn't quite know what it wants to be, juggling too many themes without fully developing any of them.",
   "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "llmScore": {
     "score": 52,
     "confidence": "medium",
@@ -81,5 +81,24 @@
     "bww-reviews",
     "bww-roundup"
   ],
-  "bwwScore": 4
+  "bwwScore": 4,
+  "textWordCount": 366,
+  "archivePath": "data/archives/reviews/paradise-square-2022/nytimes--jesse-green_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T04:37:00.089Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250722214625",
+  "archiveOrgUrl": "http://web.archive.org/web/20250722214625/https://www.nytimes.com/2022/04/03/theater/paradise-square-review.html",
+  "wordCount": 366,
+  "tierReason": "Full review text"
 }
