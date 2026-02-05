@@ -165,7 +165,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `update-reddit-sentiment.yml`
 - **Runs:** Monthly (1st of month at 10am UTC), on previews → open transition, or manually
-- **Does:** Scrapes r/Broadway for discussions, uses Claude Opus for sentiment analysis, updates `data/audience-buzz.json`
+- **Does:** Scrapes r/Broadway for discussions, uses Claude Sonnet for sentiment analysis, updates `data/audience-buzz.json`. Default: open shows only (use --all for closed).
 - **Options:** `show`, `shows` (comma-separated), `limit` (default 50)
 - **Technical:** Uses ScrapingBee with premium proxy, generic titles use Broadway-qualified searches, 2-hour timeout with `if: always()` commit
 - **Script:** `scripts/scrape-reddit-sentiment.js`
