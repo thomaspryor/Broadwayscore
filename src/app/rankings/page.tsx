@@ -16,6 +16,11 @@ export const metadata: Metadata = {
     url: `${BASE_URL}/rankings`,
     type: 'article',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Find the Best Broadway Shows - Rankings & Lists',
+    description: 'Browse Broadway shows by category: best for kids, date night, tourists, by genre, and more.',
+  },
 };
 
 // Icons for each category
