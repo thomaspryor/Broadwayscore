@@ -178,6 +178,9 @@ const OUTLET_ALIASES = {
   'cititour': [
     'cititour', 'citi tour', 'city tour', 'cititourcom'
   ],
+  'stagebuddy': [
+    'stagebuddy', 'stage buddy', 'stage-buddy'
+  ],
   'stageandcinema': [
     'stageandcinema', 'stage and cinema', 'stage & cinema', 'stage-and-cinema'
   ],
@@ -301,6 +304,13 @@ const OUTLET_ALIASES = {
   ],
   'artsdesk': [
     'artsdesk', 'the arts desk', 'arts-desk', 'arts desk', 'the-arts-desk'
+  ],
+  'caroleditosti': [
+    'caroleditosti', 'carole di tosti reviews', 'carole-di-tosti-reviews',
+    'carole di tosti', 'caroleditostitheater'
+  ],
+  'theater-pizzazz': [
+    'theater-pizzazz', 'theater pizzazz', 'theaterpizzazz', 'theatre pizzazz'
   ],
 };
 

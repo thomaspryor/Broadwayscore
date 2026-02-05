@@ -690,7 +690,7 @@ function validateReviewsJson() {
   if (validateCriticOutlet) {
     const misattributed = [];
     for (const r of reviews) {
-      const validation = validateCriticOutlet(r.criticName, r.outlet);
+      const validation = validateCriticOutlet(r.criticName, r.outletId || r.outlet);
       if (validation.isSuspicious && (validation.confidence === 'high' || validation.confidence === 'medium')) {
         misattributed.push({
           showId: r.showId,
