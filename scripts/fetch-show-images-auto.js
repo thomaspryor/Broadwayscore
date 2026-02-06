@@ -18,7 +18,7 @@
  *
  * No hardcoded IDs - works for any show!
  *
- * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing] [--bad-images]
+ * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images]
  */
 
 const https = require('https');
@@ -80,6 +80,17 @@ const PINNED_IMAGES = new Set([
   'the-outsiders-2024',
   'two-strangers-bway-2025',
   'wicked-2003',
+]);
+
+// ============================================================
+// PRE-BROADWAY VENUE SHOWS — Accept venue-branded art for these
+// These shows only have pre-Broadway venue branding available
+// (e.g., Steppenwolf, NYTW). Gemini's "non_broadway" rejection
+// is overridden for listed shows. Add as discovered.
+// ============================================================
+const PRE_BROADWAY_VENUE_SHOWS = new Set([
+  'the-minutes-2022',           // Steppenwolf
+  'august-osage-county-2007',   // Steppenwolf
 ]);
 
 // Broadway.org CDN image transforms
@@ -934,104 +945,124 @@ function searchGoogleImages(query) {
   });
 }
 
-async function fetchFromGoogleImages(show) {
-  const year = show.openingDate ? show.openingDate.substring(0, 4) : '';
-  const showType = show.type === 'play' ? 'play' : 'musical';
-  // Sanitize title: escape quotes that would break SERP query
-  const safeTitle = show.title.replace(/"/g, '');
-  const query = `"${safeTitle}" Broadway ${showType} ${year} poster`;
-  console.log(`   Trying Google Images: "${query}"`);
+// Helper: extract valid image buffer from Google Images result
+function extractImageBuffer(result) {
+  if (!result.image || !result.image.startsWith('data:image/')) return null;
+  const commaIdx = result.image.indexOf(',');
+  if (commaIdx === -1) return null;
+  const buffer = Buffer.from(result.image.substring(commaIdx + 1), 'base64');
+  if (buffer.length < 3000 || !isImageBuffer(buffer)) return null;
+  return buffer;
+}
 
-  let results;
-  try {
-    results = await searchGoogleImages(query);
-  } catch (err) {
-    console.log(`   ⚠ Google Images search failed: ${err.message}`);
-    return null;
-  }
-
-  await sleep(1500);  // Rate limit after SERP call
-
-  if (!results || results.length === 0) {
-    console.log(`   ✗ No Google Images results`);
-    return null;
-  }
-
-  // ScrapingBee Google Images SERP returns:
-  //   url: source page URL (not direct image)
-  //   image: base64-encoded thumbnail (data:image/jpeg;base64,...)
-  //   title, domain, position
-  // We use the base64 thumbnails directly — they're 10-25 KB JPEG images,
-  // sufficient for our thumbnail format (resized to WebP by archive script).
-  // This avoids extra ScrapingBee page-scrape calls per candidate.
-  const candidates = results
+// Helper: filter Google Images results to usable candidates
+function filterGoogleCandidates(results, maxCount = 10) {
+  return (results || [])
     .filter(r => {
       if (!r.image || !r.image.startsWith('data:image/')) return false;
       const domain = (r.domain || r.url || '').toLowerCase();
-      // Skip merchandise sites and low-quality sources
       if (/ebay|etsy|pinterest|redbubble|teepublic|amazon\.com\/dp/i.test(domain)) return false;
       return true;
     })
-    .slice(0, 5);  // Top 5 candidates max
+    .slice(0, maxCount);
+}
 
-  if (candidates.length === 0) {
-    console.log(`   ✗ No usable image results`);
+async function fetchFromGoogleImages(show) {
+  const year = show.openingDate ? show.openingDate.substring(0, 4) : '';
+  const safeTitle = show.title.replace(/"/g, '');
+  const showDir = path.join(IMAGES_DIR, show.id);
+  fs.mkdirSync(showDir, { recursive: true });
+
+  let thumbnailBuffer = null;
+  let thumbnailResult = null;
+  let posterBuffer = null;
+  let squareCandidates = [];
+  let posterCandidates = [];
+
+  // ============================================================
+  // SEARCH 1: Square images (for homepage thumbnail cards)
+  // ============================================================
+  const squareQuery = `${safeTitle} Broadway square`;
+  console.log(`   Trying Google Images (square): "${squareQuery}"`);
+
+  try {
+    const squareResults = await searchGoogleImages(squareQuery);
+    squareCandidates = filterGoogleCandidates(squareResults, 10);
+    console.log(`   Found ${squareCandidates.length} square candidates`);
+
+    for (const result of squareCandidates) {
+      const buffer = extractImageBuffer(result);
+      if (buffer) {
+        console.log(`   ✓ Valid square image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}`);
+        thumbnailBuffer = buffer;
+        thumbnailResult = result;
+        break;
+      }
+    }
+  } catch (err) {
+    console.log(`   ⚠ Square search failed: ${err.message}`);
+  }
+
+  await sleep(1500);
+
+  // ============================================================
+  // SEARCH 2: Poster images (for show detail pages)
+  // ============================================================
+  const posterQuery = `${safeTitle} Broadway poster`;
+  console.log(`   Trying Google Images (poster): "${posterQuery}"`);
+
+  try {
+    const posterResults = await searchGoogleImages(posterQuery);
+    posterCandidates = filterGoogleCandidates(posterResults, 10);
+    console.log(`   Found ${posterCandidates.length} poster candidates`);
+
+    for (const result of posterCandidates) {
+      const buffer = extractImageBuffer(result);
+      if (buffer) {
+        console.log(`   ✓ Valid poster image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}`);
+        posterBuffer = buffer;
+        break;
+      }
+    }
+  } catch (err) {
+    console.log(`   ⚠ Poster search failed: ${err.message}`);
+  }
+
+  // ============================================================
+  // Save results - need at least one image
+  // ============================================================
+  if (!thumbnailBuffer && !posterBuffer) {
+    console.log(`   ✗ No usable images found`);
     return null;
   }
 
-  console.log(`   Found ${candidates.length} candidate images`);
+  // Save thumbnail (prefer square, fall back to poster)
+  const finalThumbnailBuffer = thumbnailBuffer || posterBuffer;
+  const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
+  fs.writeFileSync(thumbnailPath, finalThumbnailBuffer);
+  console.log(`   ✓ Saved thumbnail${thumbnailBuffer ? ' (native square)' : ' (from poster)'}`);
 
-  // Try each candidate — decode base64 and validate
-  for (const result of candidates) {
-    try {
-      const b64Data = result.image;
-      // Extract raw bytes from data URL: "data:image/jpeg;base64,/9j/4AAQ..."
-      const commaIdx = b64Data.indexOf(',');
-      if (commaIdx === -1) {
-        console.log(`     Skip: invalid data URL — ${result.title?.substring(0, 50)}...`);
-        continue;
-      }
-      const buffer = Buffer.from(b64Data.substring(commaIdx + 1), 'base64');
-
-      if (buffer.length < 3000) {
-        console.log(`     Skip: too small (${buffer.length} bytes) — ${result.title?.substring(0, 50)}...`);
-        continue;
-      }
-
-      // Validate magic bytes
-      if (!isImageBuffer(buffer)) {
-        console.log(`     Skip: invalid image data — ${result.title?.substring(0, 50)}...`);
-        continue;
-      }
-
-      console.log(`   ✓ Valid image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}: ${result.title?.substring(0, 50)}`);
-
-      // Save the image directly to the show's image directory
-      // (archive-show-images.js will convert to WebP and skip if already exists)
-      const showDir = path.join(IMAGES_DIR, show.id);
-      fs.mkdirSync(showDir, { recursive: true });
-      const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
-      fs.writeFileSync(thumbnailPath, buffer);
-      console.log(`   ✓ Saved thumbnail to ${thumbnailPath}`);
-
-      // Return local path as thumbnail + buffer for LLM verification
-      // Return ALL remaining candidates so tier chain can try the next one if rejected
-      const remaining = candidates.slice(candidates.indexOf(result) + 1);
-      return {
-        thumbnail: `/images/shows/${show.id}/thumbnail.jpg`,
-        poster: null,
-        hero: null,
-        _verifyBuffer: buffer,  // Used by verifyAndCollect for LLM gate
-        _remainingCandidates: remaining,  // For retry if this one is rejected
-      };
-    } catch (err) {
-      console.log(`     Skip: ${err.message} — ${result.title?.substring(0, 50)}...`);
-      continue;
-    }
+  // Save poster if we have one distinct from thumbnail
+  let posterPath = null;
+  if (posterBuffer && posterBuffer !== finalThumbnailBuffer) {
+    posterPath = path.join(showDir, 'poster.jpg');
+    fs.writeFileSync(posterPath, posterBuffer);
+    console.log(`   ✓ Saved poster`);
   }
 
-  console.log(`   ✗ All candidate images failed validation`);
-  return null;
+  // Build remaining candidates for retry (combine both searches)
+  const usedResults = [thumbnailResult].filter(Boolean);
+  const allRemaining = [...squareCandidates, ...posterCandidates]
+    .filter(r => !usedResults.includes(r));
+
+  return {
+    thumbnail: `/images/shows/${show.id}/thumbnail.jpg`,
+    poster: posterPath ? `/images/shows/${show.id}/poster.jpg` : null,
+    hero: null,
+    _verifyBuffer: finalThumbnailBuffer,
+    _remainingCandidates: allRemaining,
+    _hasNativeSquare: !!thumbnailBuffer,
+  };
 }
 
 // Try next Google Images candidate after rejection
@@ -1110,6 +1141,27 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
     openingDate: show.openingDate,
     rateLimiter: verifyCtx.rateLimiter,
   });
+
+  // Fix 2: Override non_broadway rejection for pre-Broadway venue shows
+  if (result.match === false
+      && result.issues?.includes('non_broadway')
+      && PRE_BROADWAY_VENUE_SHOWS.has(show.id)) {
+    console.log(`   ⚠ VENUE OVERRIDE: Accepting pre-Broadway venue art for ${show.id}`);
+    const score = scoreCandidate({ ...result, match: true }, urlToVerify);
+    verifyCtx.verified = (verifyCtx.verified || 0) + 1;
+    verifyCtx.venueOverrides = (verifyCtx.venueOverrides || 0) + 1;
+    return { images, verifyResult: result, url: urlToVerify, tierName, score };
+  }
+
+  // Fix 3: Track production photos as fallback instead of rejecting outright
+  if (result.imageType === 'production_still') {
+    const bufSize = Buffer.isBuffer(imageInput) ? imageInput.length : 0;
+    console.log(`   ⚠ DEFERRED (production photo): ${result.description} — will use as fallback if no poster art`);
+    verifyCtx.productionPhotos = (verifyCtx.productionPhotos || 0) + 1;
+    verifyCtx.productionPhotoFallbacks = verifyCtx.productionPhotoFallbacks || [];
+    verifyCtx.productionPhotoFallbacks.push({ images, verifyResult: result, url: urlToVerify, tierName, score: -5, bufSize });
+    return null;  // Don't add to main candidates yet
+  }
 
   if (result.match === true) {
     const score = scoreCandidate(result, urlToVerify);
@@ -1306,6 +1358,22 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     return candidates[0].images;
   }
 
+  // Fix 4: Last resort — use production photo fallback with 3 safety guards
+  const existingThumb = show.images?.thumbnail;
+  const isPinned = PINNED_IMAGES.has(show.id);
+  if (!existingThumb                                      // GUARD 1: Don't overwrite existing images
+      && !isPinned                                         // GUARD 2: Never override pinned images
+      && verifyCtx?.productionPhotoFallbacks?.length > 0) {
+    const best = verifyCtx.productionPhotoFallbacks[0];
+    if (best.bufSize > 5000) {                             // GUARD 3: Quality floor (>5KB)
+      console.log(`   ⚠ LAST RESORT: Using production photo — no poster art available (${(best.bufSize/1024).toFixed(0)} KB)`);
+      verifyCtx.lastResort = (verifyCtx.lastResort || 0) + 1;
+      return best.images;
+    } else {
+      console.log(`   ✗ Production photo too small/no buffer (${best.bufSize} bytes), skipping`);
+    }
+  }
+
   return null;
 }
 
@@ -1439,28 +1507,30 @@ function applyImages(show, images) {
 async function main() {
   const args = process.argv.slice(2);
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
-  const onlyMissing = args.includes('--missing');
+  const onlyMissing = args.includes('--missing') || args.includes('--missing-only');
   const badImagesOnly = args.includes('--bad-images');
   const concurrency = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '5', 10);
-  const verifyEnabled = args.includes('--verify');
+  // Verification is ON by default — use --no-verify to skip (faster but less safe)
+  const verifyEnabled = !args.includes('--no-verify');
 
   if (!SCRAPINGBEE_API_KEY) {
     console.error('ERROR: Set SCRAPINGBEE_API_KEY environment variable');
     process.exit(1);
   }
 
-  // Initialize LLM verification gate
+  // Initialize LLM verification gate (on by default)
   let verifyCtx = null;
   if (verifyEnabled) {
     const { createRateLimiter } = require('./lib/verify-image');
-    verifyCtx = { rateLimiter: createRateLimiter(15), verified: 0, rejected: 0, uncertain: 0, lastResort: 0 };
-    console.log('Image verification: ENABLED (Gemini 2.0 Flash)');
+    verifyCtx = { rateLimiter: createRateLimiter(15), verified: 0, rejected: 0, uncertain: 0, lastResort: 0, productionPhotos: 0 };
+    console.log('Image verification: ENABLED (Gemini 2.0 Flash) — use --no-verify to skip');
+  } else {
+    console.log('Image verification: DISABLED (--no-verify flag)');
   }
 
   console.log('='.repeat(60));
   console.log('AUTO-FETCH SHOW IMAGES');
   if (badImagesOnly) console.log('MODE: Re-sourcing shows with bad (identical Playbill) images');
-  if (verifyEnabled) console.log('MODE: LLM verification gate active');
   console.log('='.repeat(60));
 
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
@@ -1527,9 +1597,13 @@ async function main() {
     console.log(`\n🔍 Verification Stats:`);
     console.log(`  Verified (accepted): ${verifyCtx.verified}`);
     console.log(`  Rejected (wrong image): ${verifyCtx.rejected}`);
+    console.log(`  Production photos deferred: ${verifyCtx.productionPhotos || 0}`);
     console.log(`  Uncertain (accepted anyway): ${verifyCtx.uncertain}`);
+    if (verifyCtx.venueOverrides > 0) {
+      console.log(`  Venue overrides (pre-Broadway): ${verifyCtx.venueOverrides}`);
+    }
     if (verifyCtx.lastResort > 0) {
-      console.log(`  Last resort (Playbill, accepted with warning): ${verifyCtx.lastResort}`);
+      console.log(`  Last resort used: ${verifyCtx.lastResort}`);
     }
     if (verifyCtx.imageTypes) {
       console.log(`\n📊 Image Type Distribution:`);
