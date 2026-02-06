@@ -6076,18 +6076,6 @@
     "timestamp": "2026-02-02T15:59:53.630Z"
   },
   {
-    "reviewId": "gutenberg-2023/wsj--charles-isherwood.json",
-    "showId": "gutenberg-2023",
-    "outlet": "The Wall Street Journal",
-    "critic": "Charles Isherwood",
-    "url": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 585,
-    "timestamp": "2026-02-02T15:59:56.248Z"
-  },
-  {
     "reviewId": "hadestown-2019/timeout--adam-feldman.json",
     "showId": "hadestown-2019",
     "outlet": "Time Out New York",
@@ -9446,18 +9434,6 @@
     "garbageReason": "Paywall/subscription prompt: \"subscriber\"",
     "textLength": 6369,
     "timestamp": "2026-02-04T02:16:35.229Z"
-  },
-  {
-    "reviewId": "fat-ham-2023/deadline--greg-evans.json",
-    "showId": "fat-ham-2023",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/2023/04/fat-ham-broadway-review-deadline-1235322718/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): harry potter and the cursed child, mamma mia!, liberation, dog day afternoon, cost of living...",
-    "textLength": 4823,
-    "timestamp": "2026-02-04T02:16:58.233Z"
   },
   {
     "reviewId": "fat-ham-2023/ew--lester-fabian-brathwaite.json",
@@ -19766,5 +19742,65 @@
     "garbageReason": "Multiple shows mentioned (14): sweeney todd, how i learned to drive, king lear, the price, the audience...",
     "textLength": 12276,
     "timestamp": "2026-02-06T14:32:58.537Z"
+  },
+  {
+    "reviewId": "eureka-day-2024/timeout--adam-feldman.json",
+    "showId": "eureka-day-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/eureka-day-broadway-review-vaccines-antivax-jonathan-spector-jessica-hecht",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 5983,
+    "timestamp": "2026-02-06T14:33:46.981Z"
+  },
+  {
+    "reviewId": "fat-ham-2023/deadline--greg-evans.json",
+    "showId": "fat-ham-2023",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2023/04/fat-ham-broadway-review-deadline-1235322718/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): cost of living, between riverside and crazy, picnic, once, high...",
+    "textLength": 4245,
+    "timestamp": "2026-02-06T14:34:02.450Z"
+  },
+  {
+    "reviewId": "floyd-collins-2025/wsj--charles-isherwood.json",
+    "showId": "floyd-collins-2025",
+    "outlet": "Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/floyd-collins-review-musical-highs-from-a-caves-depths-c1fed676",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 823,
+    "timestamp": "2026-02-06T14:34:35.076Z"
+  },
+  {
+    "reviewId": "funny-girl-2022/new-york-sun--elysa-gardner.json",
+    "showId": "funny-girl-2022",
+    "outlet": "New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/bravo-to-the-brave-beanie-feldstein-steps-capably-into-barbra-streisands-shoes",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): parade, company, my fair lady, hello, dolly!, anastasia...",
+    "textLength": 5140,
+    "timestamp": "2026-02-06T14:35:37.012Z"
+  },
+  {
+    "reviewId": "gutenberg-2023/wsj--charles-isherwood.json",
+    "showId": "gutenberg-2023",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2026 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 639,
+    "timestamp": "2026-02-06T14:36:21.033Z"
   }
 ]
