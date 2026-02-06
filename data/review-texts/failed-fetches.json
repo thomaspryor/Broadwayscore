@@ -18220,18 +18220,6 @@
     "timestamp": "2026-02-06T14:16:14.265Z"
   },
   {
-    "reviewId": "the-river-2014/vulture--jesse-green.json",
-    "showId": "the-river-2014",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "http://www.vulture.com/2014/11/theater-review-the-river.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): groundhog day, fully committed, disgraced, high, jerusalem...",
-    "textLength": 6079,
-    "timestamp": "2026-02-06T14:20:24.310Z"
-  },
-  {
     "reviewId": "american-buffalo-2008/wsj--charles-isherwood.json",
     "showId": "american-buffalo-2008",
     "outlet": "Wall Street Journal",
@@ -21926,5 +21914,53 @@
     "garbageReason": "Multiple shows mentioned (9): english, company, summer, once, elling...",
     "textLength": 7254,
     "timestamp": "2026-02-06T19:31:56.417Z"
+  },
+  {
+    "reviewId": "the-river-2014/vulture--jesse-green.json",
+    "showId": "the-river-2014",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2014/11/theater-review-the-river.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): company, groundhog day, fully committed, disgraced, high...",
+    "textLength": 9660,
+    "timestamp": "2026-02-06T19:33:33.835Z"
+  },
+  {
+    "reviewId": "the-rose-tattoo-2019/hollywood-reporter--david-rooney.json",
+    "showId": "the-rose-tattoo-2019",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/review/rose-tattoo-theater-review-1247237",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): english, purpose, company, tina, rain...",
+    "textLength": 8247,
+    "timestamp": "2026-02-06T19:33:54.189Z"
+  },
+  {
+    "reviewId": "the-rose-tattoo-2019/vulture--christopher-bonanos.json",
+    "showId": "the-rose-tattoo-2019",
+    "outlet": "Vulture",
+    "critic": "Christopher Bonanos",
+    "url": "https://www.vulture.com/2019/10/theater-review-marisa-tomei-in-the-rose-tattoo-on-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, tina, summer, evita, high...",
+    "textLength": 8615,
+    "timestamp": "2026-02-06T19:34:25.181Z"
+  },
+  {
+    "reviewId": "the-terms-of-my-surrender-2017/hollywood-reporter--frank-scheck.json",
+    "showId": "the-terms-of-my-surrender-2017",
+    "outlet": "Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/michael-moore-terms-of-my-surrender-1028191",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, 1984, hair, elling, high...",
+    "textLength": 5817,
+    "timestamp": "2026-02-06T19:35:01.706Z"
   }
 ]
