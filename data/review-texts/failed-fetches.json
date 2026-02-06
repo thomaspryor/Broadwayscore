@@ -12172,18 +12172,6 @@
     "timestamp": "2026-02-05T03:50:24.567Z"
   },
   {
-    "reviewId": "romeo-juliet-2024/hollywood-reporter--david-rooney.json",
-    "showId": "romeo-juliet-2024",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review-kit-connor-rachel-zegler-shakespeare-jack-antonoff-1236043115/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): mamma mia!, giant, an enemy of the people, appropriate, west side story...",
-    "textLength": 9845,
-    "timestamp": "2026-02-05T03:55:34.172Z"
-  },
-  {
     "reviewId": "romeo-juliet-2024/newyorker--helen-shaw.json",
     "showId": "romeo-juliet-2024",
     "outlet": "The New Yorker (Helen Shaw)",
@@ -12638,18 +12626,6 @@
     "garbageReason": "Multiple shows mentioned (10): home, caroline, or change, the present, once, evita...",
     "textLength": 7614,
     "timestamp": "2026-02-05T05:16:16.457Z"
-  },
-  {
-    "reviewId": "red-2010/newyorker--john-lahr.json",
-    "showId": "red-2010",
-    "outlet": "The New Yorker",
-    "critic": "John Lahr",
-    "url": "http://www.newyorker.com/arts/critics/theatre/2010/04/12/100412crth_theatre_lahr#ixzz0kHEDHOC3",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): appropriate, sweeney todd, hair, once, high...",
-    "textLength": 7750,
-    "timestamp": "2026-02-05T05:17:10.115Z"
   },
   {
     "reviewId": "the-iceman-cometh-2018/vulture--sara-holdren.json",
@@ -21650,5 +21626,53 @@
     "garbageReason": "Multiple shows mentioned (8): appropriate, home, purpose, company, sweat...",
     "textLength": 9009,
     "timestamp": "2026-02-06T18:42:01.448Z"
+  },
+  {
+    "reviewId": "red-2010/newyorker--john-lahr.json",
+    "showId": "red-2010",
+    "outlet": "The New Yorker",
+    "critic": "John Lahr",
+    "url": "http://www.newyorker.com/arts/critics/theatre/2010/04/12/100412crth_theatre_lahr#ixzz0kHEDHOC3",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): appropriate, sweeney todd, the audience, hair, once...",
+    "textLength": 7903,
+    "timestamp": "2026-02-06T18:56:21.113Z"
+  },
+  {
+    "reviewId": "red-2010/nytimes--ben-brantley.json",
+    "showId": "red-2010",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2012/02/19/nyregion/red-at-the-george-street-playhouse-pits-boss-and-helper-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): giant, home, sweat, elling, high...",
+    "textLength": 5225,
+    "timestamp": "2026-02-06T18:56:38.653Z"
+  },
+  {
+    "reviewId": "rent-1996/variety--steven-suskin.json",
+    "showId": "rent-1996",
+    "outlet": "Variety",
+    "critic": "Steve Suskin",
+    "url": "http://www.variety.com/review/VE1117945798?categoryid=33&cs=1&cmpid=RSS%7CNews%7CLatestNews",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, once, peter and the starcatcher, next to normal, in the heights...",
+    "textLength": 3321,
+    "timestamp": "2026-02-06T18:57:07.944Z"
+  },
+  {
+    "reviewId": "romeo-juliet-2024/hollywood-reporter--david-rooney.json",
+    "showId": "romeo-juliet-2024",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review-kit-connor-rachel-zegler-shakespeare-jack-antonoff-1236043115/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): giant, an enemy of the people, appropriate, west side story, the audience...",
+    "textLength": 9278,
+    "timestamp": "2026-02-06T18:57:22.879Z"
   }
 ]
