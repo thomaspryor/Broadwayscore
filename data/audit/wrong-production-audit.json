@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-02-06T04:07:22.016Z",
+  "timestamp": "2026-02-06T04:32:02.112Z",
   "stats": {
-    "totalReviews": 22914,
-    "alreadyFlagged": 720,
+    "totalReviews": 23290,
+    "alreadyFlagged": 842,
     "dateGuardCatches": 23,
-    "directorMismatch": 154,
-    "tvFilmSignals": 841,
-    "londonSignals": 175,
+    "directorMismatch": 28,
+    "tvFilmSignals": 842,
+    "londonSignals": 170,
     "offBroadwaySignals": 282,
-    "yearMismatch": 2,
-    "noPublishDate": 15847
+    "yearMismatch": 0,
+    "noPublishDate": 16099
   },
   "findings": [
     {
@@ -680,86 +680,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-2010",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-view-bridge-broadway-review-ent-1112-20151112-column.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-2010",
-      "file": "nytg--kathleen-campion.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.newyorktheatreguide.com/reviews/aviewfromthebridge15.htm",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-2010",
-      "file": "timeout--david-cote.json",
-      "score": 86,
-      "publishDate": null,
-      "url": "http://www.timeout.com/newyork/theater/a-view-from-the-bridge",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-2010",
-      "file": "variety--marilyn-stasio.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://variety.com/2015/legit/reviews/a-view-from-the-bridge-review-broadway-mark-strong-1201639192/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-2010",
-      "file": "washpost--peter-marks.json",
-      "score": 92,
-      "publishDate": null,
-      "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2015/11/12/an-astonishing-view-from-the-bridge-on-broadway/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
         }
       ]
     },
@@ -1460,48 +1380,6 @@
       ]
     },
     {
-      "showId": "all-my-sons-2008",
-      "file": "amny--matt-windman.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.amny.com/entertainment/all-my-sons-review-1.30121503",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from all-my-sons-2019"
-        }
-      ]
-    },
-    {
-      "showId": "all-my-sons-2008",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=I3TBDZ",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from all-my-sons-2019"
-        }
-      ]
-    },
-    {
-      "showId": "all-my-sons-2008",
-      "file": "scribicide--aaron-botwick.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://scribicide.com/2019/05/07/some-superstitions-are-very-nice/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from all-my-sons-2019"
-        }
-      ]
-    },
-    {
       "showId": "all-the-way-2014",
       "file": "nbcnews--unknown.json",
       "score": 61,
@@ -1587,20 +1465,6 @@
     },
     {
       "showId": "american-buffalo-2008",
-      "file": "deadline--greg-evans.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://t.co/X7Of9NGK3u",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"neil pepe\" from american-buffalo-2022"
-        }
-      ]
-    },
-    {
-      "showId": "american-buffalo-2008",
       "file": "nytimes--jesse-green.json",
       "score": 82,
       "publishDate": null,
@@ -1610,47 +1474,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "american-buffalo-2008",
-      "file": "thewrap--christian-holub.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.thewrap.com/american-buffalo-broadway-review-sam-rockwell-and-laurence-fishburne-explore-mamets-dark-side/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"neil pepe\" from american-buffalo-2022"
-        }
-      ]
-    },
-    {
-      "showId": "american-buffalo-2008",
-      "file": "thewrap--thom-geier.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "https://www.thewrap.com/american-buffalo-broadway-review-sam-rockwell-and-laurence-fishburne-explore-mamets-dark-side/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"neil pepe\" from american-buffalo-2022"
-        }
-      ]
-    },
-    {
-      "showId": "american-buffalo-2008",
-      "file": "timeout--adam-feldman.json",
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/theater/american-buffalo-broadway-review-david-mamet-sam-rockwell-revival",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"neil pepe\" from american-buffalo-2022"
         }
       ]
     },
@@ -1761,48 +1584,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2012",
-      "file": "dailybeast--tim-teeman.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.thedailybeast.com/in-enemy-of-the-people-jeremy-strong-finds-his-way-from-succession-to-broadway",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from an-enemy-of-the-people-2024"
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2012",
-      "file": "nytimes--unknown.json",
-      "score": 69,
-      "publishDate": null,
-      "url": "https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from an-enemy-of-the-people-2024"
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2012",
-      "file": "thewrap--robert-hofler.json",
-      "score": 63,
-      "publishDate": null,
-      "url": "https://www.thewrap.com/an-enemy-of-the-people-broadway-review-jeremy-strong/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from an-enemy-of-the-people-2024"
         }
       ]
     },
@@ -2288,66 +2069,6 @@
     },
     {
       "showId": "betrayal-2013",
-      "file": "amny--matt-windman.json",
-      "publishDate": null,
-      "url": "https://www.amny.com/entertainment/betrayal-broadway-review-1.35931623",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2013",
-      "file": "broadway-blog--matthew-wexler.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://thebroadwayblog.com/betrayal-broadway-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2013",
-      "file": "curtainup--jacob-horn.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.curtainup.com/betrayal19.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2013",
-      "file": "frontmezzjunkies--steven-ross.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://frontmezzjunkies.com/2019/09/13/west-ends-betrayal-comes-to-broadway/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2013",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 91,
       "publishDate": "November 6, 2013",
@@ -2357,94 +2078,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2013",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=PXQ4N5",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2013",
-      "file": "nysr--steven-suskin.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://nystagereview.com/2019/09/05/betrayal-pinters-web-of-deception-returns-to-broadway-incisively/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2013",
-      "file": "observer--david-cote.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://observer.com/2019/09/tom-hiddleston-betrayal-broadway-debut-review-harold-pinter/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2013",
-      "file": "theatres-leiter-side--samuel-l-leiter.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://slleiter.blogspot.com/2019/09/64-2019-2020-review-betrayal-seen.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2013",
-      "file": "timeout--adam-feldman.json",
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/theater/betrayal-review-broadway-tom-hiddleston",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2013",
-      "file": "timeout--andrzej-lukowski.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.timeout.com/london/theatre/betrayal-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
         }
       ]
     },
@@ -2827,6 +2460,19 @@
       ]
     },
     {
+      "showId": "brief-encounter-2010",
+      "file": "hollywood-reporter--frank-scheck.json",
+      "publishDate": null,
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/brief-encounter-theater-review-30102/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"movie theater\""
+        }
+      ]
+    },
+    {
       "showId": "bronx-bombers-2014",
       "file": "amny--unknown.json",
       "publishDate": null,
@@ -3093,20 +2739,6 @@
     },
     {
       "showId": "cabaret-2024",
-      "file": "variety--naveen-kumar.json",
-      "score": 81,
-      "publishDate": "2024-04-21T21:27:37-04:00",
-      "url": "https://variety.com/2024/legit/reviews/cabaret-review-broadway-eddie-redmayne-1235977702/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-2024",
       "file": "village-voice--michael-musto.json",
       "score": 76,
       "publishDate": "2024-04-21T21:27:37-04:00",
@@ -3297,132 +2929,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "company-2006",
-      "file": "deadline--greg-evans.json",
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from company-2021"
-        }
-      ]
-    },
-    {
-      "showId": "company-2006",
-      "file": "front-row-center--brittany-crowell.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://thefrontrowcenter.com/2021/12/company/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from company-2021"
-        }
-      ]
-    },
-    {
-      "showId": "company-2006",
-      "file": "nypost--johnny-oleksinski.json",
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from company-2021"
-        }
-      ]
-    },
-    {
-      "showId": "company-2006",
-      "file": "nyt-theater--jonathan-mandell.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://newyorktheater.me/2021/12/09/company-on-broadway-review-sondheim-helps-us-survive-being-alive/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from company-2021"
-        }
-      ]
-    },
-    {
-      "showId": "company-2006",
-      "file": "theater-scene--victor-gluck.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.theaterscene.net/musicals/broadway/company-2/victor-gluck/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from company-2021"
-        }
-      ]
-    },
-    {
-      "showId": "company-2006",
-      "file": "theatrely--juan-a-ramirez.json",
-      "publishDate": null,
-      "url": "https://www.theatrely.com/post/a-hopeless-bachelorette-in-excellent-company-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from company-2021"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "company-2006",
-      "file": "thewrap--robert-hofler.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.thewrap.com/company-broadway-review-katrina-lenk-patti-lupone/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from company-2021"
-        }
-      ]
-    },
-    {
-      "showId": "company-2006",
-      "file": "variety--naveen-kumar.json",
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from company-2021"
-        }
-      ]
-    },
-    {
-      "showId": "company-2006",
-      "file": "washpost--peter-marks.json",
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from company-2021"
         }
       ]
     },
@@ -3735,25 +3241,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2012",
-      "file": "nytg--gillian-russo.json",
-      "score": 89,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/death-of-a-salesman-broadway-review-wendell-pierce-sharon-d-clarke",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -4990,50 +4477,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"pilot episode\""
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2012",
-      "file": "theatrely--juan-a-ramirez.json",
-      "publishDate": null,
-      "url": "https://www.theatrely.com/post/a-curiously-beta-glengarry-glen-ross-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2025 (2x) more than 2012 (0x). 2025 matches production: glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2012",
-      "file": "thewrap--robert-hofler.json",
-      "publishDate": null,
-      "url": "https://www.thewrap.com/glengarry-glen-ross-broadway-review-bob-odenkirk-kieran-culkin/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2012",
-      "file": "wsj--charles-isherwood.json",
-      "publishDate": null,
-      "url": "https://www.wsj.com/articles/glengarry-glen-ross-review-kieran-culkin-back-on-broadway-3abd16a6",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
         }
       ]
     },
@@ -6673,47 +6116,6 @@
       ]
     },
     {
-      "showId": "les-liaisons-dangereuses-2008",
-      "file": "broadwayworld--michael-dale.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.broadwayworld.com/article/BWW-Review-Janet-McTeer-and-Liev-Schreiber-Star-In-Visually-Gorgeous-and-Emotionally-Stark-LES-LIAISONS-DANGEREUSES-20161031",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-2008",
-      "file": "thewrap--robert-hofler.json",
-      "publishDate": null,
-      "url": "http://www.thewrap.com/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer-bring-old-blighty-to-france/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-2008",
-      "file": "variety--charles-isherwood.json",
-      "score": 43,
-      "publishDate": "October 30, 2008",
-      "url": "https://variety.com/2008/legit/reviews/les-liaisons-dangereuses-1200472031/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
-        }
-      ]
-    },
-    {
       "showId": "les-miserables-2014",
       "file": "nytimes--unknown.json",
       "publishDate": null,
@@ -6882,118 +6284,6 @@
       ]
     },
     {
-      "showId": "macbeth-2008",
-      "file": "ew--unknown.json",
-      "score": 44,
-      "publishDate": null,
-      "url": "http://www.ew.com/ew/article/0,,20364394_20758996,00.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from macbeth-2013"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2008",
-      "file": "nysr--david-finkle.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://nystagereview.com/2022/04/29/macbeth-loud-sound-intermittent-fury-signifying-nothing/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from macbeth-2022"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2013",
-      "file": "hollywood-reporter--frank-scheck.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/daniel-craig-ruth-negga-asia-kate-dillon-macbeth-theater-review-1235137293/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from macbeth-2022"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2013",
-      "file": "nypost--johnny-oleksinski.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://nypost.com/2022/04/29/macbeth-broadway-review-daniel-craig-play-is-a-disaster/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from macbeth-2022"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2013",
-      "file": "stagebuddy--elyse-trevers.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://stagebuddy.com/theater/theater-review/macbeth",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from macbeth-2022"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2013",
-      "file": "theater-scene--victor-gluck.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.theaterscene.net/plays/broadway-plays/macbeth/victor-gluck/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from macbeth-2022"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2013",
-      "file": "timeout--adam-feldman.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/theater/macbeth-broadway-review-daniel-craig-ruth-negga",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from macbeth-2022"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2013",
-      "file": "vulture--helen-shaw.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.vulture.com/2022/04/theater-review-daniel-craig-and-ruth-negga-in-macbeth.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from macbeth-2022"
-        }
-      ]
-    },
-    {
       "showId": "machinal-2014",
       "file": "newsday--unknown.json",
       "score": 82,
@@ -7093,6 +6383,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "marvins-room-2017",
+      "file": "amny--matt-windman.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.amny.com/entertainment/marvin-s-room-review-uneven-drama-misses-the-mark-1.13773562",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "marvins-room-2017",
+      "file": "epoch-times--judd-hollander.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.theepochtimes.com/n3/2268982-theater-review-marvins-room/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -9039,229 +8357,6 @@
     },
     {
       "showId": "present-laughter-2010",
-      "file": "city-cabaret--elizabeth-ahlfors.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.citycabaret.com/present-laughter.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "drama-queen-nyc--jonathan-warman.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://dramaqueennyc.com/2017/04/08/review-present-laughter-2/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "epoch-times--diana-barth.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.theepochtimes.com/n3/2242875-theater-review-present-laughter/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "front-row-center--sarah-downs.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://thefrontrowcenter.com/2017/04/present-laughter/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "huffpost--barry-singer.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.huffingtonpost.com/entry/a-presidential-present-laughter_us_58efe4ede4b048372700d6ba",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "nytg--marc-miller.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://nytheatreguide.com/2017/04/broadway-review-present-laughter-at-st-james-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "out-magazine--michael-musto.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.out.com/michael-musto/2017/4/10/investigating-crime-reporter-dominick-dunnes-queer-personal-life",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "stagezine--david-nounou.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.stagezine.com/present-laughter-comedy-good-bad-manners/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "theater-in-the-now--michael-block.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.theaterinthenow.com/2017/05/review-easy-night-of-laughs.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "theater-life--david-sheward.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://theaterlife.com/present-laughter-amelie-how-to-transcend-a-happy-marriage/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "theater-life--isa-goldberg.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://theaterlife.com/present-laughter/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "theaterscenecom--ron-cohen.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://theaterscene.com/Present-Laughter-reveiw.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "this-week-in-new-york--mark-rifkin.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://twi-ny.com/blog/2017/05/17/present-laughter/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "timeout--david-cote.json",
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/theater/present-laughter",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://t2conline.com/present-laughter-brings-intelligent-sophisticated-comedy-back-to-broadway/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "towleroad--naveen-kumar.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.towleroad.com/2017/04/present-laughter/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
       "file": "variety--joe-dziemianowicz.json",
       "score": 63,
       "publishDate": "January 21, 2010",
@@ -9271,34 +8366,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "village-voice--michael-feingold.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.villagevoice.com/arts/oslo-brings-peace-negotiations-to-life-while-a-hero-battles-for-peace-at-home-in-present-laughter-9895593",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "wolf-entertainment-guide--william-wolf.json",
-      "score": null,
-      "publishDate": "April 9, 2017",
-      "url": "http://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7082",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
         }
       ]
     },
@@ -10324,34 +9391,6 @@
     },
     {
       "showId": "spring-awakening-2006",
-      "file": "nydailynews--unknown.json",
-      "score": 86,
-      "publishDate": null,
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/deaf-west-delivers-winning-spring-awakening-broadway-article-1.2373093",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael arden\" from spring-awakening-2015"
-        }
-      ]
-    },
-    {
-      "showId": "spring-awakening-2006",
-      "file": "timeout--unknown.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "http://www.timeout.com/newyork/theater/spring-awakening",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael arden\" from spring-awakening-2015"
-        }
-      ]
-    },
-    {
-      "showId": "spring-awakening-2006",
       "file": "variety--david-rooney.json",
       "score": 90,
       "publishDate": "December 11, 2006",
@@ -10472,243 +9511,6 @@
       ]
     },
     {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "amny--matt-windman.json",
-      "publishDate": null,
-      "url": "http://www.amny.com/entertainment/sunday-in-the-park-with-george-review-jake-gyllenhaal-annaleigh-ashford-star-in-superb-revival-1.13169351",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "labor-press--leonard-golubchick.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://laborpress.org/sectors/entertainment/9658-review-of-sunday-in-the-park-with-george",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "out-magazine--michael-musto.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.out.com/michael-musto/2017/2/27/queer-highlights-last-nights-most-shocking-oscars-ever",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "stagebuddy--jose-solis.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://stagebuddy.com/reviews/review-sunday-park-george",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "stagezine--david-nounou.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.stagezine.com/a-superb-sunday-in-the-park-with-george/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "talkinbroadway--matthew-murray.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.talkinbroadway.com/page/world/SundayinthePark2017.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "theater-life--isa-goldberg.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://theaterlife.com/sunday-in-the-park-with-george-12/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "theater-pizzazz--carol-rocamora.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://theaterpizzazz.com/sondheim-x-3-pacific-overtures-sweeney-todd-sunday-in-the-park/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "theater-pizzazz--sandi-durell.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://theaterpizzazz.com/sunday-in-the-park-with-george-magical/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "theatermania--zachary-stewart.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.theatermania.com/broadway/reviews/sunday-in-the-park-with-george_80121.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "theaterscenecom--jeanne-lieberman.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://theaterscene.com/Sunday-in-the-park-with-George-That-is-George-Suerat.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "thewrap--robert-hofler.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.thewrap.com/sunday-park-george-broadway-review-jake-gyllenhaal-annaleigh-ashford-sondheim/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://t2conline.com/she-says-jake-gyllenhaal-and-sunday-in-the-park-with-george-musical-perfection/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "towncountry--jesse-oxfeld.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.townandcountrymag.com/leisure/arts-and-culture/a9678/jake-gyllenhaal-sunday-in-the-park-with-george/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "village-voice--michael-feingold.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.villagevoice.com/arts/jake-gyllenhaal-fires-up-a-revival-of-sondheim-and-lapine-s-sunday-in-the-park-with-george-9721061",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "wnyc--jennifer-vanasco.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.wnyc.org/story/review-pleasant-outing-sunday-park-george/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "file": "wsj--edward-rothstein.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.wsj.com/articles/sunday-in-the-park-with-george-review-playing-with-pointillism-1487894401",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sarna lapine\" from sunday-in-the-park-with-george-2017"
-        }
-      ]
-    },
-    {
       "showId": "sunset-boulevard-2017",
       "file": "nytg--joe-dziemianowicz.json",
       "publishDate": null,
@@ -10774,78 +9576,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "sweeney-todd-2005",
-      "file": "deadline--greg-evans.json",
-      "publishDate": null,
-      "url": "https://deadline.com/2023/03/sweeney-todd-broadway-review-josh-groban-annaleigh-ashford-stephen-sondheim-1235310162/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from sweeney-todd-2023"
-        }
-      ]
-    },
-    {
-      "showId": "sweeney-todd-2005",
-      "file": "nydailynews--chris-jones.json",
-      "score": 94,
-      "publishDate": null,
-      "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-sweeney-todd-review-20230327-evqibkjo6vb5vhtzavhi2b3vdy-story.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from sweeney-todd-2023"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2023 (3x) more than 2005 (0x). 2023 matches production: sweeney-todd-2023"
-        }
-      ]
-    },
-    {
-      "showId": "sweeney-todd-2005",
-      "file": "nysr--bob-verini.json",
-      "publishDate": null,
-      "url": "https://nystagereview.com/2023/03/26/sweeney-todd-god-thats-great/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from sweeney-todd-2023"
-        }
-      ]
-    },
-    {
-      "showId": "sweeney-todd-2005",
-      "file": "nytimes--jesse-green.json",
-      "publishDate": null,
-      "url": "https://www.nytimes.com/2023/03/26/theater/sweeney-todd-broadway-review-josh-groban.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from sweeney-todd-2023"
-        }
-      ]
-    },
-    {
-      "showId": "sweeney-todd-2005",
-      "file": "thewrap--robert-hofler.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "https://www.thewrap.com/sweeney-todd-broadway-review-josh-groban/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from sweeney-todd-2023"
         }
       ]
     },
@@ -11320,243 +10050,6 @@
       ]
     },
     {
-      "showId": "the-color-purple-2005",
-      "file": "backstage-barbie--backstage-barbie.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://backstagebarbie.blogspot.com/2016/03/the-color-purple-is-religious-experience.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "broadway-and-me--janice-c-simpson.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://broadwayandme.blogspot.com/2016/01/the-color-purple-and-its-star-are.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "broadwayworld--michael-dale.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.broadwayworld.com/article/BWW-Review-Fine-Cast-Saves-THE-COLOR-PURPLE-From-John-Doyles-Bloodless-Direction-20151211",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "dctheatrescene--jonathan-mandell.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://dctheatrescene.com/2015/12/16/the-color-purple-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "financial-times-uk--brendan-lemon.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.ft.com/intl/cms/s/0/346880b8-9f2b-11e5-beba-5e33e2b79e46.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "musical-theatre-review--ron-cohen.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://musicaltheatrereview.com/the-color-purple-bernard-b-jacobs-theatre-new-york/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "publishDate": null,
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/synthia-erivo-jennifer-hudson-shine-color-purple-article-1.2461515",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "out-magazine--michael-musto.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.out.com/michael-musto/2015/12/14/charlotte-rampling-45-years-timelessness-and-gay-fans",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "the-clyde-fitch-report--david-finkle.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.clydefitchreport.com/2015/12/the-color-purple-cynthia-erivo-broadway/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "the-telegraph-uk--charles-spencer.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/10182438/The-Color-Purple-Menier-Chocolate-Factory-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "theater-pizzazz--brian-scott-lipton.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.theaterpizzazz.com/the-color-purple/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "theater-scene--darryl-reilly.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.theaterscene.net/musicals/the-color-purple-2015/darryl-reilly/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "theaterscenecom--michall-jeffers.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.theaterscene.com/ColorPurple.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "thisbroadsway--sandra-mcfarland.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.thisbroadsway.com/the-color-purple.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "towleroad--naveen-kumar.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.towleroad.com/2015/12/the-color-purple-on-broadway-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "variety--marilyn-stasio.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://variety.com/2015/legit/reviews/the-color-purple-review-broadway-jennifer-hudson-1201657768/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "file": "village-voice--chris-kompanek.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.villagevoice.com/arts/can-outstanding-performances-save-an-undersaturated-revival-of-the-color-purple-8082730",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
       "showId": "the-color-purple-2015",
       "file": "variety--marilyn-stasio.json",
       "score": 92,
@@ -11697,58 +10190,6 @@
     },
     {
       "showId": "the-glass-menagerie-2013",
-      "file": "amny--matt-windman.json",
-      "publishDate": null,
-      "url": "http://www.amny.com/entertainment/the-glass-menagerie-review-revival-shatters-sam-gold-s-winning-streak-1.13235173",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from the-glass-menagerie-2017"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2013",
-      "file": "chicagotribune--chris-jones.json",
-      "publishDate": null,
-      "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-glass-menagerie-broadway-review-ent-0309-20170309-column.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from the-glass-menagerie-2017"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2013",
-      "file": "hollywood-reporter--david-rooney.json",
-      "publishDate": null,
-      "url": "http://www.hollywoodreporter.com/review/glass-menagerie-theater-984781",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from the-glass-menagerie-2017"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2013",
-      "file": "nbcny--robert-kahn.json",
-      "publishDate": null,
-      "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Sally-Field-Glass-Menagerie-415537483.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from the-glass-menagerie-2017"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2013",
       "file": "nyt-theater--jonathan-mandell.json",
       "publishDate": null,
       "url": "http://newyorktheater.me/2013/09/26/the-glass-menagerie-on-broadway-review-zachary-quinto-cherry-jones-bring-tennessee-williams-home/",
@@ -11757,32 +10198,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2013",
-      "file": "thewrap--robert-hofler.json",
-      "publishDate": null,
-      "url": "http://www.thewrap.com/glass-menagerie-broadway-review-sally-field-sam-gold/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from the-glass-menagerie-2017"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2013",
-      "file": "timeout--david-cote.json",
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/blog/broadway-review-the-glass-menagerie-gets-a-modern-minimalist-look-with-sally-field-031017",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from the-glass-menagerie-2017"
         }
       ]
     },
@@ -13575,167 +11990,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2009",
-      "file": "am-ny-matt-windman--matt-windman.json",
-      "publishDate": null,
-      "url": "https://www.amny.com/news/arts-entertainment/theater/review-west-side-story-revival-gets-lost-in-brutal-violence-and-overwhelming-video-imagery/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from west-side-story-2020"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2009",
-      "file": "amny--matt-windman.json",
-      "publishDate": null,
-      "url": "https://www.amny.com/news/arts-entertainment/theater/review-west-side-story-revival-gets-lost-in-brutal-violence-and-overwhelming-video-imagery/amp/?__twitter_impression=true",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from west-side-story-2020"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2009",
-      "file": "broadway-blog--matthew-wexler.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://thebroadwayblog.com/west-side-story-broadway-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from west-side-story-2020"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2009",
-      "file": "broadwaynews--charles-isherwood.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://broadwaynews.com/2020/02/20/review-ivo-van-hoves-west-side-story-feels-more-cinematic-than-theatrical/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from west-side-story-2020"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2009",
-      "file": "broadwayworld--michael-dale.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/article/BWW-Review-Ivo-van-Hoves-Alarmingly-Charmless-WEST-SIDE-STORY-20200220",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from west-side-story-2020"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2009",
-      "file": "curtainup--simon-saltzman.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.curtainup.com/westsidestory20.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from west-side-story-2020"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2009",
-      "file": "hollywood-reporter--david-rooney.json",
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/review/west-side-story-theater-1280016",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from west-side-story-2020"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2009",
-      "file": "newyorker--alexandra-schwartz.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.newyorker.com/magazine/2020/03/02/a-grim-take-on-west-side-story",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from west-side-story-2020"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2009",
-      "file": "rollingstone--jerry-portwood.json",
-      "publishDate": null,
-      "url": "https://www.rollingstone.com/music/music-live-reviews/west-side-story-broadway-review-ivo-van-hove-955669/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from west-side-story-2020"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2009",
-      "file": "telegraph--diane-snyder.json",
-      "publishDate": null,
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/west-side-story-review-broadway-theatre-new-york-bernsteins/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from west-side-story-2020"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2009",
-      "file": "theater-news-online--mervyn-rothstein.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://theaternewsonline.com/NYTheaterReviews/NOTTHETIMENOTTHEPLACE.cfm",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from west-side-story-2020"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2009",
-      "file": "timeout--adam-feldman.json",
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/theater/west-side-story-broadway-review-revival-ivo-van-hove",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from west-side-story-2020"
         }
       ]
     },

@@ -437,7 +437,9 @@ function titleToSlug(title) {
 function pickBestProduction(matches, targetYear) {
   if (matches.length === 1) return matches[0];
   if (!targetYear) {
-    // No date hint — prefer most recent production
+    // No date hint — prefer most recent production, but warn about ambiguity
+    const ids = matches.map(m => m.id).join(', ');
+    console.warn(`  ⚠️  [AMBIGUOUS MATCH] ${matches.length} productions for "${matches[0].title}" (${ids}) — no year hint provided, picking most recent. Pass { year } to disambiguate.`);
     return matches.reduce((best, show) => {
       const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
       const bestYear = best.openingDate ? new Date(best.openingDate).getFullYear() : 0;
