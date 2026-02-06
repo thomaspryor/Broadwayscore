@@ -12,13 +12,13 @@
       "Shrugging": "68-77",
       "Loathing": "0-67"
     },
-    "notes": "Dynamic weighting: Reddit fixed 20%, Show Score & Mezzanine split remaining 80% by sample size"
+    "notes": "Dynamic weighting: Reddit fixed 20% (when >=15 items), Show Score & Mezzanine split remaining by sample size"
   },
   "shows": {
     "hamilton-2015": {
       "title": "Hamilton",
       "designation": "Loving",
-      "combinedScore": 93,
+      "combinedScore": 90,
       "sources": {
         "showScore": {
           "score": 96,
@@ -30,17 +30,16 @@
           "starRating": 4.7
         },
         "reddit": {
-          "score": 84,
-          "reviewCount": 19,
-          "lastUpdated": "2026-02-01",
+          "score": 68,
+          "reviewCount": 285,
           "sentiment": {
-            "enthusiastic": 0.3157894736842105,
-            "positive": 0.47368421052631576,
-            "mixed": 0.10526315789473684,
-            "negative": 0
+            "enthusiastic": 0.13,
+            "positive": 0.47,
+            "mixed": 0.11,
+            "negative": 0.17
           },
-          "recommendations": 1,
-          "positiveRate": 0.7894736842105263
+          "positiveRate": 0.5964912280701754,
+          "lastUpdated": "2026-02-06"
         }
       }
     },
@@ -105,7 +104,7 @@
     "wicked-2003": {
       "title": "Wicked",
       "designation": "Loving",
-      "combinedScore": 89,
+      "combinedScore": 90,
       "sources": {
         "showScore": {
           "score": 94,
@@ -117,17 +116,16 @@
           "starRating": 4.5
         },
         "reddit": {
-          "score": 74,
-          "reviewCount": 5,
-          "lastUpdated": "2026-02-01",
+          "score": 76,
+          "reviewCount": 191,
           "sentiment": {
-            "enthusiastic": 0,
-            "positive": 0.8,
-            "mixed": 0,
-            "negative": 0
+            "enthusiastic": 0.21,
+            "positive": 0.54,
+            "mixed": 0.06,
+            "negative": 0.13
           },
-          "recommendations": 0,
-          "positiveRate": 0.8
+          "positiveRate": 0.7539267015706806,
+          "lastUpdated": "2026-02-06"
         }
       }
     },
