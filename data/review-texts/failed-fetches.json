@@ -10828,18 +10828,6 @@
     "timestamp": "2026-02-04T16:01:19.865Z"
   },
   {
-    "reviewId": "king-kong-2018/variety--marilyn-stasio.json",
-    "showId": "king-kong-2018",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2018/legit/reviews/king-kong-review-broadway-1203016773/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): harry potter and the cursed child, giant, home, beetlejuice, beetlejuice...",
-    "textLength": 4593,
-    "timestamp": "2026-02-04T16:03:52.427Z"
-  },
-  {
     "reviewId": "left-on-tenth-2024/hollywood-reporter--anita-gates.json",
     "showId": "left-on-tenth-2024",
     "outlet": "The Hollywood Reporter",
@@ -18686,5 +18674,89 @@
     "garbageReason": "Multiple shows mentioned (8): home, frozen, carousel, all the way, once...",
     "textLength": 4324,
     "timestamp": "2026-02-06T06:54:40.784Z"
+  },
+  {
+    "reviewId": "king-kong-2018/newyorker--vinson-cunningham.json",
+    "showId": "king-kong-2018",
+    "outlet": "The New Yorker",
+    "critic": "Vinson Cunningham",
+    "url": "https://www.newyorker.com/magazine/2018/11/19/shades-of-darkness-in-king-kong-and-american-son",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): home, smash, company, american son, the audience...",
+    "textLength": 7996,
+    "timestamp": "2026-02-06T06:59:31.931Z"
+  },
+  {
+    "reviewId": "king-kong-2018/nyt-theater--jonathan-mandell.json",
+    "showId": "king-kong-2018",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2018/11/15/king-kong-review-going-apeshit-over-a-puppet-on-broadway/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): the wiz, home, company, betrayal, the cher show...",
+    "textLength": 7310,
+    "timestamp": "2026-02-06T06:59:40.904Z"
+  },
+  {
+    "reviewId": "king-kong-2018/nytimes--ben-brantley-and-jesse-green.json",
+    "showId": "king-kong-2018",
+    "outlet": "New York Times",
+    "critic": "Ben Brantley and Jesse Green",
+    "url": "https://www.nytimes.com/2018/11/08/theater/king-kong-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): harry potter and the cursed child, liberation, company, beetlejuice, beetlejuice...",
+    "textLength": 7730,
+    "timestamp": "2026-02-06T07:00:02.984Z"
+  },
+  {
+    "reviewId": "king-kong-2018/nytimes--jesse-green.json",
+    "showId": "king-kong-2018",
+    "outlet": "The New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2018/11/08/theater/king-kong-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): harry potter and the cursed child, liberation, company, beetlejuice, beetlejuice...",
+    "textLength": 7730,
+    "timestamp": "2026-02-06T07:01:49.139Z"
+  },
+  {
+    "reviewId": "king-kong-2018/variety--frank-rizzo.json",
+    "showId": "king-kong-2018",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2018/legit/reviews/king-kong-review-broadway-1203023451/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): harry potter and the cursed child, giant, home, beetlejuice, beetlejuice...",
+    "textLength": 4992,
+    "timestamp": "2026-02-06T07:02:07.708Z"
+  },
+  {
+    "reviewId": "king-kong-2018/variety--marilyn-stasio.json",
+    "showId": "king-kong-2018",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2018/legit/reviews/king-kong-review-broadway-1203016773/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): harry potter and the cursed child, giant, home, beetlejuice, beetlejuice...",
+    "textLength": 4593,
+    "timestamp": "2026-02-06T07:02:49.886Z"
+  },
+  {
+    "reviewId": "king-kong-2018/vulture--sara-holdren.json",
+    "showId": "king-kong-2018",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/2018/11/theater-review-king-kong-whos-there.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): giant, proof, company, all the way, harvey...",
+    "textLength": 15770,
+    "timestamp": "2026-02-06T07:06:14.224Z"
   }
 ]
