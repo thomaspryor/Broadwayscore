@@ -5,7 +5,7 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2012/legit/reviews/fela-1117948020/",
   "publishDate": "July 23, 2012",
-  "fullText": "Bill T. Jones has created a theatrical experience that's as much a spiritual celebration as it is a musical biography, honoring the rebellious spirit of the Nigerian musician and political activist.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Bill T. Jones has created a theatrical experience that's as much a spiritual celebration as it is a musical biography, honoring the rebellious spirit of the Nigerian musician and political activist.",
   "originalScore": null,
@@ -16,10 +16,55 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bill T. Jones has created a theatrical experience that's as much a spiritual celebration as it is a musical biography, honoring the rebellious spirit of the Nigerian musician and political activist.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "sources": [
     "web-search"
-  ]
+  ],
+  "textWordCount": 198,
+  "archivePath": "data/archives/reviews/fela-2012/variety--marilyn-stasio_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T17:19:44.698Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 1250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 198 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Particle physicists may want to measure how slowly the seconds pass during Peter Mettler's \"The End of Time.\"\n\nParticle physicists may want to measure how slowly the seconds pass during Peter Mettler’s “The End of Time.” Intermittently interesting but more often pretentious, this sluggish exploration of time as real and conceived concepts rarely does more than regurgitate philosophical platitudes without locating the depth to make them interesting. Despite Mettler’s ambition, seen to greater effect in “Gambling, Gods and LSD,” the docu fails to connect its beautiful images with a profound statement, making fests alone the likely endgame.\n\nThe opening could be excerpted for a natural history museum display, as Mettler interviews physicists at a giant particle accelerator about the origin of time and its meaning. Later, he moves to Hawaii and an active volcano whose stunning lava flows slowly destroy a once-green mountainside. Next comes Detroit, the go-to metropolis whenever urban decay is discussed (the Motor City deserves to be more than a cliche). Finally, and unsurprisingly, come India, and Buddhist concepts of temporality; lines like “the future is dependent on the present” aren’t exactly earth-shattering. Impressively elaborate soundscapes reach their apogee in the closing, psychedelic animated sequence."
 }
