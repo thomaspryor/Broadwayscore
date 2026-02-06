@@ -22,5 +22,8 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a teaser excerpt with 'Read more' prompt rather than actual review content - contains no critical evaluation or verdict about the show; openai: The provided text is a fragment that lacks evaluative content or a clear verdict about the show.; gemini: The provided text is a fragment that doesn't evaluate a show. It's more of a contextual statement about the playwright.; kimi: The excerpt provides only thematic context about the play's subject matter ('dealing with the deeper shames of American history') without any evaluative language regarding the production quality, performances, or whether the critic recommends seeing the show. It is purely descriptive of content, not a critical assessment.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "show-score-playwright"
+  ]
 }
