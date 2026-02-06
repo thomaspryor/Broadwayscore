@@ -655,14 +655,14 @@ async function main(): Promise<void> {
   let dataQualitySkipped = 0;
   const scorableFiles = filesToProcess.filter(f => {
     const d = f.data as any;
-    if (d.wrongShow || d.wrongProduction || d.showNotMentioned || d.contentTier === 'invalid') {
+    if (d.duplicateOf || d.wrongShow || d.wrongProduction || d.showNotMentioned || d.contentTier === 'invalid') {
       dataQualitySkipped++;
       return false;
     }
     return true;
   });
   if (dataQualitySkipped > 0) {
-    console.log(`Skipped ${dataQualitySkipped} reviews (wrongShow/wrongProduction/showNotMentioned/invalid)\n`);
+    console.log(`Skipped ${dataQualitySkipped} reviews (duplicateOf/wrongShow/wrongProduction/showNotMentioned/invalid)\n`);
   }
 
   // Apply text length filter - now includes reviews with excerpts
