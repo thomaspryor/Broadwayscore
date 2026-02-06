@@ -3,9 +3,9 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jesse Green",
-  "url": "https://www.vulture.com/2018/10/theater-review-the-waverly-gallery.html",
+  "url": "https://www.vulture.com/2018/10/theater-review-elaine-may-in-the-waverly-gallery.html",
   "publishDate": "October 26, 2018",
-  "fullText": "Lucas Hnath's play is a meditation on memory and loss that finds its power in specificity rather than sentiment, anchored by Joan Allen's devastating performance as a grandmother succumbing to dementia.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Lucas Hnath's play is a meditation on memory and loss that finds its power in specificity rather than sentiment, anchored by Joan Allen's devastating performance as a grandmother succumbing to dementia.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Lucas Hnath's play is a meditation on memory and loss that finds its power in specificity rather than sentiment, anchored by Joan Allen's devastating performance as a grandmother succumbing to dementia.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (31 words)",
   "textQuality": "truncated",
   "llmScore": {
@@ -76,5 +76,43 @@
   },
   "sources": [
     "web-search"
-  ]
+  ],
+  "previousUrl": "https://www.vulture.com/2018/10/theater-review-the-waverly-gallery.html",
+  "urlDiscoveredAt": "2026-02-06T19:05:12.227Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/the-waverly-gallery-2018/vulture--jesse-green_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T19:05:12.235Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }
