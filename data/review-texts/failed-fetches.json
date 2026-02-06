@@ -11860,18 +11860,6 @@
     "timestamp": "2026-02-05T02:39:32.701Z"
   },
   {
-    "reviewId": "elf-2024/vulture--jackson-mchenry.json",
-    "showId": "elf-2024",
-    "outlet": "Vulture",
-    "critic": "Jackson McHenry",
-    "url": "https://www.vulture.com/article/theater-review-elf-musical-broadway-return.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): wicked, the lion king, aladdin, giant, shucked...",
-    "textLength": 6121,
-    "timestamp": "2026-02-05T02:43:34.772Z"
-  },
-  {
     "reviewId": "fiddler-on-the-roof-2015/hollywood-reporter--unknown.json",
     "showId": "fiddler-on-the-roof-2015",
     "outlet": "Hollywood Reporter",
@@ -16648,54 +16636,6 @@
     "timestamp": "2026-02-06T04:59:10.276Z"
   },
   {
-    "reviewId": "english-2025/nytimes--jesse-green.json",
-    "showId": "english-2025",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2025/01/23/theater/english-review-broadway-toossi.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): liberation, redwood, home, company, betrayal...",
-    "textLength": 7317,
-    "timestamp": "2026-02-06T05:01:05.917Z"
-  },
-  {
-    "reviewId": "english-2025/vulture--sara-holdren.json",
-    "showId": "english-2025",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "https://www.vulture.com/article/freedom-in-speech-sanaz-toossis-english.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, smash, company, summer, once...",
-    "textLength": 8774,
-    "timestamp": "2026-02-06T05:01:24.877Z"
-  },
-  {
-    "reviewId": "enron-2010/hollywood-reporter--frank-scheck.json",
-    "showId": "enron-2010",
-    "outlet": "The Hollywood Reporter",
-    "critic": "Frank Scheck",
-    "url": "http://www.hollywoodreporter.com/hr/film-reviews/enron-theater-review-1004086708.story",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (6): home, sweat, the merchant of venice, high, race...",
-    "textLength": 1192,
-    "timestamp": "2026-02-06T05:01:58.771Z"
-  },
-  {
-    "reviewId": "enron-2010/nytimes--ben-brantley.json",
-    "showId": "enron-2010",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2010/04/28/theater/reviews/28enron.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): company, the performers, once, evita, rain...",
-    "textLength": 8715,
-    "timestamp": "2026-02-06T05:02:02.614Z"
-  },
-  {
     "reviewId": "enron-2010/variety--marilyn-stasio.json",
     "showId": "enron-2010",
     "outlet": "Variety",
@@ -20162,5 +20102,113 @@
     "garbageReason": "Multiple shows mentioned (5): smash, evita, elling, well, rent",
     "textLength": 2605,
     "timestamp": "2026-02-06T15:16:09.099Z"
+  },
+  {
+    "reviewId": "elf-2024/vulture--jackson-mchenry.json",
+    "showId": "elf-2024",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/article/theater-review-elf-musical-broadway-return.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): wicked, the lion king, aladdin, giant, shucked...",
+    "textLength": 6121,
+    "timestamp": "2026-02-06T15:16:14.961Z"
+  },
+  {
+    "reviewId": "english-2025/nytg--allison-considine.json",
+    "showId": "english-2025",
+    "outlet": "New York Theatre Guide",
+    "critic": "Allison Considine",
+    "url": "https://www.newyorktheatreguide.com/reviews/english-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, the audience, elling, high, company...",
+    "textLength": 3672,
+    "timestamp": "2026-02-06T15:16:24.480Z"
+  },
+  {
+    "reviewId": "english-2025/nytimes--jesse-green.json",
+    "showId": "english-2025",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2025/01/23/theater/english-review-broadway-toossi.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): liberation, redwood, home, company, betrayal...",
+    "textLength": 7317,
+    "timestamp": "2026-02-06T15:16:29.313Z"
+  },
+  {
+    "reviewId": "english-2025/vulture--sara-holdren.json",
+    "showId": "english-2025",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/freedom-in-speech-sanaz-toossis-english.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, smash, company, summer, once...",
+    "textLength": 8913,
+    "timestamp": "2026-02-06T15:16:34.414Z"
+  },
+  {
+    "reviewId": "enron-2010/hollywood-reporter--frank-scheck.json",
+    "showId": "enron-2010",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/hr/film-reviews/enron-theater-review-1004086708.story",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (6): home, sweat, the merchant of venice, high, race...",
+    "textLength": 1192,
+    "timestamp": "2026-02-06T15:16:59.993Z"
+  },
+  {
+    "reviewId": "enron-2010/nytimes--ben-brantley.json",
+    "showId": "enron-2010",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2010/04/28/theater/reviews/28enron.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): company, the performers, once, evita, rain...",
+    "textLength": 8715,
+    "timestamp": "2026-02-06T15:17:04.581Z"
+  },
+  {
+    "reviewId": "eureka-day-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "eureka-day-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/12/16/eureka-day-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): maybe happy ending, home, gypsy, cats, the audience...",
+    "textLength": 7219,
+    "timestamp": "2026-02-06T15:17:36.475Z"
+  },
+  {
+    "reviewId": "eureka-day-2024/nytg--gillian-russo.json",
+    "showId": "eureka-day-2024",
+    "outlet": "New York Theatre Guide",
+    "critic": "Gillian Russo",
+    "url": "https://www.newyorktheatreguide.com/reviews/eureka-day-broadway-review-jessica-hecht-thomas-middleditch-bill-irwin",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, hair, once, high, company...",
+    "textLength": 5160,
+    "timestamp": "2026-02-06T15:17:43.595Z"
+  },
+  {
+    "reviewId": "eureka-day-2024/nytimes--unknown.json",
+    "showId": "eureka-day-2024",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2024/12/16/theater/eureka-day-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (6): oh, mary!, death becomes her, just in time, cult of love, cabaret...",
+    "textLength": 2580,
+    "timestamp": "2026-02-06T15:18:01.230Z"
   }
 ]
