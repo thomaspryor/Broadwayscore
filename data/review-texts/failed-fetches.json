@@ -12028,42 +12028,6 @@
     "timestamp": "2026-02-05T03:13:31.569Z"
   },
   {
-    "reviewId": "ink-2019/hollywood-reporter--unknown.json",
-    "showId": "ink-2019",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/indian-ink-theater-review-736750",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): mamma mia!, home, english, company, the real thing...",
-    "textLength": 6924,
-    "timestamp": "2026-02-05T03:16:38.452Z"
-  },
-  {
-    "reviewId": "ink-2019/nytg--mark-shenton.json",
-    "showId": "ink-2019",
-    "outlet": "New York Theatre Guide",
-    "critic": "Mark Shenton",
-    "url": "https://www.newyorktheatreguide.com/reviews/review-of-ink-starring-jonny-lee-miller-bertie-carvel-on-broadway",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): company, king charles iii, finding neverland, harvey, hair...",
-    "textLength": 5519,
-    "timestamp": "2026-02-05T03:16:46.039Z"
-  },
-  {
-    "reviewId": "ink-2019/variety--frank-rizzo.json",
-    "showId": "ink-2019",
-    "outlet": "Variety",
-    "critic": "Frank Rizzo",
-    "url": "https://variety.com/2019/legit/reviews/ink-review-broadway-jonny-lee-miller-1203196513/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): company, network, summer, the audience, hair...",
-    "textLength": 4034,
-    "timestamp": "2026-02-05T03:18:01.752Z"
-  },
-  {
     "reviewId": "ink-2019/vulture--sara-holdren.json",
     "showId": "ink-2019",
     "outlet": "Vulture",
@@ -20426,5 +20390,77 @@
     "garbageReason": "Multiple shows mentioned (7): home, parade, once, evita, rain...",
     "textLength": 7298,
     "timestamp": "2026-02-06T15:59:07.815Z"
+  },
+  {
+    "reviewId": "ill-eat-you-last-a-chat-with-sue-mengers-2013/variety--marilyn-stasio.json",
+    "showId": "ill-eat-you-last-a-chat-with-sue-mengers-2013",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2013/legit/news/legit-review-ill-eat-you-last-a-chat-with-sue-mengers-1200413578/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): wicked, betrayal, betrayal, hair, once...",
+    "textLength": 4503,
+    "timestamp": "2026-02-06T16:01:23.087Z"
+  },
+  {
+    "reviewId": "ink-2019/hollywood-reporter--david-rooney.json",
+    "showId": "ink-2019",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/review/ink-theater-1204291",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): english, company, macbeth, network, summer...",
+    "textLength": 9703,
+    "timestamp": "2026-02-06T16:01:43.690Z"
+  },
+  {
+    "reviewId": "ink-2019/hollywood-reporter--unknown.json",
+    "showId": "ink-2019",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/indian-ink-theater-review-736750",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mamma mia!, home, english, company, the real thing...",
+    "textLength": 6875,
+    "timestamp": "2026-02-06T16:02:00.434Z"
+  },
+  {
+    "reviewId": "ink-2019/nytg--mark-shenton.json",
+    "showId": "ink-2019",
+    "outlet": "New York Theatre Guide",
+    "critic": "Mark Shenton",
+    "url": "https://www.newyorktheatreguide.com/reviews/review-of-ink-starring-jonny-lee-miller-bertie-carvel-on-broadway",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): company, king charles iii, finding neverland, harvey, hair...",
+    "textLength": 5519,
+    "timestamp": "2026-02-06T16:02:07.379Z"
+  },
+  {
+    "reviewId": "ink-2019/variety--christopher-kelly.json",
+    "showId": "ink-2019",
+    "outlet": "Variety",
+    "critic": "Christopher Kelly",
+    "url": "https://variety.com/2019/legit/reviews/ink-review-broadway-jonny-lee-miller-1203196513/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, network, summer, the audience, hair...",
+    "textLength": 4428,
+    "timestamp": "2026-02-06T16:03:37.203Z"
+  },
+  {
+    "reviewId": "ink-2019/variety--frank-rizzo.json",
+    "showId": "ink-2019",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2019/legit/reviews/ink-review-broadway-jonny-lee-miller-1203196513/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): company, network, summer, the audience, hair...",
+    "textLength": 4466,
+    "timestamp": "2026-02-06T16:04:11.588Z"
   }
 ]

@@ -1,56 +1,51 @@
 {
-  "updatedAt": "2026-02-06T15:59:07.825Z",
-  "processed": 10,
-  "failed": 180,
-  "successRate": "5.3%",
+  "updatedAt": "2026-02-06T16:04:11.601Z",
+  "processed": 18,
+  "failed": 202,
+  "successRate": "8.2%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 3,
-    "scrapingbee": 2,
+    "playwright": 2,
+    "browserbase": 2,
+    "scrapingbee": 1,
     "brightdata": 5,
-    "archive": 3
+    "archive": 10
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-06T13:52:03.878Z",
+      "t": "2026-02-06T13:56:01.639Z",
       "event": "bb-session",
-      "session": "0e346e49",
-      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
+      "session": "ecf3e630",
+      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
     },
     {
-      "t": "2026-02-06T13:55:32.984Z",
-      "event": "bb-session",
-      "session": "4614947b",
-      "url": "http://www.vulture.com/2013/11/reviews-little-miss-sunshine-a-bed-and-a-chair.ht"
-    },
-    {
-      "t": "2026-02-06T13:55:34.796Z",
+      "t": "2026-02-06T13:56:08.335Z",
       "event": "bb-login-uncertain",
-      "domain": "vulture.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-06T13:55:46.487Z",
+      "t": "2026-02-06T13:56:49.994Z",
       "event": "bb-session",
-      "session": "6cc76c96",
-      "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/"
+      "session": "09011cd2",
+      "url": "http://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
     },
     {
-      "t": "2026-02-06T13:56:02.827Z",
+      "t": "2026-02-06T13:58:19.098Z",
       "event": "bb-session",
-      "session": "57bc688f",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-dolls-house-review-jessica-ch"
+      "session": "3e62293c",
+      "url": "https://variety.com/2013/legit/reviews/a-gentlemans-guide-to-love-murder-1200814"
     },
     {
-      "t": "2026-02-06T13:58:18.912Z",
+      "t": "2026-02-06T13:59:04.455Z",
       "event": "bb-session",
-      "session": "210cd108",
-      "url": "https://www.newyorker.com/magazine/2023/03/27/a-dolls-house-theatre-review"
+      "session": "eeea1570",
+      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
     },
     {
-      "t": "2026-02-06T13:58:21.148Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
+      "t": "2026-02-06T13:59:18.426Z",
+      "event": "bb-session",
+      "session": "3bf53ad0",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
     }
   ]
 }
