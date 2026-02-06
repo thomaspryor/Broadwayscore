@@ -1678,7 +1678,7 @@ function createReviewFile(showId, reviewData) {
           const pubDate = new Date(review.publishDate);
           const earliestDate = new Date(earliest);
           const daysBefore = (earliestDate - pubDate) / (1000 * 60 * 60 * 24);
-          if (daysBefore > 60) {
+          if (daysBefore > 30) {
             console.log(`    ⚠️  WARNING: Review published ${Math.round(daysBefore)} days before show's earliest date (${earliest}).`);
             console.log(`       Likely from a prior production. Flagging as wrongProduction.`);
             review.wrongProduction = true;
@@ -1747,6 +1747,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   if (!show) {
     console.error(`Show not found: ${showId}`);
     return { success: false, error: 'Show not found' };
+  }
+
+  // Skip shows in previews — they haven't opened yet, any scraped reviews are wrong-production
+  if (show.status === 'previews') {
+    console.log(`[SKIP] ${showId}: Show is in previews (opens ${show.openingDate}) — skipping to avoid wrong-production contamination`);
+    return { success: true, skipped: true, reason: 'previews' };
   }
 
   const year = new Date(show.openingDate).getFullYear();

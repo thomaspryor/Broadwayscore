@@ -936,10 +936,11 @@ function searchGoogleImages(query) {
 
 async function fetchFromGoogleImages(show) {
   const year = show.openingDate ? show.openingDate.substring(0, 4) : '';
-  const showType = show.type === 'play' ? 'play' : 'musical';
   // Sanitize title: escape quotes that would break SERP query
   const safeTitle = show.title.replace(/"/g, '');
-  const query = `"${safeTitle}" Broadway ${showType} ${year} poster`;
+
+  // Simple search - "Title Broadway" or "Title Broadway year" just works
+  const query = year ? `"${safeTitle}" Broadway ${year}` : `"${safeTitle}" Broadway`;
   console.log(`   Trying Google Images: "${query}"`);
 
   let results;
