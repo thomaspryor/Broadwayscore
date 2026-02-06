@@ -1678,7 +1678,7 @@ function createReviewFile(showId, reviewData) {
           const pubDate = new Date(review.publishDate);
           const earliestDate = new Date(earliest);
           const daysBefore = (earliestDate - pubDate) / (1000 * 60 * 60 * 24);
-          if (daysBefore > 60) {
+          if (daysBefore > 30) {
             console.log(`    ⚠️  WARNING: Review published ${Math.round(daysBefore)} days before show's earliest date (${earliest}).`);
             console.log(`       Likely from a prior production. Flagging as wrongProduction.`);
             review.wrongProduction = true;
