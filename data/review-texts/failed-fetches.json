@@ -11104,30 +11104,6 @@
     "timestamp": "2026-02-04T17:25:14.813Z"
   },
   {
-    "reviewId": "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
-    "showId": "aint-no-mo-2022",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2022/12/04/aint-no-mo-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): proof, 1776, the color purple, the audience, the performers...",
-    "textLength": 7919,
-    "timestamp": "2026-02-04T17:40:52.818Z"
-  },
-  {
-    "reviewId": "aint-no-mo-2022/variety--aramide-tinubu.json",
-    "showId": "aint-no-mo-2022",
-    "outlet": "Variety",
-    "critic": "Aramide Tinubu",
-    "url": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448081/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): 1776, chicken & biscuits, the audience, hair, once...",
-    "textLength": 6688,
-    "timestamp": "2026-02-04T17:41:18.718Z"
-  },
-  {
     "reviewId": "aint-no-mo-2022/variety--naveen-kumar.json",
     "showId": "aint-no-mo-2022",
     "outlet": "Variety",
@@ -14042,18 +14018,6 @@
     "garbageReason": "Multiple shows mentioned (9): the lion king, chicago, appropriate, home, disgraced...",
     "textLength": 5800,
     "timestamp": "2026-02-05T04:41:14.337Z"
-  },
-  {
-    "reviewId": "after-midnight-2013/vulture--unknown.json",
-    "showId": "after-midnight-2013",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2013/11/theater-review-after-midnight.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): parade, company, bandstand, the color purple, once...",
-    "textLength": 6965,
-    "timestamp": "2026-02-05T04:57:35.809Z"
   },
   {
     "reviewId": "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json",
@@ -17594,5 +17558,41 @@
     "garbageReason": "Multiple shows mentioned (12): mamma mia!, parade, the color purple, the performers, once...",
     "textLength": 7829,
     "timestamp": "2026-02-06T03:05:28.486Z"
+  },
+  {
+    "reviewId": "after-midnight-2013/vulture--unknown.json",
+    "showId": "after-midnight-2013",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2013/11/theater-review-after-midnight.html",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): parade, company, bandstand, the color purple, once...",
+    "textLength": 7208,
+    "timestamp": "2026-02-06T03:12:23.971Z"
+  },
+  {
+    "reviewId": "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "aint-no-mo-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/12/04/aint-no-mo-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): proof, 1776, the color purple, the audience, the performers...",
+    "textLength": 7919,
+    "timestamp": "2026-02-06T03:16:46.234Z"
+  },
+  {
+    "reviewId": "aint-no-mo-2022/variety--aramide-tinubu.json",
+    "showId": "aint-no-mo-2022",
+    "outlet": "Variety",
+    "critic": "Aramide Tinubu",
+    "url": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448081/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): 1776, chicken & biscuits, the audience, hair, once...",
+    "textLength": 6557,
+    "timestamp": "2026-02-06T03:19:53.551Z"
   }
 ]
