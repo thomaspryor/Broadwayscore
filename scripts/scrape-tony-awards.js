@@ -6,9 +6,11 @@
  * This script scrapes nominations and wins, then matches to our shows.json.
  *
  * Usage:
- *   node scripts/scrape-tony-awards.js                    # All years (2005-present)
+ *   node scripts/scrape-tony-awards.js                    # All years (2005-current)
  *   node scripts/scrape-tony-awards.js --year=2024        # Single year
  *   node scripts/scrape-tony-awards.js --dry-run          # Preview without saving
+ *
+ * Runs automatically via GitHub Actions on June 20th each year.
  */
 
 const fs = require('fs');
@@ -17,8 +19,12 @@ const { JSDOM } = require('jsdom');
 
 // Tony Awards ceremonies by year (ceremony number, Wikipedia page suffix)
 // Broadway season 2004-05 had 59th Tonys in 2005, which is our data start
+// Year range is dynamic - no manual updates needed each year
+const START_YEAR = 2005;
+const CURRENT_YEAR = new Date().getFullYear();
+
 const TONY_CEREMONIES = [];
-for (let year = 2005; year <= 2025; year++) {
+for (let year = START_YEAR; year <= CURRENT_YEAR; year++) {
   // Tony Awards ceremony dates from Wikipedia:
   // 59th: June 2005, 74th: Sept 2021 (delayed from 2020), 75th: June 2022,
   // 76th: June 2023, 77th: June 2024, 78th: June 2025
@@ -33,7 +39,7 @@ for (let year = 2005; year <= 2025; year++) {
     // Shows from 2021 are covered by 75th (June 2022)
     continue;
   } else {
-    ceremonyNum = year - 1947; // 2022=75th, 2023=76th, 2024=77th, 2025=78th
+    ceremonyNum = year - 1947; // 2022=75th, 2023=76th, 2024=77th, etc.
   }
 
   // Ordinal suffix: 1st, 2nd, 3rd, otherwise th
