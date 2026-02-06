@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "\"'Cats' is pure spectacle…It is shimmering, leaping, booty shaking spectacle. There should be a Tony for the ensemble of dancers in this production. They ARE the production…Ms. Lewis appears uncertain of what she should do onstage. An actor she is not. A mighty singer she is...After a bit, all these impeccably costumed folks begin to blend together in a tabby tuffet that becomes too much of a good thing.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "After a bit, all these impeccably costumed folks begin to blend together in a tabby tuffet that becomes too much of a good thing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises the ensemble dancers as spectacular and highlights strong singing, but criticizes the lead performer's acting and suggests the show becomes monotonous. Single excerpt limits confidence in overall verdict. | GPT-4o: The review praises the ensemble and spectacle but criticizes Ms. Lewis's acting and suggests the production becomes overwhelming. The single excerpt provides mixed signals, leading to a mixed verdict. | Gemini: The review praises the ensemble but criticizes the lead actress and finds the overall spectacle overwhelming. This suggests a mixed or lukewarm recommendation. | Kimi: The excerpt offers strong praise for the dancing, spectacle, and costumes ('pure spectacle,' 'shimmering,' 'They ARE the production'), but includes significant reservations about the lead's acting abilities and finds the show becomes repetitive ('too much of a good thing'). With only one excerpt available, the review appears to land in the 'solid recommendation with reservations' range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:26:11.231Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

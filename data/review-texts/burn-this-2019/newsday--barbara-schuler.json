@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "“In the uneven revival...Driver is compelling and charismatic as Pale...Russell comes off stiff and vaguely uncomfortable in the role — tentative, constantly fussing with her hair and not quite sure what to do with herself. The idea that she’s a professional dancer never comes across. More problematic, neither does her attraction to Pale...In this case, the fire does not burn nearly hot enough.”\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the uneven revival...the fire does not burn nearly hot enough.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Praises Driver as 'compelling and charismatic' but finds Russell problematic and unconvincing, calling the revival 'uneven' with fire that 'does not burn nearly hot enough.' Single excerpt warning applies - confidence is low as this may not represent the full review. | GPT-4o: The review highlights significant issues with the revival, particularly with Russell's performance and the chemistry between characters. While Driver is praised, the overall impression is negative, suggesting the production fails to deliver the necessary impact. | Gemini: The review uses negative language such as \"uneven revival\" and criticizes the performances and chemistry between the actors. The final sentence indicates a lack of passion or connection, leading to a negative assessment. | Kimi: The excerpt describes an uneven production with compelling work from Driver but a stiff, unconvincing performance from Russell and a lack of essential chemistry, ending on a note that the production fails to ignite. | Buckets: claude=Mixed, openai=Negative, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:39:22.257Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

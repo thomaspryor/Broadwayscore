@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "\"Other than the brilliant score, there really is very little cause to revive this show unless you have a revelatory vision, which this version totally lacks...Although both Ms. Mueller and Mr. Henry are incredible talents in their own right, their chemistry here is below the charts...The joys of the show are Renee Fleming...and Alexander Gemignani as Enoch Snow, Julie’s best friend Carrie Pipperidge’s fiancé...Jack O’Brien’s listless direction makes the proceedings even more ponderous.\" \n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Other than the brilliant score, there really is very little cause to revive this show unless you have a revelatory vision, which this version totally lacks.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds the revival unnecessary and lacking vision, criticizes the leads' chemistry and director's work as 'listless' and 'ponderous,' with only individual performers providing redeeming moments. | GPT-4o: The review criticizes the lack of a revelatory vision, poor chemistry between leads, and listless direction, despite some praise for individual performers. The overall tone is negative, suggesting the production is not worth seeing. | Gemini: The review states there is little reason to revive the show and criticizes the direction and chemistry between the leads, despite acknowledging their individual talents. The positive mentions of Fleming and Gemignani are not enough to outweigh the negative assessment of the overall production. | Kimi: While the excerpt praises the source material score and two supporting performances, the critic fundamentally questions the revival's existence, criticizes the lead chemistry as 'below the charts,' and deems the direction 'listless' and the proceedings 'ponderous,' resulting in a clear recommendation against.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:07:36.189Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

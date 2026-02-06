@@ -3,7 +3,7 @@
   "outletId": "huffpost",
   "outlet": "HuffPost",
   "criticName": "David Finkle",
-  "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-harvey-fier_b_5202805.html",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,9 +15,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://www.huffingtonpost.com/david-finkle/first-nighter-harvey-fier_b_5202805.html",
-  "duplicateOf": "huffpost--unknown.json"
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's possible to leave Casa Valentina believing that drag for straight men...is an ultimately imprisoning mental state.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The excerpt suggests a complex view of the show's themes, indicating a mixed perspective. The lack of a clear positive or negative verdict and the single excerpt warning lead to a low confidence score in the Mixed bucket. | Gemini: The review excerpt presents a somewhat neutral perspective, suggesting the play raises questions about drag without explicitly endorsing or condemning it. The mention of a psychotherapist acquaintance adds a layer of complexity, making it difficult to classify as purely positive or negative. Given the limited excerpt, confidence is low. | Kimi: Single truncated excerpt presents thematic interpretation without clear evaluative stance; the 'yet' qualifier suggests mixed perspective on the show's message.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:11:43.545Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

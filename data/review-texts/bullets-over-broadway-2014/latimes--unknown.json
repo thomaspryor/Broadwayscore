@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "There's certainly much to savor in this gin fizz cocktail of a show, tossed back in the Art Deco glory of Prohibition-era New York. But the ostentatious flaws of this much-anticipated production, which opened at Broadway's St. James Theatre, make it difficult for me to hold my tongue...Backstage musicals bring out the best in director and choreographer Susan Stroman, and her production of 'Bullets' has electricity that at times matches her high-voltage staging of 'The Producers.' Even when the jokes fall flat and the songs (all borrowed from the period, many revamped by Glen Kelly) seem incongruous, the show has the galloping vigor of a runaway hit, if few of the ecstatic peaks...Stroman's staging moves with an effervescent fluidity - gangsters and flappers glide by, each in high Cotton Club style - yet the book isn't as spry. Scenes that could be distilled into a few lines are belabored. For all the frenetic Jazz Age motion, the show feels dramatically sluggish.",
-  "bwwScore": 7
+  "bwwScore": 7,
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's certainly much to savor in this gin fizz cocktail of a show, but the ostentatious flaws make it difficult for me to hold my tongue.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Acknowledges appealing elements and praises Stroman's direction, but cites significant structural problems with the book and pacing that prevent a recommendation. | GPT-4o: The review highlights both positive elements, like the 'electricity' of the production and 'effervescent fluidity,' and significant flaws, such as 'ostentatious flaws' and 'dramatically sluggish' pacing. The single excerpt suggests a mixed verdict with both praise and criticism. | Gemini: The review has both positive and negative aspects. It praises the staging and vigor but criticizes the book and songs. The overall impression is mixed, with no clear recommendation. | Kimi: The critic praises Stroman's direction and choreography as having 'electricity' matching 'The Producers' and calls it a 'gin fizz cocktail' with much to savor, but cites 'ostentatious flaws' including a sluggish book and belabored scenes that prevent it from reaching 'ecstatic peaks.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:34:17.531Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

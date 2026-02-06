@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's high-energy dance numbers and cheerleading routines are genuinely exciting to watch, even if the book feels familiar and formulaic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's high-energy dance numbers and cheerleading routines are genuinely exciting to watch, even if the book feels familiar and formulaic.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's high-energy dance numbers and cheerleading routines are genuinely exciting to watch, even if the book feels familiar and formulaic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt presents balanced view - praises the exciting dance numbers but criticizes the formulaic book. The 'even if' construction suggests the negatives outweigh the positives slightly. | GPT-4o: The excerpt praises the dance numbers and routines as exciting, suggesting a positive experience, but notes the book is familiar and formulaic, indicating some reservations. With only one excerpt available, confidence is low. | Gemini: The review excerpt praises the dance numbers but notes the book is formulaic. Given the single excerpt and the positive but qualified tone, I placed it in the lower end of the Positive bucket. | Kimi: The excerpt offers qualified praise, highlighting genuinely exciting dance sequences while criticizing the book as familiar and formulaic, indicating a mild recommendation to see the show for its production values.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:31:10.866Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

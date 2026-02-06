@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Routines tend to stay on the same level of aggressive athleticism serving more as skill demonstrations than expressions of artistry.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic dismisses the performances as mere 'skill demonstrations' lacking artistry, suggesting the show prioritizes spectacle over meaningful artistic expression. However, confidence is low due to having only one excerpt from what appears to be a longer review. | GPT-4o: The excerpt criticizes the show for lacking artistry, suggesting it is more about skill demonstration. The tone is negative, but without the full review, the confidence is low. | Gemini: The excerpt expresses a negative opinion about the routines, suggesting they lack artistry and are merely skill demonstrations. Given the single excerpt and negative tone, I've classified it as negative with low confidence. | Kimi: The critic criticizes the show for monotonous routines that display athletic skill without achieving artistic expression. Combined with the negative wordplay in the title ('So You Think You Can Sit Through This'), this suggests the reviewer does not recommend the production. Score reflects the lower end of the Negative bucket due to limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:35:24.328Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

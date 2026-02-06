@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Allen has created an old-fashioned, madcap lark of...",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows a clear positive turn - after criticizing Allen's previous Broadway work, the critic praises this musical as a successful 'madcap lark.' However, confidence is low due to truncated text and single excerpt limitation. | GPT-4o: The excerpt suggests a positive view of the musical as an 'old-fashioned, madcap lark,' indicating enjoyment. However, due to the single excerpt warning and lack of full context, confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt indicates a positive shift in Allen's Broadway work, describing the musical as an \"old-fashioned, madcap lark.\" Given the limited text, a score in the lower-middle of the positive range seems appropriate. | Kimi: Despite opening with criticism of Allen's previous 'tired' work, the critic pivots with 'But' to praise this production as a 'madcap lark' — clearly positive language indicating an entertaining, fun show. The truncated text and single-excerpt availability necessitate low confidence, but the available language is unambiguously favorable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:47:04.143Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

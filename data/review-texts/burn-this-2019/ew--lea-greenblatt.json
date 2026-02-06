@@ -6,10 +6,64 @@
   "url": "https://ew.com/theater-reviews/2019/04/16/burn-this-review/",
   "source": "bww-reviews",
   "sources": [
-    "bww-reviews",
-    "bww-roundup"
+    "bww-reviews"
   ],
   "bwwExcerpt": "In director Michael Mayer's kinetic, consistently engaging production, though, it really is a piece for quatre: David Furr, as Anna's swaggering screenwriter boyfriend, Burton, and Brandon Uranowitz, as her wisecracking roommate Larry, aren't just foils; they're fully formed humans who may not be part of the story's central romance (or at least not on the winning end of the equation), but who consistently give the almost pathologically intense deux at its center light and air.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In director Michael Mayer's kinetic, consistently engaging production, though, it really is a piece for quatre",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the production as 'kinetic, consistently engaging' and highlights strong supporting performances, indicating a positive assessment. However, with only one curated excerpt available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt describes the production as 'kinetic' and 'consistently engaging,' indicating a positive assessment. The mention of fully formed characters adds to the praise, suggesting a strong recommendation. | Gemini: The review excerpt praises the production and performances, suggesting a positive but not overwhelmingly enthusiastic recommendation. Due to the limited text, confidence is low. | Kimi: The excerpt praises the production as 'kinetic' and 'consistently engaging' while commending the supporting cast for elevating the central romance, indicating a clear recommendation despite the limited excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:38:03.495Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

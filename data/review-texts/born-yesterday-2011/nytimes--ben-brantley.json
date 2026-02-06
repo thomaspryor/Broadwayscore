@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Arianda doesn't just play dumb; she embodies the painful, defensive process of someone struggling to think when thinking doesn't come naturally.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Arianda doesn't just play dumb; she embodies the painful, defensive process of someone struggling to think when thinking doesn't come naturally.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Arianda doesn't just play dumb; she embodies the painful, defensive process of someone struggling to think when thinking doesn't come naturally.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: This excerpt shows deep appreciation for Arianda's nuanced performance, suggesting skilled acting that goes beyond surface-level portrayal. However, with only one excerpt available, the overall show verdict remains unclear. | GPT-4o: The excerpt praises Ms. Arianda's performance, indicating a positive view, but the single quote and lack of full context suggest a cautious, mildly positive score. | Gemini: The excerpt focuses on a positive aspect of the performance, suggesting a recommendation, but the lack of context makes it difficult to gauge the overall sentiment. I'm placing it in the lower end of the positive range due to the limited information. | Kimi: The excerpt contains specific, admiring praise for Nina Arianda's committed performance and technical skill. Following instructions for clearly positive single excerpts, this falls in the upper Positive range (80-84) with low confidence due to limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:28:08.107Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

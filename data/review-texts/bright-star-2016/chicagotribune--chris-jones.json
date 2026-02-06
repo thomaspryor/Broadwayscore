@@ -3,21 +3,73 @@
   "outletId": "chicagotribune",
   "outlet": "Chicago Tribune",
   "criticName": "Chris Jones",
-  "url": "http://www.chicagotribune.com/entertainment/theater/sc-bright-star-steve-martin-broadway-ent-0324-20160324-column.html",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
   "bwwExcerpt": "If you had any doubt of the formidable polyglot of talent that makes up one Steve Martin, or you were under the misapprehension that his banjo was primarily the accessory of a stand-up or Hollywood comic, the very conception of \"Bright Star\" should be enough to lay that to rest....",
   "bwwRoundupUrl": null,
   "bwwThumb": null,
-  "showScoreExcerpt": "\"Martin forged score, book and story for this wholly original musical—a piece that, despite its tonal unevenness and frequent, needless diversions from truth, still feels like a significant, distinctive and artful entry into the Broadway repertory...It would be an even-better thing if this show acknowledged the racial complexities of the era of its setting...A moving story that got under my skin despite some resistance, and a score that elevates the Broadway-bluegrass fusion.\"\n\nRead more",
+  "showScoreExcerpt": null,
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "show-score-playwright",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://www.chicagotribune.com/entertainment/theater/sc-bright-star-steve-martin-broadway-ent-0324-20160324-column.html"
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the very conception of 'Bright Star' should be enough to lay that to rest",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Steve Martin's 'formidable polyglot of talent' and defending the show's conception suggests positive assessment, but limited text makes full verdict unclear. | GPT-4o: The excerpt praises the show as a testament to Steve Martin's talent, suggesting a strong recommendation. However, with only one excerpt, confidence is low. | Gemini: The excerpt praises Steve Martin's talent and the conception of \"Bright Star\", suggesting a positive view of the show. However, due to the limited text and excerpt-only nature, the confidence is low. | Kimi: The excerpt validates Steve Martin's multifaceted talent and the show's artistic conception, indicating a clearly positive assessment, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:29:02.050Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

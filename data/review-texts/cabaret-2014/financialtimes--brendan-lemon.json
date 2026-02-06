@@ -12,5 +12,60 @@
   "bwwExcerpt": "The riotous fun of the Kit Kat boys and girls is firmly in place, and the joy they all take in playing their instruments is infectious. We need such relief as the book scenes feel a little plodding. High quality global journalism requires investment. Williams plays Sally as a British baby doll. She sings well but not too well. She makes no Liza Minnelli-type pleas for our sympathy. Instead, Williams offers intense desperation. She holds on to the microphone stand as if aware into just what abyss she will spin if she lets go.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "We need such relief as the book scenes feel a little plodding.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Praises the Kit Kat performers and Williams' performance as infectious and intense, but criticizes the book scenes as plodding. Single excerpt warning applies - limited text shows both positive and negative elements without clear overall recommendation. | GPT-4o: The excerpt highlights the infectious fun and joy of the ensemble, suggesting a positive experience despite mentioning plodding book scenes. However, the single excerpt limits confidence in the overall tone. | Gemini: The review praises the Kit Kat Klub performers and Michelle Williams' performance, but notes that the book scenes feel plodding, indicating a positive but not rave review. Given the single excerpt, I'm scoring at the lower end of positive. | Kimi: The excerpt offers enthusiastic praise for the performances ('riotous fun', 'infectious') and the lead's 'intense desperation', but criticizes the book scenes as 'plodding', indicating a positive recommendation with notable reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:50:16.601Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

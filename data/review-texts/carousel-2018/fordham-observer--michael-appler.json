@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 21,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "“An ill-timed and remarkably tactless misfire...O’Brien and Rudin have abused a large budget to create a garish, gaudy production above a hollow and disintegrating show. They’ve performed a masterful act of seduction…But no plumage, nor any attempt at elaborate rhapsody, could mask the rot at the core of this sentimental revival…Mueller’s turn is drowned by a stale character granted no room for innovation…Renée Fleming as Nettie Fowler, however, may be a singular grace in this revival.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 21,
+    "confidence": "medium",
+    "range": {
+      "low": 16,
+      "high": 26
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An ill-timed and remarkably tactless misfire",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Critic uses devastating language ('misfire', 'abused', 'garish', 'hollow', 'rot at the core') to condemn the production. While praising Fleming as 'singular grace', this isolated bright spot doesn't redeem the overall pan. | GPT-4o: The excerpt is strongly negative, describing the production as a 'misfire' and 'hollow.' While there is a mention of Renée Fleming as a 'singular grace,' the overall tone is a pan. Confidence is low due to the single excerpt warning. | Gemini: The review is largely negative, describing the production as a \"misfire\" and \"hollow.\" While Fleming is praised, the overall assessment is unfavorable. | Kimi: The excerpt employs severe condemnation ('misfire,' 'abused,' 'rot at the core,' 'disintegrating') to characterize the production as fundamentally flawed, offering only one isolated performance as a 'singular grace.' The single-excerpt format warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:01:25.347Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 22,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 20,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "\"Mueller's subtle and authentic performance gets lost in the production's grandeur, but it's a sacrifice worth making...O'Brien's direction breathes life into 'Carousel's' questionable relationships, it's Peck's breathtaking choreography that whisks it to a place of exuberance...Henry's muscular performance digs deep. With a rich baritone that soars when needed, his presence consumes the Imperial Theatre's vast stage. It's no wonder that Julie Jordan, and the audience, falls hard for him.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "O'Brien's direction breathes life into 'Carousel's' questionable relationships, it's Peck's breathtaking choreography that whisks it to a place of exuberance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for direction, choreography, and lead performances. Despite acknowledging the show's 'questionable relationships,' the critic finds the production elevates the material. However, confidence is low due to limited text and potential cherry-picking of positive quotes. | GPT-4o: The excerpt praises the direction and choreography, highlighting the production's ability to overcome its challenges. The tone is enthusiastic, suggesting a strong recommendation despite the text quality warning. | Gemini: The review praises the direction, choreography, and Henry's performance, but notes that Mueller's performance gets lost. This suggests a positive but not rave review, so I chose a score in the positive range. | Kimi: The excerpt enthusiastically praises the direction, choreography, and performances as breathtaking and exuberant, finding the production's grandeur well worth any sacrifices in subtlety.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:59:03.987Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

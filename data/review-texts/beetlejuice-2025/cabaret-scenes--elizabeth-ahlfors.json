@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,6 +21,59 @@
   "sources": [
     "show-score-playwright"
   ],
-  "wrongProduction": true,
-  "wrongProductionNote": "Review is from the 2019 original Beetlejuice production at the Winter Garden Theatre, not the 2025 tour stop."
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Beetlejuice' is certainly an experience...The show holds nothing back and all in all, 'Beetlejuice' offers sane advice about living life to the fullest.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the plot is 'totally nonsensical' but recommends it as 'certainly an experience' with positive elements like 'flash and dash' and Brightman's enthusiasm. The conclusion that it 'offers sane advice about living life to the fullest' suggests qualified recommendation. Single excerpt warning requires caution - this reads as mildly positive, so lower end of Positive bucket. | GPT-4o: The excerpt describes the show as a nonsensical but entertaining experience with enthusiastic performances and impressive visuals, suggesting a positive recommendation despite the lack of plot coherence. | Gemini: The review acknowledges the nonsensical plot but praises the visuals, music, and Brightman's performance, suggesting it's an enjoyable experience despite its flaws. Given the single excerpt and the mixed signals, a score in the middle of the positive range seems appropriate. | Kimi: The excerpt acknowledges the plot is 'totally nonsensical' but recommends the show based on its visual spectacle, energetic score, and lead performance, instructing audiences to 'just watch the effects' rather than follow the story.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:56:51.130Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

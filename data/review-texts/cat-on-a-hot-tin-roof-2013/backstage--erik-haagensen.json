@@ -12,5 +12,60 @@
   "bwwExcerpt": "Ashford's awkward, excessively physical staging includes far too much unimaginative circling of Brick and Maggie's dominating bed. Though Williams does mandate things such as the offstage singing of field hands, Ashford ham-fistedly employs Adam Cork's busy sound design, especially in the too-obvious use of some punctuating fireworks. Ashford also begins and ends each act with Cork's crashing music cranked up high, as if to create by fiat the searing drama that he has been unable to unlock in the play. Williams should be allowed to make his own music.",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ashford ham-fistedly employs Adam Cork's busy sound design, especially in the too-obvious use of some punctuating fireworks.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Single excerpt focuses entirely on directorial failures with harsh language like 'awkward,' 'ham-fisted,' and 'too-obvious.' However, since this is one curated quote that may not represent the full review's verdict, confidence is low. | GPT-4o: The review excerpt criticizes the staging as awkward and unimaginative, and the sound design as ham-fisted and too obvious. The overall tone suggests disappointment with the production. | Gemini: The review excerpt is critical of the staging and sound design, suggesting the director failed to unlock the play's drama. The tone is negative, indicating a lack of recommendation. Confidence is low due to the limited excerpt. | Kimi: The excerpt offers consistent criticism of the director's choices, citing 'ham-fisted' sound design, 'unimaginative' staging, and a failure to unlock the play's drama, though as a single curated quote it may not represent the full review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:17:14.067Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

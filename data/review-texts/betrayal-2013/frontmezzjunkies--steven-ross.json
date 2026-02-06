@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,6 +21,59 @@
   "sources": [
     "show-score-playwright"
   ],
-  "wrongProduction": true,
-  "wrongProductionNote": "Auto-flagged: mentions director \"jamie lloyd\" from betrayal-2019 (newer production). Review likely belongs in betrayal-2019."
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is the essence of this masterful revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt praises 'masterful revival' and 'gifted' director with 'tight thoughtfulness,' suggesting strong positive assessment. However, confidence is low due to single curated quote limitation. | GPT-4o: The excerpt describes the revival as 'masterful' and praises the direction by Jamie Lloyd as 'tight thoughtfulness'. Despite the limited text, the language suggests a strong recommendation. | Gemini: The excerpt uses strong positive language such as \"masterful revival\" and \"gifted Jamie Lloyd,\" indicating a positive review. Given that it's a single excerpt, I'm scoring on the higher end of the positive range but with low confidence. | Kimi: The excerpt uses strong superlatives ('masterful', 'gifted') to praise the revival and direction, indicating clear enthusiasm. Per the single-excerpt guidance, this falls in the upper Positive range (80-84), though limited context prevents Rave classification or higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:14:36.353Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

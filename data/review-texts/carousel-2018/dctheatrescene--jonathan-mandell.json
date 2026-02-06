@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "\"The new 'Carousel' has the most glorious singing on Broadway...Director Jack O’Brien hasn’t solved its dated attitude toward domestic abuse, nor does he take the corn out of the scenes set in Heaven...Happily, this 'Carousel' also features newcomer Justin Peck’s athletic dances, Santo Loquasto’s clever, eye-catching set design, Jonathan Tunick’s lush new orchestrations for a 24-piece orchestra, and some eye-opening performances...An admittedly flawed but still heavenly musical.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An admittedly flawed but still heavenly musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging significant flaws (domestic abuse issues, dated elements), the critic uses positive language like 'most glorious singing,' 'heavenly,' and praises multiple production elements. Single excerpt warning suggests caution - this sounds like qualified praise. | GPT-4o: The review excerpt praises the singing, dances, set design, and orchestrations, but acknowledges flaws in the direction and dated elements. The overall tone is positive, suggesting a recommendation despite reservations. | Gemini: The review acknowledges flaws but ultimately calls the musical \"heavenly\" and highlights several positive aspects, including the singing, dancing, set design, and orchestrations. Due to the excerpted nature of the review, the confidence is low. | Kimi: While the critic acknowledges the production fails to resolve dated elements regarding domestic abuse and retains some corniness, they praise the 'most glorious singing on Broadway,' athletic choreography, and lush orchestrations, ultimately endorsing the show as 'heavenly.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:00:22.879Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There's little poignancy in the performance. When Blanche goes crackers at the end, it seems to come out of nowhere, rather than being the inevitable result of a long slide. [...] Blair Underwood, another performer from films and TV who is normally a sensitive actor, overdoes Stanley's macho-ness to the point of excluding any other qualities.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STREETCAR-NAMED-DESIRE-Returns-to-Broadway-Updating-LIVE-20120422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's little poignancy in the performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes key performances as lacking depth and nuance, with Blanche's breakdown feeling unearned and Stanley being one-dimensional. However, this is only a single excerpt so the full verdict may differ. | GPT-4o: The excerpt highlights significant issues with the performances, noting a lack of poignancy and overacting. The critique suggests disappointment with the production, indicating a negative review. | Gemini: The review excerpt criticizes the performances of the lead actors, stating that they lack poignancy and overdo their roles. Given the negative tone, I've classified this as negative. | Kimi: The critic specifically faults the two lead performances, finding the actress lacking poignancy and the actor overplaying Stanley's macho qualities, which undermines the production's emotional impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:16:28.105Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 43,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

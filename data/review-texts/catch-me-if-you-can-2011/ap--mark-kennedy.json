@@ -12,5 +12,60 @@
   "bwwExcerpt": "And yet there's something here that just isn't connecting, that smacks a bit of a color-by-numbers musical. A large reason may be the role of the hero, who is, after all, a cipher - a faker, a fraud, a man who is whatever we assume him to be. Beneath the pilot's uniform or doctor's white coat, there's little but a smile and a wink. 'Blink your eyes and I'll be gone,' he sings in one song. And he's right: He leaves nothing that resonates behind. Played by Leonardo DiCaprio in the film, this time the role of Frank Abagnale Jr. has been handed over to Aaron Tveit. As pretty as a Ken doll and blessed with a wonderful voice, Tveit nevertheless struggles to convey genuineness.",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-CATCH-ME-IF-YOU-CAN-Updating-Live-20110410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-CATCH-ME-IF-YOU-CAN-Updating-Live-20110410",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And yet there's something here that just isn't connecting, that smacks a bit of a color-by-numbers musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The excerpt criticizes the show as formulaic ('color-by-numbers') and notes fundamental problems with character development and lead performance. However, with only one excerpt available from what may be a longer review, the full verdict remains unclear. | GPT-4o: The excerpt criticizes the show for lacking connection and depth, describing it as 'color-by-numbers' and highlighting issues with the lead role's portrayal. The tone suggests disappointment, but without the full review, the confidence is low. | Gemini: The review excerpt expresses reservations about the musical, calling it a \"color-by-numbers musical\" and criticizing the hero's role and the actor's ability to convey genuineness. This indicates a mixed assessment, but because it's a single excerpt, confidence is low. | Kimi: The excerpt criticizes the show as formulaic and emotionally hollow, finding that the lead performance lacks genuineness despite the actor's vocal talents. The overall tone indicates a clear recommendation against seeing the production. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:21:23.156Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

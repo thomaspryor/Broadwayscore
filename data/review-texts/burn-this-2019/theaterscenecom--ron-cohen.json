@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Wilson’s 1987 improbable, meandering love story, is given an expertly calibrated revival...An unquestionable showcase for two actors who can generate romantic heat burning through personality clash, and...Driver and Russell, do that...wonderfully...The play is most alive when Driver is on stage...It’s a gratifying experience to see Driver and Russell bringing validity as well as marquee glamour to this sensitively, sometimes flashily written but not always convincing work.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a gratifying experience to see Driver and Russell bringing validity as well as marquour to this sensitively written but not always convincing work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the 'expertly calibrated revival' and finds it 'gratifying,' but qualifies praise by noting the play is 'not always convincing.' Single excerpt limits confidence in capturing full verdict. | GPT-4o: The excerpt praises the performances of Driver and Russell, highlighting their ability to bring life to the play. The use of 'wonderfully' and 'gratifying experience' suggests a strong positive sentiment, despite some reservations about the play's writing. | Gemini: The review praises the performances of Driver and Russell and calls the revival \"expertly calibrated.\" However, it also notes that the play is \"not always convincing,\" indicating a reservation, so I scored it as positive with reservations. | Kimi: The excerpt praises the revival as 'expertly calibrated' and the lead performances as 'wonderful' and 'gratifying,' while offering only mild criticism of the source material ('not always convincing'), indicating a clear recommendation focused on the acting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:44:02.786Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

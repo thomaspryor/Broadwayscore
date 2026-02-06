@@ -3,21 +3,73 @@
   "outletId": "thewrap",
   "outlet": "TheWrap",
   "criticName": "Robert Hofler",
-  "url": "http://www.thewrap.com/bright-star-broadway-review-steve-martin-edie-brickell-write-a-tcm-inspired-musical/",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
   "bwwExcerpt": "The \"Bright Star\" bluegrass score features more twangs per dipthong than a whole evening of \"Tobacco Road\"...Walter Bobbie directs and Josh Rhodes choreographs \"Bright Star\" in a way that brings to mind Agnes de Mille as rendered by Grant Wood. Time will tell if this musical makes the walls of Joe A...",
   "bwwRoundupUrl": null,
   "bwwThumb": null,
-  "showScoreExcerpt": "\"The 'Bright Star' bluegrass score features more twangs per dipthong than a whole evening of 'Tobacco Road'. This is the third bluegrass musical to open in New York City in the last two weeks. More of these and Broadway will run out of fiddles and banjos, I’m praying...Time will tell if this musical makes the walls of Joe Allen restaurant’s gallery of flops. On the walls of my mind, 'Bright Star' has already taken its place between last season’s 'Doctor Zhivago' and 1979’s 'Got Tu Go Disco'.”\n\nRead more",
+  "showScoreExcerpt": null,
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "show-score-playwright",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://www.thewrap.com/bright-star-broadway-review-steve-martin-edie-brickell-write-a-tcm-inspired-musical/"
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Time will tell if this musical makes the walls of Joe A...",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single truncated excerpt with mixed descriptive language - references to artistic influences suggest some appreciation, but the 'time will tell' ending implies uncertainty about the show's success. Truncated mid-sentence makes full verdict unclear. | GPT-4o: The excerpt provides a descriptive evaluation of the direction and choreography, but lacks clear positive or negative sentiment. The single excerpt limits confidence in the overall verdict. | Gemini: The review excerpt is brief and somewhat ambiguous. The comparison to Agnes de Mille and Grant Wood suggests a unique and potentially appealing aesthetic, but the initial comment about the bluegrass score is less positive. Given the limited information, a mixed score seems most appropriate. | Kimi: Single truncated excerpt offers sophisticated but ambiguous cultural comparisons (Tobacco Road, Grant Wood) without clear recommendation, ending with uncertainty about the show's longevity at Joe Allen's.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:30:37.051Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

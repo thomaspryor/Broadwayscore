@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Beautiful' lacks the biographical wallop and dramatic intensity of such jukebox musicals as 'Jersey Boys' and the gleeful fun of 'Mamma Mia'... The presentation and performances of these venerable songs is hollow and spotty, like watching a highbrow version of TV’s 'Solid Gold'…Regardless, 'Beautiful' has a guilty-pleasure sense of fun and nostalgia and a few hearty performances, making us overlook the show’s many shortcomings.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Beautiful' has a guilty-pleasure sense of fun and nostalgia and a few hearty performances, making us overlook the show's many shortcomings.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review criticizes the show as lacking dramatic intensity and having hollow performances, but concludes it has guilty pleasure appeal that makes audiences overlook flaws. Single excerpt warning reduces confidence. | GPT-4o: The review acknowledges significant shortcomings in the show but also notes a sense of fun and nostalgia with some strong performances. The overall tone is mixed, suggesting conditional enjoyment. | Gemini: The review acknowledges shortcomings but also mentions a \"guilty-pleasure sense of fun and nostalgia\" and \"hearty performances,\" indicating a mixed experience. Due to the limited excerpt, confidence is low. | Kimi: While the critic notes significant flaws ('hollow and spotty' presentation, 'many shortcomings' compared to superior jukebox musicals), the verdict acknowledges that the show's nostalgic fun and strong performances make it worth seeing, representing a qualified, lower-end recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:51:06.157Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 67,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

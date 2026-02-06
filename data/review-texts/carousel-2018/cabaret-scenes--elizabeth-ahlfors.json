@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "\"A doomed love story unveiled through melodic songs and vigorous dances..Galvanizing performances by Mueller and Henry. A magnetic chemistry of opposites...O'Brien acknowledges the darkness in Billy...Billy's abuse is as timely an issue today...Henry's nuanced performance of machismo and recognition of the bigotry toward African-Americans, blanketing Billy's buried gentleness, is exemplary...Stimulating musical with smashing performances.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stimulating musical with smashing performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for performances ('galvanizing', 'exemplary', 'smashing') and overall assessment ('stimulating musical'). Single excerpt warning applies, but consistent positive language throughout suggests upper Positive range. | GPT-4o: The excerpt praises the performances and chemistry, calling it a 'stimulating musical' with 'smashing performances.' Despite the single excerpt warning, the language suggests strong positive sentiment. | Gemini: The excerpt contains overwhelmingly positive language, including \"galvanizing performances,\" \"magnetic chemistry,\" \"nuanced performance,\" and \"smashing performances.\" Given the single excerpt warning, I'm scoring at the higher end of the positive range. | Kimi: Single excerpt contains strong superlatives ('galvanizing,' 'exemplary,' 'smashing') praising performances and chemistry, warranting upper Positive range per excerpt guidelines, though limited context necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:59:48.358Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

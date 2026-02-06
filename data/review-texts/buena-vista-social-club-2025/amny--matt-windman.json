@@ -12,5 +12,60 @@
   "bwwExcerpt": "The ideal way to present ‘Buena Vista Social Club’ would have been as a nightclub concert or a revue that discarded the new book altogether.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundups-BUENA-VISTA-SOCIAL-CLUB-Opens-On-Broadway-20250319"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundups-BUENA-VISTA-SOCIAL-CLUB-Opens-On-Broadway-20250319",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The ideal way to present 'Buena Vista Social Club' would have been as a nightclub concert or a revue that discarded the new book altogether.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Critic suggests the show would be better in a completely different format without its book, implying the current theatrical presentation is fundamentally flawed. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt suggests a significant flaw in the production, implying that the new book detracts from the show. However, without more context, the overall tone is unclear, leading to a low confidence negative classification. | Gemini: The critic suggests a different format would have been better, implying dissatisfaction with the current production. Given the single excerpt, confidence is low. | Kimi: The single available excerpt criticizes the book as a flawed element that should have been eliminated, while implying the underlying musical material is strong enough to sustain a concert format. Without the full review context, this reads as a mixed assessment—acknowledging the content's appeal but rejecting the current Broadway production structure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:33:21.602Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

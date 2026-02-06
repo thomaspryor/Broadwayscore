@@ -3,7 +3,7 @@
   "outletId": "theatrely",
   "outlet": "Theatrely",
   "criticName": "Juan A. Ramirez",
-  "url": "https://www.theatrely.com/post/between-riverside-and-crazy-far-south-of-interesting-review",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,9 +15,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "https://www.theatrely.com/post/between-riverside-and-crazy-far-south-of-interesting-review",
-  "duplicateOf": "theatrely--unknown.json"
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the words to describe the Prize-winner's Broadway premiere are stiff and dusty",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic describes the Broadway production as 'stiff and dusty' with only Henderson's performance and set design as redeeming qualities. However, confidence is low due to single excerpt limitation and potential for truncation affecting the complete verdict. | GPT-4o: The excerpt describes the production as 'stiff and dusty,' indicating a negative view. While there is praise for a lead performance and set design, the overall tone suggests a lack of recommendation. Given the single excerpt warning, confidence is low. | Gemini: The review uses negative language like \"stiff and dusty\" to describe the production, and only praises the lead performance and set design, indicating an overall negative assessment. Given the single excerpt, confidence is low. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:20:36.309Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

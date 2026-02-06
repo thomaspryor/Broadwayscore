@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "“O’Brien is especially good at teasing out the ways in which women reveal their sexuality in their closed, largely segregated environment…Unfortunately, Fleming, the famous soprano, is no actress…The choreographer, Justin Peck, does a credible job of keeping her and the rest of the cast moving, but occasionally his work seems too expressive for the stage: it makes the space look smaller...And because Henry himself wants to get it right, he can be too precise in his 'anger.'\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, Fleming, the famous soprano, is no actress.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review balances praise (O'Brien's performance, Peck's choreography) with significant criticisms (Fleming's acting, staging issues, Henry's precision). Single excerpt warning applies - mixed signals suggest middle of Mixed range. | GPT-4o: The review excerpt provides both positive and negative elements, praising O'Brien's direction but criticizing Fleming's acting and Peck's choreography. The mixed nature of the comments suggests a balanced view without a clear recommendation. | Gemini: The review praises O'Brien's performance and Peck's choreography, but criticizes Fleming's acting and Henry's direction. Due to the limited excerpt, confidence is low. | Kimi: The excerpt balances praise for O'Brien against substantial criticism of Fleming's acting, Peck's choreography, and Henry's performance, indicating a mixed verdict. Confidence is low due to reliance on a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:05:00.049Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

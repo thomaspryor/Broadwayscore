@@ -3,7 +3,7 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jesse Green",
-  "url": "http://www.vulture.com/2014/01/theater-review-beautiful-carole-king.html",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,9 +15,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://www.vulture.com/2014/01/theater-review-beautiful-carole-king.html",
-  "duplicateOf": "vulture--unknown.json"
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "To the extent the show remains bizarrely enjoyable despite its essential hackishness, it's this central quartet of performers who make it happen",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls it 'bizarrely enjoyable' despite being 'essentially hackish' and credits strong performances. This suggests qualified recommendation, but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises the performances of the central quartet, suggesting they elevate the show despite its flaws. The term 'bizarrely enjoyable' indicates a positive experience, albeit with reservations about the show's quality. Given the single excerpt and potential cherry-picking, the score is on the lower end of the Positive range. | Gemini: The review acknowledges the show's flaws (\"essential hackishness\") but states it remains \"bizarrely enjoyable\" due to the performances. Given the single excerpt, I'm scoring it as a positive review with reservations. | Kimi: While praising the central cast (Mueller, Epstein, Spector, Larsen) for making the show 'enjoyable,' the critic fundamentally criticizes the show's 'essential hackishness,' indicating the production quality is poor and the enjoyment is limited ('to the extent,' 'bizarrely'). As a single excerpt with qualified praise and strong criticism of the material, this fits the Mixed bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:52:44.015Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“The script is snappier than I remembered...Music-wise, the biggest thrill is hearing contrasting versions of songs you know and love...The switches between the writers’ and the pop stars’ renditions, thanks to director Marc Bruni, are quick and polished; and, even more important, the music, thanks to orchestrator/arranger Steve Sidwell, sounds dynamite...You’re bound to recognize all these songs...but please, for the sake of your fellow Carole King–loving audience members, don’t sing along.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The switches between the writers' and the pop stars' renditions, thanks to director Marc Bruni, are quick and polished; and, even more important, the music, thanks to orchestrator/arranger Steve Sidwell, sounds dynamite",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for script, music, direction, and orchestrations with words like 'dynamite,' 'polished,' and 'biggest thrill.' However, confidence is low due to limited text availability. | GPT-4o: The excerpt praises the script, music, and direction, using strong positive language like 'snappier', 'quick and polished', and 'sounds dynamite'. Despite the limitations of a single excerpt, the tone suggests a strong recommendation. | Gemini: The review excerpt praises the script, music, direction, and orchestrations, suggesting a positive experience overall. However, due to the limited text, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the script ('snappier'), direction ('quick and polished'), and musical arrangements ('sounds dynamite'), indicating a clear recommendation despite the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:49:53.643Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

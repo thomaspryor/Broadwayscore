@@ -3,7 +3,7 @@
   "outletId": "ew",
   "outlet": "Entertainment Weekly",
   "criticName": "Rose Bernardo",
-  "url": "http://www.ew.com/ew/article/0,,20784296,00.html",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,9 +15,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://www.ew.com/ew/article/0,,20784296,00.html",
-  "duplicateOf": "ew--unknown.json"
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Over his three Broadway plays, Simonson's efforts become more diluted and the stories more far-fetched.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Text critiques a declining trajectory in the playwright's work and questions the manufactured plot, but excerpt cuts off mid-sentence. Single excerpt warning applies - this appears negative but confidence is low due to incomplete text. | GPT-4o: The excerpt criticizes the dilution of Simonson's work and the far-fetched nature of the stories, indicating a negative view. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt expresses disappointment, stating that the story is far-fetched and the plot is manufactured. Given the negative tone and the warning about truncated text, I've assigned a negative score with low confidence. | Kimi: The excerpt criticizes the playwright's declining quality with 'diluted' efforts and 'far-fetched' stories, specifically attacking the 'manufactured plot' with no redeeming qualities mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:31:58.756Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "“For a gay playwright to write a play with gay characters, and never even obliquely mention AIDS is puzzling...Furthermore, the surviving gay roommate, while excellently played...is a tired cliché...Driver is indisputably impressive, but I found his version of Pale unmodulated and too prone to reach for laughs. As Anna, Russell is the one who is pale. In her defense, I think her part is underwritten...If there are hidden depths in the script, director Michael Mayer did not find them.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If there are hidden depths in the script, director Michael Mayer did not find them.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds fundamental flaws in the script (puzzling omissions, clichéd characters, underwritten parts) and direction, while acknowledging some strong individual performances. The overall assessment is clearly negative despite praising certain actors. | GPT-4o: The excerpt highlights significant criticisms, including clichéd characters, underwritten parts, and a lack of depth in the script. While there is some praise for individual performances, the overall tone is negative. | Gemini: The review expresses disappointment with the script, direction, and some performances, indicating a negative overall assessment despite acknowledging some positive aspects. | Kimi: While acknowledging Driver's impressive presence and excellent supporting performances, the critic heavily criticizes the underwritten script, clichéd characters, and direction that fails to find hidden depths, resulting in a clear thumbs-down.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:38:39.218Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 44,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

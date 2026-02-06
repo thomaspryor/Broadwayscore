@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "\"When I caught the original show in its staggering 18-year run, I was bored to distraction - yes, I took a catnap - but this time, I succumbed to the show’s melodic, diverse score and expert razzle dazzle...The gussied-up cast is tireless and fully committed, remarkably choreographed by Andy Blankenbuehler...The original director and designer, Trevor Nunn and John Napier, are back, and it remains a pleasing entertainment full of whimsy and pain, and it doesn’t deserve a spaying.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I succumbed to the show's melodic, diverse score and expert razzle dazzle",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic overcame initial boredom from original production and now finds it 'pleasing entertainment' with praise for cast, choreography, and score. Single excerpt limits confidence. | GPT-4o: The excerpt indicates a positive turnaround from the critic's previous experience, praising the score, choreography, and entertainment value. However, due to the single excerpt warning, confidence is low. | Gemini: The critic admits to disliking the original but enjoyed this production, praising the score, choreography, and cast. The phrase \"pleasing entertainment\" indicates a positive but not rave review. | Kimi: The critic, who disliked the original production, praises this revival for its score, choreography, and committed cast, calling it a 'pleasing entertainment' that 'doesn't deserve a spaying'—a clear recommendation despite the limited excerpt available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:29:06.287Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 79,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

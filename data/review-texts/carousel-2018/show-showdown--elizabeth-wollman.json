@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "sources": [
     "show-score-playwright",
     "show-score"
-  ]
+  ],
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pleased as I was by just about everything in this production--its fine casting; its songs, sung by supple, able voices; its choreography",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Critic expresses clear pleasure with the production elements (casting, songs, choreography) but has fundamental disappointment with the source material's structure. Single excerpt warning applies - this appears to be a qualified positive recommendation. | GPT-4o: The review excerpt praises the casting, songs, and choreography but expresses disappointment with the character dynamics, particularly Julie's portrayal. The mixed sentiment suggests a balanced view, with positive elements but significant reservations. | Gemini: The review expresses pleasure with many aspects of the production (casting, songs, choreography) but ultimately finds the central female character lacking, leading to a mixed assessment. The single excerpt and truncated nature reduce confidence. | Kimi: The critic explicitly states being pleased by 'just about everything' in the production, praising the casting and vocals, but maintains significant reservations about the show's structural imbalance between characters. As a single excerpt, the full verdict is unclear, but the tone suggests a qualified positive recommendation. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:06:58.888Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

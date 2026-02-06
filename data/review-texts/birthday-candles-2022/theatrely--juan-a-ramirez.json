@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
@@ -19,5 +19,10 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "https://www.theatrely.com/post/birthday-candles-the-monotonous-trick-kind-review",
-  "duplicateOf": "theatrely--unknown.json"
+  "duplicateOf": "theatrely--unknown.json",
+  "rejectedAt": "2026-02-06T05:24:12.414Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "openai: The text provided is a sarcastic setup and does not contain any evaluative content about the show itself.; gemini: The review is cut off mid-sentence, making it impossible to determine the overall verdict.",
+  "promptVersion": "5.2.0"
 }

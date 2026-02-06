@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway revival of 'Carousel' is both beautiful and brutal, a production that doesn't shy away from the domestic violence at the heart of Rodgers and Hammerstein's 1945 musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,59 @@
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "openai: The text is a brief statement that lacks evaluative content or a clear recommendation about the production.; kimi: This appears to be only the opening sentence of a review, providing descriptive context about the production's approach but no evaluative verdict or recommendation. Without the critic's actual assessment of whether this approach succeeds or whether the show is worth seeing, the text cannot be scored.",
   "promptVersion": "5.2.0",
-  "textQuality": "partial"
+  "textQuality": "partial",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway revival of 'Carousel' is both beautiful and brutal, a production that doesn't shy away from the domestic violence at the heart of Rodgers and Hammerstein's 1945 musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: This appears to be a truncated excerpt that describes the production's approach but provides no clear recommendation or evaluative verdict about whether audiences should see it. | Gemini: The review acknowledges both positive and negative aspects, suggesting a qualified recommendation. The description of 'beautiful and brutal' indicates a complex but worthwhile experience. | Kimi: The critic offers clear praise ('beautiful') and commends the production's honest handling of difficult material, indicating a recommendation, though the brevity of the excerpt limits precision.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:05:31.419Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -11,5 +11,59 @@
   "bwwExcerpt": "Cumming's bouncy downtown energy keeps Cabaret from seeming like a period piece, and his new costars pull their weight. Waifish and vocally tremulous, Michelle Williams is credibly lost as Sally Bowles, a wanna-be bad girl who sings at the club; Bill Heck is appealing as her unlikely lover, Cliff, a sexually ambiguous writer. Though too young for their roles, Linda Emond and the lovable Danny Burstein are forceful and touching as Cliff's practical landlady and her menschy Jewish suitor; and Gayl",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
   "contentTier": "excerpt",
-  "duplicateOf": "timeout--adam-feldman.json"
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cumming's bouncy downtown energy keeps Cabaret from seeming like a period piece, and his new costars pull their weight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows consistent praise for performances (Cumming's energy, Williams 'credibly lost', Heck 'appealing', Emond and Burstein 'forceful and touching'). However, this is a single curated excerpt that appears cut off mid-sentence, so confidence is low. | GPT-4o: The excerpt praises the performances and energy of the cast, suggesting a positive view of the production. However, the text is limited and may not fully capture the critic's overall sentiment, leading to a low confidence in the score. | Gemini: The review praises Cumming's performance and notes that the costars \"pull their weight,\" suggesting a positive but not overwhelmingly enthusiastic assessment. Given the limited excerpt, a score in the middle of the positive range seems appropriate. | Kimi: This single excerpt offers clear praise for the revival's performances, particularly Cumming's energy and the supporting cast, though the truncated ending and curated nature warrant low confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:52:18.797Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

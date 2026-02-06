@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This irreverent biomusical about America's seventh president is a sugar rush of anachronistic attitude and infectious energy that should connect with younger theatergoers seeking something fresh.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This irreverent biomusical about America's seventh president is a sugar rush of anachronistic attitude and infectious energy that should connect with younger theatergoers seeking something fresh.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This irreverent biomusical about America's seventh president is a sugar rush of anachronistic attitude and infectious energy that should connect with younger theatergoers seeking something fresh.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('sugar rush', 'infectious energy') with specific recommendation for target audience. Single excerpt limits full assessment, but tone is enthusiastically positive. | GPT-4o: The excerpt describes the show as 'irreverent' with 'infectious energy,' suggesting a positive and fresh experience. The language indicates a strong recommendation, especially for younger audiences. | Gemini: The review excerpt uses strong positive language like \"sugar rush,\" \"anachronistic attitude,\" and \"infectious energy,\" suggesting a positive experience, especially for younger audiences. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise using descriptors like 'sugar rush' and 'infectious energy,' and explicitly states the show 'should connect' with its audience, indicating a clear recommendation. Score reflects the upper range of Positive given the clearly favorable tone, though confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:26:55.539Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

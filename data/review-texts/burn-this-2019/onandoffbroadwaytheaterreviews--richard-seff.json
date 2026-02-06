@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "“Russell, Uranowitz, and Furr are resourceful actors who bring dimension...and we find ourselves...interested in following these three whose problems we hope to find resolved...Pale is a large character, and Wilson has written him brilliantly. He is aided by actor Driver...The conclusion is somewhat abrupt...What matter is the chemistry between Anna and Pale is hot; and though I’d feel that heat uncomfortably if I stayed too close to it, I had a fine time watching it build and grow.”\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I had a fine time watching it build and grow.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the actors and writing with some reservations about the conclusion. The critic explicitly states they 'had a fine time' despite concerns. However, confidence is low due to single excerpt limitation and truncated text. | GPT-4o: The excerpt praises the actors and their chemistry, with a positive personal reaction from the critic. Despite the single excerpt warning, the tone suggests a strong positive impression. | Gemini: The review praises the actors and the chemistry between the characters, and states the reviewer had a \"fine time\" watching it. The conclusion being \"somewhat abrupt\" suggests a reservation, but overall the tone is positive. | Kimi: Single excerpt shows clear enthusiasm for the writing ('brilliantly'), performances ('resourceful actors'), and central chemistry ('hot'), culminating in the critic having a 'fine time.' Minor reservation about abrupt conclusion keeps it from Rave territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:40:00.513Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

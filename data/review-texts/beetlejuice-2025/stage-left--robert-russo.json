@@ -21,6 +21,59 @@
   "sources": [
     "show-score-playwright"
   ],
-  "wrongProduction": true,
-  "wrongProductionNote": "Review is from the 2019 original Beetlejuice production at the Winter Garden Theatre, not the 2025 tour stop."
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this hyperactive musical comedy might not meet the elevated aesthetic standards of some, but I had a blast",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict with enthusiastic language ('ghoulishly good time', 'I had a blast') despite acknowledging it may not meet all aesthetic standards. Single excerpt warning suggests upper end of Positive range. | GPT-4o: The excerpt describes the show as a 'ghoulishly good time' and praises its design and entertainment value, indicating a strong positive recommendation despite acknowledging it may not meet all aesthetic standards. | Gemini: The review excerpt is overwhelmingly positive, calling the show a \"ghoulishly good time\" and praising its design, jokes, and songs. While acknowledging it might not meet everyone's aesthetic standards, the critic clearly states they \"had a blast.\" | Kimi: The critic enthusiastically praises the show's design, humor, and songs with phrases like 'ghoulishly good time' and the direct verdict 'I had a blast,' though the caveat about 'elevated aesthetic standards' keeps it from being an unqualified rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:00:10.009Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

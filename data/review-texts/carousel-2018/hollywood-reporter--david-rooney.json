@@ -15,5 +15,60 @@
   "bwwExcerpt": "A remarkable aspect of O'Brien's production - and of Henry's staggering, soulful performance, which is this revival's smoldering core - is that even in our current moment of heightened attention toward mistreatment of women, in which a hot-tempered man like Billy might seem an automatic villain, there's a tormented helplessness to this doomed, rootless transient that makes you understand Julie's surrender. Even when she swallows her shame and makes excuses for his reprehensible behavior; it's almost as if in choosing to love him she has chosen to be an outsider like him too.",
   "bwwScore": 9,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412",
-  "showScoreExcerpt": "\"What's perhaps most striking about revisiting classics of this caliber in an ideally cast production like this one is how shoddy they make the craftsmanship of most new musicals look...The sumptuous 24-piece orchestra does the score full justice, as do Tunick's vibrant orchestrations...O'Brien has put together a dramatically forceful production that feels earthy and real, almost gritty at times, but is also wrapped in a charming old-fashioned theatricality that's quite whimsical.\"\n\nRead more"
+  "showScoreExcerpt": "\"What's perhaps most striking about revisiting classics of this caliber in an ideally cast production like this one is how shoddy they make the craftsmanship of most new musicals look...The sumptuous 24-piece orchestra does the score full justice, as do Tunick's vibrant orchestrations...O'Brien has put together a dramatically forceful production that feels earthy and real, almost gritty at times, but is also wrapped in a charming old-fashioned theatricality that's quite whimsical.\"\n\nRead more",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Henry's staggering, soulful performance, which is this revival's smoldering core",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance ('staggering, soulful') and production direction ('remarkable aspect'), with sophisticated analysis of character complexity. However, this is only an excerpt so full verdict unclear. | GPT-4o: The review highlights a 'remarkable' production and a 'staggering, soulful performance,' suggesting a positive view despite the complex character dynamics. The tone suggests a recommendation, albeit with some reservations about the character's behavior. | Gemini: The review highlights a \"staggering, soulful performance\" and praises the production for its nuanced portrayal of a complex character. While the text is limited, the positive language suggests a recommendation, albeit with potential reservations given the subject matter. | Kimi: The excerpt offers high praise for the production's nuanced handling of sensitive material and the lead's 'staggering, soulful performance,' describing it as the revival's 'smoldering core.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:02:53.962Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

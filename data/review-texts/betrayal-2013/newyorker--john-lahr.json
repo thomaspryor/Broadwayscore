@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Mike Nichols, is a masterclass in theatrical precision, with Daniel Craig, Rachel Weisz, and Rafe Spall delivering performances of extraordinary emotional intelligence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by Mike Nichols, is a masterclass in theatrical precision, with Daniel Craig, Rachel Weisz, and Rafe Spall delivering performances of extraordinary emotional intelligence.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production, directed by Mike Nichols, is a masterclass in theatrical precision, with Daniel Craig, Rachel Weisz, and Rafe Spall delivering performances of extraordinary emotional intelligence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with strong praise ('masterclass', 'extraordinary') but low confidence due to limited text that may not represent full review sentiment. | GPT-4o: The excerpt uses strong praise ('masterclass', 'extraordinary emotional intelligence') indicating a highly positive evaluation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises the direction and performances, calling the production a \"masterclass.\" Given the limited text, I'm scoring it as positive with high end of the range, but with low confidence due to the single excerpt. | Kimi: Single excerpt contains strong praise ('masterclass', 'extraordinary') but lacks explicit 'must-see' recommendation language required for Rave classification. Per instructions for clearly positive single excerpts, scored at upper end of Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:15:11.385Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

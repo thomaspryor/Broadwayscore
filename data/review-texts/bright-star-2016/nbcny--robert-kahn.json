@@ -3,7 +3,7 @@
   "outletId": "nbcny",
   "outlet": "NBC New York",
   "criticName": "Robert Kahn",
-  "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Martin-Brickell-Bright-Star-373277531.html",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,8 +15,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Martin-Brickell-Bright-Star-373277531.html"
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's much to admire in the final product: The musical is twangy and tightly performed, with a sweeping score.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear positive elements ('much to admire', 'tightly performed', 'sweeping score', praise for Cusack) but notes reservations ('enjoyment was muted', character development issues). Single excerpt with truncated text limits confidence. | GPT-4o: The excerpt highlights positive aspects like the performance and score, despite noting modest character development. The single excerpt and lack of full context suggest a lower confidence in the verdict. | Gemini: The review excerpt praises the musical's performance and score but notes that enjoyment was muted by modest character development. Given the limited text, a score in the middle of the positive range seems appropriate. | Kimi: The critic expresses clear admiration for the production's musical qualities and performances, describing it as 'tightly performed' with a 'sweeping score,' but qualifies this praise by noting that enjoyment was 'muted' by modest character development, indicating a solid but not unreserved recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:29:43.272Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "“In 1999, ‘Time’ magazine declared it the best musical of the 20th century. And now, ‘Carousel’ is back on Broadway, in a revival directed by Jack O'Brien with an emphasis on where the emphasis should be: on the songs and the singing; for whether you agree with Rodgers and ‘Time’--or not (some might put ‘South Pacific’ or even ‘The King and I’ at the top)--the score for ‘Carousel’ is, in a word, ravishing.”\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the score for 'Carousel' is, in a word, ravishing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls the score 'ravishing' and emphasizes the production's strengths in songs and singing. However, this is only a single curated excerpt, so confidence is low and the score reflects strong praise within the positive range. | GPT-4o: The excerpt praises the musical's score as 'ravishing' and highlights the focus on songs and singing in the revival. However, due to the single excerpt warning, the confidence is low and the score is at the lower end of the Positive range. | Gemini: The review excerpt focuses on the score being \"ravishing,\" which is strong praise. Given the single excerpt, I'm placing it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt offers enthusiastic praise for the musical elements, calling the score 'ravishing' and approving the directorial emphasis on songs. While limited to a single excerpt, the evaluative language is clearly positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:08:30.654Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

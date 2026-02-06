@@ -17,5 +17,60 @@
   "publishDate": "September 25, 2018",
   "showScoreExcerpt": "“The play’s not really the thing in Theresa Rebeck’s bright, lushly executed showpiece. It’s the first half of her slashed equation: Sarah Bernhardt...Von Steulpnagel keeps the action moving with brisk, chamber-piece choreography...The glue in it all is McTeer...She’s a natural force beneath her leonine pile of gold curls - by turns anxious and imperious, vulnerable and funny and fierce. She’s also the best, most vivid thing in nearly every scene.”\n\nRead more",
   "bwwExcerpt": "Writer Rebeck (Seminar) and director Moritz von Steulpnagel (Present Laughter) keeps the action moving with brisk, chamber-piece choreography: The ingenious set (by Tony winner Beaowulf Borrit) makes the most of its two-plus sides, and supporting players (including Brittany Bradford and Dylan Baker ...",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She's also the best, most vivid thing in nearly every scene.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the production as 'bright, lushly executed' and enthusiastically celebrates McTeer's performance as a 'natural force.' However, confidence is low due to excerpted text that may not show the full verdict. | GPT-4o: The review praises the execution and McTeer's performance, suggesting a positive view despite limited text. The lack of a full review and undefined original rating reduce confidence. | Gemini: The review praises the performances, especially McTeer's, and the execution of the show, but suggests the play itself is not the main draw. This indicates a positive but not rave review. | Kimi: The review praises the lush execution and brisk direction, but highlights Janet McTeer's performance as the central brilliance of the production, calling her a natural force and the best thing in nearly every scene.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:07:27.469Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -8,15 +8,65 @@
   "sources": [
     "bww-reviews",
     "show-score-playwright",
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
   "bwwExcerpt": "I am hard-pressed to think of a better production of a Harold Pinter drama to play New York in over a decade than this sharp and absorbing London revival of 1978's 'Betrayal.' Directed by Jamie Lloyd, the relationship drama stars Tom Hiddleston (Loki in the Marvel Cinematic Universe), Charlie Cox ('Daredevil') and Zawe Ashton ('Velvet Buzzsaw'). All three are making their Broadway debuts.",
   "bwwScore": 9,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BETRAYAL-Opens-on-Broadway-Updating-Live-20131027",
   "showScoreExcerpt": "3.5/4 Stars \"Jamie Lloyd, cast triumph with superb Harold Pinter revival on Broadway\"\n\nRead more",
-  "playbillVerdictUrl": "http://www.amny.com/urbanite-1.812039/theater-review-betrayal-2-5-stars-1.6328629",
-  "wrongProduction": true,
-  "wrongProductionNote": "Auto-flagged: mentions director \"jamie lloyd\" from betrayal-2019 (newer production). Review likely belongs in betrayal-2019."
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jamie Lloyd, cast triumph with superb Harold Pinter revival on Broadway",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | GPT-4o: The excerpt indicates a highly positive assessment with terms like 'triumph' and 'superb', and a high star rating (3.5/4) suggests a strong recommendation. However, the lack of full text limits confidence. | Gemini: The review excerpt includes a rating of 3.5/4 stars and the phrase \"cast triumph with superb Harold Pinter revival\", indicating a strong positive recommendation. | Kimi: The 3.5/4 star rating (87.5%) combined with effusive praise ('triumph', 'superb') places this in the Rave range (85+), indicating an enthusiastic recommendation despite the excerpt-only format.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:12:51.606Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 87,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

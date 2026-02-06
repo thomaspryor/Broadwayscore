@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "\"'Cats' mostly feels old. This musical’s better days may now be behind it, leaving you to question, how did the fur ever take flight 24 years ago?...Not even the nostalgia of magical, Mr. Mistoffelees, danced spectacularly by Ricky Ubeda, can turn back the clock to a time when 'Cats' was considered to be one of the purest expressions of theatre magic and fantasy. Now it all just seems too familiar.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical's better days may now be behind it, leaving you to question, how did the fur ever take flight 24 years ago?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising Ubeda's performance, the critic finds the show dated and questions its former appeal. The single excerpt warning applies - this negative sentiment may not represent the full review. | GPT-4o: The review suggests that 'Cats' no longer holds the magic it once did, with the nostalgia not enough to redeem it. The tone is largely negative, indicating disappointment with the current production. | Gemini: The review states that the musical feels old and questions how it was ever popular, indicating a negative assessment. The praise for Ricky Ubeda's performance is not enough to redeem the overall negative tone. | Kimi: The excerpt describes the show as dated ('feels old,' 'better days behind it') and too familiar, with the critic noting that even spectacular dancing cannot recapture past magic. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:25:21.878Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

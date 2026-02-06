@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,6 +21,59 @@
   "sources": [
     "show-score-playwright"
   ],
-  "wrongProduction": true,
-  "wrongProductionNote": "Auto-flagged: mentions director \"jamie lloyd\" from betrayal-2019 (newer production). Review likely belongs in betrayal-2019."
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pinter's Web of Deception Returns to Broadway, Incisively",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars indicates a strong positive recommendation. The word 'incisively' suggests sharp, effective execution. However, with only a headline excerpt available, confidence must be low as the full critical assessment is missing. | GPT-4o: The review excerpt provides a 4/5 star rating and describes the production as 'incisive', suggesting a strong recommendation. However, the single excerpt warning and lack of full context reduce confidence. | Gemini: The review excerpt includes a 4/5 star rating and describes the production as 'incisively' with notable actors, suggesting a strong positive recommendation. Given it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The 4/5 star rating and praise for the 'incisive' staging of this London transfer indicate a solid recommendation, though the single excerpt limits certainty about the full review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:15:49.290Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

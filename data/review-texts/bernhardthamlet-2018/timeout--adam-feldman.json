@@ -13,5 +13,60 @@
   ],
   "showScoreExcerpt": "“What ‘Bernhardt/Hamlet’ perversely refuses to give us is a coherent sense of Bernhardt’s performance in the role...Perhaps Rebeck is afraid that Bernhardt’s take on Hamlet would look dated or worse to a modern audience...While it is sometimes ungainly, the play is amusing on its own inside-theater terms. Moritz von Stuelpnagel’s staging...has a handsome rotating set...and capable performances not only by McTeer, who is incapable of being dull, but a strong supporting cast.”\n\nRead more",
   "bwwExcerpt": "But for all of Bernhardt/Hamlet's limitations, it reminded me of Bernhardt's own motto: quand même, which translates roughly to \"even so\" or \"at the same time.\" While it is sometimes ungainly, the play is amusing on its own inside-theater terms....",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While it is sometimes ungainly, the play is amusing on its own inside-theater terms.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Mixed signals with both criticism ('perversely refuses', 'ungainly') and praise ('amusing', 'capable performances'). Excerpt only with no clear final verdict makes confidence low. | GPT-4o: The review acknowledges the play's amusing aspects and capable performances but criticizes its coherence and staging. The overall tone is mixed, with both positive and negative elements. | Gemini: The review acknowledges amusement and capable performances but criticizes the lack of coherence in Bernhardt's performance and the play itself. This suggests a mixed assessment. | Kimi: The review criticizes the play's central conceit as 'perverse' and 'ungainly' but ultimately finds it 'amusing' with praise for the staging and performances, suggesting a tempered, qualified response rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:11:25.296Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

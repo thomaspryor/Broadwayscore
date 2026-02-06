@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "“Character-driven play with only a wisp of a plot,…'Burn This' is like a boiler that flares up with a whoosh whenever things begin cooling down, almost always when Driver's on stage…He makes a perfect Beast to Anna's Beauty, even though it's impossible to accept their eventual pairing…Wilson's script makes Anna so placid in the face of Pale's …rudeness that the actress is stymied from the outset; still, one would like to see more signs of her…distaste before she…gets to douse his flames.”\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He makes a perfect Beast to Anna's Beauty, even though it's impossible to accept their eventual pairing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed signals - praises Driver's performance ('perfect Beast') but criticizes the script's logic and character development. Limited text prevents clear verdict assessment. | GPT-4o: The review excerpt highlights both positive and negative aspects, praising Driver's performance but criticizing the script and character dynamics. The mixed signals and the single excerpt lead to a low confidence score. | Gemini: The review praises Driver's performance but criticizes the script and the plausibility of the relationship. The overall sentiment is mixed, with some positive aspects but significant reservations. | Kimi: The excerpt offers strong praise for Adam Driver's performance ('perfect Beast', 'flares up with a whoosh') but criticizes the script as having 'only a wisp of a plot,' finds the romantic pairing unconvincing, and notes the female lead is 'stymied' by the writing. Given this is a single curated excerpt, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:41:34.499Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

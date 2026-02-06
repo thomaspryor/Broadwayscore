@@ -3,7 +3,7 @@
   "outletId": "deadline",
   "outlet": "Deadline",
   "criticName": "Jeremy Gerard",
-  "url": "http://deadline.com/2016/03/jeff-daniels-michelle-williams-blackbird-review-1201717600/",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,8 +15,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://deadline.com/2016/03/jeff-daniels-michelle-williams-blackbird-review-1201717600/"
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is the electrifying production that this season's rev...",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the lead performances and production with vivid, enthusiastic language ('electrifying', 'sparks showering down', 'heat and crackle'). However, confidence is low due to single excerpt warning and text cutoff. | GPT-4o: The excerpt uses strong, enthusiastic language ('electrifying production', 'sparks showering down more heat and crackle') indicating a highly positive recommendation. The lack of a full review and single excerpt warning suggest caution, but the language supports a Rave classification. | Gemini: The excerpt uses strong positive language like \"heat and crackle\" and \"electrifying production.\" Given the single excerpt and lack of full context, confidence is low, but the language suggests a strong positive leaning. | Kimi: The excerpt offers strong praise ('electrifying production,' 'heat and crackle') for the performances and production, warranting a high-positive score. However, as a single truncated excerpt, confidence remains low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:25:30.917Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

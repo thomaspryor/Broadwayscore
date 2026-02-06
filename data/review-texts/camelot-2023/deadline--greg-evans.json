@@ -24,5 +24,60 @@
   "showScoreExcerpt": "“The original orchestrations by Robert Russell Bennett and Philip J. Lang, here brought to life by a fine 30-piece orchestra conducted by music director Kimberly Grigsby, go a long way in explaining ‘Camelot’s’ enduring appeal.”\n\nRead more",
   "bwwExcerpt": "Aaron Sorkin works up an answer to that question in the new Lincoln Center Theater production of the 1960 Lerner & Loewe musical, and the result is an adaptation that seems at every turn to be pleading its case for its own relevance. Where the West Wing creator conjured a real sort of writerly sorcery in 2018 with his transformation of the beloved property To Kill A Mockingbird into a new, relevant and thrilling stage work, his efforts this time around often seem strained in their attempts to drag Camelot into the 21st Century.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAMELOT-Opens-On-Broadway-Starring-Phillipa-Soo-Jordan-Donica-Andrew-Burnap-More-20230413"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAMELOT-Opens-On-Broadway-Starring-Phillipa-Soo-Jordan-Donica-Andrew-Burnap-More-20230413",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "his efforts this time around often seem strained in their attempts to drag Camelot into the 21st Century",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Compares unfavorably to Sorkin's successful Mockingbird adaptation, describing this work as 'strained' and 'pleading its case.' However, this is only an excerpt and may not reflect the full verdict. | GPT-4o: The review suggests that the adaptation struggles to find relevance, with efforts described as 'strained'. The lack of a clear positive or negative verdict and the truncated nature of the text lead to a mixed classification with low confidence. | Gemini: The review compares this adaptation unfavorably to Sorkin's previous work, suggesting it's strained and not entirely successful. This indicates a mixed or lukewarm reception. | Kimi: The excerpt criticizes Sorkin's adaptation as strained and overly eager to prove its relevance, unfavorably contrasting it with his previous 'thrilling' work on To Kill A Mockingbird. Given this is only a curated excerpt, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:53:55.385Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

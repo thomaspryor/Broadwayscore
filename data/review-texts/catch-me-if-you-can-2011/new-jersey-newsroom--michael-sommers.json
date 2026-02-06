@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "A thoroughly professional endeavor, “Catch Me If You Can” is not the most brilliant or original musical ever to land on Broadway, but it confidently provides audiences with a tuneful diversion that flies along very agreeably.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A thoroughly professional endeavor that confidently provides audiences with a tuneful diversion that flies along very agreeably.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation despite acknowledging it's 'not the most brilliant or original.' The critic explicitly states it 'confidently provides' entertainment and is 'agreeable,' indicating a solid but qualified endorsement. | GPT-4o: The review describes the show as a 'thoroughly professional endeavor' and 'tuneful diversion,' indicating a positive but not enthusiastic recommendation. The lack of originality is noted, which suggests some reservations. | Gemini: The review states that the musical is a \"tuneful diversion that flies along very agreeably,\" indicating a positive but not overwhelmingly enthusiastic recommendation. The phrase \"not the most brilliant or original\" suggests reservations. | Kimi: The critic offers qualified praise, calling the show a 'thoroughly professional endeavor' and 'tuneful diversion,' while explicitly noting it is 'not the most brilliant or original.' This represents a mild, reserved recommendation typical of the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:22:22.346Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 77,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

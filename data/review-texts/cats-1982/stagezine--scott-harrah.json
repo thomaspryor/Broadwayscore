@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "“One wonders if Mr. Nunn’s revival might have been more powerful had he put a modern, fresh spin on the show...However, gimmicky revivals almost never work so Mr. Nunn was wise not to tamper too much with Mr. Lloyd Webber’s winning formula. It is debatable whether this production will win over new generations, but if you enjoyed ‘Cats’ before and want to relive the ‘Memory’ again, there is plenty to enjoy here.”\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is debatable whether this production will win over new generations, but if you enjoyed 'Cats' before and want to relive the 'Memory' again, there is plenty to enjoy here.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review expresses uncertainty about the production's broader appeal while suggesting it will satisfy existing fans. The conditional recommendation ('if you enjoyed Cats before') and qualifier about new generations indicates a mixed assessment that leans slightly positive but with significant reservations. | GPT-4o: The review acknowledges potential limitations in appealing to new audiences but suggests that fans of the original will find enjoyment. This indicates a mixed reception, with some positive elements for existing fans. | Gemini: The review suggests it's enjoyable for those who liked it before, but unsure about new audiences. This leans towards a mixed recommendation, especially given the limited excerpt. | Kimi: The excerpt offers a conditional recommendation praising the faithful revival while questioning its appeal to new audiences, indicating mild positivity rather than broad enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:29:50.736Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

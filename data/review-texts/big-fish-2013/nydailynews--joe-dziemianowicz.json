@@ -3,7 +3,7 @@
   "outletId": "nydailynews",
   "outlet": "New York Daily News",
   "criticName": "Joe Dziemianowicz",
-  "url": "http://www.nydailynews.com/entertainment/music-arts/big-fish-theater-review-article-1.1476529",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,9 +15,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/music-arts/big-fish-theater-review-article-1.1476529",
-  "duplicateOf": "nydailynews--unknown.json"
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She's famous for wild imagination, but she serves her 'Big Fish' without a showstopper.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Excerpt criticizes choreography as 'pedestrian' and lacks showstoppers, but praises casting Butz as a 'winner.' Single excerpt warning applies - this could be cherry-picked criticism from a more positive review. | GPT-4o: The review highlights a lack of standout moments in the choreography, describing it as 'polished but a bit pedestrian'. However, it acknowledges a positive aspect in the casting of Butz. The mixed tone and lack of a clear recommendation suggest a mixed review. | Gemini: The review excerpt presents a mixed assessment, praising the casting of Butz while criticizing Stroman's dances as \"polished but a bit pedestrian\" and lacking a showstopper. This suggests a show with both strengths and weaknesses, placing it in the Mixed bucket. | Kimi: While criticizing Stroman's choreography as 'pedestrian' and lacking a 'showstopper,' the reviewer explicitly calls the casting a 'winner' and uses 'Lucky for us,' indicating the strong lead performance justifies seeing the show despite staging limitations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:22:40.458Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

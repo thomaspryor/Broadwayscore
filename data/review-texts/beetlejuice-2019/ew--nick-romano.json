@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Beetlejuice, with music and lyrics from Eddie Perfect (King Kong: The Musical) and a book by Scott Brown and Anthony King, was crafted from a group of creative minds who clearly love the source material, though not all of it works. There are still second act problems and a song list void of any real bops, but it's a fun time for the Burton novice and pure fan service for the Burton stans, thanks in large part to the titular puckish undead spirit breathing life into a Broadway experiment that cou",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
-  "showScoreExcerpt": "\"Crafted from a group of creative minds who clearly love the source material...There are still second act problems and a song list void of any real bops, but it’s a fun time for the Burton novice and pure fan service for the Burton stans, thanks in large part to the titular puckish undead spirit breathing life into a Broadway experiment that could’ve been dead in the water...The real surprise standout is Kritzer’s Delia. A supporting role, yes, but one she blends with all kinds of comedy.\"\n\nRead more"
+  "showScoreExcerpt": "\"Crafted from a group of creative minds who clearly love the source material...There are still second act problems and a song list void of any real bops, but it’s a fun time for the Burton novice and pure fan service for the Burton stans, thanks in large part to the titular puckish undead spirit breathing life into a Broadway experiment that could’ve been dead in the water...The real surprise standout is Kritzer’s Delia. A supporting role, yes, but one she blends with all kinds of comedy.\"\n\nRead more",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a fun time for the Burton novice and pure fan service for the Burton stans",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite acknowledging flaws like 'second act problems' and lack of standout songs, the critic calls it 'a fun time' and praises key performances. However, confidence is low due to truncated text that may not capture the full verdict. | GPT-4o: The review acknowledges significant issues with the second act and song list, but also notes it as a fun experience for fans of the source material. The mixed evaluation suggests a score in the Mixed range. | Gemini: The review indicates a positive experience, particularly for fans, but acknowledges some issues, such as second act problems and a weak song list. The phrase \"fun time\" suggests a recommendation, albeit with reservations. | Kimi: While the critic notes significant weaknesses in the second act and score, they ultimately recommend the show as an entertaining 'fun time' for audiences and 'fan service' for devotees, with strong performances elevating the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:53:36.764Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

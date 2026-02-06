@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But the main reason Mann's approach works is that Williams was writing about the temporal ebbs and flows of class and wealth, the appeal of fantasy and the pull to the bottom of raw sexual desire. Those themes are hardly race-bound. Nor should Williams' poetry be the province of white actors; at this juncture, this iconic American play should and can, like Shakespeare's masterworks, stand up to multiple styles and conceits.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STREETCAR-NAMED-DESIRE-Returns-to-Broadway-Updating-LIVE-20120422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mann's approach works is that Williams was writing about the temporal ebbs and flows of class and wealth",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the director's approach and artistic vision, but limited text makes full verdict unclear. Conservative positive score given excerpt quality warning. | GPT-4o: The excerpt suggests a positive assessment of Mann's approach to the play, indicating it effectively handles universal themes. However, the single excerpt and lack of a full review limit confidence. | Gemini: The excerpt suggests the critic believes the play is successful in its current production, comparing it to Shakespeare. However, due to the limited text, confidence is low. | Kimi: The excerpt validates the director's approach as effective ('Mann's approach works') and argues the production successfully realizes the play's universal themes, representing a clear endorsement of this specific Broadway production. However, as a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:15:20.732Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

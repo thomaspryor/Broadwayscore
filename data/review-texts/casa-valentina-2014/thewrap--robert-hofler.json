@@ -11,12 +11,17 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.thewrap.com/casa-valentina-theater-review-harvey-fierstein"
+  "playbillVerdictUrl": "http://www.thewrap.com/casa-valentina-theater-review-harvey-fierstein",
+  "rejectedAt": "2026-02-06T06:12:41.473Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a truncated excerpt that cuts off mid-sentence and provides no evaluative content about the show's quality or recommendation; openai: The excerpt provided is a brief mention of Harvey Fierstein's work and does not include any evaluative content about the current Broadway production of 'Casa Valentina'.; gemini: This excerpt is setting up the context of the show and the playwright's intentions, but doesn't offer an evaluation of the production itself. It's more of a plot summary or introduction than a review.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,6 +21,59 @@
   "sources": [
     "show-score-playwright"
   ],
-  "wrongProduction": true,
-  "wrongProductionNote": "Review is from the 2019 original Beetlejuice production at the Winter Garden Theatre, not the 2025 tour stop."
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I can't deny occasionally feeling I was six feet under but that doesn't mean that 'Beetlejuice,' which insists it's about death, isn't very much alive.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed elements but positive conclusion. Praises visual/comic delights and choreography, criticizes generic music, but ends affirming the show is 'very much alive' despite flaws. Single excerpt limits confidence. | GPT-4o: The review excerpt highlights inventive elements and clever lyrics, suggesting a positive experience despite some reservations about the music. The single excerpt and text quality warning lead to a low confidence score at the lower end of the Positive range. | Gemini: The review notes inventive visuals and clever lyrics, but also mentions generic music and feeling 'six feet under'. The overall impression is positive but with reservations, due to the mixed elements. | Kimi: The excerpt offers strong praise for the show's inventiveness and visual delights, ultimately affirming it is 'very much alive,' though it includes significant criticisms regarding generic tunes and occasional boredom. Given the single-excerpt limitation, this represents a qualified positive recommendation in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:02:00.445Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 74
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

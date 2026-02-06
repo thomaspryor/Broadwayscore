@@ -8,10 +8,63 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "In this still-young Broadway season already boasting a remarkable line-up of new productions that, regardless of box office sales or seats filled, is a small miracle, the Roundabout Theatre Company production of Caroline, Or Change places itself squarely at the forefront of the best in culture this city has to offer. Directed by Michael Longhurst with intensity and sensitivity, and performed by a cast that seems to have made a pact to sustain itself at the towering heights",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027",
-  "showScoreExcerpt": "\"Directed by Michael Longhurst with intensity and sensitivity, and performed by a cast that seems to have made a pact to sustain itself at the towering heights achieved early and unfailingly by its mighty star Sharon D Clarke, this Caroline, Or Change is a hurricane wind unleashed on decrepit legacies and newfound cautions.\"\n\nRead more"
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "places itself squarely at the forefront of the best in culture this city has to offer",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Single excerpt shows unqualified superlatives ('small miracle,' 'forefront of the best') and places the production among the season's finest. However, confidence is low due to single curated quote warning. | GPT-4o: The excerpt provides strong praise, placing the production at the 'forefront of the best in culture,' indicating a highly positive view. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt is highly positive, calling the production one of the best in the city. Given the single excerpt and lack of full text, confidence is low, but the language suggests a strong positive recommendation. | Kimi: Single excerpt offers superlative praise placing the show 'at the forefront of the best' and calls it a 'small miracle,' warranting a high-positive score, though limited context requires low confidence. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:56:45.810Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

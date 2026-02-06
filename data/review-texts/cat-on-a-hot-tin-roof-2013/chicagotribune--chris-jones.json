@@ -12,5 +12,60 @@
   "bwwExcerpt": "Scarlett Johansson...unlike so many young movie stars, she has no problem expanding her performance chops to the live theater, booming out a character that has been precisely forged and defined but ill-advisedly contained...a clear point of view is absent in this generally confused, low-stakes and halting production - that went through changes and subtractions in its preview period and now seems stuck. It's neither a traditional staging nor a suite of fresh ideas on a great American drama that should both embody timeless interpersonal truths and reflect how much our world is changed, sexually speaking, in little more than a half-century.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAT-ON-A-HOT-TIN-ROOF-Starring-Scarlett-Johansson-and-Benjamin-Walker-Opens-on-Broadway-Updating-LIVE-20130117",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a generally confused, low-stakes and halting production that went through changes and subtractions in its preview period and now seems stuck",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising Johansson's performance, the critic finds the production 'confused, low-stakes and halting' with no clear point of view, indicating disappointment with the overall show. | GPT-4o: The review criticizes the production for lacking a clear point of view and being generally confused and low-stakes. Despite some praise for Scarlett Johansson's performance, the overall verdict is negative. | Gemini: The review praises Johansson's performance but ultimately finds the production confused and lacking a clear point of view, indicating a negative overall assessment. | Kimi: While praising Scarlett Johansson's theatrical abilities, the critic finds the production confused, halting, and stuck between traditional and innovative approaches, lacking the necessary point of view for the classic drama.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:18:43.362Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -16,7 +16,7 @@
   "bwwExcerpt": "What do you call a revival of a revival? A re-revival? In the case of this 'Cabaret,' you just call it fantastic.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
   "showScoreExcerpt": "Williams brings a surprising amount of steel to Sally Bowles, the devil-may-care British songstress who performs at the seedy Kit Kat Club in Weimar-era Berlin.",
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "bwwScore": 9,
   "sources": [
@@ -24,5 +24,10 @@
     "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-06T05:51:47.019Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is only a single descriptive sentence about a performer's interpretation, with no evaluative content or verdict about the show's quality or whether to see it; openai: The provided text is a brief character description without any evaluative content or overall assessment of the show.",
+  "promptVersion": "5.2.0"
 }

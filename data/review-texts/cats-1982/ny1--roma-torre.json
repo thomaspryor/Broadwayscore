@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "\"The revival is quite a mixed bag…Ricky Ubeda’s dazzling Mistoffelees is indeed magical...My biggest criticism is the key role of Grizabella...Leona Lewis conveys none of Grizabella’s sense of loss and pathos. And without that, she’s just a pop star in a cat suit...That said, it’s hard to knock a show that offers such a visceral thrill. The combination of Lloyd Webber’s catchy tunes and the sight of those gorgeously fit bodies in constant motion alone give a theatre lover reason to pause.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival is quite a mixed bag",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Critic explicitly calls it 'quite a mixed bag' with both praise (Ubeda is 'dazzling', 'visceral thrill') and significant criticism (lead performance lacks pathos). Single excerpt limits confidence in full verdict. | GPT-4o: The review describes the show as a 'mixed bag', praising some elements like Ubeda's performance but criticizing others, particularly Lewis's portrayal of Grizabella. The excerpt suggests a balance of positive and negative elements without a clear recommendation. | Gemini: The review highlights both positive and negative aspects, praising Ubeda's performance and the overall visceral thrill, while criticizing Lewis' portrayal of Grizabella. This indicates a mixed experience, not clearly recommending or discouraging the show. | Kimi: While opening with 'mixed bag' and criticizing Leona Lewis's Grizabella severely, the critic pivots to recommend the revival for its 'visceral thrill,' catchy tunes, and physical spectacle, suggesting theatre lovers have reason to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:28:23.535Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

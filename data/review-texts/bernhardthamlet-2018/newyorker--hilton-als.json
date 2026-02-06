@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rebeck's play is about the gap between what we want to say about ourselves and what we actually reveal, and LuPone fills that gap with her singular brand of emotional truth.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Rebeck's play is about the gap between what we want to say about ourselves and what we actually reveal, and LuPone fills that gap with her singular brand of emotional truth.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "LuPone fills that gap with her singular brand of emotional truth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises both the play's thematic depth and LuPone's distinctive performance as filling a crucial dramatic function. However, confidence is low due to single excerpt limitation - the full review verdict may differ. | GPT-4o: The excerpt praises LuPone's performance, suggesting a positive view of the production. However, due to the single excerpt warning, the confidence is low, and the score is on the lower end of the Positive range. | Gemini: The excerpt praises LuPone's performance and the play's theme, suggesting a positive, but not overwhelmingly enthusiastic, recommendation. Given it's a single excerpt, confidence is low. | Kimi: The excerpt offers strong praise for Patti LuPone's performance, describing it as filling the play's thematic core with 'emotional truth,' indicating a positive assessment despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:08:38.199Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

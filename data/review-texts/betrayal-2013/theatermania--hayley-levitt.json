@@ -16,9 +16,14 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Broadway Continues Its Love Affair With 'Betrayal' — I Try to Understand It\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "rejectedAt": "2026-02-06T05:17:38.768Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a headline and 'Read more' link with no actual review content to evaluate; openai: The text provided is a headline or title, not an evaluative review of the show.; gemini: The provided text is a title and a \"read more\" link, not a review. There is no evaluative content to score.; kimi: The provided text consists solely of a headline ('Broadway Continues Its Love Affair With 'Betrayal' — I Try to Understand It') and a 'Read more' link. It contains no evaluative content about the production, performances, or direction, and therefore cannot be scored as a review.",
+  "promptVersion": "5.2.0"
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"This reworked incarnation, under Alex Timbers’s direction, breathes slightly more enjoyably even as it remains too faithful to the pumped-up inclinations of book writers Scott Brown and Anthony King and composer-lyricist Eddie Perfect...On the seriously plus side, two inferior songs have been cut from Act 2...It will never be among my favorite musicals, but I bet there will be a healthy and less-encumbered cheering section for it in New York.\"\n\nRead more"
+  "showScoreExcerpt": "\"This reworked incarnation, under Alex Timbers’s direction, breathes slightly more enjoyably even as it remains too faithful to the pumped-up inclinations of book writers Scott Brown and Anthony King and composer-lyricist Eddie Perfect...On the seriously plus side, two inferior songs have been cut from Act 2...It will never be among my favorite musicals, but I bet there will be a healthy and less-encumbered cheering section for it in New York.\"\n\nRead more",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It will never be among my favorite musicals, but I bet there will be a healthy and less-encumbered cheering section for it in New York.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds improvements in this version and predicts audience success, but with clear personal reservations. The qualified positive recommendation places this at the lower end of the Positive bucket. | GPT-4o: The review acknowledges improvements and a more enjoyable experience but still notes significant reservations about the production's faithfulness to its original issues. The critic does not express a strong recommendation, indicating a mixed sentiment. | Gemini: The review acknowledges improvements but ultimately expresses reservations, suggesting a mixed experience. The truncated nature of the text lowers confidence. | Kimi: The excerpt shows qualified appreciation— noting improvements ('breathes slightly more enjoyably', cuts to 'inferior songs') but maintaining significant personal reservations ('never be among my favorite musicals'). As a single curated excerpt, the overall verdict remains unclear, suggesting a lukewarm middle-ground assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:54:35.609Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

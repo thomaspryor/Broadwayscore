@@ -21,6 +21,59 @@
   "sources": [
     "show-score-playwright"
   ],
-  "wrongProduction": true,
-  "wrongProductionNote": "Review is from the 2019 original Beetlejuice production at the Winter Garden Theatre, not the 2025 tour stop."
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you can tolerate the bombardment, and don't mind sappy scenes mixed in with the comically macabre plot, 'Beetlejuice the musical' does have its pleasures",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review presents qualified praise with significant caveats. Phrases like 'if you can tolerate' and 'don't mind' suggest conditional recommendation. Praises design and some performances but calls songs merely 'serviceable' and lyrics 'puerile.' Single excerpt limits confidence in full verdict. | GPT-4o: The review acknowledges some pleasures in the performances and visuals but criticizes the songs and overall experience as mixed. The excerpt suggests a balanced view with both positive and negative elements. | Gemini: The review acknowledges both positive and negative aspects, highlighting standout performances and visuals while criticizing the songs and plot. The overall tone suggests a mixed experience. | Kimi: The critic offers a qualified recommendation, acknowledging the show has pleasures and standout design but requiring tolerance for its bombardment style and serviceable songs. Single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:59:35.415Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 63
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

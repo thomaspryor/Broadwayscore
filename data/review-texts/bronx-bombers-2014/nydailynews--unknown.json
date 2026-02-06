@@ -8,10 +8,65 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "bww-roundup",
-    "bww-reviews"
+    "bww-reviews",
+    "bww-roundup"
   ],
   "bwwExcerpt": "Devout Yankee fans may get misty at the sight of the beloved Iron Horse, bedeviled by amyotrophic lateral sclerosis, meeting today's Mr. Nice Guy Derek Jeter. But the scene is more sugary than the Cracker Jack served in the upper deck. And manipulative music seemingly recruited from 'The Natural' seeks to tug heartstrings. When all is said and done, 'Bronx Bombers' is too feel-good and fawning for its own good.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "When all is said and done, 'Bronx Bombers' is too feel-good and fawning for its own good.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the show overly manipulative and saccharine, calling it 'too feel-good and fawning.' While acknowledging it may appeal to Yankees fans, the overall assessment is negative with criticism of forced sentiment and manipulation. | GPT-4o: The review criticizes the show for being overly sentimental and manipulative, suggesting it lacks substance. The tone is negative, focusing on the show's shortcomings rather than its strengths. | Gemini: The review acknowledges potential appeal for Yankee fans but criticizes the show as overly sentimental and manipulative. Given the single excerpt, confidence is low. | Kimi: The critic describes the show as 'sugary,' 'manipulative,' and 'too feel-good,' criticizing its emotional tactics as heavy-handed. While acknowledging devout fans might appreciate certain moments, the overall verdict discourages attendance due to the fawning, saccharine treatment of the subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:32:27.251Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

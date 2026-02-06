@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "\"In O'Brien's new production, which manages to make strong, decisive choices and yet appear strangely wishy-washy, Henry rarely gets to display the confident, cock-of-the-walk side of Billy...Mueller, though vocally and facially as dainty as a Victorian cameo, seems trapped in a role that compels her to hold back rather than let loose...This production, so full of great things, has itself not been fully imagined, and so has not made a world for the performers to enter into.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production, so full of great things, has itself not been fully imagined, and so has not made a world for the performers to enter into.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Mixed assessment praising individual elements ('so full of great things') but criticizing the overall direction as 'wishy-washy' and 'not fully imagined.' Single excerpt limits confidence in overall verdict. | GPT-4o: The review highlights both strong choices and significant shortcomings, suggesting a mixed verdict. The production is described as having potential but not fully realized, indicating a lack of a clear recommendation. | Gemini: The review acknowledges \"great things\" but ultimately finds the production \"wishy-washy\" and not fully realized, leading to a mixed assessment. The single excerpt and truncated nature of the text lowers confidence. | Kimi: The critic acknowledges the production contains 'great things' but ultimately finds it 'wishy-washy' and insufficiently imagined to support its performers. With only a single excerpt available, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:09:20.084Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

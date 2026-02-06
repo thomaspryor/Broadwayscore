@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "\"Pale is one of the most explosive characters written for the stage, a sort of latter-day Stanley Kowalski. Driver expertly captures Pale's sudden mood swings and outbursts of temper, his outer bravado and his barely-hidden inner pain...And while there's little question the massively large Driver is physically threatening -- he can easily break anything -- there's the nagging suspicion from the get-go that he's really a gentle giant, which shouldn't really be unveiled until near the play's end.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And while there's little question the massively large Driver is physically threatening -- he can easily break anything -- there's the nagging suspicion from the get-go that he's really a gentle giant, which shouldn't really be unveiled until near the play's end.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows praise for Driver's performance ('expertly captures') but significant criticism of his interpretation revealing character arc too early. With only one curated quote available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt praises Driver's performance, suggesting a positive view of the production. However, the mention of a 'nagging suspicion' about character development hints at some reservations. The single excerpt limits confidence. | Gemini: The excerpt focuses on praising the performance of the actor playing Pale, highlighting the character's complexity and the actor's skill in portraying it. Given the single excerpt warning, I'm placing it in the upper end of the positive bucket. | Kimi: The excerpt offers enthusiastic praise for the lead actor's performance, describing it as 'expert' and emotionally layered, though with a minor reservation about the timing of character revelation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T05:37:11.766Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
