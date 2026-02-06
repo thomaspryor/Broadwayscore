@@ -30,7 +30,12 @@
 
 const fs = require('fs');
 const path = require('path');
+<<<<<<< Updated upstream
 const https = require('https');
+=======
+const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
+const { classifyAllComments } = require('./lib/buzz-classifier');
+>>>>>>> Stashed changes
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -823,6 +828,21 @@ async function main() {
   }
 
   console.log(`\nDone! Processed ${processed} shows, ${successful} with Reddit data.`);
+
+  // End-of-run stats
+  const apiStats = getStats();
+  console.log(`\n--- Session Stats ---`);
+  console.log(`  Reddit direct:   ${apiStats.redditDirect} requests`);
+  console.log(`  ScrapingBee:     ${apiStats.scrapingBee} requests`);
+  console.log(`  Rate limits hit: ${apiStats.rateLimits}`);
+  console.log(`  Backoff retries: ${apiStats.backoffRetries}`);
+  console.log(`  Failed requests: ${apiStats.errors}`);
+  if (apiStats.currentDelay > 7000) {
+    console.log(`  Delay adapted:   ${apiStats.currentDelay / 1000}s (started at 7s)`);
+  }
+  if (apiStats.usingScrapingBee) {
+    console.log(`  Note: Ended session using ScrapingBee fallback`);
+  }
 }
 
 main().catch(console.error);
