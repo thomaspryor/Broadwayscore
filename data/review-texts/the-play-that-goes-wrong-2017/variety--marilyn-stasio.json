@@ -5,7 +5,7 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2017/legit/reviews/the-play-that-goes-wrong-review-1201983588/",
   "publishDate": "April 2, 2017",
-  "fullText": null,
+  "fullText": "Strand Releasing has acquired all U.S. rights to Elisabeth Subrin's debut feature film “A Woman, A Part,” starring Maggie Siff, Variety has learned exclusively.\n\nThe drama had its world premiere in competition at the Rotterdam International Festival and later screened at BAMcinemafest.\n\nSiff, whose credits include AMC’s “Mad Men,” FX’s “Sons of Anarchy” and Showtime’s “Billions,” portrays a successful TV actress at a professional and personal crossroads who abruptly walks off the set of her mind-numbing TV series and tells her manager (played by Khandi Alexander) that she wants to quit acting, which would result in a career-destroying lawsuit. She returns to New York to reconnect with lost friends from an avant-garde theater troupe — portrayed by Cara Seymour and John Ortiz — in search of lost love.\n\nProducers are Scott Macaulay and Shrihari Sathe. Strand worked previously with Macaulay on “First Love, Last Rites,” directed by Jesse Peretz, which Macaulay produced with partner Robin O'Hara.\n\nSubrin is a visual artist and filmmaker who made experimental films such as “Shulie” and visual art installations like “Sweet Ruin” and “Lost Tribes.”\n\nSpeculative Pictures Production is the production company in association with Durga Entertainment and Infinitum Productions. Siff is an executive producer with Ahsan Zaman.",
   "isFullReview": false,
   "dtliExcerpt": "The British comedy troupe Mischief Theatre has created a marvel of comic construction in 'The Play That Goes Wrong,' a show that's so expertly engineered that every pratfall, fumbled line and collapsing set piece lands with perfect timing.",
   "originalScore": null,
@@ -16,6 +16,51 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The British comedy troupe Mischief Theatre has created a marvel of comic construction in 'The Play That Goes Wrong,' a show that's so expertly engineered that every pratfall, fumbled line and collapsing set piece lands with perfect timing.",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "truncated",
+  "contentTierReason": "Only aggregator excerpts available",
+  "textWordCount": 203,
+  "archivePath": "data/archives/reviews/the-play-that-goes-wrong-2017/variety--marilyn-stasio_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T19:31:22.932Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 203 (min: 300)"
+  ],
+  "wordCount": 203,
+  "tierReason": "Short text (203 words)"
 }
