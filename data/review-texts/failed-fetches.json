@@ -8620,18 +8620,6 @@
     "timestamp": "2026-02-04T00:32:05.343Z"
   },
   {
-    "reviewId": "pippin-2013/hollywood-reporter--david-rooney.json",
-    "showId": "pippin-2013",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/pippin-theater-review-447038/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): wicked, gypsy, company, tina, network...",
-    "textLength": 9658,
-    "timestamp": "2026-02-04T00:48:38.624Z"
-  },
-  {
     "reviewId": "the-heidi-chronicles-2015/vulture--jesse-green.json",
     "showId": "the-heidi-chronicles-2015",
     "outlet": "Vulture",
@@ -12170,18 +12158,6 @@
     "garbageReason": "Multiple shows mentioned (10): home, company, network, hair, once...",
     "textLength": 5968,
     "timestamp": "2026-02-05T03:40:31.808Z"
-  },
-  {
-    "reviewId": "outside-mullingar-2014/vulture--unknown.json",
-    "showId": "outside-mullingar-2014",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2014/01/theater-review-outside-mullingar.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): the prom, cats, hair, once, rain...",
-    "textLength": 6397,
-    "timestamp": "2026-02-05T03:43:29.835Z"
   },
   {
     "reviewId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/hollywood-reporter--lovia-gyarkye.json",
@@ -20930,5 +20906,65 @@
     "garbageReason": "Multiple shows mentioned (7): mamma mia!, home, hair, rain, race...",
     "textLength": 6258,
     "timestamp": "2026-02-06T17:24:24.007Z"
+  },
+  {
+    "reviewId": "outside-mullingar-2014/vulture--jesse-green.json",
+    "showId": "outside-mullingar-2014",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2014/01/theater-review-outside-mullingar.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): the prom, cats, hair, once, rain...",
+    "textLength": 6397,
+    "timestamp": "2026-02-06T17:24:30.731Z"
+  },
+  {
+    "reviewId": "outside-mullingar-2014/vulture--unknown.json",
+    "showId": "outside-mullingar-2014",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2014/01/theater-review-outside-mullingar.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): the prom, cats, hair, once, rain...",
+    "textLength": 6397,
+    "timestamp": "2026-02-06T17:24:34.143Z"
+  },
+  {
+    "reviewId": "pippin-2013/hollywood-reporter--david-rooney.json",
+    "showId": "pippin-2013",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/pippin-theater-review-447038/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): wicked, mamma mia!, gypsy, company, tina...",
+    "textLength": 9735,
+    "timestamp": "2026-02-06T17:24:44.579Z"
+  },
+  {
+    "reviewId": "present-laughter-2017/hollywood-reporter--david-rooney.json",
+    "showId": "present-laughter-2017",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/present-laughter-theater-review-991396",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): english, hand to god, harvey, cyrano de bergerac, once...",
+    "textLength": 7813,
+    "timestamp": "2026-02-06T17:28:01.010Z"
+  },
+  {
+    "reviewId": "present-laughter-2017/nytimes--unknown.json",
+    "showId": "present-laughter-2017",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2017/04/05/theater/review-kevin-kline-serves-ham-in-soignee-silk-in-present-laughter.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): home, company, the prom, hand to god, chaplin...",
+    "textLength": 5931,
+    "timestamp": "2026-02-06T17:30:28.780Z"
   }
 ]
