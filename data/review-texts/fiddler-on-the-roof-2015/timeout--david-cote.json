@@ -7,65 +7,12 @@
   "source": "bww-reviews",
   "sources": [
     "bww-reviews",
+    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "A great Tevye, and Burstein is nothing short of a miracle, finding the modern mensch in Tevye, as well as the hard-nosed, belief-bound peasant. Rather than bluster or roar his way through the role, Burstein has a delicate, almost motherly touch, kibbitzing with God for laughs and tearing out our hearts by the end. No other actor could juggle the comedy and tragedy masks with such style, such a bittersweet dance with tradition.",
   "bwwScore": 10,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LChaim-Danny-Burstein-Leads-FIDDLER-ON-THE-ROOF-Revival--Updating-Live-20151220",
-  "assignedScore": 86,
-  "llmScore": {
-    "score": 86,
-    "confidence": "medium",
-    "range": {
-      "low": 81,
-      "high": 91
-    },
-    "bucket": "Rave",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Burstein is nothing short of a miracle, finding the modern mensch in Tevye, as well as the hard-nosed, belief-bound peasant.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Critic uses superlatives like 'miracle' and 'great' with unqualified praise for Burstein's performance. However, confidence is medium due to single excerpt limitation - this could be cherry-picked praise from a mixed review. | GPT-4o: The excerpt provides high praise for Burstein's performance, describing it as miraculous and capable of balancing comedy and tragedy with style. The language used is enthusiastic and suggests a strong recommendation. | Gemini: The review excerpt is overwhelmingly positive, praising Burstein's performance as a 'miracle' and highlighting his ability to balance comedy and tragedy. Given the single excerpt, I'm scoring it as positive with high end score but low confidence. | Kimi: The excerpt offers extraordinary praise for the lead performance, describing it as 'nothing short of a miracle' with a 'delicate, almost motherly touch' that tears out hearts by the end. While limited to a single curated quote focusing on one actor, the evaluative language is strongly enthusiastic. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T23:30:24.079Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 92,
-    "geminiScore": 83,
-    "kimiScore": 83,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 9,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
-  }
+  "showScoreExcerpt": "\"Bartlett Sher’s magnificent, life-affirming revival…Rich ambivalence runs through much of Sher’s elegant and deeply satisfying staging…This revival is splendidly acted…Revelatory direction, eloquent visuals and that sublime klezmer-inflected score —what more do you need? A great Tevye, and Burstein is nothing short of a miracle, finding the modern mensch in Tevye, as well as the hard-nosed, belief-bound peasant.\"\n\nRead more"
 }
