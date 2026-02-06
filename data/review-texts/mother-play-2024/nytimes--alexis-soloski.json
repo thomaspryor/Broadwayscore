@@ -16,12 +16,18 @@
   "isFullReview": true,
   "textWordCount": 871,
   "archivePath": "data/archives/reviews/mother-play-2024/nytimes--alexis-soloski_2026-02-06.html",
-  "textFetchedAt": "2026-02-06T08:02:00.200Z",
+  "textFetchedAt": "2026-02-06T17:13:54.935Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
       "success": true
     }
   ],

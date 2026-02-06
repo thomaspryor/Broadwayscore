@@ -30,10 +30,10 @@ const homepageOgSvg = `
     </linearGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <text x="600" y="250" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" fill="#d4a84b" text-anchor="middle">Broadway</text>
-  <text x="600" y="340" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" fill="#ffffff" text-anchor="middle">Scorecard</text>
-  <text x="600" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="28" fill="#9ca3af" text-anchor="middle">Every show. Every review. One score.</text>
-  <text x="600" y="520" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#6b7280" text-anchor="middle">broadwayscorecard.com</text>
+  <text x="600" y="230" font-family="system-ui, -apple-system, sans-serif" font-size="108" font-weight="bold" fill="#d4a84b" text-anchor="middle">Broadway</text>
+  <text x="600" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="108" font-weight="bold" fill="#ffffff" text-anchor="middle">Scorecard</text>
+  <text x="600" y="430" font-family="system-ui, -apple-system, sans-serif" font-size="42" fill="#9ca3af" text-anchor="middle">Every show. Every review. One score.</text>
+  <text x="600" y="530" font-family="system-ui, -apple-system, sans-serif" font-size="36" fill="#6b7280" text-anchor="middle">broadwayscorecard.com</text>
 </svg>
 `.trim();
 
@@ -60,20 +60,20 @@ const homepageOgHtml = `
       font-family: system-ui, -apple-system, sans-serif;
     }
     .title {
-      font-size: 72px;
+      font-size: 108px;
       font-weight: bold;
     }
     .broadway { color: #d4a84b; }
     .scorecard { color: #ffffff; }
     .tagline {
-      font-size: 28px;
+      font-size: 42px;
       color: #9ca3af;
-      margin-top: 20px;
+      margin-top: 24px;
     }
     .url {
-      font-size: 24px;
+      font-size: 36px;
       color: #6b7280;
-      margin-top: 60px;
+      margin-top: 50px;
     }
   </style>
 </head>

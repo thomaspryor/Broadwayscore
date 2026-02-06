@@ -11,6 +11,7 @@ interface BizBuzzCardProps {
   trend?: RecoupmentTrend;
   weeklyGross?: number | null;
   showStatus?: 'open' | 'closed' | 'previews';
+  allTimeGross?: number | null;
 }
 
 function formatCurrency(value: number | null | undefined): string {
@@ -127,7 +128,7 @@ function calculateEstimatedReturns(
   };
 }
 
-export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus }: BizBuzzCardProps) {
+export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus, allTimeGross }: BizBuzzCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const style = getDesignationBadgeStyle(commercial.designation);
 
@@ -156,19 +157,17 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
       {/* Main Content */}
       <div className="space-y-4">
-        {/* Top Row: Designation Badge + Recoupment + Trend */}
-        <div className="flex flex-wrap items-center gap-3">
-          {/* Designation Badge */}
-          <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg ${style.bgClass} ${style.textClass} border ${style.borderClass}`}>
-            <span className="text-base">{style.icon}</span>
-            <span className="font-bold text-sm">{commercial.designation}</span>
+        {/* Designation Card */}
+        <div className={`rounded-xl p-4 ${style.bgClass} border ${style.borderClass}`}>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-2xl">{style.icon}</span>
+            <span className={`font-bold text-xl ${style.textClass}`}>{commercial.designation}</span>
+            <RecoupmentBadge recouped={commercial.recouped} />
+            {showTrend && <TrendIndicator trend={trend} />}
           </div>
-
-          {/* Recoupment Badge */}
-          <RecoupmentBadge recouped={commercial.recouped} />
-
-          {/* Trend Indicator for TBD shows */}
-          {showTrend && <TrendIndicator trend={trend} />}
+          <p className="text-xs text-gray-400 mt-2">
+            {style.description}
+          </p>
         </div>
 
         {/* Stats Row */}
@@ -203,6 +202,18 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               </div>
               <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
                 To Recoup
+              </div>
+            </div>
+          )}
+
+          {/* Total Box Office Gross (for closed shows without weeks-to-recoup) */}
+          {showStatus === 'closed' && allTimeGross && !(commercial.recouped && commercial.recoupedWeeks) && (
+            <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+              <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+                {formatCurrency(allTimeGross)}
+              </div>
+              <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
+                Total Gross
               </div>
             </div>
           )}
@@ -280,12 +291,6 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
         )}
       </div>
 
-      {/* Designation Description */}
-      <div className="mt-4 pt-3 border-t border-white/5">
-        <p className="text-xs text-gray-500">
-          <span className={style.textClass}>{commercial.designation}</span>: {style.description}
-        </p>
-      </div>
     </div>
   );
 }

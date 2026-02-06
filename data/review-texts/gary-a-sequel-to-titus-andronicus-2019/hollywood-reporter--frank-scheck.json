@@ -15,8 +15,8 @@
   "isFullReview": true,
   "textWordCount": 816,
   "archivePath": "data/archives/reviews/gary-a-sequel-to-titus-andronicus-2019/hollywood-reporter--frank-scheck_2026-02-06.html",
-  "textFetchedAt": "2026-02-06T05:33:50.262Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-06T15:46:02.898Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 1,
@@ -27,22 +27,16 @@
     {
       "tier": 2,
       "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 2,
   "textQuality": "truncated",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 816,
   "tierReason": "Full review text",

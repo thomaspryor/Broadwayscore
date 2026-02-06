@@ -3,10 +3,10 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2016/02/24/theater/review-disaster-on-broadway-serves-up-70s-songs-with-cheese.html",
+  "url": "https://www.nytimes.com/2016/03/09/theater/review-mayhem-gambling-disco-in-disaster-its-all-there-for-the-spoofing.html",
   "publishDate": "February 23, 2016",
-  "fullText": "This shameless pastiche of 1970s disaster movies is performed with such gleeful commitment that you may find yourself grinning against your better judgment.",
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2016/03/09/theater/review-mayhem-gambling-disco-in-disaster-its-all-there-for-the-spoofing.htmlShare full article3333Advertisement\n\nAlert the authorities! There’s a wayward nun on the loose in New York City, committing grand larceny eight times a week.\n\nI joke, of course — though that story would be a fun diversion from the onslaught of election coverage, no? The crimes are fictional, and are taking place at the Nederlander Theater on Broadway, where Jennifer Simard, playing a singing sister with an unquenchable yen for slot machines, is pilfering every scene she adorns in the delirious goof of a musical, “Disaster!”\n\nPerhaps petty larceny is a more appropriate charge, since this self-consciously silly spoof of the cheesy 1970s films that subjected assorted B-list stars to assorted calamities will never rank among the great musicals of our era — or even the great jukebox musicals of our era, a rather small demographic. But for anyone with a moist, albeit mortifying, affection for the oeuvre of that great auteur Irwin Allen (guilty), and the K-Tel era of pop music (guilty), “Disaster!” will provide a rush of giddy nostalgia that’s just as pleasurable, at times, as the more substantial rewards of the musical theater’s higher-reaching shows.\n\nTrue, if you have to Google either Allen, the producer of “The Poseidon Adventure,” which provides the basic template for the musical, or K-Tel, which churned out albums of soppy pop hits in collections relentlessly flogged in television ads, you might want to give this baby a skip. Try “Hamilton” — and good luck with that!\n\nEven so, “Disaster!,” written by Seth Rudetsky and Jack Plotnick, and directed by Mr. Plotnick, has such a sensational cast that musical lovers incognizant of the guilty pleasures of the movies being lampooned, and ignorant of the show’s soundtrack — a staggering stack of 45s you loved to hate, or hated to love, or a little of both (“Torn Between Two Lovers,” “Feelings,” “I Am Woman”) — may still have plenty to savor.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": "This shameless pastiche of 1970s disaster movies is performed with such gleeful commitment that you may find yourself grinning against your better judgment.",
   "originalScore": null,
   "assignedScore": 75,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This shameless pastiche of 1970s disaster movies is performed with such gleeful commitment that you may find yourself grinning against your better judgment.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (23 words)",
   "llmScore": {
     "score": 75,
@@ -72,10 +72,35 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "textQuality": "truncated",
+  "textQuality": "full",
   "playbillVerdictUrl": "http://www.nytimes.com/2016/03/09/theater/review-mayhem-gambling-disco-in-disaster-its-all-there-for-the-spoofing.html?_r=0",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.nytimes.com/2016/02/24/theater/review-disaster-on-broadway-serves-up-70s-songs-with-cheese.html",
+  "urlDiscoveredAt": "2026-02-06T15:30:31.107Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 75,
+  "textWordCount": 341,
+  "archivePath": "data/archives/reviews/disaster-2016/nytimes--ben-brantley_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T15:30:31.112Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250426204507",
+  "archiveOrgUrl": "http://web.archive.org/web/20250426204507/https://www.nytimes.com/2016/03/09/theater/review-mayhem-gambling-disco-in-disaster-its-all-there-for-the-spoofing.html",
+  "wordCount": 341,
+  "tierReason": "Full review text"
 }

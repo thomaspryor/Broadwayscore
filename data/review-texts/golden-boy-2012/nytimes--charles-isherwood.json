@@ -11,7 +11,7 @@
   ],
   "bwwExcerpt": "The skills [Sher] evinced in that rewarding revival [“Awake and Sing!”] are on view here, too: a knack for making Odets’s vernacular language feel like fresh mint instead of stale corn, and a gift for cutting to the emotional quick of a conventionally structured melodrama…As the young hero, who is determined to make himself over into the kind of man the world reveres, Mr. Numrich (“War Horse”) moves with an antic grace in the play’s early scenes...There is music in the way Mr. Numrich moves that hints at the lyric temperament Joe once felt as a salvation..., and now feels as an inhibiting burden…The process is watched from a distance by his loving father, played with impressive delicacy by a sad-eyed, soft-spoken Tony Shalhoub….Mr. Shalhoub infuses his performance with an elegiac tenderness that never descends into the maudlin….“Golden Boy” is at times dragged down by predictable plot mechanics that obscure the ripped-from-the-gut honesty that glittered more fiercely in earlier Odets plays. Some passages are too bluntly written, tapping out the play’s moral message in telegraphic language that makes you wince….But even the play’s pulpier excesses...are brought home with conviction by the cast.",
   "bwwScore": 9,
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOLDEN-BOY-Opens-on-Broadway-Updating-LIVE-20121206",
   "assignedScore": 74,
   "llmScore": {
@@ -67,5 +67,48 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 74,
+  "fullText": "https://www.nytimes.com/2012/12/07/theater/reviews/golden-boy-directed-by-bartlett-sher.htmlShare full articleAdvertisement\n\nPlenty of punches are thrown in the forceful new revival of Clifford Odets’s “Golden Boy” that opened on Thursday night at the Belasco Theater. Eyes are blackened, uppercuts fly back and forth, and by the end of the play, the young boxer hero, Joe Bonaparte (Seth Numrich), is staggering across the stage, delirious and practically bathed in blood.\n\nBut the blows that truly stun are the ones we cannot literally see, the jabs to the soul that Joe inflicts on himself, torn as he is between the urge to make it big as a boxer and the desire to be the artist he feels he was meant to be.\n\nThroughout this blistering Lincoln Center Theater production, directed by Bartlett Sher and featuring a superb cast of almost 20 actors — a rare feast on Broadway these days — we watch in anguished anticipation as Joe struggles with a defining question..\n\nDo you spend your life trying to shine in a world that values only the mighty dollar and the power it brings, or seek instead to fulfill a humbler, more humane destiny? “Truthful success,” as Joe’s Old World Italian father puts it, remains as elusive a goal today as it did when “Golden Boy” first opened on Broadway at the same theater 75 years ago.\n\nA listing of credits on Friday with a review of “Golden Boy,” at the Belasco Theater, misstated the surname of one of the sound designers. He is Marc Salzberg, not Saltzberg.\n\nWhen we learn of a mistake, we acknowledge it with a correction. If you spot an error, please let us know at corrections@nytimes.com.Learn more",
+  "isFullReview": true,
+  "textWordCount": 273,
+  "archivePath": "data/archives/reviews/golden-boy-2012/nytimes--charles-isherwood_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T16:43:34.008Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 273,
+  "tierReason": "Short text (273 words)"
 }

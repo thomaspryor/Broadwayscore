@@ -5,7 +5,7 @@
   "criticName": "Ben Brantley",
   "url": "https://www.nytimes.com/2017/04/23/theater/charlie-and-the-chocolate-factory-review-broadway.html",
   "publishDate": "April 24, 2017",
-  "fullText": "Don’t expect a sugar rush from “Charlie and the Chocolate Factory,” the new musical that opened at the Lunt-Fontanne Theater on Sunday. This latest adaptation of Roald Dahl’s winningly sinister children’s story from 1964 is — thank heaven — no sweeter than the two film adaptations it inspired, starring Gene Wilder (1971) and Johnny Depp (2005).\n\nThen again, this big but tentative show — which features a book by David Greig and songs by Marc Shaiman and Scott Wittman — doesn’t burst with flavor of any kind, at least not during its exposition-crammed first act. Only in its second half does the show acquire a distinct taste, and it definitely isn’t confectionary.\n\nThat no one goes to Dahl for the blandly picturesque was made clear a few years ago by the success of the darkness-shrouded musical adaptation of his “Matilda.” The appeal of this writer, for both children and grown-ups, has always been his nasty streak.\n\nAfter more than an hour of chipper throat clearing, that’s the streak that finally emerges, like a stinging ripple of rum in vanilla fudge, in this retooled adaptation out of London, directed by Jack O’Brien. It is also the moment when the show’s star, Christian Borle, at last comes into his own as the violently eccentric Willy Wonka, who owns and runs the enchanted factory of the musical’s title.\n\nThe Broadway “Charlie” is an improvement on its London incarnation, which I saw four years ago. That version was staged by Sam Mendes, then basking in commercial glory as a director of James Bond films. As frantic and gadget-driven as any 007 movie, it was a mega-musical that left you feeling glazed and overstuffed.",
+  "fullText": "Don’t expect a sugar rush from “Charlie and the Chocolate Factory,” the new musical that opened at the Lunt-Fontanne Theater on Sunday. This latest adaptation of Roald Dahl’s winningly sinister children’s story from 1964 is — thank heaven — no sweeter than the two film adaptations it inspired, starring Gene Wilder (1971) and Johnny Depp (2005).\n\nThen again, this big but tentative show — which features a book by David Greig and songs by Marc Shaiman and Scott Wittman — doesn’t burst with flavor of any kind, at least not during its exposition-crammed first act. Only in its second half does the show acquire a distinct taste, and it definitely isn’t confectionary.\n\nThat no one goes to Dahl for the blandly picturesque was made clear a few years ago by the success of the darkness-shrouded musical adaptation of his “Matilda.” The appeal of this writer, for both children and grown-ups, has always been his nasty streak.\n\nAfter more than an hour of chipper throat clearing, that’s the streak that finally emerges, like a stinging ripple of rum in vanilla fudge, in this retooled adaptation out of London, directed by Jack O’Brien. It is also the moment when the show’s star, Christian Borle, at last comes into his own as the violently eccentric Willy Wonka, who owns and runs the enchanted factory of the musical’s title.\n\nThe Broadway “Charlie” is an improvement on its London incarnation, which I saw four years ago. That version was staged by Sam Mendes, then basking in commercial glory as a director of James Bond films. As frantic and gadget-driven as any 007 movie, it was a mega-musical that left you feeling glazed and overstuffed.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "isFullReview": true,
   "dtliExcerpt": "This sugar-rushed musical serves up more than enough razzle-dazzle to please the children in the audience, though it may leave some adults feeling as queasy as if they'd gorged on candy.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": "Don't expect a sugar rush from 'Charlie and the Chocolate Factory,' the new musical that opened at the Lunt-Fontanne Theater on Sunday...This big but tentative show - which features a book by David Greig and songs by Marc Shaiman and Scott Wittman - doesn't burst with flavor of any kind, at least not during its exposition-crammed first act. Only in its second half does the show acquire a distinct taste, and it definitely isn't confectionary.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHARLIE-AND-THE-CHOCOLATE-FACTORY-Opens-its-Doors-Updating-Live-20170423",
   "showScoreExcerpt": "This sugar-rushed musical serves up more than enough razzle-dazzle to please the children in the audience, though it may leave some adults feeling as queasy as if they'd gorged on candy.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
     "score": 64,
@@ -74,7 +74,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "textQuality": "partial",
+  "textQuality": "full",
   "playbillVerdictUrl": "http://theater.nytimes.com/2013/06/27/theater/reviews/charlie-and-the-chocolate-factory-opens-at-drury-lane.html?ref=theater",
   "sources": [
     "web-search",
@@ -88,10 +88,10 @@
   "urlDiscoveryMethod": "google-serp",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
-  "textWordCount": 279,
-  "archivePath": "data/archives/reviews/charlie-and-the-chocolate-factory-2017/nytimes--ben-brantley_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T23:39:44.512Z",
-  "fetchMethod": "scrapingbee",
+  "textWordCount": 303,
+  "archivePath": "data/archives/reviews/charlie-and-the-chocolate-factory-2017/nytimes--ben-brantley_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T15:16:38.888Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -114,18 +114,21 @@
     {
       "tier": 2,
       "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (503): Request failed with status code 503"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 2,
+  "fetchTier": 3,
   "truncationSignals": [],
-  "textStatus": "incomplete",
-  "sourceMethod": "scrapingbee",
-  "textIssues": [
-    "Word count too low: 283 (min: 300)"
-  ],
-  "wordCount": 279,
-  "tierReason": "Short text (279 words)",
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 303,
+  "tierReason": "Full review text",
   "rescoreCompletedAt": "2026-02-04T20:06:31.549Z",
   "bwwScore": 6
 }

@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "http://www.nytimes.com/2014/04/25/theater/cabaret-opens-with-alan-cumming-and-michelle-williams.html?_r=0",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2014/04/25/theater/cabaret-opens-with-alan-cumming-and-michelle-williams.htmlShare full articleAdvertisement\n\nHot diggity dachshund, it’s old home week on the campus at Weimar Berlin, otherwise known as the Kit Kat Klub. And if we take off our glasses and squint, we can pretend that life is just as divinely, dangerously decadent as it was when we were all 16 years younger.\n\nWhy, here’s that adorably creepy M.C., a little softer around the jaw, maybe (aren’t we all?), but still such a cutup. Look at him pretending to have sex with the school slut. (Or one of them; there were so many.) And isn’t that Sally Bowles over there in the pink boa?\n\nLooking good, Sal; love the platinum bob. But why so uptight? Don’t forget what you always said: “Life is ... .” Uh, what was it you said again?\n\nA little more than 16 years after it first opened, and only a decade after it closed, it feels as if the popular Roundabout Theater Company production of “Cabaret” never left Studio 54, where it reopened on Thursday night.\n\nAlan Cumming, who won a Tony as the nasty M.C. in 1998, is back, offering a slightly looser, older-but-wiser variation on the same performance. The show’s co-directors, Rob Marshall (also its choreographer) and Sam Mendes, have returned, too, along with their ace design team, and they haven’t messed around much with a successful formula. Also on board is at least one of the original 1998 Kit Kat chorus girls, Kristin Olness, who plays Helga (as in, “Go ahead, ask Helga!”).\n\nThe most conspicuous difference is the bright blond actress portraying Sally, a role imperishably created for the Roundabout by Natasha Richardson. The promiscuous, hard-partying Sally is now embodied by a very brave Michelle Williams, who doesn’t look all that happy to be there. I’m assuming that’s more a matter of character interpretation than of personal discomfort, but it does put sort of a damper on the festivities.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 78,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Hot diggity dachshund, it’s old home week on the campus at Weimar Berlin, otherwise known as the Kit Kat Klub. And if we take off our glasses and squint, we can pretend that life is just as divinely, dangerously decadent as it was when we were all 16 years younger.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright",
@@ -77,5 +77,28 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "playbillVerdictUrl": "https://www.nytimes.com/2024/04/21/theater/cabaret-review-eddie-redmayne.html"
+  "playbillVerdictUrl": "https://www.nytimes.com/2024/04/21/theater/cabaret-review-eddie-redmayne.html",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 342,
+  "archivePath": "data/archives/reviews/cabaret-2014/nytimes--unknown_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T15:13:07.110Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20240618004957",
+  "archiveOrgUrl": "http://web.archive.org/web/20240618004957/https://www.nytimes.com/2014/04/25/theater/cabaret-opens-with-alan-cumming-and-michelle-williams.html?_r=0",
+  "wordCount": 342,
+  "tierReason": "Full review text"
 }
