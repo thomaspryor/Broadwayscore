@@ -6,64 +6,11 @@
   "url": "/article/BWW-Review-Patti-Murin-Is-A-Ray-of-Sunshine-in-Disappointingly-Perfunctory-FROZEN-20180323",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup"
+    "bww-roundup",
+    "show-score-playwright"
   ],
   "bwwExcerpt": "Older theatre-goers may think they've stumbled onto a new revival of OH! CALCUTTA!, once the second act opening song \"Hygge\" kicks into gear. The film's trading post now includes a sauna and dancers clad in body stockings suggesting nudity, frolic about to choreographer Rob Ashford's giddy routine that has them quickly maneuvering towels and leaves to cover up the parts not sanctioned by Disney Theatrical Productions. And while that spirited moment adds nothing to the plot or the character devel",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322",
   "contentTier": "excerpt",
-  "assignedScore": 62,
-  "llmScore": {
-    "score": 62,
-    "confidence": "medium",
-    "range": {
-      "low": 57,
-      "high": 67
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "And while that spirited moment adds nothing to the plot or the character devel",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt describes a 'spirited moment' and 'giddy routine' with positive language, but ends mid-sentence with apparent criticism about plot/character development. Single excerpt warning applies - this appears mildly positive but truncated, suggesting lower end of Positive range. | GPT-4o: The excerpt describes a specific scene with a playful tone but lacks a clear overall recommendation. The mention of 'adds nothing to the plot' suggests mixed feelings. The single excerpt and lack of full context lead to low confidence. | Gemini: The excerpt describes a specific scene as \"spirited\" but also notes it adds nothing to the plot. This suggests a mixed reaction, leaning towards a neutral assessment. | Kimi: The excerpt praises the choreography ('giddy routine') but explicitly criticizes the moment as adding 'nothing to the plot or the character,' indicating mixed valuation of spectacle over substance. As a single truncated excerpt, the overall verdict remains ambiguous.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T23:51:27.944Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "geminiScore": 60,
-    "kimiScore": 62,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 12,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
-  }
+  "showScoreExcerpt": "\"'Let It Go'...In Grandage's sadly underwhelming production, this declaration of independence from constraining expectations is staged more like a pop star performance than an important storytelling moment...The musical belongs to Anna...A skilled verbal and physical comic...Murin lifts the entertainment quotient considerably whenever she's on...The two-act 'Frozen' is stuffed with new songs and extended moments that, while professionally done, do little to enhance what's already there.\"\n\nRead more"
 }
