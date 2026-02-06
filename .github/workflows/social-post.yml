@@ -1,0 +1,132 @@
+name: Social Media Post
+
+on:
+  # Daily at 3 PM UTC (10 AM ET) — peak engagement for arts content
+  schedule:
+    - cron: '0 15 * * *'
+
+  # Manual trigger + event-driven dispatch
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'Content type override (auto = day-of-week rotation)'
+        required: false
+        type: choice
+        default: 'auto'
+        options:
+          - auto
+          - box-office
+          - spotlight
+          - insight
+          - picks
+          - divergence
+          - closing
+          - reviews
+      event:
+        description: 'Event trigger (opened/closed)'
+        required: false
+        type: string
+      show:
+        description: 'Show slug (for event triggers)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Generate but do not post'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium
+
+      - name: Generate and post
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
+        run: |
+          ARGS=""
+          TYPE="${{ inputs.type }}"
+          EVENT="${{ inputs.event }}"
+          SHOW="${{ inputs.show }}"
+          DRY="${{ inputs.dry_run }}"
+
+          if [ "$TYPE" != "" ] && [ "$TYPE" != "auto" ]; then
+            ARGS="$ARGS --type=$TYPE"
+          fi
+          if [ "$EVENT" != "" ]; then
+            ARGS="$ARGS --event=$EVENT"
+          fi
+          if [ "$SHOW" != "" ]; then
+            ARGS="$ARGS --show=$SHOW"
+          fi
+          if [ "$DRY" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          node scripts/generate-social-post.js $ARGS
+
+      - name: Commit post history
+        if: inputs.dry_run != 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          if ! git diff --quiet data/social-post-history.json 2>/dev/null; then
+            git add data/social-post-history.json
+            git commit -m "data: Update social post history [automated]"
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Push failed (attempt $i), pulling and rebasing..."
+              git pull --rebase origin main
+              sleep $((RANDOM % 5 + 2))
+            done
+          else
+            echo "No changes to social post history"
+          fi
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "## Social Post Result" >> $GITHUB_STEP_SUMMARY
+          if [ -f /tmp/social-post-result.json ]; then
+            node -e "
+              const r = require('/tmp/social-post-result.json');
+              console.log('**Type:** ' + r.type);
+              console.log('');
+              console.log('**Text:**');
+              console.log('> ' + (r.text || '(none)').replace(/\n/g, '\n> '));
+              console.log('');
+              if (r.tweetUrl) console.log('**Tweet:** ' + r.tweetUrl);
+              if (r.dryRun) console.log('*(Dry run — not posted)*');
+              if (!r.success && !r.dryRun) console.log('**Status:** Failed or skipped');
+            " >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No result file found" >> $GITHUB_STEP_SUMMARY
+          fi

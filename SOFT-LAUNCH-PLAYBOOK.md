@@ -749,3 +749,70 @@ These are the highest-impact actions. No amount of on-site optimization compensa
 - **Month 3-6:** Ranking page 1 for long-tail queries like "best broadway musicals 2026", "[show name] reviews". 200-500 clicks/week.
 - **Month 6-12:** Competing for head terms like "broadway reviews", "broadway show ratings". 1,000+ clicks/week.
 - **Month 12+:** Established domain authority. Rich snippets on most show pages. Featured in AI Overviews.
+
+---
+
+## AUTOMATED SOCIAL MEDIA (Added Feb 2026)
+
+The site now has a fully automated social media posting system. Once you set up the accounts and API keys below, it runs forever with zero maintenance.
+
+### What It Does
+- **1 tweet per day** at 10 AM ET, content rotates automatically:
+  - Monday: Weekly box office recap (top 5 grossing shows)
+  - Tuesday: Show spotlight (random high-scoring currently running show)
+  - Wednesday: Data insight ("did you know" fact, LLM-generated)
+  - Thursday: Weekend picks (top-rated open shows)
+  - Friday: Audience vs critics (biggest score gap)
+  - Saturday: Closing soon (shows ending within 30 days)
+  - Sunday: New reviews roundup
+- **Automatic opening night posts** — when a show transitions from previews to open, a tweet goes out with the score
+- **Each tweet includes a custom social card image** (show poster + score badge, box office chart, etc.)
+- **Tweet text is LLM-generated** via Claude Sonnet — varied, conversational, never robotic
+- **Cost: ~$0.10/month** (Claude API for text generation)
+
+### Setup Steps (One-Time, ~30 Minutes)
+
+**Step 1: Create a Twitter/X Account**
+- Go to x.com and create @BwayScorecard (or whatever handle is available)
+- Set profile pic, bio ("Aggregated Broadway show ratings from 250+ critic outlets"), link to broadwayscorecard.com
+- Follow a few Broadway accounts so it looks real
+
+**Step 2: Get Twitter API Keys (Free)**
+1. Go to https://developer.x.com/ and sign in with your @BwayScorecard account
+2. Click "Sign up for Free Account" (the free tier allows 500 tweets/month — we use ~30)
+3. Create a new "App" (call it "Broadway Scorecard Bot" or similar)
+4. Set App permissions to **"Read and Write"** (important!)
+5. Go to "Keys and Tokens" tab and generate all 4:
+   - API Key (also called Consumer Key)
+   - API Key Secret (Consumer Secret)
+   - Access Token
+   - Access Token Secret
+6. Save all 4 values — you'll need them for the next step
+
+**Step 3: Add API Keys to GitHub**
+1. Go to https://github.com/thomaspryor/Broadwayscore/settings/secrets/actions
+2. Add these 4 secrets (click "New repository secret" for each):
+   - `TWITTER_API_KEY` → paste the API Key
+   - `TWITTER_API_SECRET` → paste the API Key Secret
+   - `TWITTER_ACCESS_TOKEN` → paste the Access Token
+   - `TWITTER_ACCESS_SECRET` → paste the Access Token Secret
+
+**Step 4: Test It**
+- Go to the Actions tab in GitHub
+- Find "Social Media Post"
+- Click "Run workflow" → set `dry_run` to `true` → click "Run"
+- Check the workflow summary to see what it would have posted
+- If it looks good, run again with `dry_run` set to `false` for the first real tweet
+
+**That's it.** The daily cron handles everything from here. You'll never need to touch it again.
+
+### Phase 2: Instagram (Optional, Future)
+Instagram requires a Business account + Facebook Page + Meta App Review (1-3 weeks of setup pain). Alternative: Ayrshare ($29/mo) gives you a single API for Twitter + Instagram.
+
+Not set up yet. The system is designed so Instagram can be added later without changing anything — just a new posting function in `scripts/lib/twitter-client.js`.
+
+### If Something Breaks
+- The workflow will silently skip if Twitter credentials are missing or invalid
+- Check Actions tab → "Social Media Post" for logs
+- To temporarily disable: just remove the `schedule` trigger from `.github/workflows/social-post.yml`
+- To force a specific post: Actions → "Social Media Post" → Run workflow → pick a type
