@@ -94,6 +94,54 @@ const MAJOR_CATEGORIES = [
   'Best Sound Design of a Play',
 ];
 
+// Categories that are ONLY for plays (musicals cannot win these)
+const PLAY_ONLY_CATEGORIES = [
+  'Best Play',
+  'Best Revival of a Play',
+  'Best Actor in a Play',
+  'Best Actress in a Play',
+  'Best Featured Actor in a Play',
+  'Best Featured Actress in a Play',
+  'Best Direction of a Play',
+  'Best Scenic Design of a Play',
+  'Best Costume Design of a Play',
+  'Best Lighting Design of a Play',
+  'Best Sound Design of a Play',
+];
+
+// Categories that are ONLY for musicals (plays cannot win these)
+const MUSICAL_ONLY_CATEGORIES = [
+  'Best Musical',
+  'Best Revival of a Musical',
+  'Best Actor in a Musical',
+  'Best Actress in a Musical',
+  'Best Featured Actor in a Musical',
+  'Best Featured Actress in a Musical',
+  'Best Direction of a Musical',
+  'Best Book of a Musical',
+  'Best Original Score',
+  'Best Choreography',
+  'Best Orchestrations',
+  'Best Scenic Design of a Musical',
+  'Best Costume Design of a Musical',
+  'Best Lighting Design of a Musical',
+  'Best Sound Design of a Musical',
+];
+
+/**
+ * Filter categories based on show type to prevent impossible nominations
+ * (e.g., a musical can't win "Best Play")
+ */
+function filterCategoriesByShowType(categories, showType) {
+  if (showType === 'musical') {
+    return categories.filter(cat => !PLAY_ONLY_CATEGORIES.includes(cat));
+  }
+  if (showType === 'play') {
+    return categories.filter(cat => !MUSICAL_ONLY_CATEGORIES.includes(cat));
+  }
+  return categories; // Unknown type - keep all
+}
+
 // Load shows.json for matching
 const showsPath = path.join(__dirname, '../data/shows.json');
 const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows;
@@ -477,15 +525,21 @@ async function main() {
 
   for (const [showId, data] of showNominations) {
     const existing = awardsData.shows[showId];
+    const show = shows.find(s => s.id === showId);
+    const showType = show?.type; // 'musical' or 'play'
+
+    // Filter out impossible categories based on show type
+    const filteredNominations = filterCategoriesByShowType(data.nominations, showType);
+    const filteredWins = filterCategoriesByShowType(data.wins, showType);
 
     if (!existing) {
       awardsData.shows[showId] = {
         tony: {
           season: data.season,
           ceremony: data.ceremony,
-          nominations: data.nominations.length,
-          nominatedFor: data.nominations,
-          wins: data.wins
+          nominations: filteredNominations.length,
+          nominatedFor: filteredNominations,
+          wins: filteredWins
         }
       };
       newEntries++;
@@ -495,20 +549,20 @@ async function main() {
         existing.tony = {
           season: data.season,
           ceremony: data.ceremony,
-          nominations: data.nominations.length,
-          nominatedFor: data.nominations,
-          wins: data.wins
+          nominations: filteredNominations.length,
+          nominatedFor: filteredNominations,
+          wins: filteredWins
         };
         updated++;
-      } else if (data.nominations.length > (existing.tony.nominations || 0) ||
-                 data.wins.length !== (existing.tony.wins?.length || 0)) {
+      } else if (filteredNominations.length > (existing.tony.nominations || 0) ||
+                 filteredWins.length !== (existing.tony.wins?.length || 0)) {
         // Update if more nominations OR wins count changed
         existing.tony = {
           season: data.season,
           ceremony: data.ceremony,
-          nominations: data.nominations.length,
-          nominatedFor: data.nominations,
-          wins: data.wins
+          nominations: filteredNominations.length,
+          nominatedFor: filteredNominations,
+          wins: filteredWins
         };
         updated++;
       }

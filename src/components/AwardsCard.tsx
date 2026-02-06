@@ -450,7 +450,7 @@ export default function AwardsCard({ showId, awards, openingDate }: AwardsCardPr
               <div className="flex items-center gap-1.5">
                 <StarIcon className="text-gray-400" />
                 <span className="text-white font-bold text-lg">{tonyNominationsOnly.length}</span>
-                <span className="text-gray-400 text-sm">Other Nomination{tonyNominationsOnly.length !== 1 ? 's' : ''}</span>
+                <span className="text-gray-400 text-sm">{tonyWins > 0 ? 'Other ' : ''}Nomination{tonyNominationsOnly.length !== 1 ? 's' : ''}</span>
               </div>
             )}
           </div>
