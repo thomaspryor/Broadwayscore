@@ -187,7 +187,7 @@ function classifyPost(post, showTitle) {
  * Search with multiple strategies to capture audience reactions
  * Prioritizes audience posts, excludes industry posts, includes neutral as fallback
  */
-async function searchAudiencePosts(subreddit, showTitle, maxPosts = 500) {
+async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000) {
   const cleanTitle = showTitle.replace(/[()]/g, '').trim();
 
   // Audience-focused search strategies (ordered by relevance)
@@ -271,7 +271,7 @@ async function processShow(show) {
 
   let posts;
   try {
-    posts = await searchAudiencePosts(SUBREDDIT, show.title, 500);
+    posts = await searchAudiencePosts(SUBREDDIT, show.title);
   } catch (e) {
     console.error(`  Search failed: ${e.message}`);
     return null;
