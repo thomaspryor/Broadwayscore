@@ -579,6 +579,9 @@ async function discoverTodayTixId(showTitle) {
     const serpData = await searchGoogleForTodayTix(showTitle);
     const results = serpData?.organic_results || serpData?.results || [];
 
+    // Normalize title for matching: "The Pirate Queen" -> ["pirate", "queen"]
+    const titleWords = showTitle.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
+
     for (const result of results) {
       const url = result.url || result.link || '';
       // Match NYC show URLs only (reject /london/, /chicago/, etc.)
@@ -586,6 +589,12 @@ async function discoverTodayTixId(showTitle) {
       if (match) {
         const id = parseInt(match[1]);
         const slug = match[2];
+        // Verify slug contains at least one significant word from the title
+        const slugMatches = titleWords.some(word => slug.includes(word));
+        if (!slugMatches) {
+          console.log(`   ⚠ Skipping mismatched TodayTix result: ${slug}`);
+          continue;
+        }
         console.log(`   ✓ Found TodayTix ID via Google: ${id} (${slug})`);
         return { id, slug };
       }
@@ -939,8 +948,8 @@ async function fetchFromGoogleImages(show) {
   // Sanitize title: escape quotes that would break SERP query
   const safeTitle = show.title.replace(/"/g, '');
 
-  // Simple search - "Title Broadway" or "Title Broadway year" just works
-  const query = year ? `"${safeTitle}" Broadway ${year}` : `"${safeTitle}" Broadway`;
+  // Simple search - "Title Broadway poster" usually finds the right thing
+  const query = year ? `"${safeTitle}" Broadway ${year} poster` : `"${safeTitle}" Broadway poster`;
   console.log(`   Trying Google Images: "${query}"`);
 
   let results;

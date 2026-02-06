@@ -1,0 +1,239 @@
+{
+  "runDate": "2026-02-06T04:53:24.696Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 50,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 10,
+    "failed": 90,
+    "skipped": 0,
+    "successRate": "10.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 2,
+    "browserbase": 4,
+    "scrapingbee": 4,
+    "brightdata": 3,
+    "archive": 1
+  },
+  "statistics": {
+    "tier1Attempts": 17,
+    "tier1Success": 6,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 31,
+    "tier2Success": 7,
+    "tier3Attempts": 24,
+    "tier3Success": 9,
+    "tier4Attempts": 33,
+    "tier4Success": 10,
+    "totalFailed": 48,
+    "scrapingBeeCreditsUsed": 169,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 19,
+    "urlDiscoverySuccess": 5,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "a-little-night-music-2009/hollywood-reporter--david-rooney.json",
+    "a-little-night-music-2009/hollywood-reporter--frank-scheck.json",
+    "a-view-from-the-bridge-2015/hollywood-reporter--leslie-felperin.json",
+    "a-view-from-the-bridge-2015/nytg--kathleen-campion.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--unknown.json",
+    "american-son-2018/variety--marilyn-stasio.json",
+    "bengal-tiger-at-the-baghdad-zoo-2011/hollywood-reporter--david-rooney.json",
+    "brief-encounter-2010/hollywood-reporter--frank-scheck.json",
+    "700-sundays-2013/nytimes--ben-brantley.json",
+    "a-behanding-in-spokane-2010/hollywood-reporter--frank-scheck.json"
+  ],
+  "failed": [
+    "a-chorus-line-2006/nytimes--ben-brantley.json",
+    "a-chorus-line-2006/variety--charles-isherwood.json",
+    "a-little-night-music-2009/nytheatre--martin-denton.json",
+    "a-little-night-music-2009/nytimes--ben-brantley.json",
+    "a-little-night-music-2009/nytimes--charles-isherwood.json",
+    "a-little-night-music-2009/nytimes--matt-wolf.json",
+    "a-little-night-music-2009/variety--david-rooney.json",
+    "a-moon-for-the-misbegotten-2007/nytimes--ben-brantley.json",
+    "a-raisin-in-the-sun-2014/hollywood-reporter--david-rooney.json",
+    "a-raisin-in-the-sun-2014/hollywood-reporter--unknown.json",
+    "a-raisin-in-the-sun-2014/nytimes--ben-brantley.json",
+    "a-raisin-in-the-sun-2014/nytimes--unknown.json",
+    "a-raisin-in-the-sun-2014/vulture--jesse-green.json",
+    "a-raisin-in-the-sun-2014/vulture--unknown.json",
+    "a-strange-loop-2022/hollywood-reporter--david-rooney.json",
+    "a-strange-loop-2022/nyt-theater--jonathan-mandell.json",
+    "a-strange-loop-2022/nytg--unknown.json",
+    "a-strange-loop-2022/nytimes--jesse-green.json",
+    "a-strange-loop-2022/nytimes--maya-phillips.json",
+    "a-strange-loop-2022/vulture--helen-shaw.json",
+    "a-strange-loop-2022/vulture--jesse-green.json",
+    "a-view-from-the-bridge-2015/newyorker--hilton-als.json",
+    "a-view-from-the-bridge-2015/nytimes--unknown.json",
+    "a-view-from-the-bridge-2015/variety--matt-trueman.json",
+    "a-view-from-the-bridge-2015/vulture--jesse-green.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/nyt-theater--jonathan-mandell.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--jesse-green.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/vulture--jackson-mchenry.json",
+    "all-out-2025/nytg--joe-dziemianowicz.json",
+    "all-out-2025/nytimes--elisabeth-vincentelli.json",
+    "american-son-2018/hollywood-reporter--david-rooney.json",
+    "american-son-2018/vulture--sara-holdren.json",
+    "baby-its-you-2011/hollywood-reporter--david-rooney.json",
+    "baby-its-you-2011/nytimes--ben-brantley.json",
+    "baby-its-you-2011/nytimes--charles-isherwood.json",
+    "baby-its-you-2011/variety--steven-suskin.json",
+    "baby-its-you-2011/vulture--scott-brown.json",
+    "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
+    "back-to-the-future-2023/variety--charles-isherwood.json",
+    "bengal-tiger-at-the-baghdad-zoo-2011/vulture--scott-brown.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "brief-encounter-2010/nytheatre--martin-denton.json",
+    "110-in-the-shade-2007/nytimes--ben-brantley.json",
+    "1776-2022/hollywood-reporter--david-rooney.json",
+    "1776-2022/hollywood-reporter--unknown.json",
+    "1776-2022/newyorker--helen-shaw.json",
+    "1776-2022/newyorker--naomi-fry.json",
+    "1776-2022/nyt-theater--jonathan-mandell.json",
+    "1776-2022/nytg--gillian-russo.json",
+    "1776-2022/nytimes--jesse-green.json",
+    "1776-2022/nytimes--unknown.json",
+    "1776-2022/variety--charles-isherwood.json",
+    "1776-2022/variety--frank-rizzo.json",
+    "1776-2022/variety--peter-marks.json",
+    "1776-2022/vulture--frankie-thomas.json",
+    "1776-2022/vulture--helen-shaw.json",
+    "1776-2022/vulture--james-frankie-thomas.json",
+    "1984-2017/hollywood-reporter--david-rooney.json",
+    "1984-2017/newyorker--hilton-als.json",
+    "1984-2017/nytimes--ben-brantley.json",
+    "1984-2017/vulture--christopher-bonanos.json",
+    "1984-2017/vulture--jesse-green.json",
+    "33-variations-2009/nytimes--ben-brantley.json",
+    "33-variations-2009/variety--david-rooney.json",
+    "700-sundays-2013/hollywood-reporter--david-rooney.json",
+    "700-sundays-2013/hollywood-reporter--unknown.json",
+    "700-sundays-2013/nytimes--charles-isherwood.json",
+    "700-sundays-2013/variety--marilyn-stasio.json",
+    "700-sundays-2013/vulture--jesse-green.json",
+    "700-sundays-2013/vulture--unknown.json",
+    "9-to-5-2009/hollywood-reporter--unknown.json",
+    "9-to-5-2009/nytimes--ben-brantley.json",
+    "9-to-5-2009/vulture--unknown.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--joe-dziemianowicz.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/nytimes--elisabeth-vincentelli.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/variety--aramide-tinubu.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--jackson-mchenry.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--unknown.json",
+    "a-behanding-in-spokane-2010/newyorker--hinton-als.json",
+    "a-behanding-in-spokane-2010/nytimes--ben-brantley.json",
+    "a-behanding-in-spokane-2010/variety--david-rooney.json",
+    "a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
+    "a-bronx-tale-2007/hollywood-reporter--unknown.json",
+    "a-bronx-tale-2007/nyt-theater--jonathan-mandell.json",
+    "a-bronx-tale-2007/nytg--jeff-myhre.json",
+    "a-bronx-tale-2007/nytimes--charles-isherwood.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "a-raisin-in-the-sun-2014/vulture--jesse-green.json",
+      "a-view-from-the-bridge-2015/nytg--kathleen-campion.json"
+    ],
+    "browserbase": [
+      "data/review-texts/a-chorus-line-2006/variety--charles-isherwood.json",
+      "data/review-texts/a-little-night-music-2009/hollywood-reporter--david-rooney.json",
+      "a-little-night-music-2009/hollywood-reporter--david-rooney.json",
+      "data/review-texts/a-little-night-music-2009/nytimes--charles-isherwood.json"
+    ],
+    "scrapingbee": [
+      "american-son-2018/variety--marilyn-stasio.json",
+      "bengal-tiger-at-the-baghdad-zoo-2011/hollywood-reporter--david-rooney.json",
+      "brief-encounter-2010/hollywood-reporter--frank-scheck.json",
+      "700-sundays-2013/nytimes--ben-brantley.json"
+    ],
+    "brightdata": [
+      "a-view-from-the-bridge-2015/hollywood-reporter--leslie-felperin.json",
+      "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--unknown.json",
+      "a-behanding-in-spokane-2010/hollywood-reporter--frank-scheck.json"
+    ],
+    "archive": [
+      "a-little-night-music-2009/hollywood-reporter--frank-scheck.json"
+    ]
+  },
+  "failuresByOutlet": {
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The New Yorker": {
+      "count": 2,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "The New York Times": {
+      "count": 2,
+      "domain": "nytimes.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Variety": {
+      "count": 4,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Vulture": {
+      "count": 1,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "1776-2022/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2022/09/17/theater/1776-review.html",
+      "newUrl": "https://www.nytimes.com/2022/10/06/theater/1776-review-broadway.html"
+    },
+    {
+      "reviewId": "1776-2022/variety--charles-isherwood.json",
+      "oldUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/",
+      "newUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+    },
+    {
+      "reviewId": "1776-2022/variety--peter-marks.json",
+      "oldUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235421172/",
+      "newUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+    },
+    {
+      "reviewId": "1984-2017/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html",
+      "newUrl": "https://www.nytimes.com/2017/06/22/theater/1984-review-broadway.html"
+    },
+    {
+      "reviewId": "a-behanding-in-spokane-2010/hollywood-reporter--frank-scheck.json",
+      "oldUrl": "http://www.hollywoodreporter.com/hr/film-reviews/a-behanding-in-spokane-theater-review-1004072688.story",
+      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/behanding-spokane-theater-review-29372/"
+    }
+  ]
+}

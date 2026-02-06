@@ -12,7 +12,7 @@
   ],
   "bwwExcerpt": "There's hardly a moment in the exhilarating, devastating revival of the musical 'Falsettos' that doesn't approach, or even achieve, perfection. This singular show, about an unorthodox family grappling with the complexities of, well, just being a family - unorthodox or otherwise - has been restored to life, some 25 years after it was first produced, with such vitality that it feels as fresh and startling as it did back in 1992. The achievement seems almost miraculous, because in the intervening years, America has gone through cultural changes that might, in theory, have made the show, with its sweet-and-sour score by William Finn, and its economical book by Mr. Finn and James Lapine, seem a relic.",
   "bwwScore": 10,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FALSETTOS-Opens-on-Broadway--Updating-Live-20161027",
   "assignedScore": 94,
   "llmScore": {
@@ -69,5 +69,46 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Rave"
   },
-  "showScoreExcerpt": "\"There’s hardly a moment in the exhilarating, devastating revival of the musical 'Falsettos' that doesn’t approach, or even achieve, perfection...Directed by Mr. Lapine—whose work is so sharp it’s as if he were seeing the show with a new pair of eyes...Mr. Borle shines here as he has never before...'Falsettos' never feels like a singing time capsule. Its fundamental subject is that mysterious, maddening, uplifting, life-complicating emotion we refer to as love, which hasn’t changed in 25 years.\"\n\nRead more"
+  "showScoreExcerpt": "\"There’s hardly a moment in the exhilarating, devastating revival of the musical 'Falsettos' that doesn’t approach, or even achieve, perfection...Directed by Mr. Lapine—whose work is so sharp it’s as if he were seeing the show with a new pair of eyes...Mr. Borle shines here as he has never before...'Falsettos' never feels like a singing time capsule. Its fundamental subject is that mysterious, maddening, uplifting, life-complicating emotion we refer to as love, which hasn’t changed in 25 years.\"\n\nRead more",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 94,
+  "fullText": "https://www.nytimes.com/2016/10/28/theater/falsettos-review.htmlShare full article46Advertisement\n\nThere’s hardly a moment in the exhilarating, devastating revival of the musical “Falsettos” that doesn’t approach, or even achieve, perfection. This singular show, about an unorthodox family grappling with the complexities of, well, just being a family — unorthodox or otherwise — has been restored to life, some 25 years after it was first produced, with such vitality that it feels as fresh and startling as it did back in 1992.\n\nThe achievement seems almost miraculous, because in the intervening years, America has gone through cultural changes that might, in theory, have made the show, with its sweet-and-sour score by William Finn, and its economical book by Mr. Finn and James Lapine, seem a relic.\n\nThe musical, which opened on Thursday at the Walter Kerr Theater in a Lincoln Center Theater production, once again directed by Mr. Lapine — whose work is so sharp it’s as if he were seeing the show with a new pair of eyes — follows the topsy-turvy fortunes of a family of four, which eventually grows to five and maybe more.\n\nAt its center is the confused heart of Marvin (Christian Borle), a gay man in 1979 who introduces us in an early sequence to his lover, Whizzer (Andrew Rannells), and his ex-wife, Trina (Stephanie J. Block), along with Marvin and Trina’s precociously smart son, the 10-year-old Jason (Anthony Rosenthal). Although no one seems wholly at ease — rarely does anyone in this hilariously neurosis-infused musical — they have continued to maintain an equilibrium, to the point of still sharing meals together.\n\nBut even in the early scenes, we see fractures. Marvin is possessive, critical, irked by the younger, boyishly handsome Whizzer’s lack of enthusiasm for monogamy. Mr. Borle, known for his Tony-winning comic performances in “Something Rotten!” and “Peter and the Starcatcher,” shines here as he has never before, in a role that lets him stretch beyond his trademark loopy humor. In his piercing blue eyes and his versatile voice, we can see and hear the full panoply of Marvin’s emotions: irritation and insecurity, adoration and ambivalence, and, yes, a large stock of neuroses.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
+  "textWordCount": 377,
+  "archivePath": "data/archives/reviews/falsettos-2016/nytimes--charles-isherwood_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T05:12:46.576Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 377,
+  "tierReason": "Full review text"
 }

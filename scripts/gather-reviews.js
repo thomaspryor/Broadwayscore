@@ -1353,28 +1353,51 @@ async function scrapeBWWRoundupWithPlaywright(url) {
 function extractBWWRoundupReviews(html, showId, bwwUrl) {
   let reviews = [];
 
-  // Method 1: Extract from BlogPosting JSON-LD entries (newer BWW articles)
+  // Method 1: Extract from JSON-LD entries (newer BWW articles)
+  // Newer articles use LiveBlogPosting with liveBlogUpdate[] containing BlogPosting entries
+  // Older articles use standalone BlogPosting entries
   const scriptMatches = html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g);
   for (const scriptMatch of scriptMatches) {
     try {
       const cleanedJson = scriptMatch[1].replace(/[\x00-\x1F\x7F]/g, ' ');
       const json = JSON.parse(cleanedJson);
 
-      if (json['@type'] === 'BlogPosting' && json.author) {
-        const authorName = Array.isArray(json.author) ? json.author[0]?.name : json.author?.name;
-        if (!authorName) continue;
-
-        let outletRaw = authorName;
-        let criticName = null;
-        if (authorName.includes(' - ')) {
-          const parts = authorName.split(' - ');
-          outletRaw = parts[0].trim();
-          criticName = parts[1]?.trim() || null;
+      // Collect BlogPosting entries from either format
+      const postings = [];
+      if (json['@type'] === 'BlogPosting') {
+        postings.push(json);
+      } else if (json['@type'] === 'LiveBlogPosting' && Array.isArray(json.liveBlogUpdate)) {
+        for (const entry of json.liveBlogUpdate) {
+          if (entry['@type'] === 'BlogPosting') postings.push(entry);
         }
+      }
+
+      for (const posting of postings) {
+        // Two formats:
+        // 1. Standalone BlogPosting: author.name = "Outlet - Critic"
+        // 2. LiveBlogPosting entries: headline = "Outlet - Review Title"
+        let outletRaw = null;
+        let criticName = null;
+
+        if (posting.author) {
+          const authorName = Array.isArray(posting.author) ? posting.author[0]?.name : posting.author?.name;
+          if (authorName && authorName.includes(' - ')) {
+            const parts = authorName.split(' - ');
+            outletRaw = parts[0].trim();
+            criticName = parts[1]?.trim() || null;
+          } else if (authorName) {
+            outletRaw = authorName;
+          }
+        } else if (posting.headline && posting.headline.includes(' - ')) {
+          // LiveBlogPosting entries: "Outlet - Review Title"
+          outletRaw = posting.headline.split(' - ')[0].trim();
+        }
+
+        if (!outletRaw) continue;
 
         const outletId = normalizeOutlet(outletRaw);
         const outletName = getOutletDisplayName(outletId);
-        const quote = json.articleBody || json.description || '';
+        const quote = posting.articleBody || posting.description || '';
 
         reviews.push({
           showId,
@@ -1393,6 +1416,26 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
   }
 
   if (reviews.length > 0) {
+    // Extract thumb data from HTML img tags and pair with reviews by position
+    // BWW new-format uses: uptrans.png (Up), middletrans.png (Meh), downtrans.png (Down)
+    const thumbPattern = /(?:uptrans|middletrans|downtrans)\.png/g;
+    const thumbMatches = [];
+    let thumbMatch;
+    while ((thumbMatch = thumbPattern.exec(html)) !== null) {
+      const img = thumbMatch[0];
+      if (img.includes('uptrans')) thumbMatches.push('Up');
+      else if (img.includes('middletrans')) thumbMatches.push('Meh');
+      else if (img.includes('downtrans')) thumbMatches.push('Down');
+    }
+    if (thumbMatches.length > 0) {
+      // Pair thumbs with reviews — they appear in the same order
+      const thumbCount = Math.min(thumbMatches.length, reviews.length);
+      for (let i = 0; i < thumbCount; i++) {
+        reviews[i].bwwThumb = thumbMatches[i];
+      }
+      console.log(`    Paired ${thumbCount} BWW thumbs (${thumbMatches.filter(t=>t==='Up').length} Up, ${thumbMatches.filter(t=>t==='Meh').length} Meh, ${thumbMatches.filter(t=>t==='Down').length} Down)`);
+    }
+
     console.log(`    Extracted ${reviews.length} reviews from BWW roundup (BlogPosting)`);
     return reviews;
   }

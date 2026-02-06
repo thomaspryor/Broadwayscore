@@ -36,22 +36,40 @@
   "urlDiscoveredAt": "2026-02-03T23:10:02.477Z",
   "urlDiscoveryMethod": "google-serp",
   "textWordCount": 1193,
-  "archivePath": "data/archives/reviews/burn-this-2019/hollywood-reporter--david-rooney_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T01:32:44.105Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/burn-this-2019/hollywood-reporter--david-rooney_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T05:25:04.862Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 2,
   "truncationSignals": [
     "no_ending_punctuation"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "archive",
+  "sourceMethod": "scrapingbee",
   "archiveOrgTimestamp": "20250426031012",
   "archiveOrgUrl": "http://web.archive.org/web/20250426031012/https://www.hollywoodreporter.com/news/general-news/burn-theater-review-1201983/",
   "wordCount": 1193,

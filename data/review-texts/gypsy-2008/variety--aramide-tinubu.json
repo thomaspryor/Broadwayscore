@@ -5,8 +5,8 @@
   "criticName": "Aramide Tinubu",
   "url": "https://variety.com/2024/legit/reviews/gypsy-review-broadway-audra-mcdonald-1236255433/",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Dec 19, 2024 9:00pm PT \n\n \n\n \n \n \n\n \n\n \n ‘Gypsy’ Broadway Review: Audra McDonald Electrifies In George C. Wolfe’s Sensational Revival\n\nSixty-five years after it first premiered on Broadway, “Gypsy” is still known as one of the greatest theater masterpieces of the 20th century. There have been stellar productions of the play from New York to London, led by icons including Angela Lansbury and Imelda Staunton. However, the latest revival, shepherded by legendary director and playwright George C. Wolfe and starring Tony Award winner Audra McDonald, is an electric and truly unique production that will undoubtedly become a crowning jewel in the canon of “Gypsy.”\n\nBased on the memoirs of striptease artist Gypsy Rose Lee, the play begins in the 1920s in Seattle. A clamor of kids rehearse for Uncle Jocko’s (Jacob Ming-Trent) kid-focused vaudeville act. Baby June (a stellar Jade Smith) and her sister Louise (Kyleigh Vickers) are set to headline the upcoming performance. Unfortunately, mid-rehearsal, their mother, Rose (an absolutely magnificent McDonald), comes thundering onto the stage, usurping Jocko’s leadership and sucking up all of the air into the room. Rose is determined that June will be a megastar, and it’s immediately apparent that this local act and even Seattle are far too small to contain her ambitions.\n\nAfter Rose and her girls are booted off Jocko’s stage, the trio travels across the U.S. as Rose bulldozes her way through Hollywood, New York and Omaha. Along the way, she crosses paths with Herbie (Danny Burstein), who adores her despite her faults and takes up the mantle as the girls’ agent. Yet, as time passes into the next decade and through the Great Depression, Rose’s plans and June’s desires remain unrealized. June (now portrayed by Jordan Tyson) and Louise (now portrayed by a mesmerizing Joy Woods) get older, and their background dancers change, but nothing about their performance or costuming shifts or modernizes. Instead, the pair are forever frozen in Rose’s interpretation of who they should be. Bogged down under a preposterous cow costume or a Shirley Temple wig covered in bows, the sisters don’t dare to stand up to Rose — until they do.\n\nRibboned with glorious melodies including “Some People,” “You’ll Never Get Away From Me” and the beloved “Everything’s Coming Up Roses,” which put McDonald’s robust, crisp and exhilarating voice front and center, every second of the two-act musical is an immersive experience. From the flow and rhythm of Camille A. Brown’s dazzling choreography to the set and sound design by Santo Loquasto and Scott Lehrer, respectively, and certainly the glimmering costuming by Toni-Leslie James (especially in Act II), it’s evident why “Gypsy” has withstood the test of time.\n\nMoreover, this specific production has a distinct stamp under Wolfe’s direction. The humorous beats are present, of course. Rose’s fake Bible verses, silverware theft and social ineptness showcase a woman clamoring for the life she so desperately wants, but seeing no way to achieve it other than through the daughters she’s birthed. The show doesn’t explicitly discuss race, but nods and winks about colorism are present. Rose initially throws all of her energy into Baby June, not simply because she’s talented but also because of her light skin.\n\nWhat’s more, Rose engages in tyrannical behavior, causing June to flee and later exploiting Louise and thrusting her into the burlesque business against her will. Still, despite being overbearing and smothering, McDonald never allows the character to become wholly villainous. She is the prototypical stage mother, of course, but she is also a product of the shackles of sexism and misogyny.\n\nHaving no desire to marry again, even amid Herbie’s begging, and being unimpressed with the few opportunities provided to women (especially Black women), Rose asserts her power in the only lanes available to her. She is as much a perpetrator as a victim, a dichotomy that comes full circle in the play’s final, masterful, musical number, “Rose’s Turn.”\n\n“Gypsy” has its place in the American theater landscape, but McDonald’s performance stands on its own. Despite some of her monstrosities, Rose is always hungry and human, a woman at war with her circumstances, her abandonment issues and a desire to carve out a better life for herself and her daughters. She is both a force and a reflection of what the world offers women and how we decide to navigate it.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 76,
@@ -16,7 +16,7 @@
   "bwwExcerpt": "Sixty-five years after it first premiered on Broadway, “Gypsy” is still known as one of the greatest theater masterpieces of the 20th century. There have been stellar productions of the play from New York to London, led by icons including Angela Lansbury and Imelda Staunton. However, the latest revi...",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GYPSY-Opens-on-Broadway-2008",
   "showScoreExcerpt": "\"She is both a force and a reflection of what the world offers women\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 76,
@@ -74,5 +74,32 @@
   },
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 718,
+  "archivePath": "data/archives/reviews/gypsy-2008/variety--aramide-tinubu_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T06:06:11.044Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 718,
+  "tierReason": "Full review text"
 }

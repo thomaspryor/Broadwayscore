@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "https://www.nytimes.com/2018/04/11/theater/review-children-of-a-lesser-god-broadway.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Aside from a brief prologue, the first thing the character Sarah says in “Children of a Lesser God” is — well, I can’t tell you.\n\nEven if I could, it wouldn’t be as funny or as powerful as the way she delivers it, using a combination of poetically vulgar gestures to paint her friend Orin as a suck-up.\n\nThat’s because Sarah speaks American Sign Language, and I have only polite English at my disposal. A.S.L. wins, hands down — or, as the case may be, hands up.\n\nThe pungency of sign language is not the subject of Mark Medoff’s “Children of a Lesser God,” which opened on Wednesday at Studio 54 in a mixed bag of a Broadway revival directed by Kenny Leon. But it’s a wonderful bonus to the play’s fierce rivalry between those who promote spoken English as the highest attainable form of communication and those who are staunch partisans of silence.\n\nSarah, 26 and deaf since birth, is one of those partisans. For 21 years, the school where the play takes place has tried to push speech and lip-reading on her, only hardening her resolve not to learn them. “I don’t do things that I can’t do well,” she explains.\n\nThat would seem like rationalization if Sarah weren’t so smart and, in a knockout professional debut performance by Lauren Ridloff, so superb at A.S.L. Her fluency and expressiveness make the English speakers around her seem, as one of them actually calls her, dumb.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 63,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A knockout professional debut performance by Ridloff...A lovely performance by Jackson...Leon’s direction seems random...The play falters badly in its second act...Eventually you realize that Mr. Medoff simply did not have the wherewithal to dramatize the fundamental conflict any further because James is his hero but Sarah is right. The play, written when it was, can’t quite support that — not because of its deaf politics, but because of its sexual politics.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -75,5 +75,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 63,
+  "textWordCount": 270,
+  "archivePath": "data/archives/reviews/children-of-a-lesser-god-2018/nytimes--unknown_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T06:14:53.795Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (503): Request failed with status code 503"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 270 (min: 300)"
+  ],
+  "wordCount": 270,
+  "tierReason": "Short but structurally complete review"
 }

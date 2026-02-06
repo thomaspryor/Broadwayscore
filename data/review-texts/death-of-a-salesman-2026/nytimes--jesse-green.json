@@ -5,13 +5,13 @@
   "criticName": "Jesse Green",
   "url": "https://www.nytimes.com/2022/10/09/theater/review-death-of-a-salesman.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "A deeply original work that is also deeply influential may yet in time be trite. What once opened eyes comes to seem preloaded behind them, as if part of the general human inheritance.\n\nSuch has been the ironic trajectory of Arthur Miller’s “Death of a Salesman.” When it premiered on Broadway in 1949, with its depiction of the false hopes of capitalism and the family dysfunction left in its wake, there were fathers for whom “the doctor had to be called because they couldn’t stop crying,” the director Mike Nichols, who saw it then, said. “It was like an explosion.”\n\nAs “Salesman” spread into the culture with astonishing speed, it helped introduce the seismic re-evaluations of the ensuing decades. But now that we take those shocks to be self-evident, the job of making the play feel as new as it once did is a difficult one for those who would revive it. “Willy Loman” has long since become shorthand for the “low man” in the pecking order. And everyone for whom it was required high school reading already knows the story: how a washed-up salesman’s delusions about American success destroy not just his own life but also those of his wife, Linda, and their sons, Happy and Biff.\n\nShort of stunt casting or radical resetting, directors must therefore dig either deeper or wider. Nichols’s 2012 Broadway production, starring Philip Seymour Hoffman and Linda Emond as Willy and Linda, went deeper, examining the work with microscopic precision and even replicating Jo Mielziner’s original set design and Alex North’s music. The result was a very powerful mounting, and I use the word advisedly: It sometimes seemed like an exhibit.\n\nFrom left, Khris Davis as Biff Loman, McKinley Belcher III as Happy Loman and Sharon D Clarke as Linda Loman.Credit...Sara Krulwich/The New York TimesThe latest Broadway revival, which opened on Sunday at the Hudson Theater, goes wider, a notably rich and mostly successful approach. For the first time in a major New York production, the Lomans are played by Black actors. Wendell Pierce, as Willy, is wrenching as he flails and fails to avoid his fate instead of slumping into it from the start. And Sharon D Clarke, as Linda, is so paradoxically shattering in her stoicism that she turns what is usually portrayed as unshakable loyalty into a kind of heedless comorbidity.\n\nJesse Green",
+  "isFullReview": true,
   "bwwExcerpt": "Miranda Cromwell's revival, based on one she directed in London with Marianne Elliott in 2019, does more than give us Black Lomans - including Khris Davis as Biff and McKinley Belcher III as Happy. It also, crucially, puts them in a largely white world. Willy's employer (Blake DeLong), his neighbor ...",
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": "\"The latest Broadway revival, which opened on Sunday at the Hudson Theater, goes wider, a notably rich and mostly successful approach.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
@@ -21,5 +21,41 @@
   ],
   "playbillVerdictUrl": "https://www.nytimes.com/2022/10/09/theater/review-death-of-a-salesman.html",
   "wrongProduction": true,
-  "wrongProductionNote": "Show in previews (opens 2026-04-09) - review predates Broadway production"
+  "wrongProductionNote": "Show in previews (opens 2026-04-09) - review predates Broadway production",
+  "textWordCount": 392,
+  "archivePath": "data/archives/reviews/death-of-a-salesman-2026/nytimes--jesse-green_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T05:45:39.205Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 392,
+  "tierReason": "Wrong production"
 }
