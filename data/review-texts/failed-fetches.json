@@ -12688,18 +12688,6 @@
     "timestamp": "2026-02-05T03:44:32.680Z"
   },
   {
-    "reviewId": "pretty-woman-the-musical-2018/hollywood-reporter--david-rooney.json",
-    "showId": "pretty-woman-the-musical-2018",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/review/pretty-woman-musical-theater-review-1135530",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): home, parade, company, my fair lady, once...",
-    "textLength": 11331,
-    "timestamp": "2026-02-05T03:44:45.688Z"
-  },
-  {
     "reviewId": "pretty-woman-the-musical-2018/newyorker--michael-schulman.json",
     "showId": "pretty-woman-the-musical-2018",
     "outlet": "The New Yorker",
@@ -19442,5 +19430,77 @@
     "garbageReason": "Multiple shows mentioned (9): wicked, the cottage, the audience, hair, once...",
     "textLength": 8847,
     "timestamp": "2026-02-06T08:50:51.458Z"
+  },
+  {
+    "reviewId": "parade-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "parade-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/03/23/parade-review-ben-platt-as-jewish-martyr-in-unsettling-revival/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): chicago, home, english, smash, the cher show...",
+    "textLength": 10861,
+    "timestamp": "2026-02-06T08:54:39.614Z"
+  },
+  {
+    "reviewId": "parade-2023/nytg--joe-dziemianowicz.json",
+    "showId": "parade-2023",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/parade-broadway-review-ben-platt",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): the cher show, dear evan hansen, hair, once, elling...",
+    "textLength": 4235,
+    "timestamp": "2026-02-06T08:54:49.123Z"
+  },
+  {
+    "reviewId": "parade-2023/nytimes--unknown.json",
+    "showId": "parade-2023",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2023/03/16/theater/parade-review-leo-frank.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, the last five years, the bridges of madison county, evita, high...",
+    "textLength": 7467,
+    "timestamp": "2026-02-06T08:56:00.583Z"
+  },
+  {
+    "reviewId": "parade-2023/variety--frank-rizzo.json",
+    "showId": "parade-2023",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2023/legit/reviews/parade-review-ben-platt-broadway-musical-1235555503/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): wicked, home, the cher show, once on this island, the present...",
+    "textLength": 5655,
+    "timestamp": "2026-02-06T08:56:52.758Z"
+  },
+  {
+    "reviewId": "parade-2023/vulture--jackson-mchenry.json",
+    "showId": "parade-2023",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/2023/03/theater-review-jason-robert-brown-revived-parade.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): ragtime, home, the last five years, company, paradise square...",
+    "textLength": 9117,
+    "timestamp": "2026-02-06T08:59:18.378Z"
+  },
+  {
+    "reviewId": "pretty-woman-the-musical-2018/hollywood-reporter--david-rooney.json",
+    "showId": "pretty-woman-the-musical-2018",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/review/pretty-woman-musical-theater-review-1135530",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): home, parade, company, my fair lady, once...",
+    "textLength": 11409,
+    "timestamp": "2026-02-06T08:59:36.656Z"
   }
 ]
