@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-06T03:37:58.872Z",
-  "processed": 1,
-  "failed": 9,
-  "successRate": "10.0%",
+  "updatedAt": "2026-02-06T03:41:17.451Z",
+  "processed": 3,
+  "failed": 17,
+  "successRate": "15.0%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 1,
+    "browserbase": 4,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-02-06T03:33:48.570Z",
@@ -34,6 +34,18 @@
       "t": "2026-02-06T03:36:13.588Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-06T03:38:03.187Z",
+      "event": "bb-session",
+      "session": "fe601710",
+      "url": "http://www.hollywoodreporter.com/review/a-dolls-house-part-2-theater-998160"
+    },
+    {
+      "t": "2026-02-06T03:38:34.528Z",
+      "event": "bb-session",
+      "session": "e80a6188",
+      "url": "http://www.hollywoodreporter.com/review/free-man-color-theater-review-46713"
     }
   ]
 }
