@@ -69,6 +69,13 @@ export function hasCastChanges(showId: string): boolean {
 }
 
 /**
+ * Get all show IDs that have cast changes data
+ */
+export function getAllCastChangeShowIds(): string[] {
+  return Object.keys(castChanges.shows);
+}
+
+/**
  * Get cast changes last updated timestamp
  */
 export function getCastChangesLastUpdated(): string {

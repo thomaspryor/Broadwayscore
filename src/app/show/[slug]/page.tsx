@@ -834,11 +834,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </section>
         )}
 
-        {/* Cast Updates - between Box Office and Commercial */}
-        {castChangesData && (
-          <CastUpdatesCard castChanges={castChangesData} showStatus={show.status} />
-        )}
-
         {/* Commercial Scorecard */}
         {commercial ? (
           <BizBuzzCard
@@ -865,6 +860,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           }
           return <LotteryRushCard data={lotteryRush} showStatus={show.status} />;
         })()}
+
+        {/* Cast Updates - below Lottery/Rush */}
+        {castChangesData && (
+          <CastUpdatesCard castChanges={castChangesData} showStatus={show.status} />
+        )}
 
         {/* Creative Team */}
         {show.creativeTeam && show.creativeTeam.length > 0 && (
