@@ -78,6 +78,7 @@ jobs:
           node scripts/fetch-show-images-auto.js $ARGS --concurrency=$CONCURRENCY $VERIFY_FLAG
 
       - name: Archive images locally
+        if: always()
         run: |
           echo "Downloading CDN images to local storage..."
           ARCHIVE_ARGS=""
@@ -87,6 +88,7 @@ jobs:
           node scripts/archive-show-images.js $ARCHIVE_ARGS
 
       - name: Check for changes
+        if: always()
         id: changes
         run: |
           if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard public/images/shows/)" ]; then
@@ -99,8 +101,9 @@ jobs:
           fi
 
       - name: Commit and push if changed
-        if: steps.changes.outputs.changed == 'true'
+        if: always() && steps.changes.outputs.changed == 'true'
         run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/ public/images/shows/
@@ -114,7 +117,6 @@ jobs:
 
           # Robust push retry — handles conflicts from parallel workflows
           for i in 1 2 3 4 5; do
-            BRANCH="${GITHUB_REF#refs/heads/}"
             if git push origin HEAD:$BRANCH; then
               echo "Push succeeded on attempt $i"
               break
@@ -135,6 +137,7 @@ jobs:
           done
 
       - name: Summary
+        if: always()
         run: |
           echo "## Image Fetch Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
