@@ -12472,54 +12472,6 @@
     "timestamp": "2026-02-05T03:13:31.569Z"
   },
   {
-    "reviewId": "home-2024/newyorker--vinson-cunningham.json",
-    "showId": "home-2024",
-    "outlet": "The New Yorker",
-    "critic": "Vinson Cunningham",
-    "url": "https://www.newyorker.com/magazine/2024/06/17/samm-art-williams-home-shayan-lotfi-what-became-of-us-theatre-review-broadway",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): company, summer, the audience, rain, elling...",
-    "textLength": 9284,
-    "timestamp": "2026-02-05T03:14:50.536Z"
-  },
-  {
-    "reviewId": "home-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "home-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/06/05/home-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): shucked, company, elling, high, company...",
-    "textLength": 5177,
-    "timestamp": "2026-02-05T03:14:57.567Z"
-  },
-  {
-    "reviewId": "home-2024/nytg--amelia-merrill.json",
-    "showId": "home-2024",
-    "outlet": "New York Theatre Guide",
-    "critic": "Amelia Merrill",
-    "url": "https://www.newyorktheatreguide.com/reviews/home-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): ohio state murders, company, a soldier's play, the audience, race...",
-    "textLength": 5227,
-    "timestamp": "2026-02-05T03:15:09.620Z"
-  },
-  {
-    "reviewId": "home-2024/vulture--unknown.json",
-    "showId": "home-2024",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "https://www.vulture.com/article/theater-reviews-home-breaking-the-story-what-became-of-us.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (17): wicked, our town, the wiz, english, othello...",
-    "textLength": 12753,
-    "timestamp": "2026-02-05T03:16:22.584Z"
-  },
-  {
     "reviewId": "ink-2019/hollywood-reporter--unknown.json",
     "showId": "ink-2019",
     "outlet": "Hollywood Reporter",
@@ -18530,5 +18482,77 @@
     "garbageReason": "Multiple shows mentioned (9): chicago, company, tina, hair, once...",
     "textLength": 8026,
     "timestamp": "2026-02-06T06:32:59.350Z"
+  },
+  {
+    "reviewId": "home-2024/newyorker--vinson-cunningham.json",
+    "showId": "home-2024",
+    "outlet": "The New Yorker",
+    "critic": "Vinson Cunningham",
+    "url": "https://www.newyorker.com/magazine/2024/06/17/samm-art-williams-home-shayan-lotfi-what-became-of-us-theatre-review-broadway",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, the audience, rain, high, company...",
+    "textLength": 8382,
+    "timestamp": "2026-02-06T06:35:36.876Z"
+  },
+  {
+    "reviewId": "home-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "home-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/06/05/home-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): shucked, company, elling, high, company...",
+    "textLength": 5177,
+    "timestamp": "2026-02-06T06:35:43.483Z"
+  },
+  {
+    "reviewId": "home-2024/nytg--amelia-merrill.json",
+    "showId": "home-2024",
+    "outlet": "New York Theatre Guide",
+    "critic": "Amelia Merrill",
+    "url": "https://www.newyorktheatreguide.com/reviews/home-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): ohio state murders, company, a soldier's play, the audience, race...",
+    "textLength": 5227,
+    "timestamp": "2026-02-06T06:35:53.982Z"
+  },
+  {
+    "reviewId": "home-2024/nytimes--unknown.json",
+    "showId": "home-2024",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2024/06/05/theater/home-review-roundabout-theater.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): the wiz, company, hair, once, elling...",
+    "textLength": 6301,
+    "timestamp": "2026-02-06T06:38:59.316Z"
+  },
+  {
+    "reviewId": "home-2024/vulture--unknown.json",
+    "showId": "home-2024",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "https://www.vulture.com/article/theater-reviews-home-breaking-the-story-what-became-of-us.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): wicked, our town, the wiz, english, othello...",
+    "textLength": 12753,
+    "timestamp": "2026-02-06T06:39:02.869Z"
+  },
+  {
+    "reviewId": "in-transit-2016/hollywood-reporter--frank-scheck.json",
+    "showId": "in-transit-2016",
+    "outlet": "Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/transit-review-955048",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): frozen, rocky, annie, the performers, once...",
+    "textLength": 3879,
+    "timestamp": "2026-02-06T06:40:10.694Z"
   }
 ]
