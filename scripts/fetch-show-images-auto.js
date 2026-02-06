@@ -31,6 +31,7 @@ const PLAYBILL_URLS_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.jso
 const IBDB_IMAGE_CACHE_PATH = path.join(__dirname, '..', 'data', 'ibdb-image-cache.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
+const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 
 // ============================================================
 // PINNED IMAGES — Manually curated thumbnails, NEVER overwrite
@@ -139,6 +140,74 @@ function fetchViaScrapingBee(url, { premiumProxy = false } = {}) {
       response.on('error', reject);
     }).on('error', reject);
   });
+}
+
+// Fetch a page via Bright Data scraping browser (fallback when ScrapingBee is exhausted)
+function fetchViaBrightData(url) {
+  return new Promise((resolve, reject) => {
+    if (!BRIGHTDATA_TOKEN) {
+      reject(new Error('BRIGHTDATA_TOKEN not set'));
+      return;
+    }
+
+    const apiUrl = `https://api.brightdata.com/request`;
+    const postData = JSON.stringify({
+      zone: 'scraping_browser',
+      url: url,
+      format: 'raw',
+    });
+
+    const req = https.request(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(postData),
+      },
+    }, (response) => {
+      if (response.statusCode !== 200) {
+        let errData = '';
+        response.on('data', chunk => errData += chunk);
+        response.on('end', () => reject(new Error(`Bright Data HTTP ${response.statusCode}: ${errData.substring(0, 200)}`)));
+        return;
+      }
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => resolve(data));
+      response.on('error', reject);
+    });
+    req.on('error', reject);
+    req.write(postData);
+    req.end();
+  });
+}
+
+// Fetch page with fallback: ScrapingBee → Bright Data
+async function fetchPageWithFallback(url, opts = {}) {
+  // Try ScrapingBee first
+  if (SCRAPINGBEE_API_KEY) {
+    try {
+      return await fetchViaScrapingBee(url, opts);
+    } catch (sbErr) {
+      if (BRIGHTDATA_TOKEN) {
+        console.log(`   ⚠ ScrapingBee failed (${sbErr.message}), trying Bright Data...`);
+      } else {
+        throw sbErr;
+      }
+    }
+  }
+  // Bright Data fallback
+  return await fetchViaBrightData(url);
+}
+
+// Download image directly from URL (no proxy needed for public CDN images)
+async function downloadImageDirect(url) {
+  const resp = await fetch(url, {
+    signal: AbortSignal.timeout(15000),
+    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' },
+  });
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  return Buffer.from(await resp.arrayBuffer());
 }
 
 // Search Google via ScrapingBee SERP API for TodayTix pages (works for closed shows)
@@ -346,7 +415,7 @@ async function fetchFromIBDB(show) {
 
   // Step 2: Scrape IBDB page (needs premium proxy)
   try {
-    const html = await fetchViaScrapingBee(ibdbUrl, { premiumProxy: true });
+    const html = await fetchPageWithFallback(ibdbUrl, { premiumProxy: true });
 
     // Check for redirect to homepage (production not found)
     if (html.includes('Opening Nights in History') && !html.includes('Opening Date')) {
@@ -561,7 +630,7 @@ async function discoverTodayTixId(showTitle) {
   const searchUrl = `https://www.todaytix.com/nyc/shows?q=${encodeURIComponent(showTitle)}`;
 
   try {
-    const html = await fetchViaScrapingBee(searchUrl);
+    const html = await fetchPageWithFallback(searchUrl);
 
     // Look for show links in format: /nyc/shows/{id}-{slug}
     const showLinkMatch = html.match(/\/nyc\/shows\/(\d+)-([a-z0-9-]+)/i);
@@ -823,7 +892,7 @@ async function fetchFromPlaybill(show) {
   if (cachedUrl) {
     console.log(`   Trying cached Playbill URL: ${cachedUrl}`);
     try {
-      const html = await fetchViaScrapingBee(cachedUrl);
+      const html = await fetchPageWithFallback(cachedUrl);
       const imageUrl = extractOgImage(html);
       if (imageUrl) {
         console.log(`   ✓ Found via cached Playbill: ${imageUrl.substring(0, 60)}...`);
@@ -842,7 +911,7 @@ async function fetchFromPlaybill(show) {
     console.log(`   Trying Playbill: ${playbillUrl}`);
 
     try {
-      const html = await fetchViaScrapingBee(playbillUrl);
+      const html = await fetchPageWithFallback(playbillUrl);
       const imageUrl = extractOgImage(html);
 
       if (imageUrl) {
@@ -864,7 +933,7 @@ async function fetchFromPlaybill(show) {
   const searchUrl = `https://www.google.com/search?q=site:playbill.com/production+"${encodeURIComponent(show.title)}"+broadway`;
 
   try {
-    const searchHtml = await fetchViaScrapingBee(searchUrl);
+    const searchHtml = await fetchPageWithFallback(searchUrl);
     const urlMatch = searchHtml.match(/https:\/\/playbill\.com\/production\/[a-z0-9-]+-broadway[a-z0-9-]*/i);
 
     if (urlMatch) {
@@ -872,7 +941,7 @@ async function fetchFromPlaybill(show) {
       console.log(`   Found via Google: ${discoveredUrl}`);
 
       await sleep(2000);
-      const html = await fetchViaScrapingBee(discoveredUrl);
+      const html = await fetchPageWithFallback(discoveredUrl);
       const imageUrl = extractOgImage(html);
 
       if (imageUrl) {
@@ -919,7 +988,7 @@ function extractDirectImageUrl(url) {
   return url;
 }
 
-function searchGoogleImages(query) {
+function searchGoogleImagesSB(query) {
   return new Promise((resolve, reject) => {
     if (!SCRAPINGBEE_API_KEY) {
       reject(new Error('SCRAPINGBEE_API_KEY not set'));
@@ -945,21 +1014,80 @@ function searchGoogleImages(query) {
   });
 }
 
+// Search Google Images via Bright Data (fallback — returns direct URLs, not base64)
+async function searchGoogleImagesBD(query) {
+  if (!BRIGHTDATA_TOKEN) throw new Error('BRIGHTDATA_TOKEN not set');
+  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&tbm=isch&num=20`;
+  const html = await fetchViaBrightData(googleUrl);
+  const results = [];
+  // Google embeds image metadata as JSON arrays: ["URL", width, height]
+  const imgRegex = /\["(https?:\/\/[^"]+\.(?:jpg|jpeg|png|webp)[^"]*)",\s*(\d+),\s*(\d+)\]/gi;
+  let match;
+  while ((match = imgRegex.exec(html)) !== null) {
+    const imgUrl = match[1];
+    const width = parseInt(match[2]);
+    const height = parseInt(match[3]);
+    if (width < 100 || height < 100) continue;
+    if (imgUrl.includes('gstatic.com') || imgUrl.includes('google.com')) continue;
+    let domain = '';
+    try { domain = new URL(imgUrl).hostname; } catch {}
+    if (/ebay|etsy|pinterest|redbubble|teepublic|amazon\.com\/dp/i.test(domain)) continue;
+    results.push({ image: null, imageUrl: imgUrl, url: imgUrl, title: '', domain, width, height, _brightdata: true });
+    if (results.length >= 10) break;
+  }
+  return results;
+}
+
+// Unified Google Images search: ScrapingBee → Bright Data fallback
+async function searchGoogleImages(query) {
+  if (SCRAPINGBEE_API_KEY) {
+    try {
+      return await searchGoogleImagesSB(query);
+    } catch (sbErr) {
+      if (BRIGHTDATA_TOKEN) {
+        console.log(`   ⚠ ScrapingBee Images failed (${sbErr.message}), trying Bright Data...`);
+      } else {
+        throw sbErr;
+      }
+    }
+  }
+  return await searchGoogleImagesBD(query);
+}
+
 // Helper: extract valid image buffer from Google Images result
-function extractImageBuffer(result) {
-  if (!result.image || !result.image.startsWith('data:image/')) return null;
-  const commaIdx = result.image.indexOf(',');
-  if (commaIdx === -1) return null;
-  const buffer = Buffer.from(result.image.substring(commaIdx + 1), 'base64');
-  if (buffer.length < 3000 || !isImageBuffer(buffer)) return null;
-  return buffer;
+// Handles both ScrapingBee (base64 inline) and Bright Data (direct URL) results
+async function extractImageBuffer(result) {
+  // ScrapingBee format: base64 data URI
+  if (result.image && result.image.startsWith('data:image/')) {
+    const commaIdx = result.image.indexOf(',');
+    if (commaIdx === -1) return null;
+    const buffer = Buffer.from(result.image.substring(commaIdx + 1), 'base64');
+    if (buffer.length < 3000 || !isImageBuffer(buffer)) return null;
+    return buffer;
+  }
+  // Bright Data format: direct image URL — download it
+  if (result._brightdata && result.imageUrl) {
+    try {
+      const buffer = await downloadImageDirect(result.imageUrl);
+      if (buffer.length < 3000 || !isImageBuffer(buffer)) return null;
+      return buffer;
+    } catch {
+      return null;
+    }
+  }
+  return null;
 }
 
 // Helper: filter Google Images results to usable candidates
+// Handles both ScrapingBee (base64 image) and Bright Data (imageUrl) formats
 function filterGoogleCandidates(results, maxCount = 10) {
   return (results || [])
     .filter(r => {
-      if (!r.image || !r.image.startsWith('data:image/')) return false;
+      // ScrapingBee: has base64 data URI
+      const hasSBImage = r.image && r.image.startsWith('data:image/');
+      // Bright Data: has direct URL
+      const hasBDImage = r._brightdata && r.imageUrl;
+      if (!hasSBImage && !hasBDImage) return false;
       const domain = (r.domain || r.url || '').toLowerCase();
       if (/ebay|etsy|pinterest|redbubble|teepublic|amazon\.com\/dp/i.test(domain)) return false;
       return true;
@@ -991,7 +1119,7 @@ async function fetchFromGoogleImages(show) {
     console.log(`   Found ${squareCandidates.length} square candidates`);
 
     for (const result of squareCandidates) {
-      const buffer = extractImageBuffer(result);
+      const buffer = await extractImageBuffer(result);
       if (buffer) {
         console.log(`   ✓ Valid square image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}`);
         thumbnailBuffer = buffer;
@@ -1017,7 +1145,7 @@ async function fetchFromGoogleImages(show) {
     console.log(`   Found ${posterCandidates.length} poster candidates`);
 
     for (const result of posterCandidates) {
-      const buffer = extractImageBuffer(result);
+      const buffer = await extractImageBuffer(result);
       if (buffer) {
         console.log(`   ✓ Valid poster image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}`);
         posterBuffer = buffer;
@@ -1067,14 +1195,12 @@ async function fetchFromGoogleImages(show) {
 
 // Try next Google Images candidate after rejection
 // Re-uses the remaining candidates from the initial search
+// Handles both ScrapingBee (base64) and Bright Data (direct URL) results
 async function tryNextGoogleCandidate(show, remainingCandidates) {
   for (const result of remainingCandidates) {
     try {
-      const b64Data = result.image;
-      const commaIdx = b64Data.indexOf(',');
-      if (commaIdx === -1) continue;
-      const buffer = Buffer.from(b64Data.substring(commaIdx + 1), 'base64');
-      if (buffer.length < 3000 || !isImageBuffer(buffer)) continue;
+      const buffer = await extractImageBuffer(result);
+      if (!buffer) continue;
 
       console.log(`   ✓ Trying next Google Images candidate (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}: ${result.title?.substring(0, 50)}`);
 
@@ -1233,7 +1359,7 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     console.log(`   Fetching: ${url}`);
 
     try {
-      const html = await fetchViaScrapingBee(url);
+      const html = await fetchPageWithFallback(url);
       const images = extractAllImageFormats(html);
 
       if (images && (images.square || images.portrait || images.landscape)) {
@@ -1513,9 +1639,15 @@ async function main() {
   // Verification is ON by default — use --no-verify to skip (faster but less safe)
   const verifyEnabled = !args.includes('--no-verify');
 
-  if (!SCRAPINGBEE_API_KEY) {
-    console.error('ERROR: Set SCRAPINGBEE_API_KEY environment variable');
+  if (!SCRAPINGBEE_API_KEY && !BRIGHTDATA_TOKEN) {
+    console.error('ERROR: Set SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN environment variable');
     process.exit(1);
+  }
+  if (!SCRAPINGBEE_API_KEY) {
+    console.log('⚠ SCRAPINGBEE_API_KEY not set — using Bright Data only');
+  }
+  if (BRIGHTDATA_TOKEN) {
+    console.log('Bright Data fallback: ENABLED');
   }
 
   // Initialize LLM verification gate (on by default)
