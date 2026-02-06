@@ -1,57 +1,51 @@
 {
-  "updatedAt": "2026-02-06T07:33:59.326Z",
-  "processed": 30,
-  "failed": 220,
-  "successRate": "12.0%",
+  "updatedAt": "2026-02-06T07:41:25.474Z",
+  "processed": 41,
+  "failed": 239,
+  "successRate": "14.6%",
   "tierBreakdown": {
-    "playwright": 5,
-    "browserbase": 1,
-    "scrapingbee": 9,
-    "brightdata": 9,
-    "archive": 11
+    "playwright": 7,
+    "browserbase": 4,
+    "scrapingbee": 11,
+    "brightdata": 16,
+    "archive": 10
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-06T03:35:34.822Z",
+      "t": "2026-02-06T03:33:48.570Z",
       "event": "bb-session",
-      "session": "5a684f68",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/1776-broadway-review-1235228615"
+      "session": "e62955f4",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
     },
     {
-      "t": "2026-02-06T03:36:07.555Z",
+      "t": "2026-02-06T03:34:08.764Z",
       "event": "bb-session",
-      "session": "36bb36cd",
-      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
+      "session": "a350f4c2",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-the-neil-diamond-musica"
     },
     {
-      "t": "2026-02-06T03:38:22.931Z",
+      "t": "2026-02-06T03:36:11.209Z",
       "event": "bb-session",
-      "session": "9608a755",
-      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
+      "session": "9b7fc38e",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
     },
     {
-      "t": "2026-02-06T03:38:24.948Z",
+      "t": "2026-02-06T03:36:13.588Z",
       "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-06T03:40:57.997Z",
+      "t": "2026-02-06T03:38:03.187Z",
       "event": "bb-session",
-      "session": "6b8ede18",
-      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
+      "session": "fe601710",
+      "url": "http://www.hollywoodreporter.com/review/a-dolls-house-part-2-theater-998160"
     },
     {
-      "t": "2026-02-06T03:41:40.457Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349267309\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAv2P8qXnLEY4ALPhWIg==&cid=JbPdAhxJmjScwPh~x2dGnOqnuI6hwgvsdeBNR_13zzZYx4dnOM0groj6DoTUeGpMMldkoYnmzR2uE5fvtHwtJ9w73IjjyCqX0dHLGuXG8SxmR6rW9UNrYfzpwYI4hVRe&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349267309\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349267309\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAv2P8qXnLEY4ALPhWIg==&cid=JbPdAhxJmjScwPh~x2dGnOqnuI6hwgvsdeBNR_13zzZYx4dnOM0groj6DoTUeGpMMldkoYnmzR2uE5fvtHwtJ9w73IjjyCqX0dHLGuXG8SxmR6rW9UNrYfzpwYI4hVRe&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349267309\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    35 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349267309\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAv2P8qXnLEY4ALPhWIg==&cid=JbPdAhxJmjScwPh~x2dGnOqnuI6hwgvsdeBNR_13zzZYx4dnOM0groj6DoTUeGpMMldkoYnmzR2uE5fvtHwtJ9w73IjjyCqX0dHLGuXG8SxmR6rW9UNrYfzpwYI4hVRe&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349267309\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-06T03:42:33.899Z",
+      "t": "2026-02-06T03:38:34.528Z",
       "event": "bb-session",
-      "session": "f17db959",
-      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
+      "session": "e80a6188",
+      "url": "http://www.hollywoodreporter.com/review/free-man-color-theater-review-46713"
     }
   ]
 }
