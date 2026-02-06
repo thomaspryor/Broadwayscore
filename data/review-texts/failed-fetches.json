@@ -8356,18 +8356,6 @@
     "timestamp": "2026-02-03T23:27:51.542Z"
   },
   {
-    "reviewId": "elf-2012/nytg--caroline-cao.json",
-    "showId": "elf-2012",
-    "outlet": "New York Theatre Guide",
-    "critic": "Caroline Cao",
-    "url": "https://www.newyorktheatreguide.com/reviews/elf-the-musical-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 5120,
-    "timestamp": "2026-02-03T23:28:00.206Z"
-  },
-  {
     "reviewId": "farinelli-and-the-king-2017/hollywood-reporter--david-rooney.json",
     "showId": "farinelli-and-the-king-2017",
     "outlet": "Hollywood Reporter",
@@ -11870,54 +11858,6 @@
     "garbageReason": "Multiple shows mentioned (8): parade, company, hello, dolly!, the audience, rain...",
     "textLength": 3543,
     "timestamp": "2026-02-05T02:39:32.701Z"
-  },
-  {
-    "reviewId": "elf-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "elf-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/11/17/elf-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): maybe happy ending, tammy faye, shucked, mean girls, hair...",
-    "textLength": 3961,
-    "timestamp": "2026-02-05T02:42:53.820Z"
-  },
-  {
-    "reviewId": "elf-2024/nytg--caroline-cao.json",
-    "showId": "elf-2024",
-    "outlet": "New York Theatre Guide",
-    "critic": "Caroline Cao",
-    "url": "https://www.newyorktheatreguide.com/reviews/elf-the-musical-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 5120,
-    "timestamp": "2026-02-05T02:43:02.125Z"
-  },
-  {
-    "reviewId": "elf-2024/nytimes--unknown.json",
-    "showId": "elf-2024",
-    "outlet": "The New York Times",
-    "critic": "Unknown",
-    "url": "https://www.nytimes.com/2024/11/17/theater/elf-review-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): oh, mary!, wicked, all in: comedy about love, the prom, the children...",
-    "textLength": 5953,
-    "timestamp": "2026-02-05T02:43:15.580Z"
-  },
-  {
-    "reviewId": "elf-2024/variety--unknown.json",
-    "showId": "elf-2024",
-    "outlet": "Variety",
-    "critic": "Unknown",
-    "url": "http://variety.com/2014/tv/reviews/tv-review-elf-buddys-musical-christmas-1201376770/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (5): smash, evita, elling, well, rent",
-    "textLength": 2243,
-    "timestamp": "2026-02-05T02:43:30.930Z"
   },
   {
     "reviewId": "elf-2024/vulture--jackson-mchenry.json",
@@ -20138,5 +20078,89 @@
     "garbageReason": "Multiple shows mentioned (14): home, english, company, les liaisons dangereuses, noises off...",
     "textLength": 6789,
     "timestamp": "2026-02-06T15:12:02.863Z"
+  },
+  {
+    "reviewId": "dont-dress-for-dinner-2012/variety--marilyn-stasio.json",
+    "showId": "dont-dress-for-dinner-2012",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "http://www.variety.com/review/VE1117947452",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chicago, purpose, les liaisons dangereuses, once, rain...",
+    "textLength": 4342,
+    "timestamp": "2026-02-06T15:13:10.756Z"
+  },
+  {
+    "reviewId": "elf-2012/hollywood-reporter--david-rooney.json",
+    "showId": "elf-2012",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/elf-theater-review-394588/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): mamma mia!, annie, hair, elling, well...",
+    "textLength": 4110,
+    "timestamp": "2026-02-06T15:13:34.222Z"
+  },
+  {
+    "reviewId": "elf-2012/nytg--caroline-cao.json",
+    "showId": "elf-2012",
+    "outlet": "New York Theatre Guide",
+    "critic": "Caroline Cao",
+    "url": "https://www.newyorktheatreguide.com/reviews/elf-the-musical-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 5120,
+    "timestamp": "2026-02-06T15:13:42.656Z"
+  },
+  {
+    "reviewId": "elf-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "elf-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/11/17/elf-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): maybe happy ending, tammy faye, shucked, mean girls, hair...",
+    "textLength": 3961,
+    "timestamp": "2026-02-06T15:15:35.459Z"
+  },
+  {
+    "reviewId": "elf-2024/nytg--caroline-cao.json",
+    "showId": "elf-2024",
+    "outlet": "New York Theatre Guide",
+    "critic": "Caroline Cao",
+    "url": "https://www.newyorktheatreguide.com/reviews/elf-the-musical-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 5120,
+    "timestamp": "2026-02-06T15:15:42.410Z"
+  },
+  {
+    "reviewId": "elf-2024/nytimes--unknown.json",
+    "showId": "elf-2024",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2024/11/17/theater/elf-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): oh, mary!, wicked, all in: comedy about love, the prom, the children...",
+    "textLength": 5953,
+    "timestamp": "2026-02-06T15:15:48.007Z"
+  },
+  {
+    "reviewId": "elf-2024/variety--unknown.json",
+    "showId": "elf-2024",
+    "outlet": "Variety",
+    "critic": "Unknown",
+    "url": "http://variety.com/2014/tv/reviews/tv-review-elf-buddys-musical-christmas-1201376770/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): smash, evita, elling, well, rent",
+    "textLength": 2605,
+    "timestamp": "2026-02-06T15:16:09.099Z"
   }
 ]
