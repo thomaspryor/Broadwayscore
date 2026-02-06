@@ -22,5 +22,9 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt praising one performance, not a complete review with an overall evaluation or recommendation about the show.; openai: The text is a single sentence focusing on an actor's performance without evaluating the overall production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "web-search",
+    "show-score-playwright"
+  ]
 }

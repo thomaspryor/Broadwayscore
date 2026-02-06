@@ -7,6 +7,7 @@
   "source": "bww-reviews",
   "sources": [
     "bww-reviews",
+    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "The musical is gentle-spirited, not gaudy, and moves with an easygoing grace where others prance and strut. And it tells a sentiment-spritzed story...that you might be more likely to encounter in black and white, flickering from your flat-screen on Turner Classic Movies. The protagonist, Alice Murphy, portrayed by Carmen Cusack -- making a simply gorgeous Broadway debut -- is a spunky girl in her late teens in the scenes set in the 1920s. A dreamer with a rebellious streak and a hunger for literature, she's causing a fine ruckus in the sleepy town of Zebulon...While the story certainly skirts (if not embraces) sentimentality and the overripeness of melodrama, the production's soft-hued style -- and the sometimes wry tone of Mr. Martin's book -- keeps it from curdling into treacle. The songs boast simple but seductive melodies, and lyrics that have a sweet, homespun quality.",
@@ -39,5 +40,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The text cuts off mid-review and ends with technical error messages about JavaScript and content retrieval, making it impossible to determine the critic's verdict.; openai: The text provided is incomplete and contains navigation elements and error messages, making it not a scoreable review.; gemini: The review text is incomplete and contains error messages, making it impossible to determine the critic's opinion of the show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "showScoreExcerpt": "\"The musical is gentle-spirited, not gaudy, and moves with an easygoing grace where others prance and strut. And it tells a sentiment-spritzed story...While the story certainly skirts (if not embraces) sentimentality and the overripeness of melodrama, the production’s soft-hued style keeps it from curdling into treacle. The songs boast simple but seductive melodies, and lyrics that have a sweet, homespun quality. The mostly acoustic score is beautifully played.\"\n\nRead more"
 }
