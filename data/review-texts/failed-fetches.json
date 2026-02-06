@@ -11092,42 +11092,6 @@
     "timestamp": "2026-02-04T17:04:20.862Z"
   },
   {
-    "reviewId": "a-night-with-janis-joplin-2013/hollywood-reporter--unknown.json",
-    "showId": "a-night-with-janis-joplin-2013",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/a-night-janis-joplin-theater-647216?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+%28The+Hollywood+Reporter+-+Top+Stories%29",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (16): mamma mia!, liberation, giant, home, company...",
-    "textLength": 7141,
-    "timestamp": "2026-02-04T17:11:33.332Z"
-  },
-  {
-    "reviewId": "a-raisin-in-the-sun-2014/hollywood-reporter--unknown.json",
-    "showId": "a-raisin-in-the-sun-2014",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/a-raisin-sun-theater-review-693457",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): chicago, aladdin, mamma mia!, home, smash...",
-    "textLength": 10011,
-    "timestamp": "2026-02-04T17:12:27.571Z"
-  },
-  {
-    "reviewId": "a-raisin-in-the-sun-2014/nytimes--unknown.json",
-    "showId": "a-raisin-in-the-sun-2014",
-    "outlet": "New York Times",
-    "critic": "Unknown",
-    "url": "http://www.nytimes.com/2014/04/04/theater/raisin-in-the-sun-brings-denzel-washington-back-to-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): chicago, caroline, or change, frozen, clybourne park, rain...",
-    "textLength": 7226,
-    "timestamp": "2026-02-04T17:12:31.839Z"
-  },
-  {
     "reviewId": "a-steady-rain-2009/hollywood-reporter--david-rooney.json",
     "showId": "a-steady-rain-2009",
     "outlet": "The Hollywood Reporter",
@@ -17498,5 +17462,89 @@
     "garbageReason": "Multiple shows mentioned (8): giant, purpose, company, elling, race...",
     "textLength": 7579,
     "timestamp": "2026-02-06T02:29:17.456Z"
+  },
+  {
+    "reviewId": "a-night-with-janis-joplin-2013/hollywood-reporter--unknown.json",
+    "showId": "a-night-with-janis-joplin-2013",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/a-night-janis-joplin-theater-647216?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+%28The+Hollywood+Reporter+-+Top+Stories%29",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): liberation, giant, home, company, act one...",
+    "textLength": 6914,
+    "timestamp": "2026-02-06T02:30:50.711Z"
+  },
+  {
+    "reviewId": "a-raisin-in-the-sun-2014/hollywood-reporter--unknown.json",
+    "showId": "a-raisin-in-the-sun-2014",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/a-raisin-sun-theater-review-693457",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): chicago, aladdin, mamma mia!, home, smash...",
+    "textLength": 10011,
+    "timestamp": "2026-02-06T02:33:30.848Z"
+  },
+  {
+    "reviewId": "a-raisin-in-the-sun-2014/nytimes--unknown.json",
+    "showId": "a-raisin-in-the-sun-2014",
+    "outlet": "New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2014/04/04/theater/raisin-in-the-sun-brings-denzel-washington-back-to-broadway.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): chicago, caroline, or change, frozen, clybourne park, rain...",
+    "textLength": 7282,
+    "timestamp": "2026-02-06T02:35:44.333Z"
+  },
+  {
+    "reviewId": "a-soldiers-play-2020/hollywood-reporter--david-rooney.json",
+    "showId": "a-soldiers-play-2020",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/review/a-soldiers-play-theater-1271019",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mamma mia!, home, company, 1984, the audience...",
+    "textLength": 9116,
+    "timestamp": "2026-02-06T02:39:00.982Z"
+  },
+  {
+    "reviewId": "a-soldiers-play-2020/nyt-theater--jonathan-mandell.json",
+    "showId": "a-soldiers-play-2020",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2020/01/24/a-soldiers-play-on-broadway-at-last/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): hadestown, company, 1984, holler if ya hear me, the audience...",
+    "textLength": 6513,
+    "timestamp": "2026-02-06T02:39:07.836Z"
+  },
+  {
+    "reviewId": "a-soldiers-play-2020/nytimes--jesse-green.json",
+    "showId": "a-soldiers-play-2020",
+    "outlet": "The New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2020/01/21/theater/a-soldiers-play-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): othello, company, 1984, the present, hair...",
+    "textLength": 6876,
+    "timestamp": "2026-02-06T02:39:11.247Z"
+  },
+  {
+    "reviewId": "a-raisin-in-the-sun-2014/vulture--unknown.json",
+    "showId": "a-raisin-in-the-sun-2014",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "https://www.vulture.com/2014/04/theater-review-a-raisin-in-the-sun.html",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"adblock\"",
+    "textLength": 6931,
+    "timestamp": "2026-02-06T02:39:15.736Z"
   }
 ]
