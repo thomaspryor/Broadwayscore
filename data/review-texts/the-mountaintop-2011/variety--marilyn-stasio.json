@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2011/legit/reviews/the-mountaintop-1117946326/",
   "publishDate": "October 13, 2011",
-  "fullText": "Samuel L. Jackson and Angela Bassett bring their formidable star power to Katori Hall's imagined final night in the life of Martin Luther King Jr., but even these two pros can't make this well-intentioned but dramatically inert play take flight.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Samuel L. Jackson and Angela Bassett bring their formidable star power to Katori Hall's imagined final night in the life of Martin Luther King Jr., but even these two pros can't make this well-intentioned but dramatically inert play take flight.",
   "originalScore": null,
   "assignedScore": 45,
@@ -16,9 +16,9 @@
   "bwwExcerpt": "Unlike those warts-and-all biodramas that humiliate the celebrated figures they profess to humanize, Katori Hall's imaginative two-hander 'The Mountaintop' does, indeed, burnish the legend of the Rev. Martin Luther King Jr. Set in Memphis on the eve of his assassination, this soul-stirring drama finds King confiding his doubts, fears and morbid premonitions to a sassy motel maid -- a deceptively trite situation that Hall transforms into an emotionally powerful and theatrically stunning moment of truth. Factor in the double dose of charisma from certifiable stars Samuel L. Jackson and Angela Bassett, and this show has wings.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Samuel L. Jackson and Angela Bassett bring their formidable star power to Katori Hall's imagined final night in the life of Martin Luther King Jr., but even these two pros can't make this well-intentioned but dramatically inert play take flight.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (40 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "sources": [
     "web-search",
     "bww-reviews"
@@ -78,5 +78,46 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
   },
-  "bwwScore": 9
+  "bwwScore": 9,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 45,
+  "textWordCount": 321,
+  "archivePath": "data/archives/reviews/the-mountaintop-2011/variety--marilyn-stasio_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T18:28:20.391Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Oct 9, 2011 2:26pm PT \n\n \n\n \n \n \n\n \n\n \n Lovely Man\n \n \n\n \n\n A transvestite sex worker is confronted by the Muslim-raised teenage daughter he abandoned in \"Lovely Man.\"\n\nA transvestite sex worker is confronted by the Muslim-raised teenage daughter he abandoned in “Lovely Man,” an absorbing meller by prolific Indonesian helmer Teddy Soeriaatmadja (“Ruma Maida”). Set over the course of an eventful night, this very well-performed examination of the fundamental importance of parent-child relationships impressively mixes tough talk with tender emotion. World preemed at Busan, pic should notch up plenty of fest mileage ahead of its local release next year.\n\nArriving in Jakarta armed with only with an address scrawled on a scrap of paper, 19-year-old country girl Cahaya (Raihaanun) finds out the hard way that Saiful (Donny Damara), the father she has not seen in 15 years, has become “Ipuy,” a red-miniskirt-wearing streetwalker in Jakarta’s Taman Lawang transgender red-light district. Angrily dismissing the girl at first, Saiful gradually opens up and reveals harsh truths about his marriage and utter lack of shame about his profession. Sideline details of Cahaya’s pregnancy and a large debt Saiful owes a local heavy (Yayu aw unru) feel a little tacked on, but the central dramatic thread is convincing, compelling and rewarding. Technical package is decent on a low budget.\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice."
 }
