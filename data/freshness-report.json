@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-02T06:56:03.580Z",
+  "generatedAt": "2026-02-06T06:45:39.416Z",
   "summary": {
-    "totalShows": 87,
+    "totalShows": 724,
     "openShows": 29,
-    "closedShows": 42
+    "closedShows": 679
   },
   "grosses": {
-    "lastUpdated": "2026-01-28T15:22:16.504Z",
-    "weekEnding": "1/25/2026",
-    "showCount": 77,
+    "lastUpdated": "2026-02-04T23:59:06.672Z",
+    "weekEnding": "2/01/2026",
+    "showCount": 681,
     "status": "ok",
-    "daysStale": 4
+    "daysStale": 1
   },
   "statusChanges": {
     "autoClosed": []
@@ -20,31 +20,31 @@
       "id": "oedipus-2025",
       "title": "Oedipus",
       "closingDate": "2026-02-08",
-      "daysLeft": 6
+      "daysLeft": 2
     },
     {
       "id": "marjorie-prime-2025",
       "title": "Marjorie Prime",
       "closingDate": "2026-02-15",
-      "daysLeft": 13
+      "daysLeft": 9
     },
     {
       "id": "hells-kitchen-2024",
       "title": "Hell's Kitchen",
       "closingDate": "2026-02-22",
-      "daysLeft": 20
+      "daysLeft": 16
     },
     {
       "id": "bug-2026",
       "title": "Bug",
       "closingDate": "2026-03-08",
-      "daysLeft": 34
+      "daysLeft": 30
     },
     {
       "id": "all-out-2025",
       "title": "All Out: Comedy About Ambition",
       "closingDate": "2026-03-08",
-      "daysLeft": 34
+      "daysLeft": 30
     }
   ],
   "dataQuality": {
@@ -257,6 +257,10 @@
           {
             "type": "missing_cast",
             "severity": "medium"
+          },
+          {
+            "type": "missing_creative",
+            "severity": "medium"
           }
         ]
       },
@@ -394,6 +398,9 @@
         "Stranger Things: The First Shadow",
         "Buena Vista Social Club",
         "Just in Time"
+      ],
+      "missing_creative": [
+        "Oedipus"
       ],
       "missing_age_rec": [
         "All Out: Comedy About Ambition"
