@@ -8344,42 +8344,6 @@
     "timestamp": "2026-02-03T23:23:40.657Z"
   },
   {
-    "reviewId": "doctor-zhivago-2015/hollywood-reporter--unknown.json",
-    "showId": "doctor-zhivago-2015",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/doctor-zhivago-theater-review-790426",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (18): mamma mia!, giant, home, english, junk...",
-    "textLength": 7121,
-    "timestamp": "2026-02-03T23:25:56.971Z"
-  },
-  {
-    "reviewId": "doctor-zhivago-2015/variety--unknown.json",
-    "showId": "doctor-zhivago-2015",
-    "outlet": "Variety",
-    "critic": "Unknown",
-    "url": "http://variety.com/2015/legit/reviews/doctor-zhivago-review-broadway-musical-1201476701/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): appropriate, the father, hair, once, jesus christ superstar...",
-    "textLength": 5403,
-    "timestamp": "2026-02-03T23:27:40.405Z"
-  },
-  {
-    "reviewId": "doctor-zhivago-2015/vulture--unknown.json",
-    "showId": "doctor-zhivago-2015",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2015/04/theater-review-doctor-zhivago.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): english, the audience, act one, hair, once...",
-    "textLength": 10061,
-    "timestamp": "2026-02-03T23:27:44.855Z"
-  },
-  {
     "reviewId": "elf-2012/nyt-theater--jonathan-mandell.json",
     "showId": "elf-2012",
     "outlet": "New York Theater",
@@ -20090,5 +20054,89 @@
     "garbageReason": "Multiple shows mentioned (14): hamilton, proof, appropriate, purpose, parade...",
     "textLength": 5560,
     "timestamp": "2026-02-06T15:06:19.995Z"
+  },
+  {
+    "reviewId": "doctor-zhivago-2015/hollywood-reporter--frank-scheck.json",
+    "showId": "doctor-zhivago-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/doctor-zhivago-theater-review-790426",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): mamma mia!, giant, home, english, junk...",
+    "textLength": 7072,
+    "timestamp": "2026-02-06T15:09:10.413Z"
+  },
+  {
+    "reviewId": "doctor-zhivago-2015/hollywood-reporter--unknown.json",
+    "showId": "doctor-zhivago-2015",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/doctor-zhivago-theater-review-790426",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): mamma mia!, giant, home, english, junk...",
+    "textLength": 7072,
+    "timestamp": "2026-02-06T15:09:26.483Z"
+  },
+  {
+    "reviewId": "doctor-zhivago-2015/variety--marilyn-stasio.json",
+    "showId": "doctor-zhivago-2015",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "http://variety.com/2015/legit/reviews/doctor-zhivago-review-broadway-musical-1201476701/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): appropriate, the father, hair, once, jesus christ superstar...",
+    "textLength": 5066,
+    "timestamp": "2026-02-06T15:11:21.017Z"
+  },
+  {
+    "reviewId": "doctor-zhivago-2015/variety--unknown.json",
+    "showId": "doctor-zhivago-2015",
+    "outlet": "Variety",
+    "critic": "Unknown",
+    "url": "http://variety.com/2015/legit/reviews/doctor-zhivago-review-broadway-musical-1201476701/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): appropriate, the father, hair, once, jesus christ superstar...",
+    "textLength": 5563,
+    "timestamp": "2026-02-06T15:11:34.563Z"
+  },
+  {
+    "reviewId": "doctor-zhivago-2015/vulture--unknown.json",
+    "showId": "doctor-zhivago-2015",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2015/04/theater-review-doctor-zhivago.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): english, the audience, act one, hair, once...",
+    "textLength": 10061,
+    "timestamp": "2026-02-06T15:11:42.243Z"
+  },
+  {
+    "reviewId": "dont-dress-for-dinner-2012/hollywood-reporter--david-rooney.json",
+    "showId": "dont-dress-for-dinner-2012",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/dont-dress-dinner-theater-review-316689",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): chicago, mamma mia!, giant, english, smash...",
+    "textLength": 5425,
+    "timestamp": "2026-02-06T15:11:58.285Z"
+  },
+  {
+    "reviewId": "dont-dress-for-dinner-2012/nytimes--charles-isherwood.json",
+    "showId": "dont-dress-for-dinner-2012",
+    "outlet": "The New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://theater.nytimes.com/2012/04/27/theater/reviews/dont-dress-for-dinner-at-american-airlines-theater.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): home, english, company, les liaisons dangereuses, noises off...",
+    "textLength": 6789,
+    "timestamp": "2026-02-06T15:12:02.863Z"
   }
 ]
