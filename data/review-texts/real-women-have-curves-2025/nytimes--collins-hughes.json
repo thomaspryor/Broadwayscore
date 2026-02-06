@@ -5,13 +5,13 @@
   "criticName": "Collins- Hughes",
   "url": "https://www.nytimes.com/2025/04/27/theater/real-women-have-curves-review.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "A brief scene in the new musical “Real Women Have Curves” is as harrowing as anything in the most serious drama on Broadway: a group of terrified workers in a small Los Angeles dress factory, hiding in the dark as they listen to an immigration raid taking place next door.\n\nWhen the raid is over, the first sounds to break the quiet are soft weeping and breath laden with fear.\n\nIt’s a jolt of somber realism in a show that opts, ultimately, to lean in a feel-good direction. Yet such is the balancing act of “Real Women Have Curves,” which opened on Sunday night at the James Earl Jones Theater.\n\nBased on Josefina López’s play of the same name, and on the 2002 HBO film adaptation starring America Ferrera, it is a bouncy, crowd-pleasing comedy about female empowerment, self-acceptance and chasing one’s ambitions. It is also a tale of immigrant life in this country, and the dread woven into the fabric of daily existence for undocumented people and those closest to them.\n\nAt 18, newly graduated from high school, Ana García (Tatianna Córdoba) is the only American citizen in her family, and the only one with legal status. An aspiring journalist, and the daughter of immigrants who came to California from Mexico, she is spending the summer of 1987 doing an unpaid internship at a neighborhood newspaper.\n\nThen the dress factory owned by her older sister, Estela (Florencia Cuenca), receives a huge order that needs to be turned around fast. Their fireball of a mother, Carmen (Justina Machado), ropes Ana in to work there, too.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "bwwExcerpt": "What buoys it is an extremely likable cast, riding the waves of a hummable score that sounds variously of Mexico, Broadway and American pop. (The music director is Roberto Sinha.) And it doesn’t hurt that the show has a luscious color palette, or that its version of a disco ball is shaped like a dre...",
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
@@ -21,5 +21,51 @@
   ],
   "playbillVerdictUrl": "https://www.nytimes.com/2025/04/27/theater/real-women-have-curves-review.html",
   "nycTheatreExcerpt": "What buoys it is an extremely likable cast, riding the waves of a hummable score that sounds variously of Mexico, Broadway and American pop. (The music director is Roberto Sinha.) And it doesn't hurt that the show has a luscious color palette, or that its version of a disco ball is shaped like a dressmaker's mannequin.",
-  "duplicateOf": "nytimes--laura-collins-hughes.json"
+  "duplicateOf": "nytimes--laura-collins-hughes.json",
+  "textWordCount": 289,
+  "archivePath": "data/archives/reviews/real-women-have-curves-2025/nytimes--collins--hughes_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T18:02:59.817Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 1250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 289 (min: 300)"
+  ],
+  "duplicateTextOf": "nytimes--laura-collins-hughes.json",
+  "wordCount": 289,
+  "tierReason": "Short text (289 words)"
 }
