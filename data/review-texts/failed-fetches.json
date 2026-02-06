@@ -11608,30 +11608,6 @@
     "timestamp": "2026-02-04T20:46:14.200Z"
   },
   {
-    "reviewId": "bring-it-on-the-musical-2012/nytimes--ben-brantley.json",
-    "showId": "bring-it-on-the-musical-2012",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2012/08/02/theater/reviews/bring-it-on-the-musical-at-st-james-theater.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (6): home, summer, high, next to normal, november...",
-    "textLength": 2787,
-    "timestamp": "2026-02-04T20:46:17.273Z"
-  },
-  {
-    "reviewId": "bring-it-on-the-musical-2012/vulture--jesse-green.json",
-    "showId": "bring-it-on-the-musical-2012",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "https://www.vulture.com/2012/08/theater-review-bring-it-on-the-musical.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, summer, hair, lysistrata jones, high...",
-    "textLength": 8612,
-    "timestamp": "2026-02-04T20:46:52.027Z"
-  },
-  {
     "reviewId": "cabaret-2024/nyt-theater--jonathan-mandell.json",
     "showId": "cabaret-2024",
     "outlet": "New York Theater",
@@ -12040,18 +12016,6 @@
     "timestamp": "2026-02-05T01:47:31.054Z"
   },
   {
-    "reviewId": "bullets-over-broadway-2014/hollywood-reporter--david-rooney.json",
-    "showId": "bullets-over-broadway-2014",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/bullets-broadway-theater-review-695186/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): home, gypsy, dead outlaw, some like it hot, company...",
-    "textLength": 10171,
-    "timestamp": "2026-02-05T01:48:12.259Z"
-  },
-  {
     "reviewId": "bullets-over-broadway-2014/vulture--jesse-green.json",
     "showId": "bullets-over-broadway-2014",
     "outlet": "Vulture",
@@ -12170,30 +12134,6 @@
     "garbageReason": "Multiple shows mentioned (9): home, purpose, the audience, magic/bird, lombardi...",
     "textLength": 7686,
     "timestamp": "2026-02-05T02:00:09.575Z"
-  },
-  {
-    "reviewId": "buena-vista-social-club-2025/nyt-theater--jonathan-mandell.json",
-    "showId": "buena-vista-social-club-2025",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2025/03/19/buena-vista-social-club-broadway-review/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (21): the great gatsby, wicked, hamilton, chicago, aladdin...",
-    "textLength": 16842,
-    "timestamp": "2026-02-05T02:00:12.577Z"
-  },
-  {
-    "reviewId": "buena-vista-social-club-2025/nytimes--jesse-green.json",
-    "showId": "buena-vista-social-club-2025",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): the lion king, appropriate, company, betrayal, the present...",
-    "textLength": 7460,
-    "timestamp": "2026-02-05T02:00:15.488Z"
   },
   {
     "reviewId": "cabaret-2014/hollywood-reporter--david-rooney.json",
@@ -17918,5 +17858,101 @@
     "garbageReason": "Multiple shows mentioned (10): tina, rain, elling, how to succeed in business without really trying, high...",
     "textLength": 4516,
     "timestamp": "2026-02-06T05:07:32.085Z"
+  },
+  {
+    "reviewId": "bring-it-on-the-musical-2012/hollywood-reporter--david-rooney.json",
+    "showId": "bring-it-on-the-musical-2012",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/bring-it-on-theater-review-355631",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): junk, mean girls, summer, evita, elling...",
+    "textLength": 7471,
+    "timestamp": "2026-02-06T05:08:20.585Z"
+  },
+  {
+    "reviewId": "bring-it-on-the-musical-2012/nytimes--ben-brantley.json",
+    "showId": "bring-it-on-the-musical-2012",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2012/08/02/theater/reviews/bring-it-on-the-musical-at-st-james-theater.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, summer, evita, high, race...",
+    "textLength": 6515,
+    "timestamp": "2026-02-06T05:10:35.026Z"
+  },
+  {
+    "reviewId": "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+    "showId": "bring-it-on-the-musical-2012",
+    "outlet": "The New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://theater.nytimes.com/2012/08/02/theater/reviews/bring-it-on-the-musical-at-st-james-theater.html?ref=theater",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, summer, evita, high, race...",
+    "textLength": 6515,
+    "timestamp": "2026-02-06T05:12:00.325Z"
+  },
+  {
+    "reviewId": "bring-it-on-the-musical-2012/variety--steven-suskin.json",
+    "showId": "bring-it-on-the-musical-2012",
+    "outlet": "Variety",
+    "critic": "Steven Suskin",
+    "url": "http://www.variety.com/review/VE1117947983",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): summer, once, high, next to normal, november...",
+    "textLength": 4778,
+    "timestamp": "2026-02-06T05:12:20.547Z"
+  },
+  {
+    "reviewId": "bring-it-on-the-musical-2012/vulture--jesse-green.json",
+    "showId": "bring-it-on-the-musical-2012",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2012/08/theater-review-bring-it-on-the-musical.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, summer, hair, lysistrata jones, high...",
+    "textLength": 8612,
+    "timestamp": "2026-02-06T05:13:00.020Z"
+  },
+  {
+    "reviewId": "buena-vista-social-club-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "buena-vista-social-club-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/03/19/buena-vista-social-club-broadway-review/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (21): the great gatsby, wicked, hamilton, chicago, aladdin...",
+    "textLength": 16842,
+    "timestamp": "2026-02-06T05:13:03.230Z"
+  },
+  {
+    "reviewId": "buena-vista-social-club-2025/nytimes--jesse-green.json",
+    "showId": "buena-vista-social-club-2025",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): the lion king, appropriate, company, betrayal, the present...",
+    "textLength": 7460,
+    "timestamp": "2026-02-06T05:13:06.968Z"
+  },
+  {
+    "reviewId": "bullets-over-broadway-2014/hollywood-reporter--david-rooney.json",
+    "showId": "bullets-over-broadway-2014",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/bullets-broadway-theater-review-695186/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): home, gypsy, dead outlaw, some like it hot, company...",
+    "textLength": 10171,
+    "timestamp": "2026-02-06T05:13:13.785Z"
   }
 ]
