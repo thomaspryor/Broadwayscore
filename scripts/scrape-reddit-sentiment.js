@@ -127,46 +127,122 @@ function calculateBuzzScore(classifications) {
 }
 
 /**
+ * Check if a post title suggests audience reaction (not industry discussion)
+ * Returns: true (definitely audience), false (definitely industry), or null (neutral - include but don't prioritize)
+ */
+function classifyPost(post, showTitle) {
+  const title = (post.title || '').toLowerCase();
+  const flair = (post.link_flair_text || '').toLowerCase();
+
+  // Review flair is always a strong signal
+  if (flair.includes('review')) return true;
+
+  // Industry keywords to EXCLUDE
+  const industryKeywords = [
+    'injury', 'injured', 'hurt', 'hospital', 'medical',
+    'contract', 'leaving', 'departure', 'replacement',
+    'backstage', 'stagehand', 'crew',
+    'closing notice', 'last performance',
+    'salary', 'wages', 'union', 'strike',
+    'rake', 'raked stage',
+  ];
+
+  // Movie/film keywords to EXCLUDE (for shows with film adaptations)
+  const movieKeywords = [
+    'movie', 'film', 'screening', 'theater chain', 'cinema',
+    'imax', 'dolby', 'amc', 'regal',
+    'ariana grande', 'cynthia erivo',  // Movie cast (Wicked 2024)
+    'jon m. chu', 'universal pictures',
+    'trailer', 'teaser', 'poster reveal',
+    'box office', 'opening weekend',
+  ];
+
+  for (const keyword of industryKeywords) {
+    if (title.includes(keyword)) return false;
+  }
+
+  // Exclude movie/film discussions
+  for (const keyword of movieKeywords) {
+    if (title.includes(keyword)) return false;
+  }
+
+  // Audience keywords that strongly suggest reactions
+  const audienceKeywords = [
+    'saw', 'seen', 'watched', 'just saw',
+    'review', 'thoughts', 'opinion',
+    'loved', 'amazing', 'recommend',
+    'disappointed', 'favorite',
+  ];
+
+  if (audienceKeywords.some(kw => title.includes(kw))) return true;
+
+  // Neutral - not clearly industry or audience
+  return null;
+}
+
+/**
  * Search with multiple strategies to capture audience reactions
- * Prioritizes posts about seeing/experiencing the show over industry discussion
+ * Prioritizes audience posts, excludes industry posts, includes neutral as fallback
  */
 async function searchAudiencePosts(subreddit, showTitle, maxPosts = 100) {
   const cleanTitle = showTitle.replace(/[()]/g, '').trim();
 
   // Audience-focused search strategies (ordered by relevance)
+  // For shows with movie adaptations, prioritize Broadway-specific terms
   const searches = [
-    `flair:Review "${cleanTitle}"`,  // Review-tagged posts (highest signal)
-    `"${cleanTitle}" saw`,           // "I saw Wicked"
-    `"${cleanTitle}" loved`,         // Positive reactions
-    `"${cleanTitle}" amazing`,       // Enthusiasm
-    `"${cleanTitle}" recommend`,     // Recommendations
-    `"${cleanTitle}" review`,        // Reviews
-    `"${cleanTitle}" favorite`,      // Favorites
-    `"${cleanTitle}" disappointed`,  // Negative reactions (still audience)
-    `"${cleanTitle}"`,               // Fallback: basic search
+    `flair:Review "${cleanTitle}"`,           // Review-tagged posts (highest signal)
+    `"${cleanTitle}" "Broadway" saw`,         // Broadway-specific
+    `"just saw ${cleanTitle}"`,               // "just saw Wicked"
+    `"${cleanTitle}" saw`,                    // "I saw Wicked"
+    `"${cleanTitle}" review`,                 // Reviews
+    `"${cleanTitle}" thoughts`,               // Discussion
+    `"${cleanTitle}" loved`,                  // Positive reactions
+    `"${cleanTitle}" recommend`,              // Recommendations
+    `"${cleanTitle}" "on Broadway"`,          // Broadway-specific
+    `"${cleanTitle}"`,                        // Basic search (for neutral posts)
   ];
 
-  const allPosts = [];
+  const audiencePosts = [];  // Definitely audience
+  const neutralPosts = [];   // Not clearly industry or audience
   const seenIds = new Set();
+  let totalSearched = 0;
 
   for (const query of searches) {
-    if (allPosts.length >= maxPosts) break;
+    if (audiencePosts.length >= maxPosts) break;
 
     try {
-      const posts = await searchAllPosts(subreddit, query, 50);
+      const posts = await searchAllPosts(subreddit, query, 100);
+      totalSearched += posts.length;
+
       for (const post of posts) {
-        if (!seenIds.has(post.id)) {
-          seenIds.add(post.id);
-          allPosts.push(post);
+        if (seenIds.has(post.id)) continue;
+        seenIds.add(post.id);
+
+        const classification = classifyPost(post, showTitle);
+        if (classification === true) {
+          audiencePosts.push(post);
+        } else if (classification === null) {
+          neutralPosts.push(post);
         }
+        // classification === false means industry, skip it
       }
-      if (verbose) console.log(`    "${query}": +${posts.length} posts (total: ${allPosts.length})`);
+      if (verbose) console.log(`    "${query}": ${audiencePosts.length} audience, ${neutralPosts.length} neutral (of ${totalSearched} total)`);
     } catch (e) {
       if (verbose) console.log(`    "${query}" failed: ${e.message}`);
     }
   }
 
-  return allPosts.slice(0, maxPosts);
+  // Use audience posts first, then fill with neutral posts if needed
+  const result = [...audiencePosts];
+  if (result.length < maxPosts) {
+    result.push(...neutralPosts.slice(0, maxPosts - result.length));
+  }
+
+  if (verbose && neutralPosts.length > 0 && result.length > audiencePosts.length) {
+    console.log(`    Added ${result.length - audiencePosts.length} neutral posts to reach ${result.length} total`);
+  }
+
+  return result.slice(0, maxPosts);
 }
 
 /**
@@ -192,10 +268,35 @@ async function processShow(show) {
     return null;
   }
 
-  // 2. Collect comments from top posts (by engagement)
-  const topPosts = posts
-    .sort((a, b) => (b.score + b.num_comments) - (a.score + a.num_comments))
+  // 2. Select posts - prioritize genuinely audience-focused posts over high-engagement meta posts
+  // Posts with "saw", "seen", "just saw" in title are gold; don't let high-engagement meta posts drown them out
+  const scoredPosts = posts.map(p => {
+    const title = (p.title || '').toLowerCase();
+    let score = 0;
+
+    // Boost posts that explicitly mention seeing the show
+    if (title.includes('just saw') || title.includes('finally saw')) score += 100;
+    if (title.includes('saw ') || title.includes('seen ')) score += 50;
+    if (title.includes('i saw') || title.includes('we saw')) score += 50;
+    if (title.includes('review') && !title.includes('movie')) score += 30;
+    if (title.includes('first time')) score += 20;
+
+    // Light engagement boost (but not dominant)
+    score += Math.min(p.num_comments, 50);  // Cap at 50 so engagement doesn't dominate
+
+    return { ...p, _audienceScore: score };
+  });
+
+  const topPosts = scoredPosts
+    .sort((a, b) => b._audienceScore - a._audienceScore)
     .slice(0, 30);
+
+  if (verbose) {
+    console.log(`  Top 5 selected posts:`);
+    topPosts.slice(0, 5).forEach((p, i) => {
+      console.log(`    ${i+1}. "${p.title.slice(0, 50)}..." (score: ${p._audienceScore})`);
+    });
+  }
 
   console.log(`  Collecting comments from top ${topPosts.length} posts...`);
 
@@ -411,11 +512,19 @@ function saveAudienceBuzz() {
  */
 async function main() {
   console.log('Reddit Buzz Scraper v2 for Broadway Scorecard');
-  console.log('Using: Reddit API (free) + Gemini Flash (cheap)\n');
+
+  // Determine classifier provider
+  let classifierName = 'unknown';
+  if (process.env.OPENROUTER_API_KEY) classifierName = 'Kimi K2.5 (via OpenRouter)';
+  else if (process.env.GEMINI_API_KEY) classifierName = 'Gemini Flash';
+  else if (process.env.OPENAI_API_KEY) classifierName = 'GPT-4o-mini';
+  else if (process.env.ANTHROPIC_API_KEY) classifierName = 'Claude Sonnet';
+
+  console.log(`Using: Reddit API (free) + ${classifierName}\n`);
 
   // Check for API keys
-  if (!process.env.GEMINI_API_KEY && !process.env.OPENAI_API_KEY && !process.env.ANTHROPIC_API_KEY) {
-    console.error('Error: At least one of GEMINI_API_KEY, OPENAI_API_KEY, or ANTHROPIC_API_KEY must be set');
+  if (!process.env.OPENROUTER_API_KEY && !process.env.GEMINI_API_KEY && !process.env.OPENAI_API_KEY && !process.env.ANTHROPIC_API_KEY) {
+    console.error('Error: At least one of OPENROUTER_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY, or ANTHROPIC_API_KEY must be set');
     process.exit(1);
   }
 
