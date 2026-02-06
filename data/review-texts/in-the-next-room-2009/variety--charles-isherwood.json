@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "https://variety.com/2009/legit/reviews/in-the-next-room-or-the-vibrator-play-1200476226/",
   "publishDate": "November 10, 2009",
-  "fullText": "Sarah Ruhl's comedy about Victorian-era sexual repression and awakening is a witty and touching exploration of intimacy, featuring strong performances from Laura Benanti and Michael Cerveris.",
-  "isFullReview": false,
+  "fullText": "Feb 12, 2009 1:42pm PT \n\n \n\n \n \n \n\n \n\n \n In the Next Room (or the Vibrator Play)\n \n \n\n \n\n A most pleasant and popular -- if medically dubious -- means of \"curing\" that quintessential 19th century women's ailment, hysteria, provides the hook in Sarah Ruhl's \"In the Next Room (or the Vibrator Play).\"\n\nA most pleasant and popular — if medically dubious — means of “curing” that quintessential 19th century women’s ailment, hysteria, provides the hook in Sarah Ruhl‘s “In the Next Room (or the Vibrator Play).” Though a tad uneven once it develops more serious shades, this serenely funny new work by the author of “Eurydice” and “The Clean House” sparkles with wit and invention in Les Waters’ pitch-perfect production for Berkeley Rep.\n\nUpstate New Yorker Dr. Givings (Paul Niebanck) is a proud 1880s man of science who can’t sing enough praises about that many-faceted modern wonder, electricity — a topic (seemingly his only one) that bores wife Catherine (Hannah Cabell). It might not if she knew more about the mysterious machine he uses in his operating room on patients whose inexplicable, enthusiastic cries can be heard through the wall in their home’s parlor.\n\nA typical case is Mrs. Daldry (Maria Dizzia), whose brusque husband (John Leonard Thompson) is fed up with her neurotic sensitivities and inertia. Nervously lying down in her bloomers on the doc’s examination table, she has his electric device applied to her netherparts. It “produces a paroxysm” that relieves “pent-up emotion in the womb.” Voila! Mrs. D. is suddenly rested, rosy-cheeked and, er, stimulated.\n\nA high-spirited, garrulous sort who feels neglected by her workaholic husband, and failed as a mother (she lacks breast milk for their newborn daughter), Catherine grows curious about this “electrical therapy,” secretly trying it out with Mrs. Daldry’s help.\n\nMystified and thrilled, they describe their responses to Mrs. D’s black housekeeper Elizabeth (Melle Powers), who’s also the baby’s wet nurse. When Elizabeth hints she has felt similar sensations while “having relations” with her husband, the two ladies dissolve into embarrassed hilarity. It’s beyond comprehension that this miraculous invention could have any overlap with their own quick, dreary marital “duties.” Nor will the doc himself admit his vibrating device is related to base sexuality — in fact, when Catherine pleads he combine work (the machine) and play (kissing her), he’s appalled.\n\nMeanwhile, various individuals become convinced they’d be better off with other partners than their own, not excluding Mrs. Daldry’s strange fixation on the doc’s pleasant spinster assistant Annie (Stacy Ross).\n\nAct two brings a hilarious additional player in the form of flamboyant artist Leo (Joaquin Torres), whose rare “male hysteria” (i.e. depression) since a fiancee’s jilting requires application of “the Chattanooga Vibrator” — an actual historical entity — to his prostate. Voila!\n\n“In the Next Room” is largely one big naughty joke about the Victorian disconnect between body and mind, pleasure and propriety. But it’s an inspired one that flags just a bit in the last laps, particularly when Elizabeth (who has lost a baby to cholera) has a poignant monologue about grief that belongs in another play. The script does achieve the desired greater depth, however, in a last flourish that transforms both the Givings’ passion-deprived marriage and Annie Smart’s meticulous two-room set.\n\nPerformances are beautifully detailed, resisting caricature for psychological realism even in the funniest situations.",
+  "isFullReview": true,
   "dtliExcerpt": "Sarah Ruhl's comedy about Victorian-era sexual repression and awakening is a witty and touching exploration of intimacy, featuring strong performances from Laura Benanti and Michael Cerveris.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Sarah Ruhl's comedy about Victorian-era sexual repression and awakening is a witty and touching exploration of intimacy, featuring strong performances from Laura Benanti and Michael Cerveris.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
     "score": 76,
@@ -72,5 +72,44 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 551,
+  "archivePath": "data/archives/reviews/in-the-next-room-2009/variety--charles-isherwood_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T18:34:35.167Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 551,
+  "tierReason": "Full review text"
 }
