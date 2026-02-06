@@ -17212,66 +17212,6 @@
     "timestamp": "2026-02-06T05:53:48.761Z"
   },
   {
-    "reviewId": "caroline-or-change-2021/hollywood-reporter--david-rooney.json",
-    "showId": "caroline-or-change-2021",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235038296/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): mamma mia!, home, company, fun home, once...",
-    "textLength": 10428,
-    "timestamp": "2026-02-06T05:53:49.498Z"
-  },
-  {
-    "reviewId": "caroline-or-change-2021/nyt-theater--jonathan-mandrell.json",
-    "showId": "caroline-or-change-2021",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandrell",
-    "url": "https://newyorktheater.me/2021/10/27/caroline-or-change-on-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): home, smash, company, girl from the north country, mrs. doubtfire...",
-    "textLength": 10079,
-    "timestamp": "2026-02-06T05:53:57.315Z"
-  },
-  {
-    "reviewId": "caroline-or-change-2021/nyt-theater--jonthan-mandell.json",
-    "showId": "caroline-or-change-2021",
-    "outlet": "New York Theater",
-    "critic": "Jonthan Mandell",
-    "url": "https://newyorktheater.me/2021/10/27/caroline-or-change-on-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): home, smash, company, girl from the north country, mrs. doubtfire...",
-    "textLength": 10079,
-    "timestamp": "2026-02-06T05:54:06.761Z"
-  },
-  {
-    "reviewId": "caroline-or-change-2021/variety--aramide-tinubu.json",
-    "showId": "caroline-or-change-2021",
-    "outlet": "Variety",
-    "critic": "Aramide Tinubu",
-    "url": "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-1235104577/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): company, misery, the father, the audience, high...",
-    "textLength": 5321,
-    "timestamp": "2026-02-06T05:54:58.042Z"
-  },
-  {
-    "reviewId": "caroline-or-change-2021/variety--ayanna-prescod.json",
-    "showId": "caroline-or-change-2021",
-    "outlet": "Variety",
-    "critic": "Ayanna Prescod",
-    "url": "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-sharon-d-clarke-1235098905/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): company, misery, the father, the audience, high...",
-    "textLength": 5344,
-    "timestamp": "2026-02-06T05:55:15.424Z"
-  },
-  {
     "reviewId": "casa-valentina-2014/vulture--jesse-green.json",
     "showId": "casa-valentina-2014",
     "outlet": "Vulture",
@@ -20270,5 +20210,101 @@
     "garbageReason": "Multiple shows mentioned (10): tina, rain, elling, how to succeed in business without really trying, high...",
     "textLength": 4516,
     "timestamp": "2026-02-06T15:20:48.581Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/hollywood-reporter--david-rooney.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235038296/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, company, fun home, once, evita...",
+    "textLength": 10843,
+    "timestamp": "2026-02-06T15:21:47.194Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/nyt-theater--jonathan-mandrell.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandrell",
+    "url": "https://newyorktheater.me/2021/10/27/caroline-or-change-on-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): home, smash, company, girl from the north country, mrs. doubtfire...",
+    "textLength": 10079,
+    "timestamp": "2026-02-06T15:21:55.594Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/nyt-theater--jonthan-mandell.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "New York Theater",
+    "critic": "Jonthan Mandell",
+    "url": "https://newyorktheater.me/2021/10/27/caroline-or-change-on-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): home, smash, company, girl from the north country, mrs. doubtfire...",
+    "textLength": 10079,
+    "timestamp": "2026-02-06T15:22:04.150Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/variety--aramide-tinubu.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "Variety",
+    "critic": "Aramide Tinubu",
+    "url": "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-1235104577/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): company, misery, the father, the audience, high...",
+    "textLength": 5008,
+    "timestamp": "2026-02-06T15:22:29.752Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/variety--ayanna-prescod.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "Variety",
+    "critic": "Ayanna Prescod",
+    "url": "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-sharon-d-clarke-1235098905/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): company, misery, the father, the audience, high...",
+    "textLength": 5344,
+    "timestamp": "2026-02-06T15:22:45.698Z"
+  },
+  {
+    "reviewId": "carousel-2018/hollywood-reporter--david-rooney.json",
+    "showId": "carousel-2018",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/carousel-theater-1102253",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): giant, harmony, appropriate, smash, waitress...",
+    "textLength": 11832,
+    "timestamp": "2026-02-06T15:24:32.783Z"
+  },
+  {
+    "reviewId": "carousel-2018/newyorker--hilton-als.json",
+    "showId": "carousel-2018",
+    "outlet": "The New Yorker",
+    "critic": "Hilton Als",
+    "url": "https://www.newyorker.com/magazine/2018/04/23/the-dark-fantasies-of-carousel",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): wicked, harmony, home, oklahoma!, summer...",
+    "textLength": 8239,
+    "timestamp": "2026-02-06T15:24:41.941Z"
+  },
+  {
+    "reviewId": "carousel-2018/nytimes--ben-brantley.json",
+    "showId": "carousel-2018",
+    "outlet": "New York Times",
+    "critic": "Ben Brantley",
+    "url": "http://www.nytimes.com/2018/04/12/theater/carousel-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, violet, the performers, evita, the scottsboro boys...",
+    "textLength": 7457,
+    "timestamp": "2026-02-06T15:24:45.161Z"
   }
 ]
