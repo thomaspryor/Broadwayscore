@@ -16444,30 +16444,6 @@
     "timestamp": "2026-02-06T01:33:43.835Z"
   },
   {
-    "reviewId": "9-to-5-2009/nytimes--ben-brantley.json",
-    "showId": "9-to-5-2009",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (16): wicked, chicago, giant, company, network...",
-    "textLength": 9381,
-    "timestamp": "2026-02-06T01:33:47.086Z"
-  },
-  {
-    "reviewId": "9-to-5-2009/vulture--unknown.json",
-    "showId": "9-to-5-2009",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2013/11/reviews-little-miss-sunshine-a-bed-and-a-chair.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (22): giant, merrily we roll along, english, purpose, smash...",
-    "textLength": 13081,
-    "timestamp": "2026-02-06T01:33:51.209Z"
-  },
-  {
     "reviewId": "a-behanding-in-spokane-2010/newyorker--hinton-als.json",
     "showId": "a-behanding-in-spokane-2010",
     "outlet": "The New Yorker",
@@ -17104,66 +17080,6 @@
     "timestamp": "2026-02-06T03:19:53.551Z"
   },
   {
-    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json",
-    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2022/12/04/a-beautiful-noise-the-neil-diamond-musical-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): 1776, new york, new york, sweat, hair, high...",
-    "textLength": 7870,
-    "timestamp": "2026-02-06T03:33:31.267Z"
-  },
-  {
-    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json",
-    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-    "outlet": "New York Theatre Guide",
-    "critic": "Frank Scheck",
-    "url": "https://nystagereview.com/2022/12/04/a-beautiful-noise-neil-diamond-on-the-couch/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): smash, company, hair, once, evita...",
-    "textLength": 6384,
-    "timestamp": "2026-02-06T03:33:35.005Z"
-  },
-  {
-    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--joe-dziemianowicz.json",
-    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-    "outlet": "New York Theatre Guide",
-    "critic": "Joe Dziemianowicz",
-    "url": "https://www.newyorktheatreguide.com/reviews/a-beautiful-noise-broadway-review-neil-diamond",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): appropriate, funny girl, spring awakening, once, elling...",
-    "textLength": 6141,
-    "timestamp": "2026-02-06T03:33:42.056Z"
-  },
-  {
-    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nytimes--elisabeth-vincentelli.json",
-    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-    "outlet": "New York Times",
-    "critic": "Elisabeth Vincentelli",
-    "url": "https://www.nytimes.com/2022/12/04/theater/a-beautiful-noise-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): mamma mia!, smash, les misérables, hair, once...",
-    "textLength": 6708,
-    "timestamp": "2026-02-06T03:33:45.978Z"
-  },
-  {
-    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json",
-    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-    "outlet": "Variety",
-    "critic": "A.D. Amorosi",
-    "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-musical-broadway-1235449537/",
-    "method": "browserbase",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, smash, parade, once, rain...",
-    "textLength": 5880,
-    "timestamp": "2026-02-06T03:34:02.751Z"
-  },
-  {
     "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--unknown.json",
     "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
     "outlet": "Vulture",
@@ -17798,5 +17714,89 @@
     "garbageReason": "Multiple shows mentioned (13): english, company, the prom, 1984, charlie and the chocolate factory...",
     "textLength": 7255,
     "timestamp": "2026-02-06T04:41:40.849Z"
+  },
+  {
+    "reviewId": "9-to-5-2009/nytimes--ben-brantley.json",
+    "showId": "9-to-5-2009",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): wicked, chicago, giant, company, network...",
+    "textLength": 9381,
+    "timestamp": "2026-02-06T04:42:23.382Z"
+  },
+  {
+    "reviewId": "9-to-5-2009/vulture--unknown.json",
+    "showId": "9-to-5-2009",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2013/11/reviews-little-miss-sunshine-a-bed-and-a-chair.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (22): giant, merrily we roll along, english, purpose, smash...",
+    "textLength": 13081,
+    "timestamp": "2026-02-06T04:42:27.959Z"
+  },
+  {
+    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/12/04/a-beautiful-noise-the-neil-diamond-musical-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): 1776, new york, new york, sweat, hair, high...",
+    "textLength": 7870,
+    "timestamp": "2026-02-06T04:42:39.375Z"
+  },
+  {
+    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json",
+    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+    "outlet": "New York Theatre Guide",
+    "critic": "Frank Scheck",
+    "url": "https://nystagereview.com/2022/12/04/a-beautiful-noise-neil-diamond-on-the-couch/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): smash, company, hair, once, evita...",
+    "textLength": 6384,
+    "timestamp": "2026-02-06T04:42:42.420Z"
+  },
+  {
+    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--joe-dziemianowicz.json",
+    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/a-beautiful-noise-broadway-review-neil-diamond",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): appropriate, funny girl, spring awakening, once, elling...",
+    "textLength": 6141,
+    "timestamp": "2026-02-06T04:42:51.740Z"
+  },
+  {
+    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nytimes--elisabeth-vincentelli.json",
+    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+    "outlet": "New York Times",
+    "critic": "Elisabeth Vincentelli",
+    "url": "https://www.nytimes.com/2022/12/04/theater/a-beautiful-noise-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mamma mia!, smash, les misérables, hair, once...",
+    "textLength": 6797,
+    "timestamp": "2026-02-06T04:43:09.369Z"
+  },
+  {
+    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json",
+    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+    "outlet": "Variety",
+    "critic": "A.D. Amorosi",
+    "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-musical-broadway-1235449537/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, smash, parade, once, rain...",
+    "textLength": 6249,
+    "timestamp": "2026-02-06T04:43:32.629Z"
   }
 ]
