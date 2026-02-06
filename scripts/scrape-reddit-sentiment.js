@@ -134,9 +134,7 @@ function classifyPost(post, showTitle) {
   const title = (post.title || '').toLowerCase();
   const flair = (post.link_flair_text || '').toLowerCase();
 
-  // Review flair is always a strong signal
-  if (flair.includes('review')) return true;
-
+  // FIRST: Check exclusion keywords - these override everything including flair
   // Industry keywords to EXCLUDE
   const industryKeywords = [
     'injury', 'injured', 'hurt', 'hospital', 'medical',
@@ -165,6 +163,9 @@ function classifyPost(post, showTitle) {
   for (const keyword of movieKeywords) {
     if (title.includes(keyword)) return false;
   }
+
+  // THEN: Review flair is a strong positive signal (after exclusions)
+  if (flair.includes('review')) return true;
 
   // Audience keywords that strongly suggest reactions
   const audienceKeywords = [
@@ -268,52 +269,15 @@ async function processShow(show) {
     return null;
   }
 
-  // 2. Select posts - prioritize genuinely audience-focused posts over high-engagement meta posts
-  // Boost posts that express audience opinions, not just those with "saw"
-  const scoredPosts = posts.map(p => {
-    const title = (p.title || '').toLowerCase();
-    let score = 0;
-
-    // Tier 1: Explicit "I saw it" language (highest signal)
-    if (title.includes('just saw') || title.includes('finally saw')) score += 100;
-    if (title.includes('i saw') || title.includes('we saw')) score += 80;
-    if (title.includes('saw ') || title.includes('seen ')) score += 50;
-
-    // Tier 2: Strong positive opinion language (also high signal)
-    if (title.includes('loved') || title.includes('love ')) score += 70;
-    if (title.includes('amazing') || title.includes('incredible') || title.includes('fantastic')) score += 60;
-    if (title.includes('best ') || title.includes('favorite')) score += 50;
-    if (title.includes('must see') || title.includes('must-see') || title.includes('run to')) score += 60;
-    if (title.includes('run don')) score += 60;  // "run don't walk"
-    if (title.includes('recommend')) score += 50;
-
-    // Tier 3: Strong negative opinion language (also audience reaction)
-    if (title.includes('avoid') || title.includes('stay away') || title.includes('skip')) score += 60;
-    if (title.includes('disappointing') || title.includes('disappointed')) score += 50;
-    if (title.includes('boring') || title.includes('overrated') || title.includes('waste')) score += 50;
-    if (title.includes('worst') || title.includes('terrible') || title.includes('awful')) score += 50;
-
-    // Tier 4: Discussion starters (moderate signal)
-    if (title.includes('review') && !title.includes('movie')) score += 40;
-    if (title.includes('thoughts on') || title.includes('opinion')) score += 30;
-    if (title.includes('first time') || title.includes('for the first')) score += 30;
-    if (title.includes('unpopular opinion')) score += 30;
-    if (title.includes('underrated')) score += 40;
-
-    // Light engagement boost (but not dominant)
-    score += Math.min(p.num_comments, 50);  // Cap at 50 so engagement doesn't dominate
-
-    return { ...p, _audienceScore: score };
-  });
-
-  const topPosts = scoredPosts
-    .sort((a, b) => b._audienceScore - a._audienceScore)
-    .slice(0, 30);
+  // 2. Select posts - use Reddit's relevance ordering from our audience-focused searches
+  // Don't re-sort by engagement (that drowns out good posts with high-engagement meta threads)
+  // The LLM will filter out irrelevant comments - we just need to give it good posts to work with
+  const topPosts = posts.slice(0, 30);
 
   if (verbose) {
-    console.log(`  Top 5 selected posts:`);
+    console.log(`  Top 5 posts (by Reddit search relevance):`);
     topPosts.slice(0, 5).forEach((p, i) => {
-      console.log(`    ${i+1}. "${p.title.slice(0, 50)}..." (score: ${p._audienceScore})`);
+      console.log(`    ${i+1}. "${p.title.slice(0, 50)}..." (${p.num_comments} comments)`);
     });
   }
 
