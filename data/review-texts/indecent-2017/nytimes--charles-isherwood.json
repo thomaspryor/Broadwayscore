@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "http://www.nytimes.com/2016/05/18/theater/review-indecent-revisits-a-play-colliding-with-broadway-mores-and-more.html?partner=rss&emc=rss",
   "publishDate": "May 17, 2016",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2016/05/18/theater/review-indecent-revisits-a-play-colliding-with-broadway-mores-and-more.htmlShare full article4Advertisement\n\nThe protagonist of “Indecent,” the powerful new play by Paula Vogel, is not a person but a drama — meaning that this is a play as much about the fate of a play as it is about the lives of the people involved in it. This superbly realized production, created by Ms. Vogel and the director Rebecca Taichman, charts the tumultuous fortunes of “God of Vengeance,” a work by Sholem Asch that caused a scandal when it was produced on Broadway in 1923.\n\nIn many respects, “Indecent,” which opened at the Vineyard Theater on Tuesday, could be seen as a Jewish version of the current “Shuffle Along, or the Making of the Musical Sensation of 1921 and All That Followed,” another terrific show about a landmark Broadway production (almost) lost to history.\n\nThanks in no small measure to Ms. Taichman’s sensitive direction and the forceful performances of its cast — all of the actors play several roles — “Indecent” sheds an eye-opening light on a little-known time when theatrical history, Jewish culture and the frank depiction of homosexuality intersected, with explosive results.\n\nIt begins with the arresting image of the cast, clad in drably colored clothing from which ashes fall in thin streams, rising from chairs at the back of the stage and stepping onto a simple wooden platform. This strange vision comes to have haunting significance as the play moves to its dark conclusion.\n\nBut at first there is excitement. In their Warsaw apartment in 1906, Sholem (Max Gordon Moore) is reading the play to his wife, Madje (Adina Verson). Her enthusiasm is as much philosophical as personal. She believes that the play captures much about the Jewish culture of the times that needs to be brought into the light: “The roots of all evil: the money, the subjugation of women, the false piety … the terrifying violence of that father,” she says, referring to the central character, a Jewish patriarch, Yekel, who runs a brothel from his basement.\n\nMost of all, she’s touched by a scene in which two young women, the virgin daughter of Yekel and one of the prostitutes who work for him, discover their love for each other during a rainstorm.\n\nA theater review on Wednesday about “Indecent,” at the Vineyard Theater in Manhattan, referred incorrectly to the character Lemml. He is the cousin of a character named Nakhmen, not a cousin of Sholem Asch.\n\nWhen we learn of a mistake, we acknowledge it with a correction. If you spot an error, please let us know at corrections@nytimes.com.Learn more",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": null,
@@ -16,10 +16,48 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Superbly realized production...Thanks in no small measure to Ms. Taichman’s sensitive direction and the forceful performances of its cast 'Indecent' sheds an eye-opening light on a little-known time...The fluent choreography also contributes to the almost cinematic flow...Ms. Vogel’s script is not entirely free of necessary but still blunt expositional passages, or the occasional polemical touch...'Indecent' becomes diffuse as Ms. Vogel’s plot grows more complicated.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright",
     "show-score"
-  ]
+  ],
+  "textWordCount": 427,
+  "archivePath": "data/archives/reviews/indecent-2017/nytimes--charles-isherwood_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T08:04:53.909Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 427,
+  "tierReason": "Missing proper ending or other signals"
 }
