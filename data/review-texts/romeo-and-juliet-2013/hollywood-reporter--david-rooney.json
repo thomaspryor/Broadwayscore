@@ -6,7 +6,7 @@
   "url": "https://www.hollywoodreporter.com/news/general-news/romeo-juliet-theater-review-629441/",
   "publishDate": "September 20, 2013",
   "fullText": null,
-  "isFullReview": false,
+  "isFullReview": true,
   "dtliExcerpt": "Orlando Bloom and Condola Rashad generate appealing chemistry in this handsome but uneven revival that opened Thursday at the Richard Rodgers Theatre.",
   "originalScore": null,
   "assignedScore": null,
@@ -22,5 +22,54 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/orlando-bloom-romeo-juliet-theater-632505"
+  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/orlando-bloom-romeo-juliet-theater-632505",
+  "textWordCount": 201,
+  "archivePath": "data/archives/reviews/romeo-and-juliet-2013/hollywood-reporter--david-rooney_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T17:37:49.535Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 1250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 201 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "LeBron James Savannah Brinson - P 2012\n\nLeBron James has tied the knot with longtime girlfriend Savannah Brinson.\n\nUS Weekly reports the Miami Heat star wed his high school sweetheart in San Diego on Saturday, as a number of stars looked on, including Lance Bass, NBA player Dwyane Wade, actress Gabrielle Union, singer Neyo, and Jamie-Lynn Sigler.\n\nPHOTOS: Hollywood’s Magazine Cover Weddings\n\nAhead of the wedding, Page Six reported the wedding would be kept small, and was being planned by Preston Bailey, who organized Sean Parker‘s Lord of the Rings nuptials earlier this summer.\n\nIn July, TMZ obtained an invitation to the top-secret wedding. The invitations were vague, listing a “Welcome Barbeque” at 7 p.m. Friday and a “Farewell Brunch” at 10:30 a.m. Sunday, but listing no address.\n\nThe couple have two children together, LeBron James, Jr., 8, and Bryce Maximus, 6. James proposed on New Year’s Eve 2011.\n\nRelated Stories \n \n\n \n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Related Story\n \n \n \n \n\n \n \n \n \n Til Death Do Us Part: Hollywood's Magazine Cover Weddings \n \n \n\n \n \n \n \n\n \n \n\n \n\n \n\n \n\n \n \n \n Related Stories \n \n\n \n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Related Story\n \n \n \n \n\n \n \n \n \n LeBron James, Tom Werner Developing a Comedy Series for Starz \n \n \n\n \n \n \n \n\n \n \n\n \n\n \n\n \n\n \n \n \n Related Stories \n \n\n \n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Related Story\n \n \n \n \n\n \n \n \n \n The Secret Life of Walter Mitty Wiig Stiller - H 2013 \n \n \n\n \n \n \n \n\n \n \n\n \n\n \n\n \n\n \n \n \n Related Stories \n \n\n \n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Related Story\n \n \n \n \n\n \n \n \n \n Seth Meyers Marries Lawyer Alexi Ashe"
 }

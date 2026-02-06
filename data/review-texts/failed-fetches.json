@@ -12436,54 +12436,6 @@
     "timestamp": "2026-02-05T04:40:09.769Z"
   },
   {
-    "reviewId": "purpose-2025/nyt-theater--jonathan-mandell.json",
-    "showId": "purpose-2025",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2025/03/17/purpose-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): chicago, appropriate, home, othello, all the way...",
-    "textLength": 5444,
-    "timestamp": "2026-02-05T04:40:16.424Z"
-  },
-  {
-    "reviewId": "purpose-2025/nytg--joe-dziemianowicz.json",
-    "showId": "purpose-2025",
-    "outlet": "New York Theatre Guide",
-    "critic": "Joe Dziemianowicz",
-    "url": "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): chicago, appropriate, home, smash, company...",
-    "textLength": 5080,
-    "timestamp": "2026-02-05T04:40:24.115Z"
-  },
-  {
-    "reviewId": "purpose-2025/nytimes--jesse-green.json",
-    "showId": "purpose-2025",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2025/03/17/theater/purpose-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): chicago, appropriate, home, company, the father...",
-    "textLength": 7309,
-    "timestamp": "2026-02-05T04:40:27.922Z"
-  },
-  {
-    "reviewId": "purpose-2025/variety--aramide-tinubu.json",
-    "showId": "purpose-2025",
-    "outlet": "Variety",
-    "critic": "Aramide Tinubu",
-    "url": "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): the lion king, chicago, appropriate, home, disgraced...",
-    "textLength": 5800,
-    "timestamp": "2026-02-05T04:41:14.337Z"
-  },
-  {
     "reviewId": "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json",
     "showId": "the-kite-runner-2022",
     "outlet": "The New Yorker",
@@ -18280,18 +18232,6 @@
     "timestamp": "2026-02-06T09:14:16.067Z"
   },
   {
-    "reviewId": "rabbit-hole-2006/nytimes--ben-brantley.json",
-    "showId": "rabbit-hole-2006",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2006/02/03/theater/reviews/03rabb.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): home, kimberly akimbo, once, rain, elling...",
-    "textLength": 5613,
-    "timestamp": "2026-02-06T09:17:05.011Z"
-  },
-  {
     "reviewId": "real-women-have-curves-2025/nytimes--collins-hughes.json",
     "showId": "real-women-have-curves-2025",
     "outlet": "The New York Times",
@@ -21014,5 +20954,113 @@
     "garbageReason": "Multiple shows mentioned (11): chess, spamalot, once, anything goes, memphis...",
     "textLength": 4491,
     "timestamp": "2026-02-06T17:32:20.009Z"
+  },
+  {
+    "reviewId": "purpose-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "purpose-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/03/17/purpose-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): chicago, appropriate, home, othello, all the way...",
+    "textLength": 5444,
+    "timestamp": "2026-02-06T17:36:58.653Z"
+  },
+  {
+    "reviewId": "purpose-2025/nytg--joe-dziemianowicz.json",
+    "showId": "purpose-2025",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): chicago, appropriate, home, smash, company...",
+    "textLength": 5080,
+    "timestamp": "2026-02-06T17:37:06.474Z"
+  },
+  {
+    "reviewId": "purpose-2025/nytimes--jesse-green.json",
+    "showId": "purpose-2025",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2025/03/17/theater/purpose-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): chicago, appropriate, home, company, the father...",
+    "textLength": 7309,
+    "timestamp": "2026-02-06T17:37:10.114Z"
+  },
+  {
+    "reviewId": "purpose-2025/variety--aramide-tinubu.json",
+    "showId": "purpose-2025",
+    "outlet": "Variety",
+    "critic": "Aramide Tinubu",
+    "url": "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, appropriate, home, disgraced, the audience...",
+    "textLength": 5973,
+    "timestamp": "2026-02-06T17:37:16.822Z"
+  },
+  {
+    "reviewId": "purpose-2025/vulture--unknown.json",
+    "showId": "purpose-2025",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "https://www.vulture.com/article/purpose-branden-jacobs-jenkins-theater-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): chicago, marjorie prime, liberation, harmony, appropriate...",
+    "textLength": 14566,
+    "timestamp": "2026-02-06T17:37:20.857Z"
+  },
+  {
+    "reviewId": "rabbit-hole-2006/nytimes--ben-brantley.json",
+    "showId": "rabbit-hole-2006",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2006/02/03/theater/reviews/03rabb.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, gypsy, kimberly akimbo, once, rain...",
+    "textLength": 9075,
+    "timestamp": "2026-02-06T17:37:25.777Z"
+  },
+  {
+    "reviewId": "ragtime-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "ragtime-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/10/16/ragtime-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): liberation, parade, fiddler on the roof, hair, once...",
+    "textLength": 7279,
+    "timestamp": "2026-02-06T17:37:34.265Z"
+  },
+  {
+    "reviewId": "ragtime-2025/variety--frank-rizzo.json",
+    "showId": "ragtime-2025",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2025/legit/reviews/ragtime-review-broadway-lincoln-center-theater-1236554453/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): purpose, the audience, act one, once, evita...",
+    "textLength": 6583,
+    "timestamp": "2026-02-06T17:37:41.193Z"
+  },
+  {
+    "reviewId": "romeo-and-juliet-2013/hollywood-reporter--unknown.json",
+    "showId": "romeo-and-juliet-2013",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/orlando-bloom-romeo-juliet-theater-632505",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (18): mamma mia!, the piano lesson, macbeth, west side story, king lear...",
+    "textLength": 8150,
+    "timestamp": "2026-02-06T17:37:56.611Z"
   }
 ]
