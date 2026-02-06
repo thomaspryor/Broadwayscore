@@ -16,7 +16,7 @@
   "bwwExcerpt": "A spotlight works like a face-lift on Chauncey Miles, the title character of 'The Nance,' the strained if heartfelt new play by Douglas Carter Beane, set in the twilight of burlesque. As portrayed with shiny expertise and dark conviction by Nathan Lane in a production that opened on Monday night at the Lyceum Theater, Chauncey looks every year of whatever age he may admit to, and then some, whenever he's not onstage...This Janus-faced persona makes Mr. Lane a natural for the divided soul that is Chauncey, and he doesn't disappoint. Moving between his natural and artificial selves in increasingly adverse circumstances, his Chauncey flips the on and off switch so often that it finally short circuits, to devastating effect...But even Mr. Lane can't reconcile all the disparities Mr. Beane's script asks him to weave together.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-NANCE-Opens-on-Broadway-Updating-LIVE-20130415",
   "showScoreExcerpt": "Mr. Lane gives what may be the performance of his career, finding the aching soul within the seemingly debased comic stereotype.",
-  "contentTier": "needs-rescrape",
+  "contentTier": "complete",
   "contentTierReason": "Short text (21 words)",
   "textQuality": "full",
   "sources": [
@@ -30,44 +30,20 @@
   "urlDiscoveredAt": "2026-02-04T01:59:15.575Z",
   "urlDiscoveryMethod": "google-serp",
   "textWordCount": 306,
-  "archivePath": "data/archives/reviews/the-nance-2013/nytimes--ben-brantley_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T01:59:15.577Z",
-  "fetchMethod": "brightdata",
+  "archivePath": "data/archives/reviews/the-nance-2013/nytimes--ben-brantley_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T14:19:37.816Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "timeout of 60000ms exceeded"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "Parse Error: Header overflow"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 4,
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "archive",
   "wordCount": 306,
   "tierReason": "Full review text",
   "bwwScore": 8,
@@ -75,5 +51,7 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about JavaScript and verifying access, making it impossible to determine the critic's verdict.; openai: The text is incomplete and includes a message about retrieving article content, indicating it's not a full review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "archiveOrgTimestamp": "20241216075714",
+  "archiveOrgUrl": "http://web.archive.org/web/20241216075714/https://www.nytimes.com/2013/04/16/theater/reviews/the-nance-starring-nathan-lane-at-lyceum-theater.html"
 }

@@ -1,28 +1,17 @@
 {
-  "updatedAt": "2026-02-06T14:16:14.278Z",
-  "processed": 85,
-  "failed": 365,
-  "successRate": "18.9%",
+  "updatedAt": "2026-02-06T14:20:08.313Z",
+  "processed": 93,
+  "failed": 367,
+  "successRate": "20.2%",
   "tierBreakdown": {
     "playwright": 8,
-    "browserbase": 10,
+    "browserbase": 12,
     "scrapingbee": 21,
     "brightdata": 26,
-    "archive": 36
+    "archive": 44
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-02-06T03:40:35.311Z",
-      "event": "bb-session",
-      "session": "eb34dfd9",
-      "url": "http://www.nytimes.com/2010/08/02/theater/02night.html?_r=1"
-    },
-    {
-      "t": "2026-02-06T03:40:41.549Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-02-06T13:53:47.486Z",
       "event": "bb-session",
@@ -125,6 +114,18 @@
       "t": "2026-02-06T14:15:20.598Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-06T14:18:53.248Z",
+      "event": "bb-session",
+      "session": "937435b7",
+      "url": "http://www.nytimes.com/2015/03/20/theater/review-the-heidi-chronicles-with-elisa"
+    },
+    {
+      "t": "2026-02-06T14:19:36.504Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770387543326\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAQtmXYpEeCR4ALPe1oA==&cid=IPAzM1KTNhQfKp4nhHnPhu1RV6cDjftaRRRaZHN_V8SaYM9yXDFKDSWvzJmEGCn~CRliOyMMotQ4I9P4bfyZBD0J8Sgg0OHFHvlf9kytwZdPbMctAUuNPKccQ1Bf6dF1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770387543326\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770387543326\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAQtmXYpEeCR4ALPe1oA==&cid=IPAzM1KTNhQfKp4nhHnPhu1RV6cDjftaRRRaZHN_V8SaYM9yXDFKDSWvzJmEGCn~CRliOyMMotQ4I9P4bfyZBD0J8Sgg0OHFHvlf9kytwZdPbMctAUuNPKccQ1Bf6dF1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770387543326\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    29 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770387543326\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAQtmXYpEeCR4ALPe1oA==&cid=IPAzM1KTNhQfKp4nhHnPhu1RV6cDjftaRRRaZHN_V8SaYM9yXDFKDSWvzJmEGCn~CRliOyMMotQ4I9P4bfyZBD0J8Sgg0OHFHvlf9kytwZdPbMctAUuNPKccQ1Bf6dF1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770387543326\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
     }
   ]
 }
