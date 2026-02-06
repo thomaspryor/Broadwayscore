@@ -23,7 +23,8 @@
     "airline-highway-2015/nytimes--charles-isherwood.json",
     "all-in-comedy-about-love-2024/variety--frank-rizzo.json",
     "all-my-sons-2019/nytimes--ben-brantley.json",
-    "all-my-sons-2019/nytimes--jesse-green.json"
+    "all-my-sons-2019/nytimes--jesse-green.json",
+    "110-in-the-shade-2007/variety--david-rooney.json"
   ],
   "failed": [
     "110-in-the-shade-2007/nytimes--ben-brantley.json",
@@ -171,7 +172,16 @@
     "all-my-sons-2019/vulture--sara-holdren.json",
     "all-out-2025/nytg--joe-dziemianowicz.json",
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
-    "all-the-way-2014/hollywood-reporter--david-rooney.json"
+    "all-the-way-2014/hollywood-reporter--david-rooney.json",
+    "110-in-the-shade-2007/nytimes--ben-brantley.json",
+    "1776-2022/hollywood-reporter--david-rooney.json",
+    "1776-2022/hollywood-reporter--unknown.json",
+    "1776-2022/newyorker--helen-shaw.json",
+    "1776-2022/newyorker--naomi-fry.json",
+    "1776-2022/nyt-theater--jonathan-mandell.json",
+    "1776-2022/nytg--gillian-russo.json",
+    "1776-2022/nytimes--jesse-green.json",
+    "1776-2022/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -186,7 +196,8 @@
       "data/review-texts/1984-2017/hollywood-reporter--david-rooney.json",
       "data/review-texts/700-sundays-2013/hollywood-reporter--unknown.json",
       "data/review-texts/9-to-5-2009/hollywood-reporter--unknown.json",
-      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json"
+      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json",
+      "data/review-texts/1776-2022/hollywood-reporter--unknown.json"
     ],
     "scrapingbee": [
       "a-christmas-carol-2022/variety--frank-rizzo.json",
@@ -201,7 +212,8 @@
       "a-free-man-of-color-2010/hollywood-reporter--david-rooney.json",
       "a-little-night-music-2009/hollywood-reporter--david-rooney.json",
       "a-little-night-music-2009/nytheatre--martin-denton.json",
-      "a-streetcar-named-desire-2012/variety--marilyn-stasio.json"
+      "a-streetcar-named-desire-2012/variety--marilyn-stasio.json",
+      "110-in-the-shade-2007/variety--david-rooney.json"
     ],
     "archive": [
       "700-sundays-2013/nytimes--ben-brantley.json",
@@ -220,7 +232,7 @@
     ]
   },
   "startTime": "2026-02-05T16:54:24.470Z",
-  "lastProcessed": "all-the-way-2014/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "1776-2022/nytimes--unknown.json",
   "log": [
     {
       "t": "2026-02-05T16:54:58.536Z",
@@ -372,6 +384,58 @@
       "event": "bb-session",
       "session": "f7e63b9c",
       "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-the-neil-diamond-musica"
+    },
+    {
+      "t": "2026-02-06T01:03:34.127Z",
+      "event": "bb-session",
+      "session": "4edbaa45",
+      "url": "https://variety.com/2007/legit/reviews/110-in-the-shade-1200556534/"
+    },
+    {
+      "t": "2026-02-06T01:04:32.005Z",
+      "event": "bb-session",
+      "session": "f7c03d08",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/1776-broadway-review-1235228615"
+    },
+    {
+      "t": "2026-02-06T01:05:05.364Z",
+      "event": "bb-session",
+      "session": "303821ab",
+      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
+    },
+    {
+      "t": "2026-02-06T01:07:55.034Z",
+      "event": "bb-session",
+      "session": "7fa2f3c0",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/1776-10-17-22"
+    },
+    {
+      "t": "2026-02-06T01:07:57.353Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-06T01:10:17.985Z",
+      "event": "bb-session",
+      "session": "ccf5ac45",
+      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
+    },
+    {
+      "t": "2026-02-06T01:10:20.259Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-06T01:12:57.346Z",
+      "event": "bb-session",
+      "session": "2a1fd2ec",
+      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
+    },
+    {
+      "t": "2026-02-06T01:13:43.351Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770340389974\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA1W9M2jvpQlcALPhWIg==&cid=v1Y~dxFoCnpQaZcYas8FALCpg6g6lgQY6e9zqgBv5XJ4pP1noNAGCEsLuHasn9jEOa0NaRcaCsbH~kKwR6MLZYpJ0f33MuXg3C7yiZl0NQNlHaR2JkeFuwuJwL_sYOzu&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770340389974\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770340389974\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA1W9M2jvpQlcALPhWIg==&cid=v1Y~dxFoCnpQaZcYas8FALCpg6g6lgQY6e9zqgBv5XJ4pP1noNAGCEsLuHasn9jEOa0NaRcaCsbH~kKwR6MLZYpJ0f33MuXg3C7yiZl0NQNlHaR2JkeFuwuJwL_sYOzu&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770340389974\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770340389974\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA1W9M2jvpQlcALPhWIg==&cid=v1Y~dxFoCnpQaZcYas8FALCpg6g6lgQY6e9zqgBv5XJ4pP1noNAGCEsLuHasn9jEOa0NaRcaCsbH~kKwR6MLZYpJ0f33MuXg3C7yiZl0NQNlHaR2JkeFuwuJwL_sYOzu&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770340389974\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
