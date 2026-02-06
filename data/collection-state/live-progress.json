@@ -1,62 +1,51 @@
 {
-  "updatedAt": "2026-02-06T17:32:20.022Z",
-  "processed": 23,
-  "failed": 287,
-  "successRate": "7.4%",
+  "updatedAt": "2026-02-06T17:37:56.626Z",
+  "processed": 33,
+  "failed": 337,
+  "successRate": "8.9%",
   "tierBreakdown": {
-    "playwright": 2,
-    "browserbase": 1,
-    "scrapingbee": 1,
+    "playwright": 4,
+    "browserbase": 2,
+    "scrapingbee": 2,
     "brightdata": 7,
-    "archive": 14
+    "archive": 21
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-06T13:53:07.702Z",
+      "t": "2026-02-06T13:56:01.639Z",
       "event": "bb-session",
-      "session": "c1f3063a",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/1776-broadway-review-1235228615"
+      "session": "ecf3e630",
+      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
     },
     {
-      "t": "2026-02-06T13:53:35.084Z",
-      "event": "bb-session",
-      "session": "7e4c3b1e",
-      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
-    },
-    {
-      "t": "2026-02-06T13:56:22.671Z",
-      "event": "bb-session",
-      "session": "4d37fd5e",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/1776-10-17-22"
-    },
-    {
-      "t": "2026-02-06T13:56:24.614Z",
+      "t": "2026-02-06T13:56:08.335Z",
       "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-06T13:58:44.948Z",
+      "t": "2026-02-06T13:56:49.994Z",
       "event": "bb-session",
-      "session": "5e0a0067",
-      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
+      "session": "09011cd2",
+      "url": "http://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
     },
     {
-      "t": "2026-02-06T13:58:46.380Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-06T14:00:49.071Z",
+      "t": "2026-02-06T13:58:19.098Z",
       "event": "bb-session",
-      "session": "3305dd9a",
-      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
+      "session": "3e62293c",
+      "url": "https://variety.com/2013/legit/reviews/a-gentlemans-guide-to-love-murder-1200814"
     },
     {
-      "t": "2026-02-06T14:01:31.135Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770386458064\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAcHLbocYlT-kALPhWIg==&cid=vUeA9zdNh2YSQuGBUGAAUvqR9niuFUsdOUq1BCSBcgT3e1o0S9rNTFBc49CDOP4zlJmN6IBzDli7x1TWEeLTr~Ofg9Sx5Bk5rGK2JBDM~ts6q6FFq42tfJgnu67d0BG1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770386458064\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770386458064\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAcHLbocYlT-kALPhWIg==&cid=vUeA9zdNh2YSQuGBUGAAUvqR9niuFUsdOUq1BCSBcgT3e1o0S9rNTFBc49CDOP4zlJmN6IBzDli7x1TWEeLTr~Ofg9Sx5Bk5rGK2JBDM~ts6q6FFq42tfJgnu67d0BG1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770386458064\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    35 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770386458064\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAcHLbocYlT-kALPhWIg==&cid=vUeA9zdNh2YSQuGBUGAAUvqR9niuFUsdOUq1BCSBcgT3e1o0S9rNTFBc49CDOP4zlJmN6IBzDli7x1TWEeLTr~Ofg9Sx5Bk5rGK2JBDM~ts6q6FFq42tfJgnu67d0BG1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770386458064\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+      "t": "2026-02-06T13:59:04.455Z",
+      "event": "bb-session",
+      "session": "eeea1570",
+      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
+    },
+    {
+      "t": "2026-02-06T13:59:18.426Z",
+      "event": "bb-session",
+      "session": "3bf53ad0",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
     }
   ]
 }
