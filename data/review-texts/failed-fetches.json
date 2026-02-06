@@ -18004,18 +18004,6 @@
     "timestamp": "2026-02-06T08:47:36.535Z"
   },
   {
-    "reviewId": "our-town-2024/nyt-theater--unknown.json",
-    "showId": "our-town-2024",
-    "outlet": "New York Theater",
-    "critic": "Unknown",
-    "url": "https://newyorktheater.me/2024/10/17/our-town-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): wicked, the cottage, the audience, hair, once...",
-    "textLength": 8847,
-    "timestamp": "2026-02-06T08:50:51.458Z"
-  },
-  {
     "reviewId": "parade-2023/nyt-theater--jonathan-mandell.json",
     "showId": "parade-2023",
     "outlet": "New York Theater",
@@ -18434,18 +18422,6 @@
     "garbageReason": "Multiple shows mentioned (10): chicago, 1984, indecent, the audience, the anarchist...",
     "textLength": 6275,
     "timestamp": "2026-02-06T14:06:20.542Z"
-  },
-  {
-    "reviewId": "pirates-the-penzance-musical-2025/nytimes--jesse-green.json",
-    "showId": "pirates-the-penzance-musical-2025",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2025/04/24/theater/pirates-penzance-musical-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): real women have curves, home, sunset boulevard, english, floyd collins...",
-    "textLength": 8071,
-    "timestamp": "2026-02-06T14:09:14.707Z"
   },
   {
     "reviewId": "rodgers-hammersteins-cinderella-2013/nytimes--ben-brantley.json",
@@ -21206,5 +21182,89 @@
     "garbageReason": "Multiple shows mentioned (8): appropriate, significant other, misery, the crucible, once...",
     "textLength": 3635,
     "timestamp": "2026-02-06T17:52:22.220Z"
+  },
+  {
+    "reviewId": "once-on-this-island-2017/vulture--sara-holdren.json",
+    "showId": "once-on-this-island-2017",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "http://www.vulture.com/2017/12/theater-the-performances-that-carry-once-on-this-island.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): proof, home, the audience, hair, rain...",
+    "textLength": 10306,
+    "timestamp": "2026-02-06T17:54:12.100Z"
+  },
+  {
+    "reviewId": "our-town-2024/nyt-theater--unknown.json",
+    "showId": "our-town-2024",
+    "outlet": "New York Theater",
+    "critic": "Unknown",
+    "url": "https://newyorktheater.me/2024/10/17/our-town-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): wicked, the cottage, home, othello, the audience...",
+    "textLength": 8740,
+    "timestamp": "2026-02-06T17:56:29.142Z"
+  },
+  {
+    "reviewId": "pirates-the-penzance-musical-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "pirates-the-penzance-musical-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/04/24/pirates-the-penzance-musical-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): chicago, buena vista social club, appropriate, english, company...",
+    "textLength": 7450,
+    "timestamp": "2026-02-06T17:56:37.283Z"
+  },
+  {
+    "reviewId": "pirates-the-penzance-musical-2025/nytimes--jesse-green.json",
+    "showId": "pirates-the-penzance-musical-2025",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2025/04/24/theater/pirates-penzance-musical-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): real women have curves, home, sunset boulevard, english, floyd collins...",
+    "textLength": 8071,
+    "timestamp": "2026-02-06T17:56:40.358Z"
+  },
+  {
+    "reviewId": "pirates-the-penzance-musical-2025/variety--christian-lewis.json",
+    "showId": "pirates-the-penzance-musical-2025",
+    "outlet": "Variety",
+    "critic": "Christian Lewis",
+    "url": "https://variety.com/2025/legit/reviews/pirates-the-penzance-musical-review-broadway-1236377063/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): english, company, once, evita, race...",
+    "textLength": 8508,
+    "timestamp": "2026-02-06T17:56:47.501Z"
+  },
+  {
+    "reviewId": "pirates-the-penzance-musical-2025/vulture--sara-holdren.json",
+    "showId": "pirates-the-penzance-musical-2025",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/theater-review-pirates-penzance-musical.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, oklahoma!, rocky, act one, chaplin...",
+    "textLength": 9959,
+    "timestamp": "2026-02-06T17:56:55.944Z"
+  },
+  {
+    "reviewId": "pygmalion-2007/nytimes--ben-brantley.json",
+    "showId": "pygmalion-2007",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2007/10/19/theater/reviews/19pygm.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): appropriate, english, company, my fair lady, the audience...",
+    "textLength": 6998,
+    "timestamp": "2026-02-06T17:56:58.760Z"
   }
 ]
