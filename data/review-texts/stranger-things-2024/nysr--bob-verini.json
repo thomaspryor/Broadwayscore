@@ -61,7 +61,7 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "showScoreExcerpt": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "So here it is, the Broadway show as theme park, right down to the three-storied façade of the ebony mansion through which all patrons must pass en route to their seats and the merch, and a thrill ride not to be forgotten. The goal is an immersive experience, and to my mind not only have they achieve...",
   "bwwThumb": null,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 86,
@@ -77,6 +77,8 @@
   "playbillVerdictUrl": "https://nystagereview.com/2025/04/22/stranger-things-the-first-shadow-we-will-control-the-horizontal/",
   "sources": [
     "playwright-scraped",
-    "playbill-verdict"
-  ]
+    "playbill-verdict",
+    "bww-roundup"
+  ],
+  "bwwRoundupUrl": null
 }
