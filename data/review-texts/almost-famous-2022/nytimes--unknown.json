@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "https://www.nytimes.com/2022/11/03/theater/almost-famous-review.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "At its best, rock ’n’ roll is “a form that is gloriously and righteously dumb” — or so decrees Lester Bangs, a character in the new musical “Almost Famous.”\n\nAlas, the show, which opened on Broadway on Thursday, gets the wrong part of that formula right. Though celebrating the rock world of 1973, when the real Lester Bangs was the field’s most influential critic, “Almost Famous” is neither glorious nor righteous. It barely even has a form.\n\nThat leaves dumb, and I’m sorry to say that despite the intelligence of the 2000 movie on which it’s based, and the track record of its creators, the stage musical misses every opportunity to be the sharp, smart entertainment it might have been. In retelling the story of a 15-year-old who gets sucked prematurely into the world of bands and groupies and roadies and drugs, it lands instead in a mystifying muddle, occasionally diverting but never affecting.\n\nIt needn’t have been that way; the source material is rich. But perhaps because the story is semi-autobiographical, Cameron Crowe, who wrote and directed the movie, apparently saw little reason to rethink it for the stage. The 15-year-old, William Miller (Casey Likes), still sets out, under the tutelage of Bangs (Rob Colletti), to be a rock journalist. When Rolling Stone, thinking he is much older, assigns him to cover a middling band called Stillwater — a composite of several groups Crowe actually toured with — William is torn between Bangs’s warning not to befriend his subjects and his own craving to be cool.\n\nBut musical theater is a radically different beast from film, let alone life, and Crowe, working with the composer and co-lyricist, Tom Kitt, and the director Jeremy Herrin, does not seem to have accounted for that. The screenplay limited itself to William’s point of view, revealing the other main characters — especially Stillwater’s frontman, Russell Hammond, and his muse, Penny Lane — through the boy’s adoring eyes. William himself was characterized almost entirely by the act of watching, which was sufficient and even necessary to Crowe’s purposes.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 45,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"...the stage musical misses every opportunity to be the sharp, smart entertainment it might have been... it lands instead in a mystifying muddle, occasionally diverting but never affecting.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -75,5 +75,29 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 45,
+  "textWordCount": 368,
+  "archivePath": "data/archives/reviews/almost-famous-2022/nytimes--unknown_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T04:12:11.525Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250724234347",
+  "archiveOrgUrl": "http://web.archive.org/web/20250724234347/https://www.nytimes.com/2022/11/03/theater/almost-famous-review.html",
+  "duplicateTextOf": "nytimes--jesse-green.json",
+  "wordCount": 368,
+  "tierReason": "Full review text"
 }
