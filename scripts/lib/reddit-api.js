@@ -151,7 +151,7 @@ async function fetchWithFallback(url, retryCount = 0) {
     useScrapingBee = false;
   }
 
-  // If on ScrapingBee and it's not down, try it
+  // If on ScrapingBee and it's not down, try it first
   if (useScrapingBee && process.env.SCRAPINGBEE_API_KEY && !scrapingBeeDown) {
     try {
       return await fetchViaScrapingBee(url);
