@@ -12904,30 +12904,6 @@
     "timestamp": "2026-02-05T05:35:16.661Z"
   },
   {
-    "reviewId": "shucked-2023/variety--peter-marks.json",
-    "showId": "shucked-2023",
-    "outlet": "Variety",
-    "critic": "Peter Marks",
-    "url": "https://variety.com/2023/legit/reviews/shucked-review-broadway-1235578967/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): chicago, giant, proof, home, company...",
-    "textLength": 8135,
-    "timestamp": "2026-02-05T05:38:03.112Z"
-  },
-  {
-    "reviewId": "shucked-2023/vulture--jackson-mchenry.json",
-    "showId": "shucked-2023",
-    "outlet": "Vulture",
-    "critic": "Jackson McHenry",
-    "url": "https://www.vulture.com/2023/04/theater-review-shucked-musical-broadway-corn.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): the book of mormon, proof, the collaboration, tina, tootsie...",
-    "textLength": 7512,
-    "timestamp": "2026-02-05T05:39:47.646Z"
-  },
-  {
     "reviewId": "spamalot-2023/nyt-theater--jonathan-mandell.json",
     "showId": "spamalot-2023",
     "outlet": "New York Theater",
@@ -21350,5 +21326,77 @@
     "garbageReason": "Multiple shows mentioned (11): home, life of pi, the music man, tootsie, hair...",
     "textLength": 5958,
     "timestamp": "2026-02-06T18:08:56.356Z"
+  },
+  {
+    "reviewId": "shucked-2023/nytg--joe-dziemianowicz.json",
+    "showId": "shucked-2023",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/shucked-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): tootsie, mean girls, hair, once, high...",
+    "textLength": 5031,
+    "timestamp": "2026-02-06T18:09:06.591Z"
+  },
+  {
+    "reviewId": "shucked-2023/nytimes--unknown.json",
+    "showId": "shucked-2023",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2023/04/04/theater/shucked-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): real women have curves, home, sunset boulevard, purpose, floyd collins...",
+    "textLength": 7369,
+    "timestamp": "2026-02-06T18:10:33.709Z"
+  },
+  {
+    "reviewId": "shucked-2023/variety--peter-marks.json",
+    "showId": "shucked-2023",
+    "outlet": "Variety",
+    "critic": "Peter Marks",
+    "url": "https://variety.com/2023/legit/reviews/shucked-review-broadway-1235578967/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): giant, proof, home, company, network...",
+    "textLength": 8187,
+    "timestamp": "2026-02-06T18:10:56.657Z"
+  },
+  {
+    "reviewId": "shucked-2023/vulture--jackson-mchenry.json",
+    "showId": "shucked-2023",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/2023/04/theater-review-shucked-musical-broadway-corn.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): the book of mormon, proof, the collaboration, tina, tootsie...",
+    "textLength": 7512,
+    "timestamp": "2026-02-06T18:12:50.053Z"
+  },
+  {
+    "reviewId": "some-like-it-hot-2022/culture-vulture--jackson-mchenry.json",
+    "showId": "some-like-it-hot-2022",
+    "outlet": "culture-vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/2022/12/theater-review-some-like-it-hot-broadway-musical.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (18): the book of mormon, smash, mrs. doubtfire, the inheritance, the prom...",
+    "textLength": 8115,
+    "timestamp": "2026-02-06T18:12:55.182Z"
+  },
+  {
+    "reviewId": "some-like-it-hot-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "some-like-it-hot-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/12/11/some-like-it-hot-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): chicago, smash, parade, company, the music man...",
+    "textLength": 9670,
+    "timestamp": "2026-02-06T18:13:58.114Z"
   }
 ]
