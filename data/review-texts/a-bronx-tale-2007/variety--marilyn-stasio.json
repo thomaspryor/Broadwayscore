@@ -19,40 +19,9 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
+    "show-score-playwright",
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://variety.com/2016/legit/reviews/a-bronx-tale-review-musical-1201706762/",
-  "textWordCount": 623,
-  "archivePath": "data/archives/reviews/a-bronx-tale-2007/variety--marilyn-stasio_2026-02-06.html",
-  "textFetchedAt": "2026-02-06T01:47:13.442Z",
-  "fetchMethod": "brightdata",
-  "fetchAttempts": [
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": true
-    }
-  ],
-  "fetchTier": 3,
-  "textQuality": "partial",
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
-  "textStatus": "partial",
-  "sourceMethod": "brightdata",
-  "wordCount": 623,
-  "tierReason": "Full review text"
+  "playbillVerdictUrl": "http://variety.com/2016/legit/reviews/a-bronx-tale-review-musical-1201706762/"
 }
