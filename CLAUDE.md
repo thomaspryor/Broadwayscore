@@ -350,7 +350,7 @@ WSJ/NYT untestable in CI (anti-bot blocks headless Chrome). Use Browserbase tier
 
 ### Full Text Collection
 
-~2,700+ reviews need fullText. Nightly cron processes ~100/run. Multi-tier fallback: Archive.org → Playwright → Browserbase ($0.10) → ScrapingBee → Bright Data → Archive.org (final). Low success rates normal (many dead URLs/defunct sites).
+~2,700+ reviews need fullText. Nightly cron processes ~500/run (raised from 100 in Feb 2026). For bulk catch-up, use `bulk-collect-review-texts.yml` with parallel jobs and self-chaining. Multi-tier fallback: Archive.org → Playwright → Browserbase ($0.10) → ScrapingBee → Bright Data → Archive.org (final). Low success rates normal (many dead URLs/defunct sites).
 
 **Per-show:** `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_reviews=0`
 
