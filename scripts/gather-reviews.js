@@ -1749,6 +1749,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     return { success: false, error: 'Show not found' };
   }
 
+  // Skip shows in previews — they haven't opened yet, any scraped reviews are wrong-production
+  if (show.status === 'previews') {
+    console.log(`[SKIP] ${showId}: Show is in previews (opens ${show.openingDate}) — skipping to avoid wrong-production contamination`);
+    return { success: true, skipped: true, reason: 'previews' };
+  }
+
   const year = new Date(show.openingDate).getFullYear();
   console.log(`Title: ${show.title}`);
   console.log(`Year: ${year}`);
