@@ -106,8 +106,8 @@ async function fetchViaScrapingBee(url) {
 
 /**
  * Fetch via Bright Data (primary proxy fallback)
- * Uses their scraping_browser zone to proxy the request through rotating IPs.
- * Drops the format param so we get raw JSON back from Reddit.
+ * Uses web_unlocker zone for simple HTTP proxying (not scraping_browser which renders pages).
+ * Reddit JSON API needs a proxy, not a browser.
  */
 async function fetchViaBrightData(url) {
   const token = process.env.BRIGHTDATA_TOKEN;
@@ -115,7 +115,7 @@ async function fetchViaBrightData(url) {
 
   stats.brightData++;
 
-  const apiUrl = `https://api.brightdata.com/request?zone=scraping_browser&url=${encodeURIComponent(url)}`;
+  const apiUrl = `https://api.brightdata.com/request?zone=web_unlocker&url=${encodeURIComponent(url)}&format=raw`;
 
   return new Promise((resolve, reject) => {
     const req = https.request(apiUrl, {
@@ -138,17 +138,21 @@ async function fetchViaBrightData(url) {
               try {
                 resolve(JSON.parse(jsonMatch[0]));
               } catch (_) {
-                reject(new Error(`Bright Data response not JSON: ${data.slice(0, 100)}`));
+                reject(new Error(`Bright Data response not JSON: ${data.slice(0, 200)}`));
               }
             } else {
-              reject(new Error(`Bright Data response not JSON: ${data.slice(0, 100)}`));
+              reject(new Error(`Bright Data response not JSON: ${data.slice(0, 200)}`));
             }
           }
         } else if (res.statusCode === 401 || res.statusCode === 403) {
           brightDataDown = true;
           reject(new Error(`Bright Data ${res.statusCode} — auth/quota issue`));
+        } else if (res.statusCode === 400) {
+          // 400 likely means zone not configured — disable to avoid repeated failures
+          brightDataDown = true;
+          reject(new Error(`Bright Data 400 (zone may not be configured) — disabling: ${data.slice(0, 200)}`));
         } else {
-          reject(new Error(`Bright Data HTTP ${res.statusCode}`));
+          reject(new Error(`Bright Data HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
     });
