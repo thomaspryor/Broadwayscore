@@ -24,6 +24,7 @@ let lastRequestTime = 0;
 
 // Track if direct API is working or if we should use ScrapingBee
 let useScrapingBeeByDefault = false;
+let scrapingBeeDown = false; // True on 401 (credits exhausted) — stops retrying
 let scrapingBeeSwitchTime = 0; // When we switched to ScrapingBee
 const SCRAPINGBEE_COOLDOWN = 5 * 60 * 1000; // Try Reddit again after 5 min
 
@@ -85,6 +86,9 @@ async function fetchViaScrapingBee(url) {
           } catch (e) {
             reject(new Error(`ScrapingBee JSON parse failed: ${data.slice(0, 100)}`));
           }
+        } else if (res.statusCode === 401) {
+          scrapingBeeDown = true;
+          reject(new Error('ScrapingBee credits exhausted (401)'));
         } else {
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
         }
@@ -147,10 +151,16 @@ async function fetchWithFallback(url) {
     useScrapingBeeByDefault = false;
   }
 
-  // If recently blocked, use ScrapingBee
-  if (useScrapingBeeByDefault && process.env.SCRAPINGBEE_API_KEY) {
+  // If recently blocked, use ScrapingBee (unless it's also down)
+  if (useScrapingBeeByDefault && process.env.SCRAPINGBEE_API_KEY && !scrapingBeeDown) {
     stats.scrapingBee++;
     return fetchViaScrapingBee(url);
+  }
+
+  // Both sources down — fail fast
+  if (useScrapingBeeByDefault && scrapingBeeDown) {
+    stats.errors++;
+    throw new Error('Both Reddit (403) and ScrapingBee (credits exhausted) are unavailable');
   }
 
   // Try Reddit direct with exponential backoff on rate limits
@@ -189,8 +199,8 @@ async function fetchWithFallback(url) {
     }
   }
 
-  // ScrapingBee as last resort
-  if (process.env.SCRAPINGBEE_API_KEY) {
+  // ScrapingBee as last resort (unless credits exhausted)
+  if (process.env.SCRAPINGBEE_API_KEY && !scrapingBeeDown) {
     stats.scrapingBee++;
     return fetchViaScrapingBee(url);
   }
@@ -345,6 +355,7 @@ async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000) {
  */
 function resetFallbackState() {
   useScrapingBeeByDefault = false;
+  scrapingBeeDown = false;
   scrapingBeeSwitchTime = 0;
   currentDelay = DELAY_NORMAL;
   stats.redditDirect = 0;
