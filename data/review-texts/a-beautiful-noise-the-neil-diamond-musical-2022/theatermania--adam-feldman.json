@@ -16,11 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A Beautiful Noise is a jukebox musical that works better than most, thanks to Diamond's incredibly strong catalog and a book that finds genuine emotional weight in the singer's life story.",
-  "contentTier": "needs-rescrape",
+  "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
   "textWordCount": 42,
-  "archivePath": "data/archives/reviews/a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T17:27:32.698Z",
+  "archivePath": "data/archives/reviews/a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T14:22:00.801Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -40,6 +40,12 @@
       "method": "playwright",
       "success": false,
       "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 75 chars"
     },
     {
       "tier": 2,
