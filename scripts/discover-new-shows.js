@@ -282,13 +282,13 @@ async function discoverShows() {
     const knownCheck = checkKnownShow(show.title);
     const isPlay = detectPlayFromTitle(show.title);
 
-    let detectedType = 'musical'; // default
+    let detectedType = 'play'; // default to play (safer — musicals are more obvious)
     let isRevival = false;
     let confidence = 'low';
 
     if (knownCheck.isKnown) {
-      // Known classic - likely a revival
-      detectedType = knownCheck.type === 'play' ? 'revival' : 'revival';
+      // Known classic - likely a revival, preserve original type (play vs musical)
+      detectedType = knownCheck.type || 'play';
       isRevival = true;
       confidence = 'high';
     } else if (isPlay) {
