@@ -5,9 +5,9 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 7285,
-      "skippedNoScore": 13525,
+      "skippedNoScore": 13524,
       "skippedDuplicate": 8,
-      "skippedDuplicateUrl": 152,
+      "skippedDuplicateUrl": 153,
       "skippedCrossOutletDuplicateUrl": 5,
       "skippedWrongProduction": 566,
       "recoveredFromGarbage": 100,
@@ -18,9 +18,9 @@
         "explicit-letterGrade": 1,
         "human-review": 60,
         "originalScore-priority0": 924,
-        "llmScore": 3438,
+        "llmScore": 3440,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 2699,
+        "llmScore-lowconf": 2697,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
@@ -29398,7 +29398,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Unknown",
@@ -29408,7 +29408,7 @@
       "pullQuote": "At any moment we can choose to be something better, or worse, than we are — or, in Guirgis World, most likely both.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "between-riverside-and-crazy-2022",
@@ -33170,23 +33170,6 @@
     },
     {
       "showId": "born-yesterday-2011",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 80,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Charles Isherwood",
-      "url": "https://www.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-belushi-robert-sean-leonard-review.html",
-      "publishDate": "April 24, 2011",
-      "originalRating": null,
-      "pullQuote": "Ms. Arianda's performance is a tour de force of physical comedy and emotional authenticity.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "born-yesterday-2011",
       "outletId": "philadelphia-inquirer",
       "outlet": "The Philadelphia Inquirer",
       "assignedScore": 74,
@@ -33496,7 +33479,7 @@
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 30,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "David Rooney",
@@ -33506,7 +33489,7 @@
       "pullQuote": "It might be time to call for a moratorium on stage adaptations of Truman Capote's Breakfast at Tiffany's...Sean Mathias has taken a blundering stab at turning it into a Broadway play, this time with a page-bound script by Richard Greenberg and a strained Emilia Clarke in the central role.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "breakfast-at-tiffanys-2013",
@@ -99374,6 +99357,23 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Alfred Molina is majestic as Rothko, defying the future he reads in the face of Eddie Redmayne",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "red-2010",
+      "outletId": "vulture",
+      "outlet": "Vulture",
+      "assignedScore": 23,
+      "scoreSource": "llmScore",
+      "bucket": "Pan",
+      "thumb": "Down",
+      "criticName": "Jesse Green",
+      "url": "https://www.vulture.com/2016/03/theater-white-rabbit-red-rabbit.html",
+      "publishDate": "March 12, 2010",
+      "originalRating": null,
+      "pullQuote": "Red is a play about the relationship between art and commerce, between the sacred and the profane, and it's magnificent. Alfred Molina and Eddie Redmayne are both superb in John Logan's drama about Mark Rothko.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
