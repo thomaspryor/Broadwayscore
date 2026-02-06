@@ -503,27 +503,29 @@ function HomePageInner() {
         switch (sort) {
           case 'score_desc': {
             if (scoreMode === 'audience') {
-              const aBuzz = getAudienceBuzz(a.id);
-              const bBuzz = getAudienceBuzz(b.id);
-              return (bBuzz?.combinedScore ?? -1) - (aBuzz?.combinedScore ?? -1);
+              const aAud = a.status === 'previews' ? -1 : (getAudienceBuzz(a.id)?.combinedScore ?? -1);
+              const bAud = b.status === 'previews' ? -1 : (getAudienceBuzz(b.id)?.combinedScore ?? -1);
+              return bAud - aAud;
             }
-            return (b.criticScore?.score ?? -1) - (a.criticScore?.score ?? -1);
+            const aDesc = a.status === 'previews' ? -1 : (a.criticScore?.score ?? -1);
+            const bDesc = b.status === 'previews' ? -1 : (b.criticScore?.score ?? -1);
+            return bDesc - aDesc;
           }
           case 'score_asc': {
             if (scoreMode === 'audience') {
-              const aBuzz = getAudienceBuzz(a.id);
-              const bBuzz = getAudienceBuzz(b.id);
-              return (aBuzz?.combinedScore ?? -1) - (bBuzz?.combinedScore ?? -1);
+              const aAud = a.status === 'previews' ? Infinity : (getAudienceBuzz(a.id)?.combinedScore ?? Infinity);
+              const bAud = b.status === 'previews' ? Infinity : (getAudienceBuzz(b.id)?.combinedScore ?? Infinity);
+              return aAud - bAud;
             }
-            return (a.criticScore?.score ?? -1) - (b.criticScore?.score ?? -1);
+            const aAsc = a.status === 'previews' ? Infinity : (a.criticScore?.score ?? Infinity);
+            const bAsc = b.status === 'previews' ? Infinity : (b.criticScore?.score ?? Infinity);
+            return aAsc - bAsc;
           }
           case 'audience_buzz': {
             // Sort by audience buzz combined score (highest first)
             // NOTE: Numeric scores are used ONLY for sorting, never displayed to users
-            const aBuzz = getAudienceBuzz(a.id);
-            const bBuzz = getAudienceBuzz(b.id);
-            const aScore = aBuzz?.combinedScore ?? -1;
-            const bScore = bBuzz?.combinedScore ?? -1;
+            const aScore = a.status === 'previews' ? -1 : (getAudienceBuzz(a.id)?.combinedScore ?? -1);
+            const bScore = b.status === 'previews' ? -1 : (getAudienceBuzz(b.id)?.combinedScore ?? -1);
             return bScore - aScore;
           }
           case 'alpha':

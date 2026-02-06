@@ -3,9 +3,9 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jesse Green",
-  "url": "https://www.vulture.com/2017/04/theater-review-anastasia.html",
+  "url": "https://www.vulture.com/2017/04/theater-review-anastasia-staged-in-vain.html",
   "publishDate": "April 28, 2017",
-  "fullText": "The new musical Anastasia, which opened Thursday at the Broadhurst Theatre, is a show that seems determined to exhaust every possible iteration of its source material while somehow draining it of all its magic.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The new musical Anastasia, which opened Thursday at the Broadhurst Theatre, is a show that seems determined to exhaust every possible iteration of its source material while somehow draining it of all its magic.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": "It bewilders me that in making stage musicals from animated or otherwise fantastical movies, adaptors seem to think they can remain outside history. Perhaps the creative team of Anastasia held meetings whose agenda items included such items as Finessing the Romanovs. (There is exactly one reference to their possible contribution to Russia's problems.) You see why this must have seemed necessary; otherwise, Anastasia's self-discovery could not be the climax of her hero's journey, and her beautiful tiara might seem a tad undeserved, even to the Fanastasias. All her sorrowful warbling about the past - well sung, if little else, by Christy Altomare - would be sickening instead of heart-catching. Yet this does not excuse Anastasia, on the lightweight end of the scale, any more than it did Evita on the heavy. You can't have your revolution and eat it too.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424",
   "showScoreExcerpt": "The new musical Anastasia, which opened Thursday at the Broadhurst Theatre, is a show that seems determined to exhaust every possible iteration of its source material while somehow draining it of all its magic.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (34 words)",
   "llmScore": {
     "score": 34,
@@ -79,5 +79,45 @@
     "web-search",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "previousUrl": "https://www.vulture.com/2017/04/theater-review-anastasia.html",
+  "urlDiscoveredAt": "2026-02-06T04:37:47.652Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/anastasia-2017/vulture--jesse-green_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T04:37:47.660Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text",
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }

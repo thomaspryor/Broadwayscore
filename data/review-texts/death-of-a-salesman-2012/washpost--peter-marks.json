@@ -3,7 +3,7 @@
   "outletId": "washpost",
   "outlet": "Washington Post",
   "criticName": "Peter Marks",
-  "url": "/people/Peter-Marks/",
+  "url": null,
   "source": "bww-roundup",
   "sources": [
     "bww-roundup",
@@ -67,5 +67,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "playbillVerdictUrl": "https://www.washingtonpost.com/theater-dance/2022/10/09/salesman-broadway-miller-pierce-clarke/"
+  "playbillVerdictUrl": "https://www.washingtonpost.com/theater-dance/2022/10/09/salesman-broadway-miller-pierce-clarke/",
+  "wrongShow": true,
+  "wrongShowReason": "URL is a BWW critic profile page, not a review"
 }

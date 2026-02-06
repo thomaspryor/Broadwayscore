@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "In the 25 years since Mary-Louise Parker and David Morse first performed Paula Vogel's Pulitzer Prize-winning play How I Learned To Drive, the name for the disturbing process that we witness being depicted on stage has long since entered widespread usage. If audiences can now readily label what happens as 'grooming,' Vogel's emotionally complex masterwork remains as unsettling, disarmingly funny and as deeply moving as ever.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Parker and Morse are perfection together, two actors who know how to find the truth in every moment and make us believe it completely.",
   "contentTier": "complete",
@@ -104,5 +104,12 @@
     ],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "No bucket consensus - using median score"
-  }
+  },
+  "sources": [
+    "web-search",
+    "bww-reviews",
+    "show-score-playwright",
+    "bww-roundup",
+    "playbill-verdict"
+  ]
 }

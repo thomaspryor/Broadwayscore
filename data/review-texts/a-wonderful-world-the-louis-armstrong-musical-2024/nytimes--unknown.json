@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "https://www.nytimes.com/2024/11/11/theater/a-wonderful-world-review-louis-armstrong.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Who, having lived through 20th-century pop culture, could fail to recognize that voice like a truck without a muffler? That piercing trumpet and embracing spirit?\n\nWho could fail to recognize Louis Armstrong?\n\nYet he is something of a blur in “A Wonderful World,” the Armstrong jukebox musical that opened Monday at Studio 54. Not for lack of a precise embodiment. In the leading role, James Monroe Iglehart has every Satchmo detail perfectly tuned: the rumble, the chortle, the hankie, the beam, the satchel-like cheeks that inspired the nickname. If drama were merely a tribute concert, there would be nothing to complain of.\n\nBut with such a major figure we want something deeper. And though subtitled “The Louis Armstrong Musical,” the show, with a book by Aurin Squire, spends too little time exploring its subject’s interior life while plumping for his greatness as if the point were in doubt. The score, drawn from songs he performed but (with two exceptions) did not write, makes the case irrefutably already, encompassing the astonishing range of a man who grew up with the blues, changed the course of jazz, excelled at swing, perfected scat and won a Grammy for “Hello, Dolly!”\n\nTo balance such a rich and varied artistic life, let alone a chaotic personal one, Armstrong deserves more than the standard jukebox bullet-point biography he gets here. Offering little you would not learn from a good obituary, or from a visit to the terrific museum at his home in Queens, “A Wonderful World” compresses 60 years, from youth to death and even beyond, into four discrete chapters defined cleverly but overneatly by decade, locale and wife.\n\nThe 1910s segment, set in Armstrong’s native New Orleans, introduces wife No. 1, Daisy Parker (Dionne Figgins), a prostitute with a “Kiss of Fire.” After leaving her to join the jazz scene of Chicago in the 1920s, he falls for the pianist and arranger Lil Hardin (Jennie Harney-Fleming), who polishes his musicianship along with his wardrobe. Nevertheless, he leaves her too; she and Daisy bring down the first act with a furious medley of “Some of These Days” and “After You’ve Gone.”\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 62,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Sincere and loaded with talent, ‘A Wonderful World’ made me wish that Broadway were just another stage in a show’s development, because Armstrong himself was a work-in-progress.”\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -75,5 +75,50 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 62,
+  "textWordCount": 379,
+  "archivePath": "data/archives/reviews/a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--unknown_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T04:00:06.394Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
+  "wordCount": 379,
+  "tierReason": "Full review text"
 }

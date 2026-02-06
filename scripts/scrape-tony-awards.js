@@ -6,9 +6,11 @@
  * This script scrapes nominations and wins, then matches to our shows.json.
  *
  * Usage:
- *   node scripts/scrape-tony-awards.js                    # All years (2005-present)
+ *   node scripts/scrape-tony-awards.js                    # All years (2005-current)
  *   node scripts/scrape-tony-awards.js --year=2024        # Single year
  *   node scripts/scrape-tony-awards.js --dry-run          # Preview without saving
+ *
+ * Runs automatically via GitHub Actions on June 20th each year.
  */
 
 const fs = require('fs');
@@ -17,9 +19,28 @@ const { JSDOM } = require('jsdom');
 
 // Tony Awards ceremonies by year (ceremony number, Wikipedia page suffix)
 // Broadway season 2004-05 had 59th Tonys in 2005, which is our data start
+// Year range is dynamic - no manual updates needed each year
+const START_YEAR = 2005;
+const CURRENT_YEAR = new Date().getFullYear();
+
 const TONY_CEREMONIES = [];
-for (let year = 2005; year <= 2025; year++) {
-  const ceremonyNum = year - 1946; // 1947 was 1st Tony Awards
+for (let year = START_YEAR; year <= CURRENT_YEAR; year++) {
+  // Tony Awards ceremony dates from Wikipedia:
+  // 59th: June 2005, 74th: Sept 2021 (delayed from 2020), 75th: June 2022,
+  // 76th: June 2023, 77th: June 2024, 78th: June 2025
+  //
+  // Formula: Pre-2021 uses year-1946, but 2021+ is shifted due to COVID
+  // The 74th (Sept 2021) covered 2019-2020 season, so 2021 should skip to 75th
+  let ceremonyNum;
+  if (year <= 2020) {
+    ceremonyNum = year - 1946; // 2005=59th, 2019=73rd, 2020=74th
+  } else if (year === 2021) {
+    // Skip 2021 - the 74th was in Sept 2021 but covered 2019-2020 shows
+    // Shows from 2021 are covered by 75th (June 2022)
+    continue;
+  } else {
+    ceremonyNum = year - 1947; // 2022=75th, 2023=76th, 2024=77th, etc.
+  }
 
   // Ordinal suffix: 1st, 2nd, 3rd, otherwise th
   let suffix = 'th';
@@ -72,6 +93,54 @@ const MAJOR_CATEGORIES = [
   'Best Sound Design of a Musical',
   'Best Sound Design of a Play',
 ];
+
+// Categories that are ONLY for plays (musicals cannot win these)
+const PLAY_ONLY_CATEGORIES = [
+  'Best Play',
+  'Best Revival of a Play',
+  'Best Actor in a Play',
+  'Best Actress in a Play',
+  'Best Featured Actor in a Play',
+  'Best Featured Actress in a Play',
+  'Best Direction of a Play',
+  'Best Scenic Design of a Play',
+  'Best Costume Design of a Play',
+  'Best Lighting Design of a Play',
+  'Best Sound Design of a Play',
+];
+
+// Categories that are ONLY for musicals (plays cannot win these)
+const MUSICAL_ONLY_CATEGORIES = [
+  'Best Musical',
+  'Best Revival of a Musical',
+  'Best Actor in a Musical',
+  'Best Actress in a Musical',
+  'Best Featured Actor in a Musical',
+  'Best Featured Actress in a Musical',
+  'Best Direction of a Musical',
+  'Best Book of a Musical',
+  'Best Original Score',
+  'Best Choreography',
+  'Best Orchestrations',
+  'Best Scenic Design of a Musical',
+  'Best Costume Design of a Musical',
+  'Best Lighting Design of a Musical',
+  'Best Sound Design of a Musical',
+];
+
+/**
+ * Filter categories based on show type to prevent impossible nominations
+ * (e.g., a musical can't win "Best Play")
+ */
+function filterCategoriesByShowType(categories, showType) {
+  if (showType === 'musical') {
+    return categories.filter(cat => !PLAY_ONLY_CATEGORIES.includes(cat));
+  }
+  if (showType === 'play') {
+    return categories.filter(cat => !MUSICAL_ONLY_CATEGORIES.includes(cat));
+  }
+  return categories; // Unknown type - keep all
+}
 
 // Load shows.json for matching
 const showsPath = path.join(__dirname, '../data/shows.json');
@@ -193,6 +262,12 @@ function matchShow(showName, year) {
 
 /**
  * Fetch and parse a Wikipedia Tony Awards page
+ *
+ * Wikipedia Tony Awards tables have this structure:
+ * - TH cells contain category names (e.g., "Best Play ‡")
+ * - TD cells below contain nominees in UL/LI lists
+ * - Winners have their show title wrapped in <b> tags
+ * - The ‡ symbol after category names indicates the award was given
  */
 async function scrapeTonyYear(year, ceremonyNum, wikiPage) {
   const url = `https://en.wikipedia.org/wiki/${wikiPage}`;
@@ -217,77 +292,126 @@ async function scrapeTonyYear(year, ceremonyNum, wikiPage) {
 
     const nominations = [];
 
-    // Find the nominations section
-    // Wikipedia uses tables with category headers
+    // Find wikitables - the main nominations table is usually the first one
     const tables = doc.querySelectorAll('table.wikitable');
 
     for (const table of tables) {
       const rows = table.querySelectorAll('tr');
-      let currentCategory = null;
 
       for (const row of rows) {
-        const th = row.querySelector('th');
-        const tds = row.querySelectorAll('td');
+        const thCells = row.querySelectorAll('th');
+        const tdCells = row.querySelectorAll('td');
 
-        // Check if this row has a category header
-        if (th) {
+        // Process each TH/TD pair in the row
+        // Wikipedia often has 2 categories per row (e.g., Best Play | Best Musical)
+        thCells.forEach((th, colIndex) => {
           const headerText = th.textContent?.trim() || '';
-          // Check if it's a category we care about
+
+          // Find matching category
+          let matchedCategory = null;
           for (const cat of MAJOR_CATEGORIES) {
             if (headerText.toLowerCase().includes(cat.toLowerCase())) {
-              currentCategory = cat;
+              matchedCategory = cat;
               break;
             }
           }
-        }
 
-        // Parse nominee cells
-        if (currentCategory && tds.length >= 1) {
-          for (const td of tds) {
-            const text = td.textContent?.trim() || '';
-            const isWinner = td.style?.fontWeight === 'bold' ||
-                           td.querySelector('b, strong') !== null ||
-                           td.style?.backgroundColor?.includes('gold') ||
-                           td.classList?.contains('winner');
+          if (!matchedCategory) return;
 
-            // Extract show name - usually in italics or after a dash
-            const italics = td.querySelectorAll('i');
-            for (const italic of italics) {
-              const showName = italic.textContent?.trim();
-              if (showName && showName.length > 2) {
-                nominations.push({
-                  category: currentCategory,
-                  show: showName,
-                  winner: isWinner,
-                  year
-                });
-              }
-            }
+          // Find the corresponding TD cell (same column in next row, or check current row)
+          // Try to find TD in same position
+          let td = null;
 
-            // Also check for links that might be show titles
-            const links = td.querySelectorAll('a');
-            for (const link of links) {
-              const href = link.getAttribute('href') || '';
-              const linkText = link.textContent?.trim();
-              // Wikipedia musical/play links often contain "(musical)" or "(play)"
-              if (href.includes('_(musical)') || href.includes('_(play)') || href.includes('_musical)')) {
-                if (linkText && linkText.length > 2) {
-                  const exists = nominations.some(n =>
-                    n.category === currentCategory && n.show === linkText
-                  );
-                  if (!exists) {
-                    nominations.push({
-                      category: currentCategory,
-                      show: linkText,
-                      winner: isWinner,
-                      year
-                    });
-                  }
-                }
+          // Check if there's a TD in current row at same column
+          if (tdCells[colIndex]) {
+            td = tdCells[colIndex];
+          }
+
+          // If no TD in current row, look at next row
+          if (!td) {
+            const nextRow = row.nextElementSibling;
+            if (nextRow) {
+              const nextTds = nextRow.querySelectorAll('td');
+              if (nextTds[colIndex]) {
+                td = nextTds[colIndex];
               }
             }
           }
-        }
+
+          if (!td) return;
+
+          // Parse nominees from the TD cell
+          // Structure: <ul><li><i><b>Winner</b></i> or <i>Nominee</i></li>...</ul>
+          const listItems = td.querySelectorAll('li');
+
+          if (listItems.length > 0) {
+            // Process list items
+            listItems.forEach(li => {
+              // Check if this item contains a show (look for italic text)
+              const italic = li.querySelector('i');
+              if (!italic) return;
+
+              const showName = italic.textContent?.trim();
+              if (!showName || showName.length <= 2) return;
+
+              // Check if winner - bold can be:
+              // 1. Inside <i>: <i><b>Title</b></i>
+              // 2. Parent of <i>: <b><i>Title</i></b>
+              // 3. Ancestor of <i>: <b><a><i>Title</i></a></b>
+              const hasBoldInside = italic.querySelector('b, strong') !== null;
+
+              // Check ancestors up to the <li> for bold
+              let ancestorIsBold = false;
+              let el = italic.parentElement;
+              while (el && el !== li) {
+                if (el.tagName === 'B' || el.tagName === 'STRONG') {
+                  ancestorIsBold = true;
+                  break;
+                }
+                el = el.parentElement;
+              }
+
+              const isWinner = hasBoldInside || ancestorIsBold;
+
+              nominations.push({
+                category: matchedCategory,
+                show: showName,
+                winner: isWinner,
+                year
+              });
+            });
+          } else {
+            // No list structure - try to parse directly from cell
+            // Some older Wikipedia pages use plain text with line breaks
+            const italics = td.querySelectorAll('i');
+            italics.forEach(italic => {
+              const showName = italic.textContent?.trim();
+              if (!showName || showName.length <= 2) return;
+
+              // Check for bold (same logic as above)
+              const hasBoldInside = italic.querySelector('b, strong') !== null;
+
+              let ancestorIsBold = false;
+              let el = italic.parentElement;
+              while (el && el !== td) {
+                if (el.tagName === 'B' || el.tagName === 'STRONG') {
+                  ancestorIsBold = true;
+                  break;
+                }
+                el = el.parentElement;
+              }
+
+              const isWinner = hasBoldInside || ancestorIsBold;
+
+              nominations.push({
+                category: matchedCategory,
+                show: showName,
+                winner: isWinner,
+                year
+              });
+            });
+          }
+        });
       }
     }
 
@@ -401,36 +525,44 @@ async function main() {
 
   for (const [showId, data] of showNominations) {
     const existing = awardsData.shows[showId];
+    const show = shows.find(s => s.id === showId);
+    const showType = show?.type; // 'musical' or 'play'
+
+    // Filter out impossible categories based on show type
+    const filteredNominations = filterCategoriesByShowType(data.nominations, showType);
+    const filteredWins = filterCategoriesByShowType(data.wins, showType);
 
     if (!existing) {
       awardsData.shows[showId] = {
         tony: {
           season: data.season,
           ceremony: data.ceremony,
-          nominations: data.nominations.length,
-          nominatedFor: data.nominations,
-          wins: data.wins
+          nominations: filteredNominations.length,
+          nominatedFor: filteredNominations,
+          wins: filteredWins
         }
       };
       newEntries++;
     } else {
-      // Update existing - only if we have more data
+      // Update existing - if we have more nominations OR different wins
       if (!existing.tony) {
         existing.tony = {
           season: data.season,
           ceremony: data.ceremony,
-          nominations: data.nominations.length,
-          nominatedFor: data.nominations,
-          wins: data.wins
+          nominations: filteredNominations.length,
+          nominatedFor: filteredNominations,
+          wins: filteredWins
         };
         updated++;
-      } else if (data.nominations.length > (existing.tony.nominations || 0)) {
+      } else if (filteredNominations.length > (existing.tony.nominations || 0) ||
+                 filteredWins.length !== (existing.tony.wins?.length || 0)) {
+        // Update if more nominations OR wins count changed
         existing.tony = {
           season: data.season,
           ceremony: data.ceremony,
-          nominations: data.nominations.length,
-          nominatedFor: data.nominations,
-          wins: data.wins
+          nominations: filteredNominations.length,
+          nominatedFor: filteredNominations,
+          wins: filteredWins
         };
         updated++;
       }

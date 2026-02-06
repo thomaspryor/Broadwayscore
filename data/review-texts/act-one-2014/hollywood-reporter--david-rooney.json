@@ -6,7 +6,7 @@
   "url": "https://www.hollywoodreporter.com/news/general-news/act-one-theater-review-693690/",
   "publishDate": "April 18, 2014",
   "fullText": null,
-  "isFullReview": false,
+  "isFullReview": true,
   "dtliExcerpt": "The adaptation of Moss Hart's memoir about his early years in the theater and his collaboration with George S. Kaufman is handsomely mounted but dramatically inert.",
   "originalScore": null,
   "assignedScore": null,
@@ -22,5 +22,52 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/act-one-theater-review-697276"
+  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/act-one-theater-review-697276",
+  "textWordCount": 269,
+  "archivePath": "data/archives/reviews/act-one-2014/hollywood-reporter--david-rooney_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T03:01:14.749Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 269 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "TORONTO – Ottawa is throwing more investment coin at Canada’s tech sector.\n\nThe federal government on Friday said it will place CAN$300 million (US$273.5 million) in new bets on Canada’s next big players in digital media.\n\nFederal industry minister James Moore unveiled his government’s digital strategy, Digital Canada 150, which includes CAN$300 million in venture capital investment through the Business Development Bank of Canada for homegrown digital companies.\n\nThe feds will also bump up funding for the Canada Accelerator and Incubator Program to CAN$100 million (US$91 million) to find flashy digital startups needing a leg-up to compete on the world stage.\n\nAnd another CAN$200 million (US$182 million) from the Business Development Bank of Canada will go towards helping small- and medium-sized businesses take on new digital technology, while Ottawa also invests new coin to extend high-speed Internet access to rural Canadians.\n\nThe latest digital investments follow Canada’s federal and provincial governments doing well with generous film tax credits to draw Hollywood and other foreign features and TV shoots here.\n\nAt the same time, the federal government, which heavily subsidizes homegrown film and TV production here, has seen Canadians increasingly view streaming content on tablets or online, and mostly from over-the-top digital platforms like Netflix Canada.\n\nSo its digital strategy now includes doing more to bolster the homegrown digital media sector.\n\n“Canadians are already avid users and producers of online services and content. This strategy will accelerate digital adoption and technological innovation among Canadian businesses, which is essential if we are to remain a global economic power,” said Chris O’Neill, managing director of Google Canada, in a statement on Friday.",
+  "_showNotMentionedDiscoveryAttempted": true
 }

@@ -742,9 +742,18 @@ async function scrapePlaybillVerdict() {
       continue;
     }
 
-    const match = matchTitleToShow(article.title, shows);
+    // Extract year from article date for multi-production disambiguation
+    const articleYear = article.publishDate ? new Date(article.publishDate).getFullYear() : null;
+    const match = matchTitleToShow(article.title, shows, articleYear ? { year: articleYear } : undefined);
     if (match) {
       const showId = match.show.id;
+
+      // Skip shows in previews — they haven't opened yet, any reviews are wrong-production
+      if (match.show.status === 'previews') {
+        stats.skippedOffBroadway++;
+        continue;
+      }
+
       matchedArticles.push({ ...article, showId, confidence: match.confidence });
       unmatchedShows.delete(showId);
       stats.matchedShows++;

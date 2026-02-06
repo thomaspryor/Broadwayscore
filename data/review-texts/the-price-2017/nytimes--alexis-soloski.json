@@ -7,6 +7,8 @@
   "source": "bww-reviews",
   "sources": [
     "bww-reviews",
+    "show-score-playwright",
+    "playbill-verdict",
     "bww-roundup"
   ],
   "bwwExcerpt": "Sympathetically directed and ardently acted, there's much to enjoy in this Roundabout Theater Company revival, which opened Thursday night at the American Airlines Theater. Yet it shows 'The Price' as a smaller, more stolid work than it wants to be - still just a little out of style.",
@@ -39,5 +41,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about retrieving article content and enabling JavaScript, making it impossible to determine the critic's verdict or recommendation.; openai: The text is incomplete and contains navigation instructions and error messages, indicating it's not a full review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "showScoreExcerpt": "\"Sympathetically directed and ardently acted, there’s much to enjoy in this Roundabout Theater Company revival...Yet it shows 'The Price' as a smaller, more stolid work than it wants to be — still just a little out of style...Mr. Kinney’s quieter, more faithful style emphasizes the fine roles for actors but doesn’t make a strong case for the play itself...If the debate is involving, it’s not especially consequential.\"\n\nRead more"
 }

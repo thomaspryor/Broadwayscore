@@ -1081,12 +1081,60 @@ function normalizeOutletId(outlet) {
 console.log('=== REBUILDING ALL REVIEWS ===\n');
 console.log('NOTE: Reviews without valid scores are EXCLUDED (no default of 50)\n');
 
-// Load show dates for production-date guard
+// Load show dates and status for production-date guard
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
 const showDateMap = {};
+const showStatusMap = {};
 for (const s of showsData.shows) {
   const earliest = s.previewsStartDate || s.openingDate;
   if (earliest) showDateMap[s.id] = new Date(earliest);
+  showStatusMap[s.id] = s.status;
+}
+
+// Build director cross-check lookup for multi-production shows
+// Pattern: reviews in OLDER production dirs mentioning NEWER production's director = wrong production
+const multiProdDirectorGuard = {};
+{
+  const titleGroups = {};
+  for (const s of showsData.shows) {
+    const base = s.title.replace(/\s*\(.*?\)/g, '').replace(/:\s.*$/, '').trim().toLowerCase();
+    if (!titleGroups[base]) titleGroups[base] = [];
+    titleGroups[base].push(s);
+  }
+  for (const [, prods] of Object.entries(titleGroups)) {
+    if (prods.length < 2) continue;
+    prods.sort((a, b) => {
+      const da = a.openingDate ? new Date(a.openingDate).getTime() : Infinity;
+      const db = b.openingDate ? new Date(b.openingDate).getTime() : Infinity;
+      return da - db;
+    });
+    for (let i = 0; i < prods.length; i++) {
+      const thisShow = prods[i];
+      const thisDirectors = (thisShow.creativeTeam || [])
+        .filter(ct => /director/i.test(ct.role))
+        .map(ct => ct.name.toLowerCase());
+      // Collect directors from NEWER productions only
+      const newerDirs = new Map();
+      for (let j = i + 1; j < prods.length; j++) {
+        for (const ct of (prods[j].creativeTeam || [])) {
+          if (/director/i.test(ct.role)) {
+            const name = ct.name.toLowerCase();
+            // Skip if this person also directed the current production
+            if (!thisDirectors.includes(name)) {
+              newerDirs.set(name, prods[j].id);
+            }
+          }
+        }
+      }
+      if (newerDirs.size > 0) {
+        multiProdDirectorGuard[thisShow.id] = newerDirs;
+      }
+    }
+  }
+  const guardedShows = Object.keys(multiProdDirectorGuard).length;
+  if (guardedShows > 0) {
+    console.log(`Director cross-check guard active for ${guardedShows} multi-production shows\n`);
+  }
 }
 
 // Get all show directories
@@ -1107,6 +1155,12 @@ const allReviews = [];
 const crossShowFingerprints = new Map();
 
 showDirs.forEach(showId => {
+  // Skip shows in previews — they haven't opened yet, all reviews are wrong-production
+  if (showStatusMap[showId] === 'previews') {
+    stats.skippedPreviewsShows = (stats.skippedPreviewsShows || 0) + 1;
+    return;
+  }
+
   const showDir = path.join(reviewTextsDir, showId);
   const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'))
     // Sort: prefer files with real critic names over "unknown"/"unnamed" for URL dedup tiebreaking
@@ -1153,6 +1207,12 @@ showDirs.forEach(showId => {
         data.contentTier = tierResult.contentTier;
       }
 
+      // Skip files flagged as duplicates by cleanup-review-sources.js
+      if (data.duplicateOf) {
+        stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
+        return;
+      }
+
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
       if (data.wrongProduction === true) {
         stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
@@ -1163,6 +1223,44 @@ showDirs.forEach(showId => {
       if (data.wrongShow === true) {
         stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
         return;
+      }
+
+      // Date-based wrong-production guard: skip reviews published >30 days before previews/opening
+      // Broadway reviews are embargoed until opening night; anything earlier is likely wrong-production
+      // Reviews with allowEarlyDate: true bypass this (e.g., out-of-town tryouts, transfers)
+      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
+        const pubDate = new Date(data.publishDate);
+        if (!isNaN(pubDate.getTime())) {
+          const showDate = showDateMap[showId];
+          const daysBefore = (showDate - pubDate) / (1000 * 60 * 60 * 24);
+          if (daysBefore > 30) {
+            console.log(`  [DATE GUARD] ${showId}/${file}: published ${data.publishDate}, show opens ${showDateMap[showId].toISOString().split('T')[0]} (${Math.round(daysBefore)}d before)`);
+            if (!stats.suspectedWrongProduction) stats.suspectedWrongProduction = [];
+            stats.suspectedWrongProduction.push({
+              showId, file, outlet: data.outletId || data.outlet,
+              critic: data.criticName, publishDate: data.publishDate,
+              daysBefore: Math.round(daysBefore), score: data.assignedScore
+            });
+            stats.skippedDateMismatch = (stats.skippedDateMismatch || 0) + 1;
+            return;
+          }
+        }
+      }
+
+      // Director cross-check for multi-production shows
+      // If a review in an OLDER production's directory mentions a NEWER production's director,
+      // it's almost certainly filed under the wrong show (validated pattern, zero false positives)
+      if (multiProdDirectorGuard[showId]) {
+        const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '').toLowerCase();
+        if (text.length >= 30) {
+          for (const [dirName, newerId] of multiProdDirectorGuard[showId]) {
+            if (text.includes(dirName)) {
+              console.log(`  [DIRECTOR GUARD] ${showId}/${file}: mentions director "${dirName}" from newer production ${newerId}`);
+              stats.skippedDirectorMismatch = (stats.skippedDirectorMismatch || 0) + 1;
+              return;
+            }
+          }
+        }
       }
 
       // Skip misattributed reviews (LLM-hallucinated critic/outlet combos)
@@ -1206,34 +1304,6 @@ showDirs.forEach(showId => {
             crossShowFingerprints.set(fp, { showId, file });
           }
         }
-      }
-
-      // Auto-detect reviews from wrong production based on publish date
-      // If review was published >60 days before show's earliest date, it's likely
-      // from a prior production (off-Broadway, West End, TV show, etc.)
-      // Reviews with allowEarlyDate: true bypass this check (e.g., re-reviews of long-running shows)
-      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
-        try {
-          const pubDate = new Date(data.publishDate);
-          if (!isNaN(pubDate.getTime())) {
-            const earliest = showDateMap[showId];
-            const daysBefore = (earliest - pubDate) / (1000 * 60 * 60 * 24);
-            if (daysBefore > 60) {
-              if (!stats.suspectedWrongProduction) stats.suspectedWrongProduction = [];
-              stats.suspectedWrongProduction.push({
-                showId,
-                file: f,
-                outlet: data.outletId || data.outlet,
-                critic: data.criticName,
-                publishDate: data.publishDate,
-                daysBefore: Math.round(daysBefore),
-                score: data.assignedScore
-              });
-              stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
-              return; // Exclude from reviews.json
-            }
-          }
-        } catch (e) {}
       }
 
       // Create deduplication key
@@ -1578,6 +1648,9 @@ console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
+console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
+console.log(`  Skipped (date mismatch >30d): ${stats.skippedDateMismatch || 0}`);
+console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch || 0}`);
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
 console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);
 if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {

@@ -60,6 +60,10 @@ jobs:
           ALLOW_DRIFT: ${{ github.event.inputs.allow_drift }}
         run: node scripts/rebuild-all-reviews.js
 
+      - name: Audit wrong-production reviews
+        run: node scripts/audit-wrong-production.js
+        continue-on-error: true
+
       - name: Update critic registry
         run: node scripts/audit-critic-outlets.js
         continue-on-error: true

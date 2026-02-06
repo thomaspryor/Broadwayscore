@@ -23,5 +23,9 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review that can be properly evaluated for recommendation; openai: The text is a brief description of the characters' relationship, not an evaluative review of the show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "web-search",
+    "show-score-playwright"
+  ]
 }
