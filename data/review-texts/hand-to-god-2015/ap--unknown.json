@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Playwright Robert Askins' bracing comedy, mixes violence, swearing, brutal honesty, parental failure, church hypocrisy, and plenty of sex - of both human and puppet varieties. But beware: It's a show for those who consider 'Avenue Q' too tame, for folks who think Triumph, the Insult Comic Dog, is too neutered...The cast is great, made up of Boyer, Michael Oberholtzer and Sarah Stiles playing three teens - and the adults played by Geneva Carr, who portrays Boyer's character's mom, and the gravelly voiced Marc Kudisch as the righteous but horny church pastor...Moritz von Stuelpnagel directs with a flair for allowing the play's little absurdities to reveal themselves naturally and a skill with onstage physicalit...Beowulf Boritt's set is spot-on...Askins at times seems to fumble for a deeper meaning about the individual getting lost in the collective, but while he comes close to profundity, it's really his cast that leaves an impression. Especially Tyrone. He'll keep you up at night.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAND-TO-GOD-Opens-on-Broadway-Updating-Live-20150407"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAND-TO-GOD-Opens-on-Broadway-Updating-Live-20150407",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The cast is great, made up of Boyer, Michael Oberholtzer and Sarah Stiles playing three teens.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises cast, direction, and design elements but notes the playwright 'fumbles for deeper meaning' and falls short of profundity. Single excerpt with mixed signals suggests qualified positive. | GPT-4o: The review praises the cast and direction, noting the play's absurdities and physicality. However, it mentions the playwright's struggle for deeper meaning, suggesting some reservations. The excerpt's tone is mildly positive, fitting the lower end of the Positive range. | Gemini: The review highlights the play's strengths in its cast, direction, and set design, while also noting some shortcomings in the play's deeper meaning. The overall tone suggests a positive experience with some reservations. | Kimi: Despite noting the script occasionally 'fumbles for a deeper meaning,' the review enthusiastically praises the 'bracing' comedy, 'great' cast, stylish direction, and effective design, clearly recommending the show for audiences who enjoy edgy, absurdist theater.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:03:51.280Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

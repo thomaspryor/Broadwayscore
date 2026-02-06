@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Reza's scabrously funny new play, which opened Sunday at the Bernard Jacobs Theatre, is set in the home of Michael and Veronica Novak, seemingly a nice, middle-class couple. The Novaks play host to the more affluent Alan and Annette Raleigh, whose son has bashed their son's teeth in. It's not a typical social visit, but both sets of parents are determined to work out the matter civilly.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Reza's scabrously funny new play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls the play 'scabrously funny' which is positive praise, but this single excerpt is purely descriptive plot setup and may not represent the full review verdict. | GPT-4o: The excerpt describes the play as 'scabrously funny,' indicating a positive tone. However, due to the single excerpt warning and lack of a full review, the confidence is low and the score is set at the lower end of the Positive range. | Gemini: The excerpt describes the setup of the play but doesn't offer a clear evaluation. Without more context, it's difficult to determine if the review is positive or negative, so I'm classifying it as mixed with low confidence. | Kimi: The excerpt describes the play as 'scabrously funny,' indicating clear appreciation for the writing's sharp wit and comedy, though the limited excerpt provides mostly plot context rather than a full critical assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:29:24.277Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 58,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 24,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

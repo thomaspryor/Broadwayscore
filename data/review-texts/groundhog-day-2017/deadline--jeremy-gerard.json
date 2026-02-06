@@ -8,12 +8,65 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
   ],
   "bwwExcerpt": "But star and set were in fine form for the opening, and while Groundhog Day may not actuially be the best musical, it is, as I said, very good. This will come as a surprise, no doubt, to diehard fans of the film, which starred Murray as Phil Connors, a self-loving Pittsburgh weatherman assigned for the third year running to hit the road for Punxsutawney, Pennsylvania to cover the annual rite of P-Phil and his shadow. Accompanied by his producer and camerman (Andie MacDowell and Chris Elliott, in the film), Pittsburgh Phil approaches Punxsutawney Phil and all his human Punxsutawney denizens with loathing and condescension, and basically can't wait to get out.",
   "bwwScore": 8,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-There-Will-Be-Sun-GROUNDHOG-DAY-Opens-on-Broadway-20170417",
-  "showScoreExcerpt": "\"While 'Groundhog Day' may not actually be the best musical, it is, as I said, very good...The story works. So does the cast...Yes, the show frequently seems on the verge of spinning out of control. But there is neat whimsy — I doubt you’ll soon forget the best car chase I’ve ever seen on stage — and genuine feeling, in part because Karl is a deeply appealing guy... In all, there’s a tremendous amount of pleasure to be had here. \"\n\nRead more"
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "while Groundhog Day may not actuially be the best musical, it is, as I said, very good",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise ('very good') but with clear caveat ('may not actually be the best musical'). Given limited text and mixed tone, scoring at lower end of Positive range. | GPT-4o: The excerpt provides a positive assessment, stating the musical is 'very good' despite not being the best. However, due to the single excerpt and potential cherry-picking, the confidence is low and the score is at the lower end of the Positive range. | Gemini: The review states the show is \"very good\" while acknowledging it may not be the best. Given the limited excerpt, confidence is low, but the positive statement warrants a score in the positive range. | Kimi: The reviewer explicitly calls the show 'very good' and praises the star and set as 'in fine form,' indicating a solid recommendation despite minor reservations about it being the 'best musical.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:48:45.416Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

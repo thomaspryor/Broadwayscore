@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But enough about me. This revival of David Mamet's 1984 Pulitzer Prize-winning drama about Chicago real estate salesmen makes for a pretty enervating hour and forty-five minutes. That will surprise fans of Mamet's blistering excoriation of business in what was hailed as the successor to Arthur Miller's \"Death of a Salesman.\" John Lahr: The New Yorker: Al Pacino, as Shelly (The Machine) Levene, stands out as one of the best messengers of Mamet's gorgeous, vicious music. The play, it occurs to the",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GLENGARRY-GLEN-ROSS-Opens-on-Broadway-20121210",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival makes for a pretty enervating hour and forty-five minutes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the revival 'enervating' and suggests it will 'surprise fans' in a disappointing way, indicating a negative assessment. However, with only one excerpt available and text appearing truncated, confidence is low. | GPT-4o: The excerpt describes the revival as 'enervating,' suggesting a lack of engagement or energy, which is a negative assessment. However, the single excerpt warning and lack of full context reduce confidence in the final verdict. | Gemini: The review excerpt states the revival is \"pretty enervating\", which is a negative assessment. The truncated text and single excerpt lower the confidence. | Kimi: The critic's own assessment describes the production as 'enervating' (draining/weakening), indicating a tedious experience that fails to engage. While the excerpt includes positive words about Al Pacino attributed to John Lahr, the reviewer's direct verdict is unfavorable. The single-excerpt format and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:20:41.128Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

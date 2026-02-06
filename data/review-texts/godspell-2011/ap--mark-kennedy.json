@@ -12,5 +12,59 @@
   "bwwExcerpt": "'Godspell,' which has long been a standard show put on in colleges and high schools, captures the best of the old and embraces the new: At intermission, some cast members stay on stage for the traditional boogie with the audience - yes, free wine is handed out - and yet this new version has the parable about Tribute to Caesar illustrated by Jesus putting a coin in a tip jar. Costumes by Miranda Hoffman remain true to that dynamic, with the use of multicolored pants and suspenders as a nod to the hippy past, and prom dresses, sneakers, a bowling shirt and leopard prints a sign of the new. It all ends badly, of course - for Jesus, not the show. The second act is a bummer, though Jesus' death is sensitively handled. But as his followers carry his body away - their faces glisten with sweat and they are visibly moved - it's clear that 'Godspell' has anointed a new group of Broadway stars and we are the richer for it.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GODSPELL-Opens-on-Broadway-Updating-LIVE-20111107"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GODSPELL-Opens-on-Broadway-Updating-LIVE-20111107",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Godspell' has anointed a new group of Broadway stars and we are the richer for it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear positive verdict praising both the production's balance of old and new elements and strongly endorsing the cast as future Broadway stars. The closing sentiment 'we are the richer for it' indicates strong recommendation despite acknowledging the inherent sadness of the second act. | GPT-4o: The excerpt suggests a positive view of the show, highlighting the successful blend of old and new elements and the strong performances of the cast. However, the mention of the second act being a 'bummer' introduces some reservation. Given the single excerpt and potential cherry-picking, a cautious positive score is appropriate. | Gemini: The review praises the cast and the show's ability to blend old and new elements, ultimately concluding that the audience is \"the richer for it.\" While acknowledging the second act is a \"bummer,\" the overall tone is positive, suggesting a worthwhile experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:30:16.748Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

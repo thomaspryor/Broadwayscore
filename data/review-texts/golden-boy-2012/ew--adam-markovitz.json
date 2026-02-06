@@ -12,5 +12,60 @@
   "bwwExcerpt": "We should all be so lucky to end up as spry and sharp at 75 as Clifford Odets' Golden Boy, which debuted on Broadway in 1937 and has been given a handsome revival by Lincoln Center Theater at Broadway's Belasco Theatre. The show's old-country characters and cobblestone street slang may have aged into artifacts of Old New York, but the story still has plenty of energy and surefooted emotion even if it doesn't quite pack a knockout punch….In the play's opening act..., Odets' razor-edge dialogue sets the drama in motion so intelligently and with such casual wit that each scene practically demands its own curtain call. It isn't until the third act that weighty moral issues drag the show down from its high spirits. But by then you'll be seduced fully enough by director Bartlett Sher's light-footed pace and Michael Yeargan's evocatively lean sets to root for Golden Boy to the final round.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOLDEN-BOY-Opens-on-Broadway-Updating-LIVE-20121206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOLDEN-BOY-Opens-on-Broadway-Updating-LIVE-20121206",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The story still has plenty of energy and surefooted emotion even if it doesn't quite pack a knockout punch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict recommending the show despite third act weakness. Praises direction, sets, dialogue, and overall entertainment value, with only minor reservations about pacing in final act. | GPT-4o: The review praises the revival as 'handsome' with 'energy and surefooted emotion', despite noting it doesn't 'pack a knockout punch'. The overall tone is positive, highlighting the direction and set design. | Gemini: The review is generally positive, praising the production and direction, but notes that the third act drags. The overall tone suggests a recommendation with reservations. | Kimi: The critic praises the 'handsome revival' and 'razor-edge dialogue' while acknowledging the third act drags, but ultimately concludes audiences will be seduced enough to root for the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:34:29.877Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

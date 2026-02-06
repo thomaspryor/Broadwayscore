@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "A couple of legends, some TV stars, a few Broadway types, and Giuliani's ex wife--all together in the original outing play. It's as mixed a bag as it sounds. It's the new production of The Best Man, which is as timely as ever, seeing as it's set at a convention where corruption and dirty politics hang over every word.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Gore-Vidals-THE-BEST-MAN-is-Back-on-Broadway-Updating-LIVE-20120401",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's as mixed a bag as it sounds.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly calls it 'a mixed bag' and offers no clear recommendation. Single excerpt warning applies - this neutral description suggests neither enthusiasm nor dismissal. | GPT-4o: The excerpt describes the production as 'mixed,' suggesting neither a strong recommendation nor a discouragement. The limited context and single excerpt warning lead to a low confidence rating. | Gemini: The critic describes the show as \"mixed\", indicating a neutral or lukewarm reception. The limited excerpt makes it difficult to determine a stronger sentiment. | Kimi: The critic explicitly labels the production a 'mixed bag,' indicating an uneven experience that falls squarely in the neither-recommend-nor-discourage category. While noting the play is 'timely,' the overall assessment is unambiguously mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:44:12.349Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

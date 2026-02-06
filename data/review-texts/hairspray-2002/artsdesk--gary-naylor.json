@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There's super work throughout the cast, Jonny Amies lovable as Link, Rita Simons vicious as Velma and Mari McGinlay and Ashley Samuels delightful as the colour-bar crossing sweethearts, Penny and Seaweed. A frisson of excitement crackles from those in the know when Dreamgirls alumna Marisha Wallace embarks on \"I Know Where I've Been\". The American powerhouse gives full belting value to Marc Shaiman and Scott Wittman's epic, emotional explanation of the roots and persistence of racial injustice -",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAIRSPRAY-Returns-to-the-West-End-What-Did-the-Critics-Think-20210630",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's super work throughout the cast, Jonny Amies lovable as Link, Rita Simons vicious as Velma and Mari McGinlay and Ashley Samuels delightful as the colour-bar crossing sweethearts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise for cast performances with specific positive descriptors ('super work', 'lovable', 'delightful'). Single excerpt warning requires caution - this sounds clearly positive so scored in upper Positive range, but low confidence due to incomplete context. | GPT-4o: The excerpt highlights strong performances and a standout musical number, suggesting a positive impression. However, with only one excerpt available, confidence is low. | Gemini: The review excerpt praises the cast performances and highlights a specific song, suggesting a positive experience. However, due to the limited text, the confidence is low. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:58:45.867Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

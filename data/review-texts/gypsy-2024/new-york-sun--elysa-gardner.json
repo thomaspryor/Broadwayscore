@@ -12,5 +12,60 @@
   "bwwExcerpt": "The director has also culled fine performances from other actors, particularly another musical theater favorite, Danny Burstein, cast here as Herbie, the agent turned candy salesman lured back to his old job by Rose, who becomes his partner in love as well. While Mr. Burstein has a lovely, easy chemistry with Ms. McDonald, his beautifully nuanced portrait also flickers with the simmering indignation and fundamental decency that ultimately dooms their characters’ relationship.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GYPSY-Opens-On-Broadway-Starring-Audra-McDonald-20241219"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GYPSY-Opens-On-Broadway-Starring-Audra-McDonald-20241219",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The director has also culled fine performances from other actors, particularly another musical theater favorite, Danny Burstein.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt praises director and performances with sophisticated language ('beautifully nuanced portrait', 'lovely, easy chemistry'). Single excerpt warning applies - using upper Positive range due to clear appreciation, but low confidence due to limited text. | GPT-4o: The excerpt highlights strong performances and chemistry between actors, suggesting a positive view. However, the single excerpt and lack of full context necessitate a cautious, low-confidence score. | Gemini: The review excerpt praises the performances of Danny Burstein and Audra McDonald, noting their chemistry and nuanced portrayals. Although it highlights the eventual doom of their characters' relationship, the overall tone suggests a positive assessment of the performances and the production. | Kimi: The excerpt offers clear praise for the director and Danny Burstein's performance using words like 'fine,' 'beautifully nuanced,' and 'lovely,' indicating a positive recommendation. However, as a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:55:35.063Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

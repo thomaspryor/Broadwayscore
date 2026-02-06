@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"'Guys and Dolls'  is a nearly perfect musical, which it has to be to survive the frequent mistreatment it receives in the new revival staged by Des McAnuff. Filled with lavish directorial touches that add little to the proceedings and featuring several surprisingly pallid performances, the show still manages to provide a good time thanks to the brilliance of Frank Loesser's score and the hilarity of Jo Swerling and Abe Burrows' book. But those with strong memori",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-Review-Roundup-GUYS-DOLLS-and-More-20090302",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Filled with lavish directorial touches that add little to the proceedings and featuring several surprisingly pallid performances, the show still manages to provide a good time",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The text is clearly truncated mid-sentence. The critic acknowledges the show 'still manages to provide a good time' but criticizes the direction and performances as ineffective. This suggests a mixed verdict - positive material survives poor execution. | GPT-4o: The review acknowledges issues with the revival's direction and performances but notes the enduring quality of the score and book. The excerpt suggests a mixed experience with some redeeming qualities. | Gemini: The review acknowledges the brilliance of the source material but criticizes the direction and some performances, resulting in a mixed assessment. The truncated text and single excerpt reduce confidence. | Kimi: The critic heavily criticizes the direction ('mistreatment', 'add little') and performances ('pallid'), attributing what enjoyment exists entirely to the original score and book rather than this production. While conceding it 'provides a good time,' the review reads as grudging tolerance rather than a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:52:12.097Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Eerie and irritating in equal measure, Levi Holloway’s \"Grey House\" at the Lyceum Theatre dredges up the classic plot device of many horror films: strangers stumbling into a den of oddballs and suffering the consequences. The couple that does, indeed, invade the eponymous domicile, Max and Henry (Claire Karpen – subbing for Tatiana Maslany - and Paul Sparks, both excellent) actually refer to this conceit and even joke that the results are always bad. \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Eerie and irritating in equal measure",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt describes the show as 'eerie and irritating in equal measure' and mentions the plot is a tired horror trope, but praises the lead performances as 'excellent.' With only one curated excerpt available and text cutting off mid-sentence, confidence is low about the full verdict. | GPT-4o: The excerpt describes the show as 'eerie and irritating in equal measure' and highlights a familiar plot device, suggesting a mixed reception. The performances are praised, but the overall tone is ambivalent. | Gemini: The review excerpt describes the play as \"eerie and irritating\" and mentions a classic horror plot device. This suggests a mixed reaction, neither strongly positive nor negative, but more of an observation. | Kimi: The excerpt presents conflicting signals: the atmosphere is praised as 'eerie' while the experience is deemed 'irritating,' and the plot is described as a dredged-up cliché despite excellent performances from the leads. With only one excerpt available, this appears to be a genuinely mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:47:54.197Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

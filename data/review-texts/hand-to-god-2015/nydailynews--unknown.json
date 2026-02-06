@@ -13,5 +13,54 @@
   ],
   "bwwExcerpt": "The new Broadway comedy 'Hand to God' is so ridiculously raunchy, irreverent and funny it's bound to leave you sore from laughing. Ah, hurts so good...As in two earlier downtown runs of the show, Steven Boyer stars as Jason, and his acting and puppeteering are exceptional. Watching him do battle against his own dark side - Tyrone appears to yank him like a rag doll - is as good as physical comedy gets. It can't be outdone - and shouldn't be missed...But Askins, in his Broadway debut, proves deft at writing dialogue that's hysterical and at serving up insights about organized religion and family dysfunction. He's unapologetically profane - prompting a handful of walkouts after a line about body fluids at a recent performance. Their loss. Ultimately, Askins gets to what pain does to people. All the characters - even the cloth one - are up to their eyeballs in agony. Under the direction of Moritz von Stuelpnagel, the production zips by. It's not typical Broadway fare, but all involved deserve a big hand.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAND-TO-GOD-Opens-on-Broadway-Updating-Live-20150407"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAND-TO-GOD-Opens-on-Broadway-Updating-Live-20150407",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong enthusiastic language throughout with 'shouldn't be missed', 'exceptional', 'can't be outdone', and 'deserve a big hand'. Clear recommendation despite acknowledging it's not typical Broadway fare. | GPT-4o: The excerpt is highly positive, praising the comedy, performances, and writing. The critic emphasizes the show's humor and unique qualities, suggesting it's a must-see despite being atypical for Broadway. | Gemini: The review is overwhelmingly positive, using phrases like \"hurts so good\", \"exceptional\", \"shouldn't be missed\", and praising the writing and direction. This indicates a strong recommendation. | Kimi: The excerpt offers strong praise for the performances, writing, and direction, with explicit recommendation language ('shouldn't be missed'), though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:05:47.481Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "And before you ask Phyllis Who?, consider that even those of fleeting fame can make for fine, compelling biographies. Wright, Hayes and director Lisa Peterson are likely very sure that Levant ranks among that list, but Good Night, Oscar is less than convincing.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Sean-Hayes-Stars-In-GOOD-NIGHT-OSCAR-On-Broadway-20230424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Sean-Hayes-Stars-In-GOOD-NIGHT-OSCAR-On-Broadway-20230424",
+  "assignedScore": 46,
+  "llmScore": {
+    "score": 46,
+    "confidence": "high",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Good Night, Oscar is less than convincing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic directly states the show is 'less than convincing' despite the creators' confidence in the material. However, this is only one excerpt and may not represent the full review verdict. | GPT-4o: The excerpt suggests the show fails to convincingly portray its subject, indicating a negative assessment. However, with only one excerpt, the confidence is low. | Gemini: The review excerpt states the show is \"less than convincing,\" which indicates a negative assessment. Given the single excerpt, confidence is low. | Kimi: The critic acknowledges the subject's biographical potential but explicitly states the production fails to make a convincing case, indicating a negative verdict on the show's execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:40:05.631Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

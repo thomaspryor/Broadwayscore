@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "While Mamet’s offstage persona may continue to provoke discomfort, this revival reminds us why his plays—at their best—remain so potent onstage. “Glengarry” still crackles with vicious energy, bitter humor, and brutal truths about American ambition. This sharp, superbly cast production doesn’t just close deals—it slams the door.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Starry-GLENGARRY-GLEN-ROSS-Revival-Opens-On-Broadway-20250331"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Starry-GLENGARRY-GLEN-ROSS-Revival-Opens-On-Broadway-20250331",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This sharp, superbly cast production doesn't just close deals—it slams the door.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with vivid language ('crackles with vicious energy', 'sharp, superbly cast', 'slams the door') and clear recommendation despite opening caveat about Mamet. Single excerpt limits full context. | GPT-4o: The excerpt provides strong praise for the production, describing it as 'sharp' and 'superbly cast,' with potent energy and humor. The language suggests a highly positive view, though the single excerpt limits confidence. | Gemini: The review uses strong positive language like \"crackles with vicious energy\" and \"superbly cast production\" and concludes that it \"slams the door\", indicating a strong recommendation. Given that it is only one excerpt, I'm scoring it at the higher end of the positive range. | Kimi: The excerpt offers strong praise for the revival's energy, casting, and impact, using words like 'superbly' and 'crackles,' though as a single curated quote it may not capture the full review's nuance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:25:06.203Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

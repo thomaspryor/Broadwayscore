@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Not quite a fully realized play, it's an extended situation comedy featuring two couples meeting to discuss a playground fight between their 11-year-old sons. It seems one of the little boys whacked the other with a stick causing him to lose two teeth. At first, the interaction is civil but there are tensions in the air. It doesn't take long before emotions erupt. And look out. Besides being exceptionally funny, there are several shocking moments in this play that are bound to take you by complete surprise.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Besides being exceptionally funny, there are several shocking moments in this play that are bound to take you by complete surprise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opens with significant reservation ('Not quite a fully realized play') but concludes with clear praise ('exceptionally funny', 'shocking moments', 'bound to take you by complete surprise'). Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt describes the play as 'exceptionally funny' with 'shocking moments,' suggesting a positive experience despite noting it's 'not quite a fully realized play.' The single excerpt warning suggests using the upper end of the Positive range if the excerpt is clearly positive. | Gemini: The review describes the play as an \"extended situation comedy\" but also mentions it being \"exceptionally funny\" and having \"shocking moments.\" Given the limited text available, it seems like a positive review with some reservations, hence the score of 75. | Kimi: While the critic notes it's 'not quite a fully realized play,' the phrases 'exceptionally funny' and emphasis on shocking moments that surprise the audience indicate a clear recommendation. The tone is enthusiastic about the theatrical experience despite structural reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:28:12.182Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

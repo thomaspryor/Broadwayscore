@@ -12,5 +12,60 @@
   "bwwExcerpt": "The show's songs, including 'Day By Day' (warmly sung by Anna Maria Perez de Tagle), 'Learn Your Lessons Well,' 'By My Side' and 'All for the Best,' are well-served by Michael Holland's dynamic orchestrations...It's clever, but the message intended by the parable gets lost. That's the evening's biggest problem: Instead of the show's style enhancing the delivery of its substance, it often obscures it.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GODSPELL-Opens-on-Broadway-Updating-LIVE-20111107"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GODSPELL-Opens-on-Broadway-Updating-LIVE-20111107",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's the evening's biggest problem: Instead of the show's style enhancing the delivery of its substance, it often obscures it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt praises musical elements but identifies a fundamental flaw where style obscures substance, calling it 'the evening's biggest problem.' This suggests mixed reception with significant reservations. | GPT-4o: The review praises the orchestrations and performances but criticizes the show for obscuring its message, indicating a mixed verdict. The single excerpt and lack of full context reduce confidence. | Gemini: The review praises the orchestrations and some performances, but ultimately finds that the show's style obscures its message, indicating a mixed assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt praises specific elements like orchestrations and performances but identifies a fundamental flaw where the production style obscures the show's intended message, suggesting neither a clear recommendation nor rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:31:39.310Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

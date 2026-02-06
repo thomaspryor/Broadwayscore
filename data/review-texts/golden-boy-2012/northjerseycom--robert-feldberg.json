@@ -12,5 +12,60 @@
   "bwwExcerpt": "The play is dated and melodramatic, with slang-filled dialogue that can sound tinny. But it has decent theatrical bones, and if well-acted and offered on a humbly human level, might work well on both personal and political levels. But director Bartlett Sher, it seems to me, goes at it in exactly the wrong way, presenting 'Golden Boy' as a loud, brassy, tough-talking period piece. Add in unimpressive performances, and the result is a long evening that, for all its slam-bang moments, is tedious and uninvolving.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOLDEN-BOY-Opens-on-Broadway-Updating-LIVE-20121206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOLDEN-BOY-Opens-on-Broadway-Updating-LIVE-20121206",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a long evening that, for all its slam-bang moments, is tedious and uninvolving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict citing wrong directorial approach, unimpressive performances, and calling it 'tedious and uninvolving' despite acknowledging the play has potential. | GPT-4o: The review criticizes the direction and performances, describing the play as 'tedious and uninvolving'. While it acknowledges the play's potential, the execution is deemed unsuccessful. | Gemini: The review explicitly states that the production is \"tedious and uninvolving\" due to unimpressive performances and a misdirected approach, leading to a negative assessment. | Kimi: While the critic acknowledges the play has 'decent theatrical bones,' the review strongly criticizes Sher's direction as 'exactly the wrong way' and calls the performances unimpressive and the evening tedious, clearly advising against seeing this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:35:11.082Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "Rannells and Gad are wonderfully matched and, it appears, having a real blast with each other. Their comic timing is wetsuit tight, their chemistry indisputable, their energy manic but precise and, crucially, unflagging. It has to be — it’s them and no one but them (well, and the Middlesex Three) for two hours, plus intermission. Which is, frankly, too long. Gutenberg!’s origins as a one-act remain palpable, and in its current form the show feels padded. Its stars are almost able to disguise tha",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-On-Broadway-Starring-Josh-Gad-and-Andrew-Rannells-20231012",
   "contentTier": "excerpt",
-  "playbillVerdictUrl": "https://www.vulture.com/article/theater-review-gutenberg-the-musical-broadway.html"
+  "playbillVerdictUrl": "https://www.vulture.com/article/theater-review-gutenberg-the-musical-broadway.html",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Their comic timing is wetsuit tight, their chemistry indisputable, their energy manic but precise and, crucially, unflagging.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises the lead performances highly but criticizes the show's length and pacing as 'padded.' The truncation at 'almost able to disguise tha[t]' suggests a 'but' is coming that may undermine the praise. | GPT-4o: The excerpt praises the performances of Rannells and Gad, highlighting their chemistry and energy. However, it also notes that the show feels padded and too long, suggesting a mixed review. The single excerpt and lack of full context contribute to a low confidence level. | Gemini: The review praises the leads' performances and chemistry but notes that the show feels padded and too long, suggesting a mixed experience. Given the limited excerpt, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the lead performances ('wonderfully matched', 'wetsuit tight', 'indisputable') but includes significant criticism of the show's length and padded structure, suggesting a mildly positive, qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:50:39.457Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

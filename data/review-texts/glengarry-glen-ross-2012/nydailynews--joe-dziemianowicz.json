@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "David Mamet's 1984 Pulitzer Prize winner \"Glengarry Glen Ross,\" about ruthless salesmen, can grab you by the throat and punch you in the gut. It's a powerful play. But the new Broadway production just gives you a nudge. That's better than nothing in this season of mostly meaningless Broadway plays, but you'd expect more from a production that delayed the opening a month. A lot of that has to do with Al Pacino, the star of the show. Pacino is a terrific actor and gave a riveting performance two y",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GLENGARRY-GLEN-ROSS-Opens-on-Broadway-20121210",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's better than nothing in this season of mostly meaningless Broadway plays, but you'd expect more.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Text is truncated but shows disappointment with the production despite praising the source material. 'Better than nothing' is faint praise, suggesting a mixed verdict leaning negative. | GPT-4o: The review acknowledges the power of the play and Pacino's performance but suggests the production is underwhelming overall. The excerpt indicates a mixed reaction, with some positives but overall disappointment. | Gemini: The review states that the production is better than nothing, but also expresses disappointment, suggesting a mixed reaction. The truncated text and single excerpt lower the confidence. | Kimi: The critic finds the production disappointingly muted compared to the play's power, offering only faint praise ('better than nothing') while noting it fails to meet expectations. Confidence is low due to truncated text and single-excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:23:33.379Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Patti LuPone gives a powerhouse performance that reminds us why she's considered one of Broadway's greatest stars. This revival of 'Gypsy' crackles with energy and emotion.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Patti LuPone gives a powerhouse performance that reminds us why she's considered one of Broadway's greatest stars. This revival of 'Gypsy' crackles with energy and emotion.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Patti LuPone gives a powerhouse performance that reminds us why she's considered one of Broadway's greatest stars.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for LuPone's 'powerhouse performance' and the production 'crackles with energy and emotion' indicates clear positive recommendation, but single excerpt warning requires caution about full verdict. | GPT-4o: The excerpt praises Patti LuPone's performance as a 'powerhouse' and describes the revival as 'crackling with energy and emotion', indicating a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses strong positive language like \"powerhouse performance\" and \"crackles with energy and emotion,\" indicating a strong recommendation. | Kimi: Single excerpt offers strong praise for both the lead performance and production energy, indicating clear recommendation, but limited context warrants reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:53:09.329Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

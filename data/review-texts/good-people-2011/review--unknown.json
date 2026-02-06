@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "by Ben Brantley) says: \"Discovering how Margie operates - and where she's coming from - is one of the more subtly surprising treats of this theater season...Whether it's Ms. Parsons's amiably avaricious landlady or Ms. Goldsberry's reflexively compassionate suburbanite, there's nothing pure about the goodness or badness of the folks who inhabit this play. This makes them among the most fully human residents of Broadway these days.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Manhattan-Theater-Clubs-GOOD-PEOPLE-20110303",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This makes them among the most fully human residents of Broadway these days.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Ben Brantley praises the character development as 'subtly surprising treats' and calls the characters 'among the most fully human residents of Broadway,' indicating strong appreciation for the writing and performances. Single excerpt warning applies - using upper end of Positive range. | GPT-4o: The excerpt describes the play as a 'treat' and praises the complexity and humanity of the characters, indicating a strong positive impression. However, the single excerpt warning suggests caution, so the score is set at the upper end of the Positive range. | Gemini: The excerpt praises the characters and calls the show a 'treat,' indicating a positive recommendation. Given the single excerpt, confidence is low, but the positive language warrants a score on the higher end of the positive bucket. | Kimi: The excerpt offers enthusiastic praise calling the production a 'treat of the season' with 'fully human' characters, but confidence is low as only a single curated quote is available and may not represent the full review's balance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:42:15.007Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

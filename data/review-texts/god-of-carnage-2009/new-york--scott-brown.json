@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "So why does God of Carnage, for all its witty anarchy and farcical cheek, feel a little flabby in the gut, a little punch-drunk and glass-jawed—and, even at 85 minutes, a little padded Maybe because it’s all too easy. This fight feels fixed: the punches telegraphed, the reversals rehearsed. The cozy bassinet of gentrified Brooklyn (where child-rearing is art form, fashion statement, and blood sport, all in one) is about as big a bull’s-eye as the boulevard affords. (Reza’s longtime translator, Christopher Hampton, has repatriated the story from a tony Paris arrondissement to Cobble Hill.)",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So why does God of Carnage, for all its witty anarchy and farcical cheek, feel a little flabby in the gut, a little punch-drunk and glass-jawed—and, even at 85 minutes, a little padded",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges positive elements ('witty anarchy and farcical cheek') but overall assessment is disappointed - calls it 'flabby,' 'punch-drunk,' 'padded,' and 'too easy.' Single excerpt warning means this could be unrepresentative of full verdict. | GPT-4o: The excerpt describes the show as having 'witty anarchy and farcical cheek' but also criticizes it as 'flabby' and 'padded'. This suggests a mixed review, acknowledging some positive elements but also significant flaws. | Gemini: The review excerpt suggests the play has some redeeming qualities (\"witty anarchy and farcical cheek\") but ultimately feels \"flabby\" and \"padded.\" This indicates a mixed reaction, but the single excerpt and truncated nature lower confidence. | Kimi: The critic acknowledges the play's 'witty anarchy' but focuses heavily on its structural flaws, calling it 'flabby,' 'padded,' and 'fixed' with 'telegraphed' punches. As a single curated excerpt without a clear final recommendation, this suggests a mixed assessment weighing style against substance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:27:56.758Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

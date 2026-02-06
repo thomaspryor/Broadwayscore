@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Those who already love Schwartz's score will probably bounce up and down with them, aided by a band that is cleverly sprinkled throughout the audience. Those who performed in the show in middle school might be tempted to sing along. Regular theatergoers, however, are likely to continue to try to get tickets to 'The Book of Mormon,' the anti-'Godspell.'",
   "bwwScore": 4,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Regular theatergoers, however, are likely to continue to try to get tickets to 'The Book of Mormon,' the anti-'Godspell.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic suggests the show appeals to existing fans and nostalgia seekers but implicitly advises regular theatergoers to see other shows instead. This is a qualified, conditional assessment rather than a clear recommendation or pan. | GPT-4o: The excerpt suggests that fans of the score will enjoy the show, but regular theatergoers might prefer other productions. This indicates a mixed reception, appealing primarily to existing fans. | Gemini: The review seems to be targeted towards fans of the score or those who have performed in the show, while suggesting that regular theatergoers might prefer other options. This indicates a mixed recommendation. | Kimi: While acknowledging the production's clever staging and appeal for Schwartz fans or those with nostalgic connections to the material, the critic explicitly suggests that general theatergoers would prefer to purchase tickets for 'The Book of Mormon' instead, indicating limited broad recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:31:05.883Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

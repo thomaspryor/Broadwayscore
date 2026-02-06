@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "There’s something smugly satisfied about the whole exercise, which ultimately talks down to its audience and assumes we can’t connect the dots. Good Night, and Good Luck aims to be a hard-hitting story about accountability and checks on power, but all that ever comes through is dead air.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOOD-NIGHT-AND-GOOD-LUCK-Brings-George-Clooney-To-Broadway-20250403"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOOD-NIGHT-AND-GOOD-LUCK-Brings-George-Clooney-To-Broadway-20250403",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's something smugly satisfied about the whole exercise, which ultimately talks down to its audience and assumes we can't connect the dots.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the show condescending ('talks down to its audience'), ineffective at its stated goals ('all that ever comes through is dead air'), and 'smugly satisfied.' This is clearly negative territory, though the single excerpt limits full assessment. | GPT-4o: The excerpt is strongly negative, criticizing the show for being condescending and ineffective. The tone suggests a deep dissatisfaction with the production. | Gemini: The review excerpt expresses a negative opinion about the show, stating that it \"talks down to its audience\" and ultimately results in \"dead air.\" | Kimi: The critic finds the production smug, condescending ('talks down to its audience'), and ultimately empty ('dead air'), representing a clear failure to achieve its dramatic aims. While strongly negative, the dismissal lacks the visceral outrage or 'disaster' language typical of a Pan.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:39:17.307Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

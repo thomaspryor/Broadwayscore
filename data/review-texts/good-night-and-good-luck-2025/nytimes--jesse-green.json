@@ -8,10 +8,63 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "*CRITICS PICK* Rather it is a slender, swift and healthy exercise in hagiography, burnishing its saints and martyrs to a high sheen. Clooney’s glamour, abetted by David Cromer’s suave direction, does a lot of that work... Clooney performs them with wit, integrity and charming modesty.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOOD-NIGHT-AND-GOOD-LUCK-Brings-George-Clooney-To-Broadway-20250403",
-  "showScoreExcerpt": "\"Rather it is a slender, swift and healthy exercise in hagiography, burnishing its saints and martyrs to a high sheen\"\n\nRead more"
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Clooney performs them with wit, integrity and charming modesty.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The *CRITICS PICK* designation and praise for Clooney's performance and Cromer's direction indicate a clear recommendation, though 'slender' suggests some reservations about scope. | GPT-4o: The excerpt is marked as a 'CRITICS PICK', indicating a strong recommendation. The language is positive, highlighting 'wit, integrity and charming modesty' in the performance and 'suave direction'. | Gemini: The review uses positive language like \"slender, swift and healthy\" and \"burnishing its saints and martyrs to a high sheen,\" indicating a generally positive, though perhaps not overwhelmingly enthusiastic, assessment. The \"Critics Pick\" designation also suggests a positive recommendation. | Kimi: The NYT Critic's Pick designation and warm praise for Clooney's performance and Cromer's direction ('suave', 'wit', 'integrity') indicate a clear recommendation. While the single excerpt limits certainty, the evaluative language ('healthy exercise', 'high sheen') places this in the strong Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:38:22.554Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

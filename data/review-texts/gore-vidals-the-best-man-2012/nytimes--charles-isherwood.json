@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "By the time the curtain came down on this starry but sluggish production, and a nominee had been formally announced, I did feel as if I’d endured a particularly fractious and constipated evening at a political convention. Need I add that acquiring this experience has never been one of my great ambitions? ... I’m not sure Mr. Jones’s presence can be classified as color-blind casting.But no matter: this consummate actor digs into his role with a relish you can surely sense from the back row of the",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Gore-Vidals-THE-BEST-MAN-is-Back-on-Broadway-Updating-LIVE-20120401",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "By the time the curtain came down on this starry but sluggish production, I did feel as if I'd endured a particularly fractious and constipated evening",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic describes the production as 'sluggish' and compares the experience to enduring something unpleasant, clearly indicating disappointment despite acknowledging strong individual performances. | GPT-4o: The review excerpt describes the production as 'sluggish' and compares the experience to a 'fractious and constipated evening,' indicating a negative impression. Despite praise for an actor, the overall tone suggests disappointment. | Gemini: The review excerpt describes the production as \"sluggish\" and compares the experience to a \"fractious and constipated evening.\" While the critic praises the actor James Earl Jones, the overall sentiment is negative, suggesting the show is not enjoyable. | Kimi: The critic describes the production as 'sluggish' and the experience as one to be 'endured,' with sarcastic remarks indicating regret at attending, clearly not recommending the show despite isolated praise for an actor's performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:43:40.010Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

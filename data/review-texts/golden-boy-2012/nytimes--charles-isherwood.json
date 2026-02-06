@@ -12,5 +12,60 @@
   "bwwExcerpt": "The skills [Sher] evinced in that rewarding revival [“Awake and Sing!”] are on view here, too: a knack for making Odets’s vernacular language feel like fresh mint instead of stale corn, and a gift for cutting to the emotional quick of a conventionally structured melodrama…As the young hero, who is determined to make himself over into the kind of man the world reveres, Mr. Numrich (“War Horse”) moves with an antic grace in the play’s early scenes...There is music in the way Mr. Numrich moves that hints at the lyric temperament Joe once felt as a salvation..., and now feels as an inhibiting burden…The process is watched from a distance by his loving father, played with impressive delicacy by a sad-eyed, soft-spoken Tony Shalhoub….Mr. Shalhoub infuses his performance with an elegiac tenderness that never descends into the maudlin….“Golden Boy” is at times dragged down by predictable plot mechanics that obscure the ripped-from-the-gut honesty that glittered more fiercely in earlier Odets plays. Some passages are too bluntly written, tapping out the play’s moral message in telegraphic language that makes you wince….But even the play’s pulpier excesses...are brought home with conviction by the cast.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOLDEN-BOY-Opens-on-Broadway-Updating-LIVE-20121206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOLDEN-BOY-Opens-on-Broadway-Updating-LIVE-20121206",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But even the play's pulpier excesses are brought home with conviction by the cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises director's skills, lead performances by Numrich and Shalhoub with specific descriptive praise, but acknowledges significant flaws in the writing ('predictable plot mechanics,' 'bluntly written'). The conclusion suggests the strong cast overcomes material weaknesses - a qualified positive recommendation. | GPT-4o: The review praises the director's skills and the performances, particularly highlighting the fresh take on the language and strong acting. However, it notes issues with predictable plot mechanics and blunt writing, suggesting some reservations. | Gemini: The review praises the performances and direction, but notes that the play is dragged down by predictable plot mechanics. The overall tone is positive, but with reservations. | Kimi: The excerpt praises the director and cast highly while criticizing the play's plot mechanics and writing, suggesting a qualified but genuine recommendation of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:35:52.309Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

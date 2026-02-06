@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Tyrone is a puppet with sharp teeth that lives at the end of the right arm belonging to timid Jason (Steven Boyer). The fabric creature struts his considerable stuff in Hand to God, Robert Askins's career-making play that has now and for all the best reasons been transferred from off-off-Broadway to off-Broadway to Broadway, at the Booth...Boyer -- who resembles Irving Penn's photographs of the young Truman Capote -- is giving a career-making performance every bit equal to Askins's work. He's utterly captivating, utterly heart-breaking in his transition from a shy boy with a puppeteering inclination to a terrified young man in possibly unbreakable thrall to a virtually autonomous bully who's not reluctant to declare himself the Devil...The truth is, that the Hand to God assault on religion as irrevocable healer both tickles the ribs and gives them a powerful punch.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAND-TO-GOD-Opens-on-Broadway-Updating-Live-20150407"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAND-TO-GOD-Opens-on-Broadway-Updating-Live-20150407",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Boyer is giving a career-making performance every bit equal to Askins's work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for both the play ('career-making') and lead performance ('utterly captivating'), with vivid positive language. Single excerpt warning requires caution, but the enthusiastic tone suggests upper Positive range. | GPT-4o: The excerpt praises the play's transfer to Broadway as well-deserved and highlights the lead actor's performance as 'career-making' and 'utterly captivating'. The language suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review is overwhelmingly positive, praising the play's transfer to Broadway, Boyer's performance, and the play's impact. The critic uses strong language like \"utterly captivating\" and \"powerful punch.\" | Kimi: The excerpt delivers enthusiastic praise with phrases like 'career-making,' 'utterly captivating,' and 'powerful punch,' indicating a strong recommendation, though the single-excerpt format necessitates reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:05:14.703Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "The play's twists, which include a then-scandalous gay rumor, may seem less surprising to audiences grown jaded by Fox News, MSNBC, and the 24/7 political spin cycle. But Vidal's play remains remarkably well-constructed (and the cast will doubtless improve the pacing, which moseys occasionally, as they grow into their roles). ... And there's 86-year-old Angela Lansbury, sharp as a tack even if she needs a cane now to command the stage, as the Southern grand dame who chairs the party's women's di",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Gore-Vidals-THE-BEST-MAN-is-Back-on-Broadway-Updating-LIVE-20120401",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Vidal's play remains remarkably well-constructed",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single excerpt shows qualified praise for the play's construction and Lansbury's performance, but notes pacing issues and suggests cast needs development. Truncated text and single excerpt limit confidence. | GPT-4o: The excerpt praises the play's construction and suggests the cast will improve, indicating a positive outlook despite some pacing issues. The single excerpt and lack of a full verdict lower confidence. | Gemini: The review suggests the play is \"remarkably well-constructed\" but the pacing needs improvement. The presence of Angela Lansbury is also a positive. Given the limited excerpt, a score in the lower positive range seems appropriate.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:43:02.826Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

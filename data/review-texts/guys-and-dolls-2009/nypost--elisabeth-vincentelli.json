@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"At the Nederlander Theatre, where Des McAnuff's glitzy revival of the 1950 classic opened last night, they dazzle us with their handsome costumes and their clever projections (by Paul Tazewell and Dustin O'Neill). They serenade us with an 18-piece orchestra firing on all cylinders. We start believing: This time, it's really going to happen! But whereas Adelaide eventually gets her ring, we're left at the altar once again, wondering how things went wrong.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-Review-Roundup-GUYS-DOLLS-and-More-20090302",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 55,
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "We're left at the altar once again, wondering how things went wrong.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Despite praising production elements (costumes, orchestra), the critic uses a metaphor of being 'left at the altar' to express disappointment with the overall result. Single excerpt limits confidence. | GPT-4o: The review praises the production elements like costumes and orchestra but ultimately expresses disappointment with the overall experience, suggesting a mixed verdict. | Gemini: The review describes positive elements like costumes, projections, and the orchestra, but concludes with a sense of disappointment, suggesting the production ultimately falls short. This indicates a mixed reaction. | Kimi: While the excerpt praises the costumes, projections, and orchestra, the final verdict uses the show's own marriage metaphor to express disappointment, stating audiences are 'left at the altar' wondering 'how things went wrong,' indicating a recommendation against seeing it despite technical strengths. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:52:40.196Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "A dazzling revival of Clifford Odets’ ”Golden Boy” opened Thursday, still packing a punch after 75 years. Tyson could do well to watch how to successfully put together a show about the rise and fall of a boxer…Tony Shalhoub is a stand-out as Bonaparte’s father, a role whose lines are written in broken Italian-accented English which could be a disaster in the wrong hands...But Shalhoub is so skilled that only a deeply felt character emerges…Numrich, who starred as the young farm boy Albert Narracott in “War Horse,” is a nimble former “shrimp with glasses” here, maintaining his air of insecurity despite a toned physique and a solid left hook. The actor nicely does impetuousness and brashness, but also you can feel his inner tumult at betraying his father….Sher has embraced the realism of this dark world — the sweat, gore and rushes of blood to the head. There are passionate kisses but always a lingering threat of violence. The place reeks of leather and failure.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOLDEN-BOY-Opens-on-Broadway-Updating-LIVE-20121206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOLDEN-BOY-Opens-on-Broadway-Updating-LIVE-20121206",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A dazzling revival of Clifford Odets' 'Golden Boy' opened Thursday, still packing a punch after 75 years.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Opens with 'dazzling revival' and 'packing a punch', praises multiple performances as 'stand-out' and 'skilled', and appreciates the director's vision. Strong positive language throughout the excerpt. | GPT-4o: The excerpt describes the revival as 'dazzling' and highlights strong performances and effective direction. Despite the single excerpt warning, the language suggests a highly positive reception. | Gemini: The review uses strong positive language such as \"dazzling revival\" and praises the performances, direction, and realism of the production. The overall tone is enthusiastic, suggesting a strong recommendation. | Kimi: The excerpt describes a 'dazzling' production with 'stand-out' performances and skilled direction, offering clear recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:33:15.227Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 86,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

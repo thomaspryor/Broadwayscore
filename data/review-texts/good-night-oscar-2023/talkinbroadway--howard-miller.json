@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There is a perhaps overused but most apt phrase to describe what is happening on stage at the Belasco, and that is \"tour de force.\" Garlands all around for playwright Doug Wright, the wonderful cast, director Lisa Peterson, and, especially, for Sean Hayes, for whom this is a career-crowning achievement.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Sean-Hayes-Stars-In-GOOD-NIGHT-OSCAR-On-Broadway-20230424",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is a perhaps overused but most apt phrase to describe what is happening on stage at the Belasco, and that is \"tour de force.\"",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Uses superlative language 'tour de force' and 'career-crowning achievement' with praise for all elements. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses strong, enthusiastic language like 'tour de force' and 'career-crowning achievement,' indicating a highly positive review. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses the phrase \"tour de force\" and heaps praise on the playwright, cast, director, and especially Sean Hayes, calling it a \"career-crowning achievement.\" | Kimi: The excerpt employs superlative language ('tour de force,' 'career-crowning achievement,' 'Garlands all around') indicating an enthusiastic, must-see recommendation consistent with the Rave bucket, though confidence is reduced due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:40:40.232Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

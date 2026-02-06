@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "“Good Night, and Good Luck” is both a tribute and a reckoning—a stylish, sobering reminder of journalism’s power and the price of using it. With Clooney’s quiet strength at the center and Cromer’s riveting stagecraft all around him, this production looks to the past but refuses to stay there. The message is clear: if no one stands up, history isn’t just doomed to repeat—it already is.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOOD-NIGHT-AND-GOOD-LUCK-Brings-George-Clooney-To-Broadway-20250403"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOOD-NIGHT-AND-GOOD-LUCK-Brings-George-Clooney-To-Broadway-20250403",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With Clooney's quiet strength at the center and Cromer's riveting stagecraft all around him, this production looks to the past but refuses to stay there.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance ('quiet strength') and direction ('riveting stagecraft'), with sophisticated thematic appreciation. However, single excerpt warning applies - confidence reduced due to limited text available. | GPT-4o: The excerpt praises the production's style and message, highlighting Clooney's performance and Cromer's stagecraft. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt uses positive language such as \"quiet strength\" and \"riveting stagecraft\", and calls the production a \"tribute\" and \"sobering reminder\". Given the single excerpt, I am placing it in the upper end of the positive bucket. | Kimi: The excerpt offers strong praise for Clooney's performance and Cromer's direction ('riveting stagecraft'), indicating a solid recommendation, though the single-excerpt limitation prevents higher confidence or Rave classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:36:44.331Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "Newcomer Lizzie Bea is instantly adorable as Tracy, the irrepressibly optimistic, generous-figured schoolgirl who dreams of glory on dance-party programme The Corny Collins Show, and of winning the heart of budding teen idol Link Larkin (a smooth Jonny Amies). Ball effortlessly slips back into the double E cups and heels of her mama Edna, transforming from a meek, lank-haired domestic drudge to a marabou-bedecked butterfly. Les Dennis as her devoted husband Wilbur is pallid, but their partnershi",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAIRSPRAY-Returns-to-the-West-End-What-Did-the-Critics-Think-20210630",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Newcomer Lizzie Bea is instantly adorable as Tracy, the irrepressibly optimistic, generous-figured schoolgirl who dreams of glory.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear praise for lead performances ('instantly adorable', 'effortlessly slips back', 'smooth') with descriptive appreciation for the transformations and casting. However, this is a single curated excerpt that cuts off mid-sentence, making it impossible to assess the full verdict. | GPT-4o: The excerpt praises Lizzie Bea's performance as 'instantly adorable' and describes Michael Ball's transformation positively. However, Les Dennis is described as 'pallid', indicating some reservations. With only one excerpt available, the confidence is low, and the verdict is mildly positive. | Gemini: The review excerpt praises the performances of Lizzie Bea and Michael Ball, suggesting a positive experience overall. However, due to the limited text, the confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:00:58.721Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 78,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

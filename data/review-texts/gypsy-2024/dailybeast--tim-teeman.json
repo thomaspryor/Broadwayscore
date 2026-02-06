@@ -12,5 +12,60 @@
   "bwwExcerpt": "One’s mind returns to the banner names—AUDRA GYPSY. McDonald’s commanding performance certainly delivers, but the structure and look of the show are significant negative distractions. Gypsy remains magnificent, but this production—with its excellent singing and cast—requires a stronger conceptual execution to make it truly great.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GYPSY-Opens-On-Broadway-Starring-Audra-McDonald-20241219"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GYPSY-Opens-On-Broadway-Starring-Audra-McDonald-20241219",
+  "assignedScore": 71,
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonald's commanding performance certainly delivers, but the structure and look of the show are significant negative distractions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Praises McDonald's performance and the cast/singing, but identifies 'significant negative distractions' in structure and design. Calls for 'stronger conceptual execution' suggesting the production falls short of its potential. | GPT-4o: The review praises Audra McDonald's performance and the singing, but criticizes the show's structure and look as significant distractions. This indicates a mixed review with both positive and negative elements. | Gemini: The review praises the performance but notes significant issues with the show's structure and look, suggesting a recommendation with reservations. Given only one excerpt, confidence is low. | Kimi: While the critic praises Audra McDonald's commanding performance and the excellent cast/singing as delivering, the strong criticism of the structure and look as 'significant negative distractions' creates a qualified recommendation rather than an enthusiastic endorsement. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:54:08.696Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

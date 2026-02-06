@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Designer John Lee Beatty’s sets include a church basement, Margie’s cluttered kitchen and a handsome arts-and-crafts style living room. Like everything else about Manhattan Theatre Club’s world premiere of “Good People,” Beatty’s artistry appears unassuming but is right on the money.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like everything else about Manhattan Theatre Club's world premiere of \"Good People,\" Beatty's artistry appears unassuming but is right on the money.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the production design and uses the phrase 'right on the money' to describe both the sets and 'everything else about' the production, suggesting overall approval. However, with only one curated excerpt available, confidence is low and the score reflects the upper end of positive given the clearly appreciative tone. | GPT-4o: The excerpt praises the set design as 'right on the money,' suggesting a positive view of the production's artistic elements. However, due to the single excerpt and lack of a full review, the confidence is low. | Gemini: The excerpt praises the set design and states that it is \"right on the money,\" suggesting a positive, but not overwhelmingly enthusiastic, assessment. Given the limited text, a score on the lower end of the positive range is appropriate. | Kimi: The excerpt offers clear praise for the production design as 'right on the money' and implies the entire show meets this standard of quality. While the tone is definitely positive, the single-excerpt limitation prevents higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:41:40.536Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

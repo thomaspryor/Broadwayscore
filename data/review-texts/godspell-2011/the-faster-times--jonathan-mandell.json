@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Those who already love Schwartz's score will probably bounce up and down with them, aided by a band that is cleverly sprinkled throughout the audience. Those who performed in the show in middle school might be tempted to sing along. Regular theatergoers, however, are likely to continue to try to get tickets to \"The Book of Mormon,\" the anti-\"Godspell.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GODSPELL-Opens-on-Broadway-Updating-LIVE-20111107",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Regular theatergoers, however, are likely to continue to try to get tickets to \"The Book of Mormon,\" the anti-\"Godspell.\"",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review suggests the show appeals to existing fans and nostalgic performers but implies regular theatergoers would prefer other shows. The comparison to Book of Mormon as the 'anti-Godspell' suggests limited appeal beyond the fan base. | GPT-4o: The excerpt suggests that fans of the score will enjoy the show, but regular theatergoers might prefer other options, indicating a mixed reception. The single excerpt and lack of full context lead to a low confidence score. | Gemini: The review seems to be targeted towards fans of the show or the composer, but not necessarily recommended for regular theatergoers. The comparison to \"The Book of Mormon\" as the anti-\"Godspell\" suggests a lack of broad appeal. | Kimi: While acknowledging that fans of the score will enjoy the production, the critic explicitly discourages general audiences by recommending they seek tickets to \"The Book of Mormon\" instead, treating Godspell as inferior fare for regular theatergoers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:32:17.461Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

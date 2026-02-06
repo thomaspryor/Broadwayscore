@@ -12,5 +12,60 @@
   "bwwExcerpt": "McDonald is surrounded by an aces supporting cast: the searing Tyson and precocious Marley Lianne Gomes, who sparkle as older and younger June; and Lesli Margherita, who makes a meal out of her limited stage time as wisecracking stripper Tessie Tura. Woods, too, brings the necessary innocence to Louise, with added moments of depth for the naïve character. You see the seeds of her sensuality blossom in “All I Need is the Girl,” and she imbues “If Momma Was Married” with palpable longing for a life away from the spotlight.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GYPSY-Opens-On-Broadway-Starring-Audra-McDonald-20241219"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GYPSY-Opens-On-Broadway-Starring-Audra-McDonald-20241219",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonald is surrounded by an aces supporting cast: the searing Tyson and precocious Marley Lianne Gomes, who sparkle as older and younger June.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with consistent praise for cast performances ('aces supporting cast', 'sparkle', 'makes a meal out of'). However, this is only one curated excerpt focusing on performances, so full review verdict uncertain. | GPT-4o: The excerpt highlights strong performances from the cast, suggesting a positive view of the production. However, with only one excerpt available, the full context of the review is unclear, warranting a low confidence level. | Gemini: The excerpt focuses on the strength of the cast, using positive language like \"aces,\" \"searing,\" and \"sparkle.\" Given the single excerpt warning, I'm scoring it as positive with a higher score to reflect the enthusiastic tone. | Kimi: The single available excerpt is clearly positive, using enthusiastic language like 'aces,' 'searing,' and 'sparkle' to praise the cast, warranting the upper end of the Positive bucket despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:56:21.392Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

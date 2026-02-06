@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Pacino and Cannavale are fierce and hilarious, rattling through the Mametspeak. But the entire cast blazes in Daniel Sullivan's tight, anger-unmanaged staging: David Harbour's humiliated office prick, Williamson; John C. McGinley's bilious Moss; Richard Schiff's schlemiel Aaronow; Jeremy Shamos's spineless Lingk; and Murphy Guyer's cop, Baylen. They may be weak, craven shells of men, but they close on one of the biggest deals of the season.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GLENGARRY-GLEN-ROSS-Opens-on-Broadway-20121210",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They may be weak, craven shells of men, but they close on one of the biggest deals of the season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for lead performances ('fierce and hilarious') and entire cast ('blazes'), with director's staging described as 'tight'. The final line cleverly endorses the production as 'one of the biggest deals of the season'. | GPT-4o: The excerpt praises the performances and staging with strong language like 'fierce', 'hilarious', and 'blazes'. Despite the single excerpt warning, the tone suggests a highly positive assessment of the production. | Gemini: The review excerpt uses strong positive language like \"fierce\", \"hilarious\", and \"blazes\", indicating a positive recommendation. Given the single excerpt, I am scoring at the higher end of the positive range with low confidence. | Kimi: The excerpt offers enthusiastic praise for the cast ('fierce and hilarious,' 'blazes') and staging ('tight'), with a strong concluding metaphor calling it one of the season's best productions. As a single curated excerpt, it suggests clear positivity but warrants lower confidence without the full review context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:24:34.279Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

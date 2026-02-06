@@ -12,5 +12,60 @@
   "bwwExcerpt": "...it's a rare and wonderful thing to see director Moritz von Stuelpnagel's aggressively punk production, which started at the 99-seat Ensemble Studio Theatre and was then plunked by MCC into Off-Broadway's Lortel, now gracing Shubert Alley...Before you know it, it turns out that Askins' drama, as well as Jason's puppet, has some powerful teeth. Though uproariously funny at times, the serious-minded production will have the more squeamish playgoers averting their eyes at the bloody and desperate climax...In order for Broadway to seriously claim itself to be the heart of American theatre, more plays like this need to be produced there regularly. Hollywood stars and pop music icons may bring in the crowds, but nothing beats good writing, adventurous ideas and major attitude.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAND-TO-GOD-Opens-on-Broadway-Updating-Live-20150407"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAND-TO-GOD-Opens-on-Broadway-Updating-Live-20150407",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a rare and wonderful thing to see director Moritz von Stuelpnagel's aggressively punk production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the production as 'rare and wonderful' with advocacy that Broadway needs more shows like this. Calls it 'serious-minded' with 'good writing, adventurous ideas and major attitude' despite warning about content. | GPT-4o: The review praises the production as a rare and wonderful thing, highlighting its powerful impact and adventurous ideas. The call for more plays like this on Broadway suggests a strong recommendation. | Gemini: The critic praises the production's journey to Broadway and emphasizes the need for more plays like it on Broadway, indicating a strong positive recommendation. | Kimi: The excerpt offers strong praise for the production's 'rare and wonderful' punk energy, powerful writing, and adventurous ideas, explicitly advocating that Broadway needs more such plays, though as a single curated excerpt the full verdict may not be fully represented.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:04:34.681Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

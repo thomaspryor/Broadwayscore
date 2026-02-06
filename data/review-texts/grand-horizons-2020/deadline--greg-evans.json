@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "No doubt Wohl and her play have an appealing, compassionate spirit (first on displayed in the playwright's well-received Off Broadway plays American Hero and Small Mouth Sounds), and that goes a long way: Grand Horizons (the title is the name of Bill and Nancy's senior community) is a comfortable, comforting entertainment, its jokes more funny than not, its performances, by and large, expert. Alexander and Cromwell are marvels, pros elevating their material with subtlety and bring-it-home delivery.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GRAND-HORIZONS-Opens-On-Broadway-20200123"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GRAND-HORIZONS-Opens-On-Broadway-20200123",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grand Horizons is a comfortable, comforting entertainment, its jokes more funny than not, its performances, by and large, expert.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows qualified praise - 'comfortable, comforting entertainment' with 'more funny than not' jokes and 'expert' performances. However, this is only one curated excerpt which may not represent the full verdict, so confidence is low. | GPT-4o: The excerpt highlights the play's appealing and compassionate spirit, with praise for its humor and performances. The positive tone and specific commendation of the actors suggest a solid recommendation. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The review describes the play as a \"comfortable, comforting entertainment\" with expert performances, indicating a positive but not overwhelmingly enthusiastic recommendation. Given the limited excerpt, confidence is low. | Kimi: The excerpt offers consistent praise for the show's compassionate spirit, effective humor, and expert performances, particularly highlighting the leads as 'marvels' who elevate the material. The tone is warm and recommending, placing it in the upper range of Positive despite the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:44:50.406Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "The excellent cast is rounded out by a few Southie denizens. Margie's money-grubbing landlady and so-called friend, Dottie, is played with a steely-eyed twinkle by the inimitable Estelle Parsons. Becky Ann Baker plays Margie's equally belligerent but supportive friend, Jean, and Patrick Carroll is sweetly sensitive as Stevie, a decent younger man who tries to help Margie despite her rudeness toward him.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The excellent cast is rounded out by a few Southie denizens.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt praises the cast, highlighting strong performances. However, without a full review or clear verdict, the positive sentiment is mild, suggesting a lower score within the Positive range. | Gemini: The excerpt focuses on the strength of the supporting cast, but lacks an overall assessment of the play itself. This suggests a mixed or neutral stance, praising elements without a clear recommendation. | Kimi: The excerpt provides enthusiastic praise for the cast ('excellent', 'inimitable', 'sweetly sensitive'), indicating a strong positive assessment, though the single-excerpt format limits confidence in the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:41:17.001Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 72,
+    "geminiScore": 60,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -13,5 +13,59 @@
   ],
   "bwwExcerpt": "Grand Horizons is not especially profound, and its women are written more fully than its men. But in Leigh Silverman's production for Second Stage, the gifted cast-which also includes Maulik Pancholy as Brian's would-be hookup and Priscilla Lopez as a blowsy neighbor-keeps the energy high. And the play does have touching things to say about the difficulty of trying to navigate a course between the Scylla and Charybdis of noncommunication and too much information. 'I will be a whole person to you,' Nancy tells Brian. 'I will.' That is one hard lesson of the play, whether Brian is ready to learn it or not: There comes a certain age when, no matter how painful it may be, you have to let your parents leave the nest.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GRAND-HORIZONS-Opens-On-Broadway-20200123"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GRAND-HORIZONS-Opens-On-Broadway-20200123",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But in Leigh Silverman's production for Second Stage, the gifted cast keeps the energy high.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Opens with criticisms ('not especially profound', uneven character writing) but follows with praise for the cast and production, finding 'touching things to say.' Single excerpt warning suggests cautious scoring in lower Positive range. | Gemini: The review acknowledges flaws (\"not especially profound\", \"women are written more fully than its men\") but praises the cast and notes touching themes. Given the single excerpt, I'm scoring it as a slightly positive recommendation. | Kimi: While noting the play lacks profundity and has unevenly written characters, the critic praises the gifted cast and finds touching value in the themes, offering a qualified recommendation to see the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:45:39.606Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

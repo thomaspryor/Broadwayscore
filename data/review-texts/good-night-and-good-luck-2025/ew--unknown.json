@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "The original’s focus on the unchecked power of an elected official using fear, rumor, and lies against his enemies obviously hits even harder in 2025... But another theme lightly touched on in the movie — the future role of television in our society — gets even greater emphasis on the stage.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOOD-NIGHT-AND-GOOD-LUCK-Brings-George-Clooney-To-Broadway-20250403"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOOD-NIGHT-AND-GOOD-LUCK-Brings-George-Clooney-To-Broadway-20250403",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The original's focus on the unchecked power of an elected official using fear, rumor, and lies against his enemies obviously hits even harder in 2025.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt provides only thematic analysis without clear evaluative language or recommendation. The phrase 'hits even harder' suggests relevance but no verdict on production quality or whether to see it. | GPT-4o: The excerpt highlights thematic relevance but does not clearly recommend or discourage seeing the show. The lack of a full review and only one excerpt makes the overall sentiment unclear, suggesting a mixed evaluation. | Gemini: The excerpt discusses themes and their emphasis, but doesn't offer a clear recommendation or judgment on the show's quality, suggesting a mixed or neutral perspective. The single excerpt and lack of explicit evaluative language lead to low confidence. | Kimi: Single excerpt highlights the show's timely relevance and effective expansion of thematic material from the source film, indicating approval of the adaptation's contemporary significance, though specific production quality assessment is not present in the curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:37:41.928Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }
