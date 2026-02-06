@@ -272,7 +272,7 @@ async function processShow(show) {
   // 2. Select posts - use Reddit's relevance ordering from our audience-focused searches
   // Don't re-sort by engagement (that drowns out good posts with high-engagement meta threads)
   // The LLM will filter out irrelevant comments - we just need to give it good posts to work with
-  const topPosts = posts.slice(0, 30);
+  const topPosts = posts.slice(0, 75);  // More posts to see natural distribution
 
   if (verbose) {
     console.log(`  Top 5 posts (by Reddit search relevance):`);
@@ -285,7 +285,7 @@ async function processShow(show) {
 
   let comments;
   try {
-    comments = await collectCommentsFromPosts(SUBREDDIT, topPosts, 500);
+    comments = await collectCommentsFromPosts(SUBREDDIT, topPosts, 2000);  // High limit to see natural distribution
   } catch (e) {
     console.error(`  Comment collection failed: ${e.message}`);
     return null;
