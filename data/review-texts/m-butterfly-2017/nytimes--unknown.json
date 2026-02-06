@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "https://www.nytimes.com/2017/10/26/theater/review-m-butterfly-david-henry-hwang-julie-taymor-broadway.html?_r=0",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Maybe they should call it “M. Moth.”\n\nThough it bent (and blew) the minds of rapt audiences with its elusive opalescence nearly three decades ago, David Henry Hwang’s “M. Butterfly” returns to Broadway on heavier, drabber wings. True, the revival that opened on Thursday night at the Cort Theater, directed by Julie Taymor, has basically the same anatomy as its predecessor.\n\nBut it has undeniably morphed into a more prosaic creature, and the tantalizing mists that surrounded its initial run have dissolved as if under a harsh morning sun. When the enigmatic title character in this breakthrough drama about the illusions of sexual and cultural identity is brusquely commanded to “Strip!” by a stricken suitor, you’re apt to think, “No need guys. That’s already been taken care of.”\n\nThat’s partly because the show fails to generate any visual enchantment, despite the professional bona fides of Ms. Taymor, the magician behind the eternally lucrative spectacle of “The Lion King.” But our reluctance to suspend skepticism also comes from the ways in which Mr. Hwang has retooled his script to embrace more elements of the real international scandal that inspired this sensational story of a Parisian diplomat and his Chinese paramour.\n\nThe climactic courtroom scene now includes new anatomically exact descriptions of the — ouch! — sex life of its leading lovers. Even more cumbersome is the addition of yet another layer of deception for the character of Song Liling (Jin Ha, in the role that made BD Wong a star), the wily actor who bewitches the bureaucrat Rene Gallimard. (The good news is that Gallimard is portrayed by Clive Owen, who is terrific but performing in a vacuum.)\n\nAnd this is the point where I say, “Stop right here,” if you are unacquainted with the notorious premise of “M. Butterfly.”\n\nStill reading? O.K. In “M. Butterfly,” our not-so-bright Gallimard — a French embassy official stationed in Beijing in the 1960s — falls head over heels for Song, who he thinks is a woman but is really a fetching young dude in Suzie Wong drag. That Gallimard (and his real-life prototype, Bernard Boursicot, whose case became an international scandal in the mid-1980s) failed to register the imposture has been the subject of much bewildered speculation and many jokes. (Check out the priceless “Forbidden Broadway” parody of the show.)\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 45,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'M. Butterfly' returns to Broadway on heavier, drabber wings...Hwang more than implicitly compares Gallimard’s dim vision regarding his love object to the unrealistic beliefs that Western countries hold about the East...For 'M. Butterfly' to have emotional impact, it must make its audiences uneasily complicit in that fantasy. In this version, you always maintain the distance...We’re not being seduced, but preached at.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -75,5 +75,28 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 45,
+  "textWordCount": 410,
+  "archivePath": "data/archives/reviews/m-butterfly-2017/nytimes--unknown_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T08:33:20.139Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250726052743",
+  "archiveOrgUrl": "http://web.archive.org/web/20250726052743/https://www.nytimes.com/2017/10/26/theater/review-m-butterfly-david-henry-hwang-julie-taymor-broadway.html?_r=0",
+  "wordCount": 410,
+  "tierReason": "Full review text"
 }
