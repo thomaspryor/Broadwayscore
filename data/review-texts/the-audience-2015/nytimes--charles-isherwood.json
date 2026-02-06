@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Mirren's performance remains a marvel of controlled complexity, a portrayal that finds both the public and private faces of a woman who has spent more than 60 years on the world's most visible throne.",
-  "contentTier": "needs-rescrape",
+  "contentTier": "complete",
   "contentTierReason": "Short text (35 words)",
   "textQuality": "full",
   "playbillVerdictUrl": "http://www.nytimes.com/2015/03/09/theater/review-the-audience-with-helen-mirren-opens-on-broadway.html?ref=topics&_r=0",
@@ -33,44 +33,22 @@
   "urlDiscoveredAt": "2026-02-04T17:32:09.459Z",
   "urlDiscoveryMethod": "google-serp",
   "textWordCount": 422,
-  "archivePath": "data/archives/reviews/the-audience-2015/nytimes--charles-isherwood_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T17:32:09.465Z",
-  "fetchMethod": "brightdata",
+  "archivePath": "data/archives/reviews/the-audience-2015/nytimes--charles-isherwood_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T14:13:08.633Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "timeout of 60000ms exceeded"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "Parse Error: Header overflow"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 4,
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "archive",
   "wordCount": 422,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "archiveOrgTimestamp": "20250715074424",
+  "archiveOrgUrl": "http://web.archive.org/web/20250715074424/https://www.nytimes.com/2015/03/09/theater/review-the-audience-with-helen-mirren-opens-on-broadway.html"
 }
