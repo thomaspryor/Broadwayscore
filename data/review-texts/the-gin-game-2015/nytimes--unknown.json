@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "http://www.nytimes.com/2015/10/15/theater/review-james-earl-jones-and-cicely-tyson-shuffle-emotions-in-the-gin-game.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2015/10/15/theater/review-james-earl-jones-and-cicely-tyson-shuffle-emotions-in-the-gin-game.htmlShare full article19Advertisement\n\nWeller Martin and Fonsia Dorsey, residents of a modest retirement home and the sole characters in D. L. Coburn’s 1976 play, “The Gin Game,” have withdrawn from the world, willingly or not, and await the inevitable end with minimal protest. By contrast, James Earl Jones and Cicely Tyson, who are playing these roles in the excellent Broadway revival of Mr. Coburn’s flinty comedy, still seem to be in their glowing prime, actors with long and distinguished careers behind them who nevertheless keep seeking further heights to scale.\n\nScale them they do: Mr. Jones, 84, has appeared on Broadway a remarkable six times in the past decade. Ms. Tyson, 90, won a well-deserved Tony Award just two years ago for her luminous performance in “The Trip to Bountiful.”\n\nAlthough it won a Pulitzer Prize during a fairly lean period for American playwriting, Mr. Coburn’s play cannot exactly be called an Everest of contemporary drama. Still, it proves a sturdy, humming vehicle, its gentle comedy undergirded by dark emotional coloring. Onstage for virtually all of its two-hour running time, Mr. Jones and Ms. Tyson draw out all its nuances, as Weller and Fonsia bicker and make nice over a card table. These two superlative performers establish beyond doubt, if we needed any reminding, that great talent is ageless and ever-rewarding.\n\nOn its surface, “The Gin Game,” which opened on Wednesday night at the John Golden Theater in a production cleanly directed by Leonard Foglia, could hardly be simpler: Set entirely on the porch of the home where Weller and Fonsia have none too happily come to rest (designed in gritty detail by Riccardo Hernandez), it depicts their sometimes friendly, sometimes testy relationship, which is stirred into life when the terminally bored Weller first spies in Fonsia the potential card partner he’s been pining for.\n\nShe at first demurs, claiming little knowledge of gin rummy and requiring some rudimentary reminders. Soon, however, Fonsia is winning hand after hand, racking up points. Weller’s courtly surprise turns to frisky irritation and, ultimately, foul-mouthed fits of rage that send Fonsia stalking away.\n\nWhat is really taking place, of course, is a human connection, however flawed, that both desperately need. Fonsia and Weller were each divorced long ago, and have virtually been abandoned by their adult children; at one point Weller makes a mordant joke about their lack of visitors. As the cards are shuffled and dealt, layers of formality fall away, and we come to see these intimately drawn characters in microscopic detail, thanks to the vividly theatrical but admirably unfussy performances of Mr. Jones and Ms. Tyson.\n\nMr. Jones’s gorgeous, burly baritone seems a complicated character in itself. It takes on honeyed cadences when he’s making up to Fonsia after one of his storms of pique, but becomes the threatening roar of a baited bear when, with dainty delicacy, Fonsia once again lays down a winning hand.\n\nWeller’s frustration doesn’t derive entirely from his bad luck at cards, of course; as Fonsia draws him out, we learn of his disappointing career and less than fulfilled personal life. But there remains in him a stiff orneriness that Mr. Jones captures with subtle comic flair; it constitutes his only rebuke to the misfortunes life has dealt, and he will carry it to his grave like a tarnished badge of honor.\n\nFonsia clings to her own dignity as tightly as she does her ever-present purse. Although, when we first meet her, she is crying frustrated tears, Fonsia prides herself on her self-sufficiency as much as Weller does on his. Both are solitary characters who hold themselves apart from the other residents — the porch is their private realm, where some semblance of independence can be asserted.\n\nSmall and slim though she is, particularly in comparison with Mr. Jones’s commanding presence, Ms. Tyson transmits Fonsia’s poise and rectitude, which reveal themselves in her firm upbraiding of Weller for his foul language. But she also brings a fragility and a warmth to Fonsia that are immensely touching, and when the play’s emotional climax arrives — the only moment when Fonsia turns to Weller for desperately needed solace — Ms. Tyson is utterly heart-rending.\n\nMr. Coburn’s play was first produced on Broadway in 1977, with Jessica Tandy and Hume Cronyn, and revived in 1997 with Julie Harris and Charles Durning. It has also been produced widely at regional theaters and internationally. Having not seen it before, I confess that I was expecting a gauzy depiction of a late-life friendship, full of moist, twinkling moments inspiring “awwws” at the coming together of a pair of old folks in need of companionship.\n\nI was glad to discover that Mr. Coburn mostly resists any such patronizing sentimentality. Despite its comic overtones, “The Gin Game” presents a clarifying portrait of the loneliness that may come with age, and the difficulties of forging a relationship when our personalities have quite naturally become calcified by experience. As the moving performances of Mr. Jones and Ms. Tyson bear out, playing the hands we are dealt with equanimity is much easier when we are still sure that there will be many more hands to play.\n\n­“The Gin Game” runs through Jan. 10 at the John Golden Theater, Manhattan; 212-239-6200, thegingamebroadway.com.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 79,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Despite its comic overtones, 'The Gin Game' presents a clarifying portrait of the loneliness that may come with age, and the difficulties of forging a relationship when our personalities have quite naturally become calcified by experience. As the moving performances of Mr. Jones and Ms. Tyson bear out, playing the hands we are dealt with equanimity is much easier when we are still sure that there will be many more hands to play.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -76,5 +76,44 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "duplicateOf": "nytimes--charles-isherwood.json"
+  "duplicateOf": "nytimes--charles-isherwood.json",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 79,
+  "textWordCount": 874,
+  "archivePath": "data/archives/reviews/the-gin-game-2015/nytimes--unknown_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T19:33:41.931Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 874,
+  "tierReason": "Full review text"
 }
