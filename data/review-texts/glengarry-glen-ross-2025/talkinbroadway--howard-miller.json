@@ -5,8 +5,8 @@
   "criticName": "Howard Miller",
   "url": "https://www.talkinbroadway.com/page/world/GlengarryGlenRoss.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Theatre Review by Howard Miller - March 31, 2025\n\nGlengarry Glen Ross by David Mamet. Directed by Patrick Marber. Design by Scott Pask. Lighting design by Jen Schriever. Associate director Rory McGregor. Vocal coach Kate Wilson.\nCast: Kieran Culkin, Bob Odenkirk, Bill Burr, Michael McKean, Donald Webber, Jr., Howard W. Overshown, and John Pirruccello.\nTheater: Palace Theatre\nTickets: BroadwayDirect.com\n\nWhile some of the previous productions were more successful than others, this is a play that has a proven track record of being able to thrill audiences in much the same way that had baseball fans clinging to the edge of their seats in anticipation when, say, Joe DiMaggio would step up to the plate at a crucial bottom-of-the-ninth, two-outs, bases-loaded moment.\n\nUnfortunately, this ain't that moment. Like many a baseball game, this herky-jerky effort manages to deliver too many swings that result in misses, with only the occasional single or double to keep the fans lingering in diminishing hope for someone to score. Sorry, Mrs. Robinson, but Joltin' Joe has left and gone away.\n\nGlengarry Glen Ross takes us not into the world of competitive sports, but into the equally competitive world of real estate sales. It is a place where desperate men act out their desperation in a most unsportsmanlike way. These are fast-talking bullshit artists, flimflam men of the first degree, who readily resort to lies, flattery, intimidation, and extortion to lock in a sale. And they happily step all over themselves and each other to land at the highest rung of the ladder, where they alone will be privy to the best leads. Their earnings are hit-and-miss, but the adrenaline-pumping thrill of the game is theirs for the taking as long as they are able to hold out and hold on.\n\nThe play's title refers to two real estate developments, representing two ends of the spectrum for the salesmen depicted here. \"Glengarry,\" short for \"Glengarry Highlands,\" is the hot new property where the most lucrative sales can be made. \"Glen Ross,\" short for \"Glen Ross Farms,\" is pretty much dried up. What's left are the dregs, and only the less successful salesmen are offered those leads. The men fight like dogs over a bone for a piece of the former.\n\nTo be clear, there is no faulting the individual performances here. Rather, it is the failure of the collective whole to coalesce into something more than a series of set pieces. (It doesn't help that the 105-minute evening is split in the middle by a 15-minute intermission, a break that deflates whatever tension was built up in Act I).\n\nAll of the cast members manage to make a hearty meal out of their respective parts, strewing their f-bomb packed speeches all along the path like Hansel and Gretel's breadcrumbs. Bob Odenkirk is particularly compelling as one of the older men, a Willy Loman type named Shelley Levene, a once hotshot salesman who suddenly finds himself relegated to the bottom of the heap. The other salesmen are portrayed with flair by Michael McKean as George Aaronow, who has all but given up on himself and is easily led into participating in a risky scheme by the unscrupulous Dave Moss (Bill Burr, a ball of fury), while Ricky Roma, slick as a whistle and sly as a fox, is played by Kieran Culkin, proffering pure cynicism-on-a-stick. Rounding out the cast are Donald Webber, Jr. as the office manager; John Pirruccello as one of Roma's hapless clients; and Howard W. Overshown as the cop assigned to investigate the break-in.\n\nLike baseball, theatre-making is a team sport. And therein lies the problem with this production. When Glengarry Glen Ross has worked well in the past, it has been because of the collaborative effort necessary for achieving the overall you-are-there portrait David Mamet has conceived. Here, however, what we get is a set of individual performances or, occasionally, duets between scene partners. It is, of course, the director, in this case Patrick Marber, who is charged with creating the illusion that what we are seeing consists of authentic interactions among the characters. That's what's missing, the requisite team play that would prepare the field so one or more of the otherwise excellent actors might hit one out of the park instead of merely participating in a game of catch.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"On the face of it, Glengarry Glen Ross has a simple set-up and premise\"\n\nRead more",
-  "contentTier": "needs-rescrape",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "rejectedAt": "2026-02-04T11:31:06.852Z",
   "rejectedBy": "ensemble-scoreability-check",
@@ -25,5 +25,35 @@
   "promptVersion": "5.2.0",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "textWordCount": 717,
+  "archivePath": "data/archives/reviews/glengarry-glen-ross-2025/talkinbroadway--howard-miller_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T14:52:56.337Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 717,
+  "tierReason": "Full review text"
 }
