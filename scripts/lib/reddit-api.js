@@ -31,9 +31,13 @@ let scrapingBeeSwitchTime = 0;
 let rateLimitCount = 0;
 let lastRequestTime = 0;
 
+// Proxy state
+let brightDataDown = false;
+
 // Session stats
 const stats = {
   redditDirect: 0,
+  brightData: 0,
   scrapingBee: 0,
   rateLimits: 0,
   backoffRetries: 0,
@@ -101,6 +105,59 @@ async function fetchViaScrapingBee(url) {
 }
 
 /**
+ * Fetch via Bright Data (primary proxy fallback)
+ * Uses their scraping_browser zone to proxy the request through rotating IPs.
+ * Drops the format param so we get raw JSON back from Reddit.
+ */
+async function fetchViaBrightData(url) {
+  const token = process.env.BRIGHTDATA_TOKEN;
+  if (!token) return null; // Not available
+
+  stats.brightData++;
+
+  const apiUrl = `https://api.brightdata.com/request?zone=scraping_browser&url=${encodeURIComponent(url)}`;
+
+  return new Promise((resolve, reject) => {
+    const req = https.request(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            // Bright Data may return HTML wrapper — try to extract JSON
+            const jsonMatch = data.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
+            if (jsonMatch) {
+              try {
+                resolve(JSON.parse(jsonMatch[0]));
+              } catch (_) {
+                reject(new Error(`Bright Data response not JSON: ${data.slice(0, 100)}`));
+              }
+            } else {
+              reject(new Error(`Bright Data response not JSON: ${data.slice(0, 100)}`));
+            }
+          }
+        } else if (res.statusCode === 401 || res.statusCode === 403) {
+          brightDataDown = true;
+          reject(new Error(`Bright Data ${res.statusCode} — auth/quota issue`));
+        } else {
+          reject(new Error(`Bright Data HTTP ${res.statusCode}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.end();
+  });
+}
+
+/**
  * Fetch URL directly from Reddit
  */
 function fetchRedditDirect(url) {
@@ -151,21 +208,31 @@ async function fetchWithFallback(url, retryCount = 0) {
     useScrapingBee = false;
   }
 
-  // If on ScrapingBee and it's not down, try it first
-  if (useScrapingBee && process.env.SCRAPINGBEE_API_KEY && !scrapingBeeDown) {
-    try {
-      return await fetchViaScrapingBee(url);
-    } catch (e) {
-      // ScrapingBee failed — try Reddit direct as last resort
-      console.warn(`  ScrapingBee failed: ${e.message}. Trying Reddit direct...`);
-      useScrapingBee = false;
+  // If in proxy mode, try proxies first
+  if (useScrapingBee) {
+    // Try Bright Data (primary proxy)
+    if (process.env.BRIGHTDATA_TOKEN && !brightDataDown) {
+      try {
+        return await fetchViaBrightData(url);
+      } catch (e) {
+        console.warn(`  Bright Data failed: ${e.message}`);
+      }
+    }
+    // Try ScrapingBee (secondary proxy)
+    if (process.env.SCRAPINGBEE_API_KEY && !scrapingBeeDown) {
+      try {
+        return await fetchViaScrapingBee(url);
+      } catch (e) {
+        console.warn(`  ScrapingBee failed: ${e.message}. Trying Reddit direct...`);
+        useScrapingBee = false;
+      }
     }
   }
 
-  // Both sources down — fail fast instead of looping
-  if (useScrapingBee && scrapingBeeDown) {
+  // All proxy sources down — fail fast instead of looping
+  if (useScrapingBee && scrapingBeeDown && brightDataDown) {
     stats.errors++;
-    throw new Error('Both Reddit (403) and ScrapingBee (credits exhausted) are unavailable');
+    throw new Error('All sources unavailable: Reddit (403), Bright Data (down), ScrapingBee (credits exhausted)');
   }
 
   // Try Reddit direct
@@ -185,13 +252,13 @@ async function fetchWithFallback(url, retryCount = 0) {
         await sleep(delay);
         return fetchWithFallback(url, retryCount + 1);
       }
-      // Max retries — switch to ScrapingBee
-      return switchToScrapingBee(url);
+      // Max retries — try proxies
+      return switchToProxy(url);
     }
 
     if (e.code === 'FORBIDDEN' || e.code === 'HTML_RESPONSE') {
-      console.warn(`  Reddit ${e.code}, switching to ScrapingBee`);
-      return switchToScrapingBee(url);
+      console.warn(`  Reddit ${e.code}, switching to proxy`);
+      return switchToProxy(url);
     }
 
     // Other errors
@@ -201,24 +268,36 @@ async function fetchWithFallback(url, retryCount = 0) {
 }
 
 /**
- * Switch to ScrapingBee fallback
+ * Switch to proxy fallback chain: Bright Data → ScrapingBee
  */
-async function switchToScrapingBee(url) {
-  // If ScrapingBee is known to be down, don't bother
-  if (scrapingBeeDown) {
-    stats.errors++;
-    throw new Error('Reddit blocked (403) and ScrapingBee credits exhausted — both sources unavailable');
-  }
-
+async function switchToProxy(url) {
   useScrapingBee = true;
   scrapingBeeSwitchTime = Date.now();
 
-  if (process.env.SCRAPINGBEE_API_KEY) {
-    console.warn('  Switching to ScrapingBee (will retry Reddit direct after 5 min cooldown)');
+  // Try Bright Data first (cheaper, no credit limit concerns)
+  if (process.env.BRIGHTDATA_TOKEN && !brightDataDown) {
+    try {
+      console.warn('  Switching to Bright Data proxy (will retry Reddit direct after 5 min cooldown)');
+      return await fetchViaBrightData(url);
+    } catch (e) {
+      console.warn(`  Bright Data failed: ${e.message}`);
+    }
+  }
+
+  // Try ScrapingBee
+  if (process.env.SCRAPINGBEE_API_KEY && !scrapingBeeDown) {
+    console.warn('  Falling back to ScrapingBee');
     return fetchViaScrapingBee(url);
   }
 
-  throw new Error('Reddit blocked and no ScrapingBee key available');
+  // All proxies down
+  stats.errors++;
+  const reasons = [];
+  if (brightDataDown) reasons.push('Bright Data (auth/quota)');
+  if (scrapingBeeDown) reasons.push('ScrapingBee (credits exhausted)');
+  if (!process.env.BRIGHTDATA_TOKEN) reasons.push('Bright Data (no token)');
+  if (!process.env.SCRAPINGBEE_API_KEY) reasons.push('ScrapingBee (no key)');
+  throw new Error(`Reddit blocked and all proxies unavailable: ${reasons.join(', ')}`);
 }
 
 /**
@@ -342,6 +421,7 @@ function getStats() {
 function resetFallbackState() {
   useScrapingBee = false;
   scrapingBeeDown = false;
+  brightDataDown = false;
   scrapingBeeSwitchTime = 0;
   rateLimitCount = 0;
   lastRequestTime = 0;
