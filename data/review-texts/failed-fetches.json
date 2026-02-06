@@ -11584,18 +11584,6 @@
     "timestamp": "2026-02-04T20:38:34.133Z"
   },
   {
-    "reviewId": "born-yesterday-2011/hollywood-reporter--david-rooney.json",
-    "showId": "born-yesterday-2011",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/movies/movie-reviews/born-yesterday-theater-review-181735/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): junk, the price, the audience, venus in fur, once...",
-    "textLength": 5945,
-    "timestamp": "2026-02-04T20:39:01.407Z"
-  },
-  {
     "reviewId": "breakfast-at-tiffanys-2013/nytimes--ben-brantley.json",
     "showId": "breakfast-at-tiffanys-2013",
     "outlet": "The New York Times",
@@ -12002,42 +11990,6 @@
     "garbageReason": "Multiple shows mentioned (7): home, all the way, hair, once, war horse...",
     "textLength": 12960,
     "timestamp": "2026-02-05T01:39:37.495Z"
-  },
-  {
-    "reviewId": "bob-fosses-dancin-2023/nyt-theater--jonathan-mandell.json",
-    "showId": "bob-fosses-dancin-2023",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2023/03/19/bob-fosses-dancin-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): chicago, giant, gypsy, new york, new york, company...",
-    "textLength": 8405,
-    "timestamp": "2026-02-05T01:40:57.347Z"
-  },
-  {
-    "reviewId": "bob-fosses-dancin-2023/nytg--gillian-russo.json",
-    "showId": "bob-fosses-dancin-2023",
-    "outlet": "New York Theatre Guide",
-    "critic": "Gillian Russo",
-    "url": "https://www.newyorktheatreguide.com/reviews/bob-fosses-dancin-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): proof, home, company, the audience, cabaret...",
-    "textLength": 4388,
-    "timestamp": "2026-02-05T01:41:06.366Z"
-  },
-  {
-    "reviewId": "bob-fosses-dancin-2023/nytimes--jesse-green.json",
-    "showId": "bob-fosses-dancin-2023",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2023/03/19/theater/bob-fosses-dancin-review-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): chicago, company, cabaret, hair, once...",
-    "textLength": 7159,
-    "timestamp": "2026-02-05T01:41:09.547Z"
   },
   {
     "reviewId": "born-yesterday-2011/variety--marilyn-stasio.json",
@@ -17810,5 +17762,77 @@
     "garbageReason": "Multiple shows mentioned (7): english, the present, the humans, the real thing, rain...",
     "textLength": 4623,
     "timestamp": "2026-02-06T04:51:23.318Z"
+  },
+  {
+    "reviewId": "beetlejuice-2022/variety--frank-rizzo.json",
+    "showId": "beetlejuice-2022",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): wicked, hadestown, home, parade, tina...",
+    "textLength": 4745,
+    "timestamp": "2026-02-06T04:55:07.991Z"
+  },
+  {
+    "reviewId": "beetlejuice-2022/vulture--sara-holdren.json",
+    "showId": "beetlejuice-2022",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/2019/04/review-beetlejuice-is-best-when-its-at-its-most-antic.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): wicked, home, tina, king kong, once...",
+    "textLength": 7883,
+    "timestamp": "2026-02-06T04:55:12.181Z"
+  },
+  {
+    "reviewId": "bob-fosses-dancin-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "bob-fosses-dancin-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/03/19/bob-fosses-dancin-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): chicago, giant, gypsy, new york, new york, company...",
+    "textLength": 8405,
+    "timestamp": "2026-02-06T04:55:21.252Z"
+  },
+  {
+    "reviewId": "bob-fosses-dancin-2023/nytg--gillian-russo.json",
+    "showId": "bob-fosses-dancin-2023",
+    "outlet": "New York Theatre Guide",
+    "critic": "Gillian Russo",
+    "url": "https://www.newyorktheatreguide.com/reviews/bob-fosses-dancin-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): proof, home, company, the audience, cabaret...",
+    "textLength": 4388,
+    "timestamp": "2026-02-06T04:55:29.791Z"
+  },
+  {
+    "reviewId": "bob-fosses-dancin-2023/nytimes--jesse-green.json",
+    "showId": "bob-fosses-dancin-2023",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2023/03/19/theater/bob-fosses-dancin-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): chicago, company, cabaret, hair, once...",
+    "textLength": 7159,
+    "timestamp": "2026-02-06T04:55:33.558Z"
+  },
+  {
+    "reviewId": "born-yesterday-2011/hollywood-reporter--david-rooney.json",
+    "showId": "born-yesterday-2011",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/movies/movie-reviews/born-yesterday-theater-review-181735/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): junk, the price, the audience, venus in fur, once...",
+    "textLength": 6006,
+    "timestamp": "2026-02-06T04:59:10.276Z"
   }
 ]

@@ -1,57 +1,61 @@
 {
-  "updatedAt": "2026-02-06T04:53:23.465Z",
-  "processed": 10,
-  "failed": 90,
-  "successRate": "10.0%",
+  "updatedAt": "2026-02-06T05:00:02.258Z",
+  "processed": 14,
+  "failed": 96,
+  "successRate": "12.7%",
   "tierBreakdown": {
     "playwright": 2,
-    "browserbase": 4,
-    "scrapingbee": 4,
-    "brightdata": 3,
-    "archive": 1
+    "browserbase": 2,
+    "scrapingbee": 3,
+    "brightdata": 2,
+    "archive": 8
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-06T03:34:10.583Z",
+      "t": "2026-02-06T03:32:25.277Z",
       "event": "bb-session",
-      "session": "a5d99faf",
-      "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/"
+      "session": "1fd2082f",
+      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
     },
     {
-      "t": "2026-02-06T03:34:29.644Z",
+      "t": "2026-02-06T03:34:46.718Z",
       "event": "bb-session",
-      "session": "7272d4c6",
-      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
+      "session": "cbc2d014",
+      "url": "https://www.newyorker.com/magazine/2019/12/23/a-christmas-carol-brings-dickens-t"
     },
     {
-      "t": "2026-02-06T03:34:46.055Z",
-      "event": "bb-session",
-      "session": "e88d6d4e",
-      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
-    },
-    {
-      "t": "2026-02-06T03:37:13.487Z",
-      "event": "bb-session",
-      "session": "7c834b58",
-      "url": "https://www.nytimes.com/2009/12/14/theater/reviews/14night.html"
-    },
-    {
-      "t": "2026-02-06T03:38:01.665Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-06T03:40:35.311Z",
-      "event": "bb-session",
-      "session": "eb34dfd9",
-      "url": "http://www.nytimes.com/2010/08/02/theater/02night.html?_r=1"
-    },
-    {
-      "t": "2026-02-06T03:40:41.549Z",
+      "t": "2026-02-06T03:34:48.907Z",
       "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-06T03:37:13.025Z",
+      "event": "bb-session",
+      "session": "5c792c89",
+      "url": "https://www.vulture.com/2019/12/theater-review-a-christmas-carol-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-06T03:37:15.272Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-06T03:39:17.485Z",
+      "event": "bb-session",
+      "session": "7faae81f",
+      "url": "https://www.vulture.com/2019/11/theater-review-a-christmas-carol-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-06T03:39:19.936Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-06T03:40:00.248Z",
+      "event": "bb-session",
+      "session": "3139eca1",
+      "url": "http://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-1256271"
     }
   ]
 }
