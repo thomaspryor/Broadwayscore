@@ -3,10 +3,10 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jesse Green",
-  "url": "https://www.vulture.com/2018/04/theater-review-my-fair-lady-on-broadway.html",
+  "url": "https://www.vulture.com/2018/04/theater-review-an-unaccustomed-new-approach-to-my-fair-lady.html",
   "publishDate": "April 20, 2018",
-  "fullText": "The new Broadway revival of My Fair Lady is a handsome, well-sung, and mostly well-acted production that honors the material without particularly illuminating it.",
-  "isFullReview": false,
+  "fullText": "Things you buy through our links may earn Vox Media a commission.\n\nHarry Hadden-Paton and Lauren Ambrose in My Fair Lady, at the Vivian Beaumont. Photo: Joan Marcus/©2018 Joan Marcus A week ago, I wrote about my problems with the current Broadway revival of a very well-loved musical. If shows like Carousel, My Fair Lady, and Kiss Me Kate want to avoid getting shelved, I argued, then they’ve got to be approached with new points of view, with — to put it bluntly — a basic awareness of the world we’re living in today. As if upon command, Bartlett Sher’s glowing revival of Lerner and Loewe’s My Fair Lady has arrived at Lincoln Center to prove that it can be done. A beloved musical from another era can keep on kicking, and, as is the case here, it can even do so without making radical shifts in aesthetic, as long as it’s got its eyes wide open.\n\nGranted, Sher and his company — led by the luminous Lauren Ambrose in an intrepid, intelligently scored performance — have an advantage over their clam-baking colleagues: Their source material is already relatively self-aware. Alan Jay Lerner adapted the book of My Fair Lady from George Bernard Shaw’s Pygmalion, a complex social comedy about class and gender (more deliberately about class) that started giving its author headaches as soon as it hit the London stage. Shaw never intended his protagonists — the undaunted Cockney flower-girl, Eliza Doolittle, and the self-satisfied phonetics professor, Henry Higgins, who teaches her to speak “like a lady” — to end up romantically linked.\n\nShow \n 10 Comments / 10 New\n \n Comment\n \n\n Theater Review: An Unaccustomed New Approach to My Fair Lady\n\n \n \n \n \n\n \n \n \n \n \n\n \n \n\n \n \n \n\n \n Your product is saved! You’ll receive emails when your saved products go on sale. Manage preferences.\n \n \n\n \n \n\n \n \n\n \n\n Things you buy through our links may earn Vox Media a commission.",
+  "isFullReview": true,
   "dtliExcerpt": "The new Broadway revival of My Fair Lady is a handsome, well-sung, and mostly well-acted production that honors the material without particularly illuminating it.",
   "originalScore": null,
   "assignedScore": 70,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new Broadway revival of My Fair Lady is a handsome, well-sung, and mostly well-acted production that honors the material without particularly illuminating it.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (24 words)",
   "llmScore": {
     "score": 70,
@@ -72,5 +72,47 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
-  }
+  },
+  "previousUrl": "https://www.vulture.com/2018/04/theater-review-my-fair-lady-on-broadway.html",
+  "urlDiscoveredAt": "2026-02-06T09:08:37.212Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 70,
+  "textWordCount": 309,
+  "archivePath": "data/archives/reviews/my-fair-lady-2018/vulture--jesse-green_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T09:08:37.226Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 309,
+  "tierReason": "Full review text"
 }
