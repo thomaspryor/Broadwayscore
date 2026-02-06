@@ -5,7 +5,7 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 7480,
-      "skippedNoScore": 12876,
+      "skippedNoScore": 12875,
       "skippedDuplicate": 6,
       "skippedDuplicateUrl": 172,
       "skippedCrossOutletDuplicateUrl": 9,
@@ -18,9 +18,9 @@
         "explicit-letterGrade": 1,
         "human-review": 60,
         "originalScore-priority0": 923,
-        "llmScore": 3506,
+        "llmScore": 3508,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 2836,
+        "llmScore-lowconf": 2834,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
@@ -9701,7 +9701,7 @@
       "pullQuote": "It's a lovely and loving revival that ably masks the script's flaws.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "needs-rescrape"
+      "contentTier": "complete"
     },
     {
       "showId": "a-soldiers-play-2020",
@@ -15756,23 +15756,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "none"
-    },
-    {
-      "showId": "all-my-sons-2019",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 62,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2019/04/22/theater/all-my-sons-review.html",
-      "publishDate": "April 23, 2019",
-      "originalRating": null,
-      "pullQuote": "This revival, directed by Jack O'Brien, doesn't quite achieve the crushing inevitability that makes for great productions of this play. But it does provide a showcase for two superb performances that deepen as the evening progresses.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "all-my-sons-2019",
@@ -23328,7 +23311,7 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 76,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Green",
@@ -23338,7 +23321,7 @@
       "pullQuote": "She's a bit much here, too. In one sitting, in the concentrated form of a one-woman play, how much wit, color, and moral competence can you take?",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "annie-2012",
@@ -31608,7 +31591,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 44,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Ben Brantly",
@@ -31618,7 +31601,7 @@
       "pullQuote": "For a show that celebrates tall tales, 'Big Fish' feels curiously stunted.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "big-fish-2013",
@@ -46413,6 +46396,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "cyrano-de-bergerac-2007",
+      "outletId": "variety",
+      "outlet": "Variety",
+      "assignedScore": 63,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Charles Isherwood",
+      "url": "https://variety.com/2007/legit/reviews/cyrano-de-bergerac-1200558847/",
+      "publishDate": "October 16, 2007",
+      "originalRating": null,
+      "pullQuote": "Kevin Kline brings his customary intelligence and theatrical flair to the title role, but the production feels overly respectful and lacks the passion that should drive this romantic drama.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "cyrano-de-bergerac-2007",
@@ -70902,7 +70902,7 @@
       "pullQuote": "In this intelligent, surprising, altogether original new musical",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "ifthen-2014",
@@ -88460,7 +88460,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 62,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Peter Marks",
@@ -88470,7 +88470,7 @@
       "pullQuote": "It's a feast for the senses but leaves you hungry for more.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "needs-rescrape"
+      "contentTier": "complete"
     },
     {
       "showId": "moulin-rouge-2019",
@@ -109435,7 +109435,7 @@
       "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Arifa Akbar",
@@ -109445,7 +109445,7 @@
       "pullQuote": "It starts with those floating red letters and that electro-ethereal music. The intro creates the surreal effect of Netflix’s sci-fi juggernaut being brought to life as a stage-sized facsimile before our eyes. But the big surprise about this prequel to the TV series, about high-schoolers who tap into the dangerous world of the",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "needs-rescrape"
+      "contentTier": "truncated"
     },
     {
       "showId": "stranger-things-2024",
