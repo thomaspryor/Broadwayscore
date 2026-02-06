@@ -1,61 +1,57 @@
 {
-  "updatedAt": "2026-02-06T07:06:14.235Z",
-  "processed": 36,
-  "failed": 244,
-  "successRate": "12.9%",
+  "updatedAt": "2026-02-06T07:15:36.842Z",
+  "processed": 29,
+  "failed": 201,
+  "successRate": "12.6%",
   "tierBreakdown": {
-    "playwright": 4,
-    "browserbase": 2,
-    "scrapingbee": 7,
-    "brightdata": 6,
-    "archive": 20
+    "playwright": 5,
+    "browserbase": 1,
+    "scrapingbee": 9,
+    "brightdata": 9,
+    "archive": 10
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-06T03:32:25.277Z",
+      "t": "2026-02-06T03:35:34.822Z",
       "event": "bb-session",
-      "session": "1fd2082f",
-      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
+      "session": "5a684f68",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/1776-broadway-review-1235228615"
     },
     {
-      "t": "2026-02-06T03:34:46.718Z",
+      "t": "2026-02-06T03:36:07.555Z",
       "event": "bb-session",
-      "session": "cbc2d014",
-      "url": "https://www.newyorker.com/magazine/2019/12/23/a-christmas-carol-brings-dickens-t"
+      "session": "36bb36cd",
+      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
     },
     {
-      "t": "2026-02-06T03:34:48.907Z",
+      "t": "2026-02-06T03:38:22.931Z",
+      "event": "bb-session",
+      "session": "9608a755",
+      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
+    },
+    {
+      "t": "2026-02-06T03:38:24.948Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-06T03:37:13.025Z",
+      "t": "2026-02-06T03:40:57.997Z",
       "event": "bb-session",
-      "session": "5c792c89",
-      "url": "https://www.vulture.com/2019/12/theater-review-a-christmas-carol-on-broadway.htm"
+      "session": "6b8ede18",
+      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
     },
     {
-      "t": "2026-02-06T03:37:15.272Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
+      "t": "2026-02-06T03:41:40.457Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349267309\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAv2P8qXnLEY4ALPhWIg==&cid=JbPdAhxJmjScwPh~x2dGnOqnuI6hwgvsdeBNR_13zzZYx4dnOM0groj6DoTUeGpMMldkoYnmzR2uE5fvtHwtJ9w73IjjyCqX0dHLGuXG8SxmR6rW9UNrYfzpwYI4hVRe&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349267309\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349267309\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAv2P8qXnLEY4ALPhWIg==&cid=JbPdAhxJmjScwPh~x2dGnOqnuI6hwgvsdeBNR_13zzZYx4dnOM0groj6DoTUeGpMMldkoYnmzR2uE5fvtHwtJ9w73IjjyCqX0dHLGuXG8SxmR6rW9UNrYfzpwYI4hVRe&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349267309\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    35 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349267309\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAv2P8qXnLEY4ALPhWIg==&cid=JbPdAhxJmjScwPh~x2dGnOqnuI6hwgvsdeBNR_13zzZYx4dnOM0groj6DoTUeGpMMldkoYnmzR2uE5fvtHwtJ9w73IjjyCqX0dHLGuXG8SxmR6rW9UNrYfzpwYI4hVRe&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349267309\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     },
     {
-      "t": "2026-02-06T03:39:17.485Z",
+      "t": "2026-02-06T03:42:33.899Z",
       "event": "bb-session",
-      "session": "7faae81f",
-      "url": "https://www.vulture.com/2019/11/theater-review-a-christmas-carol-on-broadway.htm"
-    },
-    {
-      "t": "2026-02-06T03:39:19.936Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-06T03:40:00.248Z",
-      "event": "bb-session",
-      "session": "3139eca1",
-      "url": "http://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-1256271"
+      "session": "f17db959",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
     }
   ]
 }
