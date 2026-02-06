@@ -97,7 +97,10 @@
     "the-testament-of-mary-2013/nytimes--ben-brantley.json",
     "the-waverly-gallery-2018/nytimes--matt-windman.json",
     "the-winslow-boy-2013/nytimes--ben-brantley.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json"
+    "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
+    "all-my-sons-2019/thewrap--robert-hofler.json",
+    "american-buffalo-2022/thewrap--thom-geier.json",
+    "betrayal-2019/wsj--unknown.json"
   ],
   "failed": [
     "a-chorus-line-2006/nytimes--ben-brantley.json",
@@ -471,7 +474,14 @@
     "west-side-story-2020/vulture--helen-shaw.json",
     "9-to-5-2009/timeout--unknown.json",
     "a-christmas-carol-2019/theatre-news-online-jeremy-gerard--jeremy-gerard.json",
-    "a-christmas-carol-2022/theatre-news-online-jeremy-gerard--jeremy-gerard.json"
+    "a-christmas-carol-2022/theatre-news-online-jeremy-gerard--jeremy-gerard.json",
+    "a-time-to-kill-2013/bloomberg-news--unknown.json",
+    "after-midnight-2013/bloomberg-news--unknown.json",
+    "american-buffalo-2008/wsj--charles-isherwood.json",
+    "an-enemy-of-the-people-2024/wsj--unknown.json",
+    "and-juliet-2022/theatermania--jesse-green.json",
+    "betrayal-2013/timeout--david-cote.json",
+    "between-riverside-and-crazy-2022/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -520,7 +530,9 @@
       "oh-hello-on-broadway-2016/hollywood-reporter--frank-scheck.json",
       "private-lives-2011/hollywood-reporter--david-rooney.json",
       "a-bronx-tale-the-musical-2016/variety--marilyn-stasio.json",
-      "ring-of-fire-2006/variety--charles-isherwood.json"
+      "ring-of-fire-2006/variety--charles-isherwood.json",
+      "all-my-sons-2019/thewrap--robert-hofler.json",
+      "american-buffalo-2022/thewrap--thom-geier.json"
     ],
     "brightdata": [
       "a-view-from-the-bridge-2015/hollywood-reporter--leslie-felperin.json",
@@ -599,11 +611,12 @@
       "the-realistic-joneses-2014/nytimes--charles-isherwood.json",
       "the-testament-of-mary-2013/nytimes--ben-brantley.json",
       "the-waverly-gallery-2018/nytimes--matt-windman.json",
-      "the-winslow-boy-2013/nytimes--ben-brantley.json"
+      "the-winslow-boy-2013/nytimes--ben-brantley.json",
+      "betrayal-2019/wsj--unknown.json"
     ]
   },
   "startTime": "2026-02-06T03:33:55.141Z",
-  "lastProcessed": "a-christmas-carol-2022/theatre-news-online-jeremy-gerard--jeremy-gerard.json",
+  "lastProcessed": "between-riverside-and-crazy-2022/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-02-06T03:34:10.583Z",
@@ -766,6 +779,46 @@
       "event": "bb-session",
       "session": "f653ff57",
       "url": "https://www.theatermania.com/broadway/reviews/a-beautiful-noise-the-neil-diamond"
+    },
+    {
+      "t": "2026-02-06T14:22:39.728Z",
+      "event": "bb-session",
+      "session": "47320402",
+      "url": "http://www.thewrap.com/all-my-sons-broadway-review-annette-bening-and-tracy-lett"
+    },
+    {
+      "t": "2026-02-06T14:23:19.499Z",
+      "event": "bb-session",
+      "session": "76ef51e7",
+      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-s"
+    },
+    {
+      "t": "2026-02-06T14:24:03.424Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-06T14:24:29.331Z",
+      "event": "bb-session",
+      "session": "146f5389",
+      "url": "https://www.thewrap.com/american-buffalo-broadway-review-sam-rockwell-and-lauren"
+    },
+    {
+      "t": "2026-02-06T14:26:08.330Z",
+      "event": "bb-session",
+      "session": "acceda07",
+      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
+    },
+    {
+      "t": "2026-02-06T14:26:51.372Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-06T14:27:32.355Z",
+      "event": "bb-session",
+      "session": "1094c640",
+      "url": "https://www.theatermania.com/broadway/reviews/juliet-broadway-review_92586.html"
     }
   ]
 }
