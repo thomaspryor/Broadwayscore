@@ -11608,30 +11608,6 @@
     "timestamp": "2026-02-04T21:09:50.682Z"
   },
   {
-    "reviewId": "camelot-2023/variety--frank-rizzo.json",
-    "showId": "camelot-2023",
-    "outlet": "Variety",
-    "critic": "Frank Rizzo",
-    "url": "https://variety.com/2023/legit/reviews/camelot-review-broadway-aaron-sorkin-1235582644/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): giant, the inheritance, network, the king and i, once...",
-    "textLength": 6162,
-    "timestamp": "2026-02-04T21:13:16.698Z"
-  },
-  {
-    "reviewId": "camelot-2023/vulture--unknown.json",
-    "showId": "camelot-2023",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "https://www.vulture.com/2023/04/theater-review-camelot-sher-sorkin-lincoln-center.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): into the woods, my fair lady, the audience, the king and i, rocky...",
-    "textLength": 9819,
-    "timestamp": "2026-02-04T21:13:21.064Z"
-  },
-  {
     "reviewId": "american-buffalo-2022/nyt-theater--jonathan-mandell.json",
     "showId": "american-buffalo-2022",
     "outlet": "New York Theater",
@@ -18278,5 +18254,101 @@
     "garbageReason": "Multiple shows mentioned (17): mamma mia!, joe turner's come and gone, harmony, home, smash...",
     "textLength": 8220,
     "timestamp": "2026-02-06T05:47:20.574Z"
+  },
+  {
+    "reviewId": "camelot-2023/variety--frank-rizzo.json",
+    "showId": "camelot-2023",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2023/legit/reviews/camelot-review-broadway-aaron-sorkin-1235582644/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): giant, the inheritance, network, the king and i, once...",
+    "textLength": 6036,
+    "timestamp": "2026-02-06T05:49:53.477Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/hollywood-reporter--angie-han.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Angie Han",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): mamma mia!, home, company, fun home, once...",
+    "textLength": 10428,
+    "timestamp": "2026-02-06T05:53:32.920Z"
+  },
+  {
+    "reviewId": "camelot-2023/vulture--unknown.json",
+    "showId": "camelot-2023",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "https://www.vulture.com/2023/04/theater-review-camelot-sher-sorkin-lincoln-center.html",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): into the woods, my fair lady, the audience, the king and i, rocky...",
+    "textLength": 10060,
+    "timestamp": "2026-02-06T05:53:48.761Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/hollywood-reporter--david-rooney.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235038296/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): mamma mia!, home, company, fun home, once...",
+    "textLength": 10428,
+    "timestamp": "2026-02-06T05:53:49.498Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/nyt-theater--jonathan-mandrell.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandrell",
+    "url": "https://newyorktheater.me/2021/10/27/caroline-or-change-on-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): home, smash, company, girl from the north country, mrs. doubtfire...",
+    "textLength": 10079,
+    "timestamp": "2026-02-06T05:53:57.315Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/nyt-theater--jonthan-mandell.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "New York Theater",
+    "critic": "Jonthan Mandell",
+    "url": "https://newyorktheater.me/2021/10/27/caroline-or-change-on-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): home, smash, company, girl from the north country, mrs. doubtfire...",
+    "textLength": 10079,
+    "timestamp": "2026-02-06T05:54:06.761Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/variety--aramide-tinubu.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "Variety",
+    "critic": "Aramide Tinubu",
+    "url": "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-1235104577/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): company, misery, the father, the audience, high...",
+    "textLength": 5321,
+    "timestamp": "2026-02-06T05:54:58.042Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/variety--ayanna-prescod.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "Variety",
+    "critic": "Ayanna Prescod",
+    "url": "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-sharon-d-clarke-1235098905/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): company, misery, the father, the audience, high...",
+    "textLength": 5344,
+    "timestamp": "2026-02-06T05:55:15.424Z"
   }
 ]
