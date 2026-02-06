@@ -47,5 +47,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text cuts off mid-sentence with a technical error message about JavaScript and retrieving article content, making it impossible to determine the critic's verdict.; openai: The text provided is incomplete and includes a browser error message, indicating it's not a complete review.; gemini: The review is truncated and incomplete. The text ends abruptly with a message about trouble retrieving the article content.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "duplicateOf": "nytimes--jesse-green.json"
 }

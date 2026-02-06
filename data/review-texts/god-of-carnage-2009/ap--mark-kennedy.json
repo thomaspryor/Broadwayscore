@@ -3,7 +3,7 @@
   "outletId": "ap",
   "outlet": "Associated Press",
   "criticName": "Mark Kennedy",
-  "url": "/people/Mark-Kennedy/",
+  "url": null,
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
@@ -16,5 +16,7 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
   "rejectionReasoning": "claude: This is a film review discussing a movie adaptation with Academy Award winners, not a Broadway theater production.; openai: The text discusses a film adaptation of a play, not the current Broadway production.; gemini: The review is about a film adaptation of the play, not a Broadway production of 'God of Carnage'.; kimi: This text reviews the 2011 film adaptation of the play 'God of Carnage' (mentioning 'screenwriting credits,' 'new film's cast,' and 'filmed play'), not a Broadway theatrical production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "wrongShow": true,
+  "wrongShowReason": "URL is a BWW critic profile page, not a review"
 }

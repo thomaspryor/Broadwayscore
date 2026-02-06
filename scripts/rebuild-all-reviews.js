@@ -1179,14 +1179,16 @@ showDirs.forEach(showId => {
         return;
       }
 
-      // Date-based wrong-production guard: skip reviews published >18 months before show opening
-      // This catches old-production reviews that scrapers filed under the wrong show
+      // Date-based wrong-production guard: skip reviews published >60 days before previews/opening
+      // Broadway reviews are embargoed until opening night; anything earlier is likely wrong-production.
+      // Matches the 60-day guard in gather-reviews.js.
       if (data.publishDate && showDateMap[showId]) {
         const pubDate = new Date(data.publishDate);
         const showDate = showDateMap[showId];
-        const monthsBefore = (showDate - pubDate) / (1000 * 60 * 60 * 24 * 30);
-        if (monthsBefore > 18) {
-          console.log(`  [DATE GUARD] ${showId}/${file}: published ${data.publishDate}, show opens ${showDateMap[showId].toISOString().split('T')[0]} (${Math.round(monthsBefore)}mo gap)`);
+        const daysBefore = (showDate - pubDate) / (1000 * 60 * 60 * 24);
+        if (daysBefore > 60) {
+          console.log(`  [DATE GUARD] ${showId}/${file}: published ${data.publishDate}, show opens ${showDateMap[showId].toISOString().split('T')[0]} (${Math.round(daysBefore)}d before)`);
+
           stats.skippedDateMismatch = (stats.skippedDateMismatch || 0) + 1;
           return;
         }
@@ -1606,7 +1608,7 @@ console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
 console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
-console.log(`  Skipped (date mismatch >18mo): ${stats.skippedDateMismatch || 0}`);
+console.log(`  Skipped (date mismatch >60d): ${stats.skippedDateMismatch || 0}`);
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
 console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);
 if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
