@@ -8,6 +8,7 @@ import { getAudienceBuzz } from '@/lib/data-audience';
 import { getCriticConsensus } from '@/lib/data-consensus';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
+import { getCastChanges } from '@/lib/data-cast';
 import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -19,6 +20,7 @@ import AwardsCard from '@/components/AwardsCard';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import LotteryRushCard from '@/components/LotteryRushCard';
 import BizBuzzCard from '@/components/BizBuzzCard';
+import CastUpdatesCard from '@/components/CastUpdatesCard';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
@@ -479,6 +481,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const consensus = getCriticConsensus(show.id);
   const lotteryRush = getLotteryRush(show.id);
   const commercial = getShowCommercial(show.slug);
+  const castChangesData = getCastChanges(show.id);
   const lastUpdated = getShowLastUpdated(show.id);
 
   // Combine schemas, filtering out null FAQ schema
@@ -829,6 +832,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
             <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
           </section>
+        )}
+
+        {/* Cast Updates - between Box Office and Commercial */}
+        {castChangesData && (
+          <CastUpdatesCard castChanges={castChangesData} showStatus={show.status} />
         )}
 
         {/* Commercial Scorecard */}

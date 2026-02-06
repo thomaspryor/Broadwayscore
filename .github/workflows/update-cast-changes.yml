@@ -1,0 +1,111 @@
+name: Update Cast Changes
+
+on:
+  schedule:
+    # Run every Wednesday at 9 AM UTC (4 AM EST)
+    - cron: '0 9 * * 3'
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Source to scrape (articles, reddit, official-sites, all)'
+        required: false
+        type: choice
+        options:
+          - all
+          - articles
+          - reddit
+          - official-sites
+        default: all
+      shows:
+        description: 'Comma-separated show IDs (optional, e.g. just-in-time-2025,wicked-2003)'
+        required: false
+        type: string
+      high_freq_only:
+        description: 'Only check high-frequency rotation shows (Chicago, SIX, Hadestown, Gatsby)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  update-cast-changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape cast changes
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ARGS="--verbose"
+          if [ -n "${{ github.event.inputs.source }}" ]; then
+            ARGS="$ARGS --source=${{ github.event.inputs.source }}"
+          fi
+          if [ -n "${{ github.event.inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ github.event.inputs.shows }}"
+          fi
+          if [ "${{ github.event.inputs.high_freq_only }}" == "true" ]; then
+            ARGS="$ARGS --high-freq-only"
+          fi
+          node scripts/scrape-cast-changes.js $ARGS
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if [[ -n $(git status --porcelain data/cast-changes.json data/audit/cast-changes-diff.json) ]]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in cast changes data"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/cast-changes.json data/audit/cast-changes-diff.json
+          git commit -m "chore: Update cast changes data
+
+          Automated weekly cast change tracking from Playbill, BWW, Reddit, and official sites.
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+          # Retry push with rebase in case remote has new commits
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase -X theirs origin main
+            sleep $((RANDOM % 10 + 5))
+          done
+
+      - name: Summary
+        run: |
+          echo "## Cast Changes Update" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]]; then
+            echo "Updated cast changes data" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No changes detected - data is already up to date" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Sources: Playbill, BroadwayWorld, Reddit r/Broadway, Official show websites" >> $GITHUB_STEP_SUMMARY
