@@ -1,51 +1,56 @@
 {
-  "updatedAt": "2026-02-06T17:37:56.626Z",
-  "processed": 33,
-  "failed": 337,
-  "successRate": "8.9%",
+  "updatedAt": "2026-02-06T17:42:26.938Z",
+  "processed": 21,
+  "failed": 269,
+  "successRate": "7.2%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 3,
     "browserbase": 2,
-    "scrapingbee": 2,
-    "brightdata": 7,
-    "archive": 21
+    "scrapingbee": 8,
+    "brightdata": 8,
+    "archive": 4
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-06T13:56:01.639Z",
+      "t": "2026-02-06T13:55:33.576Z",
       "event": "bb-session",
-      "session": "ecf3e630",
-      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
+      "session": "d1c5c9ad",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
     },
     {
-      "t": "2026-02-06T13:56:08.335Z",
+      "t": "2026-02-06T13:56:08.350Z",
+      "event": "bb-session",
+      "session": "469d0cda",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-the-neil-diamond-musica"
+    },
+    {
+      "t": "2026-02-06T13:58:16.457Z",
+      "event": "bb-session",
+      "session": "59277549",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
+    },
+    {
+      "t": "2026-02-06T13:58:18.597Z",
       "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-06T13:56:49.994Z",
+      "t": "2026-02-06T13:59:14.733Z",
       "event": "bb-session",
-      "session": "09011cd2",
-      "url": "http://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
+      "session": "7b4c109e",
+      "url": "http://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-1256271"
     },
     {
-      "t": "2026-02-06T13:58:19.098Z",
+      "t": "2026-02-06T14:01:30.786Z",
       "event": "bb-session",
-      "session": "3e62293c",
-      "url": "https://variety.com/2013/legit/reviews/a-gentlemans-guide-to-love-murder-1200814"
+      "session": "db1e540b",
+      "url": "https://www.newyorker.com/magazine/2022/12/19/a-christmas-carol-theatre-review"
     },
     {
-      "t": "2026-02-06T13:59:04.455Z",
-      "event": "bb-session",
-      "session": "eeea1570",
-      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
-    },
-    {
-      "t": "2026-02-06T13:59:18.426Z",
-      "event": "bb-session",
-      "session": "3bf53ad0",
-      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
+      "t": "2026-02-06T14:01:33.389Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     }
   ]
 }
