@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"D’Amour employs a maddening mix of (supposedly realistic) overlapping banter and cross-talk, as well as dialogue mood swings that raucously lurch from small recollections to big resentments. The ear-splitting result: a kind of “island of lost causes,” a loudmouth Catfish Row fueled by tall tales and short fuses that’s no greater than its parts...Airline Highway (as generic as its title) couldn’t be more interesting to see or more derivative to hear. It’s never condescending, just very, very unfresh.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Airline Highway couldn't be more interesting to see or more derivative to hear.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic calls the show 'maddening,' 'derivative,' and 'very, very unfresh' with 'ear-splitting' dialogue. However, confidence is low due to single excerpt warning and potential for missing context. | GPT-4o: The review describes the show as having a mix of interesting visuals but derivative dialogue. The tone suggests a lack of freshness and originality, leading to a mixed assessment. The single excerpt limits confidence in the overall verdict. | Gemini: The review uses negative language such as \"maddening mix\", \"ear-splitting\", \"loudmouth\", \"derivative\", and \"unfresh\", indicating a negative assessment of the show. | Kimi: While the critic acknowledges the production is visually interesting, they condemn the ear-splitting dialogue as derivative and maddening, concluding the show is 'very, very unfresh' and fails to cohere into something greater than its parts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:49:54.593Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

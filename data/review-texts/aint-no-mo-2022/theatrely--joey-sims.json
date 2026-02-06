@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "It feels almost rote to declare Ain’t No Mo’, a play so uproariously, daringly, and satisfyingly true to itself, as groundbreaking. It can start to even sound like a canned line, or an echo of a marketing pitch. But it’s simply true: this is both a powerful and remarkable play, and it is also like nothing ever seen on Broadway. Ain’t No Mo’ cannot be missed.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/aint-no-mo/",
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "dtli"
-  ]
+  ],
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ain't No Mo' cannot be missed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlatives ('groundbreaking', 'powerful and remarkable', 'like nothing ever seen on Broadway') culminating in explicit must-see language. Classic rave verdict despite single excerpt warning. | GPT-4o: The excerpt uses strong, enthusiastic language, calling the play 'groundbreaking', 'powerful', and 'remarkable', and concludes with 'cannot be missed', indicating a rave review. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses strong positive language such as \"powerful and remarkable play\" and \"cannot be missed\", indicating a rave review. | Kimi: The critic employs superlatives like 'groundbreaking' and 'remarkable' and explicitly commands that the show 'cannot be missed,' indicating an unqualified, enthusiastic recommendation at the highest level.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:22:29.168Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 93,
+    "geminiScore": 90,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

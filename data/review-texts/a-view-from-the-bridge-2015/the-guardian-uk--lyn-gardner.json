@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Van Hove’s great trick is to balance detailed, low-key and almost cinematic naturalistic performances within a non-naturalistic framework and let them bounce off each other in a series of dazzling reflections that enable us to see Miller’s play anew. From the menacing tick of a clock to the under-scoring with Fauré’s Requiem, this is a meticulously conceived production that reinvents Miller without ever getting in the way of the view.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a meticulously conceived production that reinvents Miller without ever getting in the way of the view.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Van Hove's direction with sophisticated analysis ('dazzling reflections', 'meticulously conceived', 'reinvents Miller'). However, this is a single curated excerpt, so confidence is medium despite the clearly positive language. | GPT-4o: The excerpt praises the production as 'meticulously conceived' and 'dazzling', suggesting a high level of admiration. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt praises the production as \"meticulously conceived\" and notes that it \"reinvents Miller without ever getting in the way of the view.\" Given the single excerpt and its positive tone, I've scored it as positive, erring towards the higher end of the bucket. | Kimi: The excerpt offers strong praise for the direction and staging, calling it 'meticulously conceived' and 'dazzling,' indicating a clear recommendation despite being a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:02:35.863Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

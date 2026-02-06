@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Jackson, who penned book, music, and lyrics, ... brings a much-needed rebel spirit to Broadway, pushing against the boundaries of acceptable discourse to show us that, like borders, they are only an illusion — a limitation on our free expression to which we all too often consent. The result is a triumphant assertion of individuality in a world that increasingly defines us by demography, largely for the purpose of selling us products and politicians. That makes 'A Strange Loop' the best new musical of the Broadway season.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a triumphant assertion of individuality in a world that increasingly defines us by demography.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Calls it 'triumphant' and explicitly declares it 'the best new musical of the Broadway season.' However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more nuanced review. | GPT-4o: The excerpt provides strong praise, calling the show a 'triumphant assertion of individuality' and 'the best new musical of the Broadway season'. Despite the single excerpt warning, the language suggests a highly positive assessment. | Gemini: The review uses strong, positive language such as \"triumphant assertion of individuality\" and concludes that it is \"the best new musical of the Broadway season.\" | Kimi: Single excerpt contains superlative praise ('triumphant,' 'best new musical of the Broadway season'), indicating a strong recommendation. However, confidence is low due to limited context from a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:36:29.307Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 91,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

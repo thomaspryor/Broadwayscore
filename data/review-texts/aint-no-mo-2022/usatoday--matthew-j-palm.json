@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jordan E. Cooper's 'Ain't No Mo'' is a bold, uncompromising comedy that uses satire to examine Black life in America with both humor and heartbreak.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jordan E. Cooper's 'Ain't No Mo'' is a bold, uncompromising comedy that uses satire to examine Black life in America with both humor and heartbreak.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jordan E. Cooper's 'Ain't No Mo'' is a bold, uncompromising comedy that uses satire to examine Black life in America with both humor and heartbreak.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses strong positive descriptors ('bold', 'uncompromising') and acknowledges the show's substantive examination of important themes. However, with only one excerpt available, the full verdict may not be represented, warranting reduced confidence. | GPT-4o: The excerpt describes the show as 'bold' and 'uncompromising,' with a successful blend of 'humor and heartbreak,' indicating strong praise. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt describes the show as a \"bold, uncompromising comedy\" that uses satire to examine Black life in America. Given the limited text, it is difficult to gauge the overall recommendation strength, but the description is positive, suggesting a positive review. Because it's a single excerpt, confidence is low. | Kimi: The excerpt offers strong praise, describing the show as 'bold' and 'uncompromising' with an effective balance of humor and heartbreak, placing it in the upper Positive range. Confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:23:00.095Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

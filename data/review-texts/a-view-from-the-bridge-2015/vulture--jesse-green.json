@@ -16,5 +16,60 @@
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
   "showScoreExcerpt": "\"The lack of clutter is certainly chic, but without the furniture and props Miller specified, some points are unclear…What makes this slight misfit of play and production finally unimportant is that the actors are so devastatingly good…Some of the credit for the cast’s superb work obviously belongs to van Hove; he knew he needed actors who could stand up to his powerful, showy interventions. It’s a fair trade; those interventions probably made this revival viable.\"\n\nRead more",
-  "publishDate": "November 13, 2015"
+  "publishDate": "November 13, 2015",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes this slight misfit of play and production finally unimportant is that the actors are so devastatingly good.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite calling the production a 'slight misfit' and expressing concerns about the director's choices, the critic enthusiastically praises the 'devastatingly good' performances and calls the cast's work 'superb.' The recommendation hinges on the acting quality overcoming directorial issues. | GPT-4o: The review praises the actors' performances as 'devastatingly good' and credits the director for making the revival viable, despite some reservations about the production's fit. The overall tone suggests a positive recommendation with some caution. | Gemini: While the reviewer expresses reservations about the production and direction, they ultimately praise the actors' performances as 'devastatingly good,' suggesting a positive, albeit qualified, recommendation. The reference to 'alarm' lowers the score. | Kimi: While criticizing van Hove's direction as creating a 'misfit' and 'showy interventions,' Green concludes the ensemble is 'devastatingly good' and makes the production flaws 'finally unimportant,' deeming the revival a 'fair trade' that is 'viable.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:09:21.630Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 77,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Airline Highway is a sort of extended existential moment, a cross-section of life’s seamy side, an empathic montage of candid snapshots...I liked these well-drawn characters — all of them brought to multifaceted life by a skilled cast under the direction of Joe Mantello — better than I liked this often implausible and seemingly unfinished play. Imagine Jean-Paul Sartre’s “No Exit” without the despair: That’s the drama at hand.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I liked these well-drawn characters — all of them brought to multifaceted life by a skilled cast under the direction of Joe Mantello — better than I liked this often implausible and seemingly unfinished play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic praises the performances and characters but finds the play itself 'implausible and seemingly unfinished.' Single excerpt warning applies - this balanced assessment suggests mixed reception without clear recommendation either way. | GPT-4o: The review praises the characters and cast but criticizes the play as 'often implausible and seemingly unfinished.' The mixed sentiment suggests a lack of strong recommendation. | Gemini: The review praises the characters and cast but criticizes the play itself as implausible and unfinished, resulting in a mixed assessment. The single excerpt and truncated nature of the text lower the confidence. | Kimi: The critic praises the performances and direction but explicitly states the play itself is 'implausible' and 'unfinished,' indicating significant reservations without a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:37:03.714Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

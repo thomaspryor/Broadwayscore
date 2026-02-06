@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The current cast is enticing and successful. Together with veteran stage director Jack O’Brien, they’ve produced one of the very best revivals of the season...Miller has crafted a drama that masterfully builds with increasing moral fervency to a shattering climax...The stunning cast is on the same page, their performances at once expanding and focusing as the play unfolds. All in all, I would encourage you not to miss this altogether searing revival.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All in all, I would encourage you not to miss this altogether searing revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong superlatives ('one of the very best revivals of the season', 'masterfully builds', 'stunning cast', 'searing') combined with explicit recommendation 'not to miss' indicates enthusiastic endorsement, but single excerpt warning prevents highest scores. | GPT-4o: The excerpt praises the cast, direction, and the drama's impact, culminating in a strong recommendation not to miss the revival. Despite the single excerpt warning, the language suggests a highly positive verdict. | Gemini: The review contains strong positive language such as \"enticing and successful\", \"one of the very best revivals of the season\", and \"stunning cast\". The reviewer explicitly encourages the reader not to miss the revival. | Kimi: The excerpt contains superlatives ('masterfully', 'shattering', 'one of the very best revivals') and an explicit recommendation to see the show. However, as a single curated excerpt, it is scored at the upper end of the Positive bucket per guidelines for cherry-picked quotes. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:55:19.603Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

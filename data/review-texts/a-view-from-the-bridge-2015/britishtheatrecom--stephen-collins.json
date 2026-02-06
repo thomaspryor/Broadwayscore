@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"This is dynamic, inspirational theatre of the highest order...What Van Hove has achieved here is superb in every way. The telling of Miller’s tale is clean, pulsates with reason and truth and, like a great orchestral symphony, has a shape, a fierce force, a presence greater than each of its parts...Unmissable. Almost certainly the play of 2015. Do anything, absolutely anything, to get a seat.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unmissable. Almost certainly the play of 2015. Do anything, absolutely anything, to get a seat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Extreme superlatives throughout: 'highest order,' 'superb in every way,' 'unmissable,' 'play of the year,' with urgent imperative to see it at any cost. Clear rave despite single excerpt. | GPT-4o: The excerpt uses superlatives like 'dynamic', 'inspirational', 'superb', and 'unmissable', indicating a highly enthusiastic recommendation. However, the confidence is low due to the single excerpt warning. | Gemini: The review uses strong positive language such as \"superb in every way\" and \"unmissable\", indicating a rave review. The critic urges the reader to \"do anything\" to see it. | Kimi: The excerpt uses unqualified superlatives ('highest order', 'superb', 'unmissable') and explicitly urges readers to 'do anything' to get tickets, indicating an enthusiastic rave despite being a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:42:40.289Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 96,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

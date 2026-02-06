@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A Strange Loop was startling enough when it premiered in 2019 at Playwrights Horizons. At the Lyceum, it feels like a seismic event. When was the last time Broadway saw a musical as brazenly original and brutally candid as this? Never, probably; shows this iconoclastic and accomplished usually remain hidden away, far from the tourist trade -- if they exist at all\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At the Lyceum, it feels like a seismic event.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Escalating praise from 'startling' to 'seismic event', calls it 'brazenly original' and 'iconoclastic and accomplished'. However, single excerpt warning requires caution - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt describes the show as a 'seismic event' and 'brazenly original,' indicating a strong, enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language such as \"seismic event\", \"brazenly original\", and \"brutally candid\", indicating a positive recommendation. Given that it is a single excerpt, I am scoring it with low confidence. | Kimi: The excerpt offers superlative praise for the Broadway transfer, calling it a 'seismic event' and unprecedented in its 'brazenly original' quality, though the single-excerpt format necessitates caution about the full review's tone. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:33:12.867Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

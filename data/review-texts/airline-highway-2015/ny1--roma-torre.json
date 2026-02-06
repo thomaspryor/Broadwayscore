@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"If you're familiar with the large ensemble plays of Lanford Wilson, you'll find comparisons to 'Airline Highway.' There are also echoes of Tennessee Williams. If 'Airline Highway' doesn't rise to the level of those lauded works, MTC is giving this play a splendid production...'Airline Highway' takes its place among a host of existential works. Extremely thoughtful and poetic, it provides perspective but little new insight on a world that one character describes as 'no B.S., no pretending, no exit.'\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "MTC is giving this play a splendid production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the production as 'splendid' and describes the play as 'extremely thoughtful and poetic,' but notes it 'doesn't rise to the level' of comparable lauded works and offers 'little new insight.' This suggests a qualified positive recommendation. Single excerpt warning applies - setting score at lower end of Positive range due to mixed signals and limited text. | GPT-4o: The review acknowledges the play's thoughtful and poetic nature and praises the production quality, but notes it doesn't reach the level of Lanford Wilson or Tennessee Williams and offers little new insight. The single excerpt suggests a positive but reserved recommendation. | Gemini: The review suggests the play is not groundbreaking but is still a \"splendid production.\" Given the single excerpt and the comparison to lauded works, I've scored it as positive with reservations. | Kimi: While the critic notes the play doesn't rise to the level of Tennessee Williams or Lanford Wilson and offers little new insight, they praise MTC's production as 'splendid' and the work as 'extremely thoughtful and poetic,' indicating a qualified but genuine recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:47:38.480Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

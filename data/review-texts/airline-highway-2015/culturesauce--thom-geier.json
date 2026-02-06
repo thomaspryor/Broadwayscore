@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Her intriguing but diffuse new drama is more of a soft-focus snapshot of urban poverty than the powerhouse it could have been...there are just too many characters for a play that can already feel rather diffuse and unfocused.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Her intriguing but diffuse new drama is more of a soft-focus snapshot of urban poverty than the powerhouse it could have been",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows qualified praise ('intriguing') but significant criticism ('diffuse', 'unfocused', 'could have been' better). Low confidence due to limited text availability. | GPT-4o: The excerpt criticizes the play for being 'diffuse and unfocused' and not reaching its potential as a 'powerhouse'. This indicates a negative view, though the lack of a full review limits confidence. | Gemini: The review excerpt describes the play as \"intriguing but diffuse\" and \"rather diffuse and unfocused\", suggesting a mixed reaction. The phrase \"soft-focus snapshot\" also implies a lack of depth or impact. | Kimi: While the critic acknowledges the drama is 'intriguing,' the excerpt emphasizes significant structural flaws—describing it as 'diffuse,' 'unfocused,' and overcrowded with characters—indicating disappointment that it fails to achieve its potential as a 'powerhouse.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:39:22.653Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

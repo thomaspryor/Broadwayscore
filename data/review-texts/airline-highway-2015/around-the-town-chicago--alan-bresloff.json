@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Mantello has taken the words of D’Amour and with his own “amour” has painted a picture for us of the outcasts and misfits of the world and how they can make life more interesting than those who lead what we call normal lives. To make this happen, besides the brilliance of the script and story, and the rousing energetic cast, it takes the production staff to fill the whole thing out.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mantello has taken the words of D'Amour and with his own 'amour' has painted a picture for us of the outcasts and misfits",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for director, script, and 'rousing energetic cast' with appreciative tone, but limited text makes full verdict uncertain. | GPT-4o: The excerpt praises the director's work and the brilliance of the script, story, and cast, suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises the direction, script, story, and cast, indicating a positive recommendation. Due to the limited text, the confidence is low, but the positive tone suggests a score on the higher end of the positive range. | Kimi: The excerpt contains clearly positive evaluative language ('brilliance', 'rousing energetic cast') praising the script, performances, and production. Per instructions for single clearly positive excerpts, score is placed in the upper end of the Positive bucket (80-84), with low confidence due to the limited curated context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:31:39.621Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

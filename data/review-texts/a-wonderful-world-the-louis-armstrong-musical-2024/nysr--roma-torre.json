@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-06T18:13:08.912Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be only an opening setup describing the show's premise and structure, with no evaluative content or critical assessment provided.; openai: The provided text is a plot summary or description of the show's concept, not an evaluative review.; gemini: The provided excerpt is descriptive and sets up the premise of the show but does not contain any evaluative statements or a clear recommendation.",
+  "promptVersion": "5.2.0"
 }

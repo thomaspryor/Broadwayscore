@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-06T18:14:14.996Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be truncated navigation text or website content describing the show rather than actual review text with critical evaluation; openai: The text is an incomplete excerpt that appears to be setting up context about the source material rather than providing an evaluative review of the production.; kimi: The provided excerpt contains only biographical context describing the source material (Moss Hart's autobiography) and its significance to theater professionals. It includes no critical evaluation of the production itself—no assessment of performances, direction, adaptation quality, or recommendation to see the show.",
+  "promptVersion": "5.2.0"
 }

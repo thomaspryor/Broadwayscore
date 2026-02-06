@@ -8,5 +8,60 @@
   "source": "nyc-theatre",
   "sources": [
     "nyc-theatre"
-  ]
+  ],
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What ultimately makes Two Strangers such a winning Broadway arrival is its belief that tenderness is still theatrical currency.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('winning Broadway arrival', 'delightfully engaging') with praise for direction and craft. Single excerpt warning suggests using upper end of Positive range given clear enthusiasm. | GPT-4o: The excerpt praises the show as a 'winning Broadway arrival' and highlights its emotional engagement, suggesting a strong positive recommendation. However, the single excerpt warning and lack of full review text reduce confidence. | Gemini: The review uses positive language like \"winning Broadway arrival\", \"delightfully engaging\", and praises the direction and creative team. The excerpt suggests a strong recommendation, so I placed it in the upper range of the positive bucket. | Kimi: The excerpt describes the show as a 'winning Broadway arrival' with 'surefooted' direction and 'delightfully engaging' performances, even suggesting Tony Award potential. While clearly positive, confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:53:55.231Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

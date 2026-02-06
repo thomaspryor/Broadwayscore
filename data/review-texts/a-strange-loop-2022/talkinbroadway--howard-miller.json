@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"For all its sometimes rough language and interactions, 'A Strange Loop' has a sense of humor about itself, and it definitely has a big heart. The music is coupled with clever lyrics with references you may pick up on, to Stephen Sondheim and Jonathan Larson and others. Michael R. Jackson has also acknowledged being inspired by the singer Liz Phair, who, along with Tori Amos and Joni Mitchell, dwell collectively within Usher as his 'inner white girl.' \" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'A Strange Loop' has a sense of humor about itself, and it definitely has a big heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows appreciation for the show's humor and heart, plus praise for clever lyrics and musical references. However, with only one curated quote available, confidence is low and score stays in lower positive range. | GPT-4o: The excerpt highlights the show's humor, heart, and clever lyrics, suggesting a positive impression. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt highlights the show's humor and heart, suggesting a positive experience, but the limited text and mention of \"rough language\" indicate some reservations. Confidence is low due to the single excerpt. | Kimi: Single excerpt contains unambiguous praise for the show's humor, emotional core ('big heart'), and clever lyrics without any reservations, indicating a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:33:43.506Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

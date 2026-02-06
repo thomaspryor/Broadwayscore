@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"This is a hugely ambitious play, streaked with much humor and heartfelt talk. And there is a particularly wonderful sequence in which several of the characters take turns singing “improvised” verses. But really, isn’t there something terribly naive and simplistic about the belief that the souls of the dispossessed are innately nobler than those of the strivers?\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a hugely ambitious play, streaked with much humor and heartfelt talk.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed assessment - praises ambition, humor, and a musical sequence, but ends with pointed criticism of the play's underlying philosophy as 'naive and simplistic.' Low confidence due to limited text. | GPT-4o: The excerpt praises the play's ambition and humor but also critiques its naivety and simplicity. The mixed sentiments suggest a balanced view without a clear recommendation. | Gemini: The review excerpt mentions ambition, humor, and heartfelt talk, but also questions the play's naivete and simplicity. This suggests a mixed or neutral assessment. | Kimi: The excerpt offers praise for the play's ambition, humor, and specific sequences, but strongly criticizes its central philosophical premise as 'terribly naive and simplistic,' resulting in a balanced mixed assessment. Limited confidence due to single excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:35:40.241Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

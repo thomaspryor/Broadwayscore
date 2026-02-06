@@ -16,9 +16,14 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Tried and true formulas work in ‘A Soldier’s Play’ and ‘Grand Horizons’\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "rejectedAt": "2026-02-06T17:30:33.332Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a headline fragment with a 'Read more' prompt - not actual review content to evaluate; openai: The text provided is a headline or title, not an evaluative review of the show.; gemini: This is a headline or section title, not a review of a specific show.",
+  "promptVersion": "5.2.0"
 }

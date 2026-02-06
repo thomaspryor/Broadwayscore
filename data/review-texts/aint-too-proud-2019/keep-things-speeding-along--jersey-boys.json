@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The songs do their work, and the ensemble casts shines whenever it gets a chance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows measured praise for set design, dancing, and ensemble cast, though notes some trade-offs. Text cuts off mid-sentence, limiting confidence in full verdict. | GPT-4o: The excerpt highlights positive elements like the set and ensemble performance, though it notes a slight cost to vocal precision. Given the single excerpt and lack of a full review, the score is on the lower end of Positive with low confidence. | Gemini: The review excerpt highlights positive aspects such as the set design, dancing, and ensemble cast, but also mentions a potential cost to vocal precision. Due to the limited text, confidence is low, but the overall tone suggests a positive recommendation with reservations. | Kimi: The excerpt offers qualified praise—appreciating the energetic staging and shining ensemble while noting only utilitarian success for the songs and minor vocal trade-offs. As a single curated excerpt with truncated text, confidence is low and the score sits at the lower end of the Positive range per guidance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:27:43.206Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 73,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

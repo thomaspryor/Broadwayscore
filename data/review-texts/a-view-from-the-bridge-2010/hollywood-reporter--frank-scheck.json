@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/arthur-millers-a-view-bridge-839854"
+  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/arthur-millers-a-view-bridge-839854",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scarlett Johansson makes a fine stage debut and Liev Schreiber delivers another titanic performance in this revival of Miller's classic tragedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for both lead performances with 'fine' and 'titanic' as positive descriptors. Single excerpt warning noted - positive language suggests solid recommendation, scoring in upper Positive range. | GPT-4o: The excerpt praises the performances of the lead actors, indicating a positive reception. However, due to the single excerpt warning, the confidence is low and the score is set at the lower end of the Positive bucket. | Gemini: The review excerpt highlights positive performances from the leads, suggesting a worthwhile production despite the lack of further details. | Kimi: The excerpt offers clear praise for both lead performances, particularly Schreiber's 'titanic' turn, indicating a positive recommendation. As a single curated excerpt, confidence is low but the tone is distinctly favorable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:40:43.482Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

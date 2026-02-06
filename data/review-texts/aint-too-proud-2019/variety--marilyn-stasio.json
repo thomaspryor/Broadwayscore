@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The choreography by Sergio Trujillo is the real star of this show, with dance numbers that capture the smooth, synchronized moves that made the Temptations famous while adding theatrical pizzazz that lifts the audience right out of their seats.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The choreography by Sergio Trujillo is the real star of this show, with dance numbers that capture the smooth, synchronized moves that made the Temptations famous while adding theatrical pizzazz that lifts the audience right out of their seats.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The choreography by Sergio Trujillo is the real star of this show, with dance numbers that capture the smooth, synchronized moves that made the Temptations famous while adding theatrical pizzazz that lifts the audience right out of their seats.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for choreography with vivid language ('lifts the audience right out of their seats'), but only one excerpt available so unclear if this enthusiasm extends to overall recommendation. Given the enthusiastic tone about a major show element, scoring in upper Positive range. | GPT-4o: The excerpt praises the choreography as the standout element, describing it as engaging and energizing for the audience. The enthusiastic tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The excerpt focuses on the positive aspects of the choreography, indicating a favorable impression. Given it's a single excerpt, I've placed it at the higher end of the positive range, but with low confidence due to the limited context. | Kimi: The single excerpt provides clearly positive evaluation of the choreography with enthusiastic language ('real star', 'lifts the audience right out of their seats'), warranting the upper end of the Positive bucket per instructions for cherry-picked excerpts. Confidence is low due to limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:28:58.633Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

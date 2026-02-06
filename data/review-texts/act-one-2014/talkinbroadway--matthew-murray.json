@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Act One is a memory play in the truest sense, filtered through the rose-colored glasses of nostalgia and suffused with the warm glow of what might have been.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Act One is a memory play in the truest sense, filtered through the rose-colored glasses of nostalgia and suffused with the warm glow of what might have been.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Act One is a memory play in the truest sense, filtered through the rose-colored glasses of nostalgia and suffused with the warm glow of what might have been.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Single excerpt describes the show's atmosphere positively ('warm glow', 'truest sense') but lacks clear recommendation language. Given single excerpt warning and mildly positive tone, scoring at lower end of Positive bucket. | GPT-4o: The excerpt suggests a nostalgic and warm portrayal but lacks clear evaluative language indicating a strong recommendation. The single excerpt warning and lack of a clear positive or negative verdict lead to a mixed classification. | Gemini: The excerpt describes the play as nostalgic and filtered, which suggests a mixed or neutral perspective rather than a strong recommendation. Given the limited text, confidence is low. | Kimi: Single excerpt describes the production with warm, appreciative language ('warm glow,' 'truest sense') suggesting mild endorsement, though limited context prevents definitive assessment. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:17:19.186Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

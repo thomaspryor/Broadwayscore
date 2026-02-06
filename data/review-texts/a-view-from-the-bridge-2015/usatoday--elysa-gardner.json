@@ -14,5 +14,60 @@
   "bwwScore": 8,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
-  "showScoreExcerpt": "\"Strong delivers a fearless, riveting performance…Strong also affects a more convincing Brooklyn accent than some of his fellow Brits -- among them Fox, who seems a less-than-ideal fit for Catherine in other respects...Van Hove holds us rapt throughout, even when his flourishes feel overstated. While Miller's dialogue hardly requires such added fuss, the director should be commended for offering a fresh take that sacrifices none of its sting.\"\n\n\nRead more"
+  "showScoreExcerpt": "\"Strong delivers a fearless, riveting performance…Strong also affects a more convincing Brooklyn accent than some of his fellow Brits -- among them Fox, who seems a less-than-ideal fit for Catherine in other respects...Van Hove holds us rapt throughout, even when his flourishes feel overstated. While Miller's dialogue hardly requires such added fuss, the director should be commended for offering a fresh take that sacrifices none of its sting.\"\n\n\nRead more",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Van Hove holds us rapt throughout, even when his flourishes feel overstated.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises Strong's 'fearless, riveting performance' and commends the director for a 'fresh take' that preserves the play's impact. Some casting concerns noted but overall positive assessment. Low confidence due to excerpt-only format. | GPT-4o: The review praises Strong's performance and Van Hove's direction, despite some reservations about certain elements. The overall tone suggests a positive recommendation with some criticisms. | Gemini: The review praises Strong's performance and Van Hove's direction, but notes that Fox is a less-than-ideal fit and Van Hove's flourishes are overstated, indicating a positive but not rave review. | Kimi: The excerpt offers strong praise for Mark Strong's 'fearless, riveting' performance and Van Hove's compelling direction, recommending the production despite specific reservations about one casting choice and occasional overstated directorial flourishes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:06:54.091Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

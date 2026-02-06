@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-06T18:54:38.668Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This excerpt only describes the show's format (collection of pieces by Simon Rich) without any evaluative content or critical assessment; openai: The text is a description of the show's format and authorship, not an evaluative review or recommendation.; kimi: The excerpt provides only descriptive context about the show's format (describing it as a collection of short pieces rather than a traditional play) without any evaluative language regarding quality, execution, or whether it is recommended. It is plot summary/context without critical assessment.",
+  "promptVersion": "5.2.0"
 }

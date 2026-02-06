@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-airline-highway-broadway-review-20150423-column.html"
+  "playbillVerdictUrl": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-airline-highway-broadway-review-20150423-column.html",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A frequently poetic piece of writing and a fine match for an ensemble-oriented group of distinguished actors.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for writing and performances ('frequently poetic', 'distinguished actors', 'so very good') but clear reservations about edge and authenticity ('Disney-fication', 'needs more grit'). Positive overall but qualified. | GPT-4o: The review praises the writing and performances, indicating a positive view, but notes a lack of edge and grit, suggesting some reservations. The text is an excerpt, so confidence is low. | Gemini: The review excerpt is mostly positive, praising the writing and actors, but notes a potential Disney-fication, indicating reservations. The overall tone suggests a recommendation with caveats. | Kimi: The reviewer praises the poetic writing and distinguished performances as 'so very good,' but criticizes the show for verging on 'Disney-fication' and lacking grit, indicating a positive but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:38:01.857Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

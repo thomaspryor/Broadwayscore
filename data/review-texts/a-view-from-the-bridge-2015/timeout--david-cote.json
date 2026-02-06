@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's immense satisfaction and gratitude that Belgian director Ivo van Hove digs down and grabs the pulsing, bloody heart of Arthur Miller's 1956 drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite truncation, the excerpt shows clear praise for the director's work with vivid positive language ('immense satisfaction and gratitude', 'grabs the pulsing, bloody heart'). However, confidence is low due to incomplete text and potential negative continuation after 'But then comes anger'. | GPT-4o: The excerpt expresses strong praise for the director's work, indicating a highly positive reception. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The excerpt is highly positive, praising the director's interpretation of the play. Given that it's a single excerpt, I'm placing it at the higher end of the 'Positive' bucket, but with low confidence due to the limited text. | Kimi: Excerpt contains enthusiastic praise ('immense satisfaction', 'grabs the pulsing, bloody heart') indicating a powerful, effective production. Text truncates during a comparative 'but' clause, preventing full context, but the evaluative content about this specific revival is unambiguously positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:06:20.935Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

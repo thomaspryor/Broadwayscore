@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The two stars work hard to make their characters compelling, but they're hampered by Keith Huff's overly schematic play that feels more like a writing exercise than a fully realized drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The two stars work hard to make their characters compelling, but they're hampered by Keith Huff's overly schematic play that feels more like a writing exercise than a fully realized drama.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "they're hampered by Keith Huff's overly schematic play that feels more like a writing exercise than a fully realized drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic acknowledges the actors' efforts but finds the play fundamentally flawed as 'overly schematic' and 'more like a writing exercise than a fully realized drama.' This suggests disappointment with the overall production despite individual performer praise. Single excerpt limits confidence. | GPT-4o: The excerpt criticizes the play as 'overly schematic' and 'more like a writing exercise,' suggesting a negative view. However, due to the single excerpt warning, confidence is low. | Gemini: The review praises the actors' efforts but ultimately criticizes the play's writing, indicating a negative overall assessment. Given the single excerpt, confidence is medium. | Kimi: The excerpt praises the lead actors' efforts but fundamentally criticizes the play as schematic and underdeveloped, with the single available quote suggesting a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:31:15.101Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 48,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

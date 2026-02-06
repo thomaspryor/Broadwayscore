@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite a soaring score by Jill Santoriello that represents the best aspect of this misguided effort, the show suffers from a bewildering book that attempts to pack Dickens' epic novel into a roughly 2 1/2-hour evening.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite a soaring score by Jill Santoriello that represents the best aspect of this misguided effort, the show suffers from a bewildering book that attempts to pack Dickens' epic novel into a roughly 2 1/2-hour evening.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite a soaring score by Jill Santoriello that represents the best aspect of this misguided effort, the show suffers from a bewildering book",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Calls the show a 'misguided effort' with a 'bewildering book' - clearly negative verdict despite praising the score. Single excerpt limits confidence in full review assessment. | GPT-4o: The excerpt highlights a significant flaw in the production, describing the book as 'bewildering' and the effort as 'misguided', despite praising the score. The overall tone suggests a negative verdict. | Gemini: The review excerpt praises the score but criticizes the book, indicating a negative overall assessment. Given the limited text, confidence is low. | Kimi: While acknowledging a 'soaring score,' the critic deems the production a 'misguided effort' with a 'bewildering book,' indicating the weaknesses outweigh the strengths.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:38:03.072Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

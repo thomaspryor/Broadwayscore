@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Cooper's blazing comic imagination and his gift for capturing the rhythms of authentic speech make 'Ain't No Mo'' a theatrical experience that's both wildly entertaining and deeply moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Cooper's blazing comic imagination and his gift for capturing the rhythms of authentic speech make 'Ain't No Mo'' a theatrical experience that's both wildly entertaining and deeply moving.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Cooper's blazing comic imagination and his gift for capturing the rhythms of authentic speech make 'Ain't No Mo'' a theatrical experience that's both wildly entertaining and deeply moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with superlative language ('blazing comic imagination') and emotional impact ('deeply moving'). However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt provides strong praise for the show, highlighting its entertainment value and emotional impact. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"blazing comic imagination,\" \"wildly entertaining,\" and \"deeply moving,\" suggesting a positive review. Given that it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers strong praise ('blazing comic imagination,' 'wildly entertaining,' 'deeply moving') indicating a clear recommendation, though the single-excerpt limitation prevents a higher confidence rating or Rave classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:25:52.171Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

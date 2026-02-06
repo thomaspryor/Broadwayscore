@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"These are all deeply recognizable, empathetic performances, and Mantello manages our focus with great skill, but it’s hard to fully invest in the characters in the slow-burning first act. D’Amour often has two or three conversations overlapping, and it can feel like you’re missing information. Airline Highway can seem a bit clogged with traffic, but as an exploration of chosen families stocked with expert performances, it’s a road worth traveling.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a road worth traveling",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Final verdict is clearly positive ('a road worth traveling') despite acknowledging significant flaws in pacing and structure. Single excerpt warning requires caution - this sounds mildly positive rather than enthusiastic. | GPT-4o: The review acknowledges issues with the first act and overlapping dialogue but ultimately recommends the show for its performances and exploration of chosen families. The single excerpt suggests a mildly positive view. | Gemini: The review acknowledges some issues with the first act and overlapping conversations, but ultimately concludes that it's \"a road worth traveling\" due to the performances and exploration of chosen families. Given the single excerpt and the reservations, a score in the mid-range of Positive seems appropriate. | Kimi: The excerpt praises the empathetic performances and skilled direction while criticizing the slow-burning first act and overlapping dialogue, but ultimately delivers a qualified positive verdict calling the show 'a road worth traveling.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:52:11.230Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

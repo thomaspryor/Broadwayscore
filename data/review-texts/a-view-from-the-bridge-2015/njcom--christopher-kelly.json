@@ -14,5 +14,60 @@
   "bwwScore": 6,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
-  "showScoreExcerpt": "\"The result is alternately powerful and a wee bit ridiculous. The power comes mostly courtesy of an astonishing lead performance by British actor Mark Strong…Alas, this 'A View from the Bridge' doesn't quite cohere...The cast also contains a significant weak link in Fox…A touch more humor and humility might have gone a very long way.\"\n\nRead more"
+  "showScoreExcerpt": "\"The result is alternately powerful and a wee bit ridiculous. The power comes mostly courtesy of an astonishing lead performance by British actor Mark Strong…Alas, this 'A View from the Bridge' doesn't quite cohere...The cast also contains a significant weak link in Fox…A touch more humor and humility might have gone a very long way.\"\n\nRead more",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is alternately powerful and a wee bit ridiculous.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises Strong's 'astonishing' performance but finds the production doesn't 'quite cohere' with a 'significant weak link' and suggests improvements needed. Excerpts only, so low confidence. | GPT-4o: The review highlights an 'astonishing' lead performance but notes a lack of coherence and a weak cast member, suggesting a mixed verdict. The text is an excerpt, so confidence is low. | Gemini: The review highlights a powerful lead performance but notes that the production doesn't quite cohere and contains a weak link, suggesting a mixed experience overall. | Kimi: The critic praises Mark Strong's 'astonishing' lead performance and acknowledges powerful moments, but finds the production doesn't cohere, contains a significant weak link in the cast, and is at times ridiculous.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:55:16.437Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

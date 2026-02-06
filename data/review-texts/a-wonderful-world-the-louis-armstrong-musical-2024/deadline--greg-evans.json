@@ -18,5 +18,60 @@
     "bww-roundup",
     "nyc-theatre"
   ],
-  "nycTheatreExcerpt": "Wonderful World is too expansive in chronological scope to delve too deeply into the crucial question of what made Armstrong such an incomparable figure in the history of American music, but with Iglehart and a fine supporting cast of excellent singer-actresses portraying Armstrong's four wives... the musical rarely gives us enough time to ponder what's being left out. What we're seeing on stage is too entertaining."
+  "nycTheatreExcerpt": "Wonderful World is too expansive in chronological scope to delve too deeply into the crucial question of what made Armstrong such an incomparable figure in the history of American music, but with Iglehart and a fine supporting cast of excellent singer-actresses portraying Armstrong's four wives... the musical rarely gives us enough time to ponder what's being left out. What we're seeing on stage is too entertaining.",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it certainly comes closer than most to avoiding the pitfalls of jukebox musicals",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt shows qualified praise - complimenting the lead performance as 'terrific' and noting the show 'comes closer' to succeeding than typical jukebox musicals, suggesting a positive but not enthusiastic recommendation. Confidence is low due to truncated text. | GPT-4o: The excerpt acknowledges that the show doesn't escape all pitfalls but suggests it makes a significant effort. The praise for James Monroe Iglehart is noted, but the overall tone seems to be mixed due to the mention of pitfalls. | Gemini: The review acknowledges the pitfalls of the jukebox musical genre, but suggests that this production comes closer to overcoming them. The presence of 'terrific' James Monroe Iglehart also contributes to the positive leaning. | Kimi: The critic praises Iglehart as 'terrific' and suggests the show succeeds more than typical jukebox musicals, though the truncated text leaves the final verdict unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:11:35.539Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

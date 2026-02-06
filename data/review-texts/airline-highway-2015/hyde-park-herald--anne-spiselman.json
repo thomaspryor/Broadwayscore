@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"D’Amour’s play falls short in a variety of ways...The limited story line is contrived. The characters are more generic than compellingly individual. The stakes aren’t high enough for us to care about them. The quasi-poetic writing at times borders on pretentious and preachy. The hard-to-follow overlapping conversations become tiresome. And, anyway, all this has been done before — and done better, by Wilson, among others...The main reason to see the show is some of the acting.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "D'Amour's play falls short in a variety of ways",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Systematic criticism of writing, story, characters, and direction with only acting as redeeming quality. Clear negative recommendation despite performer praise. | GPT-4o: The excerpt highlights multiple shortcomings of the play, including a contrived storyline, generic characters, and pretentious writing. The only positive note is the acting, which is not enough to redeem the overall negative assessment. | Gemini: The review lists many flaws in the play, including a contrived storyline, generic characters, and pretentious writing. While the acting is praised, it's not enough to overcome the negative aspects. | Kimi: While the critic praises some performances as the 'main reason to see the show,' the review enumerates significant flaws including a contrived plot, generic characters, pretentious writing, and tiresome dialogue, indicating an overall negative assessment that does not recommend the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:44:05.508Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

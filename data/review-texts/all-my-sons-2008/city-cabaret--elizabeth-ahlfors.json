@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Skillfully revisited...O'Brien steers a sterling cast through the veneer of post-war complacency and delves into secrets and acrimony to unravel a shattering inevitability...Miller's language, always straightforward with an edge of poeticism and O'Brien's deft handling, heightens the dramatic fall-out with emotion and truth...Relevancy is clear here in Miller's second play...still delivered with smashing conviction over 70 years after he wrote it.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "O'Brien steers a sterling cast through the veneer of post-war complacency and delves into secrets and acrimony to unravel a shattering inevitability.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language throughout: 'skillfully revisited,' 'sterling cast,' 'deft handling,' 'smashing conviction.' Despite being a single excerpt, the consistent praise and superlative language ('sterling,' 'smashing') suggests upper Positive range. | GPT-4o: The excerpt praises the direction, cast, and emotional impact of the production. The language suggests strong endorsement, with terms like 'sterling cast' and 'smashing conviction'. Despite the single excerpt limitation, the tone is clearly positive. | Gemini: The excerpt uses strong positive language such as \"sterling cast\", \"deft handling\", and \"smashing conviction\". Given that this is the only excerpt available, I'm scoring it at the higher end of the positive range, but with low confidence due to the limited text. | Kimi: The excerpt offers strong praise for the direction ('deft handling,' 'skillfully revisited') and performances ('sterling cast,' 'smashing conviction'), indicating a clear recommendation despite the limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:57:24.544Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

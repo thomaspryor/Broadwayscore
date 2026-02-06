@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play is a valentine to a certain kind of American dreaming, and to the theatre as a place where such dreams might come true.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play is a valentine to a certain kind of American dreaming, and to the theatre as a place where such dreams might come true.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is a valentine to a certain kind of American dreaming, and to the theatre as a place where such dreams might come true.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the play as 'a valentine' with positive language about dreams coming true, but very limited text makes confidence low. | GPT-4o: The excerpt uses positive language ('valentine', 'dreams might come true') suggesting a strong recommendation. Given the single excerpt warning, the score is placed at the higher end of the Positive range. | Gemini: The phrase \"valentine to a certain kind of American dreaming\" suggests a positive sentiment, but without more context, it's difficult to gauge the strength of the recommendation. Given the limited excerpt, I'm placing it in the lower end of the Positive bucket. | Kimi: Single available excerpt uses the affectionate metaphor 'valentine' to describe the play, indicating clear endorsement and warmth toward both the material and the production. Per instructions for clearly positive single excerpts, scored in the 80-84 range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:14:46.270Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

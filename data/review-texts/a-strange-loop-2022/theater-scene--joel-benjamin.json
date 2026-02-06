@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Deliriously and explicitly profane, Michael R. Jackson’s Pulitzer Prize winning musical, A Strange Loop has—unbelievably—made it to Broadway, produced by Playwrights Horizons, Page 73 and the Woolly Mammoth Theatre Company. Jackson’s explicit portrait of a lost soul’s salty journey is alternately stunning and amusing, appealing and appalling, told at a breakneck pace through his book, lyrics and music. It’s a rare, if dispiriting, portrait of a gay man who isn’t a paragon, a man who isn’t conventionally handsome, successful or rich.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jackson's explicit portrait of a lost soul's salty journey is alternately stunning and amusing, appealing and appalling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows strong praise ('stunning and amusing', 'rare portrait') balanced with some reservations ('dispiriting', 'appalling'). However, with only one curated excerpt available, confidence is low as this may not represent the full review's verdict. | GPT-4o: The excerpt describes the show as 'stunning and amusing,' indicating a strong positive impression. Despite the warning about the single excerpt, the language used suggests a high level of enthusiasm. | Gemini: The review uses positive language like \"stunning and amusing\" but also includes \"appealing and appalling,\" suggesting a mixed experience. Given the limited excerpt, I'm placing it in the positive bucket with reservations. | Kimi: The excerpt uses strongly positive evaluative language ('stunning,' 'amusing,' 'rare') to praise the show's writing, pacing, and impact. While limited to a single curated quote, the enthusiastic tone warrants an upper Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:35:52.834Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

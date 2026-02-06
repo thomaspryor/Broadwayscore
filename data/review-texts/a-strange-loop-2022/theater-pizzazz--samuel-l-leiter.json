@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A Strange Loop,\" the raucously profane, satirical, Pulitzer Prize-winning musical comedy, which premiered Off Broadway at Playwrights Horizons in 2019, is now jubilantly planted at Broadway’s Lyceum Theatre. Dazzlingly original, the show is a sometimes painful, sometimes joyous, and sometimes comic cry of angst about a fat, Black, gay man writing a musical comedy about a fat, Black, gay man writing a musical comedy about being a fat, Black, gay man writing a musical comedy . . . \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dazzlingly original, the show is a sometimes painful, sometimes joyous, and sometimes comic cry of angst",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language like 'jubilantly planted' and 'dazzlingly original' suggests enthusiasm, but excerpt is truncated with only setup provided. Setting confidence low due to single excerpt warning and incomplete text. | GPT-4o: The excerpt uses strong positive language ('dazzlingly original', 'jubilantly planted') suggesting a highly favorable view. Despite the single excerpt warning, the language indicates a strong recommendation. | Gemini: The review uses positive language like \"jubilantly planted\" and \"dazzlingly original.\" Given the single excerpt, I am placing the score at the higher end of the positive range. | Kimi: The excerpt employs highly positive descriptors including 'dazzlingly original' and 'jubilantly planted,' indicating strong enthusiasm for the production. However, confidence is limited due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:35:03.904Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

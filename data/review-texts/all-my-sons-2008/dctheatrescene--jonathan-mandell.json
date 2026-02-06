@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Those climactic performances by Bening, Letts and Walker will be enough for many audience members. For theatergoers who might join in the criticism that the script is dated or implausible or otherwise flawed, it’s useful to consider this production through three lenses. The first is the time in which it was written and in which it is set...Here is where the second lens comes in handy – seeing the play as Miller intended it to be, as a Greek tragedy involving everyday Americans.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those climactic performances by Bening, Letts and Walker will be enough for many audience members.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt acknowledges script criticisms but suggests the performances justify seeing it. However, this is a single curated excerpt that may not represent the full verdict, requiring low confidence and conservative scoring within the Positive bucket. | GPT-4o: The excerpt suggests that while the performances are strong, there are criticisms of the script being dated or implausible. The mention of 'enough for many' implies a mixed reception with some positive elements. | Gemini: The excerpt highlights strong performances, suggesting a positive experience for many, but also acknowledges potential criticisms of the script. Given the single excerpt, I'm placing it in the lower end of the positive range. | Kimi: The excerpt acknowledges potential flaws in the script ('dated or implausible') but ultimately recommends the production by offering interpretive frameworks ('three lenses') to appreciate Miller's intent, with praise for the lead performances as the primary draw.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T19:00:14.094Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 71,
+    "openaiScore": 68,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

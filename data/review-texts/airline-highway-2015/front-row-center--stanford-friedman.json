@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Playwright Lisa D’Amour’s script is a slow road to nowhere...Veteran director Joe Mantello does his best to breathe life into the production, skillfully staging the actors across Pask’s fine multi-level set, and firing up a rousing party scene at the start of act two. But in a landscape made infamous by Tennessee Williams, this tale is oddly lacking in poetry.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Playwright Lisa D'Amour's script is a slow road to nowhere.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic calls the script 'a slow road to nowhere' and finds it 'oddly lacking in poetry.' While praising the director's efforts and some staging elements, the overall assessment is negative. Single excerpt warning applied - scoring conservatively in negative range. | GPT-4o: The excerpt criticizes the script as 'a slow road to nowhere' and notes a lack of poetry, despite some praise for the director's efforts. The overall tone suggests a negative view of the production. | Gemini: The review states the script is a \"slow road to nowhere\" and the tale is \"oddly lacking in poetry.\" While it praises the director and set, the overall sentiment is negative. | Kimi: While the critic praises Mantello's direction and the set design as 'fine,' the script is dismissed as a 'slow road to nowhere' and the overall work criticized for lacking poetry, suggesting a neither-here-nor-there verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:41:16.127Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

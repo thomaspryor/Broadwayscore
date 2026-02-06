@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“While Jack O’Brien’s production of 'All My Sons' is too literal, there is something to the double-edged performances, particularly from Benjamin Walker, that still make this Arthur Miller play rattle...Walker threads this all finely and his collapse at the end of the play makes you believe Chris may never find his footing again. It’s the performance that makes this production worth seeing. The rest of the production is frustratingly pedestrian.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's the performance that makes this production worth seeing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Review explicitly states the production is 'worth seeing' for Walker's performance but calls the rest 'frustratingly pedestrian' and the direction 'too literal.' This creates a mixed recommendation - see it for one element, but the overall production disappoints. | GPT-4o: The review praises Benjamin Walker's performance as a standout, but criticizes the production as 'too literal' and 'frustratingly pedestrian'. The recommendation is conditional, focusing on the performance rather than the overall production. | Gemini: The review states the production is \"worth seeing\" due to Benjamin Walker's performance, but also notes that \"the rest of the production is frustratingly pedestrian.\" Given the limited excerpt, I'm scoring it as positive but with reservations and low confidence. | Kimi: Single excerpt offers qualified recommendation praising Benjamin Walker's performance as making the show worth seeing, while criticizing Jack O'Brien's direction as 'too literal' and other elements as 'frustratingly pedestrian.' | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T19:00:59.693Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

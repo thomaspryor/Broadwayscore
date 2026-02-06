@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Airline Highway' isn’t perfect, not by a long shot. D’Amour seriously undermines the wattage of the drama later in that final act...Life isn’t that simple. Neither are people. But until those last 10 minutes or so, however, 'Airline Highway' is ensemble work at its finest, and a fascinating view of New Orleans you’ll never find in any guide book.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Airline Highway' is ensemble work at its finest, and a fascinating view of New Orleans you'll never find in any guide book.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening with 'isn't perfect, not by a long shot' and criticizing the final act, the critic calls it 'ensemble work at its finest' and 'fascinating.' Single excerpt warning applies - this appears to be a qualified positive recommendation but confidence is low due to limited text. | GPT-4o: The review acknowledges flaws in the final act but praises the ensemble work and unique perspective on New Orleans, indicating a positive recommendation with some reservations. | Gemini: The review is mostly positive, praising the ensemble work and view of New Orleans, but notes a significant flaw in the final act. Given the single excerpt and the reservations, a score on the lower end of the positive bucket is appropriate. | Kimi: While the critic notes serious flaws in the final 10 minutes that 'undermine the wattage,' the bulk of the review praises the ensemble as 'at its finest' and the setting as 'fascinating,' indicating a qualified recommendation. Score reflects strong praise tempered by significant third-act criticism, with low confidence due to single-excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:36:34.069Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

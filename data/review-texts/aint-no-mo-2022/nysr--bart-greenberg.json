@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jordan E. Cooper's 'Ain't No Mo'' is a wild, provocative, and uneven theatrical experience that tackles serious issues with comedy and pathos.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jordan E. Cooper's 'Ain't No Mo'' is a wild, provocative, and uneven theatrical experience that tackles serious issues with comedy and pathos.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jordan E. Cooper's 'Ain't No Mo'' is a wild, provocative, and uneven theatrical experience that tackles serious issues with comedy and pathos.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The word 'uneven' is a classic mixed review signal, balancing positive qualities ('wild, provocative') with clear reservations. Single excerpt warning applies - this could be cherry-picked from a more definitively positive or negative full review. | GPT-4o: The excerpt describes the show as 'wild, provocative, and uneven,' indicating a mixed review. The combination of 'serious issues with comedy and pathos' suggests some positive elements, but 'uneven' implies inconsistency in execution. With only one excerpt, confidence is low. | Gemini: The review uses the word \"uneven,\" which indicates a mixed reaction. Given the limited text, confidence is low. | Kimi: While the critic praises the show as 'wild' and 'provocative' and commends its handling of serious material with 'comedy and pathos,' the description as 'uneven' indicates significant reservations. Given this is a single curated excerpt, the score reflects a mildly positive recommendation with noted flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:20:44.344Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

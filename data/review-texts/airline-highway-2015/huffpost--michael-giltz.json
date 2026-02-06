@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Every character is aggressively colorful in Lisa D'Amour's new comic drama Airline Highway. Set in New Orleans, it's like very bad Tennessee Williams, with each new person spouting cold truths, snappy rejoinders and hard-won pearls of wisdom until you long for someone to just show up and not have a backstory or some pain bursting to get out. No such luck.\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's like very bad Tennessee Williams, with each new person spouting cold truths, snappy rejoinders and hard-won pearls of wisdom until you long for someone to just show up",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly compares the show to 'very bad Tennessee Williams' and expresses longing for relief from the characters' forced dialogue and backstories. However, single excerpt warning means the full verdict may differ. | GPT-4o: The excerpt criticizes the play for being overly dramatic and lacking subtlety, comparing it unfavorably to Tennessee Williams. The tone suggests disappointment, but without the full review, the confidence is low. | Gemini: The review excerpt uses negative language such as \"very bad Tennessee Williams\" and expresses a desire for characters without backstories or pain, indicating a negative overall assessment. Given it's a single excerpt, confidence is low. | Kimi: The critic unfavorably compares the play to Tennessee Williams and expresses exhaustion with the overwrought characterizations, indicating a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:42:52.826Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

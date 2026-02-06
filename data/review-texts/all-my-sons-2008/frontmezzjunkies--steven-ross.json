@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"This production stays painting itself on the surface like bug repellent. Their 'All My Sons' is trying to see it all as humanly as possible, but slips on the wet grass, out from under its own steady feet...The production stumbles, failing to live up to the tragedy that swirls around the home, leaving familial destruction that has little impact on those baring witness to the events. I was as unflinching as Kate, when I wanted to be as devastated as Chris.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production stumbles, failing to live up to the tragedy that swirls around the home, leaving familial destruction that has little impact.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment - the production 'stumbles,' 'fails to live up to,' and lacks emotional impact. However, single excerpt warning requires caution as this could be from a longer mixed review. | GPT-4o: The review excerpt criticizes the production for failing to deliver emotional impact and describes it as stumbling. The lack of devastation and impact suggests a negative assessment. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses negative language such as \"slips on the wet grass\" and \"the production stumbles\" to describe the production, indicating a negative overall assessment. The critic also states that the familial destruction has little impact, further supporting a negative score. | Kimi: The single excerpt describes a production that stumbles and fails to achieve the necessary tragic depth, leaving the audience emotionally disengaged with 'little impact.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T19:03:30.175Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

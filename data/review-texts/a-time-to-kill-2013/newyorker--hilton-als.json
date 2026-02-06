@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Ethan McSweeny, is hobbled by John Grisham's pedestrian adaptation of his own novel, and by a staging that feels more like a television movie than a work for the theatre.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by Ethan McSweeny, is hobbled by John Grisham's pedestrian adaptation of his own novel, and by a staging that feels more like a television movie than a work for the theatre.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production is hobbled by John Grisham's pedestrian adaptation of his own novel, and by a staging that feels more like a television movie than a work for the theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear criticism of both the adaptation ('pedestrian') and staging ('feels more like a television movie'), indicating the production fails as theater. Single excerpt warning noted but language is unambiguously negative. | GPT-4o: The excerpt criticizes the adaptation and staging, suggesting a negative view. However, with only one excerpt, the full context is unclear, leading to a low confidence score. | Gemini: The review excerpt clearly states that the production is \"hobbled\" by the adaptation and staging, indicating a negative assessment. Given the limited text, confidence is low, but the negative sentiment is clear. | Kimi: Single excerpt contains unambiguous negative verdict: 'hobbled,' 'pedestrian,' and unfavorable comparison to television indicate the critic does not recommend the production. Score reflects clear criticism while acknowledging limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:39:52.175Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

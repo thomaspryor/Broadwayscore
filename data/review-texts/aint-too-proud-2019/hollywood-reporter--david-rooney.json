@@ -12,5 +12,60 @@
   "bwwExcerpt": "There's some overlap here with 2015's Motown: The Musical, which covered a broader swath of the legendary hit factory's history. But this is the superior show, less pedestrian in its storytelling, if not without its own limitations. Those lie primarily in the workmanlike book, which settles on the memoir of Otis Williams, the Temptations' last surviving founding member, as its sole source. It also tries for such exhaustive detail that the narration almost literally never stops, while somehow mak",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
   "contentTier": "excerpt",
-  "publishDate": "March 22, 2019"
+  "publishDate": "March 22, 2019",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this is the superior show, less pedestrian in its storytelling, if not without its own limitations.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict calling it 'superior' and 'less pedestrian,' but acknowledges 'limitations' and criticizes the 'workmanlike book.' Single excerpt with truncated text warrants low confidence and lower positive score. | GPT-4o: The excerpt indicates that the show is superior to a previous production, suggesting a positive assessment. However, it acknowledges limitations in the book and narration, indicating reservations. The single excerpt and text quality warning lower confidence. | Gemini: The review excerpt indicates that the show is superior to a previous production but has limitations, suggesting a positive but not rave review. Due to the limited text, confidence is low. | Kimi: The critic considers this production superior to the comparable 'Motown: The Musical' but raises substantial concerns about the workmanlike book and exhausting narration style. As a mildly positive single excerpt with truncated text, this falls in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:26:40.328Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

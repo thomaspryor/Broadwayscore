@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cooper's theatrical voice is bold and uncompromising, and his satire cuts deep. But the evening feels more like a series of provocative sketches than a cohesive theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cooper's theatrical voice is bold and uncompromising, and his satire cuts deep. But the evening feels more like a series of provocative sketches than a cohesive theatrical experience.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the evening feels more like a series of provocative sketches than a cohesive theatrical experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Balances praise for the playwright's voice and satirical approach with significant structural criticism. Single excerpt warning applies - this appears to be a mixed assessment rather than clearly positive or negative. | GPT-4o: The review praises the boldness and depth of the satire but criticizes the lack of cohesion, suggesting a mixed experience. The single excerpt may not fully capture the overall sentiment, leading to a low confidence score. | Gemini: The review praises Cooper's voice and satire but notes the show feels like sketches rather than a cohesive experience, indicating a mixed assessment. | Kimi: The excerpt praises the bold writing and cutting satire but delivers a fundamental criticism that the show lacks cohesion, feeling like disconnected sketches rather than a unified theatrical experience. With only a single curated excerpt available, the review appears genuinely mixed rather than clearly recommending or discouraging attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:24:24.337Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

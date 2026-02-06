@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The Belgian director Ivo van Hove has taken a drastically non-naturalistic approach to Arthur Miller's 1955 drama, set in Brooklyn's Italian-American neighbourhood, and the stripped-back intensity of focus is emotionally devastating...By the end, the audience is shaken by an overwhelming sense of catharsis. Unforgettable.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "By the end, the audience is shaken by an overwhelming sense of catharsis. Unforgettable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite being a single excerpt, the language is unequivocally rapturous - 'emotionally devastating,' 'overwhelming sense of catharsis,' and 'Unforgettable' are rave-level superlatives indicating a must-see experience. | GPT-4o: The excerpt describes the production as 'emotionally devastating' and 'unforgettable,' indicating a strong, positive impact. The use of 'overwhelming sense of catharsis' suggests a powerful and memorable experience, fitting the Rave category. | Gemini: The review uses strong positive language such as \"emotionally devastating\" and \"unforgettable\", indicating a rave review. Given the single excerpt, confidence is medium. | Kimi: The single excerpt contains superlative praise ('emotionally devastating', 'overwhelming catharsis', 'Unforgettable') indicating a strong recommendation, but confidence is reduced to 'low' as per instructions for single curated excerpts that may not represent the full review sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T18:03:09.579Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }
