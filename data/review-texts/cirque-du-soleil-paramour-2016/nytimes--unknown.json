@@ -15,7 +15,7 @@
   "isFullReview": true,
   "textWordCount": 317,
   "archivePath": "data/archives/reviews/cirque-du-soleil-paramour-2016/nytimes--unknown_2026-02-06.html",
-  "textFetchedAt": "2026-02-06T14:04:59.649Z",
+  "textFetchedAt": "2026-02-06T15:18:59.119Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -40,5 +40,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: Text cuts off mid-review with technical error message about JavaScript and verifying access; openai: The review text is cut off, and the verdict or conclusion is missing, making it impossible to accurately score the review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "duplicateTextOf": "nytimes--charles-isherwood.json"
 }
