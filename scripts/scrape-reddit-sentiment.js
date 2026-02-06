@@ -55,6 +55,8 @@ const shardMode = shard !== null && totalShards !== null;
 // Config
 const SUBREDDIT = 'broadway';
 const MIN_ITEMS_FOR_SCORE = 15; // Minimum buzz items to include in combined score
+const MAX_POST_AGE_DAYS = 730;  // 2 years — filters out decade-old noise
+const TWO_YEARS_AGO = Date.now() / 1000 - (MAX_POST_AGE_DAYS * 86400); // Unix timestamp
 
 // Load data
 const showsPath = path.join(__dirname, '../data/shows.json');
@@ -185,7 +187,7 @@ function classifyPost(post, showTitle) {
  * Search with multiple strategies to capture audience reactions
  * Prioritizes audience posts, excludes industry posts, includes neutral as fallback
  */
-async function searchAudiencePosts(subreddit, showTitle, maxPosts = 100) {
+async function searchAudiencePosts(subreddit, showTitle, maxPosts = 500) {
   const cleanTitle = showTitle.replace(/[()]/g, '').trim();
 
   // Audience-focused search strategies (ordered by relevance)
@@ -207,17 +209,25 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 100) {
   const neutralPosts = [];   // Not clearly industry or audience
   const seenIds = new Set();
   let totalSearched = 0;
+  let filteredByDate = 0;
 
   for (const query of searches) {
     if (audiencePosts.length >= maxPosts) break;
 
     try {
-      const posts = await searchAllPosts(subreddit, query, 100);
+      // Fetch up to 300 per query (3 pages) to compensate for date filtering
+      const posts = await searchAllPosts(subreddit, query, 300);
       totalSearched += posts.length;
 
       for (const post of posts) {
         if (seenIds.has(post.id)) continue;
         seenIds.add(post.id);
+
+        // Filter to last 2 years — skip decade-old noise
+        if (post.created_utc && post.created_utc < TWO_YEARS_AGO) {
+          filteredByDate++;
+          continue;
+        }
 
         const classification = classifyPost(post, showTitle);
         if (classification === true) {
@@ -227,10 +237,14 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 100) {
         }
         // classification === false means industry, skip it
       }
-      if (verbose) console.log(`    "${query}": ${audiencePosts.length} audience, ${neutralPosts.length} neutral (of ${totalSearched} total)`);
+      if (verbose) console.log(`    "${query}": ${audiencePosts.length} audience, ${neutralPosts.length} neutral (of ${totalSearched} total, ${filteredByDate} older than 2yr)`);
     } catch (e) {
       if (verbose) console.log(`    "${query}" failed: ${e.message}`);
     }
+  }
+
+  if (filteredByDate > 0) {
+    console.log(`  Filtered out ${filteredByDate} posts older than 2 years`);
   }
 
   // Use audience posts first, then fill with neutral posts if needed
@@ -257,13 +271,13 @@ async function processShow(show) {
 
   let posts;
   try {
-    posts = await searchAudiencePosts(SUBREDDIT, show.title, 100);
+    posts = await searchAudiencePosts(SUBREDDIT, show.title, 500);
   } catch (e) {
     console.error(`  Search failed: ${e.message}`);
     return null;
   }
 
-  console.log(`  Found ${posts.length} posts from audience-focused searches`);
+  console.log(`  Found ${posts.length} posts from audience-focused searches (last 2 years)`);
 
   if (posts.length === 0) {
     return null;
@@ -272,7 +286,7 @@ async function processShow(show) {
   // 2. Select posts - use Reddit's relevance ordering from our audience-focused searches
   // Don't re-sort by engagement (that drowns out good posts with high-engagement meta threads)
   // The LLM will filter out irrelevant comments - we just need to give it good posts to work with
-  const topPosts = posts.slice(0, 75);  // More posts to see natural distribution
+  const topPosts = posts.slice(0, 150);  // Broader sample for better representation
 
   if (verbose) {
     console.log(`  Top 5 posts (by Reddit search relevance):`);
