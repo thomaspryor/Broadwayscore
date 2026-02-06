@@ -12,12 +12,44 @@
     "bww-roundup"
   ],
   "showScoreExcerpt": "\"Bernadette Peters and Lea Salonga lead Cameron Mackintosh’s song-stuffed revue of the Broadway composer’s legendary career\"\n\nRead more",
-  "contentTier": "needs-rescrape",
+  "contentTier": "truncated",
   "rejectedAt": "2026-02-04T13:58:02.777Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is just a promotional tagline or excerpt teaser, not actual review content with critical evaluation; openai: The provided text is a brief mention of the show's cast and concept, not an evaluative review.; gemini: This is a brief description of the show, not a review with evaluative content.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "The headliners are wonderfully showcased. Ms. Peters has been an exemplary interpreter of Sondheim’s work for decades, having starred in the original stagings of Sunday in the Park With George and Into the Woods. While her voice has lost some of its rich timbre, her rendition of Send in the Clowns is so deeply infused with soul-searching that any vocal imperfections are quickly forgotten as Ms. Peters’s evocation of a love that might have been—could ha",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-STEPHEN-SONDHEIMS-OLD-FRIENDS-Opens-On-Broadway-20250408"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-STEPHEN-SONDHEIMS-OLD-FRIENDS-Opens-On-Broadway-20250408",
+  "fullText": "https://www.wsj.com/articles/stephen-sondheim-old-friends-review-revue-broadway-bernadette-peters-lea-salonga-bbcd7f1e\n\nBernadette Peters Photo: Matthew MurphyNew York\n\nBefore Stephen Sondheim’s death in 2021, tribute concerts recurred so regularly that it sometimes seemed his birthday came around at least twice a year. Not that musical theater lovers complained, so revered had the composer and lyricist become in the latter years of his life—a faintly bitter irony given the often tepid or perplexed critical and popular response to much of his work when it was first produced.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nArts Calendar: Happenings for the Week of March 30\n\n‘Othello’ Review: Denzel Washington’s Dismal Revival\n\nDavid Foster Will Climb 65 Flights of Stairs to Avoid the Elevator\n\nA Flowing, Finely Textured Premiere at the New York Philharmonic\n\nGary Stevens, a New York Radio DJ Who Spun the British Invasion, Dies at 84\n\nCopyright ©2025 Dow Jones & Company, Inc.",
+  "isFullReview": false,
+  "textWordCount": 145,
+  "archivePath": "data/archives/reviews/stephen-sondheims-old-friends-2025/wsj--charles-isherwood_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T14:48:04.341Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "has_footer_junk"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250411023859",
+  "archiveOrgUrl": "http://web.archive.org/web/20250411023859/https://www.wsj.com/articles/stephen-sondheim-old-friends-review-revue-broadway-bernadette-peters-lea-salonga-bbcd7f1e",
+  "textIssues": [
+    "Word count too low: 148 (min: 300)"
+  ],
+  "wordCount": 145,
+  "tierReason": "Short text (145 words)"
 }
