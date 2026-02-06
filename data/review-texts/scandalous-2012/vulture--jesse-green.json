@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The problem with Scandalous isn't that it's about Aimee Semple McPherson, the flamboyant evangelist of the 1920s and '30s. The problem is that it doesn't seem to know what it wants to say about her.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -59,5 +59,59 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 886,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scandalous may be a marshmallow of a show stuck together with dopey, on-the-nose lyrics, derivative tunes, and a libretto with the psychological and literary depth of a Sunday school coloring book.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Green praises Carmello's charismatic performance extensively but finds the show itself fundamentally weak with poor writing, shallow book, and structural problems. The mixed verdict comes through in calling it 'amiably goofy' while detailing significant flaws. | Gemini: The review praises Carolee Carmello's performance and Roz Ryan, but criticizes the book, lyrics, and music. The overall impression is mixed, with the strengths of the performances partially redeeming the weaknesses of the material. | Kimi: While the critic heavily criticizes the book, lyrics, and structure as shallow and derivative, the review centers on Carolee Carmello's star power as making the show worthwhile, describing her performance with superlatives like 'blinding star-wattage' and concluding that she makes the shortcomings seem 'beside the point'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T16:15:02.623Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 65,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

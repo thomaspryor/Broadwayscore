@@ -62,5 +62,11 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 508,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T15:22:32.934Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This is a 2014 review of a world premiere production at Goodspeed Opera House in East Haddam, not a Broadway show review.; openai: The review is about a production at the Goodspeed Opera House, not a Broadway production.; gemini: This is a review of the Goodspeed Opera House production in East Haddam, CT, not a Broadway production.; kimi: This review covers the Goodspeed Opera House production in East Haddam, Connecticut, not the Broadway production.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "David Hyde Pierce brings his trademark neurotic precision to the role of Elomire, while Mark Rylance delivers a tour-de-force performance as the insufferable Valere in this revival of David Hirson's rhyming comedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -62,5 +62,60 @@
     "Show title not found in text"
   ],
   "wordCount": 435,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's tough to imagine that Broadway audiences will be clamoring to experience this ambitious but rarified pastiche.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: While praising the brilliant performances of Rylance and Pierce and the opening section, the critic clearly states the show 'loses steam' and concludes audiences won't be 'clamoring' to see it - a mixed verdict with reservations. | GPT-4o: The review praises the performances of Rylance and Pierce and the technical elements, but criticizes the show for losing steam and becoming self-important. The overall tone is mixed, with both positive and negative elements. | Gemini: The review praises the performances of Rylance and Pierce and the staging, but ultimately finds the show loses steam and is not something Broadway audiences will clamor for, leading to a mixed classification. | Kimi: While praising the 'brilliant' comic performances of Rylance and Pierce and the 'outstanding' technical elements, the critic finds the show loses steam after the opening and explicitly discourages attendance by suggesting audiences could leave early without missing much.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:35:25.967Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

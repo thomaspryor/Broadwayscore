@@ -34,15 +34,15 @@
   "textIssues": [
     "Word count too low: 291 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 291,
   "tierReason": "Short text (291 words)",
   "bwwExcerpt": "I propose putting your rational mind into sleep mode, the better to savor tickling images of order-inverting bizarreness, straight out of Dada, in which suddenly nothing is in its customary place or being used for its customary purpose. There's a wild, redeeming poetry in such anarchy. My audience, for the record, roared as loudly as the crowds at any wrestling match.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-PLAY-THAT-GOES-WRONG-Attempts-to-Open-on-Broadway-Updating-Live-20170402",
-  "rejectedAt": "2026-02-06T09:16:32.226Z",
+  "rejectedAt": "2026-02-06T16:34:37.491Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about retrieving content and JavaScript settings, making it impossible to determine the critic's verdict or recommendation.; openai: The text appears to be a mix of a review excerpt and a website error message, indicating issues with retrieving the full article content.",
+  "rejectionReasoning": "claude: The review text is truncated and ends with a technical error message about retrieving article content and enabling JavaScript, making it impossible to assess the critic's full verdict.; openai: The text includes navigation issues and a prompt to enable JavaScript, indicating it is not a complete review.",
   "promptVersion": "5.2.0",
   "publishDate": "April 3, 2017"
 }

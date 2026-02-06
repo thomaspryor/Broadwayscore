@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Audra McDonald gives a performance of such blazing intensity that she seems to consume herself in the white-hot flame of her own talent.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,5 +64,60 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 708,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonald pulls it off with style and grace and a helluva set of lungs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises McDonald's 'majestic' singing and 'extraordinary sensitivity as an actor,' calls the production one with 'uncanny immediacy,' and describes the rapt audience response. Despite noting the script is 'unrealistically stuffed,' the overall assessment is highly positive, focusing on McDonald's memorable interpretation and the effective staging. | GPT-4o: The review is filled with superlatives about Audra McDonald's performance and the production's impact, describing it as 'uncanny' and 'extraordinary'. The critic provides no reservations, strongly recommending the show. | Gemini: The review is overwhelmingly positive, praising McDonald's performance and the immersive staging. The critic highlights McDonald's acting and singing, making it a strong recommendation. | Kimi: The critic lavishes praise on Audra McDonald's 'majestic' vocals and 'extraordinary sensitivity' while commending the immersive staging for its 'uncanny immediacy,' acknowledging that McDonald's powerhouse performance overcomes an overstuffed script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:36:33.646Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

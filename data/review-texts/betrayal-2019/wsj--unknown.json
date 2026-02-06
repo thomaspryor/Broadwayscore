@@ -31,12 +31,12 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20140110200500",
   "archiveOrgUrl": "http://web.archive.org/web/20140110200500/http://online.wsj.com:80/article/AP33d95e788ba1493d9b702142144b4aac.html",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 695,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-06T07:03:45.321Z",
+  "rejectedAt": "2026-02-06T15:12:08.585Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This text begins with navigation menu elements and error messages rather than actual review content, indicating it's corrupted webpage data rather than a proper review.; openai: This text primarily consists of navigation menus and non-review content, making it unscoreable.",
+  "rejectionReasoning": "claude: Text begins with navigation menu elements and error messages, indicating this is website infrastructure rather than review content; openai: The text is primarily navigation menus and error messages, not a review.",
   "promptVersion": "5.2.0"
 }

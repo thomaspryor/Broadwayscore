@@ -54,5 +54,60 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 1182,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this entertaining but threadbare play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises Lavin's performance and calls the play 'entertaining' but finds significant structural flaws, describing it as 'threadbare' with 'insubstantiality' and problematic plot developments that make the second act 'extremely uncomfortable.' | GPT-4o: The review acknowledges Linda Lavin's strong performance but criticizes the play's structure and character development, leading to an overall mixed impression. | Gemini: The review praises Lavin's performance and some aspects of the writing, but ultimately finds the play insubstantial and the central plot point uncomfortable and ineffective. This indicates a mixed reaction. | Kimi: While praising Linda Lavin's performance, the critic finds the play structurally flawed and thematically unsuccessful, with a second-act revelation that undermines the character work and creates extreme discomfort without achieving its intellectual aims.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T16:04:10.376Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

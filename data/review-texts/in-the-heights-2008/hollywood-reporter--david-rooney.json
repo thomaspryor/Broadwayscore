@@ -56,5 +56,11 @@
     "Show title not found in text"
   ],
   "wordCount": 572,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-06T15:27:26.619Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is an interview about the TV show 'Monk' with Tony Shalhoub, not a review of a Broadway production; openai: This text is an interview about the TV show 'Monk' and Tony Shalhoub's role in it, not a review of a Broadway show.; gemini: This is an interview with Tony Shalhoub about the TV show Monk, not a review of a Broadway play.; kimi: This text is an interview about the USA Network television series 'Monk' starring Tony Shalhoub, discussing the show's 100th episode and the actor's experience playing the character. It is not a review of a Broadway theatrical production.",
+  "promptVersion": "5.2.0"
 }

@@ -54,5 +54,60 @@
   "tierReason": "Full review text",
   "previousUrl": "http://www.nydailynews.com/entertainment/theater-arts/found-theater-review-article-1.1973820",
   "urlDiscoveredAt": "2026-02-06T14:31:42.781Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "assignedScore": 71,
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Either way, there's no question that this revival is a perfect match for the Broadway moment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic acknowledges this as a radical but skillfully executed reinterpretation that fits contemporary values, praises standout performances (especially LuPone), and calls it 'a perfect match for the Broadway moment' despite philosophical reservations about the conceptual changes. | GPT-4o: The review highlights both positive aspects, such as LuPone's performance and the show's relevance, and negatives, like the loss of ambivalence and belief in love. The overall tone suggests a mixed reception with notable strengths. | Gemini: The review acknowledges radical changes to the original but ultimately finds the revival a good fit for the current Broadway landscape, making it a qualified recommendation. | Kimi: While praising individual performances (particularly LuPone's 'simply extraordinary' turn and Lenk's charm) and acknowledging the production as 'fascinating' and timely, the critic laments that the radical conceptual reboot squashes the original's ambivalence and 'decouple[s] the American musical from its perennial belief in the power of love,' leaving the show feeling emotionally hollow. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:15:29.339Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 66,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

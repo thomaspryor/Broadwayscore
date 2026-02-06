@@ -32,12 +32,12 @@
   "textIssues": [
     "Word count too low: 199 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 199,
   "tierReason": "Short text (199 words)",
-  "rejectedAt": "2026-02-06T07:12:52.612Z",
+  "rejectedAt": "2026-02-06T15:15:48.109Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This appears to be a paywall/subscription prompt with only the opening paragraph of an article visible, not a complete review; openai: This text contains subscription information and a brief mention of a different production, not a review of the target show.; gemini: This is a truncated article about a Shakespeare in the Park production of Cymbeline, not a Broadway review. It primarily discusses the play's plot and a professor's analysis, lacking critical evaluation of the production itself.; kimi: This text reviews a production of 'Cymbeline' at The Public Theater's Free Shakespeare in the Park (the Delacorte Theater), which is an Off-Broadway/outdoor summer production, not a current Broadway run.",
+  "rejectionReasoning": "claude: This appears to be a paywall/subscription prompt that cut off the actual review content after just the opening paragraph; openai: The text is about The Public Theater's Free Shakespeare in the Park production of 'Cymbeline,' not a Broadway production.; gemini: This is only a partial review of 'Cymbeline' and it is cut off before any real evaluation or recommendation can be made.; kimi: This review covers The Public Theater's Free Shakespeare in the Park production of 'Cymbeline', which is an Off-Broadway/outdoor production, not a Broadway production.",
   "promptVersion": "5.2.0"
 }

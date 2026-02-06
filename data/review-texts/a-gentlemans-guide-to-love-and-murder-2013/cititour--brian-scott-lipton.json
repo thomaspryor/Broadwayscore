@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Darko Tresnjak’s clever, gorgeously costumed production…Lutvak has proven himself a first-rate songwriter in the world of cabaret, but his work here is less memorable than I’d hoped. There are a couple of very fine comic numbers, but I expected some more beautiful ballads…Still, if you want two-and-half-hours of mayhem and merriment, guide yourself over to the Walter Kerr Theatre. The only danger you’ll be in for is having too good a time.'\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, if you want two-and-half-hours of mayhem and merriment, guide yourself over to the Walter Kerr Theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation to attend despite mixed feelings about the score. Single excerpt warning means lower confidence and conservative positive score. | GPT-4o: The excerpt praises the production as 'clever' and 'gorgeously costumed' and suggests audiences will have 'too good a time,' indicating a positive recommendation despite some reservations about the music. | Gemini: The review acknowledges some shortcomings in the songwriting but ultimately recommends the show for its mayhem and merriment. The excerpt suggests a generally positive experience, but with some reservations. | Kimi: While criticizing Lutvak's score as less memorable than hoped, the reviewer praises Tresnjak's clever direction and gorgeous costumes, and explicitly recommends attending for the 'mayhem and merriment.' As a single excerpt, confidence is reduced, but the verdict language clearly recommends the experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:01:17.771Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -55,5 +55,59 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 780,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm still glad I've had the opportunity to watch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Green clearly appreciates Midler's performance and presence ('good enough', 'still glad I've had the opportunity to watch') but finds significant flaws in Logan's material ('an event without quite being a play', 'gappy necklace'). Mixed recommendation based on star power over script quality. | Gemini: The review is mixed, praising Midler's performance but finding the play itself lacking. It's worth seeing for Midler, but not a strong recommendation overall. | Kimi: While the critic finds the play itself structurally slight ('an event without quite being a play') and superficial in its treatment of themes, the recommendation is clear and positive based entirely on Bette Midler's star power and performance, which elevates the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:26:08.359Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 65,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

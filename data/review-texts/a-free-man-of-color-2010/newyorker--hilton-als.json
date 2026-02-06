@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Guare has written a sprawling, ambitious work that attempts to capture the complexity of race, class, and identity in antebellum New Orleans, but the play's three-and-a-half-hour length feels more like an endurance test than an enlightening theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Guare has written a sprawling, ambitious work that attempts to capture the complexity of race, class, and identity in antebellum New Orleans, but the play's three-and-a-half-hour length feels more like an endurance test than an enlightening theatrical experience.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play's three-and-a-half-hour length feels more like an endurance test than an enlightening theatrical experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic acknowledges the work's ambition but finds it fails in execution, describing it as an 'endurance test' rather than enlightening. However, with only one excerpt available, the full verdict may be more nuanced. | GPT-4o: The excerpt highlights the play's ambition but criticizes its excessive length, suggesting it is more taxing than enlightening. The lack of full context and single excerpt warning necessitates a cautious approach, but the tone is clearly negative. | Gemini: The review acknowledges ambition but criticizes the length, suggesting a mixed experience. Due to the limited excerpt, confidence is low. | Kimi: The critic describes the lengthy production as an 'endurance test' lacking enlightenment, constituting a clear negative verdict despite acknowledging its ambition. Limited to a single excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T16:59:20.700Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

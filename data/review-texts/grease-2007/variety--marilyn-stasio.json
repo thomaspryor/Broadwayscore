@@ -48,5 +48,11 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 818,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-06T15:19:52.104Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a review of 'Grease Live!' - a televised live musical broadcast, not a Broadway show; openai: The review is about 'Grease Live!', a live television event, not a Broadway production.; kimi: This review covers 'Grease Live!', a 2016 Fox television broadcast/live TV musical event, not a Broadway theatrical production. The text explicitly discusses camera work, broadcast technical issues, and the television medium ('on screen,' 'Fox,' 'broadcast') rather than a live stage production.",
+  "promptVersion": "5.2.0"
 }

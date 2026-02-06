@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -38,5 +38,60 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 1564,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So, this play is often hokey and not very satisfying.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic acknowledges talented performances and impressive production numbers but finds the show 'hokey,' 'not very satisfying,' 'tedious,' 'sentimental, dated.' Mixed praise for elements but overall disappointment with the production's priorities and execution. | GPT-4o: The review criticizes the show for being hokey, not very satisfying, and dated. While it acknowledges talented performances and production numbers, the overall tone is negative, focusing on the missed potential and sentimentality. | Gemini: The review expresses disappointment that the show prioritizes soap opera over political commentary, calling it \"hokey\" and \"not very satisfying.\" While praising certain production numbers and the cast's talent, the overall assessment is mixed. | Kimi: While praising specific performances and production numbers as terrific, the critic ultimately finds the show hokey, tedious, sentimental, and dated, criticizing its failure to achieve meaningful political commentary. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:47:40.908Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

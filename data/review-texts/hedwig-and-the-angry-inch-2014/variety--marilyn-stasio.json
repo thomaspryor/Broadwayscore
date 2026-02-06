@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Neil Patrick Harris brings his considerable star power and theatrical expertise to this rock musical about a transgender punk rocker, delivering a performance that's both physically demanding and emotionally raw.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -66,5 +66,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--unknown.json",
   "wordCount": 684,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's the kind of rock-star performance he gives in this spectacular revival — helmed with fabulous flash by Michael Mayer",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Consistently enthusiastic praise throughout with superlatives like 'spectacular revival,' 'fabulous flash,' 'bravura performance,' and 'astonishing.' The critic celebrates both Harris's performance and the overall production with unqualified admiration. | GPT-4o: The review is filled with superlatives and enthusiastic praise for Neil Patrick Harris's performance and the production itself. Terms like 'spectacular revival' and 'bravura performance' indicate a strong recommendation with no reservations. | Gemini: The review is overwhelmingly positive, using words like \"spectacular revival\" and \"bravura performance\". The critic clearly recommends seeing the show. | Kimi: The critic lavishes unqualified praise on Harris's 'rock-star' and 'bravura' performance, the 'fabulous flash' direction, and the 'bizarrely imaginative' design, using superlatives throughout to enthusiastically recommend the revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:21:12.083Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

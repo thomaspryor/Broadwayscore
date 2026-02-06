@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 21,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"...a Frankenshow where the stitching is ugly and obvious.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 21,
+    "confidence": "medium",
+    "range": {
+      "low": 16,
+      "high": 26
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a Frankenshow where the stitching is ugly and obvious.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: The Frankenstein metaphor with 'ugly and obvious' stitching is a devastating critique suggesting fundamental structural problems. However, confidence is low due to single excerpt warning - this could be cherry-picked from a longer mixed review. | GPT-4o: The excerpt uses a metaphor that suggests the show is poorly constructed and unappealing, indicating a strongly negative view. However, due to the single excerpt warning, confidence is low. | Gemini: The single quote available is negative, describing the show as a poorly constructed \"Frankenshow.\" Given the limited information, a negative score is appropriate, but with low confidence. | Kimi: The critic deploys a devastating metaphor comparing the production to Frankenstein's monster with visible, unsightly seams, suggesting fundamental structural failure. While only a single excerpt is available, the language is unambiguously condemnatory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:11:59.641Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 25,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 27,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

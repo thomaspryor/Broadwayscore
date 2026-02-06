@@ -42,5 +42,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 829,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But since the scribes happen to be Woody Allen, Elaine May and Ethan Coen, these modestly amusing plays have landed on Broadway in an ungainly production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Critic finds the plays only 'modestly amusing' in an 'ungainly production' and concludes that 'bad jokes are still bad jokes' despite the famous writers. Consistently points out flaws in each segment while acknowledging they wouldn't merit Broadway without the big names attached. | GPT-4o: The review criticizes the plays for lacking humor and chemistry, despite the presence of well-known playwrights and actors. The plays are described as 'modestly amusing' and 'ungainly', with significant flaws in execution and comedic impact. | Gemini: The review is mixed, describing the plays as \"modestly amusing\" but the production as \"ungainly.\" Each play is critiqued with both positive and negative aspects, leading to an overall mixed assessment. | Kimi: The reviewer acknowledges some amusing moments and committed performances but finds the production ungainly and implies the plays are not Broadway-worthy without their famous authors' names attached. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T16:13:08.255Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

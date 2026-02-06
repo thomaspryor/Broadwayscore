@@ -58,5 +58,59 @@
   "archiveOrgTimestamp": "20101119173903",
   "archiveOrgUrl": "http://web.archive.org/web/20101119173903/http://www.nytheatre.com:80/nytheatre/showpage.php?t=mill9337",
   "wordCount": 976,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, almost the last thing that Million Dollar Quartet feels like is an impromptu jam session.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges talented performers and some effective moments (particularly praising Hunter Foster and the harmonizing), but fundamentally criticizes the show's core concept execution, calling it lacking in spontaneity and questioning its appeal. The mixed assessment with significant reservations places this in the lower Mixed range. | Gemini: The review points out flaws in the show's execution, particularly its lack of spontaneity and integration of songs, but acknowledges the talent of the performers. The truncated text makes it difficult to assess the overall recommendation, but the tone is generally mixed. | Kimi: The critic praises the cast's musical talents and Hunter Foster's performance but fundamentally criticizes the show's construction for lacking spontaneity and having a weak, formulaic book. Given the truncated text warning, the score reflects substantial reservations balanced against genuine performance praise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:47:01.911Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

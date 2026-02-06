@@ -47,5 +47,60 @@
     "Show title not found in text"
   ],
   "wordCount": 764,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a very provocative and genuinely disrupting 85 minutes with acute observational powers; you won't be bored for a millisecond.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting some structural issues and contrivances, the critic calls it 'stimulating and daring,' praises the performances, and emphasizes it's provocative with 'acute observational powers' that won't bore audiences. The positive elements clearly outweigh the reservations. | GPT-4o: The review praises the play's provocative nature, strong performances, and engaging content, with minor reservations about the ending. The overall tone is enthusiastic and recommends the show as a must-see experience. | Gemini: The review is generally positive, highlighting the play's provocative nature and strong performances, while acknowledging some flaws in the ending. The recommendation is clear, despite reservations. | Kimi: The reviewer offers strong praise for the performances and the play's daring, provocative nature, calling it stimulating and refreshing, while acknowledging minor reservations about contrivances and the ending.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:31:32.618Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

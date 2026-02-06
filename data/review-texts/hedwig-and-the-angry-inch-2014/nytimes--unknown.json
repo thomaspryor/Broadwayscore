@@ -32,7 +32,12 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250426203906",
   "archiveOrgUrl": "http://web.archive.org/web/20250426203906/https://www.nytimes.com/2014/04/23/theater/hedwig-and-the-angry-inch-stars-neil-patrick-harris.html?ref=theater&gwh=2032BE266AE0925D15136B44FB84556D&gwt=regi",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 338,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-06T15:20:29.327Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The text ends with a technical error message about JavaScript and retrieving article content, indicating this is incomplete/corrupted web content rather than a complete review.; openai: The review is about a 2014 production of 'Hedwig and the Angry Inch', not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

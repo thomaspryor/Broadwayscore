@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Robert Downey Jr. makes his Broadway debut in Ayad Akhtar's ambitious but uneven drama about a novelist grappling with artificial intelligence and his own moral failings.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -59,5 +59,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 772,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McNeal is a dull and garbled play that says very little about ethics and artificial intelligence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict calling the play 'dull and garbled,' 'confusing and meaningless.' Despite praising the visual production, the critic finds the writing, character development, and thematic focus fundamentally flawed. | GPT-4o: The review criticizes the play's lack of clarity and meaningful content, describing it as dull and confusing despite its visual appeal. The negative assessment of the narrative and character development leads to a clear recommendation against seeing the show. | Gemini: The review praises the staging and production design but strongly criticizes the play's writing, narrative, and characters, ultimately deeming it a \"dull and garbled play\" that fails to deliver on its themes. | Kimi: The critic praises the visual staging and production design but finds the play itself dull, garbled, and meaningless with no clear theme. Despite the stunning visuals, the review clearly advises against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:45:22.351Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

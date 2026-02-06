@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The production, starring James Franco and Chris O'Dowd, is hampered by Franco's miscast performance, though O'Dowd brings genuine pathos to his role as Lennie.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -46,5 +46,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250426203944/https://www.vulture.com/2014/04/theater-review-james-franco-in-of-mice-and-men.html",
   "duplicateTextOf": "vulture--unknown.json",
   "wordCount": 1059,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is more nuanced than tragedies played with uniform heaviness throughout",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Green gives consistent praise throughout - calling O'Dowd 'masterful', Franco's performance 'justified', Shapiro's direction 'beautiful', and the ensemble 'excellent'. The production succeeds on both personal and social levels as a classic work. | Gemini: The review is generally positive, praising O'Dowd's performance and the overall direction and design. While Franco's performance starts shaky, it improves, leading to a recommendation with some reservations. | Kimi: The review offers strong praise for the performances (particularly O'Dowd's 'masterful' turn), Shapiro's direction, and the design, validating the play's enduring power despite minor reservations about Franco's initial shakiness and the adaptation's abrupt ending.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:55:01.777Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

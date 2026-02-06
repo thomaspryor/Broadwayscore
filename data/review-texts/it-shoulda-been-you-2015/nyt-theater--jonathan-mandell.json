@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -35,5 +35,60 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 963,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even if the gags were funnier, or the score more noteworthy, they could not make up for the absence of any authentic-feeling observations about love or commitment or weddings or…anything.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising individual performances (Howard, Grisetti, Harris, Daly), the critic finds fundamental flaws in the material: confusing plot tricks, lack of authentic observations, inconsistent storytelling. The overall assessment is clearly negative, calling it potentially a 'vanity production' with major structural problems that talented performers cannot overcome. | GPT-4o: The review criticizes the show for its predictability, lack of authentic observations, and confusing plot twists. While there is praise for individual performances, the overall tone is negative. The text is truncated, so the final verdict may be missing, leading to a low confidence score. | Gemini: The review is largely negative, criticizing the writing and plot, despite praising some performances. The aggregator excerpt also points to a negative assessment. The truncated text makes it difficult to be certain, but the overall tone leans negative. | Kimi: While praising individual performances by Lisa Howard and Josh Grisetti, the critic pans the show as predictable, confusing, and lacking authentic emotion, concluding that the weak material and nonsensical plot twists undermine the talented cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:30:15.878Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

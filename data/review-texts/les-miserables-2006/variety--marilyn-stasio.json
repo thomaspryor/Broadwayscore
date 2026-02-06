@@ -42,5 +42,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 656,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this one is a solid piece of theatrical architecture, built to survive every critical arrow shot through its heart",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges this as a solid revival that delivers what audiences want from Les Miz - beautiful melodies and emotions - while noting some reservations about thematic darkness overwhelming the production. | GPT-4o: The review acknowledges strong performances and production elements but criticizes the revival for being overwhelmed by thematic darkness, suggesting a mixed reception with both positive and negative elements. | Gemini: The review is generally positive, highlighting strong performances and solid architecture, but notes the darkness overwhelms the production. This suggests a recommendation with reservations. | Kimi: While the critic notes significant reservations about the overwhelming thematic darkness and monochromatic emotional palette, she praises the production as 'solid theatrical architecture' with 'beautiful melodies,' stunning design, and strong performances from the entire cast. The review acknowledges the show successfully delivers what audiences seek from 'Les Miz'—unbridled emotion—despite finding the tone somewhat relentless.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:39:13.654Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

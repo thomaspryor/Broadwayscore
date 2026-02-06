@@ -31,9 +31,10 @@
   "sourceMethod": "playwright",
   "wordCount": 875,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-06T09:36:07.241Z",
+  "rejectedAt": "2026-02-06T16:42:49.207Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This text contains mostly weather advisories, website navigation elements, error messages, and fragmented content mixed with some review excerpts, making it impossible to assess as a coherent review; openai: The text contains a mix of weather advisories, promotional content, and website navigation issues, making it non-scoreable.; kimi: This review covers a touring production of Wicked at the Morrison Center in Boise, Idaho, not the current Broadway run.",
-  "promptVersion": "5.2.0"
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production of 'Wicked' at the Morrison Center in Boise, Idaho, which is not the current Broadway run.; kimi: This review covers a production at the Morrison Center in Boise, Idaho, not the current Broadway run. The text explicitly states the show is 'Currently running at the Morrison Center through Sunday, April 13,' indicating this is a touring production rather than the Broadway engagement.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

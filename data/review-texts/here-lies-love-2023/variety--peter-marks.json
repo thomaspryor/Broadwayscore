@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "David Byrne and Fatboy Slim's disco-infused musical about Imelda Marcos makes an exhilarating transition to Broadway, transforming the Broadway Theatre into a pulsating dance club.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -44,5 +44,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230901050533/https://variety.com/2023/legit/reviews/here-lies-love-review-broadway-imelda-marcos-david-byrne-1235675386/",
   "duplicateTextOf": "variety--naveen-kumar.json",
   "wordCount": 869,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A vibrant, infectious and surface-skimming summation of Philippine history — one that distracts from disturbing details with seductive beats and eye-popping dazzle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises the innovative staging and score as 'propulsive and glittering' but criticizes the show's treatment of its subject matter as lacking coherent political perspective and glorifying problematic historical figures. The critic finds the production formally impressive but ethically troubling. | GPT-4o: The review acknowledges the show's innovative production and musical elements but criticizes its lack of depth and coherent point of view. The overall tone suggests a mixed reception, appreciating certain aspects while highlighting significant shortcomings. | Gemini: The review acknowledges the show's innovative aspects and showcases Filipino culture, but criticizes its lack of critical perspective on the Marcos' legacy and its glorification of the subject. It's neither a strong recommendation nor a strong discouragement. | Kimi: The critic praises the immersive staging, score, and performances as sensory feats, but finds the show's glorification of Imelda Marcos deeply problematic, noting it lacks critical perspective on the regime's crimes and substitutes dazzle for depth. The final question about fascism feeling like 'such a blast' indicates fundamental reservations that prevent a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:21:41.994Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

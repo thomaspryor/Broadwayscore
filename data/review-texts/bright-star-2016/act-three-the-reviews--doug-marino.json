@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -35,5 +35,60 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 664,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bright Star is a solid, heartwarming story that has to be told in about 2 hours.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review praises the cast, music, and Act II while criticizing Act I's confusing structure and low-budget sets. The critic acknowledges it as 'solid' but emphasizes it needs more work to become a Broadway hit, indicating a mixed recommendation. | GPT-4o: The review acknowledges strong performances and musical elements but highlights significant issues with the story's clarity and pacing, particularly in Act I. The overall tone suggests a mixed experience with both positive and negative aspects. | Gemini: The review praises the music, cast, and some staging elements, but criticizes the confusing plot in Act I. The final verdict is mixed, suggesting potential but needing more work to become a Broadway hit. | Kimi: The critic offers enthusiastic praise for the music, cast performances, and innovative staging, but deducts points for a confusing Act I structure and disappointing set design, ultimately recommending the show while noting it needs refinement to become a true hit.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:12:53.060Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 67,
+    "geminiScore": 65,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

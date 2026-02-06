@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,60 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 949,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's an outright testament to the impressive comedic talents of Shapiro, Spector, and the play's ensemble that the subject matter of Eureka Day can remain a laughing matter.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite the truncation warning, the review consistently praises the performances (calling Jessica Hecht 'extraordinary', Bill Irwin 'perfect'), direction, and writing. The critic highlights the play's relevance and comedic success, with particular praise for the ensemble's ability to handle difficult subject matter skillfully. | GPT-4o: The review praises the comedic talents and ensemble performance, indicating a positive view. However, the text is truncated, and the final verdict is missing, leading to a low confidence score. | Gemini: The review highlights the play's comedic strengths and the talents of the cast and director, but the truncated text makes it difficult to determine the overall recommendation with high confidence. The critic seems impressed but not overwhelmingly so. | Kimi: The review offers consistent praise for the ensemble (particularly Jessica Hecht and Bill Irwin), calls the virtual town hall scene 'astounding,' and commends the director's handling of difficult material. While noting the play feels like a 'prescient period piece,' the critic clearly appreciates the production's craft and entertainment value.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:16:30.211Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

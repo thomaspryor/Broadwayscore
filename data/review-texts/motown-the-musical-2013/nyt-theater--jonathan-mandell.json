@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show is basically a jukebox musical, a revue of Motown hits with a biographical framework hung around it like Christmas ornaments on a tree.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20230529190300",
   "archiveOrgUrl": "http://web.archive.org/web/20230529190300/https://newyorktheater.me/2016/07/21/motown-the-musical-review-back-on-broadway/",
   "wordCount": 692,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yes, the musical numbers are still entertaining, thanks to the adept musical arrangements.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic acknowledges the show is still entertaining with good technical elements, but clearly disappointed compared to the original production. Notes reduced impact of performances and describes it as more 'efficient' but lacking spark. Mixed recommendation with more negative than positive elements. | GPT-4o: The review acknowledges the entertaining musical numbers and talented cast but notes a lack of impact compared to the original production. The truncated text and lack of a clear final verdict suggest a mixed reception, with some positive elements but overall diminished enthusiasm. | Gemini: The review acknowledges entertaining musical numbers and choreography but notes a lack of spark compared to the original production. The truncated text makes the final verdict somewhat unclear, but the overall tone suggests a mixed assessment. | Kimi: The critic explicitly states 'I didn't fall' for this revival compared to the 2013 original, criticizing the road-worn cast's lack of spark despite acknowledging the musical numbers remain entertaining. Given the truncated text may be missing a final verdict, the review sits between recommendation and reservation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:48:18.673Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

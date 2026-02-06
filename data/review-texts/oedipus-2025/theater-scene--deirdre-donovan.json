@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 741,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Anchored by Mark Strong and Lesley Manville's riveting performances and driven by Icke's razor-edged vision, this Oedipus becomes less a revival than a stark reminder.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout for performances ('superb', 'riveting'), direction ('razor-edged vision'), and concept. Calls it 'electrifying' and praises how well the modernization works. Despite being truncated, the final paragraph provides clear positive verdict. Medium confidence due to truncation warning, but available text shows consistent enthusiasm. | GPT-4o: The review praises the production's modern adaptation, performances, and direction with strong positive language. Despite the truncation warning, the available text suggests a highly favorable view. | Gemini: Despite being truncated, the review is overwhelmingly positive, praising the performances, direction, and modernization of the classic story. The final sentence strongly suggests a recommendation. | Kimi: The review consistently praises the production as a 'nerve-jangling thriller' with 'riveting performances' and 'razor-edged vision,' offering enthusiastic endorsement despite the truncated text warning. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:52:39.189Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Gaines brings a compelling intensity to Dr. Stockmann, a man whose discovery of contaminated water in his town's baths puts him at odds with virtually everyone he knows.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -54,5 +54,59 @@
   "archiveOrgTimestamp": "20141006223559",
   "archiveOrgUrl": "http://web.archive.org/web/20141006223559/http://www.nytimes.com:80/2012/09/28/theater/reviews/an-enemy-of-the-people-at-samuel-j-friedman-theater.html?",
   "wordCount": 782,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's gratifying to see Mr. Gaines get the opportunity to dig into such a rewarding classical role.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley praises the lead performance as 'sterling' and finds the production 'gratifying,' though notes the high-volume approach has drawbacks. Overall positive assessment of both Gaines's performance and the production's handling of timely themes. | Gemini: The review praises Gaines' performance and the play's relevance, but notes the high-intensity approach may be overwhelming. Overall, it's a positive assessment with some reservations. | Kimi: Brantley praises Boyd Gaines' 'sterling' and 'forceful' performance while finding the production 'potent' and 'rousing,' though he notes the high-volume approach occasionally strains. The clear recommendation centers on the lead performance and timely political relevance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:11:01.649Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

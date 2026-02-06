@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "McDonald's performance is nothing short of magnificent, as she seamlessly shifts between the older Suzanne reflecting on her past and the young woman living through those traumatic experiences.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -59,5 +59,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 788,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "When an exception takes root, with a team of artists as visionary as these, it's certainly worth the wait.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout for McDonald's performance ('meticulous cartographer of the heart'), Kennedy's writing, and Leon's direction. The conclusion explicitly endorses the production as worthwhile despite acknowledging challenging subject matter. | GPT-4o: The review is filled with superlative praise for both Audra McDonald's performance and Adrienne Kennedy's play, highlighting its emotional and intellectual impact. The critic emphasizes the production's visionary nature and its overdue but triumphant arrival on Broadway. | Gemini: The review is overwhelmingly positive, praising McDonald's performance, Kennedy's writing, and Leon's direction. The critic clearly recommends seeing the show, stating it was \"worth the wait.\" | Kimi: The review offers unqualified praise for Audra McDonald's performance, Adrienne Kennedy's writing, and Kenny Leon's direction, using superlatives like 'celestial,' 'brilliance,' and 'visionary' while explicitly stating the production is 'certainly worth the wait.' | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:56:52.774Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

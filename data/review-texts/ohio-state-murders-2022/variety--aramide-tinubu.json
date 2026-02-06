@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "McDonald's performance is nothing short of extraordinary, as she seamlessly transitions between the elder and younger Suzanne, capturing both the wisdom of age and the vulnerability of youth.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,60 @@
   "archiveOrgTimestamp": "20230609161027",
   "archiveOrgUrl": "http://web.archive.org/web/20230609161027/https://variety.com/2022/legit/reviews/ohio-state-murders-review-audra-mcdonald-broadway-1235454379/",
   "wordCount": 756,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "When an exception takes root, with a team of artists as visionary as these, it's certainly worth the wait.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for McDonald's performance ('celestial pairing'), Kennedy's writing ('brilliance'), and the production team ('visionary'). The review concludes with clear endorsement that it's 'worth the wait,' indicating solid recommendation despite the challenging subject matter. | GPT-4o: The review is filled with superlative praise for both Audra McDonald's performance and the production as a whole. The critic highlights the brilliance of the playwright and the production team, emphasizing the show's emotional and intellectual impact. The closing statement 'it's certainly worth the wait' strongly indicates a must-see recommendation. | Gemini: The review is overwhelmingly positive, praising Kennedy's writing, McDonald's performance, and Leon's direction. The critic clearly believes the show is worth seeing, calling it \"certainly worth the wait.\" | Kimi: The review offers unqualified praise for McDonald's performance, Kennedy's writing, and the production design, with the critic declaring the playwright's Broadway arrival 'certainly worth the wait.' | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:55:46.647Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 91,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

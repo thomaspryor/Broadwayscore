@@ -34,5 +34,59 @@
   ],
   "contentTier": "truncated",
   "wordCount": 291,
-  "tierReason": "Short text (291 words)"
+  "tierReason": "Short text (291 words)",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Too bad, then, that the Roundabout Theater Company revival reaches the play's level only intermittently, like a poorly tuned radio.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Green calls the production 'literal-minded' and says it 'does not make a resonant case for the drama today,' comparing it to 'a poorly tuned radio.' While he praises the play itself as relevant, his verdict on this specific production is clearly negative. | Gemini: The review states the production \"reaches the play’s level only intermittently, like a poorly tuned radio\" and \"does not make a resonant case for the drama today\", indicating a negative assessment. | Kimi: The critic describes the revival as literal-minded and failing to make a resonant case for the play, reaching its level only intermittently 'like a poorly tuned radio.' While the text is truncated, the evaluative direction is clearly negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:08:52.867Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 48,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

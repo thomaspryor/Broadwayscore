@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -46,5 +46,60 @@
     "Show title not found in text"
   ],
   "wordCount": 854,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I left the Helen Hayes Theater after seeing JOB with my mind racing a million miles an hour connecting the dots of this 80 minute drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic demonstrates deep engagement and intellectual stimulation, praising the playwright's insight and the play's ability to move audiences emotionally. Despite heavy analysis of disturbing themes, the overall tone is appreciative of the work's conceptual sophistication and human artistry. | GPT-4o: The review is filled with deep analysis and appreciation for the play's themes and execution. The critic expresses a strong emotional and intellectual impact, indicating a highly positive reception. | Gemini: The review is largely descriptive and analytical, but the conclusion is positive, calling it a \"cautionary tale\" and celebrating the human experience of theater. I am scoring it as positive with reservations due to the heavy focus on plot analysis over direct evaluation. | Kimi: The critic provides a thoughtful analysis praising the play's conceptual framework and insight, describing being emotionally moved by the cautionary tale and celebrating the theatrical experience, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:32:12.674Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

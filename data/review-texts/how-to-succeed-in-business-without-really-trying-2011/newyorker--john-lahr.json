@@ -34,5 +34,61 @@
   "archiveOrgTimestamp": "20130703140217",
   "archiveOrgUrl": "http://web.archive.org/web/20130703140217/http://www.newyorker.com/arts/critics/theatre/2011/04/11/110411crth_theatre_lahr",
   "wordCount": 396,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Every nanosecond of this well-cast production is eloquent with craft and wit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: This is a two-show review with sharply contrasting verdicts: Bengal Tiger is panned as 'numbing and listless' while How to Succeed is praised with 'delight' and called eloquent with craft. The mixed nature of covering both shows equally results in a Mixed bucket score. | Gemini: The review clearly states that the play is \"numbing and listless on the stage\" and criticizes its construction, characterizations, and moral argument. | Kimi: Extracted from malformed response | Buckets: claude=Mixed, gemini=Negative, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:24:56.873Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": null,
+    "geminiScore": 40,
+    "kimiScore": 84,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Positive",
+    "scoreDelta": 44,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "3-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Hanks brings a magnetic ordinariness to Mike McAlary, the Pulitzer Prize-winning tabloid columnist whose life and career are chronicled in Nora Ephron's posthumously produced play.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -51,5 +51,59 @@
   "archiveOrgTimestamp": "20250801011406",
   "archiveOrgUrl": "http://web.archive.org/web/20250801011406/https://www.nytimes.com/2013/04/02/theater/reviews/tom-hanks-in-lucky-guy-at-the-broadhurst-theater.html",
   "wordCount": 1088,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unlike some of the movies Ephron wrote and directed, and many of her peerlessly sharp essays, 'Lucky Guy' often feels only newsprint deep.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Brantley acknowledges the production's heart, energy, and technical excellence, but finds fundamental flaws in character development and dramatic structure. The review is respectful but clearly disappointed, describing it as 'little more than the sum of its anecdotes' and lacking full dimensionality. | Gemini: The review acknowledges positive aspects like the performances and production design, but ultimately finds the play lacking depth and dimensionality, resulting in a mixed assessment. | Kimi: The critic praises Tom Hanks' performance and George C. Wolfe's production design but finds Nora Ephron's script lacking in depth, calling it 'only newsprint deep' and 'not so much a fully developed play... as a boisterous swapping of fond anecdotes.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:41:16.071Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

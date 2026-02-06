@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Crystal's performance is warmly engaging, and he brings a lived-in authenticity to the role that feels both natural and theatrical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -60,5 +60,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--frank-rizzo.json",
   "wordCount": 747,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The end result is certainly the funniest show on Broadway in years, if not the most likable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive review with superlatives ('funniest show on Broadway in years'), praise for performances, score, and direction. Acknowledges some reservations about aging actors but concludes it's a great comic vehicle worth seeing. | GPT-4o: The review praises the show for its humor, charm, and strong performances, particularly highlighting Billy Crystal's role and the appealing score. The tone is enthusiastic with minor reservations about the cast's age, leading to a strong positive score. | Gemini: The review is overwhelmingly positive, highlighting the humor, music, and performances. While acknowledging some potential drawbacks, the overall tone is enthusiastic and recommends the show. | Kimi: The review calls the show the funniest on Broadway in years and praises the appealing score and performances, though it notes the story is unsurprising and the protagonist's abrasiveness requires careful handling.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:49:23.882Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

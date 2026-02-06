@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -41,5 +41,60 @@
     "Word count too low: 219 (min: 300)"
   ],
   "wordCount": 219,
-  "tierReason": "Short but structurally complete review"
+  "tierReason": "Short but structurally complete review",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A sometimes poignant, often tedious 90-minute monologue",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the adaptation 'often tedious' and criticizes it for being 'too faithful to the novel' without making 'strenuous effort' to be theatrical. Despite acknowledging some poignant moments, the overall assessment is negative. | GPT-4o: The excerpt describes the monologue as 'often tedious' and criticizes the adaptation for lacking theatrical effort, indicating a negative view. However, the single excerpt and lack of full context reduce confidence. | Gemini: The review uses negative language such as \"often tedious\" and indicates that the adaptation doesn't translate well to the stage. This suggests a negative overall assessment. | Kimi: The critic describes the adaptation as 'often tedious' and failing to make the material explicitly theatrical, with only occasional poignant moments, indicating a recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:50:57.913Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

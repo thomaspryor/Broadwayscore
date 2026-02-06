@@ -39,10 +39,10 @@
   "contentTier": "needs-rescrape",
   "wordCount": 397,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-06T07:33:14.519Z",
+  "rejectedAt": "2026-02-06T15:17:16.474Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text is truncated and ends with a technical error message about retrieving article content and enabling JavaScript, making it impossible to determine the critic's final verdict.; openai: The text is a mix of navigation instructions and incomplete content, making it impossible to evaluate as a review.; gemini: The review is cut off before a clear verdict is given. The text ends mid-sentence, making it impossible to determine the critic's overall recommendation.",
+  "rejectionReasoning": "claude: The review text is cut off mid-sentence and ends with a JavaScript error message, making it impossible to determine the critic's final verdict or recommendation.; openai: The text appears to be incomplete and includes navigation instructions and error messages, indicating it is not a full review.; gemini: The review is cut off before a clear verdict is given. The text ends mid-sentence, preventing a proper assessment of the critic's overall opinion.",
   "promptVersion": "5.2.0",
   "showScoreExcerpt": "\"Though sometimes mesmerizing, “Flying Over Sunset,” the new musical about LSD that opened there on Monday, is mostly bewildering, and further proof that transcendence can’t be shared.\"\n\nRead more",
   "publishDate": "December 14, 2021"

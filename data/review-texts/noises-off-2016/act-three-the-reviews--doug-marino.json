@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -38,5 +38,60 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 507,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I enjoyed this production but not quite as much as I enjoyed my first one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises the timing, physicality, and performances while noting the production lacks the 'mad-cap pace and hilarity' of the previous version. Despite reservations, they clearly enjoyed it, placing this in barely-positive territory. | GPT-4o: The review acknowledges the talent and timing but criticizes the pace and lack of standout performances. The overall tone is mixed, with enjoyment noted but not as much as a previous production. | Gemini: The review is mixed, praising the timing and physicality but finding it lacking in mad-cap pace and hilarity compared to a previous production. The critic enjoyed it but not as much as the first time. | Kimi: While the critic praises the technical precision, physical comedy timing, and individual performances, they criticize the production as 'deliberate and plodding' with a lack of 'mad-cap pace and hilarity,' ultimately finding it inferior to the previous production and failing to fully engage despite competent execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:52:11.624Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

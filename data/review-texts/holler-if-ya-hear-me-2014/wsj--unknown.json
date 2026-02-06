@@ -51,12 +51,12 @@
   "textIssues": [
     "Word count too low: 246 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 246,
   "tierReason": "Truncation detected: paywall_or_login_prompt, no_ending_punctuation",
-  "rejectedAt": "2026-02-06T07:59:34.652Z",
+  "rejectedAt": "2026-02-06T15:23:15.439Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This text contains website navigation elements, copyright notices, subscription prompts, and unrelated headlines rather than the actual review content; openai: The text is mostly navigation menus, copyright notices, and unrelated content, not a coherent review.",
+  "rejectionReasoning": "claude: This appears to be a webpage with navigation elements, subscription prompts, and unrelated article headlines rather than a complete review text. The actual review content is minimal and cut off.; openai: The text is mostly navigation links, copyright notices, and unrelated articles, not a coherent review.; gemini: This is a truncated article with subscription prompts and unrelated articles. It's not a complete, scoreable review.",
   "promptVersion": "5.2.0"
 }

@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This exuberant, phenomenally well-executed 'concert' avoids the lurid vortex-of-darkness that similar biographical shows revel in.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise ('exuberant, phenomenally well-executed') with positive comparison to other shows. Single excerpt limits confidence, but tone is clearly enthusiastic. | GPT-4o: The excerpt describes the show as 'exuberant' and 'phenomenally well-executed', indicating a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt praises the execution but notes the stripping away of rough edges, suggesting a positive but potentially sanitized portrayal. Given the single excerpt, confidence is low. | Kimi: The excerpt offers strong praise for the show's execution ('phenomenally well-executed,' 'exuberant') while noting it sanitizes Joplin's rough edges. Given only one curated excerpt is available per the warning, confidence is low but the evaluative language clearly recommends the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:11:09.437Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

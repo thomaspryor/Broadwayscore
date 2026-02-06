@@ -40,5 +40,60 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 803,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you never question that Cattrall and Gross belong together",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the lead performances enthusiastically, especially Cattrall's return to Broadway and the chemistry between leads. However, it notes pacing issues and design problems, preventing a higher score. | GPT-4o: The review praises the performances of Kim Cattrall and Paul Gross, highlighting their chemistry and talent. While there are some criticisms about the set design and pacing, the overall tone is positive, recommending the show primarily for the lead performances. The truncated nature of the text suggests caution, but the available content leans towards a positive recommendation. | Gemini: The review is generally positive, highlighting the chemistry between the leads and their strong performances, but notes some issues with the set design and pacing. The truncated text makes the final verdict less certain, but the overall tone suggests a recommendation with reservations. | Kimi: While the review includes reservations about the set design and pacing, it offers strong praise for the chemistry and performances of leads Kim Cattrall and Paul Gross, recommending the production primarily for their work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T16:09:48.766Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

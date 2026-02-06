@@ -42,5 +42,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 666,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This rollicking crowdpleaser in sequins nonetheless packs enough heart to leave the masses enthralled.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it a 'crowdpleaser' that will 'enthrall' audiences, with praise for performances and costumes, despite acknowledging some structural flaws and pacing issues. | GPT-4o: The review describes the show as a 'rollicking crowdpleaser' with 'heart,' suggesting a positive recommendation despite some noted flaws in the production. The overall tone is enthusiastic about its entertainment value. | Gemini: The review acknowledges flaws but ultimately suggests the show is enjoyable and has heart, leading to a positive but not rave recommendation. | Kimi: Despite noting flaws in the book, song integration, and occasional aimless staging, the critic clearly recommends the show as a good-natured, energetic crowdpleaser that will earn a long run, praising the heartfelt performances and spectacular costumes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T16:09:06.666Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -41,5 +41,59 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 666,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 47,
+  "llmScore": {
+    "score": 47,
+    "confidence": "medium",
+    "range": {
+      "low": 42,
+      "high": 52
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Saunders shines in a disappointing London revival of the Noel Coward classic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic praises Jennifer Saunders' performance extensively but finds the overall production disappointing due to miscalculated direction and overacting from most of the cast. The headline summarizes this mixed verdict perfectly. | GPT-4o: The review praises Jennifer Saunders' performance but criticizes the overall production for lacking the necessary comedic timing and depth, resulting in a disappointing experience. | Gemini: The review praises Jennifer Saunders' performance but criticizes the direction and overall execution of the play, leading to a disappointing experience. The critic states that the production should be \"so much more\".",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:12:24.617Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 48,
+    "geminiScore": 45,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

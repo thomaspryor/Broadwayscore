@@ -47,5 +47,11 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 672,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T15:37:10.136Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Donmar Warehouse, not the current Broadway run.; kimi: This review covers the Donmar Warehouse production in London, not a Broadway production. The text explicitly references the Donmar Warehouse venue and discusses British performers Janet McTeer and Dominic West with no indication this is a current Broadway run.",
+  "promptVersion": "5.2.0"
 }

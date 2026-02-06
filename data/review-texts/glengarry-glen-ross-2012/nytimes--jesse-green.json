@@ -36,5 +36,59 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text is truncated and ends with a technical error message about JavaScript and access verification, making it impossible to determine the critic's verdict; openai: The text ends with a message indicating technical issues with retrieving the article content, making it incomplete and not a full review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But in the weirdly limp revival that opened on Monday at the Palace Theater, something has flipped.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic calls this a 'weirdly limp revival' and criticizes Culkin's performance as making Roma 'neurotic' rather than masterful, saying 'The man couldn't sell a dollar for a dime.' Text is truncated but the negative verdict is clear. | Gemini: The review clearly states that the revival is \"limp\" and that Kieran Culkin's portrayal of Roma misses the mark, making it a negative assessment despite the character's initial appeal. | Kimi: The critic describes a fundamental misinterpretation of the iconic lead character, calling the revival 'weirdly limp' and noting the lead actor 'couldn't sell a dollar for a dime,' though the text is truncated before the final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:18:02.714Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

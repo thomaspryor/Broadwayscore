@@ -16,7 +16,7 @@
   "bwwExcerpt": "“Magic/Bird,” [is] an efficiently informative but uninspired trek through the lives of two towering (forgive the pun) figures in sports history. ... But as depicted by Mr. Simonson, and portrayed by Kevin Daniels (Mr. Johnson) and Tug Coker (Mr. Bird), the dual heroes never emerge as nuanced or magn...",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAGICBIRD-Opens-on-Broadway-Updating-LIVE-20120411",
   "showScoreExcerpt": null,
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "dtli",
@@ -44,5 +44,10 @@
     "Show title not found in text"
   ],
   "wordCount": 785,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-06T15:42:31.101Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: Text appears to be corrupted with navigation elements, unrelated content about Iran and Socrates, and cuts off mid-sentence without completing the review; openai: The text is about the play 'Magic/Bird' and not the target show.",
+  "promptVersion": "5.2.0"
 }

@@ -32,12 +32,12 @@
   "textIssues": [
     "Word count too low: 141 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 141,
   "tierReason": "Truncation detected: paywall_or_login_prompt",
-  "rejectedAt": "2026-02-06T07:50:47.801Z",
+  "rejectedAt": "2026-02-06T15:20:00.976Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This appears to be a website navigation page or truncated content with promotional text about Cititour.com rather than a complete review; openai: The review is about a production of Hamlet at the Park Avenue Armory, which is not the current Broadway run.; kimi: This review covers a production of 'Hamlet' at the Park Avenue Armory (July 2022), which is not a Broadway theater. The Park Avenue Armory is an Off-Broadway/institutional venue, not one of the 41 Broadway theaters in the Theater District. Therefore, this is not a review of a Broadway production.",
+  "rejectionReasoning": "claude: This appears to be a website navigation page or directory listing rather than a complete review - it ends with generic site promotional text about restaurants and nightlife guides; openai: The review is about a production of 'Hamlet' at the Park Avenue Armory, not a Broadway production.; kimi: This review covers a production at the Park Avenue Armory, which is not a Broadway theater. Broadway productions are specifically those mounted in the 41 designated Broadway theaters in Manhattan's Theater District and Lincoln Center.",
   "promptVersion": "5.2.0"
 }

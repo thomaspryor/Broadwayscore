@@ -50,5 +50,11 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 572,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T15:30:28.908Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review discusses a production at George Street Playhouse in New Brunswick, not the Broadway run.; kimi: This review covers the George Street Playhouse regional production in New Brunswick, NJ (\"a small regional like George Street\"), not the Broadway production. The text explicitly refers to it as a regional mounting, making it ineligible for scoring as a Broadway review.",
+  "promptVersion": "5.2.0"
 }

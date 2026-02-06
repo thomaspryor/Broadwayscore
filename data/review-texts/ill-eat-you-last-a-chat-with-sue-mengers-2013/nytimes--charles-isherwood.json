@@ -48,5 +48,59 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 1139,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Midler gives the most lusciously entertaining performance of the Broadway season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise throughout with superlatives like 'most lusciously entertaining performance of the Broadway season' and 'delectable soufflé of a solo show.' The critic finds the writing 'buoyant' and 'witty' and praises Midler's ability to hold audiences 'spellbound.' No significant reservations expressed. | Gemini: The review is overwhelmingly positive, praising the writing, direction, and especially Midler's performance. The critic uses strong positive language like \"lusciously entertaining\" and \"delectable soufflé\". | Kimi: The review is unreservedly enthusiastic, urging readers to 'race over to the Booth Theater' and praising the show as a 'delectable soufflé' with superlatives for the writing, direction, and Midler's performance, offering no significant caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:25:34.028Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

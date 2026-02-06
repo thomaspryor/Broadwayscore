@@ -52,5 +52,11 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 699,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T15:16:39.969Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about the production at the American Repertory Theater in Cambridge, Mass, not the Broadway run.; kimi: This review covers the pre-Broadway tryout production at the American Repertory Theater in Cambridge, Massachusetts, not the Broadway run. The text explicitly states the show is 'Broadway-bound' and premiering at A.R.T. before moving to Broadway.",
+  "promptVersion": "5.2.0"
 }

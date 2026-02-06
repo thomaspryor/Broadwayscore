@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Comer's performance is nothing short of extraordinary, a tour de force that grips you from the first moment and never lets go.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -59,5 +59,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 717,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So here is my least favorite thing about the play: that I have to recommend it, even though I don't love it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic explicitly states 'I have to recommend it' and says the show 'deserves high praise—even adulation' for its important message, despite finding it not entertaining or fun. This is a clear positive recommendation with significant reservations. | GPT-4o: The review acknowledges the play's importance and praises its impact on social issues, but criticizes the writing and performance as dull and artless. The recommendation is made with significant reservations, indicating a mixed reception. | Gemini: The critic states they \"have to recommend it, even though I don't love it\" and praises its potential impact on addressing injustice, while also noting flaws in the writing and Comer's performance. | Kimi: The critic explicitly states they recommend the show for its important social message and Jodie Comer's performance, despite finding the writing 'dull and somewhat artless' and the first half 'tiresome.' The phrase 'I have to recommend it' places this in the Positive bucket, but the heavy qualifications about it not being entertaining or inspiring keep the score at the lower end of the range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T16:08:07.345Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

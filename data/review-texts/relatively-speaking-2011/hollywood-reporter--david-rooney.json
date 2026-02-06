@@ -44,5 +44,60 @@
   "textStatus": "truncated",
   "sourceMethod": "brightdata",
   "wordCount": 803,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This comedy ménage àtrois is not without laughs, but overall, it's thin and tired.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the direction lacking ('out of his depth', 'doesn't know what to do') and concludes the show is 'thin and tired' despite acknowledging some laughs. The 'Bottom Line' verdict is clearly negative. | GPT-4o: The review criticizes the direction and overall execution, describing it as 'thin and tired,' despite acknowledging some laughs. This indicates a negative verdict with some redeeming qualities. | Gemini: The review states that the play is \"thin and tired\" and that the director \"doesn’t know what to do with them.\" While it acknowledges some laughs, the overall sentiment is negative. | Kimi: While the critic concedes the show has some laughs, the bottom line verdict deems the production 'thin and tired' with the director 'out of his depth,' constituting a recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T16:11:17.500Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

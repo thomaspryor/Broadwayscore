@@ -54,5 +54,60 @@
   "tierReason": "Missing proper ending or other signals",
   "previousUrl": "http://www.hollywoodreporter.com/hr/film-reviews/collected-stories-theater-review-1004087515.story",
   "urlDiscoveredAt": "2026-02-06T15:00:11.712Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "his characterizations are so incisive and his dialogue so rich that one hardly minds",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for performances, writing quality, and production elements. While noting the play is 'schematic,' critic emphasizes the strengths outweigh this flaw. Confident medium due to truncated text potentially missing final verdict. | GPT-4o: The review praises the characterizations, dialogue, and performances, particularly Linda Lavin's, despite noting the play's predictability. The truncated text warning suggests caution, but the available text leans towards a positive recommendation. | Gemini: The review praises the performances, writing, and set design, while acknowledging the predictable plot. The overall tone is positive, despite the schematic nature of the play. | Kimi: Despite noting the predictable structure, the critic praises the incisive writing, rich dialogue, and excellent performances from both Lavin and Paulson. The tone is consistently appreciative of the production quality, though the truncated ending necessitates lower confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T15:14:31.464Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 79,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A most delightful and charming evening...Director Darko Tresnjak has imbued the piece with lots of clever and delightful sight gags and they work perfectly. Whether it is the fault of the authors or the director, the two acts are uneven. A lot happens in Act I and not enough in Act II...Nonetheless, it is a smart musical and can be enjoyed thoroughly. 'A Gentlemen’s Guide' ranks as one of the highlights of the fall season.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A most delightful and charming evening...ranks as one of the highlights of the fall season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict calling it 'delightful', 'smart', and 'one of the highlights of the fall season' despite acknowledging Act II pacing issues. Strong recommendation outweighs structural criticisms. | GPT-4o: The excerpt praises the show as 'delightful and charming' with 'clever and delightful sight gags' and calls it a 'highlight of the fall season'. Despite noting uneven acts, the overall tone is strongly positive. | Gemini: The review is mostly positive, calling it a 'delightful and charming evening' and one of the highlights of the fall season. However, it notes that the two acts are uneven, suggesting some reservations. | Kimi: Despite noting uneven acts, the critic calls the show 'delightful' and a 'highlight of the fall season,' delivering a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:01:55.317Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

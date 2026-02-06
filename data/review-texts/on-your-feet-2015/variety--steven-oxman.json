@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -47,5 +47,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 795,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's corny, stereotypical, too on-the-nose... and it works, which is true throughout this unsubtle but ever-crafty and unquestionably entertaining show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review acknowledges the show's superficiality and predictability but consistently praises its entertainment value, craftsmanship, and ability to please audiences. The critic finds it 'unquestionably entertaining' and notes that despite flaws, 'it works' - a clear positive recommendation with reservations. | GPT-4o: The review acknowledges the show's predictability and superficiality but praises its sincerity, structural soundness, and entertainment value. It highlights the show's appeal to its target audience and the effective use of music and choreography. | Gemini: The review acknowledges the show's predictability and superficiality, but ultimately finds it entertaining and sincere, particularly praising the music and dance numbers. It's a positive review with some reservations. | Kimi: The critic acknowledges the show's superficial, predictable structure and corny moments but consistently praises its entertainment value, sincerity, and craft, calling it 'unquestionably entertaining' and recommending it for both fans and newcomers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T16:01:23.833Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

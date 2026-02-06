@@ -45,5 +45,11 @@
     "Word count too low: 299 (min: 300)"
   ],
   "wordCount": 299,
-  "tierReason": "Short text (299 words)"
+  "tierReason": "Short text (299 words)",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T15:40:30.115Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is from 2014 at the Williamstown Theater Festival, not a current Broadway production; openai: The text is about a production at the Williamstown Theater Festival, not the current Broadway run.; gemini: The review text is incomplete and contains error messages, making it impossible to assess the reviewer's opinion of the show.; kimi: This review covers the Williamstown Theater Festival production in Massachusetts (2014), not the Broadway production. The text explicitly states the location as 'WILLIAMSTOWN, Mass.' and 'the Williamstown Theater Festival here.'",
+  "promptVersion": "5.2.0"
 }

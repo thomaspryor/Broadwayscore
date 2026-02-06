@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.newsday.com/entertainment/theater/a-raisin-in-the-sun-review-magnificent-denzel-washington-1.7587798"
+  "playbillVerdictUrl": "http://www.newsday.com/entertainment/theater/a-raisin-in-the-sun-review-magnificent-denzel-washington-1.7587798",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Forget any and all reservations, except the kind that are so hard to get for director Kenny Leon's shattering revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The critic explicitly tells readers to 'forget all reservations' and describes it as a 'shattering revival,' indicating overwhelming enthusiasm that overcomes any initial doubts. | GPT-4o: The excerpt dismisses any reservations and highlights the difficulty of getting reservations, indicating a strong recommendation. However, the single excerpt warning suggests caution, so confidence is low. | Gemini: The excerpt indicates a strong positive recommendation, dismissing any reservations. Given it's a single excerpt, confidence is low, but the language suggests the upper end of the positive range. | Kimi: The critic urges readers to dismiss prior casting concerns and praises Kenny Leon's revival as 'shattering,' indicating strong endorsement despite the excerpt's truncation. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:17:29.808Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

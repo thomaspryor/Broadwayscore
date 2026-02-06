@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 67,
+    "confidence": "medium",
+    "range": {
+      "low": 62,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You're left eavesdropping on life even as Shannon's James gives off the anguished mien of the walking dead.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt presents mixed signals - 'eavesdropping on life' suggests engaging realism, but 'walking dead' implies lifeless performance. With only one curated quote available, the ambiguous tone and lack of clear recommendation warrants Mixed bucket with low confidence. | GPT-4o: The excerpt suggests a mixed impression, highlighting an 'anguished mien' which may indicate a strong performance, but the phrase 'eavesdropping on life' implies a passive or detached experience. The lack of a clear positive or negative recommendation suggests a mixed verdict. | Gemini: The excerpt is somewhat positive, describing the experience as \"eavesdropping on life.\" However, the \"anguished mien of the walking dead\" suggests a qualified recommendation. Given it's a single excerpt, I'm scoring it cautiously. | Kimi: The excerpt describes an intense, lifelike performance with evocative language ('anguished mien of the walking dead') suggesting serious dramatic achievement. However, with only one curated excerpt available, the score remains conservative in the lower Positive range. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T17:06:04.198Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }
