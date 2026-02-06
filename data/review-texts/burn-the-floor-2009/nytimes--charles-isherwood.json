@@ -13,11 +13,11 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-Review-Roundup-Burn-the-Floor-and-More-20090803",
   "contentTier": "truncated",
   "publishDate": "July 26, 2009",
-  "fullText": "https://www.nytimes.com/2009/08/03/theater/reviews/03burn.htmlShare full articleAdvertisement\n\nThe good news about “Burn the Floor,” a ballroom dancing extravaganza that opened Sunday at the Longacre Theater, is that it is every bit as flashy and tacky as you would expect.\n\nDo I need to add that this is also the bad news?\n\nTiming may not be everything in dance, but it is certainly crucial. The arrival on Broadway of this two-hour exhibition of swiveling hips and steamy embraces, directed and choreographed by Jason Gilkison, an Australian former dancing champ, is undoubtedly propitious. “Burn the Floor” has been tangoing around the globe for a decade. It made its debut in 1999 in Bournemouth, England, before touring to more than 20 countries.",
+  "fullText": "The good news about “Burn the Floor,” a ballroom dancing extravaganza that opened Sunday at the Longacre Theater, is that it is every bit as flashy and tacky as you would expect.\n\nDo I need to add that this is also the bad news?\n\nTiming may not be everything in dance, but it is certainly crucial. The arrival on Broadway of this two-hour exhibition of swiveling hips and steamy embraces, directed and choreographed by Jason Gilkison, an Australian former dancing champ, is undoubtedly propitious. “Burn the Floor” has been tangoing around the globe for a decade. It made its debut in 1999 in Bournemouth, England, before touring to more than 20 countries.",
   "isFullReview": false,
-  "textWordCount": 115,
+  "textWordCount": 112,
   "archivePath": "data/archives/reviews/burn-the-floor-2009/nytimes--charles-isherwood_2026-02-06.html",
-  "textFetchedAt": "2026-02-06T05:22:58.658Z",
+  "textFetchedAt": "2026-02-06T15:43:02.744Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -30,7 +30,7 @@
       "tier": 0.5,
       "method": "archive",
       "success": false,
-      "error": "timeout of 15000ms exceeded"
+      "error": "No CDX snapshots found"
     },
     {
       "tier": 1,
@@ -50,10 +50,10 @@
   "textStatus": "incomplete",
   "sourceMethod": "scrapingbee",
   "textIssues": [
-    "Word count too low: 138 (min: 300)"
+    "Word count too low: 135 (min: 300)"
   ],
-  "wordCount": 115,
-  "tierReason": "Short text (115 words)",
+  "wordCount": 112,
+  "tierReason": "Short text (112 words)",
   "assignedScore": 58,
   "llmScore": {
     "score": 58,
@@ -107,5 +107,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
-  }
+  },
+  "duplicateTextOf": "nytimes--ben-brantley.json"
 }
