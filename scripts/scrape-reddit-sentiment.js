@@ -73,11 +73,11 @@ function calculateBuzzScore(classifications) {
   if (relevant.length === 0) return null;
 
   const sentimentScores = {
-    enthusiastic: 95,
-    positive: 80,
-    mixed: 55,
-    negative: 25,
-    neutral: 50
+    enthusiastic: 98,
+    positive: 88,
+    mixed: 68,
+    negative: 40,
+    neutral: 60
   };
 
   const sentimentCounts = {
