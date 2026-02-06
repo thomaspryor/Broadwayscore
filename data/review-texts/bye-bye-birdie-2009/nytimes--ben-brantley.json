@@ -3,9 +3,9 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2009/10/16/theater/reviews/16birdie.html",
+  "url": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2009/10/09/arts-leisure-preview-bye-bye-birdie-ken-jacobs-garry-shandling-and-more/",
   "publishDate": "October 15, 2009",
-  "fullText": null,
+  "fullText": "Wisdom, insights and random observations from this weekend’s Arts & Leisure section. (Click on links for complete stories.)\n\n“I was so nervous I went to hide in a broom closet in the theater. I opened the door and heard a growl. It was Mike. He was already in there.” —\n Charles Strouse, who wrote the music for “Bye Bye Birdie,” recalls an unexpected encounter with the musical’s book writer, Michael Stewart, during an out-of-town tryout in Philadelphia\n\n“Wow, look at that, wow! The film proceeded from wow.” —\n the avant-garde filmmaker Ken Jacobs, who will be presenting his work during a week-long series in Los Angeles, explains the inspiration behind experimental movies like “Tom, Tom, the Piper’s Son”\n\n“I said: ‘No, Johnny, the show is on Showtime. I’m not even going on a regular network, Johnny. I promise you I am no threat of any kind.’ ” —\n Garry Shandling recounts how he told Johnny Carson he was quitting “The Tonight Show” to focus on his cable sitcom “It’s Garry Shandling’s Show”\n\n“It was the first time we saw black alpha males in movies. Before, black men were depicted as buffoons, servants. I remember watching blaxploitation and logging all the dead white people … I’d never\n seen movies where a black guy killing white people was permitted.” —\n Michael Jai White, the star of the blaxploitation homage “Black Dynamite,” discusses his appreciation for the genre\n\nComments are no longer being accepted.",
   "isFullReview": false,
   "dtliExcerpt": "This revival of the 1960 musical feels more like a high school production that has been given a professional budget than a Broadway show that deserves one.",
   "originalScore": null,
@@ -16,6 +16,48 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of the 1960 musical feels more like a high school production that has been given a professional budget than a Broadway show that deserves one.",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "truncated",
+  "contentTierReason": "Only aggregator excerpts available",
+  "previousUrl": "https://www.nytimes.com/2009/10/16/theater/reviews/16birdie.html",
+  "urlDiscoveredAt": "2026-02-06T05:16:59.712Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 241,
+  "archivePath": "data/archives/reviews/bye-bye-birdie-2009/nytimes--ben-brantley_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T05:16:59.715Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 241 (min: 300)"
+  ],
+  "wordCount": 241,
+  "tierReason": "Short text (241 words)"
 }
