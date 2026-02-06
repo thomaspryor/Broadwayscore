@@ -60,6 +60,7 @@ jobs:
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
           ARGS=""
           if [ -n "${{ inputs.show_id }}" ]; then
