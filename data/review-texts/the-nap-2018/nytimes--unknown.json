@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "https://www.nytimes.com/2018/09/27/theater/the-nap-review-richard-bean-snooker.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2018/09/27/theater/the-nap-review-richard-bean-snooker.htmlShare full article99Advertisement\n\nWhen you’re feeling burned-out, fed-up and generally disgusted — like now, maybe? — there’s nothing more therapeutic than a tickling session at the theater. Relax, it involves no squirmy physical contact.\n\nI mean the sort of tickling administered by a team of master farceurs who frisk you into a state of sustained laughter, as involuntary and contented as the purr of a kitten at play. It’s the noise being artfully coaxed from audiences by the British dramatist Richard Bean and a precision-tooled ensemble of great pretenders at the Samuel J. Friedman Theater.\n\nThat’s where Mr. Bean’s delicious new comedy “The Nap” opened on Thursday night, directed with an assured balance of blatancy and subtlety by Daniel Sullivan. While the name of this Manhattan Theater Club production might seem to promise a snooze, the title refers not to a siesta but to the baize surface of a snooker table — or specifically to the resistance it gives to the balls that skim across it.\n\nDoes that sound too esoteric? Don’t worry if you’re unacquainted with the arcana of this British cousin of billiards and pool. Not speaking snookerese is no disadvantage in experiencing Mr. Bean’s story of a young working-class phenom from Sheffield and the criminal friends and relations who love (and nearly destroy) him.\n\nBesides, the dominant game of “The Nap” isn’t snooker. It’s farce. And like most sports, farce requires from its players hair-trigger timing and an intuitive grasp of the physics of bodies in motion. Its success is achieved not by sustained assault but by dexterity, and by always keeping the other guy (in this case, the audience) off guard.\n\nThe best examples of the genre on Broadway in recent years have originated in Britain. For the form at its most elemental, there’s the current demolition derby called “The Play That Goes Wrong.” But the sterling English-language farce of this century is Mr. Bean’s “One Man, Two Guvnors” (2012), the commedia dell’arte-style caper that made an American star of James Corden.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 82,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Delicious new comedy directed with an assured balance of blatancy and subtlety by Daniel Sullivan...Its success is achieved not by sustained assault but by dexterity, and by always keeping the other guy (in this case, the audience) off guard...The cast members shape their characters with just enough comic exaggeration to stay credible and also to suggest that not everyone is what she or he seems.\" \n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -76,5 +76,32 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "duplicateOf": "nytimes--ben-brantley.json"
+  "duplicateOf": "nytimes--ben-brantley.json",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "textWordCount": 360,
+  "archivePath": "data/archives/reviews/the-nap-2018/nytimes--unknown_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T19:19:55.793Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250426204055",
+  "archiveOrgUrl": "http://web.archive.org/web/20250426204055/https://www.nytimes.com/2018/09/27/theater/the-nap-review-richard-bean-snooker.html",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "duplicateTextOf": "nytimes--ben-brantley.json",
+  "wordCount": 360,
+  "tierReason": "Full review text"
 }
