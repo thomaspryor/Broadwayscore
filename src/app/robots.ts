@@ -2,7 +2,16 @@ import { MetadataRoute } from 'next';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
+// Block indexing on Vercel preview/staging deployments
+const isProduction = process.env.VERCEL_ENV === 'production' || !process.env.VERCEL_ENV;
+
 export default function robots(): MetadataRoute.Robots {
+  if (!isProduction) {
+    return {
+      rules: { userAgent: '*', disallow: '/' },
+    };
+  }
+
   return {
     rules: [
       // Default rule for all crawlers

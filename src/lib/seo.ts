@@ -4,6 +4,12 @@ import { ComputedShow } from './engine';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
+// Convert 0-100 score to 1-5 star scale for schema.org
+// Google prefers 1-5 scale for rich snippet star display
+function toFiveStarScale(score: number): number {
+  return Math.round((score / 100) * 4 * 10) / 10 + 1; // 0→1.0, 50→3.0, 100→5.0
+}
+
 // Organization Schema - Site identity
 export function generateOrganizationSchema() {
   return {
@@ -13,6 +19,7 @@ export function generateOrganizationSchema() {
     url: BASE_URL,
     logo: `${BASE_URL}/logo.png`,
     description: 'Aggregated Broadway show ratings from professional critics',
+    inLanguage: 'en',
     sameAs: [
       // Add social profiles when available
     ],
@@ -26,6 +33,7 @@ export function generateWebSiteSchema() {
     '@type': 'WebSite',
     name: 'Broadway Scorecard',
     url: BASE_URL,
+    inLanguage: 'en',
     description: 'Comprehensive Broadway show ratings combining critic reviews, audience scores, and community buzz.',
     potentialAction: {
       '@type': 'SearchAction',
@@ -74,9 +82,9 @@ export function generateReviewSchema(review: {
     datePublished: review.publishDate,
     reviewRating: {
       '@type': 'Rating',
-      ratingValue: review.score,
-      bestRating: 100,
-      worstRating: 0,
+      ratingValue: toFiveStarScale(review.score),
+      bestRating: 5,
+      worstRating: 1,
     },
     url: review.url,
     ...(review.excerpt && { reviewBody: review.excerpt }),
@@ -84,7 +92,7 @@ export function generateReviewSchema(review: {
 }
 
 // TheaterEvent Schema with full details (enhanced)
-export function generateShowSchema(show: ComputedShow) {
+export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
   const reviews = show.criticScore?.reviews || [];
 
   const schema: Record<string, unknown> = {
@@ -93,6 +101,7 @@ export function generateShowSchema(show: ComputedShow) {
     name: show.title,
     description: show.synopsis,
     url: `${BASE_URL}/show/${show.slug}`,
+    inLanguage: 'en',
     location: {
       '@type': 'PerformingArtsTheater',
       name: show.venue,
@@ -101,6 +110,7 @@ export function generateShowSchema(show: ComputedShow) {
     startDate: show.openingDate,
     ...(show.closingDate && { endDate: show.closingDate }),
     ...(show.images?.hero && { image: show.images.hero }),
+    ...(lastUpdated && { dateModified: lastUpdated }),
     eventStatus: show.status === 'closed' ? 'https://schema.org/EventCancelled' : 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     organizer: {
@@ -111,12 +121,13 @@ export function generateShowSchema(show: ComputedShow) {
   };
 
   // Add aggregate rating if we have scores and reviewCount
+  // Uses 1-5 star scale for Google rich snippet compatibility
   if (show.criticScore?.score && show.criticScore?.reviewCount) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
-      ratingValue: Math.round(show.criticScore.score),
-      bestRating: 100,
-      worstRating: 0,
+      ratingValue: toFiveStarScale(show.criticScore.score),
+      bestRating: 5,
+      worstRating: 1,
       reviewCount: show.criticScore.reviewCount,
     };
   }
@@ -268,12 +279,13 @@ export function generateItemListSchema(items: {
       };
 
       // Aggregate rating (with required reviewCount)
+      // Uses 1-5 star scale for Google rich snippet compatibility
       if (item.score && item.reviewCount) {
         event.aggregateRating = {
           '@type': 'AggregateRating',
-          ratingValue: item.score,
-          bestRating: 100,
-          worstRating: 0,
+          ratingValue: toFiveStarScale(item.score),
+          bestRating: 5,
+          worstRating: 1,
           reviewCount: item.reviewCount,
         };
       }

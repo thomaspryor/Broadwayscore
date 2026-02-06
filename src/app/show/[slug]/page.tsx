@@ -464,7 +464,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  const showSchema = generateShowSchema(show);
+  const lastUpdated = getShowLastUpdated(show.id);
+  const showSchema = generateShowSchema(show, lastUpdated || undefined);
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
     { name: show.type === 'musical' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${show.type === 'musical' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` },
@@ -479,7 +480,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const consensus = getCriticConsensus(show.id);
   const lotteryRush = getLotteryRush(show.id);
   const commercial = getShowCommercial(show.slug);
-  const lastUpdated = getShowLastUpdated(show.id);
 
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
