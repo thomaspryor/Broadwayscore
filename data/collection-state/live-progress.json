@@ -1,63 +1,17 @@
 {
-  "updatedAt": "2026-02-06T01:26:20.771Z",
-  "processed": 25,
-  "failed": 165,
-  "successRate": "13.2%",
+  "updatedAt": "2026-02-06T01:33:51.218Z",
+  "processed": 26,
+  "failed": 174,
+  "successRate": "13.0%",
   "tierBreakdown": {
     "playwright": 2,
-    "browserbase": 12,
+    "browserbase": 14,
     "scrapingbee": 6,
     "brightdata": 6,
-    "archive": 13
+    "archive": 14
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 20,
   "recentActivity": [
-    {
-      "t": "2026-02-06T01:03:34.127Z",
-      "event": "bb-session",
-      "session": "4edbaa45",
-      "url": "https://variety.com/2007/legit/reviews/110-in-the-shade-1200556534/"
-    },
-    {
-      "t": "2026-02-06T01:04:32.005Z",
-      "event": "bb-session",
-      "session": "f7c03d08",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/1776-broadway-review-1235228615"
-    },
-    {
-      "t": "2026-02-06T01:05:05.364Z",
-      "event": "bb-session",
-      "session": "303821ab",
-      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
-    },
-    {
-      "t": "2026-02-06T01:07:55.034Z",
-      "event": "bb-session",
-      "session": "7fa2f3c0",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/1776-10-17-22"
-    },
-    {
-      "t": "2026-02-06T01:07:57.353Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-06T01:10:17.985Z",
-      "event": "bb-session",
-      "session": "ccf5ac45",
-      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
-    },
-    {
-      "t": "2026-02-06T01:10:20.259Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-06T01:12:57.346Z",
-      "event": "bb-session",
-      "session": "2a1fd2ec",
-      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
-    },
     {
       "t": "2026-02-06T01:13:43.351Z",
       "event": "bb-login-fail",
@@ -127,6 +81,54 @@
       "event": "bb-login-fail",
       "domain": "nytimes.com",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770341104790\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq_itdPyYWocANCKmrw==&cid=VSYtjEfHNIa4BNaaCc7iRcdi~U~fMMK05GahdIYve1rGkWoosWZ52k9ABZTDyeJepeo9aU9JXNcJWSpnJ_9LBbuqWi6bISL3A11CSx68nJTY5nE_of223OBFVvra4pyn&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770341104790\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770341104790\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq_itdPyYWocANCKmrw==&cid=VSYtjEfHNIa4BNaaCc7iRcdi~U~fMMK05GahdIYve1rGkWoosWZ52k9ABZTDyeJepeo9aU9JXNcJWSpnJ_9LBbuqWi6bISL3A11CSx68nJTY5nE_of223OBFVvra4pyn&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770341104790\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770341104790\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq_itdPyYWocANCKmrw==&cid=VSYtjEfHNIa4BNaaCc7iRcdi~U~fMMK05GahdIYve1rGkWoosWZ52k9ABZTDyeJepeo9aU9JXNcJWSpnJ_9LBbuqWi6bISL3A11CSx68nJTY5nE_of223OBFVvra4pyn&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770341104790\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-06T01:27:37.677Z",
+      "event": "bb-session",
+      "session": "2d773648",
+      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
+    },
+    {
+      "t": "2026-02-06T01:28:23.559Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770341270110\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA1RjRMyuArfgANBsspA==&cid=h_ReSe0IWgKj9vnpj0tGU9okHqAQlpGssRRmOujQTD~A1pYi2azMZ0vigKwYy76hDUnsLOQY~kfsBlbohUrIWsEWtcGOQr9vDAX92kIPl9K3INgk1qqNfCRXyRpAxV4S&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770341270110\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770341270110\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA1RjRMyuArfgANBsspA==&cid=h_ReSe0IWgKj9vnpj0tGU9okHqAQlpGssRRmOujQTD~A1pYi2azMZ0vigKwYy76hDUnsLOQY~kfsBlbohUrIWsEWtcGOQr9vDAX92kIPl9K3INgk1qqNfCRXyRpAxV4S&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770341270110\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770341270110\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA1RjRMyuArfgANBsspA==&cid=h_ReSe0IWgKj9vnpj0tGU9okHqAQlpGssRRmOujQTD~A1pYi2azMZ0vigKwYy76hDUnsLOQY~kfsBlbohUrIWsEWtcGOQr9vDAX92kIPl9K3INgk1qqNfCRXyRpAxV4S&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770341270110\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-06T01:28:59.908Z",
+      "event": "bb-session",
+      "session": "f5c53095",
+      "url": "http://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
+    },
+    {
+      "t": "2026-02-06T01:29:52.025Z",
+      "event": "bb-session",
+      "session": "e73638f8",
+      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+    },
+    {
+      "t": "2026-02-06T01:31:07.587Z",
+      "event": "bb-session",
+      "session": "5e5ed873",
+      "url": "https://www.nytimes.com/2013/11/14/theater/reviews/billy-crystal-in-700-sundays-"
+    },
+    {
+      "t": "2026-02-06T01:31:53.139Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770341479835\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA95mUV7evnkEANA1qtA==&cid=7m0ovMJ2U8K2F3h0Cw8EsKViQHZxvoqIQOEEMSOQAtp59KpZkrq_DAQdDqeG5PQr4BbDkSPxUTNsQzLv4oXQ04qttVvr0eBcLkuvyZReHlUdnkE4SVAp300EY1uXh~Fn&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770341479835\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770341479835\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA95mUV7evnkEANA1qtA==&cid=7m0ovMJ2U8K2F3h0Cw8EsKViQHZxvoqIQOEEMSOQAtp59KpZkrq_DAQdDqeG5PQr4BbDkSPxUTNsQzLv4oXQ04qttVvr0eBcLkuvyZReHlUdnkE4SVAp300EY1uXh~Fn&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770341479835\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770341479835\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA95mUV7evnkEANA1qtA==&cid=7m0ovMJ2U8K2F3h0Cw8EsKViQHZxvoqIQOEEMSOQAtp59KpZkrq_DAQdDqeG5PQr4BbDkSPxUTNsQzLv4oXQ04qttVvr0eBcLkuvyZReHlUdnkE4SVAp300EY1uXh~Fn&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770341479835\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-06T01:32:55.254Z",
+      "event": "bb-session",
+      "session": "b7022192",
+      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+    },
+    {
+      "t": "2026-02-06T01:33:31.112Z",
+      "event": "bb-session",
+      "session": "9ac4d804",
+      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
     }
   ]
 }

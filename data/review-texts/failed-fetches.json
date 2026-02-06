@@ -16300,66 +16300,6 @@
     "timestamp": "2026-02-05T17:13:10.169Z"
   },
   {
-    "reviewId": "700-sundays-2013/hollywood-reporter--unknown.json",
-    "showId": "700-sundays-2013",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699",
-    "method": "browserbase",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, cats, fiddler on the roof, the audience, once...",
-    "textLength": 5361,
-    "timestamp": "2026-02-05T17:17:47.004Z"
-  },
-  {
-    "reviewId": "700-sundays-2013/vulture--unknown.json",
-    "showId": "700-sundays-2013",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2013/11/theater-review-nostalgia-for-700-sundays.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): home, company, sweat, the audience, high...",
-    "textLength": 4865,
-    "timestamp": "2026-02-05T17:18:39.040Z"
-  },
-  {
-    "reviewId": "9-to-5-2009/hollywood-reporter--unknown.json",
-    "showId": "9-to-5-2009",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-656158?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+(The+Hollywood+Reporter+-+Top+Stories)",
-    "method": "browserbase",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): the book of mormon, appropriate, home, mean girls, falsettos...",
-    "textLength": 6258,
-    "timestamp": "2026-02-05T17:18:55.979Z"
-  },
-  {
-    "reviewId": "9-to-5-2009/nytimes--ben-brantley.json",
-    "showId": "9-to-5-2009",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (16): wicked, chicago, giant, company, network...",
-    "textLength": 9381,
-    "timestamp": "2026-02-05T17:18:59.707Z"
-  },
-  {
-    "reviewId": "9-to-5-2009/vulture--unknown.json",
-    "showId": "9-to-5-2009",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2013/11/reviews-little-miss-sunshine-a-bed-and-a-chair.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (22): giant, merrily we roll along, english, purpose, smash...",
-    "textLength": 13081,
-    "timestamp": "2026-02-05T17:19:03.720Z"
-  },
-  {
     "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json",
     "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
     "outlet": "New York Theater",
@@ -17354,5 +17294,65 @@
     "garbageReason": "Multiple shows mentioned (9): sweat, the audience, hair, seminar, rain...",
     "textLength": 8936,
     "timestamp": "2026-02-06T01:26:20.758Z"
+  },
+  {
+    "reviewId": "700-sundays-2013/hollywood-reporter--unknown.json",
+    "showId": "700-sundays-2013",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699",
+    "method": "browserbase",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, cats, fiddler on the roof, the audience, once...",
+    "textLength": 5361,
+    "timestamp": "2026-02-06T01:30:05.307Z"
+  },
+  {
+    "reviewId": "700-sundays-2013/vulture--unknown.json",
+    "showId": "700-sundays-2013",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2013/11/theater-review-nostalgia-for-700-sundays.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, company, sweat, the audience, high...",
+    "textLength": 4865,
+    "timestamp": "2026-02-06T01:33:28.703Z"
+  },
+  {
+    "reviewId": "9-to-5-2009/hollywood-reporter--unknown.json",
+    "showId": "9-to-5-2009",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-656158?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+(The+Hollywood+Reporter+-+Top+Stories)",
+    "method": "browserbase",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): the book of mormon, appropriate, home, mean girls, falsettos...",
+    "textLength": 6258,
+    "timestamp": "2026-02-06T01:33:43.835Z"
+  },
+  {
+    "reviewId": "9-to-5-2009/nytimes--ben-brantley.json",
+    "showId": "9-to-5-2009",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): wicked, chicago, giant, company, network...",
+    "textLength": 9381,
+    "timestamp": "2026-02-06T01:33:47.086Z"
+  },
+  {
+    "reviewId": "9-to-5-2009/vulture--unknown.json",
+    "showId": "9-to-5-2009",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2013/11/reviews-little-miss-sunshine-a-bed-and-a-chair.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (22): giant, merrily we roll along, english, purpose, smash...",
+    "textLength": 13081,
+    "timestamp": "2026-02-06T01:33:51.209Z"
   }
 ]
