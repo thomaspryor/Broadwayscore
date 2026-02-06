@@ -8560,18 +8560,6 @@
     "timestamp": "2026-02-04T00:17:56.556Z"
   },
   {
-    "reviewId": "richard-iii-2013/variety--unknown.json",
-    "showId": "richard-iii-2013",
-    "outlet": "Variety",
-    "critic": "Unknown",
-    "url": "http://variety.com/2013/legit/reviews/broadway-review-richard-iiitwelfth-night-1200816666/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): hamilton, company, the audience, twelfth night, rain...",
-    "textLength": 7091,
-    "timestamp": "2026-02-04T00:27:25.448Z"
-  },
-  {
     "reviewId": "richard-iii-2013/vulture--jesse-green.json",
     "showId": "richard-iii-2013",
     "outlet": "Vulture",
@@ -8582,18 +8570,6 @@
     "garbageReason": "Multiple shows mentioned (12): othello, company, sweat, twelfth night, once...",
     "textLength": 11200,
     "timestamp": "2026-02-04T00:27:43.412Z"
-  },
-  {
-    "reviewId": "rock-n-roll-2007/nytimes--ben-brantley.json",
-    "showId": "rock-n-roll-2007",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2007/11/05/theater/reviews/05rock.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): home, english, betrayal, betrayal, evita...",
-    "textLength": 7414,
-    "timestamp": "2026-02-04T00:27:46.764Z"
   },
   {
     "reviewId": "spongebob-squarepants-2017/nytimes--ben-brantley.json",
@@ -21326,5 +21302,53 @@
     "garbageReason": "Multiple shows mentioned (7): mamma mia!, company, evita, race, company...",
     "textLength": 5624,
     "timestamp": "2026-02-06T18:02:56.970Z"
+  },
+  {
+    "reviewId": "richard-iii-2013/nytimes--ben-brantely.json",
+    "showId": "richard-iii-2013",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantely",
+    "url": "http://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): wicked, appropriate, home, the audience, twelfth night...",
+    "textLength": 2569,
+    "timestamp": "2026-02-06T18:04:18.813Z"
+  },
+  {
+    "reviewId": "richard-iii-2013/variety--unknown.json",
+    "showId": "richard-iii-2013",
+    "outlet": "Variety",
+    "critic": "Unknown",
+    "url": "http://variety.com/2013/legit/reviews/broadway-review-richard-iiitwelfth-night-1200816666/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): hamilton, company, the audience, twelfth night, rain...",
+    "textLength": 7184,
+    "timestamp": "2026-02-06T18:05:28.646Z"
+  },
+  {
+    "reviewId": "rock-n-roll-2007/nytimes--ben-brantley.json",
+    "showId": "rock-n-roll-2007",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2007/11/05/theater/reviews/05rock.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, english, betrayal, betrayal, evita...",
+    "textLength": 7414,
+    "timestamp": "2026-02-06T18:05:31.949Z"
+  },
+  {
+    "reviewId": "shucked-2023/nyt-theater--unknown.json",
+    "showId": "shucked-2023",
+    "outlet": "New York Theater",
+    "critic": "Unknown",
+    "url": "https://newyorktheater.me/2023/04/04/shucked-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): home, life of pi, the music man, tootsie, hair...",
+    "textLength": 5958,
+    "timestamp": "2026-02-06T18:08:56.356Z"
   }
 ]
