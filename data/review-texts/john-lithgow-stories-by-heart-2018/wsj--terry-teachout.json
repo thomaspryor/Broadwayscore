@@ -3,38 +3,67 @@
   "outletId": "wsj",
   "outlet": "Wall Street Journal",
   "criticName": "Terry Teachout",
-  "url": "http://www.wsj.com/articles/john-lithgow-stories-by-heart-review-jumping-off-the-page-1515720600",
+  "url": "https://www.wsj.com/articles/john-lithgow-stories-by-heart-review-jumping-off-the-page-1515720600?gaa_at=eafs&gaa_n=AWEtsqdMn4pwOHfMo1f53ZP23mvUSRWUrChlpfHrT8Ds4C0ZI8JIvOruvqQf&gaa_ts=698600d7&gaa_sig=Jhl3n1RtegnSZaAppE6B8TDU4LwzOZlvnp45XJbFEx_wPBTH0ZdHC1-KynCt5vFDw3D2PUCyUqXGjh2og9tioQ%3D%3D",
   "playbillVerdictUrl": "http://www.wsj.com/articles/john-lithgow-stories-by-heart-review-jumping-off-the-page-1515720600",
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "fullText": null,
+  "fullText": "https://www.wsj.com/articles/john-lithgow-stories-by-heart-review-jumping-off-the-page-1515720600\n\nShareResizeMr. Lithgow in his new one-man show. Joan MarcusNew York\n\nThe solo show is one of Broadway’s best-established genres, but it’s also enervatingly unvaried. Far too many of the one-person shows that open there are cliché-encrusted exercises in theatrical taxidermy in which a famous actor pretends to be a famous historical figure. While the best such shows can be spectacularly effective vehicles for a great performer, most of them leave you sneaking peeks at your watch and muttering, “Is he ever going to die?” Not so “Stories by Heart,” in which John Lithgow, following in the hallowed footsteps of Charles Laughton, reads two of his favorite short stories out loud and tells us how he came to know them. That’s all there is to “Stories by Heart,” and it’s more than enough. Rarely have I spent so entertaining a night at the theater—or witnessed so touching a tribute to a departed parent.",
   "isFullReview": false,
-  "textWordCount": 102,
-  "archivePath": "data/archives/reviews/john-lithgow-stories-by-heart-2018/wsj--terry-teachout_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T03:36:17.972Z",
-  "fetchMethod": "archive",
+  "textWordCount": 153,
+  "archivePath": "data/archives/reviews/john-lithgow-stories-by-heart-2018/wsj--terry-teachout_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T14:40:32.555Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "incomplete",
-  "sourceMethod": "archive",
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20211128112405",
   "archiveOrgUrl": "http://web.archive.org/web/20211128112405/https://www.wsj.com/articles/john-lithgow-stories-by-heart-review-jumping-off-the-page-1515720600",
   "textIssues": [
-    "Word count too low: 102 (min: 300)"
+    "Word count too low: 175 (min: 300)"
   ],
-  "showNotMentioned": true,
   "wrongFullText": "FacebookTwitterLinkedInCopy Link\n\n \n\n \n \n \n \n \n \n\n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n Mr. Lithgow in his new one-man show.\n \n \n Photo: \n \n Joan Marcus\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n \n \n \n\n \n \n \n By\n \n \n Terry Teachout\n Close\n Terry Teachout\n \n \n \n \n Biography\n \n \n \n \n \n @terryteachout\n \n \n \n \n \n tteachout@wsj.com\n \n \n \n \n\n \n\n \n\n \n Jan. 11, 2018 8:30 pm ET\n \n\n \n\n \n \n \n \n \n New York\n\nResume Subscription\n We are delighted that you'd like to resume your subscription.\n\nYou will be charged\n $ + tax\n (if applicable) for The Wall Street Journal.\n You may change your billing preferences at any time in the Customer Center or call\n Customer Service.\n You will be notified in advance of any changes in rate or terms.\n You may cancel your subscription at anytime by calling\n Customer Service.\n\nPlease click confirm to resume now.",
-  "contentTier": "needs-rescrape",
-  "showScoreExcerpt": "\"John Lithgow reads two of his favorite short stories out loud and tells us how he came to know them. That’s all there is to 'Stories by Heart,' and it’s more than enough. Rarely have I spent so entertaining a night at the theater—or witnessed so touching a tribute to a departed parent...I rather wish that Daniel Sullivan, the director, had suggested that he tone down the comic effects a notch or three. On the other hand, Mr. Lithgow is so naturally funny that he gets his laughs anyway.\"\n\nRead more"
+  "contentTier": "truncated",
+  "showScoreExcerpt": "\"John Lithgow reads two of his favorite short stories out loud and tells us how he came to know them. That’s all there is to 'Stories by Heart,' and it’s more than enough. Rarely have I spent so entertaining a night at the theater—or witnessed so touching a tribute to a departed parent...I rather wish that Daniel Sullivan, the director, had suggested that he tone down the comic effects a notch or three. On the other hand, Mr. Lithgow is so naturally funny that he gets his laughs anyway.\"\n\nRead more",
+  "_showNotMentionedDiscoveryAttempted": true,
+  "wordCount": 153,
+  "tierReason": "Short text (153 words)",
+  "previousUrl": "http://www.wsj.com/articles/john-lithgow-stories-by-heart-review-jumping-off-the-page-1515720600",
+  "urlDiscoveredAt": "2026-02-06T14:40:32.562Z",
+  "urlDiscoveryMethod": "show-not-mentioned-recovery"
 }
