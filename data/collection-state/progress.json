@@ -1,81 +1,88 @@
 {
   "processed": [
-    "a-delicate-balance-2014/vulture--jesse-green.json",
-    "a-dolls-house-part-2-2017/nytimes--jesse-green.json",
-    "a-free-man-of-color-2010/hollywood-reporter--david-rooney.json"
+    "a-christmas-carol-2022/nytimes--jesse-green.json"
   ],
   "failed": [
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--joe-dziemianowicz.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nytimes--elisabeth-vincentelli.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/variety--aramide-tinubu.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--jackson-mchenry.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--unknown.json",
-    "a-dolls-house-part-2-2017/hollywood-reporter--david-rooney.json",
-    "a-dolls-house-part-2-2017/newyorker--hilton-als.json",
-    "a-dolls-house-part-2-2017/nytimes--ben-brantley.json",
-    "a-dolls-house-part-2-2017/nytimes--unknown.json",
-    "a-free-man-of-color-2010/newyorker--hilton-als.json",
-    "a-free-man-of-color-2010/nytimes--ben-brantley.json",
-    "a-free-man-of-color-2010/variety--charles-isherwood.json",
-    "a-free-man-of-color-2010/vulture--scott-brown.json"
+    "9-to-5-2009/hollywood-reporter--unknown.json",
+    "9-to-5-2009/nytimes--ben-brantley.json",
+    "9-to-5-2009/vulture--unknown.json",
+    "a-christmas-carol-2019/newyorker--jesse-green.json",
+    "a-christmas-carol-2019/nytg--unknown.json",
+    "a-christmas-carol-2019/nytimes--ben-brantley.json",
+    "a-christmas-carol-2019/vulture--helen-shaw.json",
+    "a-christmas-carol-2019/vulture--jesse-green.json",
+    "a-christmas-carol-2022/hollywood-reporter--david-rooney.json",
+    "a-christmas-carol-2022/newyorker--naomi-fry.json",
+    "a-christmas-carol-2022/nyt-theater--jonathan-mandell.json",
+    "a-christmas-carol-2022/nytimes--alexis-soloski.json",
+    "a-christmas-carol-2022/nytimes--ben-brantley.json",
+    "a-christmas-carol-2022/variety--frank-rizzo.json",
+    "a-christmas-carol-2022/vulture--helen-shaw.json",
+    "a-christmas-carol-2022/vulture--jackson-mchenry.json",
+    "a-christmas-carol-2022/vulture--sara-holdren.json",
+    "a-christmas-story-the-musical-2012/hollywood-reporter--david-rooney.json",
+    "a-christmas-story-the-musical-2012/nyt-theater--david-nounou.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "browserbase": [
-      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json",
-      "data/review-texts/a-dolls-house-part-2-2017/hollywood-reporter--david-rooney.json",
-      "data/review-texts/a-free-man-of-color-2010/hollywood-reporter--david-rooney.json",
-      "a-free-man-of-color-2010/hollywood-reporter--david-rooney.json"
+      "data/review-texts/9-to-5-2009/hollywood-reporter--unknown.json",
+      "data/review-texts/a-christmas-carol-2022/hollywood-reporter--david-rooney.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "a-delicate-balance-2014/vulture--jesse-green.json",
-      "a-dolls-house-part-2-2017/nytimes--jesse-green.json"
+      "a-christmas-carol-2022/nytimes--jesse-green.json"
     ]
   },
-  "startTime": "2026-02-06T03:33:21.614Z",
-  "lastProcessed": "a-free-man-of-color-2010/vulture--scott-brown.json",
+  "startTime": "2026-02-06T03:32:23.173Z",
+  "lastProcessed": "a-christmas-story-the-musical-2012/nyt-theater--david-nounou.json",
   "log": [
     {
-      "t": "2026-02-06T03:33:48.570Z",
+      "t": "2026-02-06T03:32:25.277Z",
       "event": "bb-session",
-      "session": "e62955f4",
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
+      "session": "1fd2082f",
+      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
     },
     {
-      "t": "2026-02-06T03:34:08.764Z",
+      "t": "2026-02-06T03:34:46.718Z",
       "event": "bb-session",
-      "session": "a350f4c2",
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-the-neil-diamond-musica"
+      "session": "cbc2d014",
+      "url": "https://www.newyorker.com/magazine/2019/12/23/a-christmas-carol-brings-dickens-t"
     },
     {
-      "t": "2026-02-06T03:36:11.209Z",
-      "event": "bb-session",
-      "session": "9b7fc38e",
-      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
+      "t": "2026-02-06T03:34:48.907Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-06T03:36:13.588Z",
+      "t": "2026-02-06T03:37:13.025Z",
+      "event": "bb-session",
+      "session": "5c792c89",
+      "url": "https://www.vulture.com/2019/12/theater-review-a-christmas-carol-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-06T03:37:15.272Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
     },
     {
-      "t": "2026-02-06T03:38:03.187Z",
+      "t": "2026-02-06T03:39:17.485Z",
       "event": "bb-session",
-      "session": "fe601710",
-      "url": "http://www.hollywoodreporter.com/review/a-dolls-house-part-2-theater-998160"
+      "session": "7faae81f",
+      "url": "https://www.vulture.com/2019/11/theater-review-a-christmas-carol-on-broadway.htm"
     },
     {
-      "t": "2026-02-06T03:38:34.528Z",
+      "t": "2026-02-06T03:39:19.936Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-06T03:40:00.248Z",
       "event": "bb-session",
-      "session": "e80a6188",
-      "url": "http://www.hollywoodreporter.com/review/free-man-color-theater-review-46713"
+      "session": "3139eca1",
+      "url": "http://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-1256271"
     }
   ]
 }
