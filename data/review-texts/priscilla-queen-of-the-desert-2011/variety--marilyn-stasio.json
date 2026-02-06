@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2011/legit/reviews/priscilla-queen-of-the-desert-1117944751/",
   "publishDate": "March 20, 2011",
-  "fullText": "The Broadway musical adaptation of the 1994 Australian film is a gaudy, glittery spectacle that's long on flash and short on substance.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "The Broadway musical adaptation of the 1994 Australian film is a gaudy, glittery spectacle that's long on flash and short on substance.",
   "originalScore": null,
   "assignedScore": 45,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Broadway musical adaptation of the 1994 Australian film is a gaudy, glittery spectacle that's long on flash and short on substance.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "llmScore": {
     "score": 45,
     "confidence": "medium",
@@ -73,5 +73,52 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 45,
+  "textWordCount": 463,
+  "archivePath": "data/archives/reviews/priscilla-queen-of-the-desert-2011/variety--marilyn-stasio_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T08:54:29.805Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "While the playful banter has its moments, the characters aren't strong enough to set off any alarms.\n\nA&E’s reality fare spends a good deal of time chasing fugitives, so “Breakout Kings” — a scripted procedural from producers associated with “Prison Break” — plays like a savvy brand extension, if not a particularly inspired one. Using crooks to help catch bad guys or execute capers is hardly a new conceit (anybody remember “It Takes a Thief,” “The Dirty Dozen” or “48 Hrs.?”), and while the playful banter among cops and robbers thrown together on the same side has its moments, the characters aren’t strong enough, initially, to set off any alarms.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Joko Anwar's Horror-Comedy 'Ghost in the Cell' Unveils International Teaser Ahead of Berlin Premiere (EXCLUSIVE) \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Raabta International Launches as New Spanish Sales Player and Sets Berlin European Film Market Debut (EXCLUSIVE)\n\nU.S. Marshal Charlie Duchamp (Laz Alonso) and Ray Zancanelli (“The Wire’s” Domenick Lombardozzi) briskly lay out the “use fugitives to help catch fugitives” scheme, recruiting psychiatric expert/compulsive gambler Lloyd (Jimmi Simpson) and ex-gangbanger Shea (Malcolm Goodwin). They also add a woman to the group, played by Nicole Steinwedell in the pilot, but replaced later by a new fem-con, Erica (the alluring Serinda Swan).\n\nAs motivation, the cons get time off for each escapee they help put away, starting with a murderous robber, and followed by a convicted pedophile. The only really interesting hood, though, is Simpson’s squirrelly genius, who brings a “Mentalist”-type savvy to his analysis of situations.\n\nGranted, the premise (developed initially for Fox, and created by Matt Olmstead and Nick Santora) doesn’t really make much sense. Moreover, the concept would probably be more interesting if the convicts rotated from week to week — think Mr. Phelps picking his crew for that week’s assignment on “Mission Impossible” — instead of the same-old gang. After all, wouldn’t convicts with similarities to their quarry be a greater asset?\n\nStill, that’s probably overthinking something that’s meant to be escapist froth, and moves along slickly enough — albeit with a few modest twists, some stabs at humor (like “Hawaii Five-0,” there’s bickering about what to call the group), and a darkness (grisly killings, torture) that’s become a virtual prerequisite, alas, for this genre.\n\nA&E has had an uneven track record with its scripted endeavors, before stumbling into a USA-like success with quirky crime show, “The Glades.” For a network that’s been home to “Manhunter: Fugitive Task Force,” “Fugitive Chronicles” and “Dog the Bounty Hunter,” this latest endeavor is hardly a thematic stretch.\n\nThat said, it’s a tough, competitive cable world out there, and as the cons might testify, coming away with a big score requires risks. By that measure, “Breakout Kings” doesn’t do enough to stand apart, diminishing its chances of breaking out."
 }
