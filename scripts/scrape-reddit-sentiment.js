@@ -285,7 +285,7 @@ async function processShow(show) {
 
   let comments;
   try {
-    comments = await collectCommentsFromPosts(SUBREDDIT, topPosts, 2000);  // High limit to see natural distribution
+    comments = await collectCommentsFromPosts(SUBREDDIT, topPosts, 10000);  // Effectively unlimited - collect all from selected posts
   } catch (e) {
     console.error(`  Comment collection failed: ${e.message}`);
     return null;
