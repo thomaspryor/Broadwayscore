@@ -1,41 +1,17 @@
 {
-  "updatedAt": "2026-02-06T14:09:52.556Z",
-  "processed": 80,
-  "failed": 360,
-  "successRate": "18.2%",
+  "updatedAt": "2026-02-06T14:16:14.278Z",
+  "processed": 85,
+  "failed": 365,
+  "successRate": "18.9%",
   "tierBreakdown": {
     "playwright": 8,
     "browserbase": 10,
     "scrapingbee": 21,
     "brightdata": 26,
-    "archive": 31
+    "archive": 36
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-02-06T03:34:29.644Z",
-      "event": "bb-session",
-      "session": "7272d4c6",
-      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
-    },
-    {
-      "t": "2026-02-06T03:34:46.055Z",
-      "event": "bb-session",
-      "session": "e88d6d4e",
-      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
-    },
-    {
-      "t": "2026-02-06T03:37:13.487Z",
-      "event": "bb-session",
-      "session": "7c834b58",
-      "url": "https://www.nytimes.com/2009/12/14/theater/reviews/14night.html"
-    },
-    {
-      "t": "2026-02-06T03:38:01.665Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
     {
       "t": "2026-02-06T03:40:35.311Z",
       "event": "bb-session",
@@ -127,6 +103,28 @@
       "event": "bb-session",
       "session": "ffd145da",
       "url": "https://variety.com/2006/legit/reviews/ring-of-fire-1200515194/"
+    },
+    {
+      "t": "2026-02-06T14:12:08.278Z",
+      "event": "bb-session",
+      "session": "bcf604d2",
+      "url": "https://www.newyorker.com/magazine/2021/11/01/six-brings-pop-feminism-to-broadwa"
+    },
+    {
+      "t": "2026-02-06T14:12:10.281Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-06T14:15:18.528Z",
+      "event": "bb-session",
+      "session": "d2f47ce0",
+      "url": "https://www.newyorker.com/magazine/2023/01/09/the-collaboration-review-broadway-"
+    },
+    {
+      "t": "2026-02-06T14:15:20.598Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     }
   ]
 }

@@ -79,7 +79,12 @@
     "glengarry-glen-ross-2012/nytimes--jesse-green.json",
     "on-your-feet-2015/nytimes--charles-isherwood.json",
     "present-laughter-2017/nytimes--ben-brantley.json",
-    "ring-of-fire-2006/variety--charles-isherwood.json"
+    "ring-of-fire-2006/variety--charles-isherwood.json",
+    "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
+    "seminar-2011/vulture--jesse-green.json",
+    "sweat-2017/nytimes--matt-windman.json",
+    "the-audience-2015/nytimes--charles-isherwood.json",
+    "the-children-2017/nytimes--ben-brantley.json"
   ],
   "failed": [
     "a-chorus-line-2006/nytimes--ben-brantley.json",
@@ -441,7 +446,12 @@
     "ill-eat-you-last-a-chat-with-sue-mengers-2013/vulture--unknown.json",
     "ohio-state-murders-2022/newyorker--naomi-fry.json",
     "pirates-the-penzance-musical-2025/nytimes--jesse-green.json",
-    "rodgers-hammersteins-cinderella-2013/nytimes--ben-brantley.json"
+    "rodgers-hammersteins-cinderella-2013/nytimes--ben-brantley.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "tammy-faye-2024/vulture--sara-holdren.json",
+    "the-collaboration-2022/newyorker--naomi-fry.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/nytimes--unknown.json",
+    "the-encounter-2016/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -549,11 +559,16 @@
       "cirque-du-soleil-paramour-2016/nytimes--unknown.json",
       "glengarry-glen-ross-2012/nytimes--jesse-green.json",
       "on-your-feet-2015/nytimes--charles-isherwood.json",
-      "present-laughter-2017/nytimes--ben-brantley.json"
+      "present-laughter-2017/nytimes--ben-brantley.json",
+      "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
+      "seminar-2011/vulture--jesse-green.json",
+      "sweat-2017/nytimes--matt-windman.json",
+      "the-audience-2015/nytimes--charles-isherwood.json",
+      "the-children-2017/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-02-06T03:33:55.141Z",
-  "lastProcessed": "rodgers-hammersteins-cinderella-2013/nytimes--ben-brantley.json",
+  "lastProcessed": "the-encounter-2016/nytimes--unknown.json",
   "log": [
     {
       "t": "2026-02-06T03:34:10.583Z",
@@ -676,6 +691,28 @@
       "event": "bb-session",
       "session": "ffd145da",
       "url": "https://variety.com/2006/legit/reviews/ring-of-fire-1200515194/"
+    },
+    {
+      "t": "2026-02-06T14:12:08.278Z",
+      "event": "bb-session",
+      "session": "bcf604d2",
+      "url": "https://www.newyorker.com/magazine/2021/11/01/six-brings-pop-feminism-to-broadwa"
+    },
+    {
+      "t": "2026-02-06T14:12:10.281Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-06T14:15:18.528Z",
+      "event": "bb-session",
+      "session": "d2f47ce0",
+      "url": "https://www.newyorker.com/magazine/2023/01/09/the-collaboration-review-broadway-"
+    },
+    {
+      "t": "2026-02-06T14:15:20.598Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     }
   ]
 }
