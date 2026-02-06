@@ -1,4 +1,4 @@
-Rigorously critique and improve an implementation plan using three independent AI models with differentiated roles, a pre-mortem analysis, and a concrete revised plan.
+Rigorously critique and improve an implementation plan using four independent AI models with differentiated roles, a pre-mortem analysis, and a concrete revised plan.
 
 ## Instructions
 
@@ -18,9 +18,9 @@ Write the plan text to a temporary file at `/tmp/critique-plan.txt`.
 
 This context prevents reviewers from giving generic advice that doesn't apply.
 
-### Phase 2: Four independent critiques (run ALL in parallel)
+### Phase 2: Five independent critiques (run ALL in parallel)
 
-Launch ALL FOUR of these simultaneously — the pre-mortem runs in parallel too, not after:
+Launch ALL FIVE of these simultaneously — the pre-mortem runs in parallel too, not after:
 
 1. **GPT-4o — Production & Security focus** — Run this curl command via Bash:
    ```
@@ -48,7 +48,22 @@ Launch ALL FOUR of these simultaneously — the pre-mortem runs in parallel too,
      }')" | jq -r '.candidates[0].content.parts[0].text'
    ```
 
-3. **Independent Claude critique — Structure & Gaps focus** — Use the Task tool with subagent_type "general-purpose" and this prompt:
+3. **Kimi K2.5 — Devil's Advocate (broad scope)** — Run this curl command via Bash:
+   ```
+   curl -s https://openrouter.ai/api/v1/chat/completions \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+     -d "$(jq -n --arg plan "$(cat /tmp/critique-plan.txt)" '{
+       model: "moonshotai/kimi-k2.5",
+       temperature: 0.3,
+       messages: [
+         {role: "system", content: "You are a devil'\''s advocate engineer who has joined this team specifically to challenge assumptions. You are brilliant, contrarian, and constructive. Your job is to find what everyone else will miss.\n\nCover ALL of these angles:\n1. Developer experience: Will this be maintainable by someone unfamiliar with the codebase? What is confusing, implicit, or under-documented?\n2. Edge cases & real-world data: What inputs, formats, or data volumes will break this? What works in testing but fails with production data?\n3. User impact: How will end users experience failures? Are there degraded states, slow paths, or confusing error messages?\n4. Hidden coupling: What parts of this plan are secretly dependent on each other? What changes in one place will silently break another?\n5. What is NOT in this plan that should be? (rollback plan, monitoring, feature flags, data backfill)\n\nDo NOT repeat points other reviewers would obviously catch (basic security, obvious architecture). Find the NON-OBVIOUS problems.\n\nReference specific task IDs (e.g., S1-T3) when possible. Under 400 words. Bullet points only."},
+         {role: "user", content: ("Critique this plan — what is everyone else missing?\n\n" + $plan)}
+       ]
+     }')" | jq -r '.choices[0].message.content'
+   ```
+
+4. **Independent Claude critique — Structure & Gaps focus** — Use the Task tool with subagent_type "general-purpose" and this prompt:
 
    > You are a senior software engineer reviewing an implementation plan you had no part in creating. You are the most ruthless reviewer on the team. You have no context beyond what's written here — if something is unclear or assumed, call it out.
    >
@@ -64,7 +79,7 @@ Launch ALL FOUR of these simultaneously — the pre-mortem runs in parallel too,
    > THE PLAN:
    > [paste the full plan text here]
 
-4. **Pre-mortem analysis** — Use the Task tool with subagent_type "general-purpose" and this prompt:
+5. **Pre-mortem analysis** — Use the Task tool with subagent_type "general-purpose" and this prompt:
 
    > You are conducting a pre-mortem analysis. Assume this plan was implemented exactly as written, deployed to production, and **failed catastrophically** 2 weeks later. You need to write the post-incident report.
    >
@@ -89,9 +104,10 @@ Launch ALL FOUR of these simultaneously — the pre-mortem runs in parallel too,
 
 ### Phase 3: Present results
 
-Show all four critiques clearly with headers:
+Show all five critiques clearly with headers:
 - **GPT-4o (Production & Security)**
 - **Gemini (Architecture & Alternatives)**
+- **Kimi K2.5 (Devil's Advocate)**
 - **Claude (Structure & Gaps)**
 - **Pre-Mortem (Failure Scenario)**
 
