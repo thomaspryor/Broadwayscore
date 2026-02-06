@@ -32,7 +32,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { searchAllPosts, collectCommentsFromPosts } = require('./lib/reddit-api');
+const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
 const { classifyAllComments } = require('./lib/buzz-classifier');
 
 // Parse command line args
@@ -623,7 +623,18 @@ async function main() {
     }
   }
 
+  // Print session stats
+  const sessionStats = getStats();
   console.log(`\nDone! Processed ${processed} shows, ${successful} with Reddit data.`);
+  console.log(`\nSession stats:`);
+  console.log(`  Reddit direct requests: ${sessionStats.redditDirect}`);
+  console.log(`  ScrapingBee requests: ${sessionStats.scrapingBee}`);
+  console.log(`  Rate limits hit: ${sessionStats.rateLimits}`);
+  console.log(`  Backoff retries: ${sessionStats.backoffRetries}`);
+  console.log(`  Errors: ${sessionStats.errors}`);
+  if (sessionStats.usingScrapingBee) {
+    console.log(`  (ended on ScrapingBee fallback)`);
+  }
 }
 
 main().catch(e => {
