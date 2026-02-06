@@ -26,6 +26,7 @@ const SCRAPINGBEE_COOLDOWN = 5 * 60 * 1000; // 5 min — then retry Reddit direc
 
 // State
 let useScrapingBee = false;
+let scrapingBeeDown = false; // Set true on 401 (credits exhausted) — stops retrying
 let scrapingBeeSwitchTime = 0;
 let rateLimitCount = 0;
 let lastRequestTime = 0;
@@ -89,7 +90,8 @@ async function fetchViaScrapingBee(url) {
             reject(new Error(`ScrapingBee JSON parse failed: ${data.slice(0, 100)}`));
           }
         } else if (res.statusCode === 401) {
-          reject(new Error('ScrapingBee 401 — credits may be exhausted'));
+          scrapingBeeDown = true;
+          reject(new Error('ScrapingBee credits exhausted (401) — disabling ScrapingBee'));
         } else {
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
         }
@@ -149,15 +151,21 @@ async function fetchWithFallback(url, retryCount = 0) {
     useScrapingBee = false;
   }
 
-  // If on ScrapingBee, try it first
-  if (useScrapingBee && process.env.SCRAPINGBEE_API_KEY) {
+  // If on ScrapingBee and it's not down, try it
+  if (useScrapingBee && process.env.SCRAPINGBEE_API_KEY && !scrapingBeeDown) {
     try {
       return await fetchViaScrapingBee(url);
     } catch (e) {
-      // ScrapingBee failed (e.g. credits exhausted) — try Reddit direct as last resort
+      // ScrapingBee failed — try Reddit direct as last resort
       console.warn(`  ScrapingBee failed: ${e.message}. Trying Reddit direct...`);
       useScrapingBee = false;
     }
+  }
+
+  // Both sources down — fail fast instead of looping
+  if (useScrapingBee && scrapingBeeDown) {
+    stats.errors++;
+    throw new Error('Both Reddit (403) and ScrapingBee (credits exhausted) are unavailable');
   }
 
   // Try Reddit direct
@@ -196,6 +204,12 @@ async function fetchWithFallback(url, retryCount = 0) {
  * Switch to ScrapingBee fallback
  */
 async function switchToScrapingBee(url) {
+  // If ScrapingBee is known to be down, don't bother
+  if (scrapingBeeDown) {
+    stats.errors++;
+    throw new Error('Reddit blocked (403) and ScrapingBee credits exhausted — both sources unavailable');
+  }
+
   useScrapingBee = true;
   scrapingBeeSwitchTime = Date.now();
 
@@ -327,6 +341,7 @@ function getStats() {
  */
 function resetFallbackState() {
   useScrapingBee = false;
+  scrapingBeeDown = false;
   scrapingBeeSwitchTime = 0;
   rateLimitCount = 0;
   lastRequestTime = 0;
