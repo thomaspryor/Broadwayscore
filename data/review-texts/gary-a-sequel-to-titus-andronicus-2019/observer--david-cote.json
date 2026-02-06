@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Playwright Taylor Mac's Gary has likewise cannibalized Titus with savage relish. What Mac excretes from the feast is a pungent, runny substance that won't be to everyone's taste. Still, give this prodigious artist credit for trying to transmute the Bard's crassest, bloodiest play into an ethical work of theater.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What Mac excretes from the feast is a pungent, runny substance that won't be to everyone's taste.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic uses visceral, unflattering imagery ('excretes,' 'pungent, runny substance') while acknowledging artistic ambition. Single excerpt warning applies - this could be cherry-picked from a more positive overall review. | GPT-4o: The review acknowledges the ambitious attempt but suggests that the result may not appeal to all audiences, indicating a mixed reception. | Gemini: The review uses negative imagery (\"excretes\", \"pungent, runny substance\") but also acknowledges the artist's attempt to create an ethical work. The phrase \"won't be to everyone's taste\" suggests a mixed reaction. | Kimi: The excerpt admires the 'prodigious artist' and their bold ambition to adapt Shakespeare's bloodiest play, but describes the result as a 'pungent, runny substance' using excretory imagery that suggests the work is difficult to stomach and not broadly recommendable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:04:22.191Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

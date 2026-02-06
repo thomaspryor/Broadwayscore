@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "I'll admit it, I love the Disney Channel and recently discovered the High School Musical franchise (I never claimed to be a trendsetter). I was curious to see what VHud would do with this classic part. I came away both impressed and a bit underwhelmed at the same time. In many ways she's almost too perfect a choice to play the bubbly Gigi. She does a fabulous job in the first half of the production where she plays the young, bubbly, tomboyish teenager, but the transition into adult Gigi feels od",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Broadway-Bound-GIGI-Opens-at-Kennedy-Center--UPDATED-20150203",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I came away both impressed and a bit underwhelmed at the same time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly states being 'impressed and underwhelmed at the same time,' indicating mixed feelings. Praises VHud's first-half performance but notes issues with the adult transition. Text appears cut off mid-sentence, limiting confidence. | GPT-4o: The critic expresses mixed feelings, being impressed by Vanessa Hudgens' performance in the first half but underwhelmed by the transition to adult Gigi. The excerpt suggests a balanced view without a clear recommendation. | Gemini: The review excerpt expresses mixed feelings, praising the actress's performance in the first half but noting a less successful transition. Due to the truncated nature of the text, confidence is low. | Kimi: The critic explicitly describes mixed feelings, praising the first half as 'fabulous' but expressing disappointment in the transition to the second half (text cuts off mid-criticism). The balanced praise and criticism place this in the Mixed bucket, with low confidence due to single-excerpt truncation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:12:26.909Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

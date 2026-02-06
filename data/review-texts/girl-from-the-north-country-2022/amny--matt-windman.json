@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Kitchen sink drama is beautifully intermixed with approximately 20 Bob Dylan songs in 'Girl from the North Country,' a haunting, mysterious and stunning new musical written and directed by Irish playwright Conor McPherson and set in Duluth, Minnesota (Dylan's hometown) during the Depression. It has arrived on Broadway following earlier runs in London and Off-Broadway at the Public Theater.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kitchen sink drama is beautifully intermixed with approximately 20 Bob Dylan songs in 'Girl from the North Country,' a haunting, mysterious and stunning new musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('beautifully intermixed', 'haunting, mysterious and stunning') suggests enthusiastic recommendation, but single excerpt limits confidence in full verdict. | GPT-4o: The excerpt uses strong positive language ('haunting, mysterious and stunning') to describe the musical, suggesting a highly favorable view. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt uses strong positive language like \"beautifully intermixed,\" \"haunting, mysterious and stunning.\" Given the single excerpt warning, I'm scoring it as positive with a higher score due to the enthusiastic tone. | Kimi: The excerpt uses strongly positive evaluative language ('beautifully intermixed', 'haunting', 'mysterious', 'stunning') indicating clear enthusiasm for the production, though confidence is reduced due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:16:35.466Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

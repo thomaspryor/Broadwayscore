@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Jeanine Tesori's music still resonates (the sharp-as-a-razor book is by Lisa Kron). Crowd-pleasing comic turns have Small Alison and her brothers (Oscar Williams and Zell Steele Morrow, both talented mop-tops) imagining a TV commercial for the 'Fun Home.' In a fantasy sequence, Lucas recasts the people in her orbit as members of The Partridge Family.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUN-HOME-Opens-on-Broadway--Updating-LIVE-20150419"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUN-HOME-Opens-on-Broadway--Updating-LIVE-20150419",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jeanine Tesori's music still resonates (the sharp-as-a-razor book is by Lisa Kron).",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises music and book as 'sharp-as-a-razor' and notes 'crowd-pleasing' moments, but limited text prevents assessment of full verdict. | GPT-4o: The excerpt praises the music and book, indicating a positive view. However, the single excerpt and lack of full context mean the confidence is low, and the score is on the lower end of the Positive range. | Gemini: The excerpt praises the music and book, and describes some enjoyable scenes. With only one excerpt, it's difficult to gauge the overall recommendation strength, but it leans positive. | Kimi: The excerpt offers enthusiastic praise for the show's music ('resonates'), book ('sharp-as-a-razor'), and performances ('crowd-pleasing', 'talented'), indicating a clear recommendation. Per the single-excerpt guidance, the clearly positive tone warrants an upper-range Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:58:56.088Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "First seen in New York in 1987 with James Earl Jones, 'Fences' has now returned with an equally starry actor, Denzel Washington in the lead. Washington, last on Broadway in 2005 in a production of 'Julius Caesar,' acquits himself well in this blistering revival, directed with a sure, steady hand by Wilson veteran Kenny Leon. It's a big, bold performance in a big, bold play, rife with emotion-drenched soliloquies for its star about life, love, death and the devil.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Washington, last on Broadway in 2005 in a production of 'Julius Caesar,' acquits himself well in this blistering revival, directed with a sure, steady hand by Wilson veteran Kenny Leon.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for Washington's performance and Leon's direction, calling it a 'blistering revival' with 'big, bold' performances. Single excerpt limits confidence but language is clearly positive. | GPT-4o: The excerpt praises Denzel Washington's performance and the direction of the revival, describing it as 'blistering' and 'bold'. The positive language suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review uses positive language such as \"acquits himself well\" and \"blistering revival\", indicating a positive recommendation. The description of Washington's performance as \"big, bold\" further supports this. | Kimi: The excerpt delivers enthusiastic praise for Washington's performance and the revival, using words like 'blistering' and 'bold,' though the limited context prevents a higher confidence assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:25:33.279Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

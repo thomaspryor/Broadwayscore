@@ -16,7 +16,7 @@
   "bwwExcerpt": "In the paradoxically plaintive and joyous sound of a castrato's voice channeling Handel's music, the King has glimpsed a paradise beyond his fractious court and his burdened royal self. Trying to create that idyllic vision in the real world, in a rustic outpost in the forest in the second act, is an experiment doomed to failure. But watching Mr. Rylance's Philippe experience Farinelli's voice, we hear what we hears. And an actor and a singer temporarily turn a night at the theater in an anxious city into an Eden beyond worldly care, all the more precious for its evanescence.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FARINELLI-AND-THE-KING-Arrives-on-Broadway-with-Mark-Rylance-Updating-Live-20171217",
   "showScoreExcerpt": "Mr. Rylance brings his gift for conjuring sublime eccentricity to the role of Philippe V of Spain, a deeply depressed monarch who finds solace only in the voice of the castrato singer Farinelli.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (33 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "https://www.nytimes.com/2017/12/17/theater/farinelli-and-the-king-review-mark-rylance.html",
@@ -26,5 +26,10 @@
     "bww-reviews",
     "bww-roundup"
   ],
-  "bwwScore": 8
+  "bwwScore": 8,
+  "rejectedAt": "2026-02-05T23:22:32.658Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or caption, not a complete review with evaluation or recommendation; openai: This text is a brief description of Mark Rylance's performance, not a full review or evaluation of the show.; gemini: This is a brief mention of a performance, not a full review with a recommendation.",
+  "promptVersion": "5.2.0"
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "Having sat through the sweaty, janky garbage fire Gettin' the Band Back Together, I strongly suspect that producer and book writer Ken Davenport has a chest tattoo that reads (in Gothic script), \"No one ever went broke underestimating the intelligence of the American public.\" Davenport, who is also responsible for My First Time (about losing your virginity), The Awesome '80s Prom and That Bachelorette Show, seems to never hesitate in grabbing, shall we say, the fruit that hangs low.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-GETTIN-THE-BAND-BACK-TOGETHER-on-Broadway-20180813",
   "contentTier": "excerpt",
-  "playbillVerdictUrl": "http://observer.com/2018/08/review-gettin-the-band-back-together-is-a-sweaty-garbage-fire/"
+  "playbillVerdictUrl": "http://observer.com/2018/08/review-gettin-the-band-back-together-is-a-sweaty-garbage-fire/",
+  "assignedScore": 16,
+  "llmScore": {
+    "score": 16,
+    "confidence": "high",
+    "range": {
+      "low": 11,
+      "high": 21
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Having sat through the sweaty, janky garbage fire Gettin' the Band Back Together",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating language including 'garbage fire,' 'janky,' and accusations that the producer deliberately underestimates audience intelligence. This is a clear pan with no redeeming qualities mentioned. | GPT-4o: The excerpt uses highly negative language ('sweaty, janky garbage fire') and implies a low opinion of the show's creator. The lack of full context and single excerpt warning suggest caution, but the tone is clearly a strong pan. | Gemini: The review excerpt is extremely negative, calling the show a \"garbage fire\" and questioning the intelligence of the audience. Given the single excerpt warning, I am scoring this as a pan with low confidence. | Kimi: The critic uses devastating language ('garbage fire') to describe the show and attacks the creator's artistic judgment as pandering to low tastes, indicating a deep pan. Confidence is low due to availability of only one excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:06:40.545Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 15,
+    "geminiScore": 15,
+    "kimiScore": 15,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

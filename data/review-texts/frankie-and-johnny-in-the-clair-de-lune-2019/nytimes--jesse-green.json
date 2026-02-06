@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Ms. Arbus, making a strong Broadway debut after a decade of critical success Off Broadway, seems to have realized that the comedy is crucial, not only because her stars trail tragic associations from most of their previous roles but also because the play can teeter on the edge of bathos. Her strategy of dryness and detail and specificity - leaving the poetry to Natasha Katz's lighting - pays off.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Her strategy of dryness and detail and specificity - leaving the poetry to Natasha Katz's lighting - pays off.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praise for director's approach that 'pays off' and lighting design suggests positive assessment, but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises the director's approach, highlighting a successful strategy and a strong Broadway debut. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt praises the director's choices and their positive impact on the play. Given the single excerpt, the confidence is low, but the tone is generally positive, suggesting a recommendation with reservations. | Kimi: The excerpt offers clear praise for the director's Broadway debut ('strong') and her successful handling of the play's tone, noting her strategy 'pays off.' Given this is a single curated excerpt with clearly positive language, it falls in the upper range of Positive, though confidence is reduced due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:49:27.464Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

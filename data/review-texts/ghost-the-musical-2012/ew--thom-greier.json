@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The chief draws of Warchus' production are the high-tech set (by designer Rob Howell), the cinematic video projections (designed by Jon Driscoll), the striking lighting (designed by Hugh Vanstone), and illusionist Paul Kieve's onstage magic effects that let Sam move objects and walk through walls. Like Spider-Man Turn Off the Dark, the musical version of Ghost haunts the eye, not the ear.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like Spider-Man Turn Off the Dark, the musical version of Ghost haunts the eye, not the ear.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises technical elements but compares it to the notoriously problematic Spider-Man musical, suggesting visual spectacle over substantive musical achievement. Single excerpt warning requires caution about overall verdict. | GPT-4o: The review highlights the impressive visual elements but implies a lack of auditory impact, suggesting a mixed verdict. The single excerpt and lack of a clear rating contribute to low confidence. | Gemini: The review focuses on the visual aspects of the production while explicitly stating the music is not a strong point. This suggests a mixed experience, leaning towards visual appeal over musical quality. | Kimi: The critic praises the technical elements (set, projections, lighting, illusions) as the 'chief draws' but damningly compares the show to the notorious 'Spider-Man Turn Off the Dark,' implying impressive visuals cannot compensate for a lacking auditory/musical experience ('not the ear').",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:09:47.317Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

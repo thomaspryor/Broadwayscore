@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "'Fish in the Dark,' the new Broadway comedy written by and starring Larry David, might as well be called 'Curb Your Enthusiasm: Live' or 'Larry David and Friends'...the bespectacled, balding David is playing the same sort of socially awkward, extremely inappropriate, befuddled, self-centered smartass. Hardly a great work of dramatic literature, 'Fish in the Dark' hearkens back to the silly and insubstantial Broadway comedies of the 1960s, full of one-dimensional characters and nonsensical farce...'Fish in the Dark' is essentially just a showcase for David, with the other characters serving as stick figures for him to play off. Without him, there would be no point to the play. It would be casting someone else to play him on 'Curb Your Enthusiasm.' David's abilities as a stage actor are limited (especially his vocal projection), but he is nevertheless idiosyncratic, relatable and sort of endearing. You may not want to see him do Shakespeare, but you do leave the theater wanting to hang out with the guy.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FISH-IN-THE-DARK-Opens-on-Broadway-Updating-LIVE-20150305"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FISH-IN-THE-DARK-Opens-on-Broadway-Updating-LIVE-20150305",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hardly a great work of dramatic literature, 'Fish in the Dark' hearkens back to the silly and insubstantial Broadway comedies of the 1960s.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review criticizes the play as insubstantial with one-dimensional characters and nonsensical farce, while acknowledging David's limited but endearing stage presence. The mixed signals (harsh critique of the work but finding David relatable) place this in the mixed category. | GPT-4o: The review acknowledges the play's limited dramatic value and reliance on Larry David's persona, suggesting it's more of a vehicle for his fans than a substantial work. While it notes some endearing qualities, the overall tone is mixed, neither strongly recommending nor discouraging attendance. | Gemini: The review acknowledges the play's flaws (insubstantial, one-dimensional) but also finds David relatable and endearing. It's a mixed bag, leaning towards positive for fans of David's persona. | Kimi: The critic dismisses the play as one-dimensional farce and a star vehicle with 'no point' without David, but acknowledges his idiosyncratic, endearing presence makes it somewhat enjoyable. The single excerpt shows significant reservations about the work itself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:35:59.659Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

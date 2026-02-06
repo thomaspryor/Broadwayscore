@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Gary is a farce, a piece of messy circus whose many tones and shades will likely divide audiences and critics. But there is nothing like it on Broadway, and that is to be welcomed. It is an argument for art, and a passionate call for resistance-a pie of clashing ingredients just as is served for tea in the play. All three characters make their own brave moves at the end to effect some kind of change.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But there is nothing like it on Broadway, and that is to be welcomed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges the show is messy and will divide audiences, but ultimately celebrates its uniqueness and artistic merit as 'to be welcomed.' This is a qualified positive recommendation, but the single excerpt warning and divisiveness mentioned keeps it in the lower positive range. | GPT-4o: The excerpt suggests a unique and divisive production, but the tone is welcoming and acknowledges its artistic value. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review acknowledges the divisive nature of the play, calling it a \"messy circus\" but also welcomes its uniqueness on Broadway. The overall sentiment is mixed, suggesting it's not a clear recommendation or discouragement. | Kimi: While acknowledging the show's messy, divisive nature and 'clashing ingredients,' the critic explicitly welcomes its uniqueness and praises it as an 'argument for art' and 'passionate call for resistance,' constituting a recommendation with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:03:42.388Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 65,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

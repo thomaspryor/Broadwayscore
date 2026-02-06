@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "There are some 40 people in the play and Ferguson voices all of them, from a mafia wiseguy to an imperious Bon Appetit magazine staffer, to an 86-year-old furniture maker to a Park Avenue socialite. He goes from stuffy French to surfer-guy cool in milliseconds. The 90-minute show...is a triumph of voices and athleticism from Ferguson...The amount of concentration required by Ferguson is impressive and director Jason Moore runs a tight ship. One stray ring or bobbled cue could set the whole thing off, but Ferguson runs through 'Fully Committed' surefooted like an Olympian on an obstacle course.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FULLY-COMMITTED-Starring-Jesse-Tyler-Ferguson-Opens-on-Broadway-Updating-LIVE-20160425"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FULLY-COMMITTED-Starring-Jesse-Tyler-Ferguson-Opens-on-Broadway-Updating-LIVE-20160425",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The 90-minute show...is a triumph of voices and athleticism from Ferguson.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling the performance 'a triumph' and comparing Ferguson to 'an Olympian,' but only one excerpt available so confidence is medium. | GPT-4o: The excerpt praises the show as a 'triumph' and highlights Ferguson's impressive performance and the director's skill. The language is enthusiastic, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"triumph\" and praises Ferguson's performance and athleticism. The comparison to an Olympian suggests a high level of skill and success. | Kimi: The excerpt offers unqualified praise, calling the show a 'triumph' and the performer 'impressive' and 'surefooted like an Olympian,' indicating strong approval. Confidence is low due to the single-excerpt warning about potentially cherry-picked quotes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:54:03.402Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

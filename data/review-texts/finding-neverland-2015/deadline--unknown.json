@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Finding Neverland flies. Occasionally it even soars. The miracle is that the darned thing not only got off the ground, but that this musical prequel to the Peter Pan story arrives on Broadway much improved after a storied, bumpy tour of the hinterlands, with its intermittent charms intact, many of its missteps gone or at least minimized...the script, by James Graham, has been sharpened so as not to treat the audience too much like idiots...Perhaps Weinstein and Paulus were correct in replacing Jordan with the better-known Morrison, who has the look and voice of a Broadway star but is something of a stiff. The role wants a mood transplant, a child-like quality to which Jordan was more suited. Grammer, on the other hand, is an indisputable improvement...As Hook, he's just a ton of fun...sashaying around the stage, brandishing his hook and bullying J.M...As to the score by pop writers Gary Barlow and Eliot Kennedy, well it doesn't offend, but I was still impervious to its desperate attempts to win me over...Finding Neverland is still too treacly...and the tear-wringing ending just goes on forever...But there's an audience for this show, which is visually cunning and something of a warm bath without being too insulting.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FINDING-NEVERLAND-Opens-on-Broadway-Updating-LIVE-20150415"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FINDING-NEVERLAND-Opens-on-Broadway-Updating-LIVE-20150415",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Finding Neverland flies. Occasionally it even soars.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review acknowledges improvements and some positive elements ('flies,' 'soars,' 'visually cunning') but criticizes the score as unmemoving, calls it 'too treacly,' and notes significant casting/tonal issues. The critic finds an audience for it but doesn't recommend it enthusiastically. | GPT-4o: The review acknowledges improvements and some enjoyable elements, but also notes persistent flaws and a lack of emotional impact from the score. The overall tone suggests a mixed reception with both positive and negative aspects. | Gemini: The review acknowledges improvements and charms, but also notes treacly elements and a drawn-out ending. It suggests an audience for the show, indicating a positive but not rave recommendation. | Kimi: The review acknowledges the production has improved significantly from its troubled development and offers intermittent charms and fun performances (particularly Grammer), but criticizes the stiff lead, desperate score, treacly tone, and overlong ending, resulting in a qualified, lukewarm endorsement rather than enthusiastic praise. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:30:59.675Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "My takeaway when Girl From the North Country opened at the Public Theater last fall: 'An American musical by people who hate musicals and don't know America.' Sounds harsh, but I stand by it. Although I've adored Irish writer-director Conor McPherson's work for years, I found his book for this Bob Dylan jukebox musical to be a pile of Depression-era clichés one might amass from a week of binging TCM or skimming Steinbeck. As for the integration of Dylan songs, the tracks don't illuminate character or plot so much as pause the narrative so everyone can enjoy a folksy singalong (cast members even climb into the drum kit). The result - which began as a hit on London's West End with a non-American cast - seemed to me a creaky period play wrapped around a tribute concert, all imbued with a gothic, melancholic vibe because everyone onstage is broke, unloved, addicted, mad or running from the past.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 29,
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 24,
+      "high": 34
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An American musical by people who hate musicals and don't know America.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Pan/Negative) - using median score | Claude: The critic delivers a scathing assessment, calling the book 'a pile of Depression-era clichés' and dismissing it as 'a creaky period play wrapped around a tribute concert.' The opening quote and sustained harsh criticism throughout indicate a strong pan. | GPT-4o: The critic expresses disappointment with the book and the integration of Dylan's songs, describing the musical as clichéd and lacking in narrative integration. While there is no explicit recommendation to avoid, the overall tone is clearly negative. | Gemini: The review is largely negative, describing the show as a \"creaky period play wrapped around a tribute concert\" and criticizing the book and integration of Dylan's songs. Given the single excerpt and negative tone, I'm placing it in the negative bucket with low confidence. | Kimi: The critic reaffirms a previous harsh assessment, describing the book as a pile of clichés and the song integration as ineffective, with no redeeming qualities mentioned. | Buckets: claude=Pan, openai=Negative, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:18:30.245Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 40,
+    "geminiScore": 40,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Pan/Negative) - using median score"
+  }
 }

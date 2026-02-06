@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "How does Falsettos look nearly 25 years on? Just great--with only the merest reservations that certainly don't have anything to do with the several brilliant Finn songs. They begin with the outrageous (particularly in Jennifer Caprio's Biblical costumes) opening number, 'Four Jews in a Room Bitching' and include Trina's 'I'm Breaking Down,' Marvin's 'What More Can I Say?' and Whizzer's 'The Games I Play.'",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FALSETTOS-Opens-on-Broadway--Updating-Live-20161027"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FALSETTOS-Opens-on-Broadway--Updating-Live-20161027",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "How does Falsettos look nearly 25 years on? Just great--with only the merest reservations",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict ('Just great') with explicit minimal reservations. Praises multiple songs as 'brilliant' and 'outrageous.' Single excerpt warning applied - using upper end of Positive range. | GPT-4o: The excerpt is highly positive about the production, praising the songs and overall presentation. The mention of 'merest reservations' suggests minimal criticism, leading to a strong positive score. However, the single excerpt warning reduces confidence. | Gemini: The review states the show looks \"just great\" with only minor reservations. Given the limited text, a score in the lower end of the positive bucket seems appropriate. | Kimi: The critic enthusiastically describes the production as 'just great' with only minimal reservations, specifically praising the 'brilliant' songs and 'outrageous' opening number, indicating a strong positive recommendation despite limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:19:30.614Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

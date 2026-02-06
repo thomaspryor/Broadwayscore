@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "David's play exploits human foibles - those silly, petty, mindless things that we think and do, like trying to find some real wood to knock on. In David's world, everything is a setup for his characters' self-centered behavior. With the stellar cast directed by Anna D. Shapiro, the payoffs are genuinely hysterical...He generously surrounds himself with masters of comic timing; Jayne Houdyshell, Lewis J. Stadlen, Rosie Perez, Rita Wilson, MaryLouise Burke and Ben Shenkman among them. Fans will be happy to note that David has the exact same whiny high-pitched persona from TV, hilariously kvetching all the way.",
-  "bwwScore": 7
+  "bwwScore": 7,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With the stellar cast directed by Anna D. Shapiro, the payoffs are genuinely hysterical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'stellar cast', 'genuinely hysterical', and praise for comic timing. Single excerpt warning suggests using upper Positive range given the enthusiastic tone. | GPT-4o: The excerpt praises the cast and direction, highlighting the humor and effectiveness of the play. The tone is clearly positive, suggesting a strong recommendation. | Gemini: The review praises the cast, direction, and humor, describing the payoffs as \"genuinely hysterical.\" The overall tone is positive and enthusiastic, suggesting a strong recommendation. | Kimi: The excerpt describes the production as 'genuinely hysterical' with a 'stellar cast' of 'masters of comic timing,' indicating strong comedic entertainment value despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:37:51.092Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

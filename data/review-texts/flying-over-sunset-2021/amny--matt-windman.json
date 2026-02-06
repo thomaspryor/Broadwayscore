@@ -8,12 +8,65 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
   ],
   "bwwExcerpt": "Unfortunately, 'Flying Over Sunset' is an artistic misfire - and a nearly three-hour slog to sit through. The book is devoid of conflict (relying instead of introspection and confession), expository (filling in details about the politics of the period), repetitive (with the second act more or less mirroring the first act), and indulgently weird (including a sequence in which Grant imagines himself as a 'giant penis rocket ship'). The unexpected highlight of the show ends up being a lengthy tap duet between Yazbeck and Atticus Ware (who plays Archie Leach, Grant's younger self).",
   "bwwScore": 6,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FLYING-OVER-SUNSET-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211213",
-  "showScoreExcerpt": "\"Unfortunately, “Flying Over Sunset” is an artistic misfire – and a nearly three-hour slog to sit through. The book is devoid of conflict (relying instead of introspection and confession), expository (filling in details about the politics of the period), repetitive (with the second act more or less mirroring the first act), and indulgently weird...With the exception of the evocative title song (which is powerfully performed by Cusack), the ethereal score is weighed down by prosaic lyrics and a lack of melody.\"\n\nRead more"
+  "assignedScore": 39,
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 34,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, 'Flying Over Sunset' is an artistic misfire - and a nearly three-hour slog to sit through.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict calling the show an 'artistic misfire' and 'slog.' Despite praising one tap duet, the overall assessment is strongly discouraging with multiple criticisms of the book. | GPT-4o: The review describes the show as an 'artistic misfire' and 'a nearly three-hour slog,' indicating a negative verdict. While there is praise for a specific performance, the overall tone is critical of the show's structure and content. | Gemini: The review excerpt uses strong negative language like \"artistic misfire\" and \"three-hour slog.\" While there's mention of a highlight, the overall tone is clearly negative, indicating a lack of recommendation. | Kimi: The critic delivers a harsh assessment, condemning the book as repetitive, expository, and weird while calling the show an artistic misfire and a slog, with only one tap sequence earning praise as an unexpected highlight.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:39:56.283Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 40,
+    "kimiScore": 30,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

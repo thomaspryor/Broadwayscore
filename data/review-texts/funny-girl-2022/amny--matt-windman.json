@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "On the other hand, Michele's performances of 'I'm the Greatest Star' and 'Don't Rain On My Parade' are absolutely exhilarating, prompting frenzied excitement and mid-show standing ovations. Michele also throws herself into her character's comedy bits, even though her efforts are more hard-working than inspired or genuinely funny.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUNNY-GIRL-Returns-to-Broadway--Updating-Live-20220424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUNNY-GIRL-Returns-to-Broadway--Updating-Live-20220424",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Michele's performances of 'I'm the Greatest Star' and 'Don't Rain On My Parade' are absolutely exhilarating, prompting frenzied excitement and mid-show standing ovations.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows strong praise for Michele's musical performances but criticizes her comedy as 'hard-working' rather than 'inspired or genuinely funny.' Without full review context, this suggests mixed assessment. | GPT-4o: The excerpt highlights exhilarating performances that prompt excitement and standing ovations, indicating a positive reception. However, the note about comedy bits being more hard-working than inspired suggests some reservations. | Gemini: The review excerpt highlights exhilarating performances and audience excitement, but also mentions that some comedic efforts are \"more hard-working than inspired.\" Given the strong positive language and standing ovations, I'm placing it in the positive bucket, but with a slightly lower confidence due to the single excerpt. | Kimi: While the excerpt contains strong praise for Michele's musical numbers ('absolutely exhilarating,' 'standing ovations'), the criticism of her comedy as 'more hard-working than inspired' tempers the recommendation. As a single curated excerpt with mixed signals, this falls in the mildly positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:59:33.635Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 19,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

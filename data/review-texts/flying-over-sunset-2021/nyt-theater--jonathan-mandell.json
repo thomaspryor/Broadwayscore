@@ -8,12 +8,65 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
   ],
   "bwwExcerpt": "There are certainly some highlights in 'Flying Over Sunset,' chief among them Tony Yazbeck's phenomenal dancing as Cary Grant, accompanied step by step by 14-year-old newcomer Atticus Ware as his younger self. The choreographer, Michelle Dorrance, was a star performer in Stomp, and we hear the influence. The rest of the cast is also first-rate. However, after sitting through the nearly three hours of this unique fusion of high-minded spiritual contemplation, gossipy biographical tidbits, subtle comedy and fabricated hallucinations all presented in song and dance, I was never completely persuaded that these three famous figures belong in the same musical; indeed, it seemed unlikely that they would have had anything to do with one another.",
   "bwwScore": 7,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FLYING-OVER-SUNSET-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211213",
-  "showScoreExcerpt": "There are certainly some highlights in “Flying Over Sunset,” chief among them Tony Yazbeck’s phenomenal dancing as Cary Grant...However, after sitting through the nearly three hours of this unique fusion of high-minded spiritual contemplation, gossipy biographical tidbits, subtle comedy and fabricated hallucinations all presented in song and dance, I was never completely persuaded that these three famous figures belong in the same musical\n\nRead more"
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I was never completely persuaded that these three famous figures belong in the same musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic praises specific performances and cast but fundamentally questions the show's premise and coherence, indicating mixed feelings without clear recommendation. | GPT-4o: The review praises specific elements like Yazbeck's performance and the choreography but expresses doubt about the coherence of the musical's concept. The mixed tone and lack of a clear recommendation suggest a score in the Mixed bucket. | Gemini: The review praises the performances and choreography but ultimately finds the premise unconvincing and the overall experience lacking a cohesive connection between the characters. | Kimi: While the critic praises specific performances as 'phenomenal' and 'first-rate,' the review concludes with fundamental reservations about whether the show's central conceit works, suggesting the three figures don't belong together dramatically.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:40:41.485Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

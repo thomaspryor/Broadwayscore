@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The show, which runs about 2 1/2 hours, could be tightened here and there. But as helmed by Fisher Stevens, it makes for a very entertaining, physical and heartfelt piece of theater.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it makes for a very entertaining, physical and heartfelt piece of theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict calling the show 'very entertaining' and 'heartfelt' despite noting pacing issues. Single excerpt limits confidence in full review sentiment. | GPT-4o: The excerpt describes the show as 'entertaining' and 'heartfelt', indicating a positive recommendation. Although it mentions the show could be tightened, the overall tone is clearly positive. Given the single excerpt warning, the score is placed on the higher end of the positive range. | Gemini: The review states that the show \"makes for a very entertaining, physical and heartfelt piece of theater,\" which is a positive assessment. The phrase \"could be tightened here and there\" indicates a reservation, but the overall tone is positive. | Kimi: Despite noting the show could be tightened, the critic describes it as 'very entertaining' and 'heartfelt,' indicating a clear recommendation with only minor reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:07:03.937Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

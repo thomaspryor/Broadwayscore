@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Daniel Aukin's production...is also sensationally acted...Arianda vividly embodies the conflict between May's sensuality and shame as she bounces from the bed to the bathroom to the front door of the shabby motel room...(The way she wields her long blond hair, which covers her face when she's disgusted and furiously flies in all directions when her violent temper has been stoked, is something to see.) But the revelation for me was Rockwell, who sheds new light on Eddie...Eddie is often portrayed as a Marlboro Man, a last holdout of the iconic West. Rockwell shows that he can lasso furniture as adroitly as any carnival cowboy, but there's a charming clumsiness to his characterization. He's fleshy and clownish -- qualities that intensify the violent threat.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Daniel Aukin's production...is also sensationally acted",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction ('sensationally acted') and detailed appreciation of both lead performances. The critic finds Rockwell's portrayal 'revelatory' and praises Arianda's vivid embodiment. Single excerpt warning applies, but the consistently enthusiastic tone suggests upper Positive range. | GPT-4o: The excerpt provides strong praise for the acting and production, highlighting vivid performances and a fresh take on characters. Despite the single excerpt warning, the language suggests a strong positive impression. | Gemini: The excerpt focuses on the sensational acting and vivid embodiment of characters, suggesting a positive experience. Given the single excerpt warning, I'm placing it at the higher end of the positive bucket. | Kimi: The excerpt offers enthusiastic praise for the performances ('sensationally acted', 'vividly embodies', 'revelation'), indicating strong approval. However, given this is a single curated excerpt that focuses only on acting, the score is placed at the upper end of the Positive bucket per the single-excerpt guidance rather than in the Rave category.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:46:26.444Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

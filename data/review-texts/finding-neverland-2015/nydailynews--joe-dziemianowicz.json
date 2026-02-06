@@ -7,12 +7,65 @@
   "source": "bww-reviews",
   "sources": [
     "bww-reviews",
-    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "Matthew Morrison doesn't push. His ever-genuine and impressively easygoing star turn as writer J.M. Barrie in 'Finding Neverland' is what makes his return to Broadway after six seasons of 'Glee' cast such an irresistible spell. Less can be more, and he knows it. If only producer Harvey Weinstein and director Diane Paulus had learned that lesson...Barrie's scenes with the boys and Sylvia are the show's most big-hearted. Kelly, known for 'Mary Poppins,' is so sublime you wish she had more to do. 'What You Mean to Me,' a romantic pop duet she shares with Morrison, is the production's sweetest moment. Kelly is also center stage for the production's most touching moment near the end -- a breathtaking scene that suggests the people we love are like stars that look over us.",
   "bwwScore": 6,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FINDING-NEVERLAND-Opens-on-Broadway-Updating-LIVE-20150415",
-  "showScoreExcerpt": "\"Less can be more...If only producer Harvey Weinstein and director Diane Paulus had learned that lesson. To be sure, James Graham, who adapted the story, and Gary Barlow and Eliot Kennedy, who wrote the colorful and melodious score, have come up with much to like in this fictionalized account of the creation of Peter Pan. But Paulus’ staging can — and does — go overboard...The show also strains to be adorable, like a male \"Matilda.\"\"\n\nRead more"
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Less can be more, and he knows it. If only producer Harvey Weinstein and director Diane Paulus had learned that lesson",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Praises Morrison and Kelly's performances with terms like 'sublime' and 'irresistible spell,' but the pointed critique of producer/director suggests significant production problems. Single excerpt warning applies - this may not represent full verdict. | GPT-4o: The excerpt praises Morrison's performance as 'irresistible' and highlights touching moments in the show, indicating a positive review. However, it also hints at some reservations about the production as a whole, leading to a score at the lower end of the Positive range. | Gemini: The review praises Morrison's performance and Kelly's role, highlighting touching moments. While there's a slight critique of the production overall, the positive aspects, especially the performances, suggest a recommendation. | Kimi: Strong praise for lead performances (Morrison and Kelly) with words like 'irresistible spell,' 'sublime,' and 'breathtaking,' though includes criticism of the production's direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:33:02.147Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 19,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

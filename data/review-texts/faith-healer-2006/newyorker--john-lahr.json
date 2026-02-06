@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ralph Fiennes gives a performance of such intensity and intelligence that he seems to be channeling Friel's own artistic struggle with the mysteries of inspiration.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ralph Fiennes gives a performance of such intensity and intelligence that he seems to be channeling Friel's own artistic struggle with the mysteries of inspiration.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ralph Fiennes gives a performance of such intensity and intelligence that he seems to be channeling Friel's own artistic struggle with the mysteries of inspiration.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance with strong superlatives ('intensity and intelligence', 'channeling'). However, with only one curated quote available, this could be cherry-picked praise from a mixed review. Given the high praise language, scored at upper Positive range but low confidence due to limited text. | GPT-4o: The excerpt praises Ralph Fiennes' performance with strong language ('intensity and intelligence'), suggesting a high level of recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt focuses solely on Ralph Fiennes' performance, describing it as intensely intelligent. Given the limited text, it's difficult to gauge the overall recommendation, but the strong praise suggests a positive leaning. | Kimi: The single excerpt provides clearly positive evaluation of Fiennes' performance using superlatives like 'intensity and intelligence,' but without additional context about the full production, confidence is reduced and score is placed in the upper Positive range per single-excerpt guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:18:35.582Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

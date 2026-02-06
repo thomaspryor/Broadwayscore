@@ -8,12 +8,65 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
   ],
   "bwwExcerpt": "Long-winded and impossibly earnest, the world-premiere musical, which marked its official opening Monday night at the Vivian Beaumont Theater, features an unremarkable score by Tom Kitt and Michael Korie and a lumbering book by James Lapine, who also directs. Their account is of the unlikely if actual acquaintanceship of movie star Cary Grant with writers Clare Boothe Luce, Aldous Huxley and Gerald Heard - and how they got together in Southern California in the mid-1950s to drop acid.",
   "bwwScore": 5,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FLYING-OVER-SUNSET-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211213",
-  "showScoreExcerpt": "\"This offbeat premise — smartly realized only by Beowulf Boritt’s scenic designs and the projections by 59 Productions — has been turned into an entertainment about as scintillating as an Agriculture Department instructional video on crop irrigation. It’s as if Lincoln Center Theater and the accomplished creative team (with two Pulitzer Prizes among them) came to the creative juncture of delightful and tedious and took the wrong fork.\n\nLong-winded and impossibly earnest, the world-premiere musical, which marked its official opening Monday night at the Vivian Beaumont Theater, features an unremarkable score by Tom Kitt and Michael Korie and a lumbering book by James Lapine, who also directs.\" \n\nRead more"
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Long-winded and impossibly earnest, the world-premiere musical features an unremarkable score and a lumbering book.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt contains consistently negative language ('long-winded', 'impossibly earnest', 'unremarkable score', 'lumbering book') with no positive elements mentioned. However, confidence is low because this is a single curated excerpt that may not represent the full review's verdict. | GPT-4o: The excerpt highlights significant criticisms of the musical's score and book, describing it as 'long-winded' and 'unremarkable'. The lack of positive elements suggests a negative verdict, but the single excerpt limits confidence. | Gemini: The review uses negative descriptors like \"long-winded\", \"unremarkable\", and \"lumbering\", indicating a negative assessment of the musical's key elements. | Kimi: The excerpt delivers an unambiguous pan, describing the score as 'unremarkable,' the book as 'lumbering,' and the overall work as 'long-winded and impossibly earnest.' Confidence is low due to the single-excerpt warning, but the evaluative language clearly signals a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:41:45.361Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

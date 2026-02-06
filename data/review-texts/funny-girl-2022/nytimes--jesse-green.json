@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Lea Michele, who took over the role on Sept. 6, turns out to be that stupendous Fanny. Yes, she even lights up like a light. Both vulnerable and invulnerable, kooky and ardent, she makes the show worth watching again. She can't make it good, though. Michael Mayer's production is still garish and pushy, pandering for audience overreaction. A confetti cannon tries to put an exclamation point on a dud dance. Many of the minor players overplay. The lighting by Kevin Adams would make a rat clap, and the unusually ugly set by David Zinn seems weaponized against intimacy. It looks like a missile silo. But at least 'Funny Girl' now has a missile: a performer who from her first words ('Hello, Gorgeous') shoots straight to her target and hits it.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUNNY-GIRL-Returns-to-Broadway--Updating-Live-20220424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUNNY-GIRL-Returns-to-Broadway--Updating-Live-20220424",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She makes the show worth watching again. She can't make it good, though.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Strong praise for Michele's performance ('stupendous', 'missile') but harsh criticism of the production itself ('garish', 'pushy', 'dud'). The critic explicitly states the show isn't good despite the stellar lead performance. | GPT-4o: The review praises Lea Michele's performance as a highlight, making the show 'worth watching again', but criticizes the production as 'garish and pushy' with several negative comments about the set and direction. The excerpt suggests a mixed verdict with strong performer praise but significant production flaws. | Gemini: The review praises Lea Michele's performance, stating she makes the show worth watching again. However, it also criticizes other aspects of the production, such as the direction and set design, indicating a mixed but ultimately positive assessment. | Kimi: While the critic heavily criticizes the production elements ('garish and pushy,' 'ugly set'), the explicit verdict that Michele 'makes the show worth watching again' constitutes a qualified recommendation based solely on her performance. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:01:44.329Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

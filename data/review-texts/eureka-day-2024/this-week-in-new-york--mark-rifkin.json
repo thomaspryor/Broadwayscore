@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "\"Jonathan Spector’s 'Eureka Day' is the funniest play of the season, striking gold again.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jonathan Spector's 'Eureka Day' is the funniest play of the season, striking gold again.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong superlative praise ('funniest play of the season') and positive metaphor ('striking gold') indicate enthusiastic recommendation, but single excerpt warning requires caution about representativeness. | GPT-4o: The excerpt describes the play as 'the funniest of the season' and 'striking gold again,' indicating strong praise. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt calls the play the 'funniest of the season' and states it is 'striking gold again,' indicating a strong positive recommendation. Due to the limited text, confidence is low. | Kimi: The excerpt offers unambiguous superlative praise, naming it the funniest play of the season and suggesting a major success. However, given this is a single curated excerpt that may not represent the full review's nuances, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:11:42.788Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "So here we have Larry David and Fish in the Dark, at the Cort Theatre. And it turns out the thing is an absurdistly daffy laff fest...Mr. David is once again playing himself in Fish in the Dark. Can he really by as objectionably cantankerous a being as the one he draws for us? Standing on the stage of the Cort, he sneers at his audience like a cartoon caricature of a bespectacled turtle cautiously sticking his head out of his shell only to find a smiley-faced insurance salesman; one suspects that underneath the persona, though, he is just an old teddy bear...The whole thing is in excessively poor taste, which students of the Mel Brooks school of etiquette know can make for high-grade hilarity...While the new play draws the same sort of high-octane laughter as the fabled Neil Simon comedies of yesteryear, it is closer in style to Herb Gardner's A Thousand Clowns or Murray Schisgal's Luv. They don't write plays like these anymore, no; but Fish in the Dark is the modern-day equivalent...Art it ain't; Fish in the Dark isn't O'Neill, or even O. Neil Simon. But it's funny, and it's boffo.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FISH-IN-THE-DARK-Opens-on-Broadway-Updating-LIVE-20150305"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FISH-IN-THE-DARK-Opens-on-Broadway-Updating-LIVE-20150305",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Art it ain't; Fish in the Dark isn't O'Neill, or even O. Neil Simon. But it's funny, and it's boffo.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic clearly enjoys the show calling it a 'laff fest' with 'high-grade hilarity' and 'boffo,' but explicitly acknowledges it's not high art. The recommendation is positive but with clear artistic reservations. | GPT-4o: The review describes the show as a 'daffy laff fest' with 'high-octane laughter,' comparing it to classic comedies. Despite noting it's not high art, the emphasis on humor and entertainment suggests a strong positive recommendation. | Gemini: The review is generally positive, calling the show a \"daffy laff fest\" and comparing it favorably to comedies of the past. While acknowledging it's not high art, the critic emphasizes its humor and entertainment value. | Kimi: The excerpt offers enthusiastic praise calling the show an 'absurdistly daffy laff fest' with 'high-grade hilarity' and 'boffo' appeal, favorably comparing it to classic Neil Simon comedies despite noting it lacks artistic pretension.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:37:26.625Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

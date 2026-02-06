@@ -12,5 +12,60 @@
   "bwwExcerpt": "The book by 'Gossip Girl' writer Austin Winsberg provides the couple with plenty of flippant repartee. A madcap mashup of musical styles and lyrics blazing with one-liners are provided by Alan Zachary and Michael Weiner. Director Bill Berry keeps a steady pace amid the dynamic musical staging by Josh Rhodes. Making his Broadway debut, Levi has a strong leading-man presence, smooth in his dance moves while handling Aaron's nervous gaffes with comedic flair...Rodriguez is polished and cool, gradually showing underlying vulnerability as Casey unbends a little...'Something That Will Last' is Casey and Aaron's final duet, about the uncertainties of falling in love. Never mind love, will they even make it to a second date? The point is that after just 90 minutes with this mismatched couple and their comical parade of demanding advisers, we still care how it turns out.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FIRST-DATE-Opens-on-Broadway-Updating-LIVE-20130808"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FIRST-DATE-Opens-on-Broadway-Updating-LIVE-20130808",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "After just 90 minutes with this mismatched couple and their comical parade of demanding advisers, we still care how it turns out.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises multiple elements - strong leading performances, good direction, effective comedy, and emotional investment in the characters. The final sentiment about caring for the outcome suggests audience engagement and recommendation. | GPT-4o: The excerpt highlights strong performances, dynamic staging, and engaging writing, suggesting a positive reception. The single excerpt warning and lack of a full review text limit confidence, but the tone is clearly enthusiastic. | Gemini: The review highlights the show's strengths, including the repartee, musical styles, and performances, suggesting a positive experience despite the limited excerpt. The final line indicates audience investment. | Kimi: The excerpt offers consistent praise for the book, music, direction, and lead performances, concluding with an endorsement of the show's emotional engagement, indicating a clear recommendation despite the limited excerpt available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:34:45.941Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

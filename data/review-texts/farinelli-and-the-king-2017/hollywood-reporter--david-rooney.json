@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Unlike in Alan Bennett's play The Madness of George III, and its film adaptation, the deteriorating mental health of a monarch here doesn't constitute a sustaining narrative arc, even if Rylance's commanding performance remains the center of attention. (It's certainly the main reason for the production's Broadway transfer.) The more interesting thread is the motivation of Farinelli to keep extending his stay in Madrid, his love for Isabella becoming a contributing factor, and his refusal ever to sing in public again.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FARINELLI-AND-THE-KING-Arrives-on-Broadway-with-Mark-Rylance-Updating-Live-20171217"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FARINELLI-AND-THE-KING-Arrives-on-Broadway-with-Mark-Rylance-Updating-Live-20171217",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rylance's commanding performance remains the center of attention.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed assessment - praises Rylance's performance as 'commanding' and acknowledges it as the main reason for Broadway transfer, but criticizes the narrative structure as lacking a 'sustaining narrative arc.' With only one excerpt available, confidence is low as this may not represent the full verdict. | GPT-4o: The excerpt highlights Rylance's performance as the main reason for the production's Broadway transfer, suggesting a strong individual element. However, it also implies a lack of a sustaining narrative arc, indicating mixed feelings about the overall production. | Gemini: The review praises Rylance's performance but notes a weak narrative arc. The overall sentiment is mixed, with no clear recommendation. | Kimi: The excerpt praises Rylance's 'commanding performance' as the primary draw but criticizes the show's lack of a 'sustaining narrative arc,' suggesting the production relies entirely on its star rather than strong material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:21:35.011Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

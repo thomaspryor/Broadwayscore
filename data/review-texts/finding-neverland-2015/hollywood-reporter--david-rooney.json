@@ -7,14 +7,65 @@
   "source": "bww-reviews",
   "sources": [
     "bww-reviews",
-    "web-search",
-    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "Bombastic and exhausting, the show confuses childishness with an affinity for the child inside...good luck to it, if only this family-friendly musical...didn't work so strenuously for its meager ounce or two of charm...the show does have a heart-stopping death scene that's both moving and visually spectacular in its bewitching stagecraft and its elegant knitting together of imagery and theme. But the two hours-plus leading up to that moment, more often than not, are a chore...On the plus side, the expected patchwork signs of a Frankenstein's monster are not apparent. The show is fairly much of a piece, even if there's scant cohesion to the new score by Take That frontman Gary Barlow and Brit songwriter Eliot Kennedy, which weaves cloying platitudes into numbers that run from generic pop to bad theatrical pastiche...At the core of the show are sensitive, naturalistic performances from Morrison and Kelly, two accomplished musical-theater actors who sketch their characters' mutual yearnings and sorrows in delicate strokes, at times finding sincerity even in the most hackneyed lyrics...there's nonetheless no convincing argument here that a Finding Neverland musical was ever an artistically valid idea.",
   "bwwScore": 4,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FINDING-NEVERLAND-Opens-on-Broadway-Updating-LIVE-20150415",
-  "showScoreExcerpt": "\"Bombastic and exhausting, the show confuses childishness with an affinity for the child inside, at times recalling \"Wicked\" in its busily assaultive hyperactivity, but without that show's catchy songs or engaging central character dynamic...A rare blemish on the track record of gifted director Diane Paulus, the show does have a heart-stopping death scene that's both moving and visually spectacularBut the two hours-plus leading up to that moment, more often than not, are a chore.\"\n\nRead more",
-  "publishDate": "April 15, 2015"
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's nonetheless no convincing argument here that a Finding Neverland musical was ever an artistically valid idea.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the show 'bombastic and exhausting' with a 'chore' of a runtime, calling it artistically invalid despite praising the lead performances and one spectacular scene. | GPT-4o: The review highlights significant flaws, describing the show as 'bombastic and exhausting' with 'meager charm'. While there are some positive notes about performances and a specific scene, the overall tone suggests disappointment and a lack of artistic validity. | Gemini: Despite praising the performances of Morrison and Kelly, the review is overall negative, calling the show \"bombastic and exhausting\" and questioning the artistic validity of the musical. | Kimi: While acknowledging sensitive lead performances and one spectacular scene, the critic finds the show bombastic and exhausting, calling the majority of the runtime 'a chore' and questioning whether the musical was ever an artistically valid idea.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:31:50.446Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There are three questions facing any woman in the title role of the 1979 Andrew Lloyd Webber–Tim Rice musical Evita: How is her 'Don't Cry for Me Argentina'? How is her arm raise (a.k.a. the signature Evita pose)? And how does she handle that vocal-cord-killing score? For Argentine actress Elena Roger in the adequate new Broadway revival, the answers are: Passable. Effective. And badly.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For Argentine actress Elena Roger in the adequate new Broadway revival, the answers are: Passable. Effective. And badly.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Single excerpt warning applies - this curated quote shows clear disappointment with the lead performance ('passable', 'badly') and calls the revival merely 'adequate'. However, with only one excerpt available, the full verdict may be more nuanced. | GPT-4o: The excerpt provides a critical evaluation of the lead performance, describing it as 'passable' and 'badly' in key areas. The overall tone suggests a negative impression of the production, but the single excerpt limits confidence. | Gemini: The review uses mixed language, describing the revival as \"adequate\" and Roger's performance as \"passable,\" \"effective,\" and \"badly.\" This indicates a mixed assessment, not clearly recommending or discouraging the show. | Kimi: The reviewer explicitly labels the revival merely 'adequate' and delivers lukewarm assessments of the star's performance (passable, effective) with a significant criticism of her handling of the difficult score ('badly'), indicating a mediocre, unenthusiastic assessment that falls squarely in mixed territory. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:15:27.735Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

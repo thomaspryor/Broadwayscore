@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Jimmy Buffett has written a musical for theatergoers who want to feel good about getting drunk and overeating. 'Escape to Margaritaville' opened Thursday at Broadway's Marquis Theatre, and the Buffett songs and the original book by Greg Garcia and Mike O'Malley offer a 'Bachelor in Paradise' view of romance.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jimmy Buffett has written a musical for theatergoers who want to feel good about getting drunk and overeating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt provides descriptive tone that's neither clearly positive nor negative. The 'Bachelor in Paradise' comparison and focus on drinking/overeating suggests superficiality but isn't explicitly critical. With only one curated quote available, confidence is low. | GPT-4o: The excerpt suggests a light, escapist tone without strong praise or criticism. The description of a 'Bachelor in Paradise' view of romance implies a superficial, possibly enjoyable experience, but lacks clear recommendation or discouragement. | Gemini: The review excerpt suggests a lighthearted, escapist musical experience, potentially enjoyable for fans of Jimmy Buffett but not necessarily a must-see for everyone. The 'Bachelor in Paradise' comparison implies a certain level of superficiality. | Kimi: The excerpt frames the show as indulgent, superficial entertainment ('Bachelor in Paradise' romance) aimed at a specific demographic, suggesting limited artistic merit without explicitly panning the production quality. As a single curated excerpt, the full verdict remains ambiguous.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:08:25.380Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

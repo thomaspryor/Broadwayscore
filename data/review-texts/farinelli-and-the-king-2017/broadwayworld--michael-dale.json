@@ -12,5 +12,60 @@
   "bwwExcerpt": "With the script playing to Rylance's strengths, such as asides to the audience and jolts of anachronistic language played for laughs, the imbalance of power in the two leading roles keeps the piece from fulfilling its high potential. It's nevertheless an enjoyable venture, with the sumptuousness of director John Dove's production helping to mask the flaws. The elegant visuals by designer Jonathan Fensom and costume coordinator Lorraine Ebdon-Price (accented by hair and wigs by Campbell Young Associates), are illuminated by lighting designer Paul Russell with candles placed at footlights and hanging from chandeliers. The playing area is surrounded by two levels of onstage seating for both audience members and music director Robert Howarth's ensemble of musicians playing van Kampen's arrangement on period instruments.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FARINELLI-AND-THE-KING-Arrives-on-Broadway-with-Mark-Rylance-Updating-Live-20171217"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FARINELLI-AND-THE-KING-Arrives-on-Broadway-with-Mark-Rylance-Updating-Live-20171217",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's nevertheless an enjoyable venture, with the sumptuousness of director John Dove's production helping to mask the flaws.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified recommendation - 'enjoyable venture' with production praised, but acknowledges 'imbalance' and 'flaws' that prevent 'fulfilling its high potential'. Lower end of Positive due to reservations and single excerpt limitation. | GPT-4o: The review acknowledges flaws in the production but ultimately describes it as enjoyable, with positive notes on the production's visual and musical elements. Given the single excerpt and potential cherry-picking, the score is on the lower end of the Positive range. | Gemini: The review states it's an \"enjoyable venture\" despite the imbalance of power in the leading roles. The positive aspects of the production design are highlighted. | Kimi: While noting significant flaws including an imbalance in the leading roles that prevents the piece from fulfilling its potential, the critic explicitly calls the production an 'enjoyable venture' and praises the sumptuous design elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:20:42.423Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

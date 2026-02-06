@@ -12,5 +12,60 @@
   "bwwExcerpt": "There are many good things in the new production of the Andrew Lloyd Webber-Andrew Rice musical, but the passion, excitement and persuasiveness in the vocal performances by LuPone and Patinkin are seldom to be found.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-EVITA-Returns-to-Broadway-Updating-LIVE-20120405"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-EVITA-Returns-to-Broadway-Updating-LIVE-20120405",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There are many good things in the new production of the Andrew Lloyd Webber-Andrew Rice musical, but the passion, excitement and persuasiveness in the vocal performances by LuPone and Patinkin are seldom to be found.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt acknowledges 'many good things' but criticizes the key performances for lacking passion and excitement. This balanced assessment with significant reservations places it in Mixed territory. | GPT-4o: The excerpt acknowledges positive elements but highlights a significant lack of passion and excitement in key performances. The single excerpt suggests a mixed impression, but the limited context lowers confidence. | Gemini: The review acknowledges \"many good things\" but contrasts them unfavorably with past performances, suggesting a mixed experience. The single excerpt and lack of a clear recommendation result in low confidence. | Kimi: The excerpt presents a balanced but conflicted assessment: while acknowledging 'many good things' in the production, it delivers significant criticism of the lead performances by LuPone and Patinkin, noting that passion and excitement are 'seldom to be found' in their vocals. With only one curated excerpt available, the overall verdict remains ambiguous but leans mixed due to the stark contrast between production praise and performance critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:14:40.838Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,57 @@
   "showScoreExcerpt": "Exposes what happens when we let safety slide in favor of respecting beliefs.\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 67,
+    "confidence": "low",
+    "range": {
+      "low": 62,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Exposes what happens when we let safety slide in favor of respecting beliefs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: openai=Mixed, gemini=Positive | GPT-4o: The excerpt provides a thematic observation but lacks clear evaluative language about the production's quality. Without more context, it's difficult to determine the critic's overall sentiment, leading to a mixed classification. | Gemini: The single excerpt available is a positive statement about the show's theme and impact. Given the limited information, a lower-end positive score is appropriate.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:11:01.383Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "geminiScore": 74,
+    "kimiScore": null,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: openai=Mixed, gemini=Positive"
+  }
 }

@@ -8,10 +8,63 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "show-score-playwright",
     "bww-reviews"
   ],
   "bwwExcerpt": "Two thoughts occurred while watching the Broadway revival of Terrence McNally's Frankie and Johnny in the Clair de Lune, which opens Thursday night at the Broadhurst Theatre (booking to Aug. 25). Why couldn't this have opened a few weeks ago and been eligible for the Tony Awards? It would have been a strong contender for Best Revival of a Play, and its two stars, Audra McDonald and Michael Shannon, likely contenders for Best Actor/Actress in a Play.",
   "bwwScore": 9,
-  "showScoreExcerpt": "“This is one delicious piece of theater...This beautifully written play has an odd set of concordances with ‘Burn This’...The production is anchored in two of the best performances currently on Broadway. McDonald and Shannon are a chemistry experiment made explosive, and made right. They are a delight to watch, to cringe for, and to respond to...These are two exceptional performances in total concert.”\n\nRead more"
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It would have been a strong contender for Best Revival of a Play, and its two stars, Audra McDonald and Michael Shannon, likely contenders for Best Actor/Actress in a Play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic's regret that it missed Tony eligibility and assessment that it would be a 'strong contender' for Best Revival indicates a positive recommendation, but with only one excerpt available, confidence is low. | GPT-4o: The excerpt suggests high praise for the production and performances, indicating it would have been a strong contender for major awards. Despite the limited text, the tone is clearly enthusiastic. | Gemini: The critic believes the play would have been a strong contender for a Tony award, indicating a positive view. Confidence is low due to the excerpted nature of the review. | Kimi: The excerpt indicates award-caliber quality, suggesting the revival would have been a major Tony contender. Per the single-excerpt warning guidance for clearly positive quotes, this falls in the upper Positive range (80-84).",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:48:51.399Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

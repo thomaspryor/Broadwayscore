@@ -14,5 +14,60 @@
   "bwwExcerpt": "Despite their earnestness, Floyd Collins leaves us nobody to root for... For all their expertise and Jeremy Jordan’s moving performance, the sum of the whole can’t capture the palpable fear of a man facing his mortality and those he is destined to leave behind... I can’t imagine a more committed effort to make sense of Guettel’s far-reaching score, which shines a headlamp on Jordan’s exquisite voice... But Collins gets stuck. And so does the audience.",
   "bwwScore": 6,
   "bwwThumb": "Meh",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FLOYD-COLLINS-Opens-On-Broadway-Starring-Jeremy-Jordan-Lizzy-McAlpine-and-More-20250421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FLOYD-COLLINS-Opens-On-Broadway-Starring-Jeremy-Jordan-Lizzy-McAlpine-and-More-20250421",
+  "assignedScore": 46,
+  "llmScore": {
+    "score": 46,
+    "confidence": "high",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Collins gets stuck. And so does the audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The review praises Jordan's performance and the commitment of the production, but ultimately finds the show fails to engage emotionally ('nobody to root for') and leaves the audience stuck along with the protagonist. The closing metaphor clearly indicates disappointment. | GPT-4o: The review acknowledges the expertise and a strong performance but ultimately concludes that the production fails to engage the audience, suggesting a negative overall impression. | Gemini: Despite praising Jeremy Jordan's performance and the score, the review ultimately states that the show fails to capture the intended emotion and leaves the audience feeling stuck, indicating a negative overall experience. | Kimi: While praising Jeremy Jordan's exquisite voice and the cast's committed effort, the critic concludes the production fails to deliver emotional impact, leaving the audience stuck and unable to connect with the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:39:28.914Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

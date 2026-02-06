@@ -12,5 +12,60 @@
   "bwwExcerpt": "This cabaret-style show, which fills in the end-of-season slot at Roundabout Theatre Company after the revival of 'Lips Together, Teeth Apart' was indefinitely postponed, breaks all the one-person-show rules. There's more than one actor in the cast; the witty script, by Scott and Dick Scanlan, doesn't follow a clear chronological line; and Scott wisely avoids playing all the other characters in her story. That tale traces Scott's journey from a repressive Mennonite upbringing in Topeka, Kan. to 'numerous second leads in Broadway musicals.' Employing a dry, ironic tone, Scott is not afraid to include herself among her satiric targets as she skewers the narrow fundamentalism of her hometown, the pain of being a misfit in high school, and the obsessions of musical theater fanatics.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-EVERYDAY-RAPTURE-Review-Roundup-20100429"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-EVERYDAY-RAPTURE-Review-Roundup-20100429",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scott wisely avoids playing all the other characters in her story.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises Scott's wise choices and the witty script, noting how the show 'breaks all the one-person-show rules' in positive ways. The critic appreciates Scott's dry, ironic tone and her willingness to include herself as a satiric target. | GPT-4o: The excerpt highlights the show's wit and Scott's effective use of irony in her performance. The review suggests a positive reception but lacks strong superlatives or explicit recommendations, placing it in the lower range of Positive. | Gemini: The review describes the show as witty and satiric, with Scott's performance being a highlight. However, due to the limited excerpt, the confidence is low. | Kimi: The excerpt praises the show's unconventional structure, 'witty script,' and performer's 'wise' artistic choices and sharp satire, indicating a clear recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:12:14.861Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

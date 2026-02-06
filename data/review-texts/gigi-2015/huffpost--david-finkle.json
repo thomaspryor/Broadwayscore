@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "...Thomas has gone about jiggling Colette's story of a young girl being trained as a courtesan and a rich family friend who grow over time into lovers. But the misguided Thomas only succeeds in denaturing Colette so that Gigi (Vanessa Hudgens), now older, and eventual swain Gaston Lachaille (Corey Cott), now younger, progress to a happy ending with any number of destructive changes to the story...The damage that politically correctness has done to the arts only worsens as time goes on...Clark shows off her clarion voice and otherwise does okay as Madame Alvarez, or Mamita...McGillin smiles well as the compering Honoré Lachaille. His duet with Clarke on 'I Remember It Well' is the one musical highlight. Cott does passably as Gaston...Firstly, congratulations to [Hudgens] for taking on a role associated in the mind of many a Gigi fan with Audrey Hepburn and Leslie Caron. She sings perfectly well and dances nicely. She does everything competently, but as Gigi she doesn't have the essential ingredient: charm. If it comes to that, this whole Gigi is lacking in charm, if not nerve.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This whole Gigi is lacking in charm, if not nerve.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds the adaptation 'misguided' and 'denaturing' with 'destructive changes.' Despite praising individual performers' competence, concludes the production fundamentally lacks charm and appeal. | GPT-4o: The review criticizes the adaptation for denaturing the original story and lacking charm. While there is some praise for individual performances, the overall tone is negative, focusing on the misguided changes and lack of essential charm. | Gemini: The review is largely negative, criticizing the adaptation and lack of charm. While some performers are praised, the overall assessment is unfavorable, leading to a negative classification. | Kimi: The critic condemns the adaptation as 'misguided' and 'destructive' to the source material, finds the lead competent but charmless, and dismisses most performances as merely passable, with only one musical highlight worth noting. While acknowledging technical competence, the overall verdict clearly discourages seeing this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:13:51.201Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

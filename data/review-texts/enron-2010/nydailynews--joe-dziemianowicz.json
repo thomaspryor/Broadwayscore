@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The brainchild of British playwright Lucy Prebble, who's just 29, it's a slice of American history and a cautionary tale that's audaciously theatrical but watery soup when it comes to content. Prebble follows a long tradition of English dramatists who've had an instinctive desire to revisit history - dissecting victims, concocting motives, even going so far as to make up revisionist excuses for them. Think: 'Frost/Nixon,' 'Stuff Happens' and 'Democracy.' Further back - Shakespeare did it, with a fictional twist. There's a lot of sizzle, but not a whole lot of steak.",
   "bwwScore": 4,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's a lot of sizzle, but not a whole lot of steak.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic acknowledges the show is 'audaciously theatrical' but criticizes it as 'watery soup when it comes to content.' The final assessment of 'sizzle but not steak' suggests style over substance - mixed territory leaning negative. | GPT-4o: The review criticizes the play for lacking substance despite its theatricality, using phrases like 'watery soup' and 'not a whole lot of steak' to indicate disappointment. However, the single excerpt may not fully represent the review's overall sentiment, leading to low confidence. | Gemini: The review suggests the show is \"audaciously theatrical\" but lacks substance, indicating a mixed assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: While the excerpt acknowledges the production's theatrical flair ('audaciously theatrical', 'sizzle'), the critic ultimately dismisses the content as insubstantial ('watery soup', 'not a whole lot of steak'), suggesting the play prioritizes style over meaningful substance. Given this is a single excerpt, the confidence is low. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:05:12.942Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

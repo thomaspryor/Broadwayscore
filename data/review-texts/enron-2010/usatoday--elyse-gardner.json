@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "With Goldman Sachs executives answering to a Senate committee this week, the latest round of financial wizards under fire after being accused of corrupt practices, perhaps the Enron scandal of 2001 seems like yesterday's news. Not so, argues the young British writer Lucy Prebble. In Enron, her intellectually challenging, exuberantly entertaining new play, Prebble makes the case that the disgraced energy company's abuses and collapse were both a harbinger of future debacles and a reflection of long-standing, deep-rooted social and human frailties.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Prebble makes the case that the disgraced energy company's abuses and collapse were both a harbinger of future debacles and a reflection of long-standing, deep-rooted social and human frailties.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the play as 'intellectually challenging, exuberantly entertaining' which indicates positive reception. However, confidence is low due to limited text from curated excerpt only. | GPT-4o: The excerpt praises the play as 'intellectually challenging' and 'exuberantly entertaining', suggesting a strong positive impression. However, with only one curated excerpt, the confidence is low. | Gemini: The review excerpt uses the phrase \"exuberantly entertaining\" which suggests a positive experience. Given that this is the only excerpt available, the confidence is low. | Kimi: The excerpt offers enthusiastic praise ('exuberantly entertaining,' 'intellectually challenging'), indicating a clear recommendation in the upper Positive range, though confidence is low due to limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:06:06.859Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

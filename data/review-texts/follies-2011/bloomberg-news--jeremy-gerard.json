@@ -12,5 +12,60 @@
   "bwwExcerpt": "Broadway’s sterile Marquis Theatre has never looked so good as in the state of faux decrepitude that welcomes us to the latest, and finest, revival of Stephen Sondheim's Follies...Near the end [of 'Loveland'] Raines, through a brilliant trick, snaps Ben and us back into the reality of 1971. We’re still feeling the jolt as the curtain falls and Technicolor nostalgia recedes into grim reality.",
   "bwwScore": 10,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOLLIES-on-Broadway-Updating-Live-20110912"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOLLIES-on-Broadway-Updating-Live-20110912",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway's sterile Marquis Theatre has never looked so good as in the state of faux decrepitude that welcomes us to the latest, and finest, revival of Stephen Sondheim's Follies",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Critic calls this the 'finest revival' and praises the production design and performances, but single excerpt warning applies - may not represent full verdict. | GPT-4o: The excerpt praises the production as the 'finest' revival, indicating strong enthusiasm. However, since only one excerpt is available, confidence is low. | Gemini: The review excerpt uses the phrase \"finest revival\" which indicates a strong positive sentiment. Given the single excerpt, confidence is low, but the positive language suggests a high score within the positive bucket. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:42:56.178Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

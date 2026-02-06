@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This is a true and unflinching study of relationships and humanity in all their shades. Its scale may be small-just seven characters, no fancy sets-but its emotion and power are epic, and that is written without exaggeration. When the lights come up all too quickly at the intermission and then at the end, you will-at least those without hearts of stone-be wiping away tears.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FALSETTOS-Opens-on-Broadway--Updating-Live-20161027",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Its emotion and power are epic, and that is written without exaggeration.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The critic uses extremely strong language ('epic', 'unflinching', 'true') and promises a deeply moving experience that will bring audiences to tears. Despite being a single excerpt, the passionate tone and emphatic language ('written without exaggeration') clearly indicates a rave-level recommendation. | GPT-4o: The excerpt describes the show as a powerful and emotional experience, with epic qualities despite its small scale. The strong emotional impact and lack of exaggeration suggest a highly positive review. | Gemini: The review excerpt is overwhelmingly positive, describing the show as a \"true and unflinching study\" with \"epic\" emotion and power, leading to tears. Given the single excerpt, confidence is low, but the strength of the quote warrants a high positive score. | Kimi: The excerpt provides strong praise for the show's emotional depth and humanity, describing its power as 'epic' and promising a tearful, moving experience. However, as a single curated excerpt, the full context of the review remains unknown. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:18:58.477Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

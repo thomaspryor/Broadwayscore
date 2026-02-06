@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The thin 70-minute drama, which won acclaim three decades ago and was made into a film with Kim Basinger, is essentially an unsettling character study with a sense of mystery behind it. Daniel Aukin's focused, highly physical revival is built around the intense interplay between Arianda, who evokes both a hurt young girl and a torrent of violent emotion, and Rockwell, who coolly struts around and cockily plays with his lasso as if he were the Marlboro Man.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOOL-FOR-LOVE-Opens-on-Broadway-Updating-LIVE-20151008"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOOL-FOR-LOVE-Opens-on-Broadway-Updating-LIVE-20151008",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Daniel Aukin's focused, highly physical revival is built around the intense interplay between Arianda and Rockwell.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the director's work as 'focused' and highlights strong performances, but calls the source material 'thin.' Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises the revival's focus and the performances of the lead actors, suggesting a positive view. However, the lack of a full review and the single excerpt warning necessitate a cautious, low-confidence score. | Gemini: The review describes the revival as \"focused\" and \"highly physical\", highlighting the intense performances of the leads. Given the limited text, it seems to be a positive review with some reservations, but the single excerpt makes it difficult to assess the overall sentiment with high confidence. | Kimi: While describing the play itself as 'thin,' the critic praises the revival's direction as 'focused' and 'highly physical,' with particular commendation for the intense interplay between the leads. Given only a single excerpt is available, this qualifies as a mildly positive recommendation in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:45:50.898Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

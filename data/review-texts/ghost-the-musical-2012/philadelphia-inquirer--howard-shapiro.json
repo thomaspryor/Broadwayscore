@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Luckily, the show recovers, delivered by four talented leads who include Philadelphian Da’Vine Joy Randolph in the part of the con-artist spiritualist. Randolph, a Temple University grad who received her bachelor’s degree in classical vocal performance and went on to a drama master’s from Yale, is giving the juicy role a great ride, belting it out when called for, playing it for all the extremes it’s worth and generally sizzling.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GHOST-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20120423",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Luckily, the show recovers, delivered by four talented leads who include Philadelphian Da'Vine Joy Randolph in the part of the con-artist spiritualist.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows recovery from earlier problems and praise for performances, particularly Randolph. However, limited text and mention of needing to 'recover' suggests qualified positivity rather than strong endorsement. | GPT-4o: The excerpt praises the performance of Da’Vine Joy Randolph, highlighting her strong and dynamic portrayal. However, without more context or a full verdict, the overall sentiment is mildly positive, leading to a lower score within the Positive range. | Gemini: The review excerpt focuses on praising Da'Vine Joy Randolph's performance, suggesting a positive aspect of the show. However, due to the limited text, it's difficult to determine the overall recommendation strength, so confidence is low. | Kimi: The critic praises the lead performances as 'sizzling' and notes the show 'recovers' thanks to the talented cast, indicating a positive but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:10:48.663Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

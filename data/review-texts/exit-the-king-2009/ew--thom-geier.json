@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"The cast is uniformly strong, but this is Rush's show. He commands the stage from the opening to his final spotlighted death throes, toggling easily between tragedy and comedy, not to mention between high comedy and low. At one point, he collapses with his back bent over a stool, precariously close to toppling onto his head, and then struggles to roll his royal scepter down his legs to his feet so that its weight will tip him upright again. It's a small bit of",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-Review-Roundup-Exit-the-King-and-More-20090327",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The cast is uniformly strong, but this is Rush's show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for lead performance and cast with specific admiring detail about Rush's command of the stage. However, confidence is low due to truncated text and single excerpt warning - the full review verdict may differ. | GPT-4o: The excerpt praises the cast and highlights Rush's commanding performance, suggesting a positive evaluation. However, due to the single excerpt warning, the confidence is low and the score is at the upper end of the Positive range. | Gemini: The excerpt focuses on the strength of the cast, particularly Rush's performance, indicating a positive review. Given that it's a single excerpt, I'm placing it at the higher end of the 'Positive' bucket. | Kimi: The excerpt offers enthusiastic praise for Rush's physical performance and stage command, describing specific skills with admiration, though the single-excerpt format and truncation limit certainty about the full review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:18:13.175Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

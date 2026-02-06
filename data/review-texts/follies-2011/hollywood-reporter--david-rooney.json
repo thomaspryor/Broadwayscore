@@ -12,5 +12,60 @@
   "bwwExcerpt": "40 years after its Broadway premiere, Stephen Sondheim and James Goldman’s show still dazzles with its structural complexity and brilliant score...It’s unlikely any staging will ever equal the extravagant showmanship of the original, co-directed by Harold Prince and Michael Bennett. But just having Follies back on Broadway, played by a full orchestra and performed by a gifted cast, is reward enough.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOLLIES-on-Broadway-Updating-Live-20110912"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOLLIES-on-Broadway-Updating-Live-20110912",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But just having Follies back on Broadway, played by a full orchestra and performed by a gifted cast, is reward enough.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the score as 'brilliant' and cast as 'gifted', concludes it's 'reward enough' to see on Broadway. However, acknowledges it won't match the original production, suggesting qualified enthusiasm. | GPT-4o: The excerpt praises the show's complexity and score, and expresses enthusiasm for its return to Broadway. Despite acknowledging the original's unmatched showmanship, the tone is clearly positive. | Gemini: The review praises the show's complexity and score, and states that having it back on Broadway is \"reward enough.\" While acknowledging the original production's superiority, the overall sentiment is positive, suggesting it is worth seeing. | Kimi: The excerpt contains clear praise ('dazzles', 'brilliant score', 'gifted cast') and explicitly states that seeing this revival is 'reward enough', despite noting it doesn't equal the original production's showmanship.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:43:39.182Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

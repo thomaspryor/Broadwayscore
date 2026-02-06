@@ -12,5 +12,60 @@
   "bwwExcerpt": "Originality (as in not being based on a pre-existing film or song catalog) turns out to not be the equivalent of quality in \"Gettin' the Band Back Together,\" a tacky, witless and amateurish new pop-rock musical set in Sayreville, New Jersey, that might have been commendable had it been written and performed by high school students from Sayreville, but is a total embarrassment to find on Broadway.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-GETTIN-THE-BAND-BACK-TOGETHER-on-Broadway-20180813",
   "contentTier": "excerpt",
-  "playbillVerdictUrl": "http://www.amny.com/entertainment/gettin-the-band-back-together-1.20453206"
+  "playbillVerdictUrl": "http://www.amny.com/entertainment/gettin-the-band-back-together-1.20453206",
+  "assignedScore": 16,
+  "llmScore": {
+    "score": 16,
+    "confidence": "medium",
+    "range": {
+      "low": 11,
+      "high": 21
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a tacky, witless and amateurish new pop-rock musical that is a total embarrassment to find on Broadway",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating pan with harsh language like 'tacky, witless, amateurish' and 'total embarrassment.' The critic suggests it would only be acceptable if done by high schoolers, making this a clear avoid recommendation. | GPT-4o: The review excerpt is highly negative, describing the show as 'tacky, witless and amateurish' and a 'total embarrassment' for Broadway. The language indicates a strong disapproval, fitting the Pan bucket. | Gemini: The review uses extremely negative language like \"tacky, witless and amateurish\" and calls the show \"a total embarrassment to find on Broadway.\" This is a clear pan. | Kimi: The critic delivers a devastating assessment using words like 'tacky,' 'witless,' 'amateurish,' and 'total embarrassment,' with no redeeming qualities mentioned. The comparison to high school students is used to emphasize how unprofessional the Broadway production appears.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:05:26.718Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 12,
+    "openaiScore": 20,
+    "geminiScore": 12,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

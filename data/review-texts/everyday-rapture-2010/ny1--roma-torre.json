@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "'Everyday Rapture' is little changed from the Second Stage production last year off-Broadway. There was concern that it would get swallowed up in the larger American Airlines Theatre. But while less intimate now, under Michael Mayer's solid direction it remains both a witty parody of confessional shows and an earnest showcase for a gifted diva. Scott makes fun of herself as one of Broadway's brightest semi-stars, but her glittering performance proves she is a full-fledged star.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "her glittering performance proves she is a full-fledged star",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the direction ('solid'), performance ('glittering', 'gifted diva'), and overall production despite venue concerns. The critic recommends it as both entertaining parody and star showcase. | GPT-4o: The excerpt praises the show as both a witty parody and an earnest showcase, highlighting Scott's performance as star-worthy. Despite concerns about the venue change, the direction is described as solid, indicating a strong positive recommendation. | Gemini: The review praises the direction and performance, calling it an \"earnest showcase\" and stating that the performer \"proves she is a full-fledged star.\" The overall tone is positive, suggesting a strong recommendation. | Kimi: The excerpt delivers clear praise for the star's 'glittering' performance and the production's wit, though as a single curated quote, the overall verdict may be more nuanced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:13:35.365Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

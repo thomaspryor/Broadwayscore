@@ -12,5 +12,60 @@
   "bwwExcerpt": "The ability to consume alcohol during the show certainly helps to put one in a relaxed, less critical state of mind. But all things considered, you might be better off downing margaritas at a beach bar while listening to a Buffett album.",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-Paradise-at-ESCAPE-TO-MARGARITAVILLE-20180315"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-Paradise-at-ESCAPE-TO-MARGARITAVILLE-20180315",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you might be better off downing margaritas at a beach bar while listening to a Buffett album.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly suggests audiences would have a better experience elsewhere than at this show, which is a clear negative recommendation despite the casual tone. | GPT-4o: The excerpt suggests that the show is not engaging or worthwhile, implying that other activities might be more enjoyable. However, due to the single excerpt warning, the confidence is low. | Gemini: The critic suggests that the audience would be better off doing something else, which indicates a negative review. The confidence is low due to the single excerpt. | Kimi: The critic explicitly advises against seeing the show, suggesting audiences would have a superior experience simply listening to the artist's album at a bar instead. The observation that alcohol is required to tolerate the production indicates a fundamentally flawed theatrical experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:06:36.123Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

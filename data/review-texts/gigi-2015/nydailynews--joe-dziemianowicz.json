@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The Eiffel Tower looms in the distance in 'Gigi,' a reminder that we're in Paris. It's easy to forget that because Vanessa Hudgens plays the title role of a 1900 French could-be courtesan like an all-American Gidget. The perky but ooh-la-la-less Broadway debut by Hudgens, a sufficient singer and actress known for 'High School Musical,' is par for the course in a shrill revival directed by Eric Schaeffer...Under Schaeffer's guidance, performances are all over the place. As the rich 'sugar prince' Gaston, who falls for Gigi, Corey Cott makes the most of the title song. But he's boyish and saccharine when he should be debonair and sexy. Howard McGillin's take on Honore is broader than the Champs-Elysees. Tony winner Victoria Clark adds grace notes as Gigi's compassionate Mamita. Dee Hoty is saucy and steely Aunt Alicia, who instructs Gigi to accept only the most special and sparkly jewels from men...As musical gems go, 'Gigi' is not Tiffany -- it's Jared.",
   "bwwScore": 4,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As musical gems go, 'Gigi' is not Tiffany -- it's Jared.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The review is consistently negative, calling the revival 'shrill' with performances 'all over the place' and concluding with a dismissive comparison to discount jewelry, clearly not recommending the show. | GPT-4o: The review highlights several issues with the production, including inconsistent performances and a lack of the necessary charm. The comparison to Jared instead of Tiffany suggests mediocrity. However, the excerpt is limited, so the confidence is low. | Gemini: The review is mostly negative, describing the revival as \"shrill\" and the performances as \"all over the place.\" While some performers are noted, the overall assessment is unfavorable. | Kimi: The review criticizes the 'shrill' direction and uneven lead performances, particularly Hudgens' 'ooh-la-la-less' turn. While it acknowledges grace notes from supporting players Victoria Clark and Dee Hoty, the final jewelry metaphor clearly dismisses the production as second-rate.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:14:31.258Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

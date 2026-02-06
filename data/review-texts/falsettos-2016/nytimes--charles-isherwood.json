@@ -12,5 +12,60 @@
   "bwwExcerpt": "There's hardly a moment in the exhilarating, devastating revival of the musical 'Falsettos' that doesn't approach, or even achieve, perfection. This singular show, about an unorthodox family grappling with the complexities of, well, just being a family - unorthodox or otherwise - has been restored to life, some 25 years after it was first produced, with such vitality that it feels as fresh and startling as it did back in 1992. The achievement seems almost miraculous, because in the intervening years, America has gone through cultural changes that might, in theory, have made the show, with its sweet-and-sour score by William Finn, and its economical book by Mr. Finn and James Lapine, seem a relic.",
   "bwwScore": 10,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FALSETTOS-Opens-on-Broadway--Updating-Live-20161027"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FALSETTOS-Opens-on-Broadway--Updating-Live-20161027",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's hardly a moment in the exhilarating, devastating revival of the musical 'Falsettos' that doesn't approach, or even achieve, perfection.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlative language ('perfection', 'miraculous achievement', 'exhilarating') with no caveats or reservations. The critic finds virtually every moment approaching perfection, indicating an unqualified rave. | GPT-4o: The excerpt uses superlatives like 'exhilarating', 'devastating', and 'perfection', indicating a highly enthusiastic recommendation. The language suggests the revival is both fresh and vital, which aligns with a Rave classification. | Gemini: The review uses strong positive language such as \"perfection\", \"exhilarating\", \"devastating\", and \"miraculous\", indicating a rave review. Despite being a single excerpt, the strength of the language warrants a score in the Rave bucket. | Kimi: The critic employs superlatives including 'perfection,' 'miraculous,' and 'exhilarating' to praise the revival's vitality and emotional impact without any reservations or caveats in the available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:20:04.780Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 94,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

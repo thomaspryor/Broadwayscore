@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Imagine the cartoon character Olive Oyl as a baritone in a red tube dress and you've got Arianda's May. Arianda may be the first actor to feature both arms and legs akimbo, and when she's not working those long limbs, she's running around on the set's motel-room bed like a 3-year-old without her Ritalin. Since May doesn't get to speak every line of dialogue, Arianda spends the rest of her time on stage messing with her hair, braiding her hair, or pinning up her hair -- anything to keep our attention...With Arianda offstage, it's possible to notice Rockwell and Pelphrey, and to see that they're embodying their respective characters with understated grace.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOOL-FOR-LOVE-Opens-on-Broadway-Updating-LIVE-20151008"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOOL-FOR-LOVE-Opens-on-Broadway-Updating-LIVE-20151008",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Arianda may be the first actor to feature both arms and legs akimbo, and when she's not working those long limbs, she's running around on the set's motel-room bed like a 3-year-old without her Ritalin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt is harshly critical of the lead performance with unflattering comparisons and suggests the show improves when she's offstage. However, with only one curated excerpt available, the overall verdict remains uncertain. | GPT-4o: The review excerpt highlights a mixed evaluation, focusing on Arianda's performance as distracting but acknowledges the 'understated grace' of Rockwell and Pelphrey. The single excerpt makes it difficult to gauge the overall tone, leading to a low confidence in the score. | Gemini: The review focuses heavily on Arianda's performance, both positively and negatively, and notes the other actors shine when she's not on stage. It doesn't offer a clear recommendation, suggesting a mixed experience. | Kimi: The excerpt criticizes the lead actress's manic, distracting physicality while praising supporting actors' understated grace, indicating an uneven production without clear overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:47:08.743Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "With those doleful eyes, that wide permafrost smile set at a perpetual three-minutes-to-irony, and a crinkly mezzo that slingshots from brassy to bruised, Sherie Rene Scott (Dirty Rotten Scoundrels, Aida) has steadily established herself as New York’s leading comic divette. Does that mean we care about her life? Scott, smartly, assumes we don’t. In Everyday Rapture, a self-deconstructing micro-revue tracing her transformation from Kansas Mennonite to “Broadway semi-star,” Scott uses the blimp-hangar that is the American Airlines Theatre as an echo chamber for her wit, backed by her “Mennonettes” and an eclectic set list that ranges from Judy Garland to Tom Waits to, yes, an erotic Mr. Rogers tribute medley. Tom Kitt’s typically brilliant arrangements are half the reason for showing up; the other half is Scott, whose lambent ease with the absurd (cleverly refined by director Michael Mayer and book co-writer Dick Scanlan) makes Everyday much more than just another maudlin auto-cabaret.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tom Kitt's typically brilliant arrangements are half the reason for showing up; the other half is Scott, whose lambent ease with the absurd makes Everyday much more than just another maudlin auto-cabaret.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for both star performance and musical arrangements with clear recommendation language ('reason for showing up'). Elevated above typical genre ('much more than just another maudlin auto-cabaret'). Single excerpt warning requires caution, but tone is consistently positive throughout. | GPT-4o: The excerpt praises Sherie Rene Scott's performance and the show's cleverness, indicating a strong positive impression. The use of 'brilliant arrangements' and 'lambent ease with the absurd' suggests an enthusiastic recommendation. However, the single excerpt warning suggests caution, so the score is at the upper end of the Positive range. | Gemini: The review is overwhelmingly positive, praising Scott's performance, Kitt's arrangements, and the overall production. The critic clearly recommends seeing the show, calling it \"much more than just another maudlin auto-cabaret.\" | Kimi: The excerpt offers strong praise for the musical arrangements and lead performance, explicitly stating they are reasons to attend, while maintaining witty detachment about the autobiographical format.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:12:52.181Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

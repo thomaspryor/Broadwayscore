@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Refashioned for the 'High School Musical' generation, 'Gigi' has been scrubbed and polished so that its heroine is now sassy, headstrong, and spunkier than a barrel of Disney princesses. The one thing she's not is French, and, of course, there's nothing terribly risqué or even controversial about her situation anymore. As Gigi, Vanessa Hudgens sings and moves well and looks stunning, and if ever they get around to turning 'Pretty Woman' into a Broadway musical, she won't have to change a thing...That Gigi holds out for marriage and the greater security it provides, well, that's the real story of a modern material girl. Despite presenting such a newly ambivalent character, Clark emerges as the only actor on stage who evokes turn-of-the-century Paris...While Cott has a great singing voice, his tenor turns squealy when he shows much emotion, and at times he comes off more petulant than Gigi herself. Since it involves such a small directorial touch...couldn't Hudgens's all-American rambunctiousness been dialed back a bit?",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The one thing she's not is French, and, of course, there's nothing terribly risqué or even controversial about her situation anymore.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges strong elements (Hudgens sings/moves well, looks stunning, Clark's performance) but expresses significant concerns about the adaptation losing its French essence and cultural authenticity, plus casting issues with Cott. The tone suggests a production that works on some levels but has fundamental problems. | GPT-4o: The review highlights both positive aspects (Hudgens' performance and the updated character) and negatives (lack of French authenticity, issues with other performances). The overall tone suggests a mixed reception, with some elements praised but others criticized. | Gemini: The review praises Hudgens' performance but also criticizes aspects of the production and other performances. The overall tone is mixed, with some positive and some negative points. | Kimi: The excerpt praises individual performances (Hudgens' singing, Clark's authenticity) but criticizes the sanitized, Disney-fied adaptation that loses the original's French identity and edge. The 'Pretty Woman' comparison reads as a backhanded compliment suggesting commercial vulgarity, while complaints about the male lead and anachronistic tone indicate significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:15:14.360Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

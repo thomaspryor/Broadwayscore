@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "No one could expect director Eric Schaeffer, a veteran of several Sondheim shows, to fix inherent issues - a momentumless narrative and soapy dialogue. But more originality in his approach, conceptually and design-wise (black drapes - really?), could have helped make a standard-issue show a truly distinctive one.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But more originality in his approach, conceptually and design-wise (black drapes - really?), could have helped make a standard-issue show a truly distinctive one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic identifies 'inherent issues' including 'momentumless narrative and soapy dialogue' and calls it a 'standard-issue show' that lacks distinction. While acknowledging the director's pedigree, the overall assessment is clearly negative with specific criticisms of execution. | GPT-4o: The excerpt criticizes the lack of originality and the failure to address inherent issues, suggesting a negative view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt focuses on the show's inherent issues and the director's inability to fix them, suggesting a negative overall assessment. The mention of lack of originality further reinforces this. | Kimi: The excerpt criticizes the show's 'momentumless narrative' and 'soapy dialogue' while faulting the direction for lacking originality, ultimately dismissing it as 'standard-issue' rather than distinctive. With only one curated excerpt available, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:44:16.495Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

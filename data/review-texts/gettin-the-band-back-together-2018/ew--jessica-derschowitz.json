@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "To keep with the musical parlance of the title, Gettin' the Band Back Together is like hearing an artist cover a favorite song - it's not the first time you've heard it, and it might not be all that original, but you'll be smiling and tapping your feet just the same.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-GETTIN-THE-BAND-BACK-TOGETHER-on-Broadway-20180813",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's not the first time you've heard it, and it might not be all that original, but you'll be smiling and tapping your feet just the same.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The cover song analogy acknowledges lack of originality but emphasizes the positive audience experience ('smiling and tapping your feet'). Single excerpt limits confidence in overall verdict. | GPT-4o: The review excerpt suggests a mildly positive experience, noting familiarity and enjoyment despite a lack of originality. The single excerpt and text quality warning suggest caution, so a lower score within the Positive bucket is appropriate. | Gemini: The review excerpt suggests an enjoyable but not groundbreaking experience, indicating a positive but not rave recommendation. The limited text lowers confidence. | Kimi: The critic acknowledges the show's derivative nature but promises an entertaining, enjoyable experience that delivers smiles and toe-tapping fun, constituting a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:06:03.042Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

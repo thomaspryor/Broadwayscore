@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "No prime-time sitcom star returns to the theater more faithfully than Jesse Tyler Ferguson...It's a smart move: a one-man, 30-plus-character, 90-minute comedy where he can flex his impressive comic muscles in four-walled, air-conditioned comfort...Ferguson juggles all of these personalities rather deftly, making only a few fumbles. It takes about three calls for the ego-tastic chef to really take shape, and reservations manager Bob never really becomes instantly identifiable...Fully Committed is",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FULLY-COMMITTED-Starring-Jesse-Tyler-Ferguson-Opens-on-Broadway-Updating-LIVE-20160425",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ferguson juggles all of these personalities rather deftly, making only a few fumbles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt praises Ferguson's performance as 'deft' with only minor criticisms about character development. Single excerpt warning applies - this appears mildly positive but may not represent full verdict. | GPT-4o: The excerpt praises Ferguson's performance and the show's concept but notes some minor issues with character development. The overall tone is positive, though the single excerpt limits confidence. | Gemini: The review praises Ferguson's performance and the concept, but notes some characters don't fully land. Given the truncated text, I'm scoring it as a positive with reservations. | Kimi: Single excerpt strongly praises Ferguson's comic abilities and deft character work while noting minor technical fumbles; clearly recommends the show for his performance despite specific characterization issues. Truncated ending and single-excerpt format warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:54:50.238Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

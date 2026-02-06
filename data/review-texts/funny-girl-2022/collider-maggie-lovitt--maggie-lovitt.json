@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "I was obviously not around to bear witness to the esteemed greatness of the Original Broadway cast of Funny Girl, but I did grow up loving the movie adaptation that starred Streisand and Omar Sharif and that, in my opinion, is a tough act to follow. But, for the past ten years I had been hoping that the eventual and inevitable Funny Girl revival would cast one man, and one man only, in the role. And they did. Ramin Karimloo is effortless in doling out the charm and allure that draws Fanny Brice ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUNNY-GIRL-Returns-to-Broadway--Updating-Live-20220424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUNNY-GIRL-Returns-to-Broadway--Updating-Live-20220424",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ramin Karimloo is effortless in doling out the charm and allure that draws Fanny Brice",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Karimloo's performance with 'effortless' charm, but incomplete sentence and lack of overall show assessment limits confidence in the full verdict. | GPT-4o: The excerpt provides a positive assessment of Ramin Karimloo's performance, suggesting a recommendation. However, the single excerpt and lack of full context limit confidence. | Gemini: The review excerpt focuses on Ramin Karimloo's performance, praising his charm and allure. While it doesn't provide a comprehensive assessment of the entire production, the positive sentiment towards a key performer suggests a positive, but potentially qualified, recommendation. | Kimi: The curated excerpt offers enthusiastic praise for Karimloo's performance, describing it as effortless and charming, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:00:11.189Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

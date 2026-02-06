@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "People who go in with strict, preconceived notions of what Funny Girl or who Fanny should be will probably be disappointed. They usually are. But as someone wiser than me once said, \"You curate the experience you want.\" Certainly the now-familiar songs by Bob Merrill and Jule Styne are there, topped by two certified hits: \"People\" and \"Don't Rain on My Parade,\" but this is no carbon copy of the original. This is a funny Funny Girl, and Beanie Feldstein is a truly funny, funny girl.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUNNY-GIRL-Returns-to-Broadway--Updating-Live-20220424",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a funny Funny Girl, and Beanie Feldstein is a truly funny, funny girl.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the show and lead performance with clever wordplay. Acknowledges some may be disappointed but frames this as their problem, not the show's. Single excerpt warning requires caution about full verdict. | GPT-4o: The excerpt praises Beanie Feldstein's performance and highlights the humor of the production, suggesting a positive view. However, it acknowledges that those with strict expectations may be disappointed, indicating some reservations. | Gemini: The review suggests that those with preconceived notions may be disappointed, but ultimately praises the humor and Beanie Feldstein's performance. Given the single excerpt, I'm scoring it as positive with reservations. | Kimi: The critic enthusiastically praises Feldstein's comedic performance and the production's fresh approach, explicitly recommending it despite acknowledging that purists seeking the original may be disappointed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:01:05.707Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

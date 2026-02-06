@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This version of for colored girls truly does feel like a choreopoem, Shange's term for her amalgamation of words, motion and music. (The percussive original score is by Martha Redbone and Aaron Whitby). The seven women on stage are barefoot, and their movement-which draws on African-American traditions including juba, stepping and social dance-feels organic, natural and triumphant. \"Sechita,\" performed and signed by Lady in Purple (the amazing Alexandria Wailes) and spoken by Lady in Orange (Ama",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOR-COLORED-GIRLS-Opens-On-Broadway-20220420",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "their movement feels organic, natural and triumphant",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise for the production's artistic elements ('truly does feel like a choreopoem', 'amazing', 'organic, natural and triumphant'), but with only one curated excerpt available, confidence is low as the full verdict may not be represented. | GPT-4o: The excerpt praises the production's choreography and performance, describing it as 'organic, natural and triumphant.' The positive language suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The excerpt uses positive language such as \"amazing\" and \"triumphant\", suggesting a positive review. Given that it is only one excerpt, I am scoring at the higher end of the positive bucket with low confidence. | Kimi: The excerpt uses strongly positive evaluative language including 'triumphant' and 'amazing' to describe the production's movement and performances, indicating a clear recommendation. However, confidence is low given this is a single curated excerpt with truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:48:15.810Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

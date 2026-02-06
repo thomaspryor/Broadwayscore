@@ -14,5 +14,60 @@
   "bwwExcerpt": "With Guettel’s often sublime score and lyrics that get at the terror, cynicism and, most of all, undying hope against hope well captured in Landau’s book, Floyd Collins might haunt some of those who see it now just as surely as it haunted so many back in ’96... Still, the score, and the production itself, can, and does, drag at times, particularly near the end, when, maybe with a bit of guilt, some audience members might wish a fast-forward to fate. Not to compare our endurance test to that of poor ol’ Floyd, but still, tighter tale-telling, less musical repetition and more intimate staging could send the estimable Floyd Collins soaring.",
   "bwwScore": 8,
   "bwwThumb": "Up",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FLOYD-COLLINS-Opens-On-Broadway-Starring-Jeremy-Jordan-Lizzy-McAlpine-and-More-20250421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FLOYD-COLLINS-Opens-On-Broadway-Starring-Jeremy-Jordan-Lizzy-McAlpine-and-More-20250421",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, the score, and the production itself, can, and does, drag at times, particularly near the end.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises the score as 'sublime' and acknowledges the production's haunting power, but criticizes pacing issues and suggests significant improvements needed. The mixed verdict with specific structural criticisms places this in the upper Mixed range. | GPT-4o: The review acknowledges the sublime score and haunting quality, but also notes dragging and issues with pacing and staging. The mixed elements suggest a balanced view. | Gemini: The review praises the score and lyrics but also notes that the production drags at times, especially towards the end. The critic suggests improvements that could elevate the show, indicating a mixed but not negative experience. | Kimi: The critic praises Guettel's 'often sublime' score and the show's haunting emotional power, but notes significant issues with pacing and length ('drag at times,' 'wish a fast-forward'). With only one excerpt available, this appears to be a qualified recommendation focusing on the music's quality despite production shortcomings.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:38:53.290Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

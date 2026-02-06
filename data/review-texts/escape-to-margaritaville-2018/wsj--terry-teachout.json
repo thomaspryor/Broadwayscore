@@ -12,5 +12,59 @@
   "bwwExcerpt": "The jukebox musical, in which the back catalog of a songwriter and/or pop star is repurposed as the score to a stage show, is one of Broadway's staple items. Rarely are such shows any good, but some have been hits, and hope springs eternal in the cash-hungry hearts of theatrical producers and superannuated rockers. That's why 'Escape to Margaritaville,' whose score consists of 26 songs by Jimmy Buffet t, has arrived on Broadway after preliminary runs in La Jolla, Calif., and Chicago, Houston and New Orleans. Even though the 71-year-old Mr. Buffett is very old news-'Margaritaville,' his first and biggest hit single, was released four decades ago-a group of hard-nosed businessmen is betting that his amiable brand of what he calls 'drunken Caribbean rock 'n' roll' is still popular enough to rope in a slice of the tourists who couldn't wangle tickets to ' Hamilton. '",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-Paradise-at-ESCAPE-TO-MARGARITAVILLE-20180315"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-Paradise-at-ESCAPE-TO-MARGARITAVILLE-20180315",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rarely are such shows any good, but some have been hits, and hope springs eternal in the cash-hungry hearts of theatrical producers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The excerpt establishes negative context about jukebox musicals and frames this as a commercial venture targeting tourists who can't get Hamilton tickets. However, with only one excerpt available, the full verdict may not be represented. | Gemini: The excerpt expresses skepticism about jukebox musicals in general and sets up the review with a negative tone. Given the limited text, it's difficult to gauge the full verdict, but the initial impression is negative. | Kimi: The excerpt establishes a cynical framework, describing the jukebox genre as 'rarely' good, the artist as 'very old news,' and the target audience as tourists who couldn't get Hamilton tickets. While only preliminary context, the tone suggests skepticism about artistic merit.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:09:23.526Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

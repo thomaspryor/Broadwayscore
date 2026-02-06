@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The one-man shows have been, by far, the most distinctive aspects of Leguizamo's career. He hasn't lost his talent, but some fresh material might do wonders for his effectiveness.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-GHETTO-KLOWN-20110322",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He hasn't lost his talent, but some fresh material might do wonders for his effectiveness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt acknowledges Leguizamo's continuing talent but suggests the material feels stale and needs refreshing. This balanced assessment with constructive criticism falls into mixed territory. Confidence is low due to single excerpt warning. | GPT-4o: The excerpt acknowledges Leguizamo's talent but suggests a need for fresh material, indicating a mixed sentiment. The lack of a clear recommendation or discouragement places it in the Mixed bucket. | Gemini: The review acknowledges Leguizamo's talent but suggests the material is lacking, indicating a mixed assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: Single excerpt acknowledges Leguizamo's enduring talent but critiques the staleness of the material, suggesting a qualified recommendation rather than enthusiastic praise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:07:55.655Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

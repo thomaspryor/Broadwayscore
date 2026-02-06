@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In case you hadn't noticed over the last five or six decades, Bob Dylan can't be contained, not by any particular genre, persona, creed or even voice, and the same can mostly be said for Girl From The North Country, the musical, written and directed by Conor McPherson, that transports the hits and deep-cuts of a peerless songbook to a Depression-era, crossroads-of-humanity boarding house. Opening tonight in a Broadway production that both focuses and somewhat constricts the musical that seemed more physically expansive, more tonally dreamlike, in its 2018 Off Broadway incarnation, Girl From The North Country nonetheless remains a revelation in its uncanny interpretations of even the most familiar Dylan songs.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Girl From The North Country nonetheless remains a revelation in its uncanny interpretations of even the most familiar Dylan songs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting the Broadway production 'focuses and somewhat constricts' compared to Off-Broadway, the critic calls it 'a revelation' - strong positive language that outweighs the reservations. | GPT-4o: The excerpt praises the musical as a 'revelation' in its song interpretations, indicating a positive review, but notes some constriction compared to the Off Broadway version. The single excerpt and lack of full context suggest using the lower end of the Positive range. | Gemini: The review states the show \"remains a revelation\" despite some constrictions compared to the off-Broadway production. Due to the single excerpt, confidence is low, and the score is in the lower-middle of the positive range. | Kimi: Despite noting the Broadway production feels more constricted than the 2018 Off-Broadway version, the critic praises it as a 'revelation' with 'uncanny interpretations' of Dylan's 'peerless' catalog, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:16:57.446Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

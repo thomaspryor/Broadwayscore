@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "This 'Fiddler,' helmed by the protective Bartlett Sher ('The King and I'), is bookended by scenes featuring a man we can interpret to be a present-day descendant of the tradition-cherishing milkman, famously 'blessed' with five daughters. This new 'Fiddler,' gorgeous and affecting, is a respectful staging of the Jerry Bock-Sheldon Harnick classic, with modernities here and there to keep us on our toes.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LChaim-Danny-Burstein-Leads-FIDDLER-ON-THE-ROOF-Revival--Updating-Live-20151220"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LChaim-Danny-Burstein-Leads-FIDDLER-ON-THE-ROOF-Revival--Updating-Live-20151220",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new 'Fiddler,' gorgeous and affecting, is a respectful staging of the Jerry Bock-Sheldon Harnick classic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('gorgeous and affecting') with appreciation for the direction and production, but limited excerpt makes full verdict uncertain. | GPT-4o: The excerpt describes the production as 'gorgeous and affecting,' indicating a strong positive impression. The use of 'respectful staging' suggests a high-quality production. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses positive language such as \"gorgeous and affecting\" and \"respectful staging,\" indicating a positive recommendation. However, as this is only a single excerpt, the confidence is low. | Kimi: The excerpt offers clear praise with words like 'gorgeous and affecting,' indicating a strong recommendation for this revival. However, confidence is low due to the single-excerpt limitation which may not capture the full review's nuance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:29:44.691Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

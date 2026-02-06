@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Very funny. Occasionally very, very funny. Four-stars funny. If that's all you need to know about Larry David's Fish In The Dark...then read no more...Or maybe not. I'm not usually one to put a price on art but you may want to know a little more before shelling out...for a show that's as good as some episodes of Curb Your Enthusiasm and Seinfeld. (If that seems like praising with a damned feint, you've caught my drift.) Of course in this case you're getting the added thrill of seeing Larry David shrug, blink, holler, wince, pace and blurt, up close and personal. As a fan of both TV series, I can understand the attraction. I'm with you. On the other hand, to sample an image from the show itself -- a dining table laden with curated paninis, baby micro-greens, artisanal bagels, organic crudités and Diet Coke -- the show is too much of a muchness...Through it all, and under the fleet direction of Anna D. Shapiro, Larry David pays Larry David, also very convincingly...Of course, this is the age of binge-watching, so two hours of shtick can be satisfying. Or give you heartburn.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FISH-IN-THE-DARK-Opens-on-Broadway-Updating-LIVE-20150305"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FISH-IN-THE-DARK-Opens-on-Broadway-Updating-LIVE-20150305",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As good as some episodes of Curb Your Enthusiasm and Seinfeld. (If that seems like praising with a damned feint, you've caught my drift.)",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly acknowledges their praise is 'damning with faint praise' and questions the value proposition despite finding it funny. The 'Or give you heartburn' ending and price concerns indicate ambivalence. | GPT-4o: The review acknowledges the humor and appeal for fans of Larry David's TV work, but also suggests reservations about the show's substance ('too much of a muchness'). The tone is mixed, with both positive and critical elements. | Gemini: The review is mixed, praising Larry David's performance and comparing it favorably to his TV shows, but also criticizing the show as being \"too much of a muchness.\" The overall tone is ambivalent, not strongly recommending or discouraging. | Kimi: The review praises the humor as 'four-stars funny' and acknowledges Larry David's convincing performance, but raises significant reservations about the show's repetitiveness ('too much of a muchness'), value for money ('shelling out'), and potential to disappoint ('Or give you heartburn'), resulting in a qualified, ambiguous verdict best described as mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:37:02.210Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

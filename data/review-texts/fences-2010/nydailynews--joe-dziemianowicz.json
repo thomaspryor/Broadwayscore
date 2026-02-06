@@ -6,11 +6,64 @@
   "url": "http://www.nydailynews.com/entertainment/music/2010/04/27/2010-04-27_fences.html",
   "source": "bww-reviews",
   "sources": [
-    "bww-reviews",
-    "web-search"
+    "bww-reviews"
   ],
   "bwwExcerpt": "Washington seems to have seized upon Rose's comment that when Troy 'walked through the house, he was so big he filled it up.' If he sank fully into his character, an outsize performance could work. But Washington never lets you forget you're watching him act. That fact is amplified by director Kenny Leon's tendency to overemphasize the play's inherent soapiness. Lines are underlined and spelled out in capital letters. It doesn't draw you in to Wilson's characters, but builds a fence between you and them.",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "publishDate": "April 27, 2010"
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Washington never lets you forget you're watching him act.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear criticism of Washington's performance and Leon's direction, with metaphor of building 'a fence between you and them' suggesting the production fails to connect with audiences. However, single excerpt warning requires caution about overall verdict. | GPT-4o: The review criticizes the lead performance and direction, noting a lack of immersion and overemphasis on the play's soapiness. The tone suggests disappointment, aligning with a negative verdict. | Gemini: The review criticizes Washington's performance and the director's choices, stating that it builds a fence between the audience and the characters. This indicates a negative assessment of the production. | Kimi: The excerpt criticizes the lead performance as presentational and the direction as heavy-handed, concluding that the production fails to engage the audience with the characters, indicating a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:27:16.864Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

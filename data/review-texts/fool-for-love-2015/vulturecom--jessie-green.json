@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The production, already excellent when presented at the Williamstown Theatre Festival in 2014, has only improved. Physically, it is just about perfect, especially the lighting design by Justin Townsend, which creates its poetic effects (as the play does) from the most concrete situations. Arianda's alternately spitfire and limpetlike fierceness has rarely been channeled as effectively, and Rockwell, a string bean in a cowboy hat, with a mean lasso and a mortifying chicken dance, brings tremendou",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOOL-FOR-LOVE-Opens-on-Broadway-Updating-LIVE-20151008",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production, already excellent when presented at the Williamstown Theatre Festival in 2014, has only improved.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for production quality ('just about perfect'), lighting design, and lead performances. Given single excerpt warning and high praise language, scored in upper Positive range, but low confidence due to truncated text cutting off mid-sentence. | GPT-4o: The excerpt praises the production as 'excellent' and 'improved', with specific commendation for the lighting design and performances. The tone suggests strong enthusiasm, placing it in the Rave bucket. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt praises the production, lighting design, and performances of the leads, indicating a positive recommendation. The phrase 'only improved' suggests a strong endorsement. | Kimi: The excerpt offers strong praise ('just about perfect', 'rarely been channeled as effectively') and notes the production has improved from an already excellent 2014 version, indicating a clear recommendation. Confidence is low due to the availability of only a single curated excerpt with truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:47:43.413Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

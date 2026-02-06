@@ -12,5 +12,60 @@
   "bwwExcerpt": "But this is a show no grown-up should miss; after 40 years, it remains a piercing stare of hope and regret, longing and compromise. The kind of musical theater it dissects and eulogizes may be vanishing from Broadway, but Follies is still here, and it's gorgeous.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOLLIES-on-Broadway-Updating-Live-20110912"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOLLIES-on-Broadway-Updating-Live-20110912",
+  "assignedScore": 89,
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this is a show no grown-up should miss; after 40 years, it remains a piercing stare of hope and regret, longing and compromise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong recommendation with 'no grown-up should miss' and praise for enduring artistic merit. However, single excerpt limits confidence in full review sentiment. | GPT-4o: The excerpt strongly recommends the show as a must-see for adults, highlighting its enduring impact and beauty. The language used is enthusiastic and suggests a high level of praise. | Gemini: The critic states that no grown-up should miss the show and calls it gorgeous, indicating a strong positive recommendation. | Kimi: The excerpt contains unambiguously enthusiastic language ('no grown-up should miss', 'gorgeous') indicating a rave recommendation, though confidence is reduced due to the single-excerpt format.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:44:46.821Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

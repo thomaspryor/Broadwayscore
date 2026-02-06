@@ -12,5 +12,60 @@
   "bwwExcerpt": "Grandage is incredibly well-served by a cast of terrific actors and singers, led by the phenomenal Caissie Levy as Elsa. She brings real complexity to her powerful vocals. She doesn't just belt her songs out, she performs them with a voice rich in emotion. In this way the over-familiar Let it Go, that ends the first act, is made to feel fresh. The song soars. She is perfectly partnered with the more vulnerable Patti Murin as Elsa's sister Anna. A strong bond clearly exists between the actors as well as their characters. There's also adorable work from Andrew Pirozzi as the agile reindeer Sven and Greg Hildreth as a puppeteer snowman Olaf, while Timothy Hughes brings a formidable physicality to the character of Pabbie.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She brings real complexity to her powerful vocals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise for cast performances with specific superlatives ('phenomenal', 'terrific', 'soars'). Single excerpt limitation requires caution, but tone is clearly positive throughout. | GPT-4o: The excerpt provides strong praise for the cast and performances, particularly highlighting Caissie Levy's emotional and powerful vocals. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The excerpt focuses on the strength of the performances, especially Caissie Levy as Elsa, and describes the production as incredibly well-served. Given the single excerpt, I'm placing it in the upper range of positive with low confidence. | Kimi: The excerpt offers enthusiastic praise for the lead performance and ensemble with superlatives like 'phenomenal' and 'terrific,' indicating a strong recommendation, though the single-excerpt format necessitates caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:53:28.365Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

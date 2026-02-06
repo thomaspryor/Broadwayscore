@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "[The show] seems a bit much in two acts, and contains some business I don't understand...He's endearing when he speaks about his career, self-depricating when he speaks about himself and especially his relationship with a father who both intimidated and infuriated him, and who has left and indelible mark on his psyche. When it comes to revealing his home life Leguizamo is more like an old pal than you may want - he may just be giving you a little too much information.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-GHETTO-KLOWN-20110322",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "[The show] seems a bit much in two acts, and contains some business I don't understand.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed signals - praises Leguizamo's personal revelations as 'endearing' but criticizes length and unclear elements. 'Bit much' and confusion suggest reservations outweigh positives. | GPT-4o: The excerpt provides a mix of positive and negative observations. The show is described as 'a bit much' and containing 'business I don't understand,' suggesting some confusion or excess. However, there is also praise for the endearing and self-deprecating nature of the performance. The lack of a clear recommendation or discouragement places it in the Mixed bucket. | Gemini: The review excerpt presents a mixed assessment, highlighting endearing moments but also suggesting the show can be overwhelming and too revealing. The lack of a clear recommendation places it in the Mixed category. | Kimi: The excerpt offers genuine praise for Leguizamo's persona (endearing, self-deprecating) but balances this with significant reservations about the show's structure ('bit much,' confusing elements) and content ('too much information'). With only one excerpt available, the mixed signals suggest a middle-of-the-road assessment rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:08:33.215Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

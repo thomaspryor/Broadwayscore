@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Vanessa Hudgens is a brief breath of spring amid this harsh winter as the spirited gamine Gigi in a new, Broadway-bound production of the Lerner and Loewe musical Gigi...Hudgens...is an adorable bundle of energy, youthful impertinence and carefree guile as Gigi...in the care of her warmly indulgent grandmother Mamita (a superb Victoria Clark), eavesdrops and soaks up every detail of what café society is wearing, doing, and romancing...The youthening of Gigi works, for the most part. Cott has the",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Broadway-Bound-GIGI-Opens-at-Kennedy-Center--UPDATED-20150203",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The youthening of Gigi works, for the most part.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows praise for lead performances (Hudgens described as 'adorable bundle of energy', Clark as 'superb') and notes the concept 'works, for the most part' - suggesting qualified positive recommendation, but low confidence due to truncated text and 'for the most part' caveat. | GPT-4o: The excerpt praises Vanessa Hudgens' performance and suggests the production has positive elements, but the limited text and single excerpt warning suggest a cautious, mildly positive score. | Gemini: The review excerpt praises Vanessa Hudgens' performance and the 'youthening' of Gigi. While it mentions 'harsh winter', the overall tone is positive, suggesting a recommendation with some reservations. | Kimi: The excerpt delivers enthusiastic praise for the lead performance with vivid positive metaphors ('breath of spring', 'adorable bundle of energy') and strong commendations ('superb'), placing it in the upper range of Positive despite minor qualifications.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T00:13:22.005Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

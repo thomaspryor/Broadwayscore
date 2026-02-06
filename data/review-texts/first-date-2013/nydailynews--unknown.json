@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Let's just say it: The mating-game musical 'First Date' isn't first-rate. Third-tier is more like it. Or below-deck, since this singing catalogue of cliches by a team of Broadway rookies would fit better on a cruise ship than the Great White Way...The songs are peppy but generic. The script boasts a couple of laughs...But that's a bright spot amid buzzkill...[Berry's] strategy: Throw in lots of tricks to see what sticks - megaphones, a leaf blower and talking video screens...Despite such clunkers, Rodgriguez cuts a strong presence. She has a pretty, but not especially colorful, voice. Levi, who sang in the cartoon 'Tangled,' is a pleasant enough singer and does the required geeky self-deprecation very well. All fine, but not enough to recommend the show.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FIRST-DATE-Opens-on-Broadway-Updating-LIVE-20130808"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FIRST-DATE-Opens-on-Broadway-Updating-LIVE-20130808",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All fine, but not enough to recommend the show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly states they cannot recommend the show despite acknowledging some positives like decent performances. The review calls it 'third-tier' and 'buzzkill' with only occasional bright spots. | GPT-4o: The review criticizes the show as 'third-tier' with 'peppy but generic' songs and a script with only 'a couple of laughs'. Despite some performer praise, the overall verdict is clearly negative, stating it's 'not enough to recommend the show.' | Gemini: The review is overall negative, calling the musical \"third-tier\" and saying it would be better suited for a cruise ship. Despite praising the performers, the critic explicitly states it's not enough to recommend. | Kimi: The critic explicitly declines to recommend the show, dismissing it as 'third-tier' and a 'catalogue of cliches' despite acknowledging competent performances from the cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:35:18.017Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

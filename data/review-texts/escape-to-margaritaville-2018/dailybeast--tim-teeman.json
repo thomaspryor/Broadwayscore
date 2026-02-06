@@ -12,5 +12,60 @@
   "bwwExcerpt": "Do you have to be a fan of Jimmy Buffett to love the jukebox musical Escape to Margaritaville? No, but it certainly helps. Make mine something lividly colored and very cold, please barman. And keep them coming. It may be the only way to get through this.",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-Paradise-at-ESCAPE-TO-MARGARITAVILLE-20180315"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-Paradise-at-ESCAPE-TO-MARGARITAVILLE-20180315",
+  "assignedScore": 39,
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 34,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It may be the only way to get through this.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic suggests needing alcohol to endure the show and implies it's difficult to sit through. However, this is only a single excerpt, so confidence is low as the full review context is missing. | GPT-4o: The excerpt suggests that the show is not enjoyable unless one is a fan of Jimmy Buffett, and implies that alcohol is needed to endure it. This indicates a negative view of the production. | Gemini: The review suggests enjoyment is heavily reliant on being a fan, and the critic implies needing drinks to endure it, indicating a mixed to slightly negative experience. | Kimi: The critic suggests intoxication is necessary to endure the show, indicating a tedious or unpleasant experience and a clear recommendation against seeing it sober.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:07:07.797Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 58,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

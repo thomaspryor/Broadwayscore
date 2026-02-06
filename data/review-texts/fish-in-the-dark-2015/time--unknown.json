@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "David's first Broadway play...runs barely two hours, but it seems padded out, overpopulated (18 characters -- enough for a Shakespeare history play!), and funny only in spurts. It's great to see David, the star and creator of the popular HBO series Curb Your Enthusiasm, taking a crack at Broadway. But for all the audience's indulgent laughter and the obligatory standing ovation at the end, one can't help but detect a certain, well, lack of enthusiasm...On Curb Your Enthusiasm...David proved himself a master of structure: weaving three or four storylines each week into a neat, 30-minute operetta of comic angst. With a two-act play to fill up, David has made everything bigger...Onstage, David is bigger too. His whiny voice and perplexed expressions are perfectly sized for the small screen. Here he has to project his trademark shrug to the back of the mezzanine -- hunching up his shoulders and stretching his arms so wide he looks like a seagull coming in for a landing at Kennedy Airport...for a comedy writer who practically reinvented the TV sitcom, it's surprising to see how clumsy and old-fashioned David's playwriting is.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FISH-IN-THE-DARK-Opens-on-Broadway-Updating-LIVE-20150305"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FISH-IN-THE-DARK-Opens-on-Broadway-Updating-LIVE-20150305",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "one can't help but detect a certain, well, lack of enthusiasm",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative assessment calling the play 'padded out', 'funny only in spurts', and 'clumsy and old-fashioned', despite acknowledging David's TV success and audience reaction. | GPT-4o: The review expresses disappointment with the play's structure and humor, noting it feels padded and lacks enthusiasm. Despite some audience laughter, the overall tone is negative, criticizing the play's execution compared to David's TV work. | Gemini: The review acknowledges some funny moments and audience enjoyment, but ultimately finds the play clumsy and disappointing, especially compared to David's TV work. The tone is mixed, not outright negative. | Kimi: The critic finds the play padded and overpopulated, criticizes David's stage presence as ill-suited for theater, and explicitly contrasts the 'clumsy' playwriting with his masterful TV work. While acknowledging sporadic humor, the overall verdict discourages attendance by highlighting a 'lack of enthusiasm' and fundamental structural failures.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:38:18.648Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "London went mad for Roger, an Argentine native of winningly diminutive size. Her elfin apoplexies and unique vocal interpretation were met with English bouquets. But personally, I found her performance almost too good a fit with Rice’s jagged, herky-jerky lyrics: She is memorable in part because she is irritating.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-EVITA-Returns-to-Broadway-Updating-LIVE-20120405"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-EVITA-Returns-to-Broadway-Updating-LIVE-20120405",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She is memorable in part because she is irritating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows ambivalence about the lead performance - acknowledges audience enthusiasm and vocal skill but finds her 'irritating' and 'too good a fit' with problematic lyrics. Mixed signals with low confidence due to limited text. | GPT-4o: The excerpt provides a mixed evaluation of the performance, highlighting both its memorability and its irritating quality. The lack of a full review and the single excerpt warning suggest a cautious approach, leading to a mixed classification. | Gemini: The review excerpt suggests a mixed reaction. While the performer is memorable, the critic also finds her irritating, indicating a lack of straightforward recommendation. Given the single excerpt, confidence is low. | Kimi: The critic contrasts the enthusiastic London reception with personal reservations, acknowledging the performer's skill and fit for the material while finding the performance irritating, resulting in a qualified assessment without a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:16:12.691Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

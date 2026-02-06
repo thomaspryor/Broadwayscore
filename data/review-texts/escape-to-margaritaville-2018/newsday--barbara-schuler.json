@@ -12,5 +12,60 @@
   "bwwExcerpt": "The delightful, energetic frothy drink of a show that just opened at the Marquis Theatre is exactly what you'd expect given its inspiration - a predictable romantic comedy that celebrates the music written and/or performed by the renowned singer who's turned his laid-back island sound into a serious corporate empire.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-Paradise-at-ESCAPE-TO-MARGARITAVILLE-20180315"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-Paradise-at-ESCAPE-TO-MARGARITAVILLE-20180315",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The delightful, energetic frothy drink of a show that just opened at the Marquis Theatre is exactly what you'd expect",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'delightful' and 'energetic' with positive tone, though notes it's predictable. Single excerpt warning suggests this represents a positive assessment, placing it in upper Positive range. | GPT-4o: The excerpt describes the show as 'delightful' and 'energetic', indicating a positive experience. The use of 'frothy drink' suggests a light, enjoyable show. However, the single excerpt warning reduces confidence. | Gemini: The review calls the show \"delightful\" and \"energetic,\" but also \"predictable,\" suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt, confidence is low. | Kimi: The critic describes the show as 'delightful' and 'energetic,' offering a clear recommendation while acknowledging its predictable nature. The single excerpt suggests solid entertainment value despite formulaic elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:07:42.277Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
