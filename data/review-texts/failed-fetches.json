@@ -10672,18 +10672,6 @@
     "timestamp": "2026-02-04T15:02:43.966Z"
   },
   {
-    "reviewId": "dana-h-2021/nyt-theater--jonathan-mandell.json",
-    "showId": "dana-h-2021",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2021/10/17/dana-h-broadway-review-deirdre-oconnell-lip-syncs-an-incredible-trauma/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, tina, hair, once, november...",
-    "textLength": 7093,
-    "timestamp": "2026-02-04T15:03:35.380Z"
-  },
-  {
     "reviewId": "finding-neverland-2015/variety--marilyn-stasio.json",
     "showId": "finding-neverland-2015",
     "outlet": "Variety",
@@ -18482,5 +18470,65 @@
     "garbageReason": "Multiple shows mentioned (9): proof, appropriate, english, the curious incident of the dog in the night-time, constellations...",
     "textLength": 3981,
     "timestamp": "2026-02-06T06:24:59.023Z"
+  },
+  {
+    "reviewId": "cymbeline-2007/hollywood-reporter--unknown.json",
+    "showId": "cymbeline-2007",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/cymbeline-theater-review-813603",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): hamilton, mamma mia!, giant, summer, eclipsed...",
+    "textLength": 5810,
+    "timestamp": "2026-02-06T06:28:16.490Z"
+  },
+  {
+    "reviewId": "dames-at-sea-2015/hollywood-reporter--david-rooney.json",
+    "showId": "dames-at-sea-2015",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/dames-at-sea-theater-review-833997",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (18): mamma mia!, home, parade, company, head over heels...",
+    "textLength": 8218,
+    "timestamp": "2026-02-06T06:28:35.161Z"
+  },
+  {
+    "reviewId": "dames-at-sea-2015/nytimes--charles-isherwood.json",
+    "showId": "dames-at-sea-2015",
+    "outlet": "New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://www.nytimes.com/2015/10/23/theater/review-dames-at-sea-skips-onto-broadway.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): smash, the audience, an american in paris, the performers, matilda the musical...",
+    "textLength": 6224,
+    "timestamp": "2026-02-06T06:28:51.604Z"
+  },
+  {
+    "reviewId": "dana-h-2021/nyt-theater--jonathan-mandell.json",
+    "showId": "dana-h-2021",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2021/10/17/dana-h-broadway-review-deirdre-oconnell-lip-syncs-an-incredible-trauma/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, tina, hair, once, november...",
+    "textLength": 7093,
+    "timestamp": "2026-02-06T06:29:59.309Z"
+  },
+  {
+    "reviewId": "dana-h-2021/nytimes--unknown.json",
+    "showId": "dana-h-2021",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2021/10/17/theater/review-in-the-disturbing-dana-h-whose-voice-is-it-anyway.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, company, tina, hair, once...",
+    "textLength": 8026,
+    "timestamp": "2026-02-06T06:32:59.350Z"
   }
 ]
