@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "https://variety.com/2008/legit/reviews/les-liaisons-dangereuses-1200472031/",
   "publishDate": "October 30, 2008",
-  "fullText": "Under Josie Rourke's direction, this revival of Christopher Hampton's adaptation of Choderlos de Laclos' epistolary novel about sexual gamesmanship among the French aristocracy feels strangely airless and mechanical.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Under Josie Rourke's direction, this revival of Christopher Hampton's adaptation of Choderlos de Laclos' epistolary novel about sexual gamesmanship among the French aristocracy feels strangely airless and mechanical.",
   "originalScore": null,
   "assignedScore": 43,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Under Josie Rourke's direction, this revival of Christopher Hampton's adaptation of Choderlos de Laclos' epistolary novel about sexual gamesmanship among the French aristocracy feels strangely airless and mechanical.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
     "score": 43,
@@ -77,5 +77,47 @@
     "web-search"
   ],
   "wrongProduction": true,
-  "wrongProductionNote": "Auto-flagged: mentions director \"josie rourke\" from les-liaisons-dangereuses-2016 (newer production). Review likely belongs in les-liaisons-dangereuses-2016."
+  "wrongProductionNote": "Auto-flagged: mentions director \"josie rourke\" from les-liaisons-dangereuses-2016 (newer production). Review likely belongs in les-liaisons-dangereuses-2016.",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 43,
+  "textWordCount": 484,
+  "archivePath": "data/archives/reviews/les-liaisons-dangereuses-2008/variety--charles-isherwood_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T07:30:29.634Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Nov 25, 2008 2:45pm PT \n\n \n\n \n \n \n\n \n\n \n Chungking Express\n \n \n\n \n\n Hong Kong icon Wong Kar Wai has become one of the world's most imitated directors; indeed, he more or less aped himself in his recent foray into English-language filmmaking, \"My Blueberry Nights.\"\n\nHong Kong icon Wong Kar Wai has become one of the world’s most imitated directors; indeed, he more or less aped himself in his recent foray into English-language filmmaking, “My Blueberry Nights.” All of “Blueberry’s” key ingredients — a neon-smeared palette, romantic longing expressed over a fast-food counter, a pop star making her bigscreen debut — were already on full and glorious display in Wong’s 1994 “Chungking Express,” an exhilarating pop masterpiece that recalled the freshness of the French New Wave in its playful, kinetic approach to film language. It’s a movie long overdue for deluxe DVD treatment, as opposed to the skimpy assemblage of extras made available by the Criterion Collection.\n\nThe bonuses look especially slim when set beside Criterion’s lavish two-disc set for “In the Mood for Love” (2000). Still, the two films’ contrasting production histories — Wong spent 15 months shooting “Mood,” while he tossed off “Chungking” in just two — may explain the relative absence of supplemental material here.\n\nNor is it much of a surprise that Wong, never one to overexplain his own work, did not contribute a feature commentary track. That honor falls to critic and Asian cinema expert Tony Rayns, who comes at “Chungking” from every possible angle: He outlines the unique circumstances under which it was made (as a low-budget throwaway intended to provide a quick cash flow for Wong’s Jet Tone Prods.), analyzes the pic’s nostalgic presentation of Hong Kong’s Tsim Sha Tsui district, where Wong grew up, and fills in the backgrounds of the pic’s beautiful stars: Takeshi Kaneshiro, Brigitte Lin, Tony Leung Chiu-wai and singer-songwriter Faye Wong.\n\nGratifyingly, Rayns points out the skill with which Wong (working, as usual, sans script or storyboard) conceived the film’s two delicately intertwined love stories and penned the witty, melancholy romantic aphorisms that constitute much of the dialogue. Rayns decisively refutes the tired criticism that Wong’s freewheeling, instinctual filmmaking style is merely a poor disguise for his sloppiness as a storyteller.\n\nDisc also includes a 12-minute gem of an episode from the British TV series “Moving Pictures,” in which Wong takes viewers on a tour of the film’s locations — from the sweaty, cramped corridors of Chungking Mansions to cinematographer Christopher Doyle’s apartment (occupied in the film by Leung). Wong and Doyle, whose collaboration produced one of the most distinctive and influential visual styles in recent cinema, have since parted ways. For Wong fanatics, the sight of the young director (as ever, cool, reserved, never without his sunglasses), sitting and talking with his boisterous d.p., will register as singularly poignant — and very much of a piece with the youthful promise and optimism embodied by Wong’s breakthrough movie."
 }

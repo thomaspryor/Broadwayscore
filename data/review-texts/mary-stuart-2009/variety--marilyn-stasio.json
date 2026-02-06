@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2009/legit/reviews/mary-stuart-1117999944/",
   "publishDate": "April 19, 2009",
-  "fullText": "Janet McTeer and Harriet Walter deliver commanding performances as the rival queens in Friedrich Schiller's 'Mary Stuart,' but this Broadway production feels more like a stately historical pageant than a living, breathing drama.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Janet McTeer and Harriet Walter deliver commanding performances as the rival queens in Friedrich Schiller's 'Mary Stuart,' but this Broadway production feels more like a stately historical pageant than a living, breathing drama.",
   "originalScore": null,
   "assignedScore": 61,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Janet McTeer and Harriet Walter deliver commanding performances as the rival queens in Friedrich Schiller's 'Mary Stuart,' but this Broadway production feels more like a stately historical pageant than a living, breathing drama.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (33 words)",
   "llmScore": {
     "score": 61,
@@ -72,5 +72,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 842,
+  "archivePath": "data/archives/reviews/mary-stuart-2009/variety--marilyn-stasio_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T07:51:04.608Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Rookie dramas help win key demos\n\nFox rolled to another primetime victory in key demos last week, as it has started to exhibit some strength beyond “American Idol.”\n\nThe net won Monday, Tuesday and Wednesday — in part due to solid rookie dramas “Fringe” and “Lie to Me” — and is more competitive these days on Thursday with its combo of “Bones” and “Hell’s Kitchen.” Next up to address is Friday, as the net rolls out drama “Dollhouse” this week.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Brandi Carlile and Sam Smith: A Conversation About Bravura Voices, Fashion as Queer Armor and Having a Nonbinary Headliner for Carlile's Girls Just Wanna Weekend \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n How Brandi Carlile’s Girls Just Wanna Weekend Became the World’s Warmest Music Festival: It's Not Just the Tropical Temperatures\n\nCBS ran second for the frame in key demos and first in total viewers, boosted by the Grammy Awards. The weekly result has pushed the Eye net into the plus column for the season: It’s the only network to be up across the board vs. its performance through this time a year ago.\n\nOf note in cable, USA again towered over the competish, although TNT made some noise as well thanks in part to its highest-rated NBA regular-season game in 12 years and solid numbers for original movie “Gifted Hands: The Ben Carson Story.”\n\nOverall, according to “live plus same day” nationals from Nielsen, Fox led among adults 18-49 with a 4.0 rating/11 share, followed by CBS (3.2/9), ABC (2.8/8), NBC (2.3/6), Univision (1.6/4) and USA (1.1/3).\n\nFox also led in adults 25-54 (4.6/11) and those 12-34 (3.2/10), but CBS still ruled among total viewers (11.5 million to Fox’s 10.8 million).\n\nBack on its regular sked, Fox’s “American Idol” was easily the top program, with hours on Tuesday (10.0 rating/25 share in 18-49, 26.60 million viewers) and Wednesday (9.9/27, 26.38m). Also on those respective nights, “Fringe” (5.0/12, 12.78m) and “Lie to Me” (4.7/12, 12.99m) cracked the week’s top 10 in 18-49.\n\nFor “Fringe,” this was its best delivery since its series debut.\n\nThe net captured Monday, led by “House” (5.6/14, 14.87m), and enjoyed its best Thursday of the season with “Bones” (3.2/9, 10.86m) and “Hell’s Kitchen” (3.4/8, 7.71m).\n\nFox also more than doubled the delivery of any competing net on Saturday with NASCAR’s “Budweiser Shootout” (2.8/9 in 18-49, 8.26m).\n\nAt CBS, the “51st Annual Grammy Awards” (7.4/18 in 18-49, 19.05m) rose by double-digits vs. the previous year’s record low (Daily Variety, Feb. 9). The Eye also remained strong on Monday with “Two and a Half Men” (5.5/12, 16.55m) and “CSI: Miami” (4.5/11, 16.10m), with the latter logging its best scores since its season preem.\n\nCBS was quiet at midweek as six of its seven Tuesday-Thursday crime dramas aired repeats.\n\nAt ABC, “Grey’s Anatomy” (5.8/14 in 18-49, 15.27m) was the week’s top scripted series, and lead-out “Private Practice” (5.3/14, 12.91m) hit season highs with the start of a crossover event with “Grey’s.” “Desperate Housewives” (4.9/11, 13.82m) and “Lost” (4.7/12, 11.01m) made the top 10 as well.\n\nAnd the net’s Monday continues to click with season highs for “The Bachelor” (4.1/10, 11.02m) and best-since-preem scores for “True Beauty” (3.0/8, 6.77m).\n\nLeading the way for NBC was Thursday laffer “The Office” (4.3/11, 8.48m) and more potent numbers for Tuesday’s “The Biggest Loser” (4.0/10, 10.35m). Net also saw a season high for “Chuck” (3.0/7, 8.45m) and a fairly good return for “Heroes” (4.0/9, 8.55m) — both benefiting by airing the night after the Super Bowl.\n\nCW was paced by Thursday vets “Smallville” (1.6/4, 3.93m) and “Supernatural” (1.4/3, 3.37m) and the best numbers in a while for Tuesday rookies “90210” (1.3/3, 2.49m) and “Privileged” (0.8/2, 1.65m).\n\nUnivision stood as the top-rated network among young adults Friday with novelas “Cuidado con el Angel” and “Fuego en la Sangre.”\n\nUSA’s first-place cable finish was paced as usual by Monday’s “WWE Raw” (1.9/5 in 18-49, 5.31m for its two hours) as well as more hot numbers for Thursday drama “Burn Notice” (1.8/5 in 18-49, 5.27m), the week’s top cable drama in key demos. Friday’s “Monk” was the frame’s most-watched cable program overall (5.68 million).\n\nThursday’s NBA Finals rematch between the Los Angeles Lakers and Boston Celtics was a slam dunk for TNT (1.8/5 in 18-49, 4.31m). And on Saturday, the net’s preem of Johnson & Johnson original movie “Gifted Hands: The Ben Carson Story,” starring Cuba Gooding Jr., drew 4.24 million viewers and beat repeats on ABC, CBS and NBC in 18-49.\n\nMidweek was highlighted by strong 10 o’clock skeins “Nip/Tuck” on FX (1.5/4, 2.70m) and “Top Chef” on Bravo (1.8/5, 3.23m).\n\nNickelodeon scored Saturday with the premieres of “iCarly” (5.23 million) and “True Jackson, VP” (3.95m), which combined for the week’s top numbers among kids. And Disney Channel averaged 4.03 million viewers one night later for the premiere (back-to-back episodes) of original series “Sonny With a Chance.”\n\nHBO’s “Big Love” continues to gain viewers, hitting a season-high 1.91 million on Sunday. The pay cabler said the drama is averaging more than 5 million weekly viewers via replays, DVR play and HBO on Demand."
 }

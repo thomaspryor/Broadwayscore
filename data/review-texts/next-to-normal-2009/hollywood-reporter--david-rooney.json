@@ -17,5 +17,54 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show succeeds in making audiences care deeply about these characters while never minimizing the devastating impact of mental illness on families.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "textWordCount": 194,
+  "archivePath": "data/archives/reviews/next-to-normal-2009/hollywood-reporter--david-rooney_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T08:11:29.953Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 208 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "By Jay A. Fernandez, The Associated Press \n\n \n\n November 12, 2009 1:23pm\n\nEmmy-winning writer Stan Berkowitz has been chosen to receive the WGA West Animation Writers Caucus’ animation writing award.\n\nThe lifetime achievement honor will be presented Thursday night at the AWC’s annual awards ceremony at WGAw headquarters in Los Angeles.\n\nBerkowitz’s animated TV writing credits include “Legion of Super Heroes,” “The Batman,” “Transformers: Animated,” “Superman,” “Spider-Man,” “Justice League,” “Static Shock,” “Ben 10” and “The Brave and the Bold.” In live-action, Berkowitz has written for “Dragnet: The 90’s,” “Power Rangers: Space Patrol Delta,” “The New Adam 12,” “Mike Hammer,” “T.J. Hooker” and “The Adventures of Superboy and Cover Up.”\n\nHis screenwriting credits include “Street Corner Justice” and “Acapulco Gold.”\n\n“While Stan has built an acclaimed writing career bringing superheroes to the screen,” said WGAw president John Wells, “he’s a real-life superhero to the animation writing community — not only helping to raise the profile of animation writers through his many creative gifts, but also by playing a lead role in the Guild’s ongoing efforts to organize animation writing.”\n\nRecent AWC Writing Award recipients include Brad Bird, Jules Feiffer, Alan Burnett, Michael Reiss and Linda Woolverton.",
+  "misattributedFullText": true,
+  "extractedByline": "Jay A. Fernandez",
+  "expectedCritic": "David Rooney"
 }

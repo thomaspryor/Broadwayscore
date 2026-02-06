@@ -16,7 +16,7 @@
   "bwwExcerpt": "Every now and then, as yet another peppy cliché prances across the stage of the Circle in the Square Theater, you may pause to ponder the pioneering achievement of 'In Transit,' the singing portrait of New York City subway travelers, which opened on Sunday night. After all, what you're listening to often gleams with the blended polyphony of a good-size band. Yet not an instrument has been used in the performance of this a cappella musical, staged by the Tony-winning director and choreographer Kathleen Marshall. Everything we hear, as we are told in a (sung) preshow announcement, is created by human voices. Acknowledging this is rather like admiring the ingenuity that must have gone into a sentimental picture of a rainbow, perhaps with the Care Bears in the foreground, rendered entirely in bottle caps. It's definitely something to have achieved such visual specificity out of bottle caps. But it's still a picture of a rainbow with Care Bears.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This a cappella musical about relationships and transportation in New York has more heart than most shows twice its size, but it never quite finds its rhythm.",
-  "contentTier": "needs-rescrape",
+  "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 62,
@@ -89,8 +89,8 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 306,
-  "archivePath": "data/archives/reviews/in-transit-2016/nytimes--ben-brantley_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T03:45:23.573Z",
+  "archivePath": "data/archives/reviews/in-transit-2016/nytimes--ben-brantley_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T06:40:16.060Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -112,5 +112,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about retrieving article content and enabling JavaScript, making it impossible to determine the critic's verdict.; openai: The text includes a message about trouble retrieving the article content, indicating it is incomplete and not a full review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "duplicateTextOf": "nytimes--marcus-ben-brantley.json"
 }
