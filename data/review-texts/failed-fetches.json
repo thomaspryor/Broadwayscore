@@ -17332,30 +17332,6 @@
     "timestamp": "2026-02-06T06:45:14.778Z"
   },
   {
-    "reviewId": "jagged-little-pill-2019/variety--marilyn-stasio.json",
-    "showId": "jagged-little-pill-2019",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2019/legit/reviews/jagged-little-pill-review-broadway-1203421986/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): mary jane, company, the audience, once, evita...",
-    "textLength": 5420,
-    "timestamp": "2026-02-06T06:47:27.019Z"
-  },
-  {
-    "reviewId": "jagged-little-pill-2019/vulture--helen-shaw.json",
-    "showId": "jagged-little-pill-2019",
-    "outlet": "Vulture",
-    "critic": "Helen Shaw",
-    "url": "https://www.vulture.com/2019/12/review-jagged-little-pill-is-missing-the-essence-of-alanis.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): mary jane, home, purpose, company, the audience...",
-    "textLength": 9161,
-    "timestamp": "2026-02-06T06:47:30.587Z"
-  },
-  {
     "reviewId": "jerusalem-2011/hollywood-reporter--david-rooney.json",
     "showId": "jerusalem-2011",
     "outlet": "The Hollywood Reporter",
@@ -20462,5 +20438,53 @@
     "garbageReason": "Multiple shows mentioned (8): company, network, summer, the audience, hair...",
     "textLength": 4466,
     "timestamp": "2026-02-06T16:04:11.588Z"
+  },
+  {
+    "reviewId": "it-shoulda-been-you-2015/hollywood-reporter--frank-scheck.json",
+    "showId": "it-shoulda-been-you-2015",
+    "outlet": "Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/tyne-daly-harriet-harris-shoulda-788677",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): mamma mia!, fish in the dark, gigi, an american in paris, annie...",
+    "textLength": 5346,
+    "timestamp": "2026-02-06T16:07:19.971Z"
+  },
+  {
+    "reviewId": "it-shoulda-been-you-2015/nytg--elliot-lanes.json",
+    "showId": "it-shoulda-been-you-2015",
+    "outlet": "New York Theatre Guide",
+    "critic": "Elliot Lanes",
+    "url": "http://nytheatreguide.com/2015/04/broadway-review-it-shoulda-been-you-at-brooks-atkinson-theatre/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): harmony, home, tina, the present, the price...",
+    "textLength": 45998,
+    "timestamp": "2026-02-06T16:07:29.830Z"
+  },
+  {
+    "reviewId": "jagged-little-pill-2019/variety--marilyn-stasio.json",
+    "showId": "jagged-little-pill-2019",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2019/legit/reviews/jagged-little-pill-review-broadway-1203421986/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): mary jane, company, the audience, once, evita...",
+    "textLength": 5180,
+    "timestamp": "2026-02-06T16:09:28.694Z"
+  },
+  {
+    "reviewId": "jagged-little-pill-2019/vulture--helen-shaw.json",
+    "showId": "jagged-little-pill-2019",
+    "outlet": "Vulture",
+    "critic": "Helen Shaw",
+    "url": "https://www.vulture.com/2019/12/review-jagged-little-pill-is-missing-the-essence-of-alanis.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): mary jane, home, purpose, company, the audience...",
+    "textLength": 9161,
+    "timestamp": "2026-02-06T16:09:36.485Z"
   }
 ]
