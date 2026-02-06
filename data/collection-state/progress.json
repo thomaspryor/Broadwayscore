@@ -84,7 +84,15 @@
     "seminar-2011/vulture--jesse-green.json",
     "sweat-2017/nytimes--matt-windman.json",
     "the-audience-2015/nytimes--charles-isherwood.json",
-    "the-children-2017/nytimes--ben-brantley.json"
+    "the-children-2017/nytimes--ben-brantley.json",
+    "the-hills-of-california-2024/nytimes--jesse-green.json",
+    "the-king-and-i-2015/nytimes--ben-brantley.json",
+    "the-nance-2013/nytimes--ben-brantley.json",
+    "the-nap-2018/nytimes--ben-brantley.json",
+    "the-picture-of-dorian-gray-2025/nytimes--jesse-green.json",
+    "the-play-that-goes-wrong-2017/nytimes--ben-brantley.json",
+    "the-price-2017/nytimes--alexis-soloski.json",
+    "the-price-2017/nytimes--chris-jones.json"
   ],
   "failed": [
     "a-chorus-line-2006/nytimes--ben-brantley.json",
@@ -451,7 +459,9 @@
     "tammy-faye-2024/vulture--sara-holdren.json",
     "the-collaboration-2022/newyorker--naomi-fry.json",
     "the-curious-incident-of-the-dog-in-the-nighttime-2014/nytimes--unknown.json",
-    "the-encounter-2016/nytimes--unknown.json"
+    "the-encounter-2016/nytimes--unknown.json",
+    "the-heidi-chronicles-2015/nytimes--charles-isherwood.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -475,7 +485,9 @@
       "a-time-to-kill-2013/variety--marilyn-stasio.json",
       "data/review-texts/american-idiot-2010/hollywood-reporter--david-rooney.json",
       "data/review-texts/arcadia-2011/variety--marilyn-stasio.json",
-      "data/review-texts/caroline-or-change-2021/hollywood-reporter--david-rooney.json"
+      "data/review-texts/caroline-or-change-2021/hollywood-reporter--david-rooney.json",
+      "data/review-texts/the-heidi-chronicles-2015/nytimes--charles-isherwood.json",
+      "the-heidi-chronicles-2015/nytimes--charles-isherwood.json"
     ],
     "scrapingbee": [
       "american-son-2018/variety--marilyn-stasio.json",
@@ -564,11 +576,19 @@
       "seminar-2011/vulture--jesse-green.json",
       "sweat-2017/nytimes--matt-windman.json",
       "the-audience-2015/nytimes--charles-isherwood.json",
-      "the-children-2017/nytimes--ben-brantley.json"
+      "the-children-2017/nytimes--ben-brantley.json",
+      "the-hills-of-california-2024/nytimes--jesse-green.json",
+      "the-king-and-i-2015/nytimes--ben-brantley.json",
+      "the-nance-2013/nytimes--ben-brantley.json",
+      "the-nap-2018/nytimes--ben-brantley.json",
+      "the-picture-of-dorian-gray-2025/nytimes--jesse-green.json",
+      "the-play-that-goes-wrong-2017/nytimes--ben-brantley.json",
+      "the-price-2017/nytimes--alexis-soloski.json",
+      "the-price-2017/nytimes--chris-jones.json"
     ]
   },
   "startTime": "2026-02-06T03:33:55.141Z",
-  "lastProcessed": "the-encounter-2016/nytimes--unknown.json",
+  "lastProcessed": "the-price-2017/nytimes--chris-jones.json",
   "log": [
     {
       "t": "2026-02-06T03:34:10.583Z",
@@ -713,6 +733,18 @@
       "t": "2026-02-06T14:15:20.598Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-06T14:18:53.248Z",
+      "event": "bb-session",
+      "session": "937435b7",
+      "url": "http://www.nytimes.com/2015/03/20/theater/review-the-heidi-chronicles-with-elisa"
+    },
+    {
+      "t": "2026-02-06T14:19:36.504Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770387543326\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAQtmXYpEeCR4ALPe1oA==&cid=IPAzM1KTNhQfKp4nhHnPhu1RV6cDjftaRRRaZHN_V8SaYM9yXDFKDSWvzJmEGCn~CRliOyMMotQ4I9P4bfyZBD0J8Sgg0OHFHvlf9kytwZdPbMctAUuNPKccQ1Bf6dF1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770387543326\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770387543326\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAQtmXYpEeCR4ALPe1oA==&cid=IPAzM1KTNhQfKp4nhHnPhu1RV6cDjftaRRRaZHN_V8SaYM9yXDFKDSWvzJmEGCn~CRliOyMMotQ4I9P4bfyZBD0J8Sgg0OHFHvlf9kytwZdPbMctAUuNPKccQ1Bf6dF1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770387543326\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    29 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770387543326\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAQtmXYpEeCR4ALPe1oA==&cid=IPAzM1KTNhQfKp4nhHnPhu1RV6cDjftaRRRaZHN_V8SaYM9yXDFKDSWvzJmEGCn~CRliOyMMotQ4I9P4bfyZBD0J8Sgg0OHFHvlf9kytwZdPbMctAUuNPKccQ1Bf6dF1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770387543326\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
     }
   ]
 }
