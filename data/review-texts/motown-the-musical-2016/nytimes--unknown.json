@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "http://www.nytimes.com/2016/07/22/theater/review-motown-the-musical-offers-easy-nostalgia-and-a-jolt-of-racial-relevance.html?partner=rss&emc=rss&_r=0",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2016/07/22/theater/review-motown-the-musical-offers-easy-nostalgia-and-a-jolt-of-racial-relevance.htmlShare full article0Advertisement\n\nWhen Jarran Muse, playing Marvin Gaye, sings those words and a verse or two of the song they come from in “Motown: The Musical,” which has opened at the Nederlander Theater in a limited return engagement, they carry an unsettling relevance they did not have when the show originally opened more than three years ago.\n\nA celebratory musical paying tribute to the black music explosion led by Berry Gordy’s Detroit label, “Motown” devotes only a few scenes to the civil rights movement and the tumult of the late 1960s. But they give it a new and unusual relevance after more than a year of troubled race relations, with many commentators drawing comparisons (and others making distinctions) between now and then.\n\nBy no means has “Motown” been transformed into a thoughtful or probing musical. Under Charles Randolph-Wright’s direction, it remains what it was: a sparkling and enjoyable, if lumpy, journey through 25 years of Motown history. It’s just that the climax of the first act, and the opening minutes of the second, give the show a jolt of emotional currency that contrasts strikingly with its nostalgic spirit.\n\nThe central roles have been recast, with excellent singing actors who are mostly equal to the fine originals. As Gordy, Chester Gregory could use more intensity to illuminate the relentless — some would say ruthless — drive of the man who helped usher in a pop-music revolution. But he brings some nice nuances to the role, accentuating Gordy’s brooding grievance as the stars he created begin to desert him. (Mr. Gordy himself wrote the musical’s book.)",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 74,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Under Charles Randolph-Wright’s direction, it remains what it was: a sparkling and enjoyable, if lumpy, journey through 25 years of Motown history...The central roles have been recast, with excellent singing actors who are mostly equal to the fine originals…‘Motown’ has so much story to tell that there’s no time for dramatic subtlety or complexity of character. But who’s coming to see 'Motown' for anything other than the fabulous songbook?”\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright",
@@ -77,5 +77,47 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "playbillVerdictUrl": "http://theater.nytimes.com/2013/04/15/theater/reviews/motown-the-musical-berry-gordys-story.html?hpw"
+  "playbillVerdictUrl": "http://theater.nytimes.com/2013/04/15/theater/reviews/motown-the-musical-berry-gordys-story.html?hpw",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 74,
+  "textWordCount": 265,
+  "archivePath": "data/archives/reviews/motown-the-musical-2016/nytimes--unknown_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T08:37:51.147Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 288 (min: 300)"
+  ],
+  "wordCount": 265,
+  "tierReason": "Short text (265 words)"
 }
