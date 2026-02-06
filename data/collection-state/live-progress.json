@@ -1,57 +1,63 @@
 {
-  "updatedAt": "2026-02-06T04:07:31.103Z",
-  "processed": 8,
-  "failed": 42,
-  "successRate": "16.0%",
+  "updatedAt": "2026-02-06T04:19:51.048Z",
+  "processed": 6,
+  "failed": 44,
+  "successRate": "12.0%",
   "tierBreakdown": {
-    "playwright": 2,
-    "browserbase": 4,
-    "scrapingbee": 3,
+    "playwright": 1,
+    "browserbase": 1,
+    "scrapingbee": 2,
     "brightdata": 2,
-    "archive": 1
+    "archive": 3
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-06T03:34:10.583Z",
+      "t": "2026-02-06T03:35:04.309Z",
       "event": "bb-session",
-      "session": "a5d99faf",
-      "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/"
+      "session": "837f2886",
+      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
     },
     {
-      "t": "2026-02-06T03:34:29.644Z",
+      "t": "2026-02-06T03:37:23.663Z",
       "event": "bb-session",
-      "session": "7272d4c6",
-      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
+      "session": "1369ace9",
+      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
     },
     {
-      "t": "2026-02-06T03:34:46.055Z",
-      "event": "bb-session",
-      "session": "e88d6d4e",
-      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
+      "t": "2026-02-06T03:37:25.749Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-06T03:37:13.487Z",
+      "t": "2026-02-06T03:39:44.098Z",
       "event": "bb-session",
-      "session": "7c834b58",
-      "url": "https://www.nytimes.com/2009/12/14/theater/reviews/14night.html"
+      "session": "ee8b544e",
+      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
     },
     {
-      "t": "2026-02-06T03:38:01.665Z",
+      "t": "2026-02-06T03:40:28.379Z",
       "event": "bb-login-fail",
       "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349195074\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA9fmtBBtxXokANCKmrw==&cid=_s~eIun1lY8Vwlnaxk22F6SBVrTiNRLj2M7AhxwbnZwrolapBOr45PkGs6bkedKrif7YKYkWscG3H9ctHBzAqPjHSYqBdJzyC3eSl_trFSw5H6QPA9thdgIpw5oNGuHF&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349195074\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349195074\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA9fmtBBtxXokANCKmrw==&cid=_s~eIun1lY8Vwlnaxk22F6SBVrTiNRLj2M7AhxwbnZwrolapBOr45PkGs6bkedKrif7YKYkWscG3H9ctHBzAqPjHSYqBdJzyC3eSl_trFSw5H6QPA9thdgIpw5oNGuHF&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349195074\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    27 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349195074\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA9fmtBBtxXokANCKmrw==&cid=_s~eIun1lY8Vwlnaxk22F6SBVrTiNRLj2M7AhxwbnZwrolapBOr45PkGs6bkedKrif7YKYkWscG3H9ctHBzAqPjHSYqBdJzyC3eSl_trFSw5H6QPA9thdgIpw5oNGuHF&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349195074\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     },
     {
-      "t": "2026-02-06T03:40:35.311Z",
+      "t": "2026-02-06T03:42:12.359Z",
       "event": "bb-session",
-      "session": "eb34dfd9",
-      "url": "http://www.nytimes.com/2010/08/02/theater/02night.html?_r=1"
+      "session": "92456102",
+      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
     },
     {
-      "t": "2026-02-06T03:40:41.549Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "t": "2026-02-06T03:42:56.362Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349343035\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAclL0rkTjRbEANCKmrw==&cid=sJMZuW1eLeibOokYXM3blFdDypmColcDQxmiqDT3XjPlabTfGFdo351gEVanfQUlV~IioQusZGMkAmdQxVcclYxIdwFzUIsMOVWuv4uHV7UMojozJkwHcpCHlOUKEVEn&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349343035\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349343035\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAclL0rkTjRbEANCKmrw==&cid=sJMZuW1eLeibOokYXM3blFdDypmColcDQxmiqDT3XjPlabTfGFdo351gEVanfQUlV~IioQusZGMkAmdQxVcclYxIdwFzUIsMOVWuv4uHV7UMojozJkwHcpCHlOUKEVEn&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349343035\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    26 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349343035\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAclL0rkTjRbEANCKmrw==&cid=sJMZuW1eLeibOokYXM3blFdDypmColcDQxmiqDT3XjPlabTfGFdo351gEVanfQUlV~IioQusZGMkAmdQxVcclYxIdwFzUIsMOVWuv4uHV7UMojozJkwHcpCHlOUKEVEn&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349343035\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-02-06T03:43:32.502Z",
+      "event": "bb-session",
+      "session": "a69e26ef",
+      "url": "http://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
     }
   ]
 }
