@@ -2,24 +2,66 @@
  * Reddit API Client Module
  *
  * Direct Reddit API access with ScrapingBee fallback.
- * Reddit allows ~100 requests/min for unauthenticated read-only access.
+ * Adaptive rate limiting: starts conservative, backs off on 429s,
+ * periodically retries direct access after ScrapingBee cooldown.
  *
  * Usage:
- *   const { searchSubreddit, getPostComments, searchAllPosts } = require('./reddit-api');
+ *   const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./reddit-api');
  *   const posts = await searchAllPosts('broadway', '"Wicked"', 100);
+ *   console.log(getStats());
  */
 
 const https = require('https');
 
 const USER_AGENT = 'BroadwayScorecard/1.0 (broadway buzz aggregator)';
-const RATE_LIMIT_DELAY = 1000; // 1 second between requests
 const MAX_RETRIES = 3;
 
-// Track if direct API is working or if we should use ScrapingBee
-let useScrapingBeeByDefault = false;
+// Adaptive rate limiting
+const DELAY_NORMAL = 7000;    // 7s between requests (~8.5 req/min, well under 10/min limit)
+const DELAY_CAUTIOUS = 12000; // 12s after 2+ rate limits
+const DELAY_SLOW = 20000;     // 20s after 5+ rate limits
+
+// ScrapingBee recovery
+const SCRAPINGBEE_COOLDOWN = 5 * 60 * 1000; // 5 min — then retry Reddit direct
+
+// State
+let useScrapingBee = false;
+let scrapingBeeSwitchTime = 0;
+let rateLimitCount = 0;
+let lastRequestTime = 0;
+
+// Session stats
+const stats = {
+  redditDirect: 0,
+  scrapingBee: 0,
+  rateLimits: 0,
+  backoffRetries: 0,
+  errors: 0
+};
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Get current adaptive delay based on rate limit history
+ */
+function getAdaptiveDelay() {
+  if (rateLimitCount >= 5) return DELAY_SLOW;
+  if (rateLimitCount >= 2) return DELAY_CAUTIOUS;
+  return DELAY_NORMAL;
+}
+
+/**
+ * Enforce rate limit — wait until enough time has passed since last request
+ */
+async function enforceRateLimit() {
+  const delay = getAdaptiveDelay();
+  const elapsed = Date.now() - lastRequestTime;
+  if (elapsed < delay) {
+    await sleep(delay - elapsed);
+  }
+  lastRequestTime = Date.now();
 }
 
 /**
@@ -30,6 +72,8 @@ async function fetchViaScrapingBee(url) {
   if (!apiKey) {
     throw new Error('SCRAPINGBEE_API_KEY not set and direct Reddit access failed');
   }
+
+  stats.scrapingBee++;
 
   const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${apiKey}&url=${encodeURIComponent(url)}&render_js=false&premium_proxy=true`;
 
@@ -44,6 +88,8 @@ async function fetchViaScrapingBee(url) {
           } catch (e) {
             reject(new Error(`ScrapingBee JSON parse failed: ${data.slice(0, 100)}`));
           }
+        } else if (res.statusCode === 401) {
+          reject(new Error('ScrapingBee 401 — credits may be exhausted'));
         } else {
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
         }
@@ -53,14 +99,9 @@ async function fetchViaScrapingBee(url) {
 }
 
 /**
- * Fetch URL with direct Reddit access, fallback to ScrapingBee
+ * Fetch URL directly from Reddit
  */
-async function fetchWithFallback(url, retryCount = 0) {
-  // If direct API has been failing, go straight to ScrapingBee
-  if (useScrapingBeeByDefault && process.env.SCRAPINGBEE_API_KEY) {
-    return fetchViaScrapingBee(url);
-  }
-
+function fetchRedditDirect(url) {
   return new Promise((resolve, reject) => {
     const options = {
       headers: {
@@ -72,51 +113,24 @@ async function fetchWithFallback(url, retryCount = 0) {
     https.get(url, options, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
-      res.on('end', async () => {
+      res.on('end', () => {
         if (res.statusCode === 200) {
           try {
-            resolve(JSON.parse(data));
+            const parsed = JSON.parse(data);
+            stats.redditDirect++;
+            resolve(parsed);
           } catch (e) {
             // Got HTML instead of JSON - Reddit is blocking
             if (data.includes('<html') || data.includes('<!DOCTYPE')) {
-              console.warn('  Reddit returned HTML instead of JSON, switching to ScrapingBee');
-              useScrapingBeeByDefault = true;
-              if (process.env.SCRAPINGBEE_API_KEY) {
-                resolve(fetchViaScrapingBee(url));
-              } else {
-                reject(new Error('Reddit blocked and no ScrapingBee key'));
-              }
+              reject({ code: 'HTML_RESPONSE', message: 'Reddit returned HTML instead of JSON' });
             } else {
               reject(new Error(`JSON parse failed: ${data.slice(0, 100)}`));
             }
           }
         } else if (res.statusCode === 429) {
-          // Rate limited - exponential backoff
-          const delay = Math.min(60000, 5000 * Math.pow(2, retryCount));
-          console.warn(`  Rate limited (429), waiting ${delay / 1000}s...`);
-          if (retryCount < MAX_RETRIES) {
-            sleep(delay).then(() => {
-              fetchWithFallback(url, retryCount + 1).then(resolve).catch(reject);
-            });
-          } else {
-            // Switch to ScrapingBee after max retries
-            console.warn('  Max retries reached, switching to ScrapingBee');
-            useScrapingBeeByDefault = true;
-            if (process.env.SCRAPINGBEE_API_KEY) {
-              resolve(fetchViaScrapingBee(url));
-            } else {
-              reject(new Error('Rate limited and no ScrapingBee key'));
-            }
-          }
+          reject({ code: 'RATE_LIMITED', statusCode: 429 });
         } else if (res.statusCode === 403) {
-          // Forbidden - Reddit is blocking
-          console.warn('  Reddit returned 403, switching to ScrapingBee');
-          useScrapingBeeByDefault = true;
-          if (process.env.SCRAPINGBEE_API_KEY) {
-            resolve(fetchViaScrapingBee(url));
-          } else {
-            reject(new Error('Reddit blocked (403) and no ScrapingBee key'));
-          }
+          reject({ code: 'FORBIDDEN', statusCode: 403 });
         } else {
           reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 100)}`));
         }
@@ -126,12 +140,75 @@ async function fetchWithFallback(url, retryCount = 0) {
 }
 
 /**
+ * Fetch URL with direct Reddit access, fallback to ScrapingBee
+ */
+async function fetchWithFallback(url, retryCount = 0) {
+  // Check if we should try Reddit direct again after cooldown
+  if (useScrapingBee && (Date.now() - scrapingBeeSwitchTime) > SCRAPINGBEE_COOLDOWN) {
+    console.log('  Cooldown elapsed, retrying Reddit direct...');
+    useScrapingBee = false;
+  }
+
+  // If on ScrapingBee, try it first
+  if (useScrapingBee && process.env.SCRAPINGBEE_API_KEY) {
+    try {
+      return await fetchViaScrapingBee(url);
+    } catch (e) {
+      // ScrapingBee failed (e.g. credits exhausted) — try Reddit direct as last resort
+      console.warn(`  ScrapingBee failed: ${e.message}. Trying Reddit direct...`);
+      useScrapingBee = false;
+    }
+  }
+
+  // Try Reddit direct
+  await enforceRateLimit();
+
+  try {
+    return await fetchRedditDirect(url);
+  } catch (e) {
+    if (e.code === 'RATE_LIMITED') {
+      rateLimitCount++;
+      stats.rateLimits++;
+      const delay = Math.min(120000, 30000 * Math.pow(2, retryCount)); // 30s → 60s → 120s
+      console.warn(`  Rate limited (429), count: ${rateLimitCount}, waiting ${delay / 1000}s (delay now ${getAdaptiveDelay() / 1000}s)...`);
+
+      if (retryCount < MAX_RETRIES) {
+        stats.backoffRetries++;
+        await sleep(delay);
+        return fetchWithFallback(url, retryCount + 1);
+      }
+      // Max retries — switch to ScrapingBee
+      return switchToScrapingBee(url);
+    }
+
+    if (e.code === 'FORBIDDEN' || e.code === 'HTML_RESPONSE') {
+      console.warn(`  Reddit ${e.code}, switching to ScrapingBee`);
+      return switchToScrapingBee(url);
+    }
+
+    // Other errors
+    stats.errors++;
+    throw e;
+  }
+}
+
+/**
+ * Switch to ScrapingBee fallback
+ */
+async function switchToScrapingBee(url) {
+  useScrapingBee = true;
+  scrapingBeeSwitchTime = Date.now();
+
+  if (process.env.SCRAPINGBEE_API_KEY) {
+    console.warn('  Switching to ScrapingBee (will retry Reddit direct after 5 min cooldown)');
+    return fetchViaScrapingBee(url);
+  }
+
+  throw new Error('Reddit blocked and no ScrapingBee key available');
+}
+
+/**
  * Search subreddit for posts matching query
- *
- * @param {string} subreddit - Subreddit name (e.g., 'broadway')
- * @param {string} query - Search query (use quotes for exact match)
- * @param {object} options - { sort, time, limit, after }
- * @returns {Promise<object>} Reddit API response
  */
 async function searchSubreddit(subreddit, query, options = {}) {
   const { sort = 'relevance', time = 'all', limit = 100, after = null } = options;
@@ -141,55 +218,39 @@ async function searchSubreddit(subreddit, query, options = {}) {
     restrict_sr: 'on',
     sort,
     t: time,
-    limit: String(Math.min(limit, 100)), // Reddit max is 100
+    limit: String(Math.min(limit, 100)),
     raw_json: '1'
   });
 
   if (after) params.set('after', after);
 
   const url = `https://old.reddit.com/r/${subreddit}/search.json?${params}`;
-
-  await sleep(RATE_LIMIT_DELAY);
   return fetchWithFallback(url);
 }
 
 /**
  * Get comments from a specific post
- *
- * @param {string} subreddit - Subreddit name
- * @param {string} postId - Reddit post ID (e.g., '1abc123')
- * @param {object} options - { limit, depth }
- * @returns {Promise<object>} Reddit API response with comments
  */
 async function getPostComments(subreddit, postId, options = {}) {
   const { limit = 500, depth = 10 } = options;
-
   const url = `https://old.reddit.com/r/${subreddit}/comments/${postId}.json?limit=${limit}&depth=${depth}&raw_json=1`;
-
-  await sleep(RATE_LIMIT_DELAY);
   return fetchWithFallback(url);
 }
 
 /**
  * Flatten nested comment tree into array
- *
- * @param {object} response - Reddit API comments response
- * @returns {Array} Flat array of comment objects with { id, body, score }
  */
 function flattenComments(response) {
   const comments = [];
 
   function extractComments(children) {
     if (!children) return;
-
     for (const child of children) {
       if (child.kind === 't1' && child.data) {
         const { id, body, score } = child.data;
         if (body && body !== '[deleted]' && body !== '[removed]') {
           comments.push({ id, body, score: score || 0 });
         }
-
-        // Recursively extract replies
         if (child.data.replies?.data?.children) {
           extractComments(child.data.replies.data.children);
         }
@@ -197,21 +258,14 @@ function flattenComments(response) {
     }
   }
 
-  // Comments are in the second element of the response array
   if (Array.isArray(response) && response[1]?.data?.children) {
     extractComments(response[1].data.children);
   }
-
   return comments;
 }
 
 /**
  * Search for all posts matching query with pagination
- *
- * @param {string} subreddit - Subreddit name
- * @param {string} query - Search query
- * @param {number} maxResults - Maximum posts to fetch (default 500)
- * @returns {Promise<Array>} Array of post objects
  */
 async function searchAllPosts(subreddit, query, maxResults = 500) {
   const allPosts = [];
@@ -226,9 +280,8 @@ async function searchAllPosts(subreddit, query, maxResults = 500) {
     allPosts.push(...posts.map(p => p.data));
     after = response.data?.after;
 
-    if (!after) break; // No more pages
+    if (!after) break;
 
-    // Log progress for long fetches
     if (allPosts.length % 100 === 0) {
       console.log(`    Fetched ${allPosts.length} posts...`);
     }
@@ -239,11 +292,6 @@ async function searchAllPosts(subreddit, query, maxResults = 500) {
 
 /**
  * Collect comments from multiple posts
- *
- * @param {string} subreddit - Subreddit name
- * @param {Array} posts - Array of post objects with 'id' field
- * @param {number} maxComments - Maximum total comments to collect
- * @returns {Promise<Array>} Flat array of comment objects
  */
 async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000) {
   const allComments = [];
@@ -256,7 +304,6 @@ async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000) {
       const comments = flattenComments(response);
       allComments.push(...comments);
 
-      // Log progress
       if (allComments.length % 200 === 0) {
         console.log(`    Collected ${allComments.length} comments...`);
       }
@@ -269,10 +316,21 @@ async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000) {
 }
 
 /**
- * Reset the ScrapingBee fallback flag (for testing)
+ * Get session stats
+ */
+function getStats() {
+  return { ...stats, rateLimitCount, usingScrapingBee: useScrapingBee };
+}
+
+/**
+ * Reset state (for testing)
  */
 function resetFallbackState() {
-  useScrapingBeeByDefault = false;
+  useScrapingBee = false;
+  scrapingBeeSwitchTime = 0;
+  rateLimitCount = 0;
+  lastRequestTime = 0;
+  Object.keys(stats).forEach(k => stats[k] = 0);
 }
 
 module.exports = {
@@ -281,8 +339,8 @@ module.exports = {
   flattenComments,
   searchAllPosts,
   collectCommentsFromPosts,
+  getStats,
   resetFallbackState,
-  // Expose for testing
   fetchWithFallback,
   fetchViaScrapingBee
 };
