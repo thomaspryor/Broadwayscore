@@ -1,57 +1,62 @@
 {
-  "updatedAt": "2026-02-06T15:35:03.222Z",
-  "processed": 24,
-  "failed": 116,
-  "successRate": "17.1%",
+  "updatedAt": "2026-02-06T15:44:55.585Z",
+  "processed": 19,
+  "failed": 141,
+  "successRate": "11.9%",
   "tierBreakdown": {
-    "playwright": 4,
-    "browserbase": 3,
-    "scrapingbee": 4,
-    "brightdata": 7,
-    "archive": 9
+    "playwright": 1,
+    "browserbase": 1,
+    "scrapingbee": 1,
+    "brightdata": 5,
+    "archive": 12
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-06T13:54:00.510Z",
+      "t": "2026-02-06T13:53:07.702Z",
       "event": "bb-session",
-      "session": "6716a4b4",
-      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
+      "session": "c1f3063a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/1776-broadway-review-1235228615"
     },
     {
-      "t": "2026-02-06T13:56:20.682Z",
+      "t": "2026-02-06T13:53:35.084Z",
       "event": "bb-session",
-      "session": "f338c30d",
-      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
+      "session": "7e4c3b1e",
+      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
     },
     {
-      "t": "2026-02-06T13:56:22.929Z",
+      "t": "2026-02-06T13:56:22.671Z",
+      "event": "bb-session",
+      "session": "4d37fd5e",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/1776-10-17-22"
+    },
+    {
+      "t": "2026-02-06T13:56:24.614Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-06T13:58:38.999Z",
+      "t": "2026-02-06T13:58:44.948Z",
       "event": "bb-session",
-      "session": "4a4d02fb",
-      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
+      "session": "5e0a0067",
+      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
     },
     {
-      "t": "2026-02-06T13:59:24.346Z",
+      "t": "2026-02-06T13:58:46.380Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-06T14:00:49.071Z",
+      "event": "bb-session",
+      "session": "3305dd9a",
+      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
+    },
+    {
+      "t": "2026-02-06T14:01:31.135Z",
       "event": "bb-login-fail",
       "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770386330878\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA_8pSDModsUMALPe1oA==&cid=aPqmi3Ur_f8IGh_so850HH~9012ihl5CcGs5ygiGf0GHcB6QCfWZyaXci61CWfzfyKEAqY2Y06jAK~HwT0z6~LJCabyuurtSF9oysjCE6yfOKvf~aZ0mqyqjuui5bKd_&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770386330878\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770386330878\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA_8pSDModsUMALPe1oA==&cid=aPqmi3Ur_f8IGh_so850HH~9012ihl5CcGs5ygiGf0GHcB6QCfWZyaXci61CWfzfyKEAqY2Y06jAK~HwT0z6~LJCabyuurtSF9oysjCE6yfOKvf~aZ0mqyqjuui5bKd_&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770386330878\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770386330878\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA_8pSDModsUMALPe1oA==&cid=aPqmi3Ur_f8IGh_so850HH~9012ihl5CcGs5ygiGf0GHcB6QCfWZyaXci61CWfzfyKEAqY2Y06jAK~HwT0z6~LJCabyuurtSF9oysjCE6yfOKvf~aZ0mqyqjuui5bKd_&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770386330878\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-06T14:00:07.582Z",
-      "event": "bb-session",
-      "session": "1524ad3d",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
-    },
-    {
-      "t": "2026-02-06T14:00:23.984Z",
-      "event": "bb-session",
-      "session": "c26d33ec",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770386458064\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAcHLbocYlT-kALPhWIg==&cid=vUeA9zdNh2YSQuGBUGAAUvqR9niuFUsdOUq1BCSBcgT3e1o0S9rNTFBc49CDOP4zlJmN6IBzDli7x1TWEeLTr~Ofg9Sx5Bk5rGK2JBDM~ts6q6FFq42tfJgnu67d0BG1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770386458064\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770386458064\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAcHLbocYlT-kALPhWIg==&cid=vUeA9zdNh2YSQuGBUGAAUvqR9niuFUsdOUq1BCSBcgT3e1o0S9rNTFBc49CDOP4zlJmN6IBzDli7x1TWEeLTr~Ofg9Sx5Bk5rGK2JBDM~ts6q6FFq42tfJgnu67d0BG1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770386458064\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    35 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770386458064\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAcHLbocYlT-kALPhWIg==&cid=vUeA9zdNh2YSQuGBUGAAUvqR9niuFUsdOUq1BCSBcgT3e1o0S9rNTFBc49CDOP4zlJmN6IBzDli7x1TWEeLTr~Ofg9Sx5Bk5rGK2JBDM~ts6q6FFq42tfJgnu67d0BG1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770386458064\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
