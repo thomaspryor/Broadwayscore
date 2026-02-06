@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "lastUpdated": "2026-02-05",
+    "lastUpdated": "2026-02-06",
     "sources": [
       "Show Score",
       "Mezzanine",
@@ -1447,7 +1447,7 @@
     "meteor-shower-2017": {
       "title": "Meteor Shower",
       "designation": "Shrugging",
-      "combinedScore": 76,
+      "combinedScore": 74,
       "sources": {
         "showScore": {
           "score": 77,
@@ -1458,7 +1458,19 @@
           "reviewCount": 57,
           "starRating": 3.4
         },
-        "reddit": null
+        "reddit": {
+          "score": 68,
+          "reviewCount": 5,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0.4,
+            "positive": 0,
+            "mixed": 0,
+            "negative": 0.2
+          },
+          "recommendations": 0,
+          "positiveRate": 0.4
+        }
       }
     },
     "the-parisian-woman-2017": {
@@ -1945,7 +1957,19 @@
           "reviewCount": 431,
           "starRating": 4.1
         },
-        "reddit": null
+        "reddit": {
+          "score": 86,
+          "reviewCount": 5,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0.2,
+            "positive": 0.8,
+            "mixed": 0,
+            "negative": 0
+          },
+          "recommendations": 0,
+          "positiveRate": 1
+        }
       }
     },
     "present-laughter-2017": {
@@ -3103,7 +3127,7 @@
     "mother-play-2024": {
       "title": "Mother Play",
       "designation": "Shrugging",
-      "combinedScore": 77,
+      "combinedScore": 71,
       "sources": {
         "showScore": {
           "score": 81,
@@ -3114,7 +3138,19 @@
           "reviewCount": 403,
           "starRating": 3.7
         },
-        "reddit": null
+        "reddit": {
+          "score": 45,
+          "reviewCount": 6,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0,
+            "positive": 0,
+            "mixed": 0.6666666666666666,
+            "negative": 0.3333333333333333
+          },
+          "recommendations": 0,
+          "positiveRate": 0
+        }
       }
     },
     "patriots-2024": {
@@ -5401,7 +5437,19 @@
           "reviewCount": 263,
           "starRating": 3.1
         },
-        "reddit": null
+        "reddit": {
+          "score": 71,
+          "reviewCount": 5,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0.2,
+            "positive": 0.4,
+            "mixed": 0,
+            "negative": 0.2
+          },
+          "recommendations": 1,
+          "positiveRate": 0.6
+        }
       }
     },
     "mrs-doubtfire-2021": {
@@ -5585,9 +5633,22 @@
           "score": 77,
           "reviewCount": 561,
           "starRating": 3.9
+        },
+        "reddit": {
+          "score": 59,
+          "reviewCount": 5,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0.2,
+            "positive": 0.2,
+            "mixed": 0.2,
+            "negative": 0.4
+          },
+          "recommendations": 0,
+          "positiveRate": 0.4
         }
       },
-      "combinedScore": 77,
+      "combinedScore": 73,
       "designation": "Shrugging"
     },
     "the-inheritance-2019": {
@@ -5993,9 +6054,22 @@
         "showScore": {
           "score": 85,
           "reviewCount": 434
+        },
+        "reddit": {
+          "score": 74,
+          "reviewCount": 8,
+          "lastUpdated": "2026-02-05",
+          "sentiment": {
+            "enthusiastic": 0.375,
+            "positive": 0.25,
+            "mixed": 0,
+            "negative": 0.25
+          },
+          "recommendations": 1,
+          "positiveRate": 0.625
         }
       },
-      "combinedScore": 85,
+      "combinedScore": 83,
       "designation": "Liking"
     },
     "true-west-2019": {
@@ -6140,9 +6214,22 @@
         "showScore": {
           "score": 80,
           "reviewCount": 874
+        },
+        "reddit": {
+          "score": 80,
+          "reviewCount": 5,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0.2,
+            "positive": 0.6,
+            "mixed": 0,
+            "negative": 0
+          },
+          "recommendations": 0,
+          "positiveRate": 0.8
         }
       },
-      "combinedScore": 82,
+      "combinedScore": 81,
       "designation": "Liking"
     },
     "burn-this-2019": {
@@ -8851,9 +8938,22 @@
           "score": 69,
           "reviewCount": 21,
           "starRating": 3.5
+        },
+        "reddit": {
+          "score": 79,
+          "reviewCount": 8,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0.375,
+            "positive": 0.375,
+            "mixed": 0,
+            "negative": 0.25
+          },
+          "recommendations": 2,
+          "positiveRate": 0.75
         }
       },
-      "combinedScore": 69,
+      "combinedScore": 71,
       "designation": "Shrugging"
     },
     "the-peewee-herman-show-2010": {
@@ -12664,6 +12764,25 @@
           "score": 81,
           "reviewCount": 6,
           "lastUpdated": "2026-02-05",
+          "sentiment": {
+            "enthusiastic": 0.16666666666666666,
+            "positive": 0.6666666666666666,
+            "mixed": 0.16666666666666666,
+            "negative": 0
+          },
+          "recommendations": 0,
+          "positiveRate": 0.8333333333333334
+        }
+      }
+    },
+    "primo-2005": {
+      "designation": "Liking",
+      "combinedScore": 81,
+      "sources": {
+        "reddit": {
+          "score": 81,
+          "reviewCount": 6,
+          "lastUpdated": "2026-02-06",
           "sentiment": {
             "enthusiastic": 0.16666666666666666,
             "positive": 0.6666666666666666,
