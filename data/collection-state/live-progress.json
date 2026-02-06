@@ -1,57 +1,51 @@
 {
-  "updatedAt": "2026-02-06T05:47:20.584Z",
-  "processed": 29,
-  "failed": 161,
-  "successRate": "15.3%",
+  "updatedAt": "2026-02-06T05:57:00.335Z",
+  "processed": 22,
+  "failed": 128,
+  "successRate": "14.7%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 4,
     "browserbase": 4,
-    "scrapingbee": 6,
+    "scrapingbee": 7,
     "brightdata": 9,
-    "archive": 10
+    "archive": 4
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-06T03:34:10.583Z",
+      "t": "2026-02-06T03:33:48.570Z",
       "event": "bb-session",
-      "session": "a5d99faf",
-      "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/"
+      "session": "e62955f4",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
     },
     {
-      "t": "2026-02-06T03:34:29.644Z",
+      "t": "2026-02-06T03:34:08.764Z",
       "event": "bb-session",
-      "session": "7272d4c6",
-      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
+      "session": "a350f4c2",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-the-neil-diamond-musica"
     },
     {
-      "t": "2026-02-06T03:34:46.055Z",
+      "t": "2026-02-06T03:36:11.209Z",
       "event": "bb-session",
-      "session": "e88d6d4e",
-      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
+      "session": "9b7fc38e",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
     },
     {
-      "t": "2026-02-06T03:37:13.487Z",
-      "event": "bb-session",
-      "session": "7c834b58",
-      "url": "https://www.nytimes.com/2009/12/14/theater/reviews/14night.html"
-    },
-    {
-      "t": "2026-02-06T03:38:01.665Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-06T03:40:35.311Z",
-      "event": "bb-session",
-      "session": "eb34dfd9",
-      "url": "http://www.nytimes.com/2010/08/02/theater/02night.html?_r=1"
-    },
-    {
-      "t": "2026-02-06T03:40:41.549Z",
+      "t": "2026-02-06T03:36:13.588Z",
       "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-06T03:38:03.187Z",
+      "event": "bb-session",
+      "session": "fe601710",
+      "url": "http://www.hollywoodreporter.com/review/a-dolls-house-part-2-theater-998160"
+    },
+    {
+      "t": "2026-02-06T03:38:34.528Z",
+      "event": "bb-session",
+      "session": "e80a6188",
+      "url": "http://www.hollywoodreporter.com/review/free-man-color-theater-review-46713"
     }
   ]
 }
