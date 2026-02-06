@@ -17,5 +17,51 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This impeccable revival of the 1947 musical serves as a gentle reminder that shows with something meaningful to say needn't sacrifice entertainment value to get their message across.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "textWordCount": 194,
+  "archivePath": "data/archives/reviews/finians-rainbow-2009/variety--charles-isherwood_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T05:42:21.403Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 194 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Basketball becomes an underground bloodsport in \"Fireball.\"\n\nBasketball becomes an underground bloodsport in “Fireball,” a lively Thai actioner in which Bangkok’s toughest street gangs smash each other senseless in the quest for championship honors. A rise in class for helmer Thanakorn Pongsuwan following his messy 2007 horror-thriller “Opopatika,” the pic’s regulation plot adequately holds together an impressive display of martial-arts mayhem. A modest B.O. performer on early 2009 domestic release, “Fireball” will add heat to fest sidebars and has promising international ancillary prospects.\n\nJust released from jail, Tai (Preeti Barameeanant, vocalist with Thai rock band Clash) discovers twin brother Tan (also Barameeanant) near death after a severe mauling by fireball opponent Ton (Arucha Tosawat). To pay for his bro’s operation, Tai takes his spot on a team captained by diminutive dynamo Zing (9 Million Sam). Exciting, very violent road to the inevitable smackdown pauses only briefly for standard match-fixing by sleazy organizers, and furtive romantic footsy between Tai and Tan’s teary g.f. (Khanutra Chuchuaysuwan). Eye-catching combo of slam dunks and Muay Thai maneuvers is slickly shot and set to crunching rock and ethereal vocal harmonies. Pongsuwan has announced plans for a Vietnam War-set prequel."
 }
