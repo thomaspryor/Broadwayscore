@@ -839,6 +839,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             trend={getRecoupmentTrend(show.slug)}
             weeklyGross={grosses?.thisWeek?.gross}
             showStatus={show.status as 'open' | 'closed' | 'previews'}
+            allTimeGross={grosses?.allTime?.gross}
           />
         ) : show.status === 'previews' && (
           <section className="card p-5 sm:p-6 mb-6">
