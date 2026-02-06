@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2010/legit/reviews/promises-promises-1117942216/",
   "publishDate": "April 25, 2010",
-  "fullText": "Despite sterling credentials all around, this Broadway revival of the 1968 Burt Bacharach-Hal David musical feels disappointingly flat and formulaic, lacking the spark to make a decades-old show feel fresh.",
-  "isFullReview": false,
+  "fullText": "Trimly mounted, crisply performed, a lyrical earful and a comic delight.\n\nThe dazzling “Othello” Arin Arbus staged last season for Theater for a New Audience raised expectations for her new production of “Measure for Measure” that now seem unreasonably high. It’s a nice piece of work: trimly mounted, crisply performed, a lyrical earful and a comic delight. But it’s nothing special; and on matters that really count with this problem play — namely, the questionable moral issues and ambiguous characterizations — the directorial vision is disappointingly limited.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Charli xcx's 'The Moment' Becomes A24's Fastest-Selling Limited Release \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Timothée Chalamet's 'Marty Supreme' to Get China Theatrical Release\n\nShakespeare’s views of a decadent society adrift under a weak ruler and prey to both opportunistic criminals and fanatical religious reformers make “Measure for Measure” a play for all seasons — including our own wintry times. That timeless quality is efficiently reflected in the cold metallic surfaces of Peter Ksander’s sleek set and, less imaginatively, in the bland grey business suits that define court dress and the gaudy rags that convey the licentiousness of the streets.\n\nDuke Vincentio (Jefferson Mays) has what initially seems a clever plan to reform his dissolute subjects and save his duchy from ruin. Instead of bringing down the law himself, the fastidious duke appoints Angelo (Rocco Sisto) as his deputy, trusting that virtuous worthy to clean out the stables for him.\n\nThe Duke’s failure to exercise his political duties — and his desperate efforts to cover up that initial mistake — is the flaw that undermines his authority and makes him a fascinating character. But there’s no sense of conflict in Mays’ remarkably untroubled portrayal of the floundering Duke. He comes across as a sweetly rational CEO, calmly spinning irrational and increasingly cruel schemes to rescue a company that has just gone into receivership.\n\nThe sexually repressed Angelo is even more dangerous, misusing his new power to crack down on harmless immoralists while forcing himself on the virginal Isabella (Elisabeth Waterston). Aware of his own hypocrisy, he is overcome by guilt and delivers a speech that Sisto seizes upon to give him the full dignity he deserves in that moment. But it’s only a moment, and for the rest of the play he performs without passion.\n\nWaterston, otherworldly in her nun-like demeanor, makes a lovely thing of Isabella’s rigid virtuousness. But for all its elegance, it’s a piece of work without nuance, conveying neither confusion nor doubt.\n\nGiven the lack of inflection in the play’s central figures, it’s a relief — make that a joy — to watch the ensemble’s back-up players go to town on the secondary characters.\n\nLooking a comic fright in his Lyle Lovett do, John Keating makes hilarious work of the bawd Pompey. John Christopher Jones is delightfully dense as Elbow the constable, and Alfredo Narciso is one slippery charmer as Lucio, the most vicious gossip in the canon. Even the drunk-and-disorderly Barnardine is given his moment in the sun, thanks to Joe Forbrich. Of such players are fine companies built.",
+  "isFullReview": true,
   "dtliExcerpt": "Despite sterling credentials all around, this Broadway revival of the 1968 Burt Bacharach-Hal David musical feels disappointingly flat and formulaic, lacking the spark to make a decades-old show feel fresh.",
   "originalScore": null,
   "assignedScore": 44,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite sterling credentials all around, this Broadway revival of the 1968 Burt Bacharach-Hal David musical feels disappointingly flat and formulaic, lacking the spark to make a decades-old show feel fresh.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "llmScore": {
     "score": 44,
     "confidence": "medium",
@@ -73,5 +73,52 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 44,
+  "textWordCount": 507,
+  "archivePath": "data/archives/reviews/promises-promises-2010/variety--david-rooney_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T18:02:31.898Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 1250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 507,
+  "tierReason": "Full review text"
 }
