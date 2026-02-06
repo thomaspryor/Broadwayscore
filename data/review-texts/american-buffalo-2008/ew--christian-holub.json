@@ -17,5 +17,7 @@
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "openai: The text is a contextual discussion about Mamet's influence and language, not an evaluative review of the current production.; gemini: The provided excerpt is incomplete and cuts off mid-sentence, making it impossible to determine the critic's overall assessment of the production.",
   "promptVersion": "5.2.0",
-  "playbillVerdictUrl": "https://ew.com/theater/theater-reviews/american-buffalo-review-sam-rockwell-laurence-fishburne-david-mamet/"
+  "playbillVerdictUrl": "https://ew.com/theater/theater-reviews/american-buffalo-review-sam-rockwell-laurence-fishburne-david-mamet/",
+  "wrongShow": true,
+  "wrongShowReason": "Cross-show URL collision (revival, no signal): defaulting to most recent production american-buffalo-2022"
 }

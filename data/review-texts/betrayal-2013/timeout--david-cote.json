@@ -15,5 +15,7 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The text cuts off mid-sentence with 'both app' and appears to be incomplete/corrupted content rather than a meaningful review excerpt.; openai: The text is an incomplete excerpt that does not provide an evaluative opinion or verdict on the show.; gemini: The provided text is incomplete and cuts off mid-sentence, making it impossible to determine the critic's overall assessment of the production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "wrongShow": true,
+  "wrongShowReason": "Cross-show URL collision (multi-revival): signal only in betrayal-2019"
 }
