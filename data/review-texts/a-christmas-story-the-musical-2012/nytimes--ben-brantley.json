@@ -3,10 +3,10 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2012/11/20/theater/reviews/a-christmas-story-the-musical-at-lunt-fontanne-theater.html",
+  "url": "https://www.nytimes.com/2012/11/20/theater/reviews/a-christmas-story-the-musical-at-the-lunt-fontanne-theater.html",
   "publishDate": "November 19, 2012",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2012/11/20/theater/reviews/a-christmas-story-the-musical-at-the-lunt-fontanne-theater.htmlShare full articleAdvertisement\n\nYou’d have to have a Grinch-size heart not to feel a smile spreading across your face when Luke Spring, a 9-year-old dynamo with feathers for feet, starts tapping his little heart out in “A Christmas Story,” a new musical that opened on Monday night at the Lunt-Fontanne Theater. Clad in a sleek black suit, his high-wattage grin beaming into the auditorium, this energetic little charmer raises such a merry clatter with his nimble dancing that it all but brings down the house.\n\nI wouldn’t exactly consider myself a soft touch when it comes to sentimental stories set during the Christmas season. (I’ve never even seen “It’s a Wonderful Life.”) But tap-dancing kids? Forget it. Out go the critical faculties, to be replaced by the kind of mindless adoration that the young hero of this musical brings to his obsessive worship of a toy BB gun.\n\nEvery year at this time Broadway producers are seized with the urge to pick parents’ pockets with splashy holiday fare aimed at young audiences. “A Christmas Story,” based on the popular 1983 movie adapted from the writings of the radio personality Jean Shepherd, wins points for being less glitzy and more soft-spoken than the garish, overbearing musical versions of “How the Grinch Stole Christmas” and “Elf.” Set in Indiana in 1940, it glows with sepia-toned nostalgia for a Simpler Time, back when a boy’s ardent desire for a BB gun inspired only a time-tested maternal riposte (“You’ll shoot your eye out”) and not dark fears that Junior might grow up to take out half his high school class with an automatic weapon.\n\nShepherd narrates the stage version in the likable person of Dan Lauria, former star of the similarly nostalgic television series “The Wonder Years.” I found the heavy doses of voice-over in the rather clunky movie to be obtrusive and irritating. Happily, the stage version lightens up a little on the cute, smart-alecky asides (“My fevered brain seethed with the effort to come up with an infinitely subtle device to implant the air rifle indelibly into my parents’ consciousness without their being aware of it”), making room for the music and allowing the story mostly to speak for itself.\n\nNot that there’s much story to speak of. The show, with a book by Joseph Robinette and a score by Benj Pasek and Justin Paul (the composer-lyricists of “Dogfight”), sticks to the episodic narrative from the movie.",
+  "isFullReview": true,
   "dtliExcerpt": "This determinedly cheerful musical, based on the 1983 movie that has become a holiday television perennial, is so busy trying to be charming that it forgets to be genuinely touching.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,6 +16,45 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This determinedly cheerful musical, based on the 1983 movie that has become a holiday television perennial, is so busy trying to be charming that it forgets to be genuinely touching.",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "complete",
+  "contentTierReason": "Only aggregator excerpts available",
+  "previousUrl": "https://www.nytimes.com/2012/11/20/theater/reviews/a-christmas-story-the-musical-at-lunt-fontanne-theater.html",
+  "urlDiscoveredAt": "2026-02-06T02:11:37.366Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 405,
+  "archivePath": "data/archives/reviews/a-christmas-story-the-musical-2012/nytimes--ben-brantley_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T02:11:37.370Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 405,
+  "tierReason": "Full review text"
 }

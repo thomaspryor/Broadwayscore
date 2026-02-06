@@ -13924,66 +13924,6 @@
     "timestamp": "2026-02-05T04:22:10.836Z"
   },
   {
-    "reviewId": "a-dolls-house-2023/hollywood-reporter--david-rooney.json",
-    "showId": "a-dolls-house-2023",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-dolls-house-review-jessica-chastain-1235347184/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (17): hamilton, mary jane, home, company, betrayal...",
-    "textLength": 9986,
-    "timestamp": "2026-02-05T04:23:48.188Z"
-  },
-  {
-    "reviewId": "a-dolls-house-2023/nyt-theater--jonathan-mandell.json",
-    "showId": "a-dolls-house-2023",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2023/03/16/a-dolls-house-review-jessica-chastain-escapes-her-chair/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): hamilton, mary jane, macbeth, the humans, the audience...",
-    "textLength": 8120,
-    "timestamp": "2026-02-05T04:23:55.642Z"
-  },
-  {
-    "reviewId": "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
-    "showId": "a-dolls-house-2023",
-    "outlet": "New York Theatre Guide",
-    "critic": "Joe Dziemianowicz",
-    "url": "https://www.newyorktheatreguide.com/reviews/a-dolls-house-broadway-review-jessica-chastain",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): mary jane, tammy faye, betrayal, the audience, betrayal...",
-    "textLength": 3793,
-    "timestamp": "2026-02-05T04:24:04.523Z"
-  },
-  {
-    "reviewId": "a-dolls-house-2023/nytimes--jesse-green.json",
-    "showId": "a-dolls-house-2023",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2023/03/09/theater/a-dolls-house-review-jessica-chastain.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): liberation, giant, home, english, betrayal...",
-    "textLength": 6858,
-    "timestamp": "2026-02-05T04:24:08.787Z"
-  },
-  {
-    "reviewId": "a-dolls-house-part-2-2017/hollywood-reporter--david-rooney.json",
-    "showId": "a-dolls-house-part-2-2017",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/a-dolls-house-part-2-theater-998160",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): giant, appropriate, purpose, the present, the price...",
-    "textLength": 9625,
-    "timestamp": "2026-02-05T04:24:39.898Z"
-  },
-  {
     "reviewId": "a-dolls-house-part-2-2017/nytimes--ben-brantley.json",
     "showId": "a-dolls-house-part-2-2017",
     "outlet": "New York Times",
@@ -17438,5 +17378,77 @@
     "garbageReason": "Multiple shows mentioned (10): chicago, mamma mia!, appropriate, home, tina...",
     "textLength": 8004,
     "timestamp": "2026-02-06T02:07:37.976Z"
+  },
+  {
+    "reviewId": "a-christmas-story-the-musical-2012/variety--marilyn-stasio.json",
+    "showId": "a-christmas-story-the-musical-2012",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2012/legit/reviews/a-christmas-story-the-musical-1117949167/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, seminar, once, elling, arcadia...",
+    "textLength": 4749,
+    "timestamp": "2026-02-06T02:11:57.965Z"
+  },
+  {
+    "reviewId": "a-dolls-house-2023/hollywood-reporter--david-rooney.json",
+    "showId": "a-dolls-house-2023",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-dolls-house-review-jessica-chastain-1235347184/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (20): hamilton, mamma mia!, mary jane, home, company...",
+    "textLength": 10240,
+    "timestamp": "2026-02-06T02:12:22.378Z"
+  },
+  {
+    "reviewId": "a-dolls-house-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "a-dolls-house-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/03/16/a-dolls-house-review-jessica-chastain-escapes-her-chair/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): hamilton, mary jane, macbeth, the humans, the audience...",
+    "textLength": 8120,
+    "timestamp": "2026-02-06T02:15:03.454Z"
+  },
+  {
+    "reviewId": "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
+    "showId": "a-dolls-house-2023",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/a-dolls-house-broadway-review-jessica-chastain",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mary jane, tammy faye, betrayal, the audience, betrayal...",
+    "textLength": 3793,
+    "timestamp": "2026-02-06T02:15:13.993Z"
+  },
+  {
+    "reviewId": "a-dolls-house-2023/nytimes--jesse-green.json",
+    "showId": "a-dolls-house-2023",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2023/03/09/theater/a-dolls-house-review-jessica-chastain.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): liberation, giant, home, english, betrayal...",
+    "textLength": 6858,
+    "timestamp": "2026-02-06T02:15:17.528Z"
+  },
+  {
+    "reviewId": "a-dolls-house-part-2-2017/hollywood-reporter--david-rooney.json",
+    "showId": "a-dolls-house-part-2-2017",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/a-dolls-house-part-2-theater-998160",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): giant, appropriate, purpose, the present, the price...",
+    "textLength": 9625,
+    "timestamp": "2026-02-06T02:18:37.599Z"
   }
 ]
