@@ -10696,30 +10696,6 @@
     "timestamp": "2026-02-04T15:33:45.324Z"
   },
   {
-    "reviewId": "honeymoon-in-vegas-2015/hollywood-reporter--unknown.json",
-    "showId": "honeymoon-in-vegas-2015",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/tony-danza-honeymoon-vegas-theater-764133",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): mamma mia!, the last five years, tina, the present, bandstand...",
-    "textLength": 8134,
-    "timestamp": "2026-02-04T15:51:31.629Z"
-  },
-  {
-    "reviewId": "honeymoon-in-vegas-2015/nytimes--unknown.json",
-    "showId": "honeymoon-in-vegas-2015",
-    "outlet": "New York Times",
-    "critic": "Unknown",
-    "url": "http://www.nytimes.com/2015/01/16/theater/honeymoon-in-vegas-with-tony-danza-opens-on-broadway.html?partner=rss&emc=rss&_r=0",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (5): frozen, rain, high, race, well",
-    "textLength": 2230,
-    "timestamp": "2026-02-04T15:51:36.607Z"
-  },
-  {
     "reviewId": "honeymoon-in-vegas-2015/variety--marilyn-stasio.json",
     "showId": "honeymoon-in-vegas-2015",
     "outlet": "Variety",
@@ -12052,18 +12028,6 @@
     "timestamp": "2026-02-05T02:35:19.082Z"
   },
   {
-    "reviewId": "hedwig-and-the-angry-inch-2014/hollywood-reporter--unknown.json",
-    "showId": "hedwig-and-the-angry-inch-2014",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/neil-patrick-harris-hedwig-angry-698195",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): wicked, home, company, tina, spring awakening...",
-    "textLength": 8967,
-    "timestamp": "2026-02-05T02:35:34.410Z"
-  },
-  {
     "reviewId": "hedwig-and-the-angry-inch-2014/nytimes--unknown.json",
     "showId": "hedwig-and-the-angry-inch-2014",
     "outlet": "New York Times",
@@ -12074,18 +12038,6 @@
     "garbageReason": "Multiple shows mentioned (12): tina, frozen, sweat, spring awakening, twelfth night...",
     "textLength": 8081,
     "timestamp": "2026-02-05T02:38:34.668Z"
-  },
-  {
-    "reviewId": "hedwig-and-the-angry-inch-2014/vulture--unknown.json",
-    "showId": "hedwig-and-the-angry-inch-2014",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2014/04/theater-review-hedwig-and-the-angry-inch.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): rocky, once, rain, elling, race...",
-    "textLength": 7688,
-    "timestamp": "2026-02-05T02:38:40.489Z"
   },
   {
     "reviewId": "hello-dolly-2017/hollywood-reporter--frank-scheck.json",
@@ -18962,5 +18914,89 @@
     "garbageReason": "Multiple shows mentioned (11): appropriate, home, tina, summer, cats...",
     "textLength": 4932,
     "timestamp": "2026-02-06T07:39:40.670Z"
+  },
+  {
+    "reviewId": "hedwig-and-the-angry-inch-2014/hollywood-reporter--unknown.json",
+    "showId": "hedwig-and-the-angry-inch-2014",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/neil-patrick-harris-hedwig-angry-698195",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): wicked, home, company, tina, spring awakening...",
+    "textLength": 9680,
+    "timestamp": "2026-02-06T07:41:46.542Z"
+  },
+  {
+    "reviewId": "hedwig-and-the-angry-inch-2014/nytimes--ben-brantley.json",
+    "showId": "hedwig-and-the-angry-inch-2014",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "http://www.nytimes.com/2014/04/23/theater/hedwig-and-the-angry-inch-stars-neil-patrick-harris.html?ref=theater&_r=0",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): tina, frozen, sweat, spring awakening, twelfth night...",
+    "textLength": 7915,
+    "timestamp": "2026-02-06T07:43:18.521Z"
+  },
+  {
+    "reviewId": "hedwig-and-the-angry-inch-2014/vulture--unknown.json",
+    "showId": "hedwig-and-the-angry-inch-2014",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2014/04/theater-review-hedwig-and-the-angry-inch.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): rocky, once, rain, elling, race...",
+    "textLength": 7688,
+    "timestamp": "2026-02-06T07:44:02.655Z"
+  },
+  {
+    "reviewId": "honeymoon-in-vegas-2015/hollywood-reporter--david-rooney.json",
+    "showId": "honeymoon-in-vegas-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/tony-danza-honeymoon-vegas-theater-764133",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): mamma mia!, the last five years, tina, the present, bandstand...",
+    "textLength": 8119,
+    "timestamp": "2026-02-06T07:46:01.742Z"
+  },
+  {
+    "reviewId": "honeymoon-in-vegas-2015/hollywood-reporter--unknown.json",
+    "showId": "honeymoon-in-vegas-2015",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/tony-danza-honeymoon-vegas-theater-764133",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): mamma mia!, the last five years, tina, the present, bandstand...",
+    "textLength": 8119,
+    "timestamp": "2026-02-06T07:46:17.101Z"
+  },
+  {
+    "reviewId": "honeymoon-in-vegas-2015/nytimes--ben-brantley.json",
+    "showId": "honeymoon-in-vegas-2015",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "http://www.nytimes.com/2015/01/16/theater/honeymoon-in-vegas-with-tony-danza-opens-on-broadway.html?partner=rss&emc=rss&_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): frozen, rain, high, race, well",
+    "textLength": 2230,
+    "timestamp": "2026-02-06T07:46:38.920Z"
+  },
+  {
+    "reviewId": "honeymoon-in-vegas-2015/nytimes--unknown.json",
+    "showId": "honeymoon-in-vegas-2015",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2015/01/16/theater/honeymoon-in-vegas-with-tony-danza-opens-on-broadway.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): frozen, rain, high, race, well",
+    "textLength": 2230,
+    "timestamp": "2026-02-06T07:46:42.392Z"
   }
 ]
