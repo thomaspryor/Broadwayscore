@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "http://www.nytimes.com/2016/01/21/theater/review-our-mothers-brief-affair-a-play-about-unmoored-lives.html?partner=rssnyt&emc=rss&_r=0",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2016/01/21/theater/review-our-mothers-brief-affair-a-play-about-unmoored-lives.htmlShare full article11Advertisement\n\nEvery mother is Greta Garbo to her children, at least upon occasion. The woman you were closest to in the world, the one who weaned and wiped you, could suddenly seem so ravishingly remote it was scary. What was really on her mind those nights she tucked you into bed, deliciously lipsticked and perfumed for an evening out?\n\nSuch is the enigma who presides over “Our Mother’s Brief Affair,” Richard Greenberg’s untethered play about unmoored lives, which opened on Wednesday night at the Samuel J. Friedman Theater, starring a marvelous Linda Lavin. Her name is Anna, and while she has a way of wearing a Burberry trench coat with a certain je ne sais quoi, this Long Island housewife would be few people’s idea of a glamorous sphinx.\n\nBut to the twins she gave birth to and reared in a state of otherwise-engaged preoccupation, Anna is a tantalizing unknown, especially as she nears death. “Who was she?” asks her son, Seth (an anxiously neutral Greg Keller), as the play begins. Seth works as an obituary writer but can’t begin to sum up this particular life.\n\nHe gropes for the words and comes up with one of those sparkling gems that Mr. Greenberg delivers with such gratifying frequency. We should think of Seth’s mother as we might of Julie Andrews: “Tundra or hearth? It’s impossible to tell.” One look at Ms. Lavin’s face — amused and rueful, resigned and impatient at the same time — and you know exactly what he means.\n\nIt can’t be easy for anyone to live up to Mr. Greenberg’s analytical eloquence, especially in a lyrical memory play in which the object of his descriptions is often required to stand mute and embody what’s being said about her. Yet throughout this Manhattan Theater Club production, directed a shade too tentatively by Lynne Meadow, Ms. Lavin’s poses unfailingly match, and even amplify, Mr. Greenberg’s exquisite prose.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 62,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"An untethered play about unmoored lives...Throughout this production, directed a shade too tentatively by Lynne Meadow, Ms. Lavin’s poses unfailingly match, and even amplify, Mr. Greenberg’s exquisite prose...I wish the play that surrounds her were more compellingly realized...As a mystery drama, 'Our Mother’s Brief Affair' never acquires much urgency, despite the fretful, fine-grained ambivalence of all the performances.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -75,5 +75,50 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 62,
+  "textWordCount": 345,
+  "archivePath": "data/archives/reviews/our-mothers-brief-affair-2016/nytimes--unknown_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T17:43:27.703Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 1250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
+  "wordCount": 345,
+  "tierReason": "Full review text"
 }
