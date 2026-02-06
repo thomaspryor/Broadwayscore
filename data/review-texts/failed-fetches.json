@@ -11896,42 +11896,6 @@
     "timestamp": "2026-02-05T02:49:32.613Z"
   },
   {
-    "reviewId": "godspell-2011/hollywood-reporter--david-rooney.json",
-    "showId": "godspell-2011",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/godspell-theater-review-258325",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): wicked, mamma mia!, appropriate, company, summer...",
-    "textLength": 7464,
-    "timestamp": "2026-02-05T02:52:45.168Z"
-  },
-  {
-    "reviewId": "godspell-2011/nytimes--charles-isherwood.json",
-    "showId": "godspell-2011",
-    "outlet": "New York Times",
-    "critic": "Charles Isherwood",
-    "url": "http://theater.nytimes.com/2011/11/08/theater/reviews/godspell-at-the-circle-in-the-square-review.html?ref=theater",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): wicked, home, summer, spring awakening, the audience...",
-    "textLength": 6032,
-    "timestamp": "2026-02-05T02:53:56.279Z"
-  },
-  {
-    "reviewId": "godspell-2011/variety--david-rooney.json",
-    "showId": "godspell-2011",
-    "outlet": "Variety",
-    "critic": "David Rooney",
-    "url": "https://variety.com/2011/legit/reviews/godspell-1117946484/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (5): company, the audience, race, company, well",
-    "textLength": 2358,
-    "timestamp": "2026-02-05T02:54:23.918Z"
-  },
-  {
     "reviewId": "golden-boy-2012/nytimes--charles-isherwood.json",
     "showId": "golden-boy-2012",
     "outlet": "New York Times",
@@ -16996,42 +16960,6 @@
     "timestamp": "2026-02-06T05:46:34.305Z"
   },
   {
-    "reviewId": "glengarry-glen-ross-2025/nyt-theater--jonathan-mandell.json",
-    "showId": "glengarry-glen-ross-2025",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2025/04/04/glengarry-glen-ross-broadway-review-whats-the-effing-point/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): liberation, american buffalo, betrayal, 1984, the audience...",
-    "textLength": 6482,
-    "timestamp": "2026-02-06T05:46:41.437Z"
-  },
-  {
-    "reviewId": "glengarry-glen-ross-2025/variety--unknown.json",
-    "showId": "glengarry-glen-ross-2025",
-    "outlet": "Variety",
-    "critic": "Unknown",
-    "url": "https://variety.com/2025/legit/reviews/glengarry-glen-ross-review-kieran-culkin-broadway-1236352188/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): home, company, american buffalo, 1984, the audience...",
-    "textLength": 5868,
-    "timestamp": "2026-02-06T05:46:59.373Z"
-  },
-  {
-    "reviewId": "glengarry-glen-ross-2025/vulture--sara-holdren.json",
-    "showId": "glengarry-glen-ross-2025",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "https://www.vulture.com/article/theater-review-glengarry-glen-ross-mamet-culkin-odenkirk-burr.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): home, purpose, company, american buffalo, sweat...",
-    "textLength": 10538,
-    "timestamp": "2026-02-06T05:47:03.522Z"
-  },
-  {
     "reviewId": "golden-boy-2012/hollywood-reporter--david-rooney.json",
     "showId": "golden-boy-2012",
     "outlet": "Hollywood Reporter",
@@ -20390,5 +20318,77 @@
     "garbageReason": "Multiple shows mentioned (8): home, waitress, waitress, hair, once...",
     "textLength": 7270,
     "timestamp": "2026-02-06T15:47:05.208Z"
+  },
+  {
+    "reviewId": "glengarry-glen-ross-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "glengarry-glen-ross-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/04/04/glengarry-glen-ross-broadway-review-whats-the-effing-point/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): liberation, american buffalo, betrayal, 1984, the audience...",
+    "textLength": 6482,
+    "timestamp": "2026-02-06T15:50:17.053Z"
+  },
+  {
+    "reviewId": "glengarry-glen-ross-2025/variety--unknown.json",
+    "showId": "glengarry-glen-ross-2025",
+    "outlet": "Variety",
+    "critic": "Unknown",
+    "url": "https://variety.com/2025/legit/reviews/glengarry-glen-ross-review-kieran-culkin-broadway-1236352188/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): home, company, american buffalo, 1984, the audience...",
+    "textLength": 6316,
+    "timestamp": "2026-02-06T15:50:32.831Z"
+  },
+  {
+    "reviewId": "glengarry-glen-ross-2025/vulture--sara-holdren.json",
+    "showId": "glengarry-glen-ross-2025",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/theater-review-glengarry-glen-ross-mamet-culkin-odenkirk-burr.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): home, purpose, company, american buffalo, sweat...",
+    "textLength": 10538,
+    "timestamp": "2026-02-06T15:50:46.029Z"
+  },
+  {
+    "reviewId": "godspell-2011/hollywood-reporter--david-rooney.json",
+    "showId": "godspell-2011",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/godspell-theater-review-258325",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): wicked, mamma mia!, appropriate, company, summer...",
+    "textLength": 7415,
+    "timestamp": "2026-02-06T15:51:03.266Z"
+  },
+  {
+    "reviewId": "godspell-2011/nytimes--charles-isherwood.json",
+    "showId": "godspell-2011",
+    "outlet": "New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://theater.nytimes.com/2011/11/08/theater/reviews/godspell-at-the-circle-in-the-square-review.html?ref=theater",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): wicked, home, summer, spring awakening, the audience...",
+    "textLength": 6032,
+    "timestamp": "2026-02-06T15:52:28.970Z"
+  },
+  {
+    "reviewId": "godspell-2011/variety--david-rooney.json",
+    "showId": "godspell-2011",
+    "outlet": "Variety",
+    "critic": "David Rooney",
+    "url": "https://variety.com/2011/legit/reviews/godspell-1117946484/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): company, the audience, race, company, well",
+    "textLength": 2523,
+    "timestamp": "2026-02-06T15:52:59.538Z"
   }
 ]
