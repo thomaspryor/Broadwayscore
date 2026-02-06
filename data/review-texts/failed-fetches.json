@@ -12160,30 +12160,6 @@
     "timestamp": "2026-02-05T02:13:14.959Z"
   },
   {
-    "reviewId": "fish-in-the-dark-2015/hollywood-reporter--david-rooney.json",
-    "showId": "fish-in-the-dark-2015",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/fish-dark-theater-review-780167/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): chicago, mamma mia!, 1776, company, rocky...",
-    "textLength": 3494,
-    "timestamp": "2026-02-05T02:16:57.968Z"
-  },
-  {
-    "reviewId": "fish-in-the-dark-2015/vulture--jesse-green.json",
-    "showId": "fish-in-the-dark-2015",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "https://www.vulture.com/2015/03/theater-review-fish-in-the-dark.html",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): operation mincemeat, chicago, redwood, home, swept away...",
-    "textLength": 6428,
-    "timestamp": "2026-02-05T02:20:56.722Z"
-  },
-  {
     "reviewId": "floyd-collins-2025/nyt-theater--jonathan-mandell.json",
     "showId": "floyd-collins-2025",
     "outlet": "New York Theater",
@@ -17954,5 +17930,65 @@
     "garbageReason": "Multiple shows mentioned (15): home, gypsy, dead outlaw, some like it hot, company...",
     "textLength": 10171,
     "timestamp": "2026-02-06T05:13:13.785Z"
+  },
+  {
+    "reviewId": "fela-2009/variety--charles-isherwood.json",
+    "showId": "fela-2009",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2009/legit/reviews/fela-1200476265/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): home, hair, once, rain, high...",
+    "textLength": 6961,
+    "timestamp": "2026-02-06T05:17:11.748Z"
+  },
+  {
+    "reviewId": "fish-in-the-dark-2015/hollywood-reporter--david-rooney.json",
+    "showId": "fish-in-the-dark-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/fish-dark-theater-review-780167/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): chicago, mamma mia!, 1776, company, november...",
+    "textLength": 3445,
+    "timestamp": "2026-02-06T05:18:18.271Z"
+  },
+  {
+    "reviewId": "fish-in-the-dark-2015/newyorker--hilton-als.json",
+    "showId": "fish-in-the-dark-2015",
+    "outlet": "The New Yorker",
+    "critic": "Hilton Als",
+    "url": "http://www.newyorker.com/magazine/2015/03/16/lady-and-the-tramp",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, english, smash, of mice and men, hair...",
+    "textLength": 12099,
+    "timestamp": "2026-02-06T05:18:32.561Z"
+  },
+  {
+    "reviewId": "fish-in-the-dark-2015/nyt-theater--jonathan-mandell.json",
+    "showId": "fish-in-the-dark-2015",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "http://newyorktheater.me/2015/03/07/fish-in-the-dark-review-larry-david-on-death-and-recycling/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): appropriate, home, company, macbeth, my fair lady...",
+    "textLength": 7763,
+    "timestamp": "2026-02-06T05:18:39.637Z"
+  },
+  {
+    "reviewId": "fish-in-the-dark-2015/vulture--jesse-green.json",
+    "showId": "fish-in-the-dark-2015",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2015/03/theater-review-fish-in-the-dark.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, of mice and men, harvey, evita, clybourne park...",
+    "textLength": 7789,
+    "timestamp": "2026-02-06T05:19:25.901Z"
   }
 ]

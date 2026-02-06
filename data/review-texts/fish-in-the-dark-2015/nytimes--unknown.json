@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "http://www.nytimes.com/2015/03/06/theater/review-fish-in-the-dark-larry-davids-antic-broadway-debut.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "The fish itself — the one that figures in ads for the new play “Fish in the Dark” and can be seen on the drop curtain at the Cort Theater — is pretty great, a charming and maddening creature destined to capture your heart. O.K., if you insist: It is pret-ty, pret-ty, pret-ty great.\n\nThe show for which this fish stands? Not so much.\n\nIf you don’t recognize what all those “prettys” signify, do not feel obliged to read further. (But if you do, I promise to return to the enchanting fish later.) The use of “pretty” as a repeated modifier, with a protracted first syllable and palate-tapping t’s, is a signature catch phrase of Larry David, the beloved comic television writer and actor.\n\nAnd, yes, Mr. David does make pretty (if not pret-ty, pret-ty) good use of said catchphrase in the second act of “Fish in the Dark,” his Broadway debut as an actor and playwright, which opened on Thursday night. When he pulls out the prettys — as his character describes how it felt to touch a certain part of a certain woman’s anatomy — he lands the biggest laugh of the night.\n\nIt’s not the sexual content that elicits the roar. It’s the pleasure of hearing words made familiar on a hit television show, Mr. David’s “Curb Your Enthusiasm,” by the man who first spoke them. Those “prettys” are a bone with a bow tossed to an audience of expectant fans, rather in the manner of the Rolling Stones’ singing “Satisfaction” toward the end of a live concert.\n\nThat Mr. David commands such a following is evidenced by the box-office receipts of “Fish,” which has set a record for advance ticket sales for a Broadway play. And for people who feel that it’s enough just to be in the same room as an adored celebrity, this “Fish” — which on paper would seem to teem with the comic tics and turns for which Mr. David is celebrated — may well constitute a full meal.\n\nBut let me caution that I have been known to dissolve into incontinent giggles while watching episodes of “Curb” or of “Seinfeld,” the fabled sitcom of which Mr. David was a co-creator. During “Fish,” I laughed fully exactly once. Before I get to the why behind my laughlessness (and while I’m debating whether to tell you the one thing I laughed at, since it’s not that funny secondhand), allow me to return briefly to a happier subject. That’s the goldfish in a light bulb that adorns the poster and program and curtain for Mr. David’s show.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 43,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The fish that figures in ads for the new play and can be seen on the drop curtain at the Cort Theater is pretty great, a charming and maddening creature destined to capture your heart. O.K., if you insist: It is pret-ty, pret-ty, pret-ty great. The show for which this fish stands? Not so much...I have been known to dissolve into incontinent giggles while watching episodes of “Curb” or of “Seinfeld.” During “Fish,” I laughed fully exactly once.\" \n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -76,5 +76,29 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
   },
-  "duplicateOf": "nytimes--charles-isherwood.json"
+  "duplicateOf": "nytimes--charles-isherwood.json",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 43,
+  "textWordCount": 457,
+  "archivePath": "data/archives/reviews/fish-in-the-dark-2015/nytimes--unknown_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T05:18:46.456Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250722064136",
+  "archiveOrgUrl": "http://web.archive.org/web/20250722064136/https://www.nytimes.com/2015/03/06/theater/review-fish-in-the-dark-larry-davids-antic-broadway-debut.html",
+  "duplicateTextOf": "nytimes--ben-brantley.json",
+  "wordCount": 457,
+  "tierReason": "Full review text"
 }

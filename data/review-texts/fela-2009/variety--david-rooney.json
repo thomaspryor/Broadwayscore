@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2009/legit/reviews/fela-1200476205/",
   "publishDate": "November 24, 2009",
-  "fullText": "This exhilarating biographical musical about Nigerian Afrobeat pioneer Fela Kuti is a sensory feast that celebrates both the man and his music with infectious energy.",
-  "isFullReview": false,
+  "fullText": "Every acerbic line is firmly rooted in character.\n\nFor a story about a guy who keeps disappointing the people he loves, “Solitary Man” is a movie of no small generosity: It offers audiences the pleasures of a screenplay whose every acerbic line is firmly rooted in character, and it hands Michael Douglas one of his best roles in years. And the actor more than returns the favor, delivering a dryly funny turn as a bull-spouting, skirt-chasing ex-businessman having a late-in-life family/career meltdown. While it plows familiar coming-of-old-age terrain, this sharply etched ensemble dramedy is an unassuming winner that should parlay cast names into modest arthouse returns.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Timothée Chalamet's 'Marty Supreme' to Get China Theatrical Release \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Timothée Chalamet's 'Marty Supreme' Character Celebrated With 10-Foot Sculpture at Italy’s National Film Museum\n\nPic reps a polished sophomore feature for helmers Brian Koppelman and David Levien eight years after their debut, “Knockaround Guys.” The duo’s scripting credits include “Rounders,” “Runaway Jury” and two films (“Ocean’s Thirteen,” “The Girlfriend Experience”) directed by Steven Soderbergh, credited as a producer here.\n\nA prologue introduces Ben (Douglas), aka “New York’s honest car dealer,” as he receives some unsettling medical news. Six and a half years later, he’s about to turn 60 and still going strong, though much has happened since that fateful doctor’s visit. Corporate malfeasance has liquidated his auto business; philandering has ended his marriage to Nancy (Susan Sarandon); and chronic unreliability is threatening his relationships with his daughter (Jenna Fischer) and her young son.\n\nBen’s current g.f. (Mary-Louise Parker) asks him to accompany her college-bound daughter, Allyson (Imogen Poots), to his alma mater so he can pull a few strings with the dean. While on campus, Ben is very much in his element, offering techniques on how to score to nerdy sophomore Cheston (Jesse Eisenberg); visiting an old school chum (Danny DeVito) who’s had a less illustrious but more stable life; and sparring verbally with Allyson, a thorny, headstrong type who nonetheless proves receptive to Ben’s often provocative advice.\n\nWhat happens next is at once logical and surprising, and Koppelman spins out the ensuing ramifications in a series of fraught one-on-one conversations between Ben and the characters we’ve met so far. Through it all, Ben remains a gregarious smooth-talker, boasting of his business savvy and pragmatic approach to relationships, even as his power-player facade begins to crumble and he starts to need money as well as emotional support. Fortunately, Koppelman’s bracing script presents Ben’s friends, family members and sympathetic strangers as smart, strong-minded individuals in their own right, more than capable of seeing through his blather and calling him on it when necessary.\n\nWhile their protag’s gradual descent is tightly constructed, the helmers make meaningful use of silences, dissolves and occasional downtime, allowing scenes and relationships to breathe even as the noose tightens around Ben’s neck. If the last scene bookends the first one a bit too glibly, the filmmakers are honest enough to avoid easy resolutions yet wise enough to extend hope.\n\nDouglas tosses off every self-serving pronouncement and phony promise with silver-tongued relish without chewing the scenery, in a characterization that fits neatly into the actor’s gallery of oily corporate rogues (“Wall Street,” “Disclosure”) even as it serves as something of an implicit rebuke. Although Douglas appears in every scene, he never overpowers his co-stars, and the script, gratifyingly, doesn’t let him monopolize the good lines.\n\nBritish actress Poots (“28 Weeks Later”), who resembles both Kate Winslet and Scarlett Johansson, is a knockout in every sense, and reps Douglas’ most satisfying opponent here, with sterling pros DeVito and Sarandon running a close second. Fischer and Eisenberg movingly embody younger types who, because they see Ben as a father figure, are more susceptible to emotional wounds. Olivia Thirlby shines in a late-breaking role as Cheston’s g.f.\n\nAlwin Kuchler’s cinematography is functional yet elegant, acquiring a darker, moodier cast as Ben’s journey dictates. Gotham-shot pic plays the titular Johnny Cash tune over the opening credits.",
+  "isFullReview": true,
   "dtliExcerpt": "This exhilarating biographical musical about Nigerian Afrobeat pioneer Fela Kuti is a sensory feast that celebrates both the man and his music with infectious energy.",
   "originalScore": null,
   "assignedScore": 90,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This exhilarating biographical musical about Nigerian Afrobeat pioneer Fela Kuti is a sensory feast that celebrates both the man and his music with infectious energy.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
     "score": 90,
@@ -72,5 +72,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Rave"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 90,
+  "textWordCount": 661,
+  "archivePath": "data/archives/reviews/fela-2009/variety--david-rooney_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T05:17:48.214Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 661,
+  "tierReason": "Full review text"
 }
