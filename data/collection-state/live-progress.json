@@ -1,56 +1,132 @@
 {
-  "updatedAt": "2026-02-06T14:04:28.186Z",
-  "processed": 2,
-  "failed": 18,
-  "successRate": "10.0%",
+  "updatedAt": "2026-02-06T14:09:52.556Z",
+  "processed": 80,
+  "failed": 360,
+  "successRate": "18.2%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 3,
-    "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 0
+    "playwright": 8,
+    "browserbase": 10,
+    "scrapingbee": 21,
+    "brightdata": 26,
+    "archive": 31
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 11,
   "recentActivity": [
     {
-      "t": "2026-02-06T13:52:03.878Z",
+      "t": "2026-02-06T03:34:29.644Z",
       "event": "bb-session",
-      "session": "0e346e49",
-      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
+      "session": "7272d4c6",
+      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
     },
     {
-      "t": "2026-02-06T13:55:32.984Z",
+      "t": "2026-02-06T03:34:46.055Z",
       "event": "bb-session",
-      "session": "4614947b",
-      "url": "http://www.vulture.com/2013/11/reviews-little-miss-sunshine-a-bed-and-a-chair.ht"
+      "session": "e88d6d4e",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
     },
     {
-      "t": "2026-02-06T13:55:34.796Z",
+      "t": "2026-02-06T03:37:13.487Z",
+      "event": "bb-session",
+      "session": "7c834b58",
+      "url": "https://www.nytimes.com/2009/12/14/theater/reviews/14night.html"
+    },
+    {
+      "t": "2026-02-06T03:38:01.665Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770349048164\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq7-GSJdIFpAALPhWIg==&cid=Obu37_YcdZ7DjNQpSQAZWeXvhCfku9YgRBTyw9rwE~zCvo2~QUmgWZGwmb0kJdDOLPv6E1I_6XQwTvWPUZJfiZGPS7gd9vx7ZX6AoMSzLUZ43_3sSLveRNjrrEHYvBEV&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770349048164\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-06T03:40:35.311Z",
+      "event": "bb-session",
+      "session": "eb34dfd9",
+      "url": "http://www.nytimes.com/2010/08/02/theater/02night.html?_r=1"
+    },
+    {
+      "t": "2026-02-06T03:40:41.549Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-06T13:53:47.486Z",
+      "event": "bb-session",
+      "session": "c77763db",
+      "url": "https://variety.com/2016/legit/reviews/a-bronx-tale-review-broadway-1201934086/"
+    },
+    {
+      "t": "2026-02-06T13:54:29.618Z",
+      "event": "bb-session",
+      "session": "ab3306cb",
+      "url": "https://variety.com/2022/legit/reviews/a-christmas-carol-review-broadway-1235434"
+    },
+    {
+      "t": "2026-02-06T13:59:12.242Z",
+      "event": "bb-session",
+      "session": "c0d10047",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/steady-rain-theater-revie"
+    },
+    {
+      "t": "2026-02-06T13:59:26.585Z",
+      "event": "bb-session",
+      "session": "ed1597a8",
+      "url": "https://www.vulture.com/2014/04/theater-review-a-raisin-in-the-sun.html"
+    },
+    {
+      "t": "2026-02-06T13:59:26.654Z",
+      "event": "bb-session",
+      "session": "7c511080",
+      "url": "http://variety.com/2013/legit/reviews/broadway-review-a-time-to-kill-1200746001/"
+    },
+    {
+      "t": "2026-02-06T13:59:28.509Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
     },
     {
-      "t": "2026-02-06T13:55:46.487Z",
+      "t": "2026-02-06T14:00:19.435Z",
       "event": "bb-session",
-      "session": "6cc76c96",
-      "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/"
+      "session": "daa23e4e",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/american-idiot-theater-re"
     },
     {
-      "t": "2026-02-06T13:56:02.827Z",
+      "t": "2026-02-06T14:00:54.876Z",
       "event": "bb-session",
-      "session": "57bc688f",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-dolls-house-review-jessica-ch"
+      "session": "a2c85ba2",
+      "url": "https://variety.com/2011/legit/reviews/arcadia-1117944526/"
     },
     {
-      "t": "2026-02-06T13:58:18.912Z",
+      "t": "2026-02-06T14:04:30.547Z",
       "event": "bb-session",
-      "session": "210cd108",
-      "url": "https://www.newyorker.com/magazine/2023/03/27/a-dolls-house-theatre-review"
+      "session": "283a6f8e",
+      "url": "https://www.vulture.com/2013/10/theater-review-betrayal.html"
     },
     {
-      "t": "2026-02-06T13:58:21.148Z",
+      "t": "2026-02-06T14:04:32.905Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-06T14:04:39.636Z",
+      "event": "bb-session",
+      "session": "47041c0e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-rev"
+    },
+    {
+      "t": "2026-02-06T14:08:26.919Z",
+      "event": "bb-session",
+      "session": "a439b7bd",
+      "url": "https://www.newyorker.com/magazine/2023/01/09/ohio-state-murders-review-adrienne"
+    },
+    {
+      "t": "2026-02-06T14:08:29.298Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-06T14:09:24.088Z",
+      "event": "bb-session",
+      "session": "ffd145da",
+      "url": "https://variety.com/2006/legit/reviews/ring-of-fire-1200515194/"
     }
   ]
 }
