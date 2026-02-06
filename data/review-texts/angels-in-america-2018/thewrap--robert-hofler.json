@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "\"Angels in America\" returns to Broadway to help remind us why Tony Kushner was the Lin-Manuel Miranda of the 1990s. It's the second Broadway revival for this 1993 marathon AIDS drama, and Marianne Elliott's staging enthralls by putting the fantasy of Kushner's play front and center. Her much-praised National Theatre production opened Sunday at the Neil Simon Theatre.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "showScoreExcerpt": "\"Elliott’s staging enthralls by putting the fantasy of Kushner’s play front and center...Whenever Kushner’s pontifications about the cosmos threaten to dominate, there’s Elliott and her designers hard at work to lift the verbal overload...It’s quite a story, and Kushner’s powers of narrative and imagination are prodigious in 'Millennium Approaches.' 'Perestroika,' which Kushner has continued to rewrite over the years, remains something of a fascinating mess.\"\n\nRead more"
+  "showScoreExcerpt": "\"Elliott’s staging enthralls by putting the fantasy of Kushner’s play front and center...Whenever Kushner’s pontifications about the cosmos threaten to dominate, there’s Elliott and her designers hard at work to lift the verbal overload...It’s quite a story, and Kushner’s powers of narrative and imagination are prodigious in 'Millennium Approaches.' 'Perestroika,' which Kushner has continued to rewrite over the years, remains something of a fascinating mess.\"\n\nRead more",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Elliott's staging enthralls by putting the fantasy of Kushner's play front and center",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises Elliott's direction as 'enthralling' and calls Kushner's narrative powers 'prodigious', but notes 'Perestroika' remains a 'fascinating mess'. The balance tilts positive with strong praise for staging and Part One, though concerns about Part Two prevent a higher score. Low confidence due to excerpt format. | GPT-4o: The review praises the staging and narrative imagination, but notes 'Perestroika' as a 'fascinating mess.' The positive elements are emphasized, but the excerpt is limited, so confidence is low. | Gemini: The review praises the staging and narrative powers, but notes that 'Perestroika' remains a 'fascinating mess,' suggesting a mixed experience overall. Given the positive elements, it leans towards a recommendation with reservations. | Kimi: The excerpt offers strong praise for the direction ('enthralls') and first part ('prodigious'), but significantly qualifies this by calling the second part a 'fascinating mess,' suggesting an uneven experience. As only curated excerpts are available, the full verdict remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:35:17.602Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 65,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

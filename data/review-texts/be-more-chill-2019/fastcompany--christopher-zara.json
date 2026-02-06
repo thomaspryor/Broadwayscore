@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The fact that the musical itself doesn’t match the greatness or inspiration of the mythical buzz that propelled it is a bit of a downer...The story is bogged down by well-worn conventions of the geeky-male-teen genre, and it doesn’t seem very interested in subverting them...The show redeems itself in the thoroughly enjoyable second act, when its charms become apparent and the many promises of its quirky plot come to fruition. It’s not a masterpiece, but I get what its fans see in it.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not a masterpiece, but I get what its fans see in it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review critiques the first act as conventional and disappointing, praises the second act as 'thoroughly enjoyable', but concludes with qualified appreciation rather than a clear recommendation. | GPT-4o: The review acknowledges the show's shortcomings in the first act but notes a redemption in the second act. The overall tone is mixed, recognizing both flaws and redeeming qualities. | Gemini: The review is mixed overall, but the conclusion is that the show is enjoyable and redeems itself in the second act. Given the single excerpt and mixed signals, I'm scoring it as a barely positive review. | Kimi: While criticizing the first act as conventional and noting the show fails to live up to its hype, the reviewer praises the second act as 'thoroughly enjoyable' and acknowledges the show's charms, offering a qualified but genuine recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:42:43.799Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

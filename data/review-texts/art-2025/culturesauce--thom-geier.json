@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "manual",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "manual",
     "show-score-playwright",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Art' is entertaining middlebrow fare, a kind of Gallic update of the urbane comedy of manners that Neil Simon mastered in an earlier era.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes the show as 'entertaining' which is positive, but qualifies it as 'middlebrow fare' and compares it to an earlier era, suggesting modest praise. Single excerpt warning applies - this appears mildly positive so scoring at lower end of Positive bucket. | GPT-4o: The excerpt describes the show as 'entertaining', suggesting a positive recommendation. However, terms like 'middlebrow' imply some reservations. With only a single excerpt available, confidence is low. | Gemini: The excerpt calls the show \"entertaining\" and compares it favorably to Neil Simon, suggesting a positive, though not rave, review. Confidence is low due to the limited text. | Kimi: The excerpt offers qualified praise, describing the show as 'entertaining' but labeling it 'middlebrow fare,' suggesting competent commercial entertainment rather than artistic triumph. With only one curated excerpt available, the score reflects mildly positive reception at the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:37:09.799Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 71,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

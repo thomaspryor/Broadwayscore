@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 29,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"If you see 'Amazing Grace,' you will get a sense of what it’s like to waste a lot of money...Mr. Smith has set up his scenes and characters in the most predictable of fashions and given them message songs to sing. The intent may have been very sincere, but the results are stock scenes with stock characters in stock situations and are not aided at all by Gabriel Barre’s lackluster direction.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 24,
+      "high": 34
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you see 'Amazing Grace,' you will get a sense of what it's like to waste a lot of money.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative recommendation with harsh opening line about wasting money, criticizes predictable setup, stock characters, and lackluster direction. Single excerpt warning noted but tone is unambiguously negative. | GPT-4o: The excerpt is strongly negative, criticizing the predictability, stock nature of the scenes and characters, and the lackluster direction. The phrase 'waste a lot of money' indicates a strong recommendation against seeing the show. | Gemini: The review uses negative language such as \"waste a lot of money\", \"predictable\", \"lackluster direction\", and \"stock scenes\" to describe the show, indicating a negative assessment. | Kimi: The critic explicitly warns seeing the show is a waste of money and condemns the 'stock' writing and 'lackluster direction,' offering no redeeming qualities. Confidence is low due to availability of only a single curated excerpt. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:48:24.977Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 18,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

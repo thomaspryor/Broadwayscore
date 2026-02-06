@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The dancing s'wonderful; the music s'marvelous; I was dazzled by the scenery, even if it was a little too busy. But I didn't feel the love. And that's a problem for a show that's billed as a romance....Though very nicely acted by a supporting cast of stage veterans, Craig Lucas's book gets bogged down with too many complicating subplots...on its toes, \"An American In Paris\" is glorious. But when the dancing stops, it falls disappointingly flat.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "on its toes, 'An American In Paris' is glorious. But when the dancing stops, it falls disappointingly flat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises the dancing as 'glorious' and 's'wonderful' but finds major flaws in the romance and book, concluding it 'falls disappointingly flat' when not dancing. This is a classic mixed review with clear highs and lows but no overall recommendation. | GPT-4o: The review praises the dancing and music but criticizes the book and emotional impact. The excerpt suggests mixed feelings, with strong elements but significant drawbacks. | Gemini: The review praises the dancing, music, and scenery, but criticizes the book and lack of romance. This indicates a mixed experience with both positive and negative aspects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:16:16.130Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

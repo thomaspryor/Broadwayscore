@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,9 +18,53 @@
   "showScoreExcerpt": "\"The music is good, if not the most memorable. Act I felt long, but Act II flies by and really tugs at the heartstrings....There is a lot of pain in 'Allegiance,' but - thankfully - director Stafford Arima does a brilliant job of not making the show too dark and of finding the beauty in the bleak. The way he represents the bombing of Hiroshima is so inspired! His formations and choices are to be strongly lauded. Fine job by all!\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "playbillVerdictUrl": "http://perezhilton.com/2015-11-08-allegiance-broadway-review#.VkAf-ouJnww",
-  "sources": [
-    "show-score-playwright",
-    "playbill-verdict"
-  ]
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the director's work as 'brilliant' and 'inspired' and ends with 'Fine job by all!' but notes the music is 'not the most memorable' and Act I 'felt long.' Single excerpt warning requires caution - this appears mildly positive with reservations. | GPT-4o: The review excerpt praises the direction and Act II, but notes Act I felt long and the music isn't the most memorable. The overall tone suggests a positive recommendation with some reservations. | Gemini: The review praises the direction and emotional impact of Act II, suggesting a positive experience. Despite the caveat about Act I and the music not being the most memorable, the overall tone is enthusiastic. | Kimi: While the critic notes the music is unmemorable and Act I drags, they offer strong praise for the direction ('brilliant,' 'inspired') and Act II's emotional impact, concluding with an endorsement ('Fine job by all!'). Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:23:54.944Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

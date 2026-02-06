@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Be More Chill,' the dazzling and inventive musical based on the cult Young Adult novel by Ned Vizzini, has made a successful transfer to Broadway Lyceum Theater with the same cast and an expanded production team after a tryout production at Two Rivers Theater in Red Bank, New Jersey in 2014, and a YouTube soundtrack that has had over 150,000,000 hits which led to an Off Broadway production at the Pershing Square Signature Theatre Center during the summer of 2018.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Be More Chill,' the dazzling and inventive musical based on the cult Young Adult novel by Ned Vizzini, has made a successful transfer to Broadway Lyceum Theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt describes the show as 'dazzling and inventive' and notes a 'successful transfer' to Broadway, indicating a positive view. However, the single excerpt warning suggests caution, leading to a lower score within the Positive range. | Gemini: The excerpt describes the show as \"dazzling and inventive\" and states that it made a \"successful transfer to Broadway.\" However, due to the limited text, the confidence is low. | Kimi: The excerpt offers strong praise ('dazzling,' 'inventive') and explicitly calls the Broadway transfer 'successful,' indicating a clear recommendation. Confidence is low due to availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:46:09.065Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

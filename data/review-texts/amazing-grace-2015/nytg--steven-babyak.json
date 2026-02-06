@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 16,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"There isn't an oven big enough for this turkey; a Sunday School polemic that beats you around the head with its message but fails to have any charm or memorable melodies...I can't imagine this subject matter ever being dealt with in a more elementary way – even a middle school assembly project would give a more insightful and educational exploration of the theme. The direction and staging heaves under the viscous book and uninspiring score.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 16,
+    "confidence": "medium",
+    "range": {
+      "low": 11,
+      "high": 21
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There isn't an oven big enough for this turkey; a Sunday School polemic that beats you around the head with its message.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating language including 'turkey,' comparison to middle school assembly, calls book 'viscous' and score 'uninspiring.' No redeeming qualities mentioned. | GPT-4o: The review uses strong negative language, comparing the show to a 'turkey' and criticizing its lack of charm and memorable melodies. The direction and staging are described as struggling under a 'viscous book and uninspiring score,' indicating a strongly negative verdict. | Gemini: The review uses extremely negative language, calling the show a 'turkey' and a 'Sunday School polemic' that 'fails to have any charm or memorable melodies.' The critic clearly does not recommend seeing it. | Kimi: The critic delivers a devastating assessment using theatrical slang for a flop ('turkey') and compares the production unfavorably to a middle school assembly project, condemning the book as 'viscous,' the score as 'uninspiring,' and the direction as failing under the weight of the material. Single excerpt warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:46:53.070Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 12,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

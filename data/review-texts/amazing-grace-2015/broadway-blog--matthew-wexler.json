@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The production has sweeping and emotionally resonant themes that never seem to find cohesion in the book, music and lyrics. Nor is director Gabriel Barre able to harness spotty performances from his leading players...'Amazing Grace’s' message of redemption and change is a beautiful one. Unfortunately, its delivery feels less than inspired.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, its delivery feels less than inspired.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite acknowledging the beautiful message, the critic finds fundamental flaws in book/music cohesion, direction, and performances. The final verdict is clearly negative. | GPT-4o: The review highlights issues with cohesion and performance, and describes the delivery as uninspired, indicating a negative sentiment. However, due to the single excerpt warning, confidence is low. | Gemini: The review states that the production's themes never find cohesion and the director is unable to harness spotty performances. The delivery feels less than inspired. | Kimi: While the critic praises the show's message as 'beautiful' and its themes as 'sweeping,' they criticize the lack of cohesion in the creative elements, spotty performances, and direction, concluding that the delivery is 'less than inspired.' With only a single excerpt available, this appears to be a recommendation against seeing the show despite its worthy subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:37:50.782Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

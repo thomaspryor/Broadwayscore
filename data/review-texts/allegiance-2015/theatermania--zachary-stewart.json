@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Shockingly, it works: Not only is 'Allegiance' a grandiose epic reminiscent of Miss Saigon, it also serves as a compelling family drama...'Allegiance' is delightfully old-school: a big schmaltzy musical of dubious historical accuracy delivered with ample humor and heart...Stafford Arima's fast-paced, ever-moving production reinforces that tone.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shockingly, it works: Not only is 'Allegiance' a grandiose epic reminiscent of Miss Saigon, it also serves as a compelling family drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('shockingly, it works', 'compelling', 'delightfully') with praise for production values and direction. Single excerpt warning applies, but tone is clearly enthusiastic rather than qualified. | GPT-4o: The excerpt praises 'Allegiance' as a 'grandiose epic' and 'compelling family drama,' with a 'delightfully old-school' tone, suggesting a strong positive recommendation. The single excerpt and lack of full context reduce confidence. | Gemini: The excerpt uses positive language such as \"compelling\", \"delightfully old-school\", and \"ample humor and heart\", suggesting a positive review. Given that it is a single excerpt, I am scoring it at the higher end of the positive bucket. | Kimi: The excerpt expresses genuine surprise that the show succeeds, praising it as a compelling family drama and grandiose epic with humor, heart, and skilled direction. Confidence is low due to reliance on a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:30:58.094Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The musical comes with a back story almost as intriguing (and true) as the one it spins about the creation of the hymn whose title it bears. For the show’s score — and it is a uniformly solid, always fervent and often soaring piece of work full of well-crafted lyrics and character-driven melodies — happens to be the first professional effort of a complete unknown...Gabriel Barre’s direction is clean and crisp, if, like the show as a whole, a bit wooden.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is a uniformly solid, always fervent and often soaring piece of work full of well-crafted lyrics and character-driven melodies",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the score as 'uniformly solid' and 'soaring' but notes the direction and show overall as 'a bit wooden.' Single excerpt warning suggests caution - this appears mildly positive with qualifications, placing it at the lower end of Positive range. | GPT-4o: The review excerpt praises the score as 'solid' and 'soaring' but mentions the direction and show as 'a bit wooden', indicating a positive but slightly reserved recommendation. | Gemini: The review excerpt praises the score as \"uniformly solid, always fervent and often soaring.\" However, the direction is described as \"a bit wooden.\" Given the single excerpt and mildly positive tone, I'm scoring it as a low positive. | Kimi: The excerpt offers strong praise for the score ('uniformly solid, always fervent and often soaring') and direction ('clean and crisp'), but includes a significant reservation about the production being 'wooden' overall. With only one excerpt available and the text truncated, this represents a mildly positive, qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:40:52.648Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

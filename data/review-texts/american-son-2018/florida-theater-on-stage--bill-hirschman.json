@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"What Demos-Brown wrought on the page is a fusion of the intense racial issues with the universal terror of parents struggling to prepare a teenager to graduate into an antagonistic and unforgiving world. With those two elements intertwined and acidly eating into other, 'American Son' produces a far more complicated tale than simply an emotion-suffused polemic about overt and subtle manifestations of racism in the 21st Century.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What Demos-Brown wrought on the page is a fusion of the intense racial issues with the universal terror of parents struggling to prepare a teenager to graduate into an antagonistic and unforgiving world.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the playwright's work as sophisticated fusion creating a 'far more complicated tale' than simple polemic, suggesting artistic merit. However, confidence is low due to single excerpt limitation - this could be setup rather than verdict. | GPT-4o: The excerpt praises the complexity of the play's themes, suggesting a positive view of its depth. However, the single excerpt warning and lack of full context necessitate a cautious, low-confidence score. | Gemini: The excerpt describes the play as a \"complicated tale\" with intense racial issues and universal parental struggles. This suggests a positive, albeit potentially challenging, experience, but the single excerpt and lack of explicit recommendation lead to a lower confidence score. | Kimi: The excerpt praises the playwright's sophisticated fusion of racial themes with universal parental anxiety, highlighting the work's complexity and emotional resonance. As a single curated excerpt with clearly positive tone, it scores at the upper end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:04:56.341Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

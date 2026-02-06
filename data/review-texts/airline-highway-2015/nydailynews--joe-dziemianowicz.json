@@ -3,7 +3,7 @@
   "outletId": "nydailynews",
   "outlet": "New York Daily News",
   "criticName": "Joe Dziemianowicz",
-  "url": "http://www.nydailynews.com/entertainment/theater-arts/airline-highway-review-lisa-amour-story-down-and-out-article-1.2196492",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,8 +15,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/airline-highway-review-lisa-amour-story-down-and-out-article-1.2196492"
+  "assignedScore": 21,
+  "llmScore": {
+    "score": 21,
+    "confidence": "medium",
+    "range": {
+      "low": 16,
+      "high": 26
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The only part of this long, meandering byway you'll want to use is the exit ramp.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Clear pan with vivid negative metaphors ('road to nowhere', 'potholed') and explicit advice to leave early. Text appears cut off but the verdict is unambiguous. | GPT-4o: The excerpt describes the show as 'a road to nowhere' with 'contrived storytelling,' and suggests the only desirable action is to leave. This indicates a strongly negative review. However, given the single excerpt, the confidence is low. | Gemini: The review excerpt is overwhelmingly negative, describing the show as a \"road to nowhere\" and recommending the \"exit ramp.\" | Kimi: The critic delivers a devastating verdict, describing the show as a \"road to nowhere\" with contrived storytelling and explicitly recommending the \"exit ramp\" as the only desirable element, indicating a strong recommendation against seeing the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:06:38.681Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

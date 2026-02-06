@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical Anastasia, which opened on Broadway on Thursday, is a handsome production that unfortunately feels more like a theme park attraction than a theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels more like a theme park attraction than a theatrical experience",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls it 'handsome' but dismisses it as feeling like a theme park rather than real theater, which is clearly negative. However, with only one excerpt available, the full verdict may be more nuanced. | GPT-4o: The review describes the production as 'handsome' but ultimately criticizes it for lacking the depth of a theatrical experience, likening it to a 'theme park attraction'. This suggests a negative overall impression despite some positive aspects. | Gemini: The review excerpt compares the show unfavorably to a theme park attraction, suggesting a lack of theatrical depth. Given the limited text, confidence is low. | Kimi: While the critic acknowledges the production values as 'handsome,' the use of 'unfortunately' and the comparison to a 'theme park attraction' rather than legitimate theater indicates a recommendation against seeing the show for serious theatergoers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:23:58.982Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

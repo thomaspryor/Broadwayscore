@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A magnificent thing of sound and fury...The theatrical equivalent of a teeming, furiously detailed Diego Rivera mural.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Superlative praise throughout with words like 'magnificent,' 'extraordinary,' 'stunning,' and 'incantatory power.' Compares favorably to acclaimed 'War Horse' production. Despite being a single excerpt, the language is unqualifiedly rapturous. | GPT-4o: The excerpt uses superlative language ('magnificent', 'extraordinary', 'stunning') and compares the production favorably to past successes ('more brio than she brought to 'War Horse''). Despite the single excerpt warning, the language strongly suggests a rave review. | Gemini: The review uses extremely positive language such as \"magnificent\", \"extraordinary magic-realist tapestry\", \"stunning ensemble\", and \"lost nothing of its incantatory power\", indicating a rave review. | Kimi: The excerpt uses superlative language ('magnificent,' 'extraordinary,' 'stunning') and favorably compares the direction to the acclaimed 'War Horse,' indicating enthusiastic praise. However, confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:30:03.916Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

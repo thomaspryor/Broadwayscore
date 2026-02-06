@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For better or worse, this new production mostly offers the not-inconsiderable spectacle of a job well done.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Single excerpt shows qualified praise - acknowledges the play's merits and calls it 'a job well done,' but questions its contemporary relevance and seems somewhat lukewarm overall. Low confidence due to limited text. | GPT-4o: The review acknowledges the production as a 'job well done' but questions its relevance to contemporary audiences, suggesting a mixed verdict. | Gemini: The review acknowledges the play's strengths and calls the production a \"job well done,\" but also questions its relevance in 2022. Given the single excerpt and the reservations, a score in the lower-middle of the positive range seems appropriate. | Kimi: While the critic acknowledges the play's formidable qualities and calls the production a 'job well done,' the review emphasizes significant reservations about the revival's failure to engage with contemporary relevance or offer fresh revelations for 2022 audiences. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:56:28.140Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 74
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 68,
+    "geminiScore": 75,
+    "kimiScore": 66,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"This taut drama where you can guess the ending but don’t want to believe it...Demos-Brown’s debut play addresses a lot of issues...Knowing that the police will play as the villain, Demos-Brown gives a veteran Black Police Lieutenant played by Eugene Lee who has some opinions worth hearing out...A little underdeveloped. Without a big star it would have been sent to off Broadway for development. But it’s timely and important, and the actors invest their all.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A little underdeveloped. Without a big star it would have been sent to off Broadway for development.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic acknowledges the play is 'timely and important' with committed performances, but calls it 'underdeveloped' and suggests it only made Broadway due to star power. This mixed assessment with significant reservations falls in the Mixed bucket. Low confidence due to single excerpt warning. | GPT-4o: The review acknowledges the play's timeliness and the actors' commitment but notes it is 'a little underdeveloped' and suggests it might have been better suited for off-Broadway. The excerpt provides a mixed impression with both positive and critical elements. | Gemini: The review acknowledges the play is \"a little underdeveloped\" but also states it is \"timely and important\" and praises the actors. Given the single excerpt and the mixed signals, I've scored it as positive with reservations. | Kimi: The excerpt offers qualified praise, acknowledging the play feels underdeveloped and might have suited off-Broadway better, but ultimately finds it timely and important with committed performances. Single excerpt limits confidence. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:06:40.561Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

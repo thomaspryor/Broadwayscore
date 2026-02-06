@@ -3,7 +3,7 @@
   "outletId": "amny",
   "outlet": "amNewYork",
   "criticName": "Matt Windman",
-  "url": "http://www.amny.com/entertainment/amazing-grace-theater-review-2-stars-1.10650852",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,8 +15,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://www.amny.com/entertainment/amazing-grace-theater-review-2-stars-1.10650852"
+  "assignedScore": 23,
+  "llmScore": {
+    "score": 23,
+    "confidence": "medium",
+    "range": {
+      "low": 18,
+      "high": 28
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "How in the world did this get to Broadway?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: The critic calls the musical 'embarrassingly uninteresting' and questions how it even reached Broadway, indicating fundamental rejection. However, confidence is low due to single excerpt warning - the full review verdict may differ. | GPT-4o: The excerpt describes the musical as 'embarrassingly uninteresting' and questions its presence on Broadway, indicating a strongly negative view. | Gemini: The critic questions how the show made it to Broadway and calls it \"embarrassingly uninteresting.\" This suggests a negative assessment, despite the truncated nature of the text. | Kimi: The critic describes the show as 'embarrassingly uninteresting' and questions its legitimacy as a Broadway production, indicating strong negative judgment despite acknowledging good intentions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:36:33.084Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 22,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 28,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

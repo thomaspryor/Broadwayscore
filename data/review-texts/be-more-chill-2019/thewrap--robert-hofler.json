@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Unfortunately, The Squip fails to prevent Jeremy from making the most mundane rhymes when it comes to singing Joe Iconis’ repetitive score...Iconis’ musical score can best be described the way fast-food chains sometimes advertise their processed chicken. It’s crispy. No matter that crispy is neither a flavor nor a tune...These overwrought people on stage recall the street performers in nearby Times Square.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Iconis' musical score can best be described the way fast-food chains sometimes advertise their processed chicken.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Single excerpt contains harsh criticism of the score ('repetitive', 'mundane rhymes', compared to processed fast food) and dismissive comparison of performers to Times Square street performers. However, with only one excerpt available, this could be cherry-picked negative content from an otherwise mixed review. | GPT-4o: The excerpt criticizes the musical score as repetitive and compares it to processed fast food, suggesting a lack of originality or quality. The negative tone and lack of positive remarks indicate a negative review, though the single excerpt limits confidence. | Gemini: The review excerpt is negative, criticizing the score as repetitive and comparing the performers to street performers in Times Square. Given the limited text, confidence is low. | Kimi: The excerpt offers unambiguous criticism of the repetitive score using dismissive fast-food analogies and describes the performers as overwrought, with no redeeming qualities mentioned. Confidence is low due to single-excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:46:59.098Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

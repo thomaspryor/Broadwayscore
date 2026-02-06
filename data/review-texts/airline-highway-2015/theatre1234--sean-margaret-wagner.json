@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A sometimes warm, sometimes biting tribute...This ensemble is an incredible force. They are bombastic, deeply flawed and thrilling to watch as each stumbles further from the ideal self they’ve expended such effort to project...Do yourself a favor: see “Airline Highway” onstage, then keep your eyes open for it everywhere you go.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Do yourself a favor: see 'Airline Highway' onstage, then keep your eyes open for it everywhere you go.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with 'Do yourself a favor: see' and praise for ensemble as 'incredible force' and 'thrilling to watch.' Single excerpt warning applied - using upper end of Positive range due to enthusiastic tone. | GPT-4o: The excerpt provides a strong recommendation to see the show, praising the ensemble as 'an incredible force' and describing the experience as both 'warm' and 'biting'. The directive to 'do yourself a favor' indicates a strong positive sentiment. | Gemini: The review uses phrases like \"incredible force\" and \"thrilling to watch\", and the final line is a strong recommendation to see the show. | Kimi: Single excerpt contains explicit recommendation ('Do yourself a favor: see') and strong praise for the ensemble ('incredible force', 'thrilling'), warranting upper Positive range despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:08:42.394Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

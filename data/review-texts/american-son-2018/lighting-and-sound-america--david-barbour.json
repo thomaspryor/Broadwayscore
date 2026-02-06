@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Most of 'American Son' consists of them stewing and agonizing while they attempt to find out what has happened to him. This gives the audience plenty of time to notice the contrivances and bald devices that are employed liberally throughout...Kenny Leon's direction maintains a brisk pace, but both of his stars struggle with their one-note roles...Demos-Brown's script adds little to the conversation, and the awful conflicts at its heart are diminished by a series of mechanical twists.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Demos-Brown's script adds little to the conversation, and the awful conflicts at its heart are diminished by a series of mechanical twists.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes the script as contrived with 'bald devices,' notes actors 'struggle with their one-note roles,' and states the script 'adds little to the conversation.' Only positive element is praising the director's 'brisk pace,' but overall assessment is clearly negative. Low confidence due to single excerpt warning. | GPT-4o: The excerpt criticizes the script for adding little to the conversation and diminishing conflicts with mechanical twists. The direction is noted for maintaining pace, but the overall sentiment is negative, highlighting contrivances and struggles with roles. | Gemini: The review excerpt highlights contrivances in the script, struggles with the roles, and a lack of contribution to the conversation, indicating a negative assessment. The truncated nature lowers confidence. | Kimi: The excerpt offers substantial criticism of the script's contrivances, mechanical plot twists, and one-note characterizations, with only faint praise for the direction. While acknowledging the single excerpt limitation, the evaluative language clearly indicates the critic does not recommend the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:05:45.591Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

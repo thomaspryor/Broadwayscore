@@ -15,5 +15,60 @@
   "bwwExcerpt": "As Anastasia piles discovery upon discovery, the happiest surprise is how consistently good the musical turns out to be. Smartly adapted by Terrence McNally from the 1997 animated film and the 1956 Ingrid Bergman movie-with Stephen Flaherty and Lynn Ahrens impressively expanding their score from the former-Anastasia is a sweeping adventure, romance and historical epic whose fine craftsmanship will satisfy musical-theater fans beyond the show's ideal audience of teenage girls. (When I saw it, a second-act kiss was greeted with deafening shrieks of approval.)",
   "bwwScore": 8,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424",
-  "publishDate": "April 25, 2017"
+  "publishDate": "April 25, 2017",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Anastasia is a sweeping adventure, romance and historical epic whose fine craftsmanship will satisfy musical-theater fans beyond the show's ideal audience of teenage girls.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('consistently good', 'fine craftsmanship', 'will satisfy') with praise for adaptation and expanded score. Single excerpt warning suggests this represents the overall positive verdict. | GPT-4o: The excerpt praises the musical's adaptation, score, and craftsmanship, indicating a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review expresses surprise at how good the musical is, calling it a \"sweeping adventure, romance and historical epic\" and praising its \"fine craftsmanship.\" This indicates a strong positive sentiment. | Kimi: The excerpt expresses clear enthusiasm with phrases like 'happiest surprise,' 'consistently good,' and 'fine craftsmanship,' indicating a strong positive recommendation. However, given this is a single curated excerpt, confidence is reduced per instructions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:24:29.847Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

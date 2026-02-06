@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Many moving and touching moments throughout, but merely functional rather than transcendent, particularly with its clunky exposition, the lack of a truly rousing ensemble opening number and a by-the-numbers feel to the assignment of songs to some characters...Without more work on its script and score, this vessel won't survive the treacherous waters of Broadway.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Without more work on its script and score, this vessel won't survive the treacherous waters of Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite acknowledging 'moving and touching moments,' the critic finds the show 'merely functional rather than transcendent' with significant structural problems and predicts it won't survive on Broadway. The negatives clearly outweigh the positives. | GPT-4o: The excerpt highlights significant issues with the show, such as 'clunky exposition' and a 'by-the-numbers feel.' The critic suggests that the show is 'merely functional' and unlikely to succeed on Broadway without improvements, indicating a negative stance. | Gemini: The review notes \"moving and touching moments\" but also criticizes the exposition and score, suggesting a mixed experience. The concluding sentence indicates a lack of confidence in the show's Broadway success. | Kimi: While the critic acknowledges 'many moving and touching moments,' the overall assessment finds the show merely functional with clunky exposition and a by-the-numbers feel, ultimately predicting it will not survive on Broadway without significant revisions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:51:56.088Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The richly-layered presentation keeps moving and the time flies by, with seamless fast-paced transitions through gripping scenes of the individual and intimate, the broader socio-political, and the cosmic and otherworldly, before leaving us with an uplifting message of self-worth, acceptance, and hope for the future. It’s a message that we needed then, and need again now...'Angels' is at once a period piece, a timeless classic, and a renewed call for action and hope.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The richly-layered presentation keeps moving and the time flies by, with seamless fast-paced transitions through gripping scenes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for pacing, presentation quality, and emotional impact with phrases like 'richly-layered,' 'gripping,' and 'uplifting message.' Calls it both 'timeless classic' and 'renewed call for action.' Single excerpt warning suggests this represents positive sentiment, scored in upper Positive range. | GPT-4o: The excerpt provides strong praise for the production's pacing, thematic depth, and emotional impact, describing it as a 'timeless classic' and 'renewed call for action and hope'. The tone suggests a highly positive recommendation. | Gemini: The excerpt uses positive language such as \"richly-layered\", \"gripping\", and \"uplifting message\". The conclusion that it is a \"renewed call for action and hope\" suggests a strong recommendation. | Kimi: Single excerpt contains strong praise calling the show a 'timeless classic' with 'gripping scenes' and an 'uplifting message,' warranting a high Positive score despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:27:17.398Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

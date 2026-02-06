@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"So was it worth the hype? Mostly, yes...One area that many believe needs work is Newton's somewhat fairytale, unrealistic conversion from bad guy to good guy...The rousing final scene in the show where the entire cast sings 'Amazing Grace' and the audience joins in resulting in a standing ovation shows the potential of this work in progress--a musical well worth seeing.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So was it worth the hype? Mostly, yes...a musical well worth seeing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic explicitly states it was 'worth the hype' and calls it 'well worth seeing', but acknowledges flaws and calls it a 'work in progress'. Single excerpt limits confidence. | GPT-4o: The review excerpt suggests a positive recommendation with some reservations about character development. The standing ovation and 'well worth seeing' indicate a positive verdict, but the single excerpt and mention of areas needing work suggest using the lower end of the Positive range. | Gemini: The review states that the show is \"well worth seeing\" despite some reservations about the character's conversion. The standing ovation and audience participation also indicate a positive reception. | Kimi: Single excerpt offers qualified recommendation ('Mostly, yes') with noted flaws ('needs work', 'work in progress'), but concludes with clear endorsement ('well worth seeing'). Scored conservatively at lower end of Positive range due to single-excerpt limitations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:39:30.784Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 79,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

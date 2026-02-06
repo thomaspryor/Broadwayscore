@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"In sum, the narrative is clearer and the manic and zany camp tone tighter and more even, thanks no doubt to the benefit of additional time and skillful revision by director Stephen Brackett...While Mr. Iconis’ lyrics can be cloyingly cute, baldly expositive, and often predictable, the music in this musical quite literally justifies its existence, and there’s a lot of interesting texture and instrumentation in Charlie Rosen’s smart orchestrations.\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the music in this musical quite literally justifies its existence",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows mixed evaluation - praises direction improvements and music/orchestrations, but criticizes lyrics as 'cloyingly cute' and 'predictable'. The phrase 'justifies its existence' suggests overall recommendation despite flaws. Low confidence due to single curated excerpt. | GPT-4o: The excerpt highlights improvements in narrative clarity and tone, and praises the music and orchestrations, indicating a positive view despite some criticism of the lyrics. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review acknowledges flaws in the lyrics but praises the music and orchestrations, suggesting a qualified positive recommendation. Confidence is low due to the limited excerpt. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:45:17.357Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

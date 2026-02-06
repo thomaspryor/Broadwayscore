@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Almost Famous the musical is a sweet, earnest adaptation that captures the spirit of Crowe's film without quite matching its emotional depth or cultural specificity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Almost Famous the musical is a sweet, earnest adaptation that captures the spirit of Crowe's film without quite matching its emotional depth or cultural specificity.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Almost Famous the musical is a sweet, earnest adaptation that captures the spirit of Crowe's film without quite matching its emotional depth or cultural specificity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows qualified praise ('sweet, earnest') but significant reservation about lacking 'emotional depth' and 'cultural specificity' compared to source material. This suggests mixed reception with notable shortcomings. | GPT-4o: The excerpt describes the musical as 'sweet' and 'earnest', indicating a generally positive view, but notes it lacks the film's emotional depth and cultural specificity, suggesting some reservations. Given the single excerpt and potential cherry-picking, confidence is low. | Gemini: The review is positive, calling the musical \"sweet\" and \"earnest\" and saying it \"captures the spirit\" of the film. However, it also notes that it doesn't quite match the film's emotional depth or cultural specificity, indicating reservations. Given that this is only one excerpt, I am scoring at the lower end of the positive range. | Kimi: Single excerpt offers qualified praise, acknowledging the show's charm ('sweet, earnest') while noting significant shortcomings compared to the source material. Tone is appreciative but falls short of enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:34:17.665Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

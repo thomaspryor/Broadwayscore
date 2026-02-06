@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Rupert Goold, songwriter Duncan Sheik and book-writer Roberto Aguirre-Sacasa persuasively capture the designer chic milieu, materialistic attitude and dance club sound of 1980s Manhattan while adding a pervading sense of eerie unease",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows praise for the creative team 'persuasively' capturing the show's milieu and atmosphere. However, with only one curated excerpt available and incomplete text about the lead performance, confidence is low and score reflects cautious positive assessment. | GPT-4o: The excerpt highlights the production's success in capturing the 1980s Manhattan vibe and creating an eerie atmosphere, suggesting a positive impression. However, due to the single excerpt warning and lack of a full review, confidence is low. | Gemini: The review excerpt praises the direction, songwriting, and book, suggesting a positive experience, but the lack of a clear overall recommendation and the single excerpt lowers confidence. | Kimi: The excerpt praises the director, songwriter and book-writer for convincingly realizing the 1980s Manhattan atmosphere and materialistic attitude, while noting the lead's effective performance, indicating a favorable assessment of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:00:14.346Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

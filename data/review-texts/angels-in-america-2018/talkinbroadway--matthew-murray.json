@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Angels in America is nothing short of a revelation, a production that honors Kushner's text while finding new depths and meanings within it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Angels in America is nothing short of a revelation, a production that honors Kushner's text while finding new depths and meanings within it.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Angels in America is nothing short of a revelation, a production that honors Kushner's text while finding new depths and meanings within it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong superlative language ('nothing short of a revelation') indicates Rave bucket. However, confidence is low due to single excerpt limitation - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses strong positive language ('nothing short of a revelation') indicating a highly enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"revelation\" and \"honors\" suggesting a very positive review. Given it's a single excerpt, confidence is low, but the strength of the language warrants a high positive score. | Kimi: The excerpt uses superlative language ('revelation,' 'new depths') indicating strong enthusiasm, but per the single-excerpt guidance, the score is capped in the Positive bucket (80-84) rather than Rave due to the risk of cherry-picking. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:33:21.112Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

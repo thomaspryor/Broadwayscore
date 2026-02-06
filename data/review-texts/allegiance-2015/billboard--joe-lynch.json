@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Allegiance' is the rare WWII-era piece of drama that actually feels fresh and necessary. A family splintering as they decide how to react to the internment is not a story that's been done to death, and 'Allegiance' deftly handles the high emotions and conflicting schools of thought...While Takei is certainly the celebrity draw, this production is entirely worth seeing on its own merits. If you get the chance, check this one out.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Allegiance' is the rare WWII-era piece of drama that actually feels fresh and necessary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with 'entirely worth seeing' and 'check this one out,' plus praise for being 'fresh and necessary.' Single excerpt warning means low confidence, but sentiment is clearly positive with strong recommendation language. | GPT-4o: The excerpt praises the show as fresh and necessary, highlighting its handling of emotions and recommending it on its own merits. The positive tone and recommendation suggest a strong positive score, but confidence is low due to the single excerpt warning. | Gemini: The review excerpt expresses a clear positive sentiment, calling the production \"fresh and necessary\" and \"entirely worth seeing.\" Given the single excerpt, confidence is low, but the positive language warrants a score in the upper end of the positive range. | Kimi: The excerpt offers clear praise ('fresh and necessary,' 'deftly handles') and an explicit recommendation to see the show, placing it in the upper Positive range, though single-excerpt limitations reduce confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:15:36.544Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "The Angel's introduction is as grand as the come, and that's fitting for such a grand revival of Angels in America. Twenty-five years ago, the play was important and relevant-and in the age of Trump, it might be moreso, on both counts, today. But the reason it persists, the reason companies will stage this work for decades to come, is that it's first and foremost great, riveting drama. And its time has come-again.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
   "contentTier": "excerpt",
-  "showScoreExcerpt": "\"The play is still unrivaled, thanks to a production directed by Marianne Elliott that brings out the best in the work...But it's the cast that makes this 'Angels' soar...Whoever thought to cast Lane as Cohn should be given a MacArthur 'Genius Grant'...His Tony Award–worthy performance is matched by Garfield's own as Prior, the heart of the play...The reason companies will stage this work for decades, is that it's first and foremost great, riveting drama. And its time has come—again.\" \n\nRead more"
+  "showScoreExcerpt": "\"The play is still unrivaled, thanks to a production directed by Marianne Elliott that brings out the best in the work...But it's the cast that makes this 'Angels' soar...Whoever thought to cast Lane as Cohn should be given a MacArthur 'Genius Grant'...His Tony Award–worthy performance is matched by Garfield's own as Prior, the heart of the play...The reason companies will stage this work for decades, is that it's first and foremost great, riveting drama. And its time has come—again.\" \n\nRead more",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The reason companies will stage this work for decades, is that it's first and foremost great, riveting drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Lavish praise for both production and performances with superlatives ('unrivaled', 'Tony Award–worthy', 'great, riveting drama'). The excerpt suggests total enthusiasm despite being incomplete text. | GPT-4o: The review is highly positive, praising the production, direction, and performances, describing it as 'great, riveting drama' and highlighting its enduring relevance. The lack of a full review and original rating lowers confidence. | Gemini: The review uses strong positive language such as \"unrivaled\", \"brings out the best\", \"soar\", and \"genius grant\" to describe the production and performances, indicating a rave review. | Kimi: Excerpt contains unqualified superlatives including 'unrivaled,' 'soar,' and 'Tony Award–worthy' with no reservations mentioned. The critic describes the production as 'great, riveting drama' that will be staged for decades.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:30:38.674Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

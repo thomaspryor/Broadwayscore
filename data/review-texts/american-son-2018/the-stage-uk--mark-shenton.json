@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The timing could not be more apt for a Broadway theatre to offer a play that puts race at its centre...Demos-Brown spins various themes and sympathies, all underpinned with the churning dread surrounding the fate of the missing teenager. Director Kenny Leon’s exceptionally tense production maintains the constantly shifting dynamics between its four characters with ease and the production is driven by the impassioned distress and intensity of Washington’s performance.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Kenny Leon's exceptionally tense production maintains the constantly shifting dynamics between its four characters with ease.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction ('exceptionally tense'), performance ('impassioned distress and intensity'), and production quality. However, confidence is low due to single excerpt limitation - full review sentiment may differ. | GPT-4o: The excerpt praises the production's tension, dynamics, and performances, suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt praises the direction and Washington's performance, highlighting the tense and impassioned nature of the production. While it's a single excerpt, the positive language suggests a recommendation. | Kimi: The excerpt offers strong praise for the direction ('exceptionally tense'), writing ('churning dread'), and lead performance ('impassioned distress and intensity'), indicating a clear recommendation. Given this is a single curated excerpt with strongly positive language, it falls in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:07:58.362Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

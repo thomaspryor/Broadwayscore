@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A captivating tale of romance, rebellion and redemption, this radiant production follows one man whose incredible journey ignited a historic wave of change...Brimming with emotion and adventure, 'Amazing Grace' is an unforgettable musical saga. This show was categorically stunning, thrilling, inspiring, and breathtakingly beautiful. \"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show was categorically stunning, thrilling, inspiring, and breathtakingly beautiful.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Multiple superlatives and unqualified praise ('categorically stunning', 'breathtakingly beautiful', 'unforgettable') indicate a rave review. However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses strong superlatives like 'stunning', 'thrilling', and 'breathtakingly beautiful', indicating a highly enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt contains strong positive language such as \"captivating,\" \"radiant,\" \"unforgettable,\" and \"breathtakingly beautiful.\" Given the single excerpt and its strong positivity, the score is placed at the higher end of the positive range. | Kimi: The single available excerpt offers superlative praise using words like 'stunning' and 'breathtakingly beautiful,' suggesting a strong recommendation, but confidence is low given the warning about potentially cherry-picked excerpts from the full review. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:47:30.081Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

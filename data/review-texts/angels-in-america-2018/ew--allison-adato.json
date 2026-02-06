@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "This new production, a transplant from London's",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "showScoreExcerpt": "\"As relevant as ever, in part because it wrestles with timeless questions of good and evil, faith and loyalty, and what connects us to one another. In fact, in its near-total realization of some of modern theater’s greatest ambitions, it still towers over almost any stage event in its wake...Elliott...brings out the text’s dreamier aspects, blurring an unreal reality...This renewed reminder that the world will spin forward also through these troubled times feels especially welcome.\"\n\nRead more"
+  "showScoreExcerpt": "\"As relevant as ever, in part because it wrestles with timeless questions of good and evil, faith and loyalty, and what connects us to one another. In fact, in its near-total realization of some of modern theater’s greatest ambitions, it still towers over almost any stage event in its wake...Elliott...brings out the text’s dreamier aspects, blurring an unreal reality...This renewed reminder that the world will spin forward also through these troubled times feels especially welcome.\"\n\nRead more",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In its near-total realization of some of modern theater's greatest ambitions, it still towers over almost any stage event in its wake.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong superlatives including 'towers over almost any stage event' and 'near-total realization of modern theater's greatest ambitions' indicate exceptional praise, placing this firmly in Rave territory despite being excerpted text. | GPT-4o: The review uses highly positive language, describing the show as a near-total realization of theater's ambitions and towering over other stage events. The lack of the full review text reduces confidence, but the available excerpts suggest a strong recommendation. | Gemini: The review excerpt uses phrases like \"as relevant as ever\" and \"still towers over almost any stage event\", indicating a strong positive recommendation. The truncated text and lack of a specific rating reduce confidence. | Kimi: The excerpt contains unqualified superlatives describing the production as a towering achievement that realizes modern theater's greatest ambitions, indicating strong recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:27:53.427Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

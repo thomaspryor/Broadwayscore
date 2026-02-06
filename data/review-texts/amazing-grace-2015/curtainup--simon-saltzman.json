@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Far from light-hearted but deeply felt and spiritedly envisioned, 'Amazing Grace' is another stirring historical period musical adventure...It remains to be seen whether his lilting arias and stirring anthems and the the impressive text will ultimately validate him as a major musical find. What I do know is that Smith and his production associates have given us an amazing show with an abundance of grit and grace.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Smith and his production associates have given us an amazing show with an abundance of grit and grace.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language throughout - 'stirring,' 'spiritedly envisioned,' 'impressive,' and concludes with 'amazing show.' Despite some uncertainty about the composer's future, the overall verdict is clearly enthusiastic recommendation. | GPT-4o: The excerpt praises the show as 'amazing' with 'an abundance of grit and grace', indicating a strong positive recommendation. However, the single excerpt warning suggests caution, so the score is set at the upper end of the Positive range. | Gemini: The review uses positive language such as \"deeply felt\", \"spiritedly envisioned\", and \"amazing show\". Despite the caveat about Smith's future, the overall tone is enthusiastic. | Kimi: The excerpt contains strong praise ('amazing show,' 'abundance of grit and grace,' 'stirring') with only minor reservation about the composer's long-term status, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:41:33.039Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

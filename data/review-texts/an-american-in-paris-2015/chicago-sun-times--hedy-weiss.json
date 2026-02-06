@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Inspired by the beloved 1951 film, Wheeldon has created what might best be described as a story ballet on steroids. Everything in this new musical moves — from the actors (two of whom just happen to be world class dancers), to the fabulously “choreographed” projection-enhanced sets and costumes...And even when the dialogue falls a bit flat, the story is in such perpetual motion that words seem almost beside the point. Dance is the only language really needed here.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wheeldon has created what might best be described as a story ballet on steroids.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the choreography, movement, and visual spectacle as 'fabulous' and describes dance as the essential language of the show. However, this is a single curated excerpt with limited context, so confidence is low. | GPT-4o: The excerpt praises the production's dynamic movement and visual elements, suggesting a strong positive impression despite some flat dialogue. The language used is enthusiastic, indicating a high positive score. | Gemini: The review excerpt highlights the show's perpetual motion, world-class dancers, and choreographed sets and costumes, indicating a positive experience, especially for those who appreciate dance. | Kimi: The excerpt offers strong praise for the visual spectacle and choreography ('story ballet on steroids', 'world class dancers') with only minor reservation about dialogue, indicating a clearly positive recommendation despite limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:14:12.812Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

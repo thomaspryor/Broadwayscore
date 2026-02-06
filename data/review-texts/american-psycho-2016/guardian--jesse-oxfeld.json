@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is slick and stylish, with a strong lead performance from Benjamin Walker, but it never quite finds its footing between satire and sincerity.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is slick and stylish, with a strong lead performance from Benjamin Walker, but it never quite finds its footing between satire and sincerity.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is slick and stylish, with a strong lead performance from Benjamin Walker, but it never quite finds its footing between satire and sincerity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Single excerpt shows praise for production values and lead performance but identifies a fundamental structural flaw. The 'but' pivot and 'never quite finds its footing' suggests the critic sees promise but finds the execution lacking. Given only one excerpt available, confidence is low. | GPT-4o: The original rating of 40 suggests a negative review. The excerpt highlights a strong lead performance but criticizes the show for not finding its footing, indicating overall disappointment. | Gemini: The review acknowledges positive aspects (slick, stylish, strong lead) but ultimately states the show 'never quite finds its footing,' indicating a negative overall assessment. Given the critic's rating of 40, I've placed it in the negative bucket. | Kimi: The excerpt praises the production values and lead performance but identifies a critical tonal confusion that undermines the show, aligning with the critic's 40/100 rating. As a single curated excerpt, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:01:43.926Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 29,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"As predictable as a Quarter Pounder, though not nearly so filling. As God, Mr. Parsons is monochromatically campy, but in an unthreatening way—the kind of camp you’d expect from a sitcom star, in other words. If that floats your ark and you’ve got $145 to blow on an orchestra seat, go thou and do likewise. Me, I’d rather go straight to hell than sit through 'An Act of God' again.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 24,
+      "high": 34
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'd rather go straight to hell than sit through 'An Act of God' again.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Despite the single excerpt warning, the critic's final verdict is unambiguous: they'd rather 'go straight to hell' than see the show again. This hyperbolic rejection, combined with criticism of predictability and weak performance, clearly indicates a negative recommendation. | GPT-4o: The critic expresses strong disdain for the show, comparing it unfavorably to a mundane experience and stating a preference to avoid it entirely. The tone is clearly negative with no redeeming qualities mentioned. | Gemini: The critic explicitly states they would rather go to hell than see the show again, indicating a negative recommendation. | Kimi: The critic delivers a devastating final verdict, preferring eternal damnation to enduring the show again, indicating a complete rejection despite faint praise for the lead's campiness. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:13:21.628Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 18,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

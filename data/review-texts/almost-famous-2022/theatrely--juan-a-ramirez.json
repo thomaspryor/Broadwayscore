@@ -3,7 +3,7 @@
   "outletId": "theatrely",
   "outlet": "Theatrely",
   "criticName": "Juan A. Ramirez",
-  "url": "https://www.theatrely.com/post/almost-famous-barely-there-review",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,8 +15,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "https://www.theatrely.com/post/almost-famous-barely-there-review"
+  "assignedScore": 21,
+  "llmScore": {
+    "score": 21,
+    "confidence": "high",
+    "range": {
+      "low": 16,
+      "high": 26
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is a production so dull, with poor direction, ugly sets, uninteresting",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Opens with 'devastating blow' and calls the production 'so dull' with 'poor direction' and 'ugly sets'. However, confidence is low due to truncated text - only one negative excerpt available. | GPT-4o: The excerpt provides a strongly negative view, criticizing the production as dull with poor direction and ugly sets. However, due to the single excerpt warning, the confidence is low as the full context of the review is not available. | Gemini: The excerpt is strongly negative, describing the production as dull with poor direction and ugly sets. Given the limited text, I'm placing it in the Pan bucket with low confidence. | Kimi: The excerpt delivers a devastating verdict using words like 'dull,' 'poor direction,' and 'ugly sets,' while framing the Broadway transfer as a 'devastating blow' that disproves West Coast acclaim. Given this is a single truncated excerpt, confidence is low that the full review maintains this uniformly negative tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:35:19.520Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 22,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 20,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A once in a lifetime kind of production that will move you beyond anything that you've seen before, shattering your senses and tearing your heart to pieces.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Extreme superlatives throughout: 'once in a lifetime,' 'beyond anything you've seen before,' 'words can barely describe its wonder,' 'solidly majestic.' The emotional intensity ('shattering your senses,' 'tearing your heart to pieces') combined with unqualified praise indicates the highest level of recommendation. | GPT-4o: The excerpt uses superlatives and highly enthusiastic language, indicating a rave review. Despite the single excerpt warning, the intensity of praise suggests a strong recommendation. | Gemini: The review uses extremely positive language such as \"once in a lifetime,\" \"shattering your senses,\" \"majestic,\" \"complete,\" and \"words can barely describe its wonder,\" indicating a rave review. | Kimi: The excerpt contains unqualified superlatives ('once in a lifetime', 'solidly majestic', 'magnificent') and ecstatic praise indicating a strong recommendation, though the single-excerpt format limits certainty about the full review's tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:29:16.904Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 97,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

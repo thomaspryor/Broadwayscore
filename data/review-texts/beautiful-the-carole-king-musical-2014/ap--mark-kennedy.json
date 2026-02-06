@@ -3,7 +3,7 @@
   "outletId": "ap",
   "outlet": "Associated Press",
   "criticName": "Mark Kennedy",
-  "url": "http://abcnews.go.com/Entertainment/wireStory/review-carole-king-musical-beautiful-insipid-21507120",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,8 +15,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://abcnews.go.com/Entertainment/wireStory/review-carole-king-musical-beautiful-insipid-21507120"
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Anyone not named Carole King may toy with the same idea, but for a different reason: It's just insipid",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The excerpt clearly criticizes the show as 'insipid' and suggests audiences might want to walk out. However, with only one truncated excerpt available, the full verdict is unclear, warranting low confidence. | GPT-4o: The excerpt suggests a strongly negative view, describing the musical as 'insipid' and implying that audiences might consider leaving. The lack of full context and single excerpt warning lowers confidence. | Gemini: The review excerpt calls the show \"insipid,\" which indicates a negative assessment. Due to the truncated nature of the text, confidence is low, but the available information points to a negative recommendation. | Kimi: The critic explicitly describes the show as 'insipid' and suggests audience members may consider leaving at intermission, indicating a clear negative verdict. With only a single excerpt available that is also truncated, confidence must remain low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:47:45.897Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

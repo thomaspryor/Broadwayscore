@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-06T04:12:35.690Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is only a plot summary/show description that cuts off mid-sentence with no critical evaluation or verdict provided; openai: The excerpt discusses 'An Act of God' with Jim Parsons, which is not the target show for scoring.; gemini: The provided excerpt is setting up the premise of the show but does not contain any evaluative statements about the current production. It's descriptive, not critical.; kimi: The excerpt provides only plot context and casting information (describing the premise and noting the change from Jim Parsons to a new performer) without any critical evaluation, opinion, or verdict on the production's quality.",
+  "promptVersion": "5.2.0"
 }

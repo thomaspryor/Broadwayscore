@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of David Mamet's 1975 play about three small-time crooks planning a coin heist has moments of authenticity but lacks the electric tension that made the original so compelling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of David Mamet's 1975 play about three small-time crooks planning a coin heist has moments of authenticity but lacks the electric tension that made the original so compelling.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival has moments of authenticity but lacks the electric tension that made the original so compelling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review acknowledges positive elements ('moments of authenticity') but expresses disappointment about missing the key quality that made the play work ('lacks the electric tension'). Single excerpt warning applies - this could represent a larger mixed or negative review. | GPT-4o: The review notes some positive aspects ('moments of authenticity') but ultimately criticizes the revival for lacking the tension of the original. The single excerpt and lack of full context lead to a low confidence in the verdict. | Gemini: The review notes 'moments of authenticity' but also states that it 'lacks the electric tension that made the original so compelling,' indicating a mixed assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The critic acknowledges 'moments of authenticity' but emphasizes that the production 'lacks the electric tension' essential to the play, indicating a disappointing revival that fails to match the original's impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:57:19.754Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 50,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

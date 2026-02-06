@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Twenty-five years after its Tony- and Pulitzer-winning first Broadway run, the scope and richness of the seven-hour, two-part saga - the taut \"Millennium Approaches,\" followed by the somewhat messier \"Perestroika\" - remain as impressive as ever.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "showScoreExcerpt": "\"The most electrifying production you’re apt to ever see of the author’s masterwork...The scope and richness of the two-part saga remain as impressive as ever...Direction by Elliott amplifies the play’s powers and wrings out every drop of emotion. Slashes of neon, rotating set pieces, and a seamless restlessness give the staging its own striking distinction...The cast is uniformly very effective...The desire for 'more life' remains constant. Just like the power of this sprawling play.\"\n\nRead more"
+  "showScoreExcerpt": "\"The most electrifying production you’re apt to ever see of the author’s masterwork...The scope and richness of the two-part saga remain as impressive as ever...Direction by Elliott amplifies the play’s powers and wrings out every drop of emotion. Slashes of neon, rotating set pieces, and a seamless restlessness give the staging its own striking distinction...The cast is uniformly very effective...The desire for 'more life' remains constant. Just like the power of this sprawling play.\"\n\nRead more",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The most electrifying production you're apt to ever see of the author's masterwork",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlatives ('most electrifying...ever', 'masterwork') with consistent praise for direction, staging, and cast. No reservations expressed despite being excerpted text. | GPT-4o: The review uses superlatives like 'most electrifying' and praises the direction and cast, indicating a highly enthusiastic recommendation. The lack of a full review text reduces confidence slightly. | Gemini: The review uses superlatives like \"most electrifying\" and \"impressive as ever,\" indicating a rave review despite being an excerpt. | Kimi: Despite being excerpts, the text overflows with superlatives ('electrifying,' 'masterwork,' 'impressive as ever') and praises the direction, staging, and cast without reservation, indicating the highest possible recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:31:02.124Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

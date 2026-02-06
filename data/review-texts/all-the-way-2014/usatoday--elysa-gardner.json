@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bryan Cranston delivers a towering performance as Lyndon B. Johnson in 'All the Way,' a compelling if somewhat sprawling drama about LBJ's first year in the White House.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,8 +19,61 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://www.usatoday.com/story/life/theater/2014/03/06/all-the-way-review-broadway/5978737/"
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bryan Cranston delivers a towering performance as Lyndon B. Johnson in 'All the Way,' a compelling if somewhat sprawling drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'compelling' with praise for Cranston's 'towering performance,' but notes it's 'somewhat sprawling,' suggesting qualified approval. However, confidence is low due to very limited excerpt text. | GPT-4o: The review praises Cranston's performance and describes the drama as compelling, though it notes the play is somewhat sprawling. The excerpt suggests a positive recommendation with some reservations, but due to the limited text, confidence is low. | Gemini: The review excerpt praises Cranston's performance and calls the drama \"compelling\" but also \"somewhat sprawling,\" suggesting a positive but not rave review. The limited text makes confidence low. | Kimi: The critic offers high praise for Cranston's lead performance ('towering') while offering a qualified positive assessment of the play itself ('compelling if somewhat sprawling'), indicating a solid but not unreserved recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:14:01.851Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

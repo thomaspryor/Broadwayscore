@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of David Mamet's 1975 drama about three small-time crooks planning a coin heist is a masterclass in acting, with Sam Rockwell, Laurence Fishburne and Darren Criss delivering powerhouse performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of David Mamet's 1975 drama about three small-time crooks planning a coin heist is a masterclass in acting, with Sam Rockwell, Laurence Fishburne and Darren Criss delivering powerhouse performances.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival is a masterclass in acting, with Sam Rockwell, Laurence Fishburne and Darren Criss delivering powerhouse performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt uses strong praise ('masterclass', 'powerhouse performances') but only addresses acting. Given single excerpt warning and strong language, scored in upper Positive range, though medium confidence due to limited text. | GPT-4o: The excerpt praises the production as a 'masterclass in acting' with 'powerhouse performances,' suggesting a strong positive recommendation. Given the single excerpt warning, the score is at the upper end of the Positive bucket. | Gemini: The excerpt praises the acting as a \"masterclass\" and highlights the \"powerhouse performances,\" indicating a strong positive sentiment. Given that it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: Single excerpt uses strong praise ('masterclass,' 'powerhouse') specifically for the acting, suggesting a clear recommendation, but limited to one curated quote warranting caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:58:56.088Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

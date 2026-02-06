@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cranston is magnificent as Johnson—he captures both the President's crude charisma and his deep understanding of how power works.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cranston is magnificent as Johnson—he captures both the President's crude charisma and his deep understanding of how power works.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cranston is magnificent as Johnson—he captures both the President's crude charisma and his deep understanding of how power works.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with unqualified praise ('magnificent') for the lead performance. However, confidence is low due to limited text and potential cherry-picking of positive quotes. | GPT-4o: The excerpt praises Cranston's performance as 'magnificent,' suggesting a positive view of his portrayal. However, due to the single excerpt warning and lack of broader context, the score is on the lower end of the Positive range. | Gemini: The excerpt focuses solely on praising Cranston's performance as Johnson, using the word \"magnificent.\" Given the limited text, it's difficult to gauge the overall sentiment, but the strong praise suggests a positive recommendation, so I've placed it in the positive bucket with a higher score. | Kimi: Single excerpt contains unambiguously positive language ('magnificent') regarding the lead performance. Following single-excerpt guidelines for clearly positive quotes, scored in upper Positive range (80-84). Low confidence due to limited context about overall production quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:13:02.061Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Arthur Miller's 'All My Sons' at the Lyceum Theatre is a solid showcase for Jeremy Irons, who brings his considerable stage presence to bear on the role of Joe Keller.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of Arthur Miller's 'All My Sons' at the Lyceum Theatre is a solid showcase for Jeremy Irons, who brings his considerable stage presence to bear on the role of Joe Keller.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival of Arthur Miller's 'All My Sons' at the Lyceum Theatre is a solid showcase for Jeremy Irons, who brings his considerable stage presence to bear on the role of Joe Keller.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the revival as 'solid' and praises Irons' performance. Given the limited text and measured praise ('solid' rather than enthusiastic language), this appears to be a qualified positive recommendation, scoring in the lower Positive range. | GPT-4o: The excerpt praises Jeremy Irons' performance, describing the revival as a 'solid showcase'. However, the single excerpt warning suggests caution, indicating a mildly positive tone with limited context. | Gemini: The review excerpt is positive, calling the revival a \"solid showcase\" for Jeremy Irons. Given that it's a single excerpt, the confidence is low, and the score is in the lower end of the Positive bucket. | Kimi: Single excerpt describes the production as a 'solid showcase' with praise for the lead performance, indicating a mild positive recommendation. The limited context and measured language ('solid' rather than 'triumph') warrant the lower end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:12:29.062Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

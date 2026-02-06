@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The choppy story and slight score do not coalesce into a satisfying work of musical theater. What saves 'Amazing Grace' from embarrassment is the thoroughly professional rendering it gets from director Gabriel Barre, his design collaborators and a sterling cast whose fine voices and solid acting skills give the flimsy piece some much-needed weight.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What saves 'Amazing Grace' from embarrassment is the thoroughly professional rendering it gets from director Gabriel Barre, his design collaborators and a sterling cast whose fine voices and solid acting skills give the flimsy piece some much-needed weight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds fundamental flaws in the material ('choppy story and slight score do not coalesce') but acknowledges the production quality saves it from being worse. This is classic mixed territory - neither recommended nor panned. | GPT-4o: The review highlights significant flaws in the story and score, suggesting the show is not satisfying. While the performances are praised, the overall tone suggests a negative view of the production itself. | Gemini: The review states that the story and score do not coalesce into a satisfying work, which is a negative assessment. While it praises the cast and direction, the overall impression is negative due to the fundamental flaws in the musical's core elements. | Kimi: While the critic praises the sterling cast and professional production for giving weight to the piece, the verdict is clearly negative: the story is 'choppy,' the score 'slight,' and the work ultimately 'unsatisfying.' The production values save it from embarrassment but do not redeem the weak material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:44:21.289Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

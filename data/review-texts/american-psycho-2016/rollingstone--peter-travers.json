@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Benjamin Walker is magnetic as Patrick Bateman, the narcissistic Wall Street psycho who treats murder like a workout routine. The musical adaptation of Bret Easton Ellis' controversial novel is a bloody brilliant piece of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Benjamin Walker is magnetic as Patrick Bateman, the narcissistic Wall Street psycho who treats murder like a workout routine. The musical adaptation of Bret Easton Ellis' controversial novel is a bloody brilliant piece of theater.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation of Bret Easton Ellis' controversial novel is a bloody brilliant piece of theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'bloody brilliant piece of theater' with positive assessment of lead performance. Single excerpt limits full context understanding. | GPT-4o: The excerpt provides strong praise, calling the adaptation 'bloody brilliant,' which suggests a highly positive reception. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses strong positive language like \"magnetic\" and \"bloody brilliant piece of theater,\" indicating a strong recommendation. Given it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt delivers enthusiastic praise ('bloody brilliant', 'magnetic') suggesting a strong recommendation, but as a single curated quote it may not capture the full review's nuance or potential reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:02:49.853Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -3,7 +3,7 @@
   "outletId": "nydailynews",
   "outlet": "New York Daily News",
   "criticName": "Chris Jones",
-  "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-bad-cinderella-review-20230324-hxvkscrxrzanfd7htbptvhteri-story.html",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,8 +15,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-bad-cinderella-review-20230324-hxvkscrxrzanfd7htbptvhteri-story.html"
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's like everyone involved here tried to get down with the high school kids and what they're thinking these days",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The excerpt suggests the creative team failed to connect authentically with their subject matter, with the critic noting even typically excellent contributors fell short. However, confidence is low due to truncated text cutting off mid-sentence. | GPT-4o: The excerpt suggests an attempt to connect with a younger audience but implies a lack of success. The mention of typically excellent director Laurence Connor suggests a comparison to better work, indicating a mixed reception. | Gemini: The excerpt suggests the reviewer found the show to be trying too hard and missing the mark, indicating a negative assessment. Given the truncated nature, I've placed it in the lower end of the negative bucket. | Kimi: The sole available excerpt criticizes the creative team for attempting to connect with youth culture inauthentically, suggesting the writers and director failed in their approach. With only one truncated excerpt available, the overall verdict is unclear, but the available text indicates disappointment with the production's fundamental creative choices.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:39:26.512Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

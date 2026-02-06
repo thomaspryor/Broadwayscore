@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"It’s a powerful tale of survival in the face of injustice, and although book writers Marc Acito, Jay Kuo, and Lorenzo Thione don’t trivialize what happened, they do employ some melodramatic flourishes...The story doesn’t benefit as much from a musical treatment as it could if Kuo’s music and lyrics were more distinct and alive. Stafford Arima directs an excellent cast fully committed to their characters. which makes for an affecting, if not entirely exciting, two and a half hours.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "which makes for an affecting, if not entirely exciting, two and a half hours",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review acknowledges the story's power and praises the cast's commitment, but criticizes the music as not distinct enough and finds the overall experience only 'affecting, if not entirely exciting.' This mixed assessment with qualified praise falls into the Mixed bucket. | GPT-4o: The review acknowledges the power of the tale and the commitment of the cast, but criticizes the musical treatment and describes the experience as 'affecting, if not entirely exciting'. This suggests a mixed reception, with both positive and negative elements. | Gemini: The review acknowledges the powerful story and excellent cast, but also notes that the musical treatment doesn't fully benefit the story and the music/lyrics could be more distinct and alive. This suggests a mixed reaction. | Kimi: The critic praises the 'excellent' cast and calls the show 'affecting' and a 'powerful tale,' indicating a recommendation, but significant reservations about the music/lyrics and 'melodramatic flourishes' keep it at the lower end of Positive. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:16:45.379Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

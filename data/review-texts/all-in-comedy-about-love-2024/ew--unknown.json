@@ -8,5 +8,60 @@
   "source": "nyc-theatre",
   "sources": [
     "nyc-theatre"
-  ]
+  ],
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And Two Strangers (Carry a Cake Across New York) definitely works.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt ends with a clear positive verdict ('definitely works') despite noting some unoriginal elements. However, with only one curated excerpt available, the full review's tone remains uncertain. | GPT-4o: The excerpt concludes with a positive assessment, stating that the show 'definitely works.' However, due to the single excerpt warning, the confidence is low and the score is at the lower end of the Positive range. | Gemini: The review acknowledges some shortcomings in the design but ultimately concludes that \"Two Strangers (Carry a Cake Across New York) definitely works,\" indicating a positive, albeit qualified, recommendation. | Kimi: The critic notes the design and rom-com genre elements are not highly original but finds them 'effective enough,' delivering a clear verdict that the show 'definitely works' and justifies itself through its stars and songs.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:09:16.095Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

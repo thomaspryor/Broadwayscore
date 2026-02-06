@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Some may find the musical’s frenetic energy and juvenile worldview tiresome. I, however, found these qualities to be actually refreshing, but perhaps unintentionally...Stephen Brackett’s tight, peppy staging remains a treat. He’s aided by a tireless, pumped-up cast of just ten, all of whom appeared in the Off-Broadway edition of the show. It’s a joy to see these young, hardworking performers.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I, however, found these qualities to be actually refreshing, but perhaps unintentionally.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Acknowledges criticisms others may have but personally finds it refreshing. Praises staging and cast as 'treat' and 'joy'. However, single excerpt with qualified language and 'unintentionally' suggests modest positive rather than strong recommendation. | GPT-4o: The review excerpt acknowledges potential downsides ('frenetic energy and juvenile worldview tiresome') but ultimately finds the qualities 'refreshing' and praises the staging and cast. The single excerpt suggests a mildly positive tone, but the lack of full context limits confidence. | Gemini: The reviewer acknowledges that some may find the show tiresome, but they found it refreshing. The positive aspects of the staging and cast are also highlighted, leading to a positive but not rave score. | Kimi: The critic clearly enjoys the show's frenetic energy, finding it refreshing, and praises the tight staging and tireless cast as a joy to watch, indicating a recommendation despite acknowledging some may find it tiresome.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:40:54.869Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

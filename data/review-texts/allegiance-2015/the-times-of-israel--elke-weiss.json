@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Allegiance' needs to broaden our views of the world. In one epic scene, the bombing of Hiroshima is shown through the eyes of the Japanese Americans. It was a chilling moment for me. As much as I am always glad to see the Axis lose, it was the first time I saw the Japanese people in the story as anything more than villains... Not only is it poignant and timely, 'Allegiance' is entertaining. While the score and lyrics are rather ordinary, the show’s actors make the play a feast for the eyes and ears.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Not only is it poignant and timely, 'Allegiance' is entertaining.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows positive assessment calling the show 'poignant and timely' and 'entertaining' with praise for actors, though notes the score is 'ordinary'. Limited text warrants lower confidence and conservative positive score. | GPT-4o: The review excerpt praises the show as 'entertaining' and highlights the actors' performances, but notes that the score and lyrics are 'rather ordinary'. This indicates a positive recommendation with some reservations. | Gemini: The review states that the show is \"poignant and timely\" as well as \"entertaining.\" While the reviewer notes that the score and lyrics are \"rather ordinary,\" the overall tone is positive, leading to a recommendation with reservations. | Kimi: The excerpt delivers a clear recommendation, praising the show as 'poignant and timely' and 'entertaining' with performances described as 'a feast for the eyes and ears,' despite reservations about the ordinary score and lyrics.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:30:13.001Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

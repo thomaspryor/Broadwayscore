@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Just like walking on cloud nine! The fear of getting dizzy quickly disappears as it’s replaced by exhilaration, thanks to the golden reputation and Gershwin’s music, which warms you up in no time...An American in Paris achieves a true miracle; by making the audience almost forget about the 1951 Vincente Minelli’s film starring Gene Kelly, while curiously enticing the desire to watch it again. It’s a hell of a pleasure.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An American in Paris achieves a true miracle; by making the audience almost forget about the 1951 Vincente Minelli's film starring Gene Kelly.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Extremely positive language (\"cloud nine\", \"exhilaration\", \"true miracle\", \"hell of a pleasure\") suggests a rave, but confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt provides strong praise, describing the show as a 'true miracle' and a 'hell of a pleasure,' suggesting a highly enthusiastic recommendation. Despite the single excerpt warning, the language indicates a rave review. | Gemini: The review excerpt is overwhelmingly positive, using phrases like \"walking on cloud nine,\" \"exhilaration,\" \"golden reputation,\" and \"hell of a pleasure.\" Given the single excerpt and positive tone, I scored it high in the positive range. | Kimi: The excerpt contains superlative praise ('true miracle', 'hell of a pleasure', 'walking on cloud nine') indicating strong enthusiasm for the production. However, as a single curated excerpt, it may not represent the full review's balance, warranting the upper end of the Positive bucket rather than Rave. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:18:56.047Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

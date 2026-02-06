@@ -12,5 +12,60 @@
   "bwwExcerpt": "Broadway's faithful didn't have to wait long before the second coming of David Javerbaum's cute and charming comedy, An Act of God. In the beginning (last May) Jim Parsons premiered the nightclubby diversion at Studio 54. Now Sean Hayes stars in a limited run at the Booth, described by his character as \"the only theatre named for the brother of a man who assassinated a President in a different theatre.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606",
   "contentTier": "excerpt",
-  "showScoreExcerpt": "\"Cute and charming comedy...You'd be hard-pressed to find anything blasphemous or edgy in this breezy ninety minute riff that depicts its central character as a left-leaning social commentator...There isn't a lot to chew on, but nevertheless 'An Act Of God' is a tasty and sweet stick of bubble gum, full of good laughs and silly summer fun.\"\n\nRead more"
+  "showScoreExcerpt": "\"Cute and charming comedy...You'd be hard-pressed to find anything blasphemous or edgy in this breezy ninety minute riff that depicts its central character as a left-leaning social commentator...There isn't a lot to chew on, but nevertheless 'An Act Of God' is a tasty and sweet stick of bubble gum, full of good laughs and silly summer fun.\"\n\nRead more",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There isn't a lot to chew on, but nevertheless 'An Act Of God' is a tasty and sweet stick of bubble gum, full of good laughs and silly summer fun.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with qualifiers - describes it as 'cute and charming' with 'good laughs' but acknowledges it's light entertainment without much substance. The bubble gum metaphor suggests enjoyable but not substantial. | GPT-4o: The review describes the show as 'cute and charming' with 'good laughs and silly summer fun,' indicating a positive tone. However, it also notes that 'there isn't a lot to chew on,' suggesting some reservations. This places it in the Positive bucket with a score reflecting a solid recommendation with some caveats. | Gemini: The review uses positive language like \"cute and charming comedy\" and \"full of good laughs\", but also notes that it is not particularly deep. This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic recommends the show as 'cute and charming' with 'good laughs' and 'silly summer fun,' though acknowledging it lacks depth ('isn't a lot to chew on').",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:10:20.290Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

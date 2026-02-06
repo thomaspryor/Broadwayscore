@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is most successful when it's content to be a straightforward, cheerfully corny musical adaptation of the beloved 1985 film, complete with flying DeLorean and other dazzling technical effects.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is most successful when it's content to be a straightforward, cheerfully corny musical adaptation of the beloved 1985 film.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows qualified praise, noting when the show works well ('most successful when') with positive language ('cheerfully corny', 'dazzling technical effects'). However, this is a very limited excerpt that may not capture the full verdict, warranting low confidence. | GPT-4o: The excerpt suggests a positive view of the show as a successful adaptation with impressive technical effects, but the lack of full context and potential reservations about its straightforwardness necessitate a cautious score. | Gemini: The review excerpt suggests a positive but not overwhelmingly enthusiastic recommendation, highlighting the show's success as a 'cheerfully corny' adaptation. Confidence is low due to the truncated text. | Kimi: The excerpt offers qualified praise, highlighting that the production succeeds as crowd-pleasing entertainment with dazzling technical effects, though the conditional phrasing ('most successful when') suggests reservations about elements that stray from the simple adaptation approach.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:38:26.609Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

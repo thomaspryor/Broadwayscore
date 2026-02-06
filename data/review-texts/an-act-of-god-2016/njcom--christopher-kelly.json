@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 39,
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 34,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A one-joke sketch dragged out to, er, ungodly lengths, 'An Act of God' feels like little more than a cash grab designed to prey on tourists.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative language calling it a 'one-joke sketch' and 'cash grab' with derogatory tone. Single excerpt warning noted, but the dismissive language is unambiguous. | GPT-4o: The review describes the show as a 'one-joke sketch' and 'cash grab,' indicating a strongly negative opinion. The lack of redeeming qualities and the description of the show as a tourist trap suggest a deep Pan score. | Gemini: The review excerpt is negative, calling the show a \"cash grab\" and a \"one-joke sketch.\" Given the limited text, confidence is low, but the tone is clearly negative. | Kimi: The available excerpt offers an unambiguously negative verdict, dismissing the show as a thin premise stretched to 'ungodly lengths' and condemning it as a cynical 'cash grab' targeting tourists. With only one excerpt available, confidence is reduced, but the language clearly falls in the negative range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:11:23.326Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

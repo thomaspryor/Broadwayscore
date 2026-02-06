@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"It’s more of a living jukebox filled with Carole King’s works, with minimal context and a cringe-worthy Jewish mother added...The audience is there for the great music and choreography, and the cast does not disappoint...Unfortunately, some of the references will only make sense to AARP card-toting audience members...It’s practically a given that everyone will leave the show humming something from the Carole King catalog.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The audience is there for the great music and choreography, and the cast does not disappoint.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review offers both criticism ('minimal context', 'cringe-worthy') and praise ('cast does not disappoint', acknowledges audience satisfaction). Single excerpt warning applies - this could be cherry-picked from a more negative or positive full review. | GPT-4o: The review highlights positive aspects like music and choreography but also notes issues with context and dated references. The single excerpt suggests a mix of strengths and weaknesses, leading to a mixed verdict. | Gemini: The review praises the music, choreography, and cast but criticizes the minimal context and cringe-worthy elements. The reference to AARP card-toting audience members suggests a limited appeal. | Kimi: The excerpt offers qualified praise for the cast and Carole King's music while criticizing the minimal context and dated references, indicating a mild recommendation to fans of the songwriter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:48:17.813Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

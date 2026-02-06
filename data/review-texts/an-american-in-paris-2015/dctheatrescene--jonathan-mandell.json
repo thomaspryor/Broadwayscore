@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Why does \"An American in Paris\" feel so fresh? First-time Broadway director Christopher Wheeldon has turned it into a modern ballet...it’s mesmerizing, unlike anything I’ve witnessed on Broadway before...While this is what makes An American in Paris special, it’s not the whole show. There are also traditional razzmatazz song-and-dance routines. There are scenes full of dialogue. There’s a plot. Some of playwright Craig Lucas’s choices are intriguing (some aren’t.)\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's mesmerizing, unlike anything I've witnessed on Broadway before",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic uses strong positive language like 'mesmerizing' and 'unlike anything I've witnessed on Broadway before' to describe the innovative staging, though notes some mixed elements in the plot. Single excerpt warning suggests this is likely cherry-picked from a positive review. | GPT-4o: The excerpt praises the production as 'mesmerizing' and 'fresh', indicating a strong positive impression. However, the single excerpt warning suggests caution, so the score is set at the upper end of the Positive range. | Gemini: The review excerpt is mostly positive, highlighting the unique ballet aspect and calling it mesmerizing, but also mentions that some of the playwright's choices are not as good, indicating mixed feelings overall. | Kimi: The excerpt offers strong praise for the direction and choreography as 'mesmerizing' and 'fresh,' but explicitly notes the book is uneven with only some intriguing choices, indicating a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:15:09.795Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

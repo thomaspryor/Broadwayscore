@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"My biggest criticism is of 'Allegiance’s' predictable plot. For the most part, this isn’t a problem…The show still packs serious emotional weight. I’m not ashamed to admit that I teared up multiple times...So 'Allegiance' isn’t just set in the 1940s, it feels as if it were written back then, too.That’s (mostly) a good thing. The show perfectly captures the era’s style…Even with its flaws, 'Allegiance' is a wonderful new American musical.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even with its flaws, 'Allegiance' is a wonderful new American musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict calling it 'wonderful' despite acknowledging 'predictable plot' and other flaws. Single excerpt limits confidence but final assessment is clearly positive. | GPT-4o: The excerpt acknowledges a predictable plot but emphasizes the show's emotional impact and stylistic authenticity. It concludes with strong praise, calling it a 'wonderful new American musical,' indicating a positive recommendation despite some reservations. | Gemini: The review acknowledges flaws in the predictable plot but ultimately concludes that it is a 'wonderful new American musical,' indicating a positive recommendation with reservations. | Kimi: While noting the plot is predictable, the critic praises the show's emotional weight and period authenticity, delivering a strong final verdict calling it 'wonderful.' Per instructions for clearly positive single excerpts, this scores in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:21:54.544Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 81,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

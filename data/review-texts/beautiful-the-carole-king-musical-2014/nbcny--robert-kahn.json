@@ -3,7 +3,7 @@
   "outletId": "nbcny",
   "outlet": "NBC New York",
   "criticName": "Robert Kahn",
-  "url": "http://www.nbcnewyork.com/news/local/beautiful-carole-king-review-239760321.html",
+  "url": null,
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -15,8 +15,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup",
-    "playbill-verdict"
+    "bww-roundup"
   ],
-  "playbillVerdictUrl": "http://www.nbcnewyork.com/news/local/beautiful-carole-king-review-239760321.html"
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Beautiful' is a must-see if you're a King fan, or you're fascinated by the music business during a potent time",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses 'must-see' which is strong recommendation language, and praises Mueller's performance as 'understated.' However, confidence is low due to truncated excerpt and conditional recommendation ('if you're a King fan'). | GPT-4o: The review excerpt suggests a positive recommendation, particularly for fans of Carole King or those interested in the music business. However, the recommendation is conditional, targeting specific audiences. The confidence is low due to the single excerpt warning and lack of a full review. | Gemini: The phrase \"must-see\" indicates a strong positive recommendation. The rest of the excerpt provides context for who would enjoy the show, further solidifying the positive sentiment. | Kimi: The excerpt uses strong 'must-see' language indicating a clear recommendation, though qualified for specific audiences rather than universal acclaim, placing it in the upper Positive range. Confidence is low due to the single truncated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:49:20.225Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

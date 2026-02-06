@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The fusion of the Broadway musical and ballet, set to the sublime music and lyrics of the Gershwin Brothers’ songbook, is an evening of pure enchantment. Forget what you know about the movie, because Christopher Wheeldon, the director and choreographer, has truly reinvented a new, old-fashioned-style musical…The one drawback of the musical is the book by Craig Lucas, and the forced obligatory humor that has to be injected into a serious musical.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The fusion of the Broadway musical and ballet, set to the sublime music and lyrics of the Gershwin Brothers' songbook, is an evening of pure enchantment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise ('pure enchantment', 'sublime', 'truly reinvented') with one specific criticism of the book. Single excerpt warning requires caution - this appears clearly positive but may not represent full verdict. | GPT-4o: The excerpt praises the production as 'an evening of pure enchantment' and highlights the successful reinvention by the director and choreographer. The mention of a drawback in the book is a minor reservation, but the overall tone is strongly positive. | Gemini: The review excerpt is mostly positive, praising the fusion of musical and ballet and the Gershwin Brothers' music. However, it also mentions a drawback in the book and forced humor, indicating reservations. Given the single excerpt and the reservations, a score in the upper-middle of the Positive range seems appropriate. | Kimi: The excerpt offers strong praise ('pure enchantment', 'truly reinvented') for the production and direction, but explicitly notes a significant drawback in the book by Craig Lucas. This qualified enthusiasm places it in the upper range of Positive rather than Rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:19:54.659Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Under Neil Pepe's tight direction, this revival crackles with tension and dark humor, anchored by three superb performances that make Mamet's profanity-laced dialogue sing.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Under Neil Pepe's tight direction, this revival crackles with tension and dark humor, anchored by three superb performances that make Mamet's profanity-laced dialogue sing.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Neil Pepe's tight direction, this revival crackles with tension and dark humor, anchored by three superb performances that make Mamet's profanity-laced dialogue sing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction ('tight'), production energy ('crackles'), and performances ('superb'). The 87 original rating confirms this is solidly positive, and the enthusiastic language warrants the upper end of the Positive bucket. | GPT-4o: The excerpt praises the direction and performances, highlighting tension and humor. The original rating of 87 suggests a strong positive verdict, aligning with the upper end of the Positive bucket. | Gemini: The excerpt uses strong positive language such as \"crackles with tension and dark humor\" and \"superb performances.\" Given the single excerpt warning, I am placing it in the upper end of the positive bucket. | Kimi: While the single-excerpt format limits certainty, the available text offers enthusiastic praise ('superb performances,' 'crackles with tension') that places the review at the high end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:58:20.090Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 84,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

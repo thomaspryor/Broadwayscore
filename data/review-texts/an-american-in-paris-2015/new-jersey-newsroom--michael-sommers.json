@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Ravishing visuals, beautiful dancing, classic Gershwin songs, dandy performances and a pretty good story; this is a blessedly unfaithful Broadway version of the M-G-M film musical...The entire show truly dances along in Wheeldon’s exceptionally graceful staging. The generally dreamy quality with which Wheeldon imbues the production results in a thoroughly enchanting attraction that offers a refreshing change from the hard-driven nature of concurrent Broadway musicals.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The generally dreamy quality with which Wheeldon imbues the production results in a thoroughly enchanting attraction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language throughout with 'ravishing visuals,' 'thoroughly enchanting,' and 'refreshing change.' Multiple elements praised (visuals, dancing, performances, story). Single excerpt warning noted - using upper Positive range given clearly enthusiastic tone. | GPT-4o: The excerpt praises the visuals, dancing, performances, and staging, describing the show as 'thoroughly enchanting' and a 'refreshing change'. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The review excerpt uses strong positive language like \"ravishing visuals,\" \"beautiful dancing,\" \"dandy performances,\" \"exceptionally graceful staging,\" and \"thoroughly enchanting attraction.\" Given the single excerpt warning, I'm scoring at the higher end of the positive range. | Kimi: The excerpt offers effusive praise for the staging, performances, and visuals, describing the production as 'thoroughly enchanting' and 'exceptionally graceful,' indicating a strong recommendation despite the limitation of having only a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:15:49.489Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

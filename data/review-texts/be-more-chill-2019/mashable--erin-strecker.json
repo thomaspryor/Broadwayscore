@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A technicolor, high energy swirl of buzzwords and ideas that a corporate boardroom thought might appeal to Today's Youth but miss the mark.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic acknowledges some elements work ('fun and rare idea') but delivers sharp criticism of the show's execution, calling it 'stereotype-filled retrograde' that 'misses the mark' and fails to deliver on its promise. | GPT-4o: The review criticizes the show for missing the mark with its intended message and settling for stereotypes, indicating a negative view. However, it acknowledges some fun elements, suggesting it's not a complete pan. | Gemini: The review excerpt acknowledges some fun and rare ideas, but ultimately finds the show misses the mark and settles for stereotypes. Due to the truncated text, confidence is low. | Kimi: The critic acknowledges the sci-fi concept is 'fun and rare' and that 'some of it works,' but heavily criticizes the execution as 'missing the mark' with 'stereotype-filled' storytelling, resulting in a neither-here-nor-there assessment. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:43:49.952Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Although there are some inaccuracies in the fictional play, 'Allegiance' is doing a good job in helping to tell the Japanese American story... 'Allegiance' has its flaws telling the exact history, but the messages of the play are important for all to hear and to benefit from its lessons of betrayal by our own government. It was a great evening on Broadway watching 'Allegiance.'\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It was a great evening on Broadway watching 'Allegiance.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict ('great evening') with explicit acknowledgment of flaws but emphasis on important messages. Single excerpt limits confidence in full review sentiment. | GPT-4o: The review acknowledges inaccuracies and flaws in historical portrayal but emphasizes the importance of the play's messages and describes the experience as a 'great evening on Broadway.' Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review acknowledges flaws but ultimately states that the play is doing a good job and that the messages are important, concluding it was a great evening on Broadway. Given the single excerpt, I'm scoring it on the higher end of positive. | Kimi: While acknowledging historical inaccuracies, the critic praises the show's messaging and calls it a 'great evening,' indicating a solid recommendation despite caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T03:22:27.794Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

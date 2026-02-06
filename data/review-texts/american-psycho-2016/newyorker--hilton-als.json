@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a failure, but it's an interesting failure—one that raises questions about what we expect from musical theatre, and about how far the form can be pushed before it breaks.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a failure, but it's an interesting failure—one that raises questions about what we expect from musical theatre, and about how far the form can be pushed before it breaks.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a failure, but it's an interesting failure—one that raises questions about what we expect from musical theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Critic explicitly calls it 'a failure' while acknowledging intellectual interest. Single excerpt warning applies - this could be cherry-picked from a longer mixed assessment. | GPT-4o: The excerpt describes the show as a 'failure', indicating a negative verdict. However, the term 'interesting failure' suggests some redeeming qualities or thought-provoking elements, which prevents it from being a complete pan. The single excerpt warning and lack of full context reduce confidence. | Gemini: The review explicitly calls the show a failure, but qualifies it as an \"interesting failure,\" suggesting a mixed assessment. Due to the limited excerpt, confidence is low. | Kimi: While the critic finds intellectual value in the show's ambition ('interesting failure,' raises questions about the form), the explicit verdict is that 'the show is a failure,' indicating a recommendation against seeing it despite acknowledging its artistic risks.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T04:02:05.118Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

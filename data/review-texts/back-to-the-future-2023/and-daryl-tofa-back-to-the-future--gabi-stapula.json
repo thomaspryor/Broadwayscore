@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-06T04:37:35.495Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a cast/crew listing or promotional content describing the production team, not an evaluative review of the show's quality or recommendation.; openai: The text provided is a list of the production's creative team and their credentials, not an evaluative review of the show.; gemini: This is a listing of the creative team, not a review of the show.; kimi: The text consists solely of production credits and creative team listings (director, designers, choreographer) without any evaluative language, critical assessment, or recommendation regarding the show's quality.",
+  "promptVersion": "5.2.0"
 }
