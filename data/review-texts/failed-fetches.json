@@ -14044,66 +14044,6 @@
     "timestamp": "2026-02-05T04:41:14.337Z"
   },
   {
-    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/11/11/a-wonderful-world-the-louis-armstrong-musical-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): maybe happy ending, chicago, aladdin, buena vista social club, home...",
-    "textLength": 7831,
-    "timestamp": "2026-02-05T04:52:04.529Z"
-  },
-  {
-    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--unknown.json",
-    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-    "outlet": "The New York Times",
-    "critic": "Unknown",
-    "url": "https://www.nytimes.com/2024/11/11/theater/a-wonderful-world-review-louis-armstrong.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): chicago, redwood, home, company, tina...",
-    "textLength": 8294,
-    "timestamp": "2026-02-05T04:53:10.556Z"
-  },
-  {
-    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/vulture--jackson-mchenry.json",
-    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-    "outlet": "Vulture",
-    "critic": "Jackson McHenry",
-    "url": "https://www.vulture.com/article/theater-review-a-wonderful-world-louis-armstrong-broadway-musical.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): chicago, aladdin, tina, torch song, hello, dolly!...",
-    "textLength": 8832,
-    "timestamp": "2026-02-05T04:53:17.958Z"
-  },
-  {
-    "reviewId": "act-one-2014/hollywood-reporter--unknown.json",
-    "showId": "act-one-2014",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/act-one-theater-review-697276",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): hamilton, mamma mia!, english, frozen, my fair lady...",
-    "textLength": 7640,
-    "timestamp": "2026-02-05T04:53:46.941Z"
-  },
-  {
-    "reviewId": "after-midnight-2013/hollywood-reporter--unknown.json",
-    "showId": "after-midnight-2013",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/midnight-theater-review-652788",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): mamma mia!, parade, the color purple, rocky, the performers...",
-    "textLength": 7878,
-    "timestamp": "2026-02-05T04:55:56.717Z"
-  },
-  {
     "reviewId": "after-midnight-2013/vulture--unknown.json",
     "showId": "after-midnight-2013",
     "outlet": "Vulture",
@@ -17594,5 +17534,65 @@
     "garbageReason": "Multiple shows mentioned (9): sylvia, act one, hair, once, rain...",
     "textLength": 7998,
     "timestamp": "2026-02-06T02:56:53.243Z"
+  },
+  {
+    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/11/11/a-wonderful-world-the-louis-armstrong-musical-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): maybe happy ending, chicago, aladdin, buena vista social club, home...",
+    "textLength": 7724,
+    "timestamp": "2026-02-06T02:57:02.846Z"
+  },
+  {
+    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--unknown.json",
+    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2024/11/11/theater/a-wonderful-world-review-louis-armstrong.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): chicago, home, tina, torch song, hello, dolly!...",
+    "textLength": 7882,
+    "timestamp": "2026-02-06T03:00:35.523Z"
+  },
+  {
+    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/vulture--jackson-mchenry.json",
+    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/article/theater-review-a-wonderful-world-louis-armstrong-broadway-musical.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, aladdin, tina, torch song, hello, dolly!...",
+    "textLength": 8832,
+    "timestamp": "2026-02-06T03:00:40.334Z"
+  },
+  {
+    "reviewId": "act-one-2014/hollywood-reporter--unknown.json",
+    "showId": "act-one-2014",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/act-one-theater-review-697276",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): hamilton, english, frozen, my fair lady, the audience...",
+    "textLength": 7594,
+    "timestamp": "2026-02-06T03:01:32.304Z"
+  },
+  {
+    "reviewId": "after-midnight-2013/hollywood-reporter--unknown.json",
+    "showId": "after-midnight-2013",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/midnight-theater-review-652788",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): mamma mia!, parade, the color purple, the performers, once...",
+    "textLength": 7829,
+    "timestamp": "2026-02-06T03:05:28.486Z"
   }
 ]
