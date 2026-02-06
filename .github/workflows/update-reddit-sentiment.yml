@@ -45,11 +45,16 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Backup audience-buzz.json
+        run: cp data/audience-buzz.json data/audience-buzz.backup.json
+
       - name: Run Reddit sentiment scraper
         id: scrape
         env:
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: |
           ARGS=""
           if [ -n "${{ github.event.inputs.show }}" ]; then
@@ -62,6 +67,32 @@ jobs:
             ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
           fi
           node scripts/scrape-reddit-sentiment.js $ARGS
+
+      - name: Validate output
+        run: |
+          # Check for NaN, null scores, or corruption
+          node -e "
+            const data = require('./data/audience-buzz.json');
+            let errors = 0;
+            for (const [id, show] of Object.entries(data.shows)) {
+              if (show.combinedScore !== null && show.combinedScore !== undefined) {
+                if (isNaN(show.combinedScore) || show.combinedScore < 0 || show.combinedScore > 100) {
+                  console.error('Invalid score for', id, ':', show.combinedScore);
+                  errors++;
+                }
+              }
+            }
+            if (errors > 0) process.exit(1);
+            console.log('✓ Validation passed');
+          "
+
+      - name: Restore backup on failure
+        if: failure()
+        run: |
+          if [ -f data/audience-buzz.backup.json ]; then
+            mv data/audience-buzz.backup.json data/audience-buzz.json
+            echo "Restored from backup due to validation failure"
+          fi
 
       # Always try to commit, even if script had errors (continue-on-error above)
       - name: Commit and push changes
