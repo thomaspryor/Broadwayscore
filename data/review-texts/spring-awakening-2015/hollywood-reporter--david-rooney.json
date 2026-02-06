@@ -22,5 +22,53 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/deaf-wests-spring-awakening-theater-827479"
+  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/deaf-wests-spring-awakening-theater-827479",
+  "textWordCount": 225,
+  "archivePath": "data/archives/reviews/spring-awakening-2015/hollywood-reporter--david-rooney_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T19:18:30.183Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_read_more_prompt"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 255 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "\"A red lip is like the little black dress of makeup,\" says Chanel celebrity makeup artist Rachel Goodwin, who was responsible for January Jones' glam look at the Emmys on Sunday night. And considering how well the LBD did on the red carpet, it's not surprising red lips were equally well represented. Zoe Kazan was the picture of red-lipped perfection, and Padma Lakshmi (wearing Temptu Color True Lipstick in Imperial Red, $24) proved there's no such thing as colors clashing with her crimson and chartreuse combo.\n\nSee more Emmys 2015: The Top 10 Best-Dressed Men\n\nChristina Hendricks, Elisabeth Moss, and Morena Baccarin were just a handful of the other stars who rocked the timeless look. \"It's always going to exist, I think on the red carpet especially. It never fails to make us stop, pause and gasp for how perfect it is,\" Goodwin tells Pret-a-Reporter.\n\nRead more Emmys Beauty: Subtle Lips Make A Strong Showing\n\nTatiana Maslany's crimson pout was the perfect accompaniment to her pristine white tuxedo, while Taylor Schilling's Charlotte Tilbury Matte Revolution in 1975 Red ($32) looked fantastic with her sunny yellow frock. Amanda Peet was another who wore red lips well. Says Goodwin: \"Red screams 'This is an important moment, look at me!' It does that like no other color does. It says, 'I feel beautiful and bold and empowered.’ \""
 }
