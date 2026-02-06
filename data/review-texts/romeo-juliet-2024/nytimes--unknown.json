@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "https://www.nytimes.com/2024/10/24/theater/romeo-juliet-broadway-kit-connor-rachel-zegler.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "You have a preview view of this article while we are checking your access. When we have confirmed access, the full article content will load.Theater Review\n\nThe Broadway revival of “Romeo + Juliet” plays to the TikTok crowd. But maybe that’s a good thing.\n\nCredit...Sara Krulwich/The New York Times\n\nListen to this article · 6:34 min Learn moreShare full article7272By Jesse Green\n\nWho can forget the classic first line of “Romeo and Juliet”: “How y’all doin’ today?”\n\nWell, perhaps not so classic. But as uttered at the start of the play’s 36th Broadway revival, which opened Thursday at Circle in the Square, the words are certainly more welcoming to the production’s youthful target audience than the traditional iambic pentameter ones: “Two households, both alike in dignity.”\n\nNot that there are two households in the director Sam Gold’s rec-room adaptation anyway. Romeo’s parents, along with a clutch of other characters, have been discarded. Juliet’s are both played by one actor, with little more than a change of inflection. And though Kit Connor and Rachel Zegler, the box-office draws, cover just one star-crossed lover each — he a beagly Romeo, she a beamish Juliet — the other eight cast members take on 17 roles, adorably if often indistinguishably. It’s a puppy pile.\n\nBut before you wonder whether this production was sponsored by CliffsNotes, with only as much poetry and staying power as an Instagram story, bear in mind that many of the characters are teenagers, and that the play may most usefully be directed at people seeing it for the first time, not the 36th. Certainly Gold has used everything in his formidable toolbox — scissors, hammers, punches, wrenches — to get young people interested in a world that looks more like theirs than Elizabethan London or Renaissance Verona.\n\nSo after an energetic preshow, filled with flirting, peacocking and snits of aggression, the story begins with that casual greeting from Gabby Beans, the play’s Chorus. Beans, later a hotheaded Mercutio, a beneficent Friar Lawrence and a barely there Prince Escalus, makes a relatable hype woman, introducing the rest of the cast by first name and telling us whom they’ll be playing. If you’re confused — and even a frequent flier might be — you can consult a program insert that visualizes the Montagues and Capulets as a mood board.\n\nFeeling the groove: Gabby Beans, far right, leading Tommy Dorfman (center), Kit Connor (far back) and other cast members in a dance in Sam Gold’s “Romeo + Juliet” at Circle in the Square.Credit...Sara Krulwich/The New York TimesWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 45,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“The play is thus less terrifying than teenifying — hence the plus sign instead of the ‘and’ in the title.”\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -74,5 +74,28 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 45,
+  "textWordCount": 447,
+  "archivePath": "data/archives/reviews/romeo-juliet-2024/nytimes--unknown_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T19:00:14.634Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250507133736",
+  "archiveOrgUrl": "http://web.archive.org/web/20250507133736/https://www.nytimes.com/2024/10/24/theater/romeo-juliet-broadway-kit-connor-rachel-zegler.html",
+  "wordCount": 447,
+  "tierReason": "Full review text"
 }

@@ -12172,30 +12172,6 @@
     "timestamp": "2026-02-05T03:50:24.567Z"
   },
   {
-    "reviewId": "romeo-juliet-2024/newyorker--helen-shaw.json",
-    "showId": "romeo-juliet-2024",
-    "outlet": "The New Yorker (Helen Shaw)",
-    "critic": "Helen Shaw",
-    "url": "https://www.newyorker.com/magazine/2024/11/04/sunset-blvd-romeo-and-juliet-theatre-review",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (16): an enemy of the people, sunset boulevard, company, west side story, network...",
-    "textLength": 8443,
-    "timestamp": "2026-02-05T03:55:42.356Z"
-  },
-  {
-    "reviewId": "romeo-juliet-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "romeo-juliet-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/10/24/romeo-juliet-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): the outsiders, english, the skin of our teeth, west side story, gigi...",
-    "textLength": 6307,
-    "timestamp": "2026-02-05T03:55:50.297Z"
-  },
-  {
     "reviewId": "she-loves-me-2016/vulture--jesse-green.json",
     "showId": "she-loves-me-2016",
     "outlet": "Vulture",
@@ -21674,5 +21650,53 @@
     "garbageReason": "Multiple shows mentioned (12): giant, an enemy of the people, appropriate, west side story, the audience...",
     "textLength": 9278,
     "timestamp": "2026-02-06T18:57:22.879Z"
+  },
+  {
+    "reviewId": "romeo-juliet-2024/newyorker--helen-shaw.json",
+    "showId": "romeo-juliet-2024",
+    "outlet": "The New Yorker (Helen Shaw)",
+    "critic": "Helen Shaw",
+    "url": "https://www.newyorker.com/magazine/2024/11/04/sunset-blvd-romeo-and-juliet-theatre-review",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): an enemy of the people, sunset boulevard, company, west side story, network...",
+    "textLength": 8443,
+    "timestamp": "2026-02-06T18:57:30.515Z"
+  },
+  {
+    "reviewId": "romeo-juliet-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "romeo-juliet-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/10/24/romeo-juliet-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): the outsiders, english, the skin of our teeth, west side story, gigi...",
+    "textLength": 6307,
+    "timestamp": "2026-02-06T18:59:57.706Z"
+  },
+  {
+    "reviewId": "romeo-juliet-2024/vulture--sara-holdren.json",
+    "showId": "romeo-juliet-2024",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/theater-review-connor-zegler-gold-romeo-juliet.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): proof, the children, summer, once, rain...",
+    "textLength": 13525,
+    "timestamp": "2026-02-06T19:05:15.240Z"
+  },
+  {
+    "reviewId": "side-show-2014/hollywood-reporter--david-rooney.json",
+    "showId": "side-show-2014",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/side-show-theater-review-749712",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): appropriate, frozen, rocky, violet, follies...",
+    "textLength": 9607,
+    "timestamp": "2026-02-06T19:05:33.631Z"
   }
 ]
