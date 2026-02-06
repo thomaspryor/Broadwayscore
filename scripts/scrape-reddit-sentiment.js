@@ -269,17 +269,36 @@ async function processShow(show) {
   }
 
   // 2. Select posts - prioritize genuinely audience-focused posts over high-engagement meta posts
-  // Posts with "saw", "seen", "just saw" in title are gold; don't let high-engagement meta posts drown them out
+  // Boost posts that express audience opinions, not just those with "saw"
   const scoredPosts = posts.map(p => {
     const title = (p.title || '').toLowerCase();
     let score = 0;
 
-    // Boost posts that explicitly mention seeing the show
+    // Tier 1: Explicit "I saw it" language (highest signal)
     if (title.includes('just saw') || title.includes('finally saw')) score += 100;
+    if (title.includes('i saw') || title.includes('we saw')) score += 80;
     if (title.includes('saw ') || title.includes('seen ')) score += 50;
-    if (title.includes('i saw') || title.includes('we saw')) score += 50;
-    if (title.includes('review') && !title.includes('movie')) score += 30;
-    if (title.includes('first time')) score += 20;
+
+    // Tier 2: Strong positive opinion language (also high signal)
+    if (title.includes('loved') || title.includes('love ')) score += 70;
+    if (title.includes('amazing') || title.includes('incredible') || title.includes('fantastic')) score += 60;
+    if (title.includes('best ') || title.includes('favorite')) score += 50;
+    if (title.includes('must see') || title.includes('must-see') || title.includes('run to')) score += 60;
+    if (title.includes('run don')) score += 60;  // "run don't walk"
+    if (title.includes('recommend')) score += 50;
+
+    // Tier 3: Strong negative opinion language (also audience reaction)
+    if (title.includes('avoid') || title.includes('stay away') || title.includes('skip')) score += 60;
+    if (title.includes('disappointing') || title.includes('disappointed')) score += 50;
+    if (title.includes('boring') || title.includes('overrated') || title.includes('waste')) score += 50;
+    if (title.includes('worst') || title.includes('terrible') || title.includes('awful')) score += 50;
+
+    // Tier 4: Discussion starters (moderate signal)
+    if (title.includes('review') && !title.includes('movie')) score += 40;
+    if (title.includes('thoughts on') || title.includes('opinion')) score += 30;
+    if (title.includes('first time') || title.includes('for the first')) score += 30;
+    if (title.includes('unpopular opinion')) score += 30;
+    if (title.includes('underrated')) score += 40;
 
     // Light engagement boost (but not dominant)
     score += Math.min(p.num_comments, 50);  // Cap at 50 so engagement doesn't dominate
