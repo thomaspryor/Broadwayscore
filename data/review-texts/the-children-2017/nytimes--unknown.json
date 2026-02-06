@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html?_r=0",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.htmlShare full article35Advertisement\n\nFirst the earthquake. Then the tsunami. Then the nuclear reactor shuts down when the tidal wave reaches its seaside dome. But not to worry. That’s why they have emergency generators.\n\nPutting emergency generators where floodwaters can quickly render them useless sounds like a design mistake only a polemical (or satirical) playwright would invent. But part of the horror of “The Children,” which opened on Tuesday at the Samuel J. Friedman Theater, is that the author, Lucy Kirkwood, did not dream up that part of the plot. Pretty much the same chain of events caused the 2011 nuclear disaster in Fukushima, Japan.\n\n“It was a one in 10 million years fault sequence,” says Rose, a physicist who helped build the play’s fictional plant on the crumbling east coast of England.\n\nAnd yet one of the astonishments of “The Children,” which comes to the Manhattan Theater Club intact from a run at the Royal Court Theater in London last winter, is that even though it is completely successful as an eco-thriller, bristling with chills and suspense and foreboding sound effects, denuclearization is not its subject. Just a few months after the core meltdown, Rose and the two other characters, also physicists involved in the plant’s creation, remain blasé about that. They assume that such facilities, albeit better designed, will have to be part of the world’s energy mix for a long time to come.\n\nNo, the “fault sequence” Ms. Kirkwood wants to explore is a great deal larger and, given human nature, more intractable.\n\nBut that only dawns on us slowly. First we meet Rose, standing in the kitchen of a ramshackle seaside cottage and ignoring a prodigious nosebleed. She has arrived uninvited to visit Hazel and her husband, Robin, the other two physicists, now retired. They have lived here, a few miles outside the disaster’s “exclusion zone,” since their longtime home and farm nearby was inundated by the tsunami.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 82,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Even though it is completely successful as an eco-thriller, bristling with chills and suspense, denuclearization is not its subject…Its true concerns…become so lofty and yet at the same time so essential that the play is as disturbing to replay in your imagination as it is to see in the first place...The naturalness of Mr. Macdonald’s stage movement in such a confined space is central to the containment of energy that makes the play thrilling.”\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -75,5 +75,44 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "textWordCount": 321,
+  "archivePath": "data/archives/reviews/the-children-2017/nytimes--unknown_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T18:51:47.495Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 321,
+  "tierReason": "Full review text"
 }
