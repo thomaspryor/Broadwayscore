@@ -65,9 +65,33 @@ function loadShows() {
   return Object.values(data).filter(v => v && typeof v === 'object' && v.title);
 }
 
+// Outlet tier mapping (from src/config/scoring.ts via src/lib/outlet-id-mapper.ts)
+// Tier weights: 1 = 1.0, 2 = 0.75, 3 = 0.45 (default = 3)
+const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.45 };
+const OUTLET_TIER_MAP = {
+  // Tier 1
+  'nytimes': 1, 'nyt-theater': 1, 'washpost': 1, 'latimes': 1, 'wsj': 1,
+  'ap': 1, 'associated-press': 1, 'variety': 1, 'hollywood-reporter': 1,
+  'vulture': 1, 'guardian': 1, 'timeout': 1, 'broadwaynews': 1, 'newyorker': 1,
+  // Tier 2
+  'chicagotribune': 2, 'usatoday': 2, 'usa-today': 2, 'nydailynews': 2, 'nypost': 2,
+  'thewrap': 2, 'ew': 2, 'entertainment-weekly': 2, 'indiewire': 2, 'deadline': 2,
+  'slantmagazine': 2, 'dailybeast': 2, 'observer': 2, 'nytg': 2, 'nysr': 2,
+  'theatermania': 2, 'theatrely': 2, 'newsday': 2, 'time': 2, 'rollingstone': 2,
+  'bloomberg': 2, 'vox': 2, 'slate': 2, 'people': 2, 'parade': 2, 'billboard': 2,
+  'huffpost': 2, 'backstage': 2, 'village-voice': 2,
+  // Everything else defaults to Tier 3
+};
+
+function getOutletTier(outletId) {
+  if (!outletId) return 3;
+  return OUTLET_TIER_MAP[outletId.toLowerCase()] || 3;
+}
+
 /**
- * Compute per-show scores from flat reviews array.
- * reviews.json is { _meta, reviews: [ {showId, assignedScore, ...}, ... ] }
+ * Compute per-show scores from flat reviews array using tier-weighted averaging.
+ * Matches the website's engine.ts:computeCriticScore() → weightedScore methodology.
+ * reviews.json is { _meta, reviews: [ {showId, assignedScore, outletId, ...}, ... ] }
  * Returns { [showId]: { compositeScore, reviewCount, title } }
  */
 function computeShowScores() {
@@ -77,15 +101,24 @@ function computeShowScores() {
   const byShow = {};
   for (const r of data.reviews) {
     if (!r.showId || r.assignedScore == null) continue;
-    if (!byShow[r.showId]) byShow[r.showId] = { scores: [], title: r.showTitle || r.showId };
-    byShow[r.showId].scores.push(r.assignedScore);
+    if (!byShow[r.showId]) byShow[r.showId] = { reviews: [], title: r.showTitle || r.showId };
+    byShow[r.showId].reviews.push({ score: r.assignedScore, outletId: r.outletId });
   }
 
   const result = {};
-  for (const [showId, { scores, title }] of Object.entries(byShow)) {
-    if (scores.length === 0) continue;
-    const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
-    result[showId] = { compositeScore: Math.round(avg * 10) / 10, reviewCount: scores.length, title };
+  for (const [showId, { reviews, title }] of Object.entries(byShow)) {
+    if (reviews.length === 0) continue;
+    // Tier-weighted average (matching engine.ts)
+    let weightedSum = 0;
+    let totalWeight = 0;
+    for (const r of reviews) {
+      const tier = getOutletTier(r.outletId);
+      const weight = TIER_WEIGHTS[tier];
+      weightedSum += r.score * weight;
+      totalWeight += weight;
+    }
+    const weightedScore = totalWeight > 0 ? Math.round((weightedSum / totalWeight) * 10) / 10 : 0;
+    result[showId] = { compositeScore: weightedScore, reviewCount: reviews.length, title };
   }
   return result;
 }
@@ -113,6 +146,16 @@ function saveResult(result) {
   fs.writeFileSync(RESULT_FILE, JSON.stringify(result, null, 2));
 }
 
+// ─── Helpers ──────────────────────────────────────────────────
+
+function getCurrentSeason() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth(); // 0-indexed
+  // Broadway season runs roughly June–May (Tony cutoff late April)
+  return month >= 5 ? `${year}-${year + 1}` : `${year - 1}-${year}`;
+}
+
 // ─── Dedup ────────────────────────────────────────────────────
 
 function wasPostedRecently(history, showId, days) {
@@ -128,11 +171,19 @@ function getBoxOfficeContent() {
   const grosses = loadJSON('grosses.json');
   if (!grosses?.shows) return null;
 
+  // Build slug→title lookup from shows.json (never derive titles from slugs)
+  const allShows = loadShows();
+  const titleBySlug = {};
+  for (const s of allShows) {
+    titleBySlug[s.slug] = s.title;
+    titleBySlug[s.id] = s.title;
+  }
+
   const shows = Object.entries(grosses.shows)
     .filter(([, d]) => d.thisWeek?.gross)
     .map(([slug, d]) => ({
       slug,
-      title: d.thisWeek.title || slug.replace(/-\d{4}$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+      title: titleBySlug[slug] || slug,
       gross: d.thisWeek.gross,
       capacity: d.thisWeek.capacity,
       change: d.thisWeek.capacityPrevWeek != null && d.thisWeek.capacity != null
@@ -216,7 +267,7 @@ function getInsightContent() {
     url: BASE_URL,
     imageType: 'generic',
     imageData: {}, // Will be filled after LLM generates the headline
-    promptData: `Data points:\n- ${openShows.length} shows currently on Broadway\n- Average score of open shows: ${avgScore}/100\n- Highest rated open: ${highest?.title} (${Math.round(highest?.score || 0)})\n- Lowest rated open: ${lowest?.title} (${Math.round(lowest?.score || 0)})\n- Most reviewed: ${mostReviewed?.title} (${mostReviewed?.reviewCount} reviews)\n- Total in database: ${totalShows} shows, ${totalReviews} reviews\n- Season: 2024-2025`,
+    promptData: `Data points:\n- ${openShows.length} shows currently on Broadway\n- Average score of open shows: ${avgScore}/100\n- Highest rated open: ${highest?.title} (${Math.round(highest?.score || 0)})\n- Lowest rated open: ${lowest?.title} (${Math.round(lowest?.score || 0)})\n- Most reviewed: ${mostReviewed?.title} (${mostReviewed?.reviewCount} reviews)\n- Total in database: ${totalShows} shows, ${totalReviews} reviews\n- Season: ${getCurrentSeason()}`,
     prompt: `You're a Broadway data nerd. Pick the most interesting fact from this data and write a "did you know" style tweet. Be specific with numbers. Under 240 chars. End with: ${BASE_URL}`,
   };
 }
@@ -450,8 +501,8 @@ async function generateTweetText(content) {
   const Anthropic = require('@anthropic-ai/sdk');
 
   if (!process.env.ANTHROPIC_API_KEY) {
-    console.log('[Social] No ANTHROPIC_API_KEY, using prompt data as tweet text');
-    return content.promptData.slice(0, 240) + '\n' + content.url;
+    console.log('[Social] No ANTHROPIC_API_KEY — skipping (will not post raw data)');
+    return null;
   }
 
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -507,8 +558,47 @@ Rules:
     return text;
   } catch (err) {
     console.error('[Social] LLM error:', err.message);
-    // Fallback: use raw prompt data
-    return content.promptData.slice(0, 240) + '\n' + content.url;
+    return null; // Don't post raw data — caller will alert via Discord
+  }
+}
+
+// ─── Discord Alerts ──────────────────────────────────────────
+
+async function sendDiscordAlert(title, description, severity = 'error') {
+  try {
+    const { sendAlert } = require('./lib/discord-notify');
+    await sendAlert({ title, description, severity });
+  } catch (err) {
+    console.error('[Social] Discord alert failed:', err.message);
+  }
+}
+
+// ─── Dead Man's Switch ───────────────────────────────────────
+
+async function checkDeadManSwitch(history) {
+  if (history.posts.length === 0) return; // Nothing posted yet, skip check
+
+  const lastPost = history.posts[history.posts.length - 1];
+  const daysSinceLastPost = (Date.now() - new Date(lastPost.date).getTime()) / (1000 * 60 * 60 * 24);
+
+  if (daysSinceLastPost > 3) {
+    console.log(`[Social] Dead man's switch: ${Math.round(daysSinceLastPost)} days since last post`);
+    await sendDiscordAlert(
+      'Social Media Silent for ' + Math.round(daysSinceLastPost) + ' Days',
+      `No social media post has succeeded in ${Math.round(daysSinceLastPost)} days. Last post: "${lastPost.text?.slice(0, 100)}..." (${lastPost.type}). Check Twitter secrets, Anthropic API key, or workflow logs.`,
+      'warning'
+    );
+  }
+}
+
+// ─── History Pruning ─────────────────────────────────────────
+
+function pruneHistory(history) {
+  const MAX_ENTRIES = 365;
+  if (history.posts.length > MAX_ENTRIES) {
+    const pruned = history.posts.length - MAX_ENTRIES;
+    history.posts = history.posts.slice(-MAX_ENTRIES);
+    console.log(`[Social] Pruned ${pruned} old history entries (keeping ${MAX_ENTRIES})`);
   }
 }
 
@@ -518,6 +608,9 @@ async function main() {
   console.log(`[Social] Starting social post generation${DRY_RUN ? ' (DRY RUN)' : ''}`);
 
   const history = loadHistory();
+
+  // Check dead man's switch (alert if no post in 3+ days)
+  await checkDeadManSwitch(history);
 
   // 1. Select content
   const content = selectContent(history);
@@ -531,6 +624,16 @@ async function main() {
 
   // 2. Generate tweet text via LLM
   const tweetText = await generateTweetText(content);
+  if (!tweetText) {
+    console.log('[Social] LLM failed to generate text — skipping post');
+    await sendDiscordAlert(
+      'Social Post Skipped: LLM Failed',
+      `Could not generate tweet text for ${content.type} post. Check ANTHROPIC_API_KEY.`,
+      'warning'
+    );
+    saveResult({ type: content.type, text: '', dryRun: DRY_RUN, success: false });
+    return;
+  }
   console.log(`[Social] Tweet text (${tweetText.length} chars):\n${tweetText}`);
 
   // 3. Generate social card image
@@ -559,6 +662,13 @@ async function main() {
     const { postTweet, isConfigured } = require('./lib/twitter-client');
     if (isConfigured()) {
       tweetResult = await postTweet({ text: tweetText, imagePath });
+      if (!tweetResult.success) {
+        await sendDiscordAlert(
+          'Social Post Failed: Twitter Error',
+          `Failed to post tweet: ${tweetResult.error || 'unknown'}. Type: ${content.type}.`,
+          'error'
+        );
+      }
     } else {
       console.log('[Social] Twitter not configured, skipping post');
     }
@@ -577,6 +687,7 @@ async function main() {
       tweetUrl: tweetResult.tweetUrl || null,
       text: tweetText,
     });
+    pruneHistory(history);
     saveHistory(history);
     console.log('[Social] History updated');
   }
