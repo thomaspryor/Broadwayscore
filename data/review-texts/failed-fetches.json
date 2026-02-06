@@ -8404,18 +8404,6 @@
     "timestamp": "2026-02-03T23:19:24.280Z"
   },
   {
-    "reviewId": "casa-valentina-2014/vulture--unknown.json",
-    "showId": "casa-valentina-2014",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2014/04/theater-review-casa-valentina.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (21): chicago, liberation, macbeth, betrayal, cats...",
-    "textLength": 7731,
-    "timestamp": "2026-02-03T23:19:28.257Z"
-  },
-  {
     "reviewId": "cyrano-de-bergerac-2007/variety--charles-isherwood.json",
     "showId": "cyrano-de-bergerac-2007",
     "outlet": "Variety",
@@ -18350,5 +18338,53 @@
     "garbageReason": "Multiple shows mentioned (9): company, misery, the father, the audience, high...",
     "textLength": 5344,
     "timestamp": "2026-02-06T05:55:15.424Z"
+  },
+  {
+    "reviewId": "casa-valentina-2014/vulture--jesse-green.json",
+    "showId": "casa-valentina-2014",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2014/04/theater-review-casa-valentina.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (21): chicago, liberation, macbeth, betrayal, cats...",
+    "textLength": 7731,
+    "timestamp": "2026-02-06T06:01:08.128Z"
+  },
+  {
+    "reviewId": "casa-valentina-2014/vulture--unknown.json",
+    "showId": "casa-valentina-2014",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2014/04/theater-review-casa-valentina.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (21): chicago, liberation, macbeth, betrayal, cats...",
+    "textLength": 7731,
+    "timestamp": "2026-02-06T06:01:10.871Z"
+  },
+  {
+    "reviewId": "cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json",
+    "showId": "cat-on-a-hot-tin-roof-2008",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/a-streetcar-named-desire-theater-314871",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, network, sweat, the audience, once...",
+    "textLength": 7258,
+    "timestamp": "2026-02-06T06:01:28.590Z"
+  },
+  {
+    "reviewId": "catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json",
+    "showId": "catch-me-if-you-can-2011",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/theater-review-catch-me-you-176795",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): the wiz, appropriate, home, the music man, the audience...",
+    "textLength": 6933,
+    "timestamp": "2026-02-06T06:04:05.034Z"
   }
 ]

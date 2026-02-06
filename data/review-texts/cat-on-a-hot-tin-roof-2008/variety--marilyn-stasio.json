@@ -65,5 +65,46 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 75,
+  "fullText": null,
+  "isFullReview": true,
+  "textWordCount": 684,
+  "archivePath": "data/archives/reviews/cat-on-a-hot-tin-roof-2008/variety--marilyn-stasio_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T06:03:49.439Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wrongFullText": "The physical beauty and sexual magnetism the stars bring to these iconic characters would surely delight Tennessee Williams.\n\nNicole Ari Parker, Blair Underwood and Daphne Rubin-Vega, the stars of Emily Mann’s striking production of “A Streetcar Named Desire,” offer no subtle psychological insights into Blanche, Stanley and Stella. But the physical beauty and sexual magnetism they bring to these iconic characters would surely delight Tennessee Williams — along with auds who might appreciate some kicks with their culture. The only downside to the production coup of looking good (witness the handsome set, gorgeous lighting, nice costumes, and great sounds) is that much of this bold beauty is only skin deep.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Paramount Hires Shivani Patel as Executive VP of Strategy and Operations (EXCLUSIVE) \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n BBC Names Interim Director General, Confirms Tim Davie Will Exit in April\n\nBefore the audience even lays eyes on the three principals, Mann prepares the 1950s New Orleans scene for them with a parade of the French Quarter’s exotic gumbo of colorful inhabitants. That tall, high-stepping marcher who carries herself like a queen is the great dancer Carmen de Lavallade, so this revival is already off to a good start.\n\nThere’s no privacy on Eugene Lee’s skeletal set of a rickety wooden tenement house and no room to breathe in Stanley and Stella’s stultifying apartment. Lighting designer Edward Pierce brightens this drab scene with color washes in jazzy shades of blue and rose, Mark Bennett heats it up with a pulsing soundscape of street music, and Grammy guy Terence Blanchard has supplied the kind of music that makes you sweat.\n\nThus prepped, the audience can truly appreciate, as Williams did, the sultry, hot-breathed beauty of this seductive city.\n\nWhen Blanche DuBois (Parker) arrives on this scene she can’t see past the dirt and poverty. Having buried the last of her family and lost their ancestral estate, this fragile flower of Southern womanhood thinks she’s found refuge with her earthier (and mentally sturdier) younger sister, Stella (Rubin-Vega). Unfortunately for her, Stella’s crude and vulgar (but incredibly sexy) husband, Stanley (Underwood), sees right through the fantasies she’s constructed of her life.\n\nTall, shapely, and drop-dead gorgeous, Parker is nothing like the Blanche traditionally played as a physically delicate and emotionally damaged woman teetering on the edge of madness. The aura of health and vigor that Parker projects gives the lie to Blanche’s helplessness, and her flirtatious efforts to charm her brother-in-law and his lowlife friends show more shrewd calculation than panicked desperation.\n\nWhile this robust performance diminishes Blanche’s vulnerability, the unexpected strength and determination that Parker finds in her character makes Blanche’s brutal rape more sadistic — and her mental breakdown more unnerving for a modern audience.\n\nMann’s blunt staging of the rape scene blows away another conventional view of the play; namely, that refined Blanche and barbaric Stanley are two sides of the sexual coin, involving Blanche as a semi-complicit partner in her own rape. In this production, rape means rape.\n\nFar from throwing the sexual dynamic of the play out of joint, Mann’s color-casting brings it into sharper relief. In a mainly black cast, Stanley’s sneering reference to ladylike Blanche’s “lily-white fingers” is a grave insult, if not as nasty as Blanche’s constant putdowns of Stanley (“There’s something downright bestial about him”) and his dark-skinned, working-class friends. The color-sensitive casting also makes Mitch’s abject adoration of Blanche all the more touching in the scenes beautifully underplayed by Wood Harris (“The Wire”) and Parker.\n\nTo his credit, Underwood sticks to the program and turns in a physically powerful performance, playing Stanley as the brute “animal” Blanche calls him, with no hint of the wounded little boy that Stella sees. The violence of his lovemaking may suit his little hot-pot of a wife (especially in Robin-Vega’s lusty perf), but when he socks her in the jaw, it’s no love tap.\n\nAs good as it looks, the visceral production style does come at the cost of psychological subtlety. Lacking that dimension, it’s tough to believe Stanley’s claim to Blanche — and to the audience — that “we’ve had this date from the beginning.”",
+  "contentMismatchNote": "Show title \"Cat on a Hot Tin Roof\" not found in text; Different show \"the audience\" mentioned 3+ times",
+  "contentMismatchScore": -5
 }
