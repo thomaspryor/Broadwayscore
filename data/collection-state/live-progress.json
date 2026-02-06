@@ -1,130 +1,51 @@
 {
-  "updatedAt": "2026-02-06T15:00:44.868Z",
-  "processed": 132,
-  "failed": 424,
-  "successRate": "23.7%",
+  "updatedAt": "2026-02-06T17:15:36.878Z",
+  "processed": 28,
+  "failed": 292,
+  "successRate": "8.8%",
   "tierBreakdown": {
-    "playwright": 17,
-    "browserbase": 12,
-    "scrapingbee": 30,
-    "brightdata": 29,
-    "archive": 62
+    "playwright": 3,
+    "browserbase": 2,
+    "scrapingbee": 2,
+    "brightdata": 6,
+    "archive": 18
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-06T14:04:30.547Z",
+      "t": "2026-02-06T13:56:01.639Z",
       "event": "bb-session",
-      "session": "283a6f8e",
-      "url": "https://www.vulture.com/2013/10/theater-review-betrayal.html"
+      "session": "ecf3e630",
+      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
     },
     {
-      "t": "2026-02-06T14:04:32.905Z",
+      "t": "2026-02-06T13:56:08.335Z",
       "event": "bb-login-uncertain",
-      "domain": "vulture.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-06T14:04:39.636Z",
+      "t": "2026-02-06T13:56:49.994Z",
       "event": "bb-session",
-      "session": "47041c0e",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-rev"
+      "session": "09011cd2",
+      "url": "http://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
     },
     {
-      "t": "2026-02-06T14:08:26.919Z",
+      "t": "2026-02-06T13:58:19.098Z",
       "event": "bb-session",
-      "session": "a439b7bd",
-      "url": "https://www.newyorker.com/magazine/2023/01/09/ohio-state-murders-review-adrienne"
+      "session": "3e62293c",
+      "url": "https://variety.com/2013/legit/reviews/a-gentlemans-guide-to-love-murder-1200814"
     },
     {
-      "t": "2026-02-06T14:08:29.298Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-06T14:09:24.088Z",
+      "t": "2026-02-06T13:59:04.455Z",
       "event": "bb-session",
-      "session": "ffd145da",
-      "url": "https://variety.com/2006/legit/reviews/ring-of-fire-1200515194/"
+      "session": "eeea1570",
+      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
     },
     {
-      "t": "2026-02-06T14:12:08.278Z",
+      "t": "2026-02-06T13:59:18.426Z",
       "event": "bb-session",
-      "session": "bcf604d2",
-      "url": "https://www.newyorker.com/magazine/2021/11/01/six-brings-pop-feminism-to-broadwa"
-    },
-    {
-      "t": "2026-02-06T14:12:10.281Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-06T14:15:18.528Z",
-      "event": "bb-session",
-      "session": "d2f47ce0",
-      "url": "https://www.newyorker.com/magazine/2023/01/09/the-collaboration-review-broadway-"
-    },
-    {
-      "t": "2026-02-06T14:15:20.598Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-06T14:18:53.248Z",
-      "event": "bb-session",
-      "session": "937435b7",
-      "url": "http://www.nytimes.com/2015/03/20/theater/review-the-heidi-chronicles-with-elisa"
-    },
-    {
-      "t": "2026-02-06T14:19:36.504Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770387543326\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAQtmXYpEeCR4ALPe1oA==&cid=IPAzM1KTNhQfKp4nhHnPhu1RV6cDjftaRRRaZHN_V8SaYM9yXDFKDSWvzJmEGCn~CRliOyMMotQ4I9P4bfyZBD0J8Sgg0OHFHvlf9kytwZdPbMctAUuNPKccQ1Bf6dF1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770387543326\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770387543326\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAQtmXYpEeCR4ALPe1oA==&cid=IPAzM1KTNhQfKp4nhHnPhu1RV6cDjftaRRRaZHN_V8SaYM9yXDFKDSWvzJmEGCn~CRliOyMMotQ4I9P4bfyZBD0J8Sgg0OHFHvlf9kytwZdPbMctAUuNPKccQ1Bf6dF1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770387543326\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    29 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770387543326\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAQtmXYpEeCR4ALPe1oA==&cid=IPAzM1KTNhQfKp4nhHnPhu1RV6cDjftaRRRaZHN_V8SaYM9yXDFKDSWvzJmEGCn~CRliOyMMotQ4I9P4bfyZBD0J8Sgg0OHFHvlf9kytwZdPbMctAUuNPKccQ1Bf6dF1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770387543326\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
-    },
-    {
-      "t": "2026-02-06T14:21:38.352Z",
-      "event": "bb-session",
-      "session": "f653ff57",
-      "url": "https://www.theatermania.com/broadway/reviews/a-beautiful-noise-the-neil-diamond"
-    },
-    {
-      "t": "2026-02-06T14:22:39.728Z",
-      "event": "bb-session",
-      "session": "47320402",
-      "url": "http://www.thewrap.com/all-my-sons-broadway-review-annette-bening-and-tracy-lett"
-    },
-    {
-      "t": "2026-02-06T14:23:19.499Z",
-      "event": "bb-session",
-      "session": "76ef51e7",
-      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-s"
-    },
-    {
-      "t": "2026-02-06T14:24:03.424Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-06T14:24:29.331Z",
-      "event": "bb-session",
-      "session": "146f5389",
-      "url": "https://www.thewrap.com/american-buffalo-broadway-review-sam-rockwell-and-lauren"
-    },
-    {
-      "t": "2026-02-06T14:26:08.330Z",
-      "event": "bb-session",
-      "session": "acceda07",
-      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
-    },
-    {
-      "t": "2026-02-06T14:26:51.372Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-06T14:27:32.355Z",
-      "event": "bb-session",
-      "session": "1094c640",
-      "url": "https://www.theatermania.com/broadway/reviews/juliet-broadway-review_92586.html"
+      "session": "3bf53ad0",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
     }
   ]
 }
