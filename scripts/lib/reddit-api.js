@@ -106,8 +106,8 @@ async function fetchViaScrapingBee(url) {
 
 /**
  * Fetch via Bright Data (primary proxy fallback)
- * Uses web_unlocker zone for simple HTTP proxying (not scraping_browser which renders pages).
- * Reddit JSON API needs a proxy, not a browser.
+ * Sends params in POST body (API validates body, not query params).
+ * Tries web_unlocker (simple proxy) then scraping_browser (browser-based).
  */
 async function fetchViaBrightData(url) {
   const token = process.env.BRIGHTDATA_TOKEN;
@@ -115,14 +115,38 @@ async function fetchViaBrightData(url) {
 
   stats.brightData++;
 
-  const apiUrl = `https://api.brightdata.com/request?zone=web_unlocker&url=${encodeURIComponent(url)}&format=raw`;
+  // Try zones in order: web_unlocker (simple proxy) → scraping_browser (browser)
+  const zones = ['web_unlocker', 'scraping_browser'];
+
+  for (const zone of zones) {
+    try {
+      return await brightDataRequest(token, zone, url);
+    } catch (e) {
+      if (e.permanent) {
+        brightDataDown = true;
+        throw e;
+      }
+      console.warn(`  Bright Data ${zone}: ${e.message}`);
+    }
+  }
+
+  brightDataDown = true;
+  throw new Error('Bright Data: all zones failed');
+}
+
+/**
+ * Single Bright Data API request — params in POST body
+ */
+function brightDataRequest(token, zone, url) {
+  const body = JSON.stringify({ zone, url, format: 'raw' });
 
   return new Promise((resolve, reject) => {
-    const req = https.request(apiUrl, {
+    const req = https.request('https://api.brightdata.com/request', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body)
       }
     }, (res) => {
       let data = '';
@@ -132,31 +156,24 @@ async function fetchViaBrightData(url) {
           try {
             resolve(JSON.parse(data));
           } catch (e) {
-            // Bright Data may return HTML wrapper — try to extract JSON
+            // Try to extract JSON from HTML wrapper
             const jsonMatch = data.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
             if (jsonMatch) {
-              try {
-                resolve(JSON.parse(jsonMatch[0]));
-              } catch (_) {
-                reject(new Error(`Bright Data response not JSON: ${data.slice(0, 200)}`));
-              }
-            } else {
-              reject(new Error(`Bright Data response not JSON: ${data.slice(0, 200)}`));
+              try { resolve(JSON.parse(jsonMatch[0])); return; } catch (_) { /* fall through */ }
             }
+            reject(new Error(`response not JSON: ${data.slice(0, 200)}`));
           }
         } else if (res.statusCode === 401 || res.statusCode === 403) {
-          brightDataDown = true;
-          reject(new Error(`Bright Data ${res.statusCode} — auth/quota issue`));
-        } else if (res.statusCode === 400) {
-          // 400 likely means zone not configured — disable to avoid repeated failures
-          brightDataDown = true;
-          reject(new Error(`Bright Data 400 (zone may not be configured) — disabling: ${data.slice(0, 200)}`));
+          const err = new Error(`${res.statusCode} auth/quota issue`);
+          err.permanent = true;
+          reject(err);
         } else {
-          reject(new Error(`Bright Data HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+          reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
     });
     req.on('error', reject);
+    req.write(body);
     req.end();
   });
 }
