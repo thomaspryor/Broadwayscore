@@ -12424,18 +12424,6 @@
     "timestamp": "2026-02-05T05:05:02.791Z"
   },
   {
-    "reviewId": "the-lifespan-of-a-fact-2018/hollywood-reporter--david-rooney.json",
-    "showId": "the-lifespan-of-a-fact-2018",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/lifespan-a-fact-theater-review-1152081/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): appropriate, home, purpose, company, sweat...",
-    "textLength": 8860,
-    "timestamp": "2026-02-05T05:05:26.965Z"
-  },
-  {
     "reviewId": "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
     "showId": "the-lifespan-of-a-fact-2018",
     "outlet": "Vulture",
@@ -21602,5 +21590,65 @@
     "garbageReason": "Multiple shows mentioned (7): our town, hair, rain, brighton beach memoirs, race...",
     "textLength": 8076,
     "timestamp": "2026-02-06T18:35:24.782Z"
+  },
+  {
+    "reviewId": "the-humans-2016/nytg--tommy-partl.json",
+    "showId": "the-humans-2016",
+    "outlet": "New York Theatre Guide",
+    "critic": "Tommy Partl",
+    "url": "http://nytheatreguide.com/2016/02/broadway-review-the-humans-at-the-helen-hayes-theater/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): harmony, home, tina, finding neverland, once...",
+    "textLength": 45998,
+    "timestamp": "2026-02-06T18:38:06.142Z"
+  },
+  {
+    "reviewId": "the-humans-2016/nytimes--charles-isherwood.json",
+    "showId": "the-humans-2016",
+    "outlet": "New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-and-a-country-under-pressure.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): home, company, once, company, rent",
+    "textLength": 2441,
+    "timestamp": "2026-02-06T18:40:49.250Z"
+  },
+  {
+    "reviewId": "the-humans-2016/nytimes--unknown.json",
+    "showId": "the-humans-2016",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-and-a-country-under-pressure.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): home, company, once, company, rent",
+    "textLength": 2441,
+    "timestamp": "2026-02-06T18:40:53.502Z"
+  },
+  {
+    "reviewId": "the-humans-2016/vulture--jesse-green.json",
+    "showId": "the-humans-2016",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2016/02/theater-reviews-old-hats.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): proof, home, tina, once, rain...",
+    "textLength": 11617,
+    "timestamp": "2026-02-06T18:41:22.792Z"
+  },
+  {
+    "reviewId": "the-lifespan-of-a-fact-2018/hollywood-reporter--david-rooney.json",
+    "showId": "the-lifespan-of-a-fact-2018",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/lifespan-a-fact-theater-review-1152081/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): appropriate, home, purpose, company, sweat...",
+    "textLength": 9009,
+    "timestamp": "2026-02-06T18:42:01.448Z"
   }
 ]
