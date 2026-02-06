@@ -5,7 +5,7 @@
   "criticName": "Vinson Cunningham",
   "url": "https://www.newyorker.com/goings-on-about-town/theatre/mr-saturday-night-05-16-22",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "Sometimes entertainment is a mercifully simple affair. Case in point: put Billy Crystal on a stage, give him some jokes, and let him interact with the crowd, and it’ll probably add up to a good time. The comedian and longtime Oscar host hits his marks again in “Mr. Saturday Night,” a musical based on a 1992 movie of the same name, with a book by Lowell Ganz, Babaloo Mandel, and Crystal himself, music by Jason Robert Brown, and lyrics by Amanda Green. The story is fairly basic: when a faded star comedian is declared dead on a televised “In Memoriam” roll call, he takes the fluky fifteen minutes of fresh fame and tries to turn it into a comeback. The songs are forgettable, and forgettably sung. But the structure of the musical is nicely roomy, giving Crystal ample time to perform standup, sell jokes, and serve up his shtick. It works!(Nederlander; through Sept. 4.)",
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
@@ -16,6 +16,51 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The structure of the musical is nicely roomy, giving Crystal ample time to perform standup, sell jokes, and serve up his shtick. It works!\"\n\nRead more",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "truncated",
+  "contentTierReason": "Only aggregator excerpts available",
+  "textWordCount": 154,
+  "archivePath": "data/archives/reviews/mr-saturday-night-2022/newyorker--vinson-cunningham_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T09:02:10.685Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 154 (min: 300)"
+  ],
+  "wordCount": 154,
+  "tierReason": "Short text (154 words)"
 }
