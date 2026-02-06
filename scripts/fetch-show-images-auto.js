@@ -939,15 +939,26 @@ async function fetchFromGoogleImages(show) {
   const showType = show.type === 'play' ? 'play' : 'musical';
   // Sanitize title: escape quotes that would break SERP query
   const safeTitle = show.title.replace(/"/g, '');
-  const query = `"${safeTitle}" Broadway ${showType} ${year} poster`;
-  console.log(`   Trying Google Images: "${query}"`);
+
+  // PRIORITY 1: Search specifically for poster/logo art (not production photos)
+  // Adding "official poster" and excluding "production photo" helps Google prioritize key art
+  const posterQuery = `"${safeTitle}" Broadway ${year} official poster logo key art -"production photo" -"rehearsal"`;
+  console.log(`   Trying Google Images (poster search): "${posterQuery}"`);
 
   let results;
   try {
-    results = await searchGoogleImages(query);
+    results = await searchGoogleImages(posterQuery);
   } catch (err) {
-    console.log(`   ⚠ Google Images search failed: ${err.message}`);
-    return null;
+    console.log(`   ⚠ Google Images poster search failed: ${err.message}`);
+    // Fall back to broader search
+    const fallbackQuery = `"${safeTitle}" Broadway ${showType} ${year}`;
+    console.log(`   Trying Google Images (fallback): "${fallbackQuery}"`);
+    try {
+      results = await searchGoogleImages(fallbackQuery);
+    } catch (err2) {
+      console.log(`   ⚠ Google Images fallback search also failed: ${err2.message}`);
+      return null;
+    }
   }
 
   await sleep(1500);  // Rate limit after SERP call
