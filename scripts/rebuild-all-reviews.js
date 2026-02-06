@@ -1081,12 +1081,14 @@ function normalizeOutletId(outlet) {
 console.log('=== REBUILDING ALL REVIEWS ===\n');
 console.log('NOTE: Reviews without valid scores are EXCLUDED (no default of 50)\n');
 
-// Load show dates for production-date guard
+// Load show dates and status for production-date guard
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
 const showDateMap = {};
+const showStatusMap = {};
 for (const s of showsData.shows) {
   const earliest = s.previewsStartDate || s.openingDate;
   if (earliest) showDateMap[s.id] = new Date(earliest);
+  showStatusMap[s.id] = s.status;
 }
 
 // Get all show directories
@@ -1107,6 +1109,12 @@ const allReviews = [];
 const crossShowFingerprints = new Map();
 
 showDirs.forEach(showId => {
+  // Skip shows in previews — they haven't opened yet, all reviews are wrong-production
+  if (showStatusMap[showId] === 'previews') {
+    stats.skippedPreviewsShows = (stats.skippedPreviewsShows || 0) + 1;
+    return;
+  }
+
   const showDir = path.join(reviewTextsDir, showId);
   const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'))
     // Sort: prefer files with real critic names over "unknown"/"unnamed" for URL dedup tiebreaking
@@ -1153,6 +1161,12 @@ showDirs.forEach(showId => {
         data.contentTier = tierResult.contentTier;
       }
 
+      // Skip files flagged as duplicates by cleanup-review-sources.js
+      if (data.duplicateOf) {
+        stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
+        return;
+      }
+
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
       if (data.wrongProduction === true) {
         stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
@@ -1163,6 +1177,19 @@ showDirs.forEach(showId => {
       if (data.wrongShow === true) {
         stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
         return;
+      }
+
+      // Date-based wrong-production guard: skip reviews published >18 months before show opening
+      // This catches old-production reviews that scrapers filed under the wrong show
+      if (data.publishDate && showDateMap[showId]) {
+        const pubDate = new Date(data.publishDate);
+        const showDate = showDateMap[showId];
+        const monthsBefore = (showDate - pubDate) / (1000 * 60 * 60 * 24 * 30);
+        if (monthsBefore > 18) {
+          console.log(`  [DATE GUARD] ${showId}/${file}: published ${data.publishDate}, show opens ${showDateMap[showId].toISOString().split('T')[0]} (${Math.round(monthsBefore)}mo gap)`);
+          stats.skippedDateMismatch = (stats.skippedDateMismatch || 0) + 1;
+          return;
+        }
       }
 
       // Skip misattributed reviews (LLM-hallucinated critic/outlet combos)
@@ -1578,6 +1605,8 @@ console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
+console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
+console.log(`  Skipped (date mismatch >18mo): ${stats.skippedDateMismatch || 0}`);
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
 console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);
 if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
