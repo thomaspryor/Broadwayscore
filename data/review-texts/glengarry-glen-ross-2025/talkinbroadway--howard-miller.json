@@ -22,5 +22,8 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is just a teaser sentence with a 'Read more' prompt - not actual review content that can be scored; openai: The provided text is an incomplete sentence that does not offer any evaluative content or opinion about the show.; gemini: The provided text is not a review. It's a partial sentence that appears to be the beginning of a plot summary or introduction to a review, but it offers no evaluation or opinion about the show.; kimi: The provided excerpt consists solely of a descriptive statement about the play's premise ('simple set-up and premise') with no evaluative content, critical opinion, or indication of recommendation quality.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "show-score-playwright"
+  ]
 }

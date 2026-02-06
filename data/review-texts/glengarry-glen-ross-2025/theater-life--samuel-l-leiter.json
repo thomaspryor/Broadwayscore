@@ -18,58 +18,7 @@
   "showScoreExcerpt": "“this cast is doing what it was hired to do, from the top down”\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 74,
-    "confidence": "medium",
-    "range": {
-      "low": 69,
-      "high": 79
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "this cast is doing what it was hired to do, from the top down",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt is neutral, indicating the cast is performing adequately but without strong praise or criticism. With only one excerpt and no clear positive or negative sentiment, it suggests a mixed review. | Gemini: The excerpt suggests the cast is performing well, which implies a positive aspect of the show. However, without more context, it's difficult to determine the overall recommendation strength, so I've assigned a score in the lower-middle of the positive range with low confidence. | Kimi: The single available excerpt offers faint praise suggesting professional competence rather than excellence, warranting the lower end of the Positive range given the instructions for limited excerpts. The lack of additional context or evaluative language beyond basic competency necessitates low confidence.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-06T00:26:22.347Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 65,
-    "geminiScore": 75,
-    "kimiScore": 72,
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 10,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

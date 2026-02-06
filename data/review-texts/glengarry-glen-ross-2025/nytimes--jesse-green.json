@@ -8,6 +8,7 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
   ],
@@ -41,5 +42,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text is cut off mid-sentence and ends with an error message about JavaScript and verifying access, making it impossible to determine the critic's final verdict.; openai: The text is interrupted with a message about enabling JavaScript and verifying access, indicating it is not a complete review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "showScoreExcerpt": "\"it’s not just because this is such a patchy production, or because Odenkirk and McKean are nevertheless so good in it, that the losers make the biggest impressions. The winners, once glamorous, now have nothing new to show us.\"\n\nRead more"
 }
