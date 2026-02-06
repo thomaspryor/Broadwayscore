@@ -16840,66 +16840,6 @@
     "timestamp": "2026-02-06T01:57:42.243Z"
   },
   {
-    "reviewId": "a-christmas-story-the-musical-2012/variety--marilyn-stasio.json",
-    "showId": "a-christmas-story-the-musical-2012",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2012/legit/reviews/a-christmas-story-the-musical-1117949167/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, seminar, once, elling, arcadia...",
-    "textLength": 4749,
-    "timestamp": "2026-02-06T02:11:57.965Z"
-  },
-  {
-    "reviewId": "a-dolls-house-2023/hollywood-reporter--david-rooney.json",
-    "showId": "a-dolls-house-2023",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-dolls-house-review-jessica-chastain-1235347184/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (20): hamilton, mamma mia!, mary jane, home, company...",
-    "textLength": 10240,
-    "timestamp": "2026-02-06T02:12:22.378Z"
-  },
-  {
-    "reviewId": "a-dolls-house-2023/nyt-theater--jonathan-mandell.json",
-    "showId": "a-dolls-house-2023",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2023/03/16/a-dolls-house-review-jessica-chastain-escapes-her-chair/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): hamilton, mary jane, macbeth, the humans, the audience...",
-    "textLength": 8120,
-    "timestamp": "2026-02-06T02:15:03.454Z"
-  },
-  {
-    "reviewId": "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
-    "showId": "a-dolls-house-2023",
-    "outlet": "New York Theatre Guide",
-    "critic": "Joe Dziemianowicz",
-    "url": "https://www.newyorktheatreguide.com/reviews/a-dolls-house-broadway-review-jessica-chastain",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): mary jane, tammy faye, betrayal, the audience, betrayal...",
-    "textLength": 3793,
-    "timestamp": "2026-02-06T02:15:13.993Z"
-  },
-  {
-    "reviewId": "a-dolls-house-2023/nytimes--jesse-green.json",
-    "showId": "a-dolls-house-2023",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2023/03/09/theater/a-dolls-house-review-jessica-chastain.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): liberation, giant, home, english, betrayal...",
-    "textLength": 6858,
-    "timestamp": "2026-02-06T02:15:17.528Z"
-  },
-  {
     "reviewId": "a-gentlemans-guide-to-love-and-murder-2013/nyt-theater--jonathan-mandell.json",
     "showId": "a-gentlemans-guide-to-love-and-murder-2013",
     "outlet": "New York Theater",
@@ -17198,18 +17138,6 @@
     "garbageReason": "Multiple shows mentioned (7): summer, the audience, once, elling, high...",
     "textLength": 7169,
     "timestamp": "2026-02-06T02:47:12.534Z"
-  },
-  {
-    "reviewId": "a-touch-of-the-poet-2005/nytimes--ben-brantley.json",
-    "showId": "a-touch-of-the-poet-2005",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2005/12/09/theater/reviews/09poet.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): appropriate, company, long day's journey into night, once, race...",
-    "textLength": 4665,
-    "timestamp": "2026-02-06T02:49:37.413Z"
   },
   {
     "reviewId": "a-view-from-the-bridge-2010/hollywood-reporter--unknown.json",
@@ -17594,5 +17522,77 @@
     "garbageReason": "Multiple shows mentioned (10): chicago, mamma mia!, appropriate, home, tina...",
     "textLength": 8004,
     "timestamp": "2026-02-06T03:49:50.147Z"
+  },
+  {
+    "reviewId": "a-christmas-story-the-musical-2012/variety--marilyn-stasio.json",
+    "showId": "a-christmas-story-the-musical-2012",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2012/legit/reviews/a-christmas-story-the-musical-1117949167/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, seminar, once, elling, arcadia...",
+    "textLength": 4749,
+    "timestamp": "2026-02-06T03:51:04.535Z"
+  },
+  {
+    "reviewId": "a-dolls-house-2023/hollywood-reporter--david-rooney.json",
+    "showId": "a-dolls-house-2023",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-dolls-house-review-jessica-chastain-1235347184/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (19): hamilton, mamma mia!, mary jane, home, company...",
+    "textLength": 10191,
+    "timestamp": "2026-02-06T03:51:20.576Z"
+  },
+  {
+    "reviewId": "a-dolls-house-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "a-dolls-house-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/03/16/a-dolls-house-review-jessica-chastain-escapes-her-chair/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): hamilton, mary jane, macbeth, the humans, the audience...",
+    "textLength": 8120,
+    "timestamp": "2026-02-06T03:53:48.220Z"
+  },
+  {
+    "reviewId": "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
+    "showId": "a-dolls-house-2023",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/a-dolls-house-broadway-review-jessica-chastain",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mary jane, tammy faye, betrayal, the audience, betrayal...",
+    "textLength": 3793,
+    "timestamp": "2026-02-06T03:53:54.624Z"
+  },
+  {
+    "reviewId": "a-dolls-house-2023/nytimes--jesse-green.json",
+    "showId": "a-dolls-house-2023",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2023/03/09/theater/a-dolls-house-review-jessica-chastain.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): liberation, giant, home, english, betrayal...",
+    "textLength": 6858,
+    "timestamp": "2026-02-06T03:53:58.406Z"
+  },
+  {
+    "reviewId": "a-touch-of-the-poet-2005/nytimes--ben-brantley.json",
+    "showId": "a-touch-of-the-poet-2005",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2005/12/09/theater/reviews/09poet.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): appropriate, company, long day's journey into night, once, race...",
+    "textLength": 4665,
+    "timestamp": "2026-02-06T03:54:15.996Z"
   }
 ]
