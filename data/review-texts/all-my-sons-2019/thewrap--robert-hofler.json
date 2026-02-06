@@ -14,8 +14,8 @@
   "fullText": "After all the Donald Trump references in recent plays, it’s refreshing to see an actor and director go back to another administration for their hit job.\n\nIn the new revival of Arthur Miller’s “All My Sons,” which opened Monday at the Roundabout’s American Airlines Theatre, Tracy Letts delivers a Dick Cheney who’s every bit as terrifying as Christian Bale’s in “Vice” — but without the need of all those prosthetics.",
   "isFullReview": false,
   "textWordCount": 70,
-  "archivePath": "data/archives/reviews/all-my-sons-2019/thewrap--robert-hofler_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T02:46:25.327Z",
+  "archivePath": "data/archives/reviews/all-my-sons-2019/thewrap--robert-hofler_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T14:22:59.778Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -25,20 +25,26 @@
       "error": "Skipped (known-blocked site)"
     },
     {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Paywall detected"
+    },
+    {
       "tier": 2,
       "method": "scrapingbee",
       "success": true
     }
   ],
   "fetchTier": 2,
-  "textQuality": "excerpt",
+  "textQuality": "truncated",
   "truncationSignals": [],
-  "textStatus": "incomplete",
+  "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Word count too low: 76 (min: 300)"
   ],
-  "contentTier": "needs-rescrape",
+  "contentTier": "truncated",
   "wordCount": 70,
   "tierReason": "Short text (70 words)",
   "rejectedAt": "2026-02-04T10:06:07.725Z",
