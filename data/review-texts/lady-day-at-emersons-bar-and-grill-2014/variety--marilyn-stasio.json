@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2014/legit/reviews/broadway-review-lady-day-at-emersons-bar-grill-1201154309/",
   "publishDate": "April 13, 2014",
-  "fullText": "Audra McDonald gives a performance of such blazing intensity that she seems to consume herself in the white-hot flame of her own talent.",
-  "isFullReview": false,
+  "fullText": "“Lady Day at Emerson’s Bar & Grill,” Lanie Robertson’s elegiac lament for the jazz singer Billie Holiday at the end of her broken-down life, has been knocking around forever in regional theaters. But in all those years, this intimate bio-musical was waiting for a great singer like Audra McDonald to reach out and bring this tragic figure back from the grave. There’s an uncanny immediacy to this production, which helmer Lonny Price has shrewdly staged in the round, with theater patrons sitting and sipping drinks at little club tables while bearing witness to the final days of a lost Lady.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n How Brandi Carlile’s Girls Just Wanna Weekend Became the World’s Warmest Music Festival: It's Not Just the Tropical Temperatures \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Brandi Carlile and Sam Smith: A Conversation About Bravura Voices, Fashion as Queer Armor and Having a Nonbinary Headliner for Carlile's Girls Just Wanna Weekend\n\nThe ungainly stage at Broadway's Circle in the Square has proved an inspiration for set designer James Noone to recreate Emerson’s Bar & Grill, the seedy joint in North Philadelphia where Billie Holiday played one of her last club dates in 1959, three months before she died. One end of the stage has been closed off and elevated to support a tiny nightclub stage and a trio of fine jazz musicians. (Clayton Craddock on drums and George Farmer on bass with Shelton Becton on piano and playing the role of Billie’s manager, Jimmy Powers.) A fussy canopy and miniature chandeliers dangle above their heads.\n\nAbout a third of the audience is seated at tables below this stage, and when Billie makes her entrance, clad in a white column gown and elbow-length sleeveless gloves (to hide the track marks on her arms), she navigates her way through the audience. As the show goes on, with Billie growing increasingly unsteady from all the booze she’s been slugging back, her interaction with the audience also increases. She asks one nice man to help her down from the stage so she can stagger over to the bar for a refill. Another patron relinquishes his own drink to her grasping hand; yet another lights her cigarette. And a dozen hands reach out when she finally falls on her face.\n\nLet’s just say you could hear a pin drop in this rapt house.\n\nIt’s a known fact that McDonald is a majestic singer. (Maybe the best Bess, of “Porgy and Bess,” our modern stage has seen.) In more than a dozen songs, she captures the plaintive sound, the eccentric phrasing and all the little vocal catches that identify Billie Holiday’s unique style. But it’s her extraordinary sensitivity as an actor that makes McDonald’s interpretation memorable.\n\nRobertson’s script is unrealistically stuffed with just about every known biographical detail about her unhappy life. The mother (“the Duchess”) who got her chubby little girl her first housecleaning job in a whorehouse. The humiliations she endured traveling on club dates through the segregated deep south. The rotten bad luck of falling in love with a no-good man who got her hooked on heroin and set her up to take the fall on a drug charge. All that, plus the appalling injustice of losing her cabaret card and being banned from performing in New York.\n\nIt’s a grueling monologue to sustain for an hour and a half, but McDonald pulls it off with style and grace and a helluva set of lungs. Complying with Billie’s contention that she can’t sing on cue, McDonald lets Billie find her own songs — or lets the songs find her — as she looks back and remembers the happy times, the sad times, the times she thought she’d go mad.\n\n“When a Woman Loves a Man” is her surrendering to that handsome rat who ruined her life. “God Bless the Child” is her gift of love to the Duchess. “Strange Fruit” is her anguished response to the racial violence that sickened her on her travels through the south. “Pig Foot (and a Bottle of Beer)” is her bawdy salute to the down and dirty world she came from. And “Tain’t Nobody’s Business If I Do” is her fierce insistence on living any damned way she chooses — even if it killed her. Which, of course, it did.",
+  "isFullReview": true,
   "dtliExcerpt": "Audra McDonald gives a performance of such blazing intensity that she seems to consume herself in the white-hot flame of her own talent.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,12 +16,53 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Audra McDonald gives a performance of such blazing intensity that she seems to consume herself in the white-hot flame of her own talent.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "rejectedAt": "2026-02-03T18:03:21.153Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single quote or excerpt about a performance, not a complete review with evaluation and recommendation; openai: This is a single sentence praising a performance without evaluating the overall show or production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "textWordCount": 708,
+  "archivePath": "data/archives/reviews/lady-day-at-emersons-bar-and-grill-2014/variety--marilyn-stasio_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T07:22:06.778Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (507): Request failed with status code 507"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
+  "wordCount": 708,
+  "tierReason": "Full review text"
 }

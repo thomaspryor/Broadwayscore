@@ -6,7 +6,7 @@
   "url": "http://nymag.com/daily/entertainment/2010/10/theater_review_your_comp-lit_t.html",
   "publishDate": "October 14, 2010",
   "fullText": null,
-  "isFullReview": false,
+  "isFullReview": true,
   "dtliExcerpt": "Mark Rylance is a fool’s fool. Belching, bragging, accompanying his own self-aggrandizing soliloquies with stunning four-part flatulence, he tears into the first half of La Bête, David Hirson’s 1991 meta-Moliere oddity, with a 400-line megalogue. In rhymed couplets. Not a syllable of which, I’m happy to report, isn’t uproarious.",
   "originalScore": null,
   "assignedScore": null,
@@ -17,5 +17,44 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": null,
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "textWordCount": 265,
+  "archivePath": "data/archives/reviews/la-bete-2010/vulture--ben-brantley_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T07:20:25.969Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Things you buy through our links may earn Vox Media a commission.\n\nMark Rylance is a fool’s fool. Belching, bragging, accompanying his own self-aggrandizing soliloquies with stunning four-part flatulence, he tears into the first half of La Bête, David Hirson’s 1991 meta-Molière oddity, with a 400-line megalogue. In rhymed couplets. Not a syllable of which, I’m happy to report, isn’t uproarious. With all due respect to his excellent co-stars, David Hyde Pierce and Joanna Lumley, and the fine ensemble that embroiders the show’s frilly edges, Rylance is clearly the show’s raison d’être. His performance as the irresistibly loathsome street clown Valere — a lowbrow bête noire visited upon the tidy playwright Elomire (Pierce) — is the grand prize at the bottom of a box of confetti.\n\nBecause what the hell is La Bête, exactly? It’s more than an act, yet not quite a play. If an ambitious comp-lit department teamed up with Cirque du Soleil, this is the show they’d confect: Meticulously rhymed and timed, stuffed with a seminar’s worth of seventeenth-century inside jokes and intertextual resonances (a pinch of Tartuffe, heaping spoonfuls of The Misanthrope, etc.), Hirson’s script is a masterpiece of formal wit and, at the same time, a strange, pompous monstrosity. It would win best sketch at Richard Wilbur’s end-of-semester talent show, hands-down, but it adds up to far, far less than it thinks it does: La Bête is children’s theater for graduate students.\n\nYour product is saved! You’ll receive emails when your saved products go on sale. Manage preferences.\n \n \n\n \n \n\n \n \n\n Things you buy through our links may earn Vox Media a commission."
 }
