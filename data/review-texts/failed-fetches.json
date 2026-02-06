@@ -16696,54 +16696,6 @@
     "timestamp": "2026-02-06T05:17:11.748Z"
   },
   {
-    "reviewId": "fish-in-the-dark-2015/hollywood-reporter--david-rooney.json",
-    "showId": "fish-in-the-dark-2015",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/fish-dark-theater-review-780167/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): chicago, mamma mia!, 1776, company, november...",
-    "textLength": 3445,
-    "timestamp": "2026-02-06T05:18:18.271Z"
-  },
-  {
-    "reviewId": "fish-in-the-dark-2015/newyorker--hilton-als.json",
-    "showId": "fish-in-the-dark-2015",
-    "outlet": "The New Yorker",
-    "critic": "Hilton Als",
-    "url": "http://www.newyorker.com/magazine/2015/03/16/lady-and-the-tramp",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, english, smash, of mice and men, hair...",
-    "textLength": 12099,
-    "timestamp": "2026-02-06T05:18:32.561Z"
-  },
-  {
-    "reviewId": "fish-in-the-dark-2015/nyt-theater--jonathan-mandell.json",
-    "showId": "fish-in-the-dark-2015",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "http://newyorktheater.me/2015/03/07/fish-in-the-dark-review-larry-david-on-death-and-recycling/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (16): appropriate, home, company, macbeth, my fair lady...",
-    "textLength": 7763,
-    "timestamp": "2026-02-06T05:18:39.637Z"
-  },
-  {
-    "reviewId": "fish-in-the-dark-2015/vulture--jesse-green.json",
-    "showId": "fish-in-the-dark-2015",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "https://www.vulture.com/2015/03/theater-review-fish-in-the-dark.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, of mice and men, harvey, evita, clybourne park...",
-    "textLength": 7789,
-    "timestamp": "2026-02-06T05:19:25.901Z"
-  },
-  {
     "reviewId": "flying-over-sunset-2021/nyt-theater--jonathan-mandell.json",
     "showId": "flying-over-sunset-2021",
     "outlet": "New York Theater",
@@ -16862,30 +16814,6 @@
     "garbageReason": "Multiple shows mentioned (12): cats, the audience, act one, picnic, orphans...",
     "textLength": 11699,
     "timestamp": "2026-02-06T05:27:15.627Z"
-  },
-  {
-    "reviewId": "frankie-and-johnny-in-the-clair-de-lune-2019/nytimes--ben-brantley.json",
-    "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2019/05/30/theater/frankie-and-johnny-review-audra-mcdonald.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): home, waitress, waitress, hair, once...",
-    "textLength": 7270,
-    "timestamp": "2026-02-06T05:27:42.281Z"
-  },
-  {
-    "reviewId": "frankie-and-johnny-in-the-clair-de-lune-2019/nytimes--jesse-green.json",
-    "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "http://www.nytimes.com/2019/05/30/theater/frankie-and-johnny-review-audra-mcdonald.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): home, waitress, waitress, hair, once...",
-    "textLength": 7122,
-    "timestamp": "2026-02-06T05:28:02.159Z"
   },
   {
     "reviewId": "frankie-and-johnny-in-the-clair-de-lune-2019/vulture--sara-holdren.json",
@@ -20366,5 +20294,101 @@
     "garbageReason": "Multiple shows mentioned (13): hamilton, giant, summer, eclipsed, the father...",
     "textLength": 6129,
     "timestamp": "2026-02-06T15:43:43.915Z"
+  },
+  {
+    "reviewId": "elling-2010/vulture--scott-brown.json",
+    "showId": "elling-2010",
+    "outlet": "New York Magazine",
+    "critic": "Scott Brown",
+    "url": "http://nymag.com/daily/entertainment/2010/11/theater_review_the_low-key_ple.html",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): english, take me out, oslo, the father, of mice and men...",
+    "textLength": 6559,
+    "timestamp": "2026-02-06T15:45:28.306Z"
+  },
+  {
+    "reviewId": "fish-in-the-dark-2015/hollywood-reporter--david-rooney.json",
+    "showId": "fish-in-the-dark-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/fish-dark-theater-review-780167/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): chicago, mamma mia!, 1776, company, november...",
+    "textLength": 3445,
+    "timestamp": "2026-02-06T15:45:36.568Z"
+  },
+  {
+    "reviewId": "fish-in-the-dark-2015/newyorker--hilton-als.json",
+    "showId": "fish-in-the-dark-2015",
+    "outlet": "The New Yorker",
+    "critic": "Hilton Als",
+    "url": "http://www.newyorker.com/magazine/2015/03/16/lady-and-the-tramp",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, english, smash, of mice and men, hair...",
+    "textLength": 12099,
+    "timestamp": "2026-02-06T15:45:45.141Z"
+  },
+  {
+    "reviewId": "fish-in-the-dark-2015/nyt-theater--jonathan-mandell.json",
+    "showId": "fish-in-the-dark-2015",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "http://newyorktheater.me/2015/03/07/fish-in-the-dark-review-larry-david-on-death-and-recycling/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): appropriate, home, company, macbeth, my fair lady...",
+    "textLength": 7763,
+    "timestamp": "2026-02-06T15:45:53.393Z"
+  },
+  {
+    "reviewId": "fish-in-the-dark-2015/variety--marilyn-stasio.json",
+    "showId": "fish-in-the-dark-2015",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2015/legit/reviews/fish-in-the-dark-theater-review-1201447693/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"fish in the dark\" not mentioned in text; No theater-related keywords in short text",
+    "textLength": 660,
+    "timestamp": "2026-02-06T15:46:17.757Z"
+  },
+  {
+    "reviewId": "fish-in-the-dark-2015/vulture--jesse-green.json",
+    "showId": "fish-in-the-dark-2015",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2015/03/theater-review-fish-in-the-dark.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, of mice and men, harvey, evita, clybourne park...",
+    "textLength": 7789,
+    "timestamp": "2026-02-06T15:46:26.139Z"
+  },
+  {
+    "reviewId": "frankie-and-johnny-in-the-clair-de-lune-2019/nytimes--ben-brantley.json",
+    "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2019/05/30/theater/frankie-and-johnny-review-audra-mcdonald.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, waitress, waitress, hair, once...",
+    "textLength": 7122,
+    "timestamp": "2026-02-06T15:47:01.264Z"
+  },
+  {
+    "reviewId": "frankie-and-johnny-in-the-clair-de-lune-2019/nytimes--jesse-green.json",
+    "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "http://www.nytimes.com/2019/05/30/theater/frankie-and-johnny-review-audra-mcdonald.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, waitress, waitress, hair, once...",
+    "textLength": 7270,
+    "timestamp": "2026-02-06T15:47:05.208Z"
   }
 ]
