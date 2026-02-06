@@ -1,81 +1,17 @@
 {
-  "updatedAt": "2026-02-06T01:14:19.709Z",
+  "updatedAt": "2026-02-06T01:26:20.771Z",
   "processed": 25,
-  "failed": 155,
-  "successRate": "13.9%",
+  "failed": 165,
+  "successRate": "13.2%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 9,
+    "playwright": 2,
+    "browserbase": 12,
     "scrapingbee": 6,
     "brightdata": 6,
     "archive": 13
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-02-05T17:14:27.342Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-05T17:14:31.419Z",
-      "event": "bb-session",
-      "session": "d85bc561",
-      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
-    },
-    {
-      "t": "2026-02-05T17:15:19.237Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770311685797\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMACcIPKGQvsGkALPhWIg==&cid=QOQxQSGeq~e5X8YYJqQxTcK7zIPAPInUwn56Jx0btMOJ~CYfKxOZt_4A~veIsUSogj_aTkGweDz3MwgH2IQdVQrJtQreuDTKgdZ8hE2PkWqIdYG7sU56SFg~Gpwz22QD&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770311685797\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770311685797\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMACcIPKGQvsGkALPhWIg==&cid=QOQxQSGeq~e5X8YYJqQxTcK7zIPAPInUwn56Jx0btMOJ~CYfKxOZt_4A~veIsUSogj_aTkGweDz3MwgH2IQdVQrJtQreuDTKgdZ8hE2PkWqIdYG7sU56SFg~Gpwz22QD&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770311685797\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770311685797\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMACcIPKGQvsGkALPhWIg==&cid=QOQxQSGeq~e5X8YYJqQxTcK7zIPAPInUwn56Jx0btMOJ~CYfKxOZt_4A~veIsUSogj_aTkGweDz3MwgH2IQdVQrJtQreuDTKgdZ8hE2PkWqIdYG7sU56SFg~Gpwz22QD&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770311685797\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
-    },
-    {
-      "t": "2026-02-05T17:15:21.958Z",
-      "event": "bb-session",
-      "session": "a608273a",
-      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
-    },
-    {
-      "t": "2026-02-05T17:15:50.493Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-05T17:16:36.184Z",
-      "event": "bb-session",
-      "session": "990234d7",
-      "url": "http://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
-    },
-    {
-      "t": "2026-02-05T17:17:32.985Z",
-      "event": "bb-session",
-      "session": "da712ee9",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
-    },
-    {
-      "t": "2026-02-05T17:17:59.926Z",
-      "event": "bb-session",
-      "session": "5d1458c8",
-      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
-    },
-    {
-      "t": "2026-02-05T17:18:41.355Z",
-      "event": "bb-session",
-      "session": "649823be",
-      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
-    },
-    {
-      "t": "2026-02-05T17:19:32.330Z",
-      "event": "bb-session",
-      "session": "d147d3ba",
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
-    },
-    {
-      "t": "2026-02-05T17:20:01.639Z",
-      "event": "bb-session",
-      "session": "f7e63b9c",
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-the-neil-diamond-musica"
-    },
     {
       "t": "2026-02-06T01:03:34.127Z",
       "event": "bb-session",
@@ -127,6 +63,70 @@
       "event": "bb-login-fail",
       "domain": "nytimes.com",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770340389974\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA1W9M2jvpQlcALPhWIg==&cid=v1Y~dxFoCnpQaZcYas8FALCpg6g6lgQY6e9zqgBv5XJ4pP1noNAGCEsLuHasn9jEOa0NaRcaCsbH~kKwR6MLZYpJ0f33MuXg3C7yiZl0NQNlHaR2JkeFuwuJwL_sYOzu&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770340389974\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770340389974\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA1W9M2jvpQlcALPhWIg==&cid=v1Y~dxFoCnpQaZcYas8FALCpg6g6lgQY6e9zqgBv5XJ4pP1noNAGCEsLuHasn9jEOa0NaRcaCsbH~kKwR6MLZYpJ0f33MuXg3C7yiZl0NQNlHaR2JkeFuwuJwL_sYOzu&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770340389974\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770340389974\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA1W9M2jvpQlcALPhWIg==&cid=v1Y~dxFoCnpQaZcYas8FALCpg6g6lgQY6e9zqgBv5XJ4pP1noNAGCEsLuHasn9jEOa0NaRcaCsbH~kKwR6MLZYpJ0f33MuXg3C7yiZl0NQNlHaR2JkeFuwuJwL_sYOzu&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770340389974\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-06T01:14:40.439Z",
+      "event": "bb-session",
+      "session": "ad408802",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
+    },
+    {
+      "t": "2026-02-06T01:15:12.211Z",
+      "event": "bb-session",
+      "session": "da07c59c",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+    },
+    {
+      "t": "2026-02-06T01:15:42.646Z",
+      "event": "bb-session",
+      "session": "ab90f3c0",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235421172/"
+    },
+    {
+      "t": "2026-02-06T01:17:30.283Z",
+      "event": "bb-session",
+      "session": "8bfde7c2",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+    },
+    {
+      "t": "2026-02-06T01:19:15.151Z",
+      "event": "bb-session",
+      "session": "813d11e5",
+      "url": "https://www.vulture.com/2022/09/theater-review-1776-broadway.html"
+    },
+    {
+      "t": "2026-02-06T01:19:17.405Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-06T01:21:16.545Z",
+      "event": "bb-session",
+      "session": "9e171d8d",
+      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
+    },
+    {
+      "t": "2026-02-06T01:23:18.959Z",
+      "event": "bb-session",
+      "session": "ab28b400",
+      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
+    },
+    {
+      "t": "2026-02-06T01:23:21.244Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-06T01:24:52.532Z",
+      "event": "bb-session",
+      "session": "8c5311a8",
+      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
+    },
+    {
+      "t": "2026-02-06T01:25:38.101Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770341104790\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq_itdPyYWocANCKmrw==&cid=VSYtjEfHNIa4BNaaCc7iRcdi~U~fMMK05GahdIYve1rGkWoosWZ52k9ABZTDyeJepeo9aU9JXNcJWSpnJ_9LBbuqWi6bISL3A11CSx68nJTY5nE_of223OBFVvra4pyn&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770341104790\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770341104790\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq_itdPyYWocANCKmrw==&cid=VSYtjEfHNIa4BNaaCc7iRcdi~U~fMMK05GahdIYve1rGkWoosWZ52k9ABZTDyeJepeo9aU9JXNcJWSpnJ_9LBbuqWi6bISL3A11CSx68nJTY5nE_of223OBFVvra4pyn&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770341104790\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770341104790\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq_itdPyYWocANCKmrw==&cid=VSYtjEfHNIa4BNaaCc7iRcdi~U~fMMK05GahdIYve1rGkWoosWZ52k9ABZTDyeJepeo9aU9JXNcJWSpnJ_9LBbuqWi6bISL3A11CSx68nJTY5nE_of223OBFVvra4pyn&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770341104790\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }

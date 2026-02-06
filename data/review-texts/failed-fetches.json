@@ -11056,42 +11056,6 @@
     "timestamp": "2026-02-04T16:17:50.925Z"
   },
   {
-    "reviewId": "1776-2022/variety--frank-rizzo.json",
-    "showId": "1776-2022",
-    "outlet": "Variety",
-    "critic": "Frank Rizzo",
-    "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/",
-    "method": "browserbase",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): hamilton, the present, the audience, once, rain...",
-    "textLength": 4355,
-    "timestamp": "2026-02-04T16:27:42.166Z"
-  },
-  {
-    "reviewId": "1776-2022/vulture--james-frankie-thomas.json",
-    "showId": "1776-2022",
-    "outlet": "Vulture",
-    "critic": "James Frankie Thomas",
-    "url": "https://www.vulture.com/2022/10/theater-review-1776-on-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): hamilton, company, oklahoma!, the audience, once...",
-    "textLength": 6944,
-    "timestamp": "2026-02-04T16:32:01.675Z"
-  },
-  {
-    "reviewId": "1984-2017/hollywood-reporter--david-rooney.json",
-    "showId": "1984-2017",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/",
-    "method": "browserbase",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): appropriate, purpose, company, allegiance, the audience...",
-    "textLength": 4831,
-    "timestamp": "2026-02-04T16:32:32.445Z"
-  },
-  {
     "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json",
     "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
     "outlet": "Variety",
@@ -14102,18 +14066,6 @@
     "garbageReason": "Multiple shows mentioned (12): chicago, appropriate, american buffalo, macbeth, noises off...",
     "textLength": 6675,
     "timestamp": "2026-02-05T04:27:20.586Z"
-  },
-  {
-    "reviewId": "1984-2017/vulture--christopher-bonanos.json",
-    "showId": "1984-2017",
-    "outlet": "Vulture",
-    "critic": "Christopher Bonanos",
-    "url": "http://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): sweat, the audience, hair, seminar, rain...",
-    "textLength": 6688,
-    "timestamp": "2026-02-05T04:31:37.067Z"
   },
   {
     "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--joe-dziemianowicz.json",
@@ -17354,5 +17306,53 @@
     "garbageReason": "Multiple shows mentioned (13): hamilton, company, summer, the audience, the performers...",
     "textLength": 7516,
     "timestamp": "2026-02-06T01:14:19.698Z"
+  },
+  {
+    "reviewId": "1776-2022/variety--frank-rizzo.json",
+    "showId": "1776-2022",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/",
+    "method": "browserbase",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): hamilton, the present, the audience, once, rain...",
+    "textLength": 4355,
+    "timestamp": "2026-02-06T01:15:24.964Z"
+  },
+  {
+    "reviewId": "1776-2022/vulture--james-frankie-thomas.json",
+    "showId": "1776-2022",
+    "outlet": "Vulture",
+    "critic": "James Frankie Thomas",
+    "url": "https://www.vulture.com/2022/10/theater-review-1776-on-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): hamilton, company, oklahoma!, the audience, once...",
+    "textLength": 6944,
+    "timestamp": "2026-02-06T01:20:58.548Z"
+  },
+  {
+    "reviewId": "1984-2017/hollywood-reporter--david-rooney.json",
+    "showId": "1984-2017",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/",
+    "method": "browserbase",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): appropriate, purpose, company, allegiance, the audience...",
+    "textLength": 4831,
+    "timestamp": "2026-02-06T01:21:28.833Z"
+  },
+  {
+    "reviewId": "1984-2017/vulture--christopher-bonanos.json",
+    "showId": "1984-2017",
+    "outlet": "Vulture",
+    "critic": "Christopher Bonanos",
+    "url": "http://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): sweat, the audience, hair, seminar, rain...",
+    "textLength": 8936,
+    "timestamp": "2026-02-06T01:26:20.758Z"
   }
 ]

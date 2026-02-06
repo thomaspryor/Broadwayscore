@@ -3,9 +3,9 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Helen Shaw",
-  "url": "https://www.vulture.com/2022/09/theater-review-1776-broadway.html",
+  "url": "https://www.vulture.com/2022/10/theater-review-1776-on-broadway.html",
   "publishDate": "September 16, 2022",
-  "fullText": "The show's structural problems remain, but this production's passionate commitment to its ideals and its gorgeous singing make it worth seeing.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The show's structural problems remain, but this production's passionate commitment to its ideals and its gorgeous singing make it worth seeing.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's structural problems remain, but this production's passionate commitment to its ideals and its gorgeous singing make it worth seeing.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (21 words)",
   "llmScore": {
     "score": 76,
@@ -78,5 +78,44 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.vulture.com/2022/09/theater-review-1776-broadway.html",
+  "urlDiscoveredAt": "2026-02-06T01:21:37.681Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/1776-2022/vulture--helen-shaw_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T01:21:37.688Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }
