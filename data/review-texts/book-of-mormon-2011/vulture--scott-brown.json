@@ -1,0 +1,80 @@
+{
+  "showId": "book-of-mormon-2011",
+  "outletId": "newyorkmagazine",
+  "outlet": "New York Magazine",
+  "criticName": "Scott Brown",
+  "url": "http://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/",
+  "publishDate": "2011-03-25T13:49:16-04:00",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "bwwExcerpt": "The Book of Mormon, arriving after months of hype, somehow delivers even more than its ridiculously felicitous advance buzz promised: It's an often uproarious, spiritually up-tempo satire not just of Mormonism, and not just religion in general, but of (no kidding) Occidental civilization itself, in ...",
+  "showScoreExcerpt": "\"The Book of Mormon, arriving after months of hype, somehow delivers even more than its ridiculously felicitous advance buzz promised: It’s an often uproarious, spiritually up-tempo satire not just of Mormonism, and not just religion in general, but of (no kidding) Occidental civilization itself.\"\n\nRead more",
+  "assignedScore": 88,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "contentTier": "excerpt",
+  "wordCount": 0,
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "somehow delivers even more than its ridiculously felicitous advance buzz promised",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Despite being a single excerpt, the language is unmistakably enthusiastic - 'delivers even more than promised', 'uproarious', 'felicitous'. This indicates a rave review that exceeded high expectations. | GPT-4o: The excerpt describes the show as exceeding high expectations and being 'uproarious' and 'spiritually up-tempo', indicating a highly positive reception. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"delivers even more than its ridiculously felicitous advance buzz promised\" and \"often uproarious, spiritually up-tempo satire\". Given the single excerpt, I'm placing it in the upper end of the positive range. | Kimi: The critic praises the show as exceeding its 'ridiculously felicitous' advance buzz, calling it 'often uproarious' and a successful satire, though as a single truncated excerpt, the full verdict scope is uncertain. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:45:29.660Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  },
+  "sources": [
+    "bww-roundup",
+    "show-score-playwright",
+    "bww-reviews"
+  ],
+  "bwwScore": 9
+}

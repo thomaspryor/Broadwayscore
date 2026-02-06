@@ -1,0 +1,92 @@
+name: Update Tony Awards Data
+
+on:
+  # Run annually in late June after Tony Awards ceremony
+  schedule:
+    - cron: '0 12 20 6 *'  # June 20th at noon UTC
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      year:
+        description: 'Specific year to scrape (leave empty for all years)'
+        required: false
+        type: string
+
+jobs:
+  update-awards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape Tony Awards data
+        run: |
+          if [ -n "${{ inputs.year }}" ]; then
+            echo "Scraping year ${{ inputs.year }} only..."
+            node scripts/scrape-tony-awards.js --year=${{ inputs.year }}
+          else
+            echo "Scraping all years..."
+            node scripts/scrape-tony-awards.js
+          fi
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/awards.json; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to awards data"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            BEFORE=$(git show HEAD:data/awards.json 2>/dev/null | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(Object.keys(JSON.parse(d).shows||{}).length)" 2>/dev/null || echo "0")
+            AFTER=$(node -e "const d=require('./data/awards.json');console.log(Object.keys(d.shows||{}).length)")
+            echo "before=$BEFORE" >> $GITHUB_OUTPUT
+            echo "after=$AFTER" >> $GITHUB_OUTPUT
+            echo "Awards data changed: $BEFORE → $AFTER shows"
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/awards.json
+
+          YEAR_NOTE=""
+          if [ -n "${{ inputs.year }}" ]; then
+            YEAR_NOTE=" (year ${{ inputs.year }})"
+          fi
+
+          git commit -m "chore: Update Tony Awards data${YEAR_NOTE}
+
+          Shows with awards: ${{ steps.changes.outputs.before }} → ${{ steps.changes.outputs.after }}"
+
+          # Push with retry for concurrent workflows
+          for i in 1 2 3 4 5; do
+            git push && break
+            echo "Push failed, attempt $i/5, rebasing..."
+            git pull --rebase origin main
+            sleep 2
+          done
+
+      - name: Summary
+        run: |
+          echo "## Tony Awards Update" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.changes.outputs.has_changes }}" == "true" ]; then
+            echo "✅ Awards data updated" >> $GITHUB_STEP_SUMMARY
+            echo "- Before: ${{ steps.changes.outputs.before }} shows" >> $GITHUB_STEP_SUMMARY
+            echo "- After: ${{ steps.changes.outputs.after }} shows" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ No changes to awards data" >> $GITHUB_STEP_SUMMARY
+          fi

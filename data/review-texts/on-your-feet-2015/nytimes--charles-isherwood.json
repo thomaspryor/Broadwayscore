@@ -7,6 +7,7 @@
   "source": "bww-reviews",
   "sources": [
     "bww-reviews",
+    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "The recipe may be familiar, but the flavor is fresh in 'On Your Feet!,' the half-formulaic, half-original and undeniably crowd-pleasing musical about the lives of Emilio and Gloria Estefan that opened on Thursday at the Marquis Theater. To cite the most unusual element: Many a musical could be described as a car crash, but I can't think of any in which such a calamity figures as a dramatic turning point. Still, it's no spoiler to say that the show includes the accident that threatened Ms. Estefan's life and might have ended her career. Fans of hers will recall that 1990 incident, which darkens the second act and brings some gravity to this mostly flashy, salsa-splashed show.",
@@ -39,5 +40,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The text is truncated with a technical error message at the end indicating problems retrieving the article content, making it impossible to determine the critic's final verdict; openai: The text includes navigation issues and incomplete content, indicating it is not a complete review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "showScoreExcerpt": "\"The recipe may be familiar, but the flavor is fresh in 'On Your Feet!,' the half-formulaic, half-original and undeniably crowd-pleasing musical...But with an often mechanical book, moving through its rags-to-riches paces as if to a rigid percussive beat, 'On Your Feet!' ultimately falls somewhere in the middle of the hefty pack of jukebox musicals that have plugged in to Broadway’s power strip.\"\n\nRead more"
 }
