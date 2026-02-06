@@ -4232,7 +4232,7 @@
     "almost-famous-2022": {
       "title": "Almost Famous",
       "designation": "Loathing",
-      "combinedScore": 63,
+      "combinedScore": 61,
       "sources": {
         "showScore": {
           "score": 64,
@@ -4243,7 +4243,19 @@
           "reviewCount": 454,
           "starRating": 3.1
         },
-        "reddit": null
+        "reddit": {
+          "score": 53,
+          "reviewCount": 5,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0,
+            "positive": 0.4,
+            "mixed": 0.2,
+            "negative": 0.4
+          },
+          "recommendations": 0,
+          "positiveRate": 0.4
+        }
       }
     },
     "kimberly-akimbo-2022": {
@@ -4461,6 +4473,19 @@
         "showScore": {
           "score": 79,
           "reviewCount": 830
+        },
+        "reddit": {
+          "score": 74,
+          "reviewCount": 5,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0.4,
+            "positive": 0.2,
+            "mixed": 0,
+            "negative": 0.2
+          },
+          "recommendations": 0,
+          "positiveRate": 0.6
         }
       },
       "combinedScore": 76,
@@ -4759,7 +4784,7 @@
     "good-night-oscar-2023": {
       "title": "Good Night, Oscar",
       "designation": "Liking",
-      "combinedScore": 87,
+      "combinedScore": 81,
       "sources": {
         "showScore": {
           "score": 96,
@@ -4770,7 +4795,19 @@
           "reviewCount": 417,
           "starRating": 4
         },
-        "reddit": null
+        "reddit": {
+          "score": 56,
+          "reviewCount": 7,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0,
+            "positive": 0.42857142857142855,
+            "mixed": 0,
+            "negative": 0.2857142857142857
+          },
+          "recommendations": 0,
+          "positiveRate": 0.42857142857142855
+        }
       }
     },
     "summer-1976-2023": {
@@ -5854,10 +5891,23 @@
           "score": 67,
           "reviewCount": 32,
           "starRating": 3.3
+        },
+        "reddit": {
+          "score": 76,
+          "reviewCount": 5,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0,
+            "positive": 0.8,
+            "mixed": 0,
+            "negative": 0
+          },
+          "recommendations": 1,
+          "positiveRate": 0.8
         }
       },
-      "combinedScore": 67,
-      "designation": "Loathing"
+      "combinedScore": 69,
+      "designation": "Shrugging"
     },
     "the-nap-2018": {
       "sources": {
@@ -6886,9 +6936,22 @@
           "score": 69,
           "reviewCount": 194,
           "starRating": 3.5
+        },
+        "reddit": {
+          "score": 75,
+          "reviewCount": 6,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0.3333333333333333,
+            "positive": 0.3333333333333333,
+            "mixed": 0,
+            "negative": 0.3333333333333333
+          },
+          "recommendations": 2,
+          "positiveRate": 0.6666666666666666
         }
       },
-      "combinedScore": 69,
+      "combinedScore": 70,
       "designation": "Shrugging"
     },
     "in-transit-2016": {
@@ -7194,10 +7257,23 @@
         "showScore": {
           "score": 66,
           "reviewCount": 161
+        },
+        "reddit": {
+          "score": 86,
+          "reviewCount": 5,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0.2,
+            "positive": 0.8,
+            "mixed": 0,
+            "negative": 0
+          },
+          "recommendations": 0,
+          "positiveRate": 1
         }
       },
-      "combinedScore": 65,
-      "designation": "Loathing"
+      "combinedScore": 69,
+      "designation": "Shrugging"
     },
     "the-humans-2016": {
       "sources": {
@@ -9838,9 +9914,22 @@
           "score": 72,
           "reviewCount": 68,
           "starRating": 3.6
+        },
+        "reddit": {
+          "score": 96,
+          "reviewCount": 5,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0.6,
+            "positive": 0.4,
+            "mixed": 0,
+            "negative": 0
+          },
+          "recommendations": 1,
+          "positiveRate": 1
         }
       },
-      "combinedScore": 72,
+      "combinedScore": 77,
       "designation": "Shrugging"
     },
     "dr-seuss-how-the-grinch-stole-christmas-2007": {
@@ -12791,6 +12880,25 @@
           },
           "recommendations": 0,
           "positiveRate": 0.8333333333333334
+        }
+      }
+    },
+    "well-2006": {
+      "designation": "Loving",
+      "combinedScore": 96,
+      "sources": {
+        "reddit": {
+          "score": 96,
+          "reviewCount": 7,
+          "lastUpdated": "2026-02-06",
+          "sentiment": {
+            "enthusiastic": 0.8571428571428571,
+            "positive": 0,
+            "mixed": 0.14285714285714285,
+            "negative": 0
+          },
+          "recommendations": 1,
+          "positiveRate": 0.8571428571428571
         }
       }
     }
