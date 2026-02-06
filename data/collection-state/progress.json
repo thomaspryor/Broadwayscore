@@ -1,6 +1,8 @@
 {
   "processed": [
-    "a-delicate-balance-2014/vulture--jesse-green.json"
+    "a-delicate-balance-2014/vulture--jesse-green.json",
+    "a-dolls-house-part-2-2017/nytimes--jesse-green.json",
+    "a-free-man-of-color-2010/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json",
@@ -11,22 +13,34 @@
     "a-beautiful-noise-the-neil-diamond-musical-2022/variety--aramide-tinubu.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--jackson-mchenry.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--unknown.json"
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--unknown.json",
+    "a-dolls-house-part-2-2017/hollywood-reporter--david-rooney.json",
+    "a-dolls-house-part-2-2017/newyorker--hilton-als.json",
+    "a-dolls-house-part-2-2017/nytimes--ben-brantley.json",
+    "a-dolls-house-part-2-2017/nytimes--unknown.json",
+    "a-free-man-of-color-2010/newyorker--hilton-als.json",
+    "a-free-man-of-color-2010/nytimes--ben-brantley.json",
+    "a-free-man-of-color-2010/variety--charles-isherwood.json",
+    "a-free-man-of-color-2010/vulture--scott-brown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "browserbase": [
-      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json"
+      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json",
+      "data/review-texts/a-dolls-house-part-2-2017/hollywood-reporter--david-rooney.json",
+      "data/review-texts/a-free-man-of-color-2010/hollywood-reporter--david-rooney.json",
+      "a-free-man-of-color-2010/hollywood-reporter--david-rooney.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "a-delicate-balance-2014/vulture--jesse-green.json"
+      "a-delicate-balance-2014/vulture--jesse-green.json",
+      "a-dolls-house-part-2-2017/nytimes--jesse-green.json"
     ]
   },
   "startTime": "2026-02-06T03:33:21.614Z",
-  "lastProcessed": "a-delicate-balance-2014/vulture--jesse-green.json",
+  "lastProcessed": "a-free-man-of-color-2010/vulture--scott-brown.json",
   "log": [
     {
       "t": "2026-02-06T03:33:48.570Z",
@@ -50,6 +64,18 @@
       "t": "2026-02-06T03:36:13.588Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-06T03:38:03.187Z",
+      "event": "bb-session",
+      "session": "fe601710",
+      "url": "http://www.hollywoodreporter.com/review/a-dolls-house-part-2-theater-998160"
+    },
+    {
+      "t": "2026-02-06T03:38:34.528Z",
+      "event": "bb-session",
+      "session": "e80a6188",
+      "url": "http://www.hollywoodreporter.com/review/free-man-color-theater-review-46713"
     }
   ]
 }
