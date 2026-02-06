@@ -39,5 +39,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 749,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "if you allow yourself to get carried away, you'll have a delightful time",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation despite noting flaws like weak romantic subplot and chemistry issues. Praises direction, choreography, and standout performances, particularly Hyde Pierce. | GPT-4o: The review praises the direction, choreography, and performances, particularly highlighting David Hyde Pierce and the ensemble. While there are some reservations about the romantic subplot and certain performances, the overall tone is positive, suggesting a fun experience. | Gemini: The review is generally positive, highlighting the direction, choreography, orchestrations, and cast. While noting some shortcomings, the overall verdict is that audiences will have a delightful time. | Kimi: The reviewer praises the fleet-footed direction, spirited choreography, jazzy orchestrations, and delightful cast, calling the show a 'diverting concoction' with 'plenty to recommend,' though noting minor flaws in the romantic subplot and one performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:35:58.518Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

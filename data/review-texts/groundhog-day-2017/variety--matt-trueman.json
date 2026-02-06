@@ -41,5 +41,11 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 640,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T07:50:03.740Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about the London theater production of 'Groundhog Day,' not the Broadway run.; kimi: This is a review of the London production from August 2016, not the Broadway production. The text explicitly identifies itself as a 'London Theater Review' and predates the Broadway opening by eight months.",
+  "promptVersion": "5.2.0"
 }

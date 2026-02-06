@@ -35,5 +35,59 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 632,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Whether that love is endless enough to make 'Diana' a Broadway blockbuster remains to be seen.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges strengths (DeWaal's voice, Long's costumes, the show's thematic point) but criticizes significant flaws (superficial portrait, breakneck pacing, cheap production values, underpopulated stage). The critic's closing uncertainty about success indicates a mixed recommendation. | Gemini: The review points out both strengths and weaknesses of the show. While praising the costumes and some performances, it criticizes the superficial portrait of Diana, breakneck speed, unnecessary choreography, and campy directorial choices, resulting in a mixed assessment. | Kimi: While the critic praises individual performances (particularly Erin Davie and Judy Kaye) and the costume design, they find the portrait of Diana superficial, the production cheap-looking, and the staging underpopulated. The review concludes with cautious optimism about commercial prospects ('Let's not underestimate it quite yet') rather than a clear recommendation to attend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:20:59.113Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

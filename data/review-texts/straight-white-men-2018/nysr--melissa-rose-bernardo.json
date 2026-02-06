@@ -21,5 +21,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2018/07/23/straight-white-men-check-their-privilege/",
   "showScoreExcerpt": "\"The whole thing has a clever, ever-so-creepy diorama effect—like we’re watching the actors in a museum, or at Epcot Center. It’s also a double-edged sword: Looking at them as if they’re merely figures on display to be studied lends an oddly thrilling anthropological angle to the production; it also, unfortunately, keeps us at arm’s length, never affording any emotional investment in the characters.\"\n\nRead more",
-  "bwwExcerpt": "You'll remember that our mission, as explained by the Persons in Charge, was to \"try to find some understanding for straight white men.\" Understanding turns out to be in short supply. But Lee's perspective-wry, unflinching, and altogether unique-is an unexpected privilege."
+  "bwwExcerpt": "You'll remember that our mission, as explained by the Persons in Charge, was to \"try to find some understanding for straight white men.\" Understanding turns out to be in short supply. But Lee's perspective-wry, unflinching, and altogether unique-is an unexpected privilege.",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's also a double-edged sword: Looking at them as if they're merely figures on display to be studied lends an oddly thrilling anthropological angle to the production; it also, unfortunately, keeps us at arm's length.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The 3/5 stars rating indicates mixed reception. The excerpt shows balanced perspective - acknowledging both positive ('clever', 'oddly thrilling') and negative ('keeps us at arm's length', 'never affording any emotional investment') aspects. However, confidence is low due to limited excerpt text. | GPT-4o: The review describes both a 'thrilling anthropological angle' and a lack of emotional investment, indicating a mixed assessment. The 3/5 star rating supports a score in the Mixed range. | Gemini: The review describes a \"clever, ever-so-creepy diorama effect\" that is both \"thrilling\" and keeps the audience \"at arm's length.\" The 3/5 star rating also suggests a mixed assessment. | Kimi: The 3/5 rating and mixed assessment—praising the clever, anthropological staging while criticizing the lack of emotional investment and distance created—places this firmly in the Mixed bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:49:32.624Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

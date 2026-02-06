@@ -59,5 +59,60 @@
   "contentTier": "complete",
   "wordCount": 1248,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"So endlessly stimulating that it could give audiences fodder for heated conversation until the fall season is in full swing...Hnath’s play fairly sets your head spinning with its knotty perspectives...With a sterling cast led by Metcalf, the production is as much an engrossing entertainment as it is a theatrical treatise that stirs the heart even as it invigorates the mind...Metcalf here delivers what is easily her finest Broadway performance to date—and she has never been less than terrific.\"\n\nRead more"
+  "showScoreExcerpt": "\"So endlessly stimulating that it could give audiences fodder for heated conversation until the fall season is in full swing...Hnath’s play fairly sets your head spinning with its knotty perspectives...With a sterling cast led by Metcalf, the production is as much an engrossing entertainment as it is a theatrical treatise that stirs the heart even as it invigorates the mind...Metcalf here delivers what is easily her finest Broadway performance to date—and she has never been less than terrific.\"\n\nRead more",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With a sterling cast led by Metcalf, the production is as much an engrossing entertainment as it is a theatrical treatise that stirs the heart even as it invigorates the mind.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with superlatives ('endlessly stimulating', 'sterling cast', 'engrossing entertainment', 'finest Broadway performance'). However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt provides strong praise for both the play and Metcalf's performance, describing it as 'endlessly stimulating' and 'engrossing entertainment'. However, with only one excerpt, confidence is low. | Gemini: The excerpt is overwhelmingly positive, praising the stimulating nature of the play, the sterling cast, and Metcalf's performance. Given the single excerpt, confidence is low, but the content points to a strong positive recommendation. | Kimi: Despite single-excerpt warning, the language is unambiguously ecstatic: 'endlessly stimulating,' 'sterling cast,' 'engrossing entertainment,' 'stirs the heart,' 'invigorates the mind,' and 'finest Broadway performance to date.' The excerpt functions as a clear verdict with no caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:43:53.791Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 91,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

@@ -43,5 +43,59 @@
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text is cut off mid-sentence and ends with an error message about JavaScript and verifying access, making it impossible to determine the critic's final verdict.; openai: The text is interrupted with a message about enabling JavaScript and verifying access, indicating it is not a complete review.",
   "promptVersion": "5.2.0",
-  "showScoreExcerpt": "\"it’s not just because this is such a patchy production, or because Odenkirk and McKean are nevertheless so good in it, that the losers make the biggest impressions. The winners, once glamorous, now have nothing new to show us.\"\n\nRead more"
+  "showScoreExcerpt": "\"it’s not just because this is such a patchy production, or because Odenkirk and McKean are nevertheless so good in it, that the losers make the biggest impressions. The winners, once glamorous, now have nothing new to show us.\"\n\nRead more",
+  "assignedScore": 46,
+  "llmScore": {
+    "score": 46,
+    "confidence": "high",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But in the weirdly limp revival that opened on Monday at the Palace Theater, something has flipped.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic calls the revival 'weirdly limp' and criticizes Culkin's performance as making the character ineffective ('The man couldn't sell a dollar for a dime'). Despite praise for the source material and character, the assessment of this production is clearly negative, though the truncated text limits full evaluation. | Gemini: The review clearly states that the revival is \"weirdly limp\" and that the lead character is no longer the master, but neurotic. This indicates a negative assessment of the production despite the potential of the source material. | Kimi: The critic describes the production as 'weirdly limp' and finds that the lead performance undermines the central character's essential nature, though the truncated text necessitates cautious scoring.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:45:14.117Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

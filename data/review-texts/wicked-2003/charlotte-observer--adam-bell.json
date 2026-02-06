@@ -36,5 +36,60 @@
   "textStatus": "complete",
   "sourceMethod": "browserbase",
   "wordCount": 656,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Talia Suskauer's green-hued 'wicked' Witch of the West, Elphaba, simply owns the role from the start",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise for both leads' performances with specific positive language ('hits all the right notes,' 'simply owns the role'), but as a single curated excerpt from a larger review, the overall verdict remains uncertain. | GPT-4o: The excerpt praises the performances of the lead actors, highlighting their ability to bring depth and humor to their roles. However, due to the single excerpt warning and lack of a full review, the confidence is low, and the score is on the lower end of the Positive range. | Gemini: The review excerpt praises the performances of both lead actresses, especially Talia Suskauer as Elphaba, indicating a positive experience. Given the limited text, a high positive score is appropriate. | Kimi: The excerpt offers unambiguous praise for both lead performers, describing them as hitting 'all the right notes' and 'simply owns the role.' Following the guidance for single excerpts that sound clearly positive, this falls in the upper Positive range, though confidence is low given the truncated text and lack of full context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T09:39:09.286Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

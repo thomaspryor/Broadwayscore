@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Lynn Nottage's 'Clyde's' is a warm-hearted comedy about finding dignity and purpose in the most unlikely places, anchored by a powerhouse performance from Uzo Aduba.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -44,5 +44,60 @@
   ],
   "duplicateTextOf": "variety--aramide-tinubu.json",
   "wordCount": 654,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nottage improbably turns the lunchtime staple into the storytelling engine of 'Clyde's,' her deceptively simple flavor-bomb of a new comedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Nottage's writing ('flavor-bomb'), outstanding performances (especially Aduba making 'an acrylic-licking meal of the part'), and effective direction. Minor reservations about Clyde's character development, but overall enthusiastic recommendation. | GPT-4o: The review praises the play's clever use of a sandwich as a metaphor and highlights strong performances, particularly by Uzo Aduba. The critic appreciates the comedy's structure and execution, and the positive tone suggests a strong recommendation. | Gemini: The review is generally positive, highlighting the performances and the play's themes, but notes that the title role feels \"underdone.\" This suggests a recommendation with some reservations. | Kimi: The critic offers enthusiastic praise for the performances (particularly Uzo Aduba's 'acrylic-licking' turn), direction, design, and thematic resonance, calling the play a 'flavor-bomb' while offering only minor qualification about the title character's depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:11:25.001Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

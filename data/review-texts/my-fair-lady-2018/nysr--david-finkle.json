@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"The cherished musical comedy roles are in good hands...With those performers not only acting but singing—and occasionally dancing—this 'My Fair Lady' moves bracingly along...Though the offending sweep-out occurs during the final moments, it can’t completely distract anyone from the abundant successes of the revival. Enough of it is a potent reminder that Lerner, Loewe were able to take a property that others couldn’t tame into one of the most entertaining musicals ever written.\" \n\nRead more"
+  "showScoreExcerpt": "\"The cherished musical comedy roles are in good hands...With those performers not only acting but singing—and occasionally dancing—this 'My Fair Lady' moves bracingly along...Though the offending sweep-out occurs during the final moments, it can’t completely distract anyone from the abundant successes of the revival. Enough of it is a potent reminder that Lerner, Loewe were able to take a property that others couldn’t tame into one of the most entertaining musicals ever written.\" \n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this 'My Fair Lady' moves bracingly along",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with clear praise for performances and pacing ('bracingly along', 'abundant successes', 'most entertaining musicals'). Single minor complaint about ending doesn't detract from overall positive assessment. | GPT-4o: The review excerpt praises the performances and overall success of the revival, despite a noted flaw in the final moments. The original 4/5 star rating supports a positive classification, and the excerpt's positive tone suggests a strong recommendation. | Gemini: The review is positive, highlighting the performances and the overall success of the revival, despite a minor issue at the end. The 4/5 star rating supports this classification. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:23:37.632Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

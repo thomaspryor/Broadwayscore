@@ -53,5 +53,59 @@
     "Word count too low: 138 (min: 300)"
   ],
   "wordCount": 115,
-  "tierReason": "Short text (115 words)"
+  "tierReason": "Short text (115 words)",
+  "assignedScore": 58,
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The good news about 'Burn the Floor' is that it is every bit as flashy and tacky as you would expect.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show delivers what it promises (flashy spectacle) but frames 'tacky' as both good and bad news, suggesting a lukewarm assessment of a show that succeeds at being what it is, even if that's not particularly elevated. | Gemini: The review states that the show is exactly as expected, both flashy and tacky, which suggests a mixed reaction. The critic doesn't explicitly recommend or discourage seeing it. | Kimi: The critic acknowledges the show delivers exactly what it promises—flashy, tacky ballroom dancing—but explicitly frames this quality as 'bad news,' suggesting a dismissive attitude toward the production's artistic value. However, given the truncated text, the final recommendation remains ambiguous.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:06:36.935Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 58,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

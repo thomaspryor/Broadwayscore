@@ -22,5 +22,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "showScoreExcerpt": "\"The first New York production of 'Hangmen 'had a creepier aura; this one—slickly directed by Matthew Dunster—leans more heavily into comedy, capitalizing on Threlfall’s purposely pompous puffed-chest, poker-faced delivery of the most wonderfully absurd lines\"\n\nRead more",
-  "bwwExcerpt": "Is Mooney a pervert? A murderer? Or just a really strange chap who likes to wind people up? We'll never know. On all of those subjects, the clever McDonagh leaves the audience, you'll pardon the pun, hanging."
+  "bwwExcerpt": "Is Mooney a pervert? A murderer? Or just a really strange chap who likes to wind people up? We'll never know. On all of those subjects, the clever McDonagh leaves the audience, you'll pardon the pun, hanging.",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The first New York production of Hangmen had a creepier aura; this one—slickly directed by Matthew Dunster—leans more heavily into comedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars indicates positive recommendation. Critic praises Dunster's direction as 'slick' and appreciates McDonagh's clever writing and Threlfall's performance delivery. Despite being truncated, the tone is appreciative of the production's comedic approach and craft. | GPT-4o: The review highlights the comedic elements and clever writing of the current production, with a 4/5 star rating indicating a positive reception. However, the text is truncated, so the final verdict may be missing, leading to low confidence. | Gemini: The review notes that this production leans more heavily into comedy, which is a positive. The 4/5 star rating also suggests a positive recommendation. However, the truncated text and the comparison to the previous production make the confidence medium. | Kimi: The critic assigns 4/5 stars and offers consistent praise for the slick direction and Threlfall's comedic performance, though the truncated text necessitates caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:54:03.070Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

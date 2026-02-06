@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "A sandwich has always been a kind of vehicle, ingredients riding between sliced bread. Lynn Nottage improbably turns the lunchtime staple into the storytelling engine of “Clyde’s,” her deceptively simple flavor-bomb of a new comedy about survival, second chances and digesting whatever life serves up.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/clydes/",
@@ -46,5 +46,60 @@
   ],
   "duplicateTextOf": "variety--aramide-tinubu.json",
   "wordCount": 654,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lynn Nottage improbably turns the lunchtime staple into the storytelling engine of 'Clyde's,' her deceptively simple flavor-bomb of a new comedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise throughout for Nottage's writing ('flavor-bomb'), Aduba's performance ('makes an acrylic-licking meal of the part'), and the production's energy and design. While noting some underdevelopment in the title character, the overall tone is enthusiastically positive with sophisticated analysis of the play's subversive qualities. | GPT-4o: The review praises the play's innovative storytelling and strong performances, particularly highlighting Uzo Aduba's role. The critic appreciates the play's subversion of familiar genres and its focus on humanizing characters, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the performances and Nottage's focus on working-class people. While noting some sitcom-like qualities and an underdone title role, the overall assessment is favorable. | Kimi: The critic praises Nottage's 'flavor-bomb' writing and the vibrant performances, particularly Aduba's scene-stealing turn, while offering only minor reservation that the title role feels somewhat underdeveloped.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:11:54.978Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 77,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

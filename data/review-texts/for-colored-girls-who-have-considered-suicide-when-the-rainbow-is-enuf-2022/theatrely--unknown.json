@@ -34,5 +34,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251212034336/https://www.theatrely.com/post/for-colored-girls-returns-home-to-broadway-review",
   "contentTier": "complete",
   "wordCount": 1164,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not an ideal production, but if you can focus on the words themselves rather than the other stimuli thrown your way, it remains essential, vivid, and affirming.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic extensively criticizes the direction, choreography, music, and design choices while praising Shange's text and some performances. The final verdict acknowledges significant flaws but still finds the work worthwhile for the source material, placing it in mixed territory. | GPT-4o: The review acknowledges the strength of the text and some performances but criticizes the over-choreographed production and distracting elements. It suggests the production is worth seeing for the text, but with significant reservations. | Gemini: The review acknowledges the strength of the source material but criticizes the production's direction and over-choreography, resulting in a mixed assessment. The reviewer suggests it's still worth seeing if one can focus on the text despite the production's flaws. | Kimi: While the reviewer praises the 'excellent' ensemble and Ntozake Shange's 'gorgeous poetry' as essential and affirming, they heavily criticize Camille A. Brown's direction as 'over-choreographed to a fault,' the generic music, and characterless design, noting this Broadway revival loses the intimate power of the 2019 Public Theatre production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:35:44.485Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

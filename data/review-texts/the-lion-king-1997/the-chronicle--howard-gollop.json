@@ -36,5 +36,11 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 787,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T09:10:21.721Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This reviews a touring production at Playhouse Square in Cleveland, not a current Broadway production.; openai: The review is about a touring production of 'The Lion King' at Playhouse Square, not the current Broadway run.; kimi: This review covers the touring production at Playhouse Square in Cleveland, not the current Broadway run in New York City.",
+  "promptVersion": "5.2.0"
 }

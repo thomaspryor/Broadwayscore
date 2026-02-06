@@ -30,5 +30,11 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 593,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T09:41:55.396Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a touring production of 'Wicked' in Pittsburgh, not the current Broadway run.; kimi: This review explicitly covers the touring production at Pittsburgh's Benedum Center ('The touring production has made its sixth stop in Pittsburgh'), not the current Broadway production.",
+  "promptVersion": "5.2.0"
 }

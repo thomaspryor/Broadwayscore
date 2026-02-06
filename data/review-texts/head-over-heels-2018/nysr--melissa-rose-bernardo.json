@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2018/07/26/head-over-heels-the-beat-goes-on/",
-  "showScoreExcerpt": "\"As soon as the curtain goes up, you’ll hear the unmistakable driving drum riff of 'We Got the Beat'...If that number doesn’t put a smile on your face, go grab a frosé from the lobby bar at intermission, because you need a boozy millennial-pink frozen beverage to relax your facial muscles...'HOH' is a parade of cross-dressing, mistaken identities, and, above all, moments of profound silliness. Some work, such as a flock of sheep singing backup on 'Mad About You'. And some don’t.\"\n\nRead more"
+  "showScoreExcerpt": "\"As soon as the curtain goes up, you’ll hear the unmistakable driving drum riff of 'We Got the Beat'...If that number doesn’t put a smile on your face, go grab a frosé from the lobby bar at intermission, because you need a boozy millennial-pink frozen beverage to relax your facial muscles...'HOH' is a parade of cross-dressing, mistaken identities, and, above all, moments of profound silliness. Some work, such as a flock of sheep singing backup on 'Mad About You'. And some don’t.\"\n\nRead more",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If that number doesn't put a smile on your face, go grab a frosé from the lobby bar at intermission.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic praise for opening number, choreography, and performances (calling Milligan's performance 'star-making'). Acknowledges some elements don't work but overall tone is positive and recommending. Confidence is medium due to truncated text potentially missing final verdict. | GPT-4o: The review describes the show as 'giddy, gleeful' and compares it to 'Mamma Mia!', indicating a fun and entertaining experience. Despite noting some elements that don't work, the overall tone is positive, aligning with the 4/5 stars rating. The text is truncated, so confidence is low. | Gemini: The review is mostly positive, highlighting the choreography, costumes, and performances, but acknowledges that some of the silliness doesn't quite work. The 4/5 star rating also indicates a positive recommendation. | Kimi: The critic awards 4/5 stars and delivers consistent praise for performances, choreography, and design, describing the show as 'giddy' and 'gleeful' with 'genius' moments, despite noting some gags don't land. The truncated text warrants reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:57:58.219Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

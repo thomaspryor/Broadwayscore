@@ -30,5 +30,11 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 762,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T09:08:34.971Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This is a review of the touring production in Atlanta, not the current Broadway run in New York; openai: The review is about a production of The Lion King in Atlanta, not the current Broadway run.; gemini: This is a review of the Atlanta production, not the Broadway production.; kimi: This review covers the touring production at the Fox Theatre in Atlanta (October 2024), not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"A wildly entertaining affair, 'The Cher Show' truly represents the singular superstar it chronicles: Just like the lady herself, this flashy new musical regarding the fabulous life and times of Cherilyn Sarkisian Bono Allman is funny, down-to-earth, madly flamboyant, occasionally conventional, blazing with talent, and delivers dozens of hit songs...Although 'The Cher Show' has its occasional stumbles, the production mostly is fluently staged by director Jason Moore.\"\n\nRead more"
+  "showScoreExcerpt": "\"A wildly entertaining affair, 'The Cher Show' truly represents the singular superstar it chronicles: Just like the lady herself, this flashy new musical regarding the fabulous life and times of Cherilyn Sarkisian Bono Allman is funny, down-to-earth, madly flamboyant, occasionally conventional, blazing with talent, and delivers dozens of hit songs...Although 'The Cher Show' has its occasional stumbles, the production mostly is fluently staged by director Jason Moore.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A wildly entertaining affair, 'The Cher Show' truly represents the singular superstar it chronicles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic praise ('wildly entertaining', 'blazing with talent') but acknowledges 'occasional stumbles'. Single excerpt requires caution, but tone is clearly positive. | GPT-4o: The excerpt describes the show as 'wildly entertaining' and praises its representation of Cher, with only minor reservations. The 4/5 star rating and the positive tone of the excerpt suggest a strong positive recommendation. | Gemini: The review excerpt is overwhelmingly positive, calling the show \"wildly entertaining\" and comparing it favorably to Cher herself. The 4/5 star rating and aggregator context support this assessment. | Kimi: The 4/5 star rating and enthusiastic language ('wildly entertaining', 'blazing with talent') warrant a high Positive score, though mention of 'occasional stumbles' keeps it from the Rave category. Single excerpt availability limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:58:27.855Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

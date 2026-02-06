@@ -36,5 +36,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250910104649/https://www.theatrely.com/post/jodie-comer-triumphs-in-prima-facie-review",
   "contentTier": "complete",
   "wordCount": 573,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Prima Facie is a masterclass in sophistication, thoughtfulness, and brevity; the platonic ideal of a night at the theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Clear rave with superlative language: 'masterclass,' 'platonic ideal of a night at the theatre,' 'exquisitely brought to life,' 'impeccably executed.' The critic calls Comer's performance a 'bravura stage debut' and praises both the writing and direction as 'laser-sharp' and 'superb.' | GPT-4o: The review is overwhelmingly positive, praising both Jodie Comer's performance and the play's execution. The use of terms like 'masterclass' and 'platonic ideal' indicates a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"bravura stage debut,\" \"exquisitely to life,\" \"superb sense of emotional and practical efficiency,\" and \"masterclass.\" The critic clearly recommends seeing the show. | Kimi: The review lavishes superlative praise on Comer's 'bravura' performance, Miller's writing, and Martin's direction, calling the production 'impeccably executed' and dismissing minor reservations about the play's thematic simplicity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:40:44.240Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

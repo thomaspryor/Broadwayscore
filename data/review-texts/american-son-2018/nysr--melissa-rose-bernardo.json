@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "showScoreExcerpt": "\"With its ripped-from-the-headlines plot, deliberate arguments, and crystal-clear-from-the-start ending, 'American Son' would have made an excellent episode of 'Law & Order.' It’s eminently watchable...Leon directs with the smooth efficiency befitting this procedural-style work, and the cast—Washington and Pasquale are especially fine as parents whose emotions ricochet from angry to anguished to afraid and back again—wrings just about all the drama they can out of the newsprint-thin script.\"\n\nRead more",
-  "bwwExcerpt": "Tony winner Kenny Leon (A Raisin in the Sun) directs with the smooth efficiency befitting this procedural-style work, and the cast-Washington and Pasquale are especially fine as parents whose emotions ricochet from angry to anguished to afraid and back again-wrings just about all the drama they can out of the newsprint-thin script. Hopefully they'll both be available for the inevitable small-screen adaptation (Netflix, perhaps?). And expect regional theaters and college campuses to jump at Ameri"
+  "bwwExcerpt": "Tony winner Kenny Leon (A Raisin in the Sun) directs with the smooth efficiency befitting this procedural-style work, and the cast-Washington and Pasquale are especially fine as parents whose emotions ricochet from angry to anguished to afraid and back again-wrings just about all the drama they can out of the newsprint-thin script. Hopefully they'll both be available for the inevitable small-screen adaptation (Netflix, perhaps?). And expect regional theaters and college campuses to jump at Ameri",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's eminently watchable",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: 3/5 stars with praise for direction and performances, but criticism of 'newsprint-thin script' suggests qualified recommendation. Positive overall but with clear reservations. | GPT-4o: The review describes the show as 'eminently watchable' but compares it to a procedural TV episode, suggesting it lacks depth. The 3/5 stars and praise for the cast indicate a mixed but somewhat positive view. | Gemini: The review states the show is \"eminently watchable\" and praises the cast, but notes the script is \"newsprint-thin\", indicating a positive but not rave review. Given the truncated text, confidence is low. | Kimi: The 3/5 star rating and qualified tone—praising the production as 'eminently watchable' with 'smooth efficiency' direction and strong performances while criticizing the 'newsprint-thin script'—places this firmly in the Mixed bucket. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:54:56.664Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

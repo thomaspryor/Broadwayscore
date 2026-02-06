@@ -44,5 +44,60 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241026195248",
   "archiveOrgUrl": "http://web.archive.org/web/20241026195248/https://www.theatrely.com/post/an-astonishing-romeo-juliet-for-a-new-age-review",
-  "wordCount": 974
+  "wordCount": 974,
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's all a very pleasant surprise that this Romeo + Juliet is more akin to Skins than expected: wildly enjoyable, acutely contemporary, potently acted, and often surprisingly revealing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening concerns about the marketing and some production choices, the critic finds it 'remarkably strong,' praises the leads as revelations/stars, and concludes it's 'wildly enjoyable' and 'a very pleasant surprise.' Clear positive recommendation with some reservations about stylistic choices. | GPT-4o: The review praises the production as 'wildly enjoyable' and 'potently acted,' with strong thematic elements. Despite some initial skepticism about its modern approach, the overall verdict is positive and enthusiastic. | Gemini: Despite initial reservations about the marketing, the critic ultimately finds the production \"wildly enjoyable, acutely contemporary, potently acted, and often surprisingly revealing.\" The review is overwhelmingly positive, praising the direction, performances, and overall thematic core. | Kimi: Despite opening skepticism about the marketing campaign, the critic delivers an enthusiastic verdict, calling the production 'remarkably strong,' the leads 'revelations,' and the overall experience 'wildly enjoyable' and 'surprisingly revealing,' with only minor reservations about pacing in less stylized scenes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:43:25.941Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

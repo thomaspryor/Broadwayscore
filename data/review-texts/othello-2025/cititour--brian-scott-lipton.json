@@ -35,5 +35,59 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 726,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I suspect most people who shelled out those big bucks will leave this production generally disappointed in the final product.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic clearly states audiences will be 'generally disappointed' and criticizes Washington's performance as feeling like 'another day at the office,' while praising only supporting performances. The negative assessment outweighs the praise for Gyllenhaal and others. | Gemini: The review expresses disappointment with the production, citing issues with the set, costumes, and Washington's performance. While Gyllenhaal's performance is praised, the overall experience is deemed underwhelming. | Kimi: While praising Jake Gyllenhaal's and Andrew Burnap's performances, the critic finds Denzel Washington miscast and the production visually underwhelming, concluding that audiences will leave 'generally disappointed' and questioning the high ticket price.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:31:51.740Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

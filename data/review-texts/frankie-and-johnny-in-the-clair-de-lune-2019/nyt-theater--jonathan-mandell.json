@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -35,5 +35,60 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 822,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, even at its full two hours (plus intermission) over two acts, the play has enough humor, delicate pathos, specificity of detail, and psychological complexity to showcase McNally's skills as a dramatist.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opens with 'ultimately lovely' and concludes that despite being overlong, the play has enough positive qualities to showcase McNally's skills. The aggregator excerpt confirms this positive-with-reservations stance. | GPT-4o: The review acknowledges flaws, such as the play being overlong and a scene that feels like a misstep, but ultimately highlights the humor, pathos, and complexity that showcase McNally's skills. The text is truncated, so the final verdict may be missing, leading to a low confidence rating. | Gemini: The review is mostly positive, noting the play has \"enough humor, delicate pathos, specificity of detail and psychological complexity.\" However, it also mentions the play is \"overlong\" and a scene feels like a \"misstep\", indicating reservations. | Kimi: While the critic finds the production overlong and notes a 'creepy' scene that feels dated, the overall verdict is clearly positive, calling the revival 'ultimately lovely' and praising the performances and McNally's writing. The review ends on an uplifting note about the characters' chance at love.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:38:35.115Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

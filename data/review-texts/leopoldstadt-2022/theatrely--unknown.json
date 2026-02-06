@@ -36,5 +36,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251212011702/https://www.theatrely.com/post/leopoldstadt-makes-it-to-broadway-with-more-work-to-go-review",
   "contentTier": "complete",
   "wordCount": 572,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is, unfortunately, not a very good play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite acknowledging the impressive scale and production values, the critic clearly states it's 'not a very good play' and systematically criticizes the dialogue, character development, and dramatic engagement. The conclusion expresses personal satisfaction for Stoppard but not recommendation for audiences. | GPT-4o: The review criticizes the play for its lack of dynamic engagement, unlikable characters, and ineffective dialogue. Despite some praise for individual performances and production elements, the overall tone is negative, indicating a lack of recommendation. | Gemini: The review states it is \"not a very good play\" and criticizes the dialogue and lack of dramatic tension. While praising some performances and design elements, the overall assessment is negative. | Kimi: The critic explicitly states the play is not very good and criticizes its dull, exposition-heavy writing and lack of dramatic tension, despite acknowledging strong production design and some performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:14:59.950Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

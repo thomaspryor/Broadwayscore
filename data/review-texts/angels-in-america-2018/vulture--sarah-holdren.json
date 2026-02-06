@@ -47,5 +47,59 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 333,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under the piercing, balletic direction of Marianne Elliott, this brilliant rendering arrives from London's National Theatre in a moment as detached from solidity as any in living memory — and the play couldn't feel more vivid, more eloquently enraged, funnier or more full of life than if the ink on its script were still drying.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Effusive praise with superlatives like 'magnificent,' 'brilliant,' 'piercing,' and 'couldn't feel more vivid...funnier or more full of life.' The critic is clearly rhapsodic about this production. | Gemini: The review uses strong positive language like \"magnificent wings\", \"brilliant rendering\", \"more vivid, more eloquently enraged, funnier or more full of life\". This indicates a rave review. | Kimi: The critic lavishes unqualified praise on the production using words like 'magnificent,' 'brilliant,' and 'vivid,' declaring the play feels fully alive and urgently relevant with no reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:56:42.565Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

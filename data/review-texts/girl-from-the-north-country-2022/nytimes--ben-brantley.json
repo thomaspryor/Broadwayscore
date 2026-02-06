@@ -52,5 +52,11 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 304,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T07:41:11.580Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Old Vic Theater in London, not the current Broadway run.; gemini: This review is for the Old Vic Theatre in London, not the Broadway production.; kimi: This review covers the 2017 London premiere at the Old Vic Theater, not the Broadway production.",
+  "promptVersion": "5.2.0"
 }

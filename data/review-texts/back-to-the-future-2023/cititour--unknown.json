@@ -35,5 +35,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 736,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you're smart, prepare for 'Future' imperfect and you'll have a good enough time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show works as entertainment and value for families/teens, but consistently criticizes the craft elements (forgettable score, overblown choreography, distracting design). The conclusion suggests lowered expectations for a 'good enough time' rather than enthusiasm. | GPT-4o: The review provides a balanced view, acknowledging impressive elements like the video designs and performances, but also criticizes the score, choreography, and overall execution. The recommendation is conditional, suggesting a mixed experience depending on expectations. | Gemini: The review acknowledges some positive aspects, such as the performances of Casey Likes and Roger Bart, but also points out flaws in the score, choreography, and overall direction. The critic suggests it's a good introduction to musical theater for children but may not satisfy more sophisticated tastes, indicating a mixed recommendation. | Kimi: While praising lead performances by Casey Likes and Roger Bart, the critic heavily criticizes the score, direction, and overall craft, finding the show 'undercooked' and 'overblown' with effects that don't justify the ticket price for sophisticated audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:57:50.296Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

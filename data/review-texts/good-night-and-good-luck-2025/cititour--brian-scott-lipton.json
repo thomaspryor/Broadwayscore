@@ -38,5 +38,59 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 696,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a solid evening of theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review clearly recommends the show with phrases like 'solid evening of theater,' 'fine showcase,' and 'eminently watchable,' while acknowledging it's 'less-than-dramatic' and 'heavy-handed' at times. | Gemini: The review is generally positive, highlighting Clooney's performance and the play's relevance, but acknowledges it might be less dramatic for those familiar with the story. The final line suggests a positive experience. | Kimi: The reviewer praises the production as a 'fine showcase' for Clooney and calls it a 'solid evening of theater' that is 'eminently watchable,' recommending it despite noting it is 'less-than-dramatic' for those familiar with the history. The final verdict that audiences will 'have a good night' confirms a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:47:17.991Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The revival of David Mamet's 1975 drama about small-time crooks plotting a coin heist is elevated by three terrific performances, particularly Sam Rockwell's twitchy, volatile Bobby.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -41,5 +41,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230309155531/https://variety.com/2022/legit/reviews/american-buffalo-review-broadway-david-mametsam-rockwell-laurence-fishburne-1235232931/",
   "duplicateTextOf": "variety--aramide-tinubu.json",
   "wordCount": 896,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 'American Buffalo' is a closed circuit, too reverent by half of its source material.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the production lacking in vitality and specificity, praises Rockwell's performance but criticizes direction as telegraphed and predictable, and concludes it fails to make a case for Mamet's continued relevance. Clear negative recommendation despite acknowledging some individual strengths. | GPT-4o: The review highlights strong performances by Rockwell and Fishburne but criticizes the production for lacking vitality and being overly reverent. The overall tone is mixed, with some praise for performances but significant reservations about the production's execution and impact. | Gemini: The review expresses disappointment with the production, citing a lack of vitality and specificity. While praising Rockwell and Fishburne, it criticizes Criss' performance and the direction, ultimately finding the production reverent but unconvincing. | Kimi: While praising Sam Rockwell's compelling performance and Laurence Fishburne's stolid authority, the critic finds the production lacks vitality, features awkward direction that telegraphs moments unduly, and grinds toward an overdue conclusion, ultimately failing to make a case for Mamet's continued relevance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:53:49.179Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 58,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

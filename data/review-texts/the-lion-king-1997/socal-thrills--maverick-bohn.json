@@ -32,5 +32,11 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 851,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T09:09:29.478Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at Segerstrom Center for the Arts, not the current Broadway run.; kimi: This review covers the national tour production at Segerstrom Center for the Arts in Costa Mesa, CA (and mentions Minneapolis in the excerpt), not the current Broadway run at the Minskoff Theatre in New York City.",
+  "promptVersion": "5.2.0"
 }

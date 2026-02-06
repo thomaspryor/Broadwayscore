@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of 'A Christmas Carol' feels like a Christmas miracle itself — a show that manages to be both faithful to Dickens' original story and refreshingly inventive in its theatrical presentation.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "textWordCount": 903,
   "archivePath": "data/archives/reviews/a-christmas-carol-2022/variety--maya-phillips_2026-02-06.html",
@@ -58,5 +58,10 @@
     "Show title not found in text"
   ],
   "wordCount": 903,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-06T06:43:48.464Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This text is website navigation content, article headlines, and promotional copy from Variety's homepage, not a theater review of A Christmas Carol; openai: The text provided is a collection of unrelated headlines and snippets, not a coherent review of a Broadway show.; gemini: This appears to be a listing of various articles and headlines, not a review of a specific show.; kimi: The provided text is a jumbled collection of Variety headlines, 'Popular on Variety' navigation links, and fragmented snippets about various films, albums, and TV shows—not a coherent review article. It contains no identifiable review of the target show (A Christmas Carol) mentioned in the aggregator context, nor any single scoreable theatrical production.",
+  "promptVersion": "5.2.0"
 }

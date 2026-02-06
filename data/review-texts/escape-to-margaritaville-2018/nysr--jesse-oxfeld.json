@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"Perfectly pleasant but not especially good, a watered-down, mostly flavorless, machine-made frozen concoction that does enough to remind you of a better version of itself that you're left satisfied by default, for lack of another option...It is trying so hard to show you a good time, while also trying so hard to stay true to its tell-it-like-it-is roots...First act is so obvious...so labored, that it turns awfully tedious...Second act is better, 'Margaritaville' finally allows itself to have some fun.\"\n\nRead more"
+  "showScoreExcerpt": "\"Perfectly pleasant but not especially good, a watered-down, mostly flavorless, machine-made frozen concoction that does enough to remind you of a better version of itself that you're left satisfied by default, for lack of another option...It is trying so hard to show you a good time, while also trying so hard to stay true to its tell-it-like-it-is roots...First act is so obvious...so labored, that it turns awfully tedious...Second act is better, 'Margaritaville' finally allows itself to have some fun.\"\n\nRead more",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Escape to Margaritaville is perfectly pleasant but not especially good, a watered-down, mostly flavorless, machine-made frozen concoction",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: 2/5 stars with consistent criticism throughout. While acknowledging some second act improvements and individual performances, the critic finds the show 'tedious,' 'mediocre,' and compares it to a 'watered-down, mostly flavorless' concoction, clearly not recommending it. | GPT-4o: The review is largely negative, describing the show as 'perfectly pleasant but not especially good' and 'a mediocre simulacrum of escape.' The 2/5 star rating aligns with a Negative bucket, indicating a recommendation against seeing it. | Gemini: The review is mixed, noting the show is \"perfectly pleasant but not especially good\". While the second act is better, the overall impression is lukewarm, leading to a mixed classification. | Kimi: The 2/5 star review criticizes the show as a 'watered-down, mostly flavorless' and 'tedious' production that fails to deliver genuine pleasure, despite some decent performances and an improved second act.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:29:25.925Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

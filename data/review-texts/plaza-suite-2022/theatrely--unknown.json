@@ -36,5 +36,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251116034408/https://www.theatrely.com/post/checked-out-of-plaza-suite-review",
   "contentTier": "complete",
   "wordCount": 783,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "not even SJP's incandescent star power can brush off the dust settled on this three-act look at marriage",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising Parker's performance and noting the later acts improve, the critic finds the material fundamentally flawed ('mediocrity, baldly served') and questions why Parker's talent should 'go to waste' on this revival. The overall assessment is clearly negative. | GPT-4o: The review criticizes the production for its outdated material and lack of compelling direction, despite some praise for Parker's performance. The overall tone suggests disappointment and questions the necessity of the revival. | Gemini: The review is mixed, praising Parker's performance and the physical comedy in the later acts, but criticizing the first act and the overall lack of depth in Simon's writing. It doesn't strongly recommend or discourage seeing the show. | Kimi: While praising Parker and Broderick's physical comedy and watchability, the critic finds the first act 'dreadful,' the direction unadorned, and concludes that the production wastes its stars' talents on dated material that shouldn't have been revived. The final rhetorical question suggests audiences seek better company.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:38:25.528Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

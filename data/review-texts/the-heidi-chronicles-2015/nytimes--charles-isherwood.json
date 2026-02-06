@@ -40,5 +40,58 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text cuts off mid-sentence with a technical error message about retrieving content and enabling JavaScript, making it incomplete and unscoreable; openai: The text is incomplete and contains a technical error message about enabling JavaScript, making it unscoreable.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Moss, a superb actor who possesses an unusual ability to project innocence and smarts at the same time, inherits a role played by many since Joan Allen originated it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises Moss as 'superb' and calls the revival 'vibrant,' but expresses anxiety about the play's durability and whether its humor will still resonate. The text is truncated mid-sentence, creating uncertainty about the final verdict. | Gemini: The review praises Moss's performance and the play's intelligence, but expresses some concern about its relevance to a modern audience. The overall tone is positive, but with caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T09:06:19.419Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  }
 }

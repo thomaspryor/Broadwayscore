@@ -18,5 +18,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "bwwExcerpt": "Perhaps removing the less-significant male characters is supposed to focus more squarely on the blossoming parallel love stories: the awkward, oh-so-idealistic teenage pairing of Rosa and Jack, and the awkward, cynical, mature coupling of Serafina and Alvaro. But sometimes the sauce just doesn't come together."
+  "bwwExcerpt": "Perhaps removing the less-significant male characters is supposed to focus more squarely on the blossoming parallel love stories: the awkward, oh-so-idealistic teenage pairing of Rosa and Jack, and the awkward, cynical, mature coupling of Serafina and Alvaro. But sometimes the sauce just doesn't come together.",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But sometimes the sauce just doesn't come together.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with a clear negative verdict metaphor about the show not working. Single excerpt warning noted, but the rating and culinary failure metaphor align consistently. | GPT-4o: The review excerpt suggests a lack of cohesion in the production, and the original 2/5 star rating indicates a negative overall assessment. The excerpt's metaphor implies the show fails to deliver a satisfying experience. | Gemini: The single excerpt available is negative, and the original rating is 2/5 stars, indicating a negative review. | Kimi: The critic's 2/5 star rating and the assessment that the production's structural changes fail to achieve coherence ('the sauce just doesn't come together') indicate a negative verdict, though confidence is low given only a single excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T09:20:02.383Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

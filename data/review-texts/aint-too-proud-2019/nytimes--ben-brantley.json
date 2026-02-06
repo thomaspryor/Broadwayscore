@@ -39,5 +39,59 @@
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about JavaScript and retrieving content, making it impossible to determine the critic's final verdict; openai: The text is incomplete and includes navigation instructions and error messages, making it not scoreable.",
   "promptVersion": "5.2.0",
-  "publishDate": "March 22, 2019"
+  "publishDate": "March 22, 2019",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As you watch this latest entry in Broadway's ever-expanding jukebox musical sweepstakes, you will no doubt find your legs twitching, as if from muscle memory.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley praises the choreography as 'sensational', describes the performers as 'Platonic ideals', and celebrates the music as a 'collective miracle'. While he notes the formulaic jukebox musical format, the overall tone is appreciative and recommending. | Gemini: The review praises the music, choreography, and direction, while acknowledging the somewhat downbeat narrative. The overall tone is positive, recommending it for the experience despite the story's challenges. | Kimi: The review offers unqualified praise for the production, describing the direction as 'shrewd,' choreography as 'sensational,' and performances with 'sublime grace' and 'anchoring gravity.' Despite the truncated ending, the evaluative language indicates a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:49:16.265Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

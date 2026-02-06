@@ -41,5 +41,59 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 671,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This crowd-pleasing and thought-provoking play has finally arrived in New York.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review consistently praises the performances, direction, and writing with positive descriptors like 'superb,' 'excellent,' and 'crowd-pleasing.' Despite noting some parts 'fail to achieve desired effect,' the overall assessment is clearly positive with an 'A for effort' conclusion. | Gemini: The review is generally positive, highlighting the play's complexity, the performances, and the direction. While acknowledging that some parts may not fully achieve their desired effect, the critic gives an \"A for effort\". | Kimi: The review offers sustained praise for the direction ('assured', 'excellent'), performances ('superb', 'brilliantly hilarious'), and writing ('crowd-pleasing and thought-provoking'), with only minor caveats about some parts failing to achieve full effect.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:09:07.891Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

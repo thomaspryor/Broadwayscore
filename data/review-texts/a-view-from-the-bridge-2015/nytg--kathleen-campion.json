@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -43,5 +43,60 @@
   "textStatus": "truncated",
   "sourceMethod": "playwright",
   "wordCount": 726,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you can get a ticket see it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Opens with clear must-see recommendation, praises van Hove's inventive direction as offering 'truly fresh take on an American classic', calls Strong's performance 'heart-breaking and infuriating perfection', and describes the vision as powerfully raw. Despite being truncated, the verdict is unambiguously positive with strong enthusiasm. | GPT-4o: The review praises the production's inventiveness, director's vision, and performances, particularly Mark Strong's. Despite the truncated text, the strong recommendation to see the show indicates a rave review. | Gemini: The review is overwhelmingly positive, praising the direction, acting, and overall vision. The opening line \"If you can get a ticket see it\" is a strong recommendation. | Kimi: The review opens with an explicit imperative recommendation ('If you can get a ticket see it'), followed by sustained praise for van Hove's 'truly fresh take,' Mark Strong's 'heart-breaking and infuriating perfection,' and the production's raw emotional power. Despite truncation, the verdict is unambiguously enthusiastic with no reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:47:57.892Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

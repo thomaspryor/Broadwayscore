@@ -45,5 +45,60 @@
   "tierReason": "Missing proper ending or other signals",
   "previousUrl": "http://www.hollywoodreporter.com/hr/film-reviews/brief-encounter-theater-review-1004117319.story",
   "urlDiscoveredAt": "2026-02-06T04:07:23.037Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The overall effect is visually dazzling, but the neatest trick is that the technological gimmickry never overwhelms the simple emotionality of the tale.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise ('visually dazzling', 'neatest trick', balanced technology with emotion), but limited text requires caution about full verdict. | GPT-4o: The excerpt praises the immersive and visually dazzling production, highlighting the successful integration of technology without overshadowing the story's emotional core. Despite the single excerpt limitation, the tone suggests a strong positive impression. | Gemini: The review excerpt describes the show as \"visually dazzling\" and praises the integration of technology with the story's emotional core. Given the single excerpt, I'm placing it in the upper end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the production's visual design and technological integration while emphasizing its emotional core, indicating a strong positive recommendation, though the single-excerpt limitation prevents higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:04:46.360Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

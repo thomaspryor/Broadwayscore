@@ -33,5 +33,60 @@
   "contentTier": "complete",
   "wordCount": 875,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"Poetry was made so Ntozake Shange could write it. It’s why her words could be read in a 1970s Berkeley bar and have women falling out of their seats. Five decades later, a Broadway revival has women leaping to their feet before bows have begun. “for colored girls” cuts to the marrow of the bone, and I want to get caught up in its rapture again and again\"\n\nRead more"
+  "showScoreExcerpt": "\"Poetry was made so Ntozake Shange could write it. It’s why her words could be read in a 1970s Berkeley bar and have women falling out of their seats. Five decades later, a Broadway revival has women leaping to their feet before bows have begun. “for colored girls” cuts to the marrow of the bone, and I want to get caught up in its rapture again and again\"\n\nRead more",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival, by director and choreographer Camille A. Brown, is the most essential production of Shange's masterwork to date.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'most essential,' 'marvel,' and 'honor to witness.' The critic expresses desire to see it multiple times and calls it transformative. No reservations expressed. | GPT-4o: The review is filled with superlative praise, describing the production as 'essential' and expressing a strong emotional impact. The critic's personal connection and the enthusiastic tone suggest a rave recommendation. | Gemini: The review is overwhelmingly positive, calling the production \"essential\" and praising the direction, choreography, and performances. The critic expresses a strong personal connection to the work and recommends experiencing it multiple times. | Kimi: The critic offers unqualified praise for the production, calling it the 'most essential' version of the work to date, praising the direction, choreography, and performances as marvelous and enthralling, with no reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:33:55.038Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

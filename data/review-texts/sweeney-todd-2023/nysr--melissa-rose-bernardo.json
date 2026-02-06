@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "bwwExcerpt": "I’d never call myself a Sweeney Todd person—thrillers simply aren’t my thing, on stage or screen—but every time I see a production I leave with a deeper appreciation for Sondheim’s score, packed with swoon-worthy melodies and subversively witty lyrics. (Is “A Little Priest” the best-ever example of Sondheim’s wordplay? Discuss.) The new Broadway revival—starring Josh Groban, Annaleigh Ashford, a 26-member orchestra, and Jonathan Tunick’s original orc"
+  "bwwExcerpt": "I’d never call myself a Sweeney Todd person—thrillers simply aren’t my thing, on stage or screen—but every time I see a production I leave with a deeper appreciation for Sondheim’s score, packed with swoon-worthy melodies and subversively witty lyrics. (Is “A Little Priest” the best-ever example of Sondheim’s wordplay? Discuss.) The new Broadway revival—starring Josh Groban, Annaleigh Ashford, a 26-member orchestra, and Jonathan Tunick’s original orc",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway revival is guaranteed to do the same for you. It sounds spectacular.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with clear praise for Groban's performance, Ashford's comedy, and the production values (lighting, orchestra). Some reservations about casting choices and venue size, but overall enthusiastic recommendation. | GPT-4o: The review praises the production's music, performances, and staging, but notes some reservations about the casting and portrayal of characters. The original 4/5 star rating suggests a strong positive recommendation, but the truncated text and mixed signals about certain elements lower confidence. | Gemini: The review is generally positive, highlighting the spectacular sound and performances, but notes some reservations about casting choices. The 4/5 star rating also supports a positive classification. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:54:54.195Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

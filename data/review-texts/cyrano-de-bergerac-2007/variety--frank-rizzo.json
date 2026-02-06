@@ -48,5 +48,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 743,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Not so much the show, which only sees the pain of illusion.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: While praising Dinklage's 'mesmerizing' performance and acknowledging production values, the critic finds the adaptation 'reductive,' 'overly spare,' and emotionally disconnected, leaving audiences 'unfulfilled and stranded.' The final line clearly states the show itself is not captivating. | GPT-4o: The review praises Peter Dinklage's performance but criticizes the production for being overly spare and lacking emotional connection. The overall tone suggests disappointment with the adaptation, indicating a negative recommendation. | Gemini: The review praises Dinklage's performance and the score, but criticizes the reductive nature of the adaptation and its emotional impact, resulting in a mixed assessment. | Kimi: While the critic praises Peter Dinklage's 'mesmerizing' performance and the 'haunting' score, the review fundamentally criticizes the adaptation as 'thin,' 'reductive,' and 'gloomy,' finding that it 'diminishes the audience's emotional connection' and leaves viewers 'unfulfilled and stranded.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:13:22.634Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

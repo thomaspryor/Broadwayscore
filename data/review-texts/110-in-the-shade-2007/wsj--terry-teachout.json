@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The problem with '110 in the Shade' isn't that it's a bad show -- it's that it isn't quite good enough to justify reviving it on Broadway in 2007.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The problem with '110 in the Shade' isn't that it's a bad show -- it's that it isn't quite good enough to justify reviving it on Broadway in 2007.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The problem with '110 in the Shade' isn't that it's a bad show -- it's that it isn't quite good enough to justify reviving it on Broadway in 2007.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Critic explicitly states it's not a bad show but questions whether it merits Broadway revival, suggesting lukewarm assessment. Single excerpt warning applies - this could be from a longer mixed review. | GPT-4o: The excerpt suggests the show lacks sufficient quality to warrant a Broadway revival, indicating a negative assessment. However, the single excerpt warning and lack of full context lower confidence. | Gemini: The critic states the show isn't bad, but also not good enough to justify a revival, indicating a mixed opinion. | Kimi: The critic acknowledges the production is competent ('isn't a bad show') but delivers a clear negative verdict that it fails to merit a Broadway revival, recommending against the production. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T09:47:41.041Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 65,
+    "kimiScore": 52,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

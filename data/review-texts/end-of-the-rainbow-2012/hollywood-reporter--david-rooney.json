@@ -36,5 +36,60 @@
   "archiveOrgTimestamp": "20200930141610",
   "archiveOrgUrl": "http://web.archive.org/web/20200930141610/https://www.hollywoodreporter.com/review/end-of-the-rainbow-theater-review-306891",
   "wordCount": 954,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A gutsy performance trapped in a one-note play that gives us the broad outline of the tragic star but lacks the insight to penetrate her heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises Bennett's committed performance extensively but finds the play itself limiting and one-dimensional. The overall assessment is that strong acting cannot overcome weak material, placing this in mixed territory. | GPT-4o: The review praises Tracie Bennett's performance but criticizes the writing and direction for lacking depth and emotional connection. The text is truncated, so the final verdict may be missing, leading to a cautious mixed score. | Gemini: The review praises Bennett's performance but criticizes the writing and direction. The overall impression is mixed, with the performance being the main highlight. | Kimi: While Tracie Bennett's performance receives high praise as a 'fiercely dynamic center,' the critic finds the writing 'hits every obvious note except the pathos' and the direction 'unrelentingly emphatic,' calling the overall experience a 'sad spectacle' and 'macabre sideshow' that lacks emotional insight.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:26:44.306Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

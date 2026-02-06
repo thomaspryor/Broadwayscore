@@ -36,5 +36,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251010000358/https://www.theatrely.com/post/peter-pan-goes-wrong-in-the-best-ways-review",
   "contentTier": "complete",
   "wordCount": 464,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "my date and I were delighted by the sheer bravado of its joke-a-minute style, inventive design, and committed performances",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear positive recommendation with praise for performances, design, and entertainment value. Despite acknowledging the shtick 'gets old', the critic expresses delight and recommends the show's 'bravado' and commitment. | Gemini: The review is generally positive, highlighting the fast pace, inventive design, and committed performances, while acknowledging that the shtick can get old. The reviewer and their date were delighted, and the kids in the audience were howling with laughter. | Kimi: While acknowledging the repetitive nature of the slapstick gimmick, the critic delivers an enthusiastic recommendation, praising the breathless direction, committed performances, and inventive design as delightful entertainment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:34:46.018Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 79,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

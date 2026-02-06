@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20230318023215",
   "archiveOrgUrl": "http://web.archive.org/web/20230318023215/https://www.theatrely.com/post/the-humanity-of-parade-on-full-display-review",
   "wordCount": 645,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jason Robert Brown's score is a masterpiece.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with superlatives like 'masterpiece,' 'tour-de-force,' 'stunning,' and 'astonishing.' Praises performances, direction, and score with minimal reservations. Only minor criticism about one staging choice. | GPT-4o: The review is filled with superlative praise for the production, performances, and direction, describing it as 'stunning', 'breathtaking', and a 'masterpiece'. The critic strongly recommends the show with no reservations. | Gemini: The review is overwhelmingly positive, praising the performances, direction, score, and overall impact of the show. The critic uses strong language like \"stunning tale\", \"breathtaking\", and \"masterpiece\". | Kimi: Review offers unqualified enthusiastic praise with superlatives ('tour-de-force', 'masterpiece', 'breathtaking') and no significant reservations, clearly recommending the production as essential viewing. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:33:38.113Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

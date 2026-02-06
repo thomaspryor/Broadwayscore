@@ -52,5 +52,59 @@
   ],
   "duplicateTextOf": "nytimes--ben-brantley.json",
   "wordCount": 570,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show does have just enough nice supporting performances and successful comic moments to amuse easily amused kiddies and leave grown-up ticket buyers grumbling no more loudly than they would after any of the other holiday shows.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review finds significant flaws in the lead performance and adaptation choices but acknowledges decent supporting work and some successful moments. The critic suggests it's adequate holiday fare without strong recommendation. | Gemini: The review is mixed, praising some supporting performances and comic moments but criticizing the lead and the love story. The overall tone suggests a lukewarm recommendation, suitable for undemanding audiences. | Kimi: While the review acknowledges nice supporting performances and some successful comic moments that will entertain children, it heavily criticizes the lead performance as awkward and uncomfortably close to mentally disabled, finds the love story pared down, and notes grown-ups will be grumbling. The critic finds the adaptation inferior to the film and suggests it's generic holiday filler.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:24:58.071Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

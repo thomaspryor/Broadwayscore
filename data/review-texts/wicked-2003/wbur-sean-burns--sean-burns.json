@@ -29,5 +29,11 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 950,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T09:45:19.069Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The text is a review of the film adaptation of 'Wicked', not the current Broadway production.; gemini: This is a review of the movie 'Wicked: For Good', not the Broadway show 'Wicked'.; kimi: This is a film review of the movie 'Wicked: For Good' (2024), not a review of the Broadway stage production. The text explicitly discusses cinematic elements (director Jon M. Chu, camera work, movie pacing, theatrical release) and compares the film adaptation to the Broadway source material rather than evaluating a live theatrical performance.",
+  "promptVersion": "5.2.0"
 }

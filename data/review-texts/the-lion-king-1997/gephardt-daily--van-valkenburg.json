@@ -30,5 +30,11 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 607,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T09:08:58.426Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This is a review of a touring production at the Eccles Theater in Salt Lake City in 2022, not a Broadway production; openai: The review is about a Broadway touring production of 'The Lion King' at the Eccles Theater in Salt Lake City, not the current Broadway run.; kimi: This review covers a touring production at the Eccles Theater in Salt Lake City, Utah, not the current Broadway run in New York City.",
+  "promptVersion": "5.2.0"
 }

@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"You're guaranteed to get everything you hoped for from the production, a slam-bang success sure to keep the adored singer-songwriter in Margaritas for some time to come...Ashley proves his prowess...Definitely a Tony nominee in this season...Laidback and kickbacked as 'Escape to Margaritaville' is, it's vigorously up-to-date on the Time's Up agenda. A late storyline twist works forcefully as a bow to women today who want to make it on their own before tying any knot.\"\n\nRead more"
+  "showScoreExcerpt": "\"You're guaranteed to get everything you hoped for from the production, a slam-bang success sure to keep the adored singer-songwriter in Margaritas for some time to come...Ashley proves his prowess...Definitely a Tony nominee in this season...Laidback and kickbacked as 'Escape to Margaritaville' is, it's vigorously up-to-date on the Time's Up agenda. A late storyline twist works forcefully as a bow to women today who want to make it on their own before tying any knot.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a slam-bang success sure to keep the adored singer-songwriter in Margaritas for some time to come",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise throughout - calls it a 'slam-bang success,' predicts Tony nomination, compares favorably to Mamma Mia's long-run potential, and praises all major elements including direction, book, performances, and creative team. | GPT-4o: The review is filled with praise for the production, direction, and performances, describing it as a 'slam-bang success' and predicting Tony nominations. The original 4/5 stars aligns with a strong positive recommendation. | Gemini: The review is overwhelmingly positive, with the critic praising the direction, book, performances, and overall experience. The 4/5 star rating and language like \"slam-bang success\" and \"guaranteed to get everything you hoped for\" indicate a strong positive recommendation. | Kimi: The reviewer awards 4/5 stars and delivers consistent praise for the direction, book, and performances, calling it a 'slam-bang success' with Tony nomination potential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:28:50.910Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

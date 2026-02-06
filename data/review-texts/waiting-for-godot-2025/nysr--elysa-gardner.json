@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "For a play that’s famous for the lack of progress its characters make, Waiting for Godot has succeeded in bringing an awful lot of A-list names to the New York stage. The latest to take on Samuel Beckett’s co-dependent hobos, Keanu Reeves and Alex Winter, have teamed up in the past on film—perhaps m...",
-  "bwwRoundupUrl": null
+  "bwwRoundupUrl": null,
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I would have rather spent a longer time with a Godot helmed by a director more concerned about what he wanted to say than how differently he could say it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The 3/5 star rating aligns with mixed reception. Gardner praises the set design as 'stunning' and highlights strong supporting performances, but criticizes Reeves' flat line readings and Lloyd's superficial directorial choices. The closing critique suggests style over substance concerns. | GPT-4o: The review provides a balanced assessment with praise for some elements like the set design and certain performances, but also highlights significant reservations about the direction and some performances. The original 3/5 stars suggests a mixed review, but the text is truncated, so confidence is low. | Gemini: The review praises the set design and some performances, but criticizes Reeves' performance and Lloyd's direction. The overall impression is mixed, with no clear recommendation. | Kimi: The 3/5 star rating reflects a balanced assessment that praises the striking set design and supporting performances (particularly Thornton and Dirden) but criticizes the lead acting and director Lloyd's style-over-substance approach. The review concludes with a clear reservation about the production's artistic priorities, placing it firmly in mixed territory despite notable visual strengths.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T09:32:45.083Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

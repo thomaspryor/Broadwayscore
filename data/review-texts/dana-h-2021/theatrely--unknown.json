@@ -36,5 +36,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251212010624/https://www.theatrely.com/post/dana-h-finally-on-broadway-mesmerizes-review",
   "contentTier": "complete",
   "wordCount": 721,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dana H. is a play unlike anything Broadway has seen before.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Review uses superlative language throughout ('astonishing', 'marvelous', 'unlike anything I've ever seen') and concludes by calling it 'one of the best plays in the season'. No significant reservations expressed. | GPT-4o: The review is filled with superlatives and praises the play as 'astonishing', 'marvelous', and 'one of the best plays in the season'. The critic describes the performance and storytelling as exceptional, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performance, direction, and storytelling. The critic calls it \"astonishing\" and \"one of the best plays in the season.\" | Kimi: The critic delivers unqualified praise, calling the show 'astonishing' and 'marvelous' while declaring it one of the best plays of the season and a unique theatrical achievement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:14:45.337Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 89,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

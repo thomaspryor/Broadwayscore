@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Daniel Craig brings a muscular masculinity to his role as Robert, the betrayed husband who may not be as obtuse as his cheating wife and best friend assume.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -68,5 +68,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--unknown.json",
   "wordCount": 613,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mike Nichols' impeccable revival of 'Betrayal' delivers powerful performances and infallible timing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'impeccable,' 'pitch-perfect,' 'expertly acted,' and 'infallible.' No reservations or criticisms offered, only enthusiastic recommendation of performances, direction, and production values. | GPT-4o: The review is filled with superlatives such as 'impeccable', 'powerful performance', and 'expertly acted', indicating a strong recommendation. The critic praises the production, direction, and performances without reservations. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and set design. Phrases like \"pitch-perfect,\" \"expertly acted,\" and \"impeccable revival\" indicate a strong recommendation. | Kimi: The critic offers unqualified praise for the revival, using superlatives like 'impeccable,' 'infallible,' and 'brilliant' to describe the direction, performances, and design with no reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:03:00.384Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "showScoreExcerpt": "\"Schreck has a visible, and contagious, passion for the subject—and a gift for conveying it to the crowd...While it’s certainly not a lecture, the show is undoubtedly an education...It would be enough if Schreck had made this simply her show—her memoir, her coming-of-age story, her take on the Constitution. But she dedicates the last section to debate with a high school student...It feels energizing and hopeful—and exactly what our country needs.\"\n\nRead more",
-  "bwwExcerpt": "The first time I saw Schreck's show was the weekend after the Brett Kavanaugh hearings. After watching his smug, self-satisfied face and histrionic outbursts replayed on TV and Twitter ad nauseam, Constitution was comforting and restorative; it was exactly what I needed. Now, it feels energizing and hopeful-and exactly what our country needs."
+  "bwwExcerpt": "The first time I saw Schreck's show was the weekend after the Brett Kavanaugh hearings. After watching his smug, self-satisfied face and histrionic outbursts replayed on TV and Twitter ad nauseam, Constitution was comforting and restorative; it was exactly what I needed. Now, it feels energizing and hopeful-and exactly what our country needs.",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "medium",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It feels energizing and hopeful—and exactly what our country needs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with unqualified praise throughout. Critic calls it 'inventive, invigorating' and concludes it's 'exactly what our country needs'—clear must-see language despite political context. | GPT-4o: The review is overwhelmingly positive, describing the show as 'energizing and hopeful' and 'exactly what our country needs.' The original 5/5 star rating supports a high score in the Rave bucket, despite the truncated text. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, using words like \"miraculous\" and describing the show as \"inventive, invigorating, comforting and restorative; it was exactly what I needed.\" | Kimi: Awarded 5/5 stars with unqualified enthusiasm and superlatives like 'inventive, invigorating' and 'miraculous.' The critic describes the show as 'exactly what our country needs' with no reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T09:35:48.906Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 98,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

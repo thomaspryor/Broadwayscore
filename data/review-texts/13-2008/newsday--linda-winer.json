@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "2 ½ hours of brain-blurring historical asides, strenuously costumed artifice and luxuriously overpopulated incoherence",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Despite acknowledging the play eventually becomes 'important' in its final moments, the critic describes 2.5 hours of 'brain-blurring' content and 'incoherence.' However, confidence is low due to truncated text that cuts off mid-sentence when discussing the play's ultimate point. | GPT-4o: The review excerpt indicates that the play only becomes important in the final 15 minutes, suggesting a mixed experience with some redeeming qualities. The mention of 'brain-blurring historical asides' and 'luxuriously overpopulated incoherence' implies significant issues, but the eventual importance suggests it's not entirely negative. | Gemini: The review excerpt describes the play as incoherent and brain-blurring for most of its duration, only becoming important in the final 15 minutes. This suggests a negative overall experience. | Kimi: The excerpt heavily criticizes the first 2.5 hours as 'brain-blurring' and 'incoherent' while acknowledging the final 15 minutes achieve importance and resonance, indicating a mixed verdict where the payoff doesn't justify the journey for general audiences. | Buckets: claude=Negative, openai=Mixed, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T09:52:34.561Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 58,
+    "geminiScore": 45,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

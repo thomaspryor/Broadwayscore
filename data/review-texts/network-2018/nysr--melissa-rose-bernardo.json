@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"Nothing about van Hove’s production works as well as the Cranston close-ups...There’s already so much commotion on stage...A couple rows of people eating shrimp rolls and empanadas seems like an unnecessary distraction. When Cranston is on, we’re completely tuned in. His Beale is a force...Only Broadway vet Nick Wyman matches Cranston’s intensity...But when you’re watching a grainy ancient Mazola ad instead of a live actor, the background noise is getting way too loud.\"\n\nRead more"
+  "showScoreExcerpt": "\"Nothing about van Hove’s production works as well as the Cranston close-ups...There’s already so much commotion on stage...A couple rows of people eating shrimp rolls and empanadas seems like an unnecessary distraction. When Cranston is on, we’re completely tuned in. His Beale is a force...Only Broadway vet Nick Wyman matches Cranston’s intensity...But when you’re watching a grainy ancient Mazola ad instead of a live actor, the background noise is getting way too loud.\"\n\nRead more",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nothing about van Hove's production works as well as the Cranston close-ups.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with clear criticism of production choices (unnecessary distractions, background noise) while praising Cranston's performance. Performer praise doesn't redeem overall negative assessment. | GPT-4o: The review highlights significant issues with the production, noting distractions and ineffective elements. Despite some praise for Cranston's performance, the overall tone is negative, aligning with the 2/5 star rating. | Gemini: The review excerpt focuses on the production's shortcomings, particularly the distractions and reliance on video, despite praising Cranston's performance. The 2/5 star rating confirms a negative assessment. | Kimi: The 2/5 star rating places this firmly in the Negative range, and while the critic praises Cranston's performance as 'a force,' the overwhelming criticism of the staging as noisy and distracting ('background noise is getting way too loud') indicates a recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:25:17.609Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

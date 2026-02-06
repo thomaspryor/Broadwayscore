@@ -31,5 +31,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250910114703/https://www.theatrely.com/post/the-chill-of-media-literacy-in-good-night-and-good-luck----review",
   "contentTier": "complete",
   "wordCount": 806,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But its book, co-written with Grant Heslov, is ultimately too slight to care to analyze.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review appreciates Clooney's performance and Cromer's direction but finds the book weak and the production concept flawed. Mixed praise for individual elements but overall disappointment with the theatrical experience. | Gemini: The review acknowledges Clooney's charisma and the production's ambition but ultimately finds the play slight and somewhat patronizing, resulting in a mixed assessment. | Kimi: While praising Clooney's performance and the production design, the critic finds the book 'too slight to care to analyze,' criticizes the over-reliance on screens that makes the audience 'feel a bit cheated,' and dismisses subplots as 'padding.' The final assessment of 'mostly still waters' indicates a disappointing lack of depth despite competent execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:48:33.912Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

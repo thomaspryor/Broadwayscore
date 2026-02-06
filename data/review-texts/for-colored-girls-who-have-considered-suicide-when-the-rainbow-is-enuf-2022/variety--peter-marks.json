@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The revival of Ntozake Shange's groundbreaking choreopoem feels both urgent and timeless, with Leah C. Gardiner's direction bringing fresh vitality to the seven women's interconnected stories.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -60,5 +60,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--ayanna-prescod.json",
   "wordCount": 661,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shange's work remains as riveting as it was in 1976.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the production, performances, and direction with only one specific criticism about a single directorial choice. The review emphasizes the power and relevance of the work. | GPT-4o: The review praises the production's authentic storytelling and the performances, especially highlighting the impact of Shange's work and Camille A. Brown's direction. Despite a minor critique, the overall tone is highly positive. | Gemini: The review is largely positive, praising the performances and direction, but notes a disappointing directorial choice. The overall tone suggests a recommendation with reservations. | Kimi: Despite one reservation about a specific directorial choice regarding the Lady in Green's monologue, the reviewer overwhelmingly praises the production as a 'masterwork' with 'skillful' direction, 'dazzling' performances, and 'riveting' storytelling, offering a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:37:27.459Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Under the assured direction of Jack O'Brien, this revival crackles with tension and features powerhouse performances from its entire cast, particularly Jeremy Jordan and Benjamin Walker.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -43,5 +43,59 @@
     "Word count too low: 214 (min: 300)"
   ],
   "wordCount": 199,
-  "tierReason": "Short text (199 words)"
+  "tierReason": "Short text (199 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under the assured direction of Jack O'Brien, this revival crackles with tension and features powerhouse performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises O'Brien's assured direction, describes the revival as crackling with tension, and highlights powerhouse performances from the cast. The additional context reinforces these positive assessments. | Gemini: The review highlights the play's gradual reveal and culminates in praising the powerhouse performances, suggesting a positive experience overall. The truncated nature lowers confidence. | Kimi: The critic praises the 'assured direction' and 'powerhouse performances,' describing the revival as 'crackling with tension,' indicating a strong recommendation despite the excerpted text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:50:35.400Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

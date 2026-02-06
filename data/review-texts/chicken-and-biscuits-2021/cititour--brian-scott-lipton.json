@@ -35,5 +35,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 552,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "audiences who come prepared to eat it all up are sure to leave satisfied",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges significant flaws (needs dramaturgy, overlong, weak direction) but ultimately recommends the show as satisfying 'comfort food for the soul' with strong performances and heart. | GPT-4o: The review acknowledges issues with the play's length and direction but ultimately describes it as a satisfying and enjoyable experience, likening it to 'comfort food for the soul.' This suggests a positive recommendation despite some reservations. | Gemini: The review acknowledges flaws (overlong, needs dramaturgy) but ultimately concludes that the show is satisfying and a 'love letter to power of family and forgiveness,' leading to a positive but not rave score. | Kimi: While the critic notes significant flaws including excessive length and weak direction, the final verdict recommends the show as humorous, sentimental 'comfort food' with strong performances that satisfies audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:08:40.509Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

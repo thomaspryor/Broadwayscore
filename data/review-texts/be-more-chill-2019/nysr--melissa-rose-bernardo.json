@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2019/03/10/be-more-chill-a-sci-fi-musical-for-generation-z/",
-  "showScoreExcerpt": "\"Iconis’ tunes, which have earned him a major online following, are character-driven and catchy...But a lot of Iconis’ songs, and Vizzini’s story, gets lost in the chaos at the Lyceum. Director Stephen Brackett isn’t much for subtlety or soft moments. Roland, ideally cast in so many ways, is pushing too hard—vocally and otherwise...What I liked—actually, loved—about ‘Be More Chill’ more than anything is its potential...The songs would sound just as good without all the amplification. Perhaps even better.\"\n\nRead more"
+  "showScoreExcerpt": "\"Iconis’ tunes, which have earned him a major online following, are character-driven and catchy...But a lot of Iconis’ songs, and Vizzini’s story, gets lost in the chaos at the Lyceum. Director Stephen Brackett isn’t much for subtlety or soft moments. Roland, ideally cast in so many ways, is pushing too hard—vocally and otherwise...What I liked—actually, loved—about ‘Be More Chill’ more than anything is its potential...The songs would sound just as good without all the amplification. Perhaps even better.\"\n\nRead more",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But a lot of Iconis' songs, and Vizzini's story, gets lost in the chaos at the Lyceum.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite the 4/5 star rating, this excerpt shows significant criticism of the direction, lead performance, and overall execution ('chaos', 'pushing too hard', 'isn't much for subtlety'). The critic loves the 'potential' but not the current realization. Single excerpt warning applies - this may not represent the full verdict that earned 4 stars. | GPT-4o: The review acknowledges issues with direction and performance but ultimately expresses love for the show's potential. The original 4/5 stars rating supports a positive classification, though the excerpt indicates reservations. | Gemini: The review has both positive and negative points, but the critic states they \"loved\" the potential of the show. Given the single excerpt and 4/5 stars, I am scoring this as positive, but with reservations. | Kimi: The 4/5 star rating places this in the Positive bucket, but the single available excerpt reveals significant criticisms of the direction and lead performance alongside praise for the songs, suggesting a mildly positive, qualified recommendation rather than enthusiastic praise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:58:47.994Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

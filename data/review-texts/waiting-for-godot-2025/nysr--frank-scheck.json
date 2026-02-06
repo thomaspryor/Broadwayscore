@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "The actors manage to hold their own, although their lack of seasoned stage chops is made more evident by the excellent supporting turns from theatrical veterans Brandon J. Dirden, mesmerizing as a Southern-accented Pozzo, and Michael Patrick Thornton, arresting as a wheelchair-bound Lucky. Reeves ha...",
-  "bwwRoundupUrl": null
+  "bwwRoundupUrl": null,
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The actors manage to hold their own, although their lack of seasoned stage chops is made more evident by the excellent supporting turns from theatrical veterans",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars indicates mixed reception. The excerpt shows qualified assessment - leads 'manage to hold their own' but their inexperience shows compared to veteran supporting actors. Single excerpt limits confidence. | GPT-4o: The excerpt highlights both strengths and weaknesses, noting the actors' ability to hold their own but also their lack of experience compared to veterans. The original 3/5 stars suggests a mixed review. | Gemini: The review excerpt indicates mixed feelings. While praising the supporting actors, it points out the lead actors' lack of experience. Given the limited text, a 'Mixed' classification with low confidence is appropriate. | Kimi: 3/5 star rating indicates a middle-of-the-road verdict; excerpt praises supporting cast while criticizing leads' stage experience. Single truncated excerpt warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T09:34:37.442Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

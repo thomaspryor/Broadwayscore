@@ -37,5 +37,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 635,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The performers are excellent, particularly Metcalf, an actress who vibrates with emotive intensity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite being truncated, the review consistently praises the performances (especially Metcalf as 'thrilling'), dialogue ('fast, vibrant'), and intellectual content. The critic explicitly tells readers not to be 'put off' and invites them to 'Step in.' The warning that it's 'better as philosophical exercise than character-driven drama' is a reservation, not a rejection. | GPT-4o: The review praises the play's vibrant dialogue and Metcalf's performance, suggesting a positive experience despite some reservations about the play's character-driven drama. The text is truncated, so the final verdict may be missing, leading to low confidence. | Gemini: Despite some reservations about plot, the review praises the vibrant dialogue, excellent performances, and sophisticated arguments, ultimately recommending it. The truncated text lowers confidence. | Kimi: The review praises Metcalf's thrilling performance and the play's vibrant, sophisticated wit, acknowledging it works better as philosophical exercise than character drama but explicitly encouraging audiences to see it with the closing invitation 'Step in.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T06:44:38.740Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

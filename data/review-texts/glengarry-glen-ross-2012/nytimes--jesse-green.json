@@ -29,7 +29,12 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250507133803",
   "archiveOrgUrl": "http://web.archive.org/web/20250507133803/https://www.nytimes.com/2025/03/31/theater/glengarry-glen-ross-review-culkin-odenkirk-burr.html",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 333,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-06T07:42:22.866Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text is truncated and ends with a technical error message about JavaScript and access verification, making it impossible to determine the critic's verdict; openai: The text ends with a message indicating technical issues with retrieving the article content, making it incomplete and not a full review.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This handsome revival boasts a superb cast headed by James Earl Jones and Phylicia Rashad, with Terrence Howard and Anika Noni Rose as the central couple locked in marital combat.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -72,5 +72,60 @@
     "Show title not found in text"
   ],
   "wordCount": 537,
-  "tierReason": "Truncation detected: paywall_or_login_prompt"
+  "tierReason": "Truncation detected: paywall_or_login_prompt",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This handsome revival boasts a superb cast headed by James Earl Jones and Phylicia Rashad.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with positive language ('handsome revival', 'superb cast') but extremely limited text. Could be cherry-picked from a mixed or even negative review that praised the cast while criticizing other elements. | GPT-4o: The excerpt praises the revival as 'handsome' and highlights a 'superb cast', indicating a strong positive impression. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt praises the cast as superb, suggesting a positive experience. Given the limited text, confidence is low, but the positive language warrants a score on the higher end of the positive bucket. | Kimi: The single excerpt contains strong positive language ('superb cast', 'handsome revival') indicating clear approval of the production quality and performances, though the limited context necessitates a low confidence rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:07:30.928Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 81,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

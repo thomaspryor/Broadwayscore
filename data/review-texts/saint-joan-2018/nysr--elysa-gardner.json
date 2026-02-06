@@ -22,5 +22,60 @@
   "wordCount": 0,
   "showScoreExcerpt": "\"Rashad’s performance—tender, resolute, and deeply human—presents us with something we’ve become sadly unaccustomed to in reality: a leader whose strength is rooted in humility. Director Daniel Sullivan manages to capture the timelessness and the topicality of Shaw’s play without straining to emphasize the latter...Sullivan trusts the text and a superb company to show us how relevant the playwright’s progressive humanism is right now.\"\n\nRead more",
   "bwwExcerpt": "Condola Rashad, who assumes the role in Manhattan Theatre Club's stirring new Broadway revival of Saint Joan, exudes a very different kind of purity. With her doe eyes and sweetly resonant voice, Rashad's Joan is a distinctly feminine presence, even a girlish one at points, though it's clear that ge...",
-  "bwwRoundupUrl": null
+  "bwwRoundupUrl": null,
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rashad's performance—tender, resolute, and deeply human—presents us with something we've become sadly unaccustomed to in reality: a leader whose strength is rooted in humility.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for lead performance ('tender, resolute, deeply human'), direction ('manages to capture'), and ensemble ('superb company'). However, confidence is medium due to limited excerpt text. | GPT-4o: The review excerpt praises the performance and direction, highlighting the show's relevance and quality. The original 4/5 star rating supports a strong positive classification. However, the lack of a full review text limits confidence. | Gemini: The review praises Rashad's performance and the director's ability to capture the play's timelessness and topicality. The 4/5 star rating and the use of words like \"superb\" suggest a positive recommendation. | Kimi: The 4/5 star rating and enthusiastic praise for both the lead performance ('tender, resolute, and deeply human') and direction ('superb company') indicate a solid recommendation, though the excerpt-only format limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:45:24.575Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -37,5 +37,60 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 726,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Clarke animates a curious — and at times troubling — musical with undeniable life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review praises Sharon D Clarke's performance as transcendent but consistently critiques the musical's perspective and characterization of Black characters as problematic. The critic appreciates individual elements but finds the overall story troubling. | GPT-4o: The review praises Sharon D Clarke's performance as stunning and highlights the talented cast, but criticizes the story's perspective and depth. The overall tone is mixed, with strong performer praise but significant reservations about the narrative. | Gemini: The review praises Sharon Clarke's performance and the production, but also points out issues with the story's perspective and character development. It's a qualified recommendation. | Kimi: The review offers superlative praise for Sharon D Clarke's performance while raising significant concerns about the book's handling of race and narrative, recommending the show primarily on the strength of its star turn. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:07:14.718Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 67,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

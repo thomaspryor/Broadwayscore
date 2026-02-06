@@ -58,5 +58,60 @@
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: Text contains road construction alerts, weather information, and other non-review content mixed with what appears to be a review fragment; openai: The text is primarily road construction updates and weather information, not a review of the show.",
   "promptVersion": "5.2.0",
-  "bwwExcerpt": "\"We are meant to feel a bit off-balance, a little disoriented, maybe even confused in parts of \"If/Then\" -- and that's the sharp point. In this intelligent, surprising, altogether original new musical, the main character is a 39-year-old divorced woman, Elizabeth, who returns to New York after 12 ye..."
+  "bwwExcerpt": "\"We are meant to feel a bit off-balance, a little disoriented, maybe even confused in parts of \"If/Then\" -- and that's the sharp point. In this intelligent, surprising, altogether original new musical, the main character is a 39-year-old divorced woman, Elizabeth, who returns to New York after 12 ye...",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In this intelligent, surprising, altogether original new musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes the musical as 'intelligent, surprising, altogether original' which are strong positive descriptors. However, this is only an excerpt and may not represent the full verdict, so confidence is low but the language suggests solid recommendation. | GPT-4o: The excerpt describes the musical as 'intelligent, surprising, altogether original,' indicating a positive assessment. However, the single excerpt warning suggests caution, so the score is on the lower end of the Positive range. | Gemini: The excerpt describes the musical as \"intelligent, surprising, altogether original\", suggesting a positive, though possibly qualified, recommendation. Given the limited text, confidence is low. | Kimi: Single excerpt uses strong positive language ('intelligent,' 'surprising,' 'altogether original') suggesting an enthusiastic recommendation, though limited context and truncation require caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:03:37.090Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

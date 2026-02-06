@@ -40,5 +40,60 @@
   "contentTier": "complete",
   "wordCount": 799,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "“Like the city it’s named after, ‘New York, New York’ is full of promise and potential – neither of which is completely fulfilled.”\n\nRead more"
+  "showScoreExcerpt": "“Like the city it’s named after, ‘New York, New York’ is full of promise and potential – neither of which is completely fulfilled.”\n\nRead more",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like the city it's named after, 'New York, New York' is full of promise and potential – neither of which is completely fulfilled.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges exceptional talent and memorable musical numbers while criticizing the overstuffed concept and execution. The critic finds both 'exasperating' and 'joyous' elements, with no clear recommendation either way. | GPT-4o: The review acknowledges both strengths and weaknesses, praising performances and certain musical numbers, but criticizing the overstuffed concept and execution. The overall tone is mixed, with appreciation for some elements but a lack of fulfillment in its potential. | Gemini: The review acknowledges strong talent and some excellent songs, but ultimately finds the show overstuffed and not fully realized. This places it firmly in the mixed category. | Kimi: The review praises individual performances and specific musical numbers highly, but criticizes the overstuffed book, busy execution, and underdeveloped supporting characters. The critic describes the experience as 'sometimes exasperating (and sometimes joyous)' and concludes that the show's promise remains unfulfilled, indicating a genuinely mixed assessment rather than a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:26:07.528Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

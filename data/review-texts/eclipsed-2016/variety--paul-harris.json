@@ -50,5 +50,11 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 631,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T07:21:19.505Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about the production of 'Eclipsed' at Woolly Mammoth, which is not the current Broadway run.; kimi: This review covers the 2009 regional premiere at Woolly Mammoth in Washington D.C., not the Broadway production. The text explicitly mentions the play is being produced by three regional theaters (Woolly Mammoth, Center Theater Group, and Yale Rep) and discusses the D.C. cast and staging.",
+  "promptVersion": "5.2.0"
 }

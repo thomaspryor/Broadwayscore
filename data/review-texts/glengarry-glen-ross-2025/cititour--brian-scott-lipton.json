@@ -35,5 +35,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 785,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Given the high prices the production is asking for tickets, the inconsistency of the acting, and the unwise choice of using a less-than-intimate theater, I feel those who spend their money on this 'Glengarry Glen Ross' are getting an even rawer deal than the show's characters.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the production 'often miscast' and 'sitcom-like,' criticizes the lead performances as insufficient, and explicitly advises against purchasing tickets due to poor value. The final line comparing ticket buyers to the show's swindled characters is a clear negative recommendation. | GPT-4o: The review criticizes the casting, performances, and venue choice, concluding that the audience is not getting value for their money. Despite some praise for individual performances, the overall recommendation is negative. | Gemini: The review is largely negative, citing miscasting, a sitcom-like tone, and the inconsistency of the acting. The critic explicitly states that those who spend money on this production are getting a raw deal. | Kimi: The critic explicitly advises against purchasing tickets due to miscasting of the leads (particularly Odenkirk and Culkin), a sitcom-like tone, and an inappropriate venue, despite praising some supporting performances and the set design.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:43:50.845Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

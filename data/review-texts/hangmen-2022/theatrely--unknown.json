@@ -36,5 +36,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251011131309/https://www.theatrely.com/post/hangmen-holds-a-tight-noose-review",
   "contentTier": "complete",
   "wordCount": 568,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hangmen is the kind of play we don't really see anymore.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise throughout for performances ('uniformly excellent'), writing ('clever, twisty script'), design ('screams money'), and direction. Calls it 'sturdy, well-observed, and vividly performed' with 'breezy, engaging tension.' No significant reservations expressed. | GPT-4o: The review is filled with praise for the cast, script, direction, and production design. The critic appreciates the play's traditional qualities and execution, indicating a strong recommendation. | Gemini: The review is positive, highlighting the strong cast, clever script, and impressive design. While not a rave, it's a clear recommendation for those seeking a well-made play. | Kimi: The critic consistently praises the 'uniformly excellent' cast, 'attentive' direction, 'stunningly lit' design, and 'writerly elegance' of the script, offering a clear recommendation for this 'welcome callback' to classic theatrical craftsmanship.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:55:20.985Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

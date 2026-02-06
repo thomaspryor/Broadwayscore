@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"A bright, funny, and slightly loopy musical comedy peers out every so often...These delights are only intermittent, alas; whenever theatrical joy starts to break through, the emotion is flash-frozen as if to extend the moment...Drab is the mood of most of the evening...The problem is that the non-musical comedy portions are so—well—frozen. Operetta, melodrama, villagers with pitchforks: whose idea of musical comedy is this?\"\n\nRead more"
+  "showScoreExcerpt": "\"A bright, funny, and slightly loopy musical comedy peers out every so often...These delights are only intermittent, alas; whenever theatrical joy starts to break through, the emotion is flash-frozen as if to extend the moment...Drab is the mood of most of the evening...The problem is that the non-musical comedy portions are so—well—frozen. Operetta, melodrama, villagers with pitchforks: whose idea of musical comedy is this?\"\n\nRead more",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A bright, funny, and slightly loopy musical comedy peers out every so often from the stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with balanced assessment: praises individual moments and performers (especially Murin) but criticizes the show as 'ponderous' and 'frozen' overall. Neither recommends nor discourages. | GPT-4o: The review acknowledges some bright and funny moments but criticizes the overall execution as 'drab' and 'ponderous'. The 3/5 star rating aligns with a mixed verdict, highlighting both strengths and significant weaknesses. | Gemini: The review highlights both positive and negative aspects, praising some performances and moments of comedy, but criticizing the overall tone and choreography. The critic's 3/5 star rating aligns with a mixed assessment. | Kimi: The 3/5 star rating reflects a genuinely mixed assessment: while praising specific performances (particularly Patti Murin) and comedic moments, the critic finds the overall production ponderous, drab, and unevenly paced, concluding it ranks in the middle of Disney's theatrical adaptations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:39:44.681Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

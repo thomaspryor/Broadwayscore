@@ -36,5 +36,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251212012519/https://www.theatrely.com/post/mcneal-fights-ai-audience-loses-review",
   "contentTier": "complete",
   "wordCount": 858,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McNeal, the play, therefore comes and goes; a mild thumbnail in a growing pile of decreasingly worthwhile content.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the play 'impotent,' 'trite,' 'wandering and ineffective,' and dismisses it as decreasingly worthwhile content. While acknowledging some production merits and Downey's embodiment of the character, the overall assessment is clearly negative. | GPT-4o: The review criticizes the play for being 'impotent', 'wandering and ineffective', and 'a mild thumbnail in a growing pile of decreasingly worthwhile content'. While there are some mentions of interesting elements, the overall tone is negative, suggesting the play is not worth seeing. | Gemini: The review is overall negative. While it acknowledges some potential in Downey's performance and the production's design, it ultimately finds the play itself to be ineffective, trite, and lost in the slop. | Kimi: While acknowledging competent direction, set design, and Downey's committed performance, the critic fundamentally pans the play as 'impotent,' 'trite,' and 'wandering and ineffective,' concluding it is forgettable archive fodder rather than essential viewing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:19:54.371Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

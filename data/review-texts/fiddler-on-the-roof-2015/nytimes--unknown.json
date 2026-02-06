@@ -58,5 +58,11 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 453,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T07:30:41.464Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is from 2015 about a previous Broadway revival of Fiddler on the Roof, not the current Broadway production being evaluated.; openai: The review is about a 2015 revival of 'Fiddler on the Roof', not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

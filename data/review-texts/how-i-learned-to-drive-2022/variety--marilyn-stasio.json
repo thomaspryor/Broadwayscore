@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -41,5 +41,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 753,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is no halfway enterprise; it's a first-rate revival of a theater piece that never gets stale.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Critic uses superlatives throughout ('sterling revival,' 'first-rate,' 'shattering perfection') and praises both lead performances as brilliant. Despite the disturbing subject matter, the review is unqualifiedly positive about the production quality and impact. | GPT-4o: The review is full of superlatives and praises the performances, direction, and writing. It describes the production as 'first-rate' and highlights the lasting impact and relevance of the play, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances of Parker and Morse, the direction, and the enduring power of the play itself. The critic explicitly calls it a \"first-rate revival\". | Kimi: The review offers unqualified praise for the production, describing Parker and Morse as 'shattering perfection' and 'brilliant,' the direction as 'killer intensity,' and explicitly calling it a 'first-rate revival' with no significant caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T08:00:55.965Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

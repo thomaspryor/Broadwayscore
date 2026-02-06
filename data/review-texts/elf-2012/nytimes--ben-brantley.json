@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This aggressively cheerful show about a human raised by elves who brings Christmas spirit to New York is determined to make you smile whether you want to or not.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -48,5 +48,59 @@
     "Show title not found in text"
   ],
   "wordCount": 570,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show does have just enough nice supporting performances and successful comic moments to amuse easily amused kiddies and leave grown-up ticket buyers grumbling no more loudly than they would after any of the other holiday shows.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Brantley acknowledges some positives (supporting performances, comic moments) but criticizes the lead performance and pared-down love story. His verdict suggests it's adequate holiday fare but nothing special, placing it squarely in mixed territory. | Gemini: The review is mixed, noting that the show has some redeeming qualities but ultimately falls short of expectations. It's not a strong recommendation, but not a complete dismissal either. | Kimi: While the critic acknowledges adequate supporting performances and a few comic moments, he finds the central performance uncomfortable and the adaptation inferior to the film, ultimately suggesting adult audiences will leave grumbling.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:24:04.341Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

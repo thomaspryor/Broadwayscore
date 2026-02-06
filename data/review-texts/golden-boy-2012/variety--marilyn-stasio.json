@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Director Bartlett Sher has staged a handsome production that captures both the period atmosphere and the universal themes of Clifford Odets' 1937 drama about a violinist who trades his music for a career in boxing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -53,5 +53,60 @@
   "tierReason": "Full review text",
   "previousUrl": "https://variety.com/2012/legit/reviews/golden-boy-1117949065/",
   "urlDiscoveredAt": "2026-02-06T05:50:09.142Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's no act of charity, either, because the show is killer good.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Stasio delivers unqualified praise throughout - 'dynamite version,' 'killer good,' 'moving experience' - with detailed appreciation for performances, direction, and the production's achievement in bringing difficult material to life. | GPT-4o: The review is filled with superlatives and praise for the production, performances, and direction. The critic describes the show as 'killer good' and highlights the emotional and historical depth achieved by the cast and director. | Gemini: The review is overwhelmingly positive, using phrases like \"dynamite version\" and \"killer good.\" The critic praises the performances, direction, and overall impact of the production. | Kimi: The critic delivers unqualified praise for the revival, using enthusiastic superlatives like 'dynamite,' 'killer good,' and 'sensational' for the direction and performances, with no reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:46:05.095Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 89,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

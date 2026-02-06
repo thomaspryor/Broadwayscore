@@ -32,5 +32,11 @@
   "textStatus": "truncated",
   "sourceMethod": "playwright",
   "wordCount": 536,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T09:08:22.027Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production of 'The Lion King' in Chicago, not the current Broadway run.; kimi: This review covers the 'Broadway in Chicago' production at the Cadillac Palace Theatre in Chicago, not the current Broadway run in New York City.",
+  "promptVersion": "5.2.0"
 }

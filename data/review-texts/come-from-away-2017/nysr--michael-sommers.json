@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "“Its real-life story is stirring and honestly heartwarming, the tunes sound friendly to the ear, and the whirlwind staging is so smart...A visit...finds the show to be in excellent shape...This documentary-style musical is rendered with compassion, humor, and insight...The score’s rhythmic, folk-rock music, which possesses a windswept, Celtic flavor, briskly drives along these compelling doings...Everybody should see this show.”\n\nRead more"
+  "showScoreExcerpt": "“Its real-life story is stirring and honestly heartwarming, the tunes sound friendly to the ear, and the whirlwind staging is so smart...A visit...finds the show to be in excellent shape...This documentary-style musical is rendered with compassion, humor, and insight...The score’s rhythmic, folk-rock music, which possesses a windswept, Celtic flavor, briskly drives along these compelling doings...Everybody should see this show.”\n\nRead more",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yes, oh, yes, everybody should see this show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with unqualified praise throughout. Critic calls it the 'one musical that I unreservedly tell everyone to see' and closes with 'Yes, oh, yes, everybody should see this show.' Uses superlatives like 'brilliant,' 'sterling,' and 'heartfelt' with no reservations expressed. | GPT-4o: The review is filled with superlatives and unreserved praise, recommending the show to everyone. The critic's 5/5 star rating and the enthusiastic language throughout indicate a strong rave. | Gemini: The review is overwhelmingly positive, with the critic stating they unreservedly recommend it to everyone. The 5/5 star rating and enthusiastic language throughout the review support a Rave classification. | Kimi: The critic awards 5/5 stars and explicitly urges all audiences to see the show, praising the sterling ensemble performances, brilliant staging, and emotionally resonant storytelling without reservation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T07:12:16.461Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 97,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }
