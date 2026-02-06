@@ -23,8 +23,8 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 **Production:** https://broadwayscorecard.com | **Branch:** `main`
 **NEVER:** Create PRs or random feature branches (only `main` or `staging`).
 
-### 4. Automate Everything
-Write scripts via GitHub Actions. Never ask user to manually fetch data.
+### 4. Automate Everything — SET AND FORGET
+**This site is designed to run indefinitely with zero manual intervention.** All data pipelines, scrapers, and updates must be fully automated via GitHub Actions with dynamic date ranges (no hardcoded years). Never ask user to manually fetch data or update year constants. If a workflow requires annual tweaks, fix it to be dynamic.
 
 ### 5. NEVER Guess or Fake Data
 Never give approximate ranges. If you can't access a source, say so.
@@ -39,7 +39,9 @@ Never give approximate ranges. If you can't access a source, say so.
 Broadway review aggregator. **Tech:** Next.js 14, TypeScript, Tailwind CSS, static export.
 **Production:** https://broadwayscorecard.com (Vercel, auto-deploys from `main`)
 
-**Current state:** 738 shows (IBDB 2005-2024 + 8 pre-2005 classics), 8,900+ source files, 3,439 scored reviews. ~29 open, ~16 previews, 690+ closed. Critics-only scoring (V1).
+**Philosophy:** Set-and-forget automation. The site maintains itself indefinitely via GitHub Actions — new shows discovered daily, reviews gathered automatically, grosses updated weekly, Tony Awards scraped annually. No manual intervention required.
+
+**Current state:** 724+ shows (IBDB 2005-present + pre-2005 classics), 8,900+ source files, 3,400+ scored reviews. ~29 open, ~16 previews, 690+ closed. Critics-only scoring (V1).
 
 ## Scoring Methodology
 
