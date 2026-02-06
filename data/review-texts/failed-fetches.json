@@ -8512,18 +8512,6 @@
     "timestamp": "2026-02-03T23:43:42.765Z"
   },
   {
-    "reviewId": "inherit-the-wind-2007/nytimes--ben-brantley.json",
-    "showId": "inherit-the-wind-2007",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2007/04/13/theater/reviews/13wind.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): death of a salesman, giant, home, death of a salesman, king lear...",
-    "textLength": 8584,
-    "timestamp": "2026-02-03T23:52:09.983Z"
-  },
-  {
     "reviewId": "job-2024/nyt-theater--jonathan-mandell.json",
     "showId": "job-2024",
     "outlet": "New York Theater",
@@ -18554,5 +18542,65 @@
     "garbageReason": "Multiple shows mentioned (9): frozen, rocky, annie, the performers, once...",
     "textLength": 3879,
     "timestamp": "2026-02-06T06:40:10.694Z"
+  },
+  {
+    "reviewId": "inherit-the-wind-2007/nytimes--ben-brantley.json",
+    "showId": "inherit-the-wind-2007",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2007/04/13/theater/reviews/13wind.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): death of a salesman, giant, home, death of a salesman, king lear...",
+    "textLength": 8584,
+    "timestamp": "2026-02-06T06:43:40.693Z"
+  },
+  {
+    "reviewId": "jagged-little-pill-2019/hollywood-reporter--david-rooney.json",
+    "showId": "jagged-little-pill-2019",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/culture-news/jagged-little-pill-broadway-review-1259086/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Error/404 page: \"Page Not Found\"",
+    "textLength": 911,
+    "timestamp": "2026-02-06T06:44:58.427Z"
+  },
+  {
+    "reviewId": "in-transit-2016/vulture--jesse-green.json",
+    "showId": "in-transit-2016",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2016/12/theater-review-in-transit.html",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): harmony, home, company, frozen, rocky...",
+    "textLength": 7406,
+    "timestamp": "2026-02-06T06:45:14.778Z"
+  },
+  {
+    "reviewId": "jagged-little-pill-2019/variety--marilyn-stasio.json",
+    "showId": "jagged-little-pill-2019",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2019/legit/reviews/jagged-little-pill-review-broadway-1203421986/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): mary jane, company, the audience, once, evita...",
+    "textLength": 5420,
+    "timestamp": "2026-02-06T06:47:27.019Z"
+  },
+  {
+    "reviewId": "jagged-little-pill-2019/vulture--helen-shaw.json",
+    "showId": "jagged-little-pill-2019",
+    "outlet": "Vulture",
+    "critic": "Helen Shaw",
+    "url": "https://www.vulture.com/2019/12/review-jagged-little-pill-is-missing-the-essence-of-alanis.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): mary jane, home, purpose, company, the audience...",
+    "textLength": 9161,
+    "timestamp": "2026-02-06T06:47:30.587Z"
   }
 ]
