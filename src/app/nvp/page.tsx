@@ -122,13 +122,13 @@ function NVPPageInner() {
       switch (sort) {
         case 'score_desc': {
           if (scoreMode === 'audience') {
-            const aBuzz = getAudienceBuzz(a.id);
-            const bBuzz = getAudienceBuzz(b.id);
-            return (bBuzz?.combinedScore ?? -1) - (aBuzz?.combinedScore ?? -1);
+            const aAudience = a.status === 'previews' ? -1 : (getAudienceBuzz(a.id)?.combinedScore ?? -1);
+            const bAudience = b.status === 'previews' ? -1 : (getAudienceBuzz(b.id)?.combinedScore ?? -1);
+            return bAudience - aAudience;
           }
           // Sort by score, then open > previews > closed for ties
-          const aScore = a.criticScore?.score ?? -1;
-          const bScore = b.criticScore?.score ?? -1;
+          const aScore = a.status === 'previews' ? -1 : (a.criticScore?.score ?? -1);
+          const bScore = b.status === 'previews' ? -1 : (b.criticScore?.score ?? -1);
           if (bScore !== aScore) return bScore - aScore;
           const statusOrder = { open: 0, previews: 1, closed: 2 };
           return (statusOrder[a.status as keyof typeof statusOrder] ?? 3) - (statusOrder[b.status as keyof typeof statusOrder] ?? 3);
