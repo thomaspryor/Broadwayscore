@@ -4,11 +4,11 @@
     "lastUpdated": "2026-02-06",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 7273,
-      "skippedNoScore": 13402,
+      "totalReviews": 7271,
+      "skippedNoScore": 13435,
       "skippedDuplicate": 8,
-      "skippedDuplicateUrl": 153,
-      "skippedCrossOutletDuplicateUrl": 5,
+      "skippedDuplicateUrl": 166,
+      "skippedCrossOutletDuplicateUrl": 9,
       "skippedWrongProduction": 566,
       "recoveredFromGarbage": 100,
       "scoreSources": {
@@ -18,9 +18,9 @@
         "explicit-letterGrade": 1,
         "human-review": 60,
         "originalScore-priority0": 924,
-        "llmScore": 3438,
+        "llmScore": 3441,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 2687,
+        "llmScore-lowconf": 2682,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
@@ -9688,23 +9688,6 @@
     },
     {
       "showId": "a-view-from-the-bridge-2010",
-      "outletId": "hollywood-reporter",
-      "outlet": "The Hollywood Reporter",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Unknown",
-      "url": "http://www.hollywoodreporter.com/review/arthur-millers-a-view-bridge-839854",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Scarlett Johansson makes a fine stage debut and Liev Schreiber delivers another titanic performance in this revival of Miller's classic tragedy.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "none"
-    },
-    {
-      "showId": "a-view-from-the-bridge-2010",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 80,
@@ -13838,6 +13821,23 @@
     },
     {
       "showId": "all-my-sons-2008",
+      "outletId": "dailybeast",
+      "outlet": "The Daily Beast",
+      "assignedScore": 73,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Tim Teeman",
+      "url": "https://www.thedailybeast.com/annette-bening-in-all-my-sons-arthur-millers-postwar-tragedy-lands-too-quietly-on-broadway?source=articles&via=rss&utm_source=dlvr.it&utm_medium=twitter",
+      "publishDate": "April 22, 2019",
+      "originalRating": null,
+      "pullQuote": "There is the pleasure...of well-executed theatrical convention; the reassurance of a revival done traditionally and done right.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "all-my-sons-2008",
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 76,
@@ -16926,23 +16926,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Rockwell and Fishburne nail the buddy-cop dynamic of these prickly parts.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "american-buffalo-2008",
-      "outletId": "nysr",
-      "outlet": "New York Stage Review",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Finkle",
-      "url": "http://nystagereview.com/2022/04/14/american-buffalo-david-mamets-classic-retains-its-classic-status/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "\"Because Rockwell has the showiest role, he rivets attention as he charges around like a bull in a junk shop. He’s an actor unleashed after Marlon Brando broke molds to establish a new one. Rockwell is grand at the volatile tradition.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -31659,7 +31642,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Steve Suskin",
@@ -31669,7 +31652,7 @@
       "pullQuote": "Boy meets girl on a deserted road in Depression-era West Dallas, and sooner than you can say \"Warren Beatty,\" they're rolling in the hay -- or rather, the dust.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "book-of-mormon-2011",
@@ -35794,17 +35777,17 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
-      "url": "https://variety.com/2009/legit/reviews/burn-the-floor-1200476270/",
+      "url": "https://variety.com/2009/legit/reviews/burn-the-floor-2-1200506919/",
       "publishDate": "August 2, 2009",
       "originalRating": null,
       "pullQuote": "This slickly packaged ballroom dance showcase is heavy on flash and light on substance, but it delivers exactly what it promises.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "burn-this-2019",
@@ -42135,17 +42118,17 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 82,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Helen Shaw",
-      "url": "https://www.vulture.com/2021/12/theater-review-company-revival-katrina-lenk-patti-lupone.html",
+      "url": "https://www.vulture.com/2021/12/theater-review-company-katrina-lenk-patti-lupone-nyc.html",
       "publishDate": "December 9, 2021",
       "originalRating": null,
       "pullQuote": "The production feels both fresh and inevitable, like something that should have been done years ago but somehow needed to wait for exactly this moment and exactly this cast.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "constellations-2015",
@@ -43251,23 +43234,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "cyrano-de-bergerac-2007",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 63,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Charles Isherwood",
-      "url": "https://variety.com/2007/legit/reviews/cyrano-de-bergerac-1200558847/",
-      "publishDate": "October 16, 2007",
-      "originalRating": null,
-      "pullQuote": "Kevin Kline brings his customary intelligence and theatrical flair to the title role, but the production feels overly respectful and lacks the passion that should drive this romantic drama.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "cyrano-de-bergerac-2012",
@@ -44788,7 +44754,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 87,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Unknown",
@@ -44798,7 +44764,7 @@
       "pullQuote": "The marvelous young actor Ben Platt is giving a performance that's not likely to be bettered on Broadway this season.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "dear-evan-hansen-2016",
@@ -47298,7 +47264,7 @@
       "pullQuote": "Still, despite any quibbles, it remains a pleasure to watch these two old pros at work.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "driving-miss-daisy-2010",
@@ -49855,7 +49821,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 94,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -49865,7 +49831,7 @@
       "pullQuote": "There's hardly a moment in the exhilarating, devastating revival of the musical 'Falsettos' that doesn't approach, or even achieve, perfection.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "falsettos-2016",
@@ -50579,7 +50545,7 @@
       "pullQuote": "This exhilarating biographical musical about Nigerian Afrobeat pioneer Fela Kuti is a sensory feast that celebrates both the man and his music with infectious energy.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "fela-2012",
@@ -52592,17 +52558,17 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 53,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Marilyn Stasio",
-      "url": "https://variety.com/2015/legit/reviews/fool-for-love-theater-review-sam-shepard-1201617446/",
+      "url": "https://variety.com/2015/legit/reviews/fool-for-love-review-broadway-1201612517/",
       "publishDate": "October 9, 2015",
       "originalRating": null,
       "pullQuote": "Sam Rockwell and Nina Arianda bring a ferocious sexual heat to their performances as the doomed lovers in Sam Shepard's 'Fool for Love,' but even their blazing chemistry can't ignite this oddly passionless revival.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "fool-for-love-2015",
