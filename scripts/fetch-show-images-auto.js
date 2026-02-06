@@ -1543,7 +1543,8 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
 
 // Process shows in batches with concurrency.
 // API-sourced shows (instant) are separated from scrape-needing shows.
-async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx) {
+// checkpoint() is called every 25 shows to save progress to disk.
+async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, checkpoint) {
   const results = { success: [], failed: [], skipped: [] };
 
   // Separate API-matched shows (instant, no rate limit needed) from scrape-needed shows
@@ -1603,13 +1604,21 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
       console.log(`   [${processed}/${scrapeShows.length}] ${results.success.length} success, ${results.failed.length} failed`);
     }
 
+    // Checkpoint every 25 shows to save progress (protects against timeout)
+    if (checkpoint && processed % 25 < scrapeConcurrency && results.success.length > 0) {
+      console.log(`\n   💾 CHECKPOINT at ${processed}/${scrapeShows.length} — saving progress...`);
+      saveTodayTixIds(todayTixIds);
+      if (ibdbImageCache) saveIbdbImageCache(ibdbImageCache);
+      checkpoint();
+    }
+
     // Rate limit between batches (not between individual shows within a batch)
     if (i + scrapeConcurrency < scrapeShows.length) {
       await sleep(2000);
     }
   }
 
-  // Save caches once at end (not per-show)
+  // Final save of caches
   saveTodayTixIds(todayTixIds);
   if (ibdbImageCache) saveIbdbImageCache(ibdbImageCache);
 
@@ -1702,14 +1711,20 @@ async function main() {
 
   console.log(`\nProcessing ${shows.length} shows...\n`);
 
-  // Use concurrent processing for large batches, sequential for small
-  const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx);
-
-  // Save updated shows
-  if (results.success.length > 0) {
+  // Checkpoint callback — saves shows.json to disk so progress survives timeouts
+  const saveShowsData = () => {
     showsData._meta = showsData._meta || {};
     showsData._meta.lastUpdated = new Date().toISOString().split('T')[0];
     fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    console.log(`   💾 shows.json saved (${showsData.shows.length} shows)`);
+  };
+
+  // Use concurrent processing for large batches, sequential for small
+  const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, saveShowsData);
+
+  // Final save
+  if (results.success.length > 0) {
+    saveShowsData();
   }
 
   // Summary
