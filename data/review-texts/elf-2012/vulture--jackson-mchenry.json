@@ -14,5 +14,45 @@
   "contentTier": "excerpt",
   "playbillVerdictUrl": "https://www.vulture.com/article/theater-review-elf-musical-broadway-return.html",
   "wrongShow": true,
-  "wrongShowReason": "Cross-show URL collision (revival): review likely belongs to elf-2024 (has score, this file does not)"
+  "wrongShowReason": "Cross-show URL collision (revival): review likely belongs to elf-2024 (has score, this file does not)",
+  "fullText": null,
+  "isFullReview": false,
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/elf-2012/vulture--jackson-mchenry_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T05:56:11.625Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text",
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }
