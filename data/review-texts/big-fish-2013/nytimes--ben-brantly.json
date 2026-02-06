@@ -10,7 +10,7 @@
   ],
   "bwwExcerpt": "For a show that celebrates tall tales, 'Big Fish' feels curiously stunted. Granted, this movie-inspired musical about a whopper-spinning traveling salesman, which opened on Sunday night at the Neil Simon Theater, is certainly big by most conventional measurements...'Big Fish' fails to forge the crucial connection between its characters and their fantasies. Featuring songs by Andrew Lippa and a book by John August, this musical is about one of those impossible, wonderful, embarrassing fathers whose ghosts have done so much to keep psychiatrists in business...[Susan Stroman] seems to be drawing almost randomly from her bottomless bag of tricks. Yes, her use of dancers to embody an enchanted forest and a campfire is delightful. And it's hard not to chuckle when those two-stepping elephants make a cameo appearance. But if the show is all about the need for personal myths, it has to let its leading mythmaker take charge...Not once did I feel that what I was seeing had been spawned by the teeming mind of Edward Bloom. The show's de facto theme song may advocate 'be the hero' of your own life, but somehow 'Big Fish' turns everyone into a local-color extra.",
   "bwwScore": 6,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "assignedScore": 44,
   "llmScore": {
     "score": 44,
@@ -65,5 +65,52 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 44,
+  "fullText": "For a show that celebrates tall tales, “Big Fish” feels curiously stunted. Granted, this movie-inspired musical about a whopper-spinning traveling salesman, which opened on Sunday night at the Neil Simon Theater, is certainly big by most conventional measurements.\n\nIt has a big cast, a big orchestra, a host of hyperventilating big production numbers and a cornucopia of wild-and-crazy centerpieces, with really big special effects. It is also endowed with big talents, including the director and choreographer Susan Stroman (“Contact,” “The Producers”) and the actor Norbert Leo Butz (“Dirty Rotten Scoundrels”), who tend to attract Tony Award nominations the way cashmere draws moths. Add to this the considerable gifts of the fast-rising Broadway star Bobby Steggert and the endlessly resourceful set designer Julian Crouch, and you would seem to have the makings of a musical giant.\n\nYet “Big Fish,” which has been carefully designed to grow on you as it piles up its excesses, perversely starts shrinking almost from the beginning. While this process might baffle endocrinologists, lovers of liars of all stripes will understand what’s gone wrong. For outlandish stories to seduce, you should never be able to separate the teller from the tale.\n\n“Big Fish” fails to forge the crucial connection between its characters and their fantasies. Featuring songs by Andrew Lippa and a book by John August, this musical is about one of those impossible, wonderful, embarrassing fathers whose ghosts have done so much to keep psychiatrists in business. Based on Daniel Wallace’s 1998 novel and the 2003 film by Tim Burton (with a screenplay by Mr. August), this is a story that presents father as fantasist, and its tone brings to mind best-selling sentimental filial memoirs — à la Tim Russert and Geoffrey Wolff — crossed with “The Adventures of Baron Munchausen.”\n\nThe dad of “Big Fish” is Edward Bloom, and he is played by the wonderful but, in this case, stymied Mr. Butz. (By the way, if you think there might be a pun waiting to explode in Edward’s last name, you’re already ahead of the game.) Edward is a life-of-the-party Alabama boy still twinkling in the twilight of his life, which (this is not a spoiler) is destined to end soon. Age cannot stale his enthusiasm for retelling the same improbable accounts of his youth or his hunger for the spotlight.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
+  "textWordCount": 410,
+  "archivePath": "data/archives/reviews/big-fish-2013/nytimes--ben-brantly_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T14:46:45.551Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No usable CDX snapshots (all non-200 or non-HTML)"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 410,
+  "tierReason": "Full review text"
 }
