@@ -1,9 +1,14 @@
+'use client';
+
+import { useState } from 'react';
 import type { ShowCastChanges, CastEvent } from '@/lib/data-types';
 
 interface CastUpdatesCardProps {
   castChanges: ShowCastChanges;
   showStatus: string;
 }
+
+const INITIAL_COUNT = 3;
 
 function PersonIcon() {
   return (
@@ -41,6 +46,14 @@ function ExternalLinkIcon() {
   return (
     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+    </svg>
+  );
+}
+
+function ChevronDownIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className || "w-4 h-4"} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
     </svg>
   );
 }
@@ -157,19 +170,9 @@ function CastEventRow({ event }: { event: CastEvent }) {
   );
 }
 
-export default function CastUpdatesCard({ castChanges, showStatus }: CastUpdatesCardProps) {
-  // Don't show for closed shows
-  if (showStatus === 'closed') return null;
-
-  const upcoming = castChanges.upcoming || [];
-
-  // Don't render if nothing upcoming
-  if (upcoming.length === 0) return null;
-
-  // Sort: departures first (people want to know who's leaving), then arrivals, absences, notes
-  // Within each type, sort by date ascending
+function sortEvents(events: CastEvent[]): CastEvent[] {
   const typeOrder: Record<string, number> = { departure: 0, arrival: 1, absence: 2, note: 3 };
-  const sorted = [...upcoming].sort((a, b) => {
+  return [...events].sort((a, b) => {
     const typeA = typeOrder[a.type] ?? 4;
     const typeB = typeOrder[b.type] ?? 4;
     if (typeA !== typeB) return typeA - typeB;
@@ -178,6 +181,23 @@ export default function CastUpdatesCard({ castChanges, showStatus }: CastUpdates
     if (b.date) return 1;
     return 0;
   });
+}
+
+export default function CastUpdatesCard({ castChanges, showStatus }: CastUpdatesCardProps) {
+  const [expanded, setExpanded] = useState(false);
+
+  // Don't show for closed shows
+  if (showStatus === 'closed') return null;
+
+  const upcoming = castChanges.upcoming || [];
+
+  // Don't render if nothing upcoming
+  if (upcoming.length === 0) return null;
+
+  const sorted = sortEvents(upcoming);
+  const hasMore = sorted.length > INITIAL_COUNT;
+  const displayed = expanded ? sorted : sorted.slice(0, INITIAL_COUNT);
+  const hiddenCount = sorted.length - INITIAL_COUNT;
 
   return (
     <section className="card p-5 sm:p-6 mb-6" aria-labelledby="cast-updates-heading">
@@ -187,10 +207,20 @@ export default function CastUpdatesCard({ castChanges, showStatus }: CastUpdates
       </h2>
 
       <div className="space-y-3">
-        {sorted.map((event, i) => (
+        {displayed.map((event, i) => (
           <CastEventRow key={`${event.type}-${event.name}-${event.date || i}`} event={event} />
         ))}
       </div>
+
+      {hasMore && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="mt-3 w-full flex items-center justify-center gap-1.5 py-2 text-sm font-medium text-gray-400 hover:text-white bg-surface-overlay hover:bg-white/10 rounded-lg transition-colors border border-white/5"
+        >
+          {expanded ? 'Show less' : `Show ${hiddenCount} more update${hiddenCount === 1 ? '' : 's'}`}
+          <ChevronDownIcon className={`w-4 h-4 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+        </button>
+      )}
     </section>
   );
 }
