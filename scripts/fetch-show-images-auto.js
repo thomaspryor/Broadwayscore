@@ -1121,6 +1121,14 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
     rateLimiter: verifyCtx.rateLimiter,
   });
 
+  // Reject production photos — we only want poster art
+  if (result.imageType === 'production_still') {
+    console.log(`   ✗ REJECTED (production photo): ${result.description} — we want poster art, not stage photos`);
+    verifyCtx.rejected = (verifyCtx.rejected || 0) + 1;
+    verifyCtx.productionPhotos = (verifyCtx.productionPhotos || 0) + 1;
+    return null;
+  }
+
   if (result.match === true) {
     const score = scoreCandidate(result, urlToVerify);
     console.log(`   ✓ VERIFIED (${result.confidence}, ${result.imageType}): ${result.description} [score=${score}]`);
@@ -1147,8 +1155,12 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
 async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   console.log(`\n📽️  ${show.title}`);
 
+  // When verification is active, collect candidates from all tiers and pick the best
+  // instead of returning on first success. This prefers promotional art over production stills.
+  const candidates = [];
+
   // Step 1: Try TodayTix API data (native square images, no HTTP call needed)
-  // TRUSTED SOURCE — skip verification
+  // Now verified like other sources — title matching can fail
   if (apiData) {
     console.log(`   Found in TodayTix API: "${apiData.displayName}" (ID: ${apiData.id})`);
 
@@ -1169,19 +1181,30 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
       console.log(`     - Portrait (poster): ${poster ? 'from API' : 'not available'}`);
       console.log(`     - Landscape (hero): ${hero ? 'from API' : 'not available'}`);
 
-      return {
+      const apiImages = {
         hero: addWebp(hero),
         thumbnail: addWebp(thumbnail),
         poster: addWebp(poster),
       };
+
+      // Verify API images too — title matching can fail
+      const candidate = await verifyAndCollect(apiImages, show, 'TodayTix API', verifyCtx);
+      if (candidate) {
+        candidates.push(candidate);
+        // High-confidence promotional art from API = accept immediately
+        if (candidate.verifyResult?.imageType === 'promotional_art' &&
+            candidate.verifyResult?.confidence === 'high') {
+          console.log(`   ★ Promotional art from API at high confidence — using this`);
+          return candidate.images;
+        }
+        // Without verify context, first success wins (original behavior)
+        if (!verifyCtx) return candidate.images;
+      }
+      if (verifyCtx && !candidate) console.log(`   API image rejected, trying other sources...`);
+    } else {
+      console.log(`   API match found but missing image data, falling back to page scrape`);
     }
-
-    console.log(`   API match found but missing image data, falling back to page scrape`);
   }
-
-  // When --verify is active, collect candidates from all tiers and pick the best
-  // instead of returning on first success. This prefers promotional art over production stills.
-  const candidates = [];
 
   // Step 2: Try TodayTix page scrape if we have an ID
   // NEEDS VERIFICATION — scraped images may be from wrong show/production
@@ -1452,25 +1475,27 @@ async function main() {
   const onlyMissing = args.includes('--missing');
   const badImagesOnly = args.includes('--bad-images');
   const concurrency = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '5', 10);
-  const verifyEnabled = args.includes('--verify');
+  // Verification is ON by default — use --no-verify to skip (faster but less safe)
+  const verifyEnabled = !args.includes('--no-verify');
 
   if (!SCRAPINGBEE_API_KEY) {
     console.error('ERROR: Set SCRAPINGBEE_API_KEY environment variable');
     process.exit(1);
   }
 
-  // Initialize LLM verification gate
+  // Initialize LLM verification gate (on by default)
   let verifyCtx = null;
   if (verifyEnabled) {
     const { createRateLimiter } = require('./lib/verify-image');
-    verifyCtx = { rateLimiter: createRateLimiter(15), verified: 0, rejected: 0, uncertain: 0, lastResort: 0 };
-    console.log('Image verification: ENABLED (Gemini 2.0 Flash)');
+    verifyCtx = { rateLimiter: createRateLimiter(15), verified: 0, rejected: 0, uncertain: 0, lastResort: 0, productionPhotos: 0 };
+    console.log('Image verification: ENABLED (Gemini 2.0 Flash) — use --no-verify to skip');
+  } else {
+    console.log('Image verification: DISABLED (--no-verify flag)');
   }
 
   console.log('='.repeat(60));
   console.log('AUTO-FETCH SHOW IMAGES');
   if (badImagesOnly) console.log('MODE: Re-sourcing shows with bad (identical Playbill) images');
-  if (verifyEnabled) console.log('MODE: LLM verification gate active');
   console.log('='.repeat(60));
 
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
@@ -1537,15 +1562,17 @@ async function main() {
     console.log(`\n🔍 Verification Stats:`);
     console.log(`  Verified (accepted): ${verifyCtx.verified}`);
     console.log(`  Rejected (wrong image): ${verifyCtx.rejected}`);
+    if (verifyCtx.productionPhotos > 0) {
+      console.log(`    ↳ Production photos rejected: ${verifyCtx.productionPhotos}`);
+    }
     console.log(`  Uncertain (accepted anyway): ${verifyCtx.uncertain}`);
     if (verifyCtx.lastResort > 0) {
       console.log(`  Last resort (Playbill, accepted with warning): ${verifyCtx.lastResort}`);
     }
     if (verifyCtx.imageTypes) {
-      console.log(`\n📊 Image Type Distribution:`);
+      console.log(`\n📊 Image Type Distribution (accepted only):`);
       const types = verifyCtx.imageTypes;
       console.log(`  Promotional art: ${types.promotional_art || 0}`);
-      console.log(`  Production stills: ${types.production_still || 0}`);
       console.log(`  Headshot/cast: ${types.headshot_cast || 0}`);
       console.log(`  Other: ${types.other || 0}`);
     }

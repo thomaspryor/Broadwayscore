@@ -45,11 +45,16 @@ REJECT (match=false) only when you see POSITIVE EVIDENCE of these problems:
 - The image shows a completely different show's recognizable artwork or cast
 
 ACCEPT (match=true) in these cases:
-- The image shows the correct show title — accept even if you can't confirm the exact production year
-- Promotional art, logos, production photos, or cast photos that plausibly match the show — accept
-- Closing notice images ("Final Performance", "Must Close") for the correct show — accept
+- Official poster art, key art, or promotional graphics showing the correct show title
+- Show logos, stylized title treatments, or title cards with design elements
+- Closing notice images ("Final Performance", "Must Close") for the correct show
 - You cannot determine whether the image is from this specific production year vs another year — ACCEPT (benefit of the doubt)
-- Simple text-based logos or stylized title treatments showing the right title — accept
+
+REJECT production photos (match=false, imageType="production_still"):
+- Photos showing actors performing on stage during a show
+- Rehearsal photos, backstage photos
+- Cast photos taken during performance (not promotional portraits)
+These are NOT suitable as show thumbnails — we want poster art, not performance photos.
 
 KEY PRINCIPLE: If the image title matches the show title and there's no visible evidence of a wrong venue/production, ACCEPT IT. Do not reject just because you can't confirm the exact year.
 
@@ -59,7 +64,7 @@ Reply with ONLY this JSON (no markdown fencing, no explanation):
 Or if there's a problem:
 {"match":false,"confidence":"high","description":"brief description of what the image actually shows","issues":["category"],"imageType":"other"}
 
-Issue categories: wrong_show, wrong_production, non_broadway, placeholder, playbill_cover, seating_chart, generic_image, social_media_logo, ticket_listing, venue_photo
+Issue categories: wrong_show, wrong_production, non_broadway, placeholder, playbill_cover, seating_chart, generic_image, social_media_logo, ticket_listing, venue_photo, production_photo
 
 Also classify the image type. Add an "imageType" field to your JSON response:
 - "promotional_art" — Official poster, key art, logo treatment, title card with stylized design, marketing material
