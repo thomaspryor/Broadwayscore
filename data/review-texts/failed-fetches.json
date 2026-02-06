@@ -10708,30 +10708,6 @@
     "timestamp": "2026-02-04T15:18:37.803Z"
   },
   {
-    "reviewId": "grey-gardens-2006/hollywood-reporter--unknown.json",
-    "showId": "grey-gardens-2006",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/grey-gardens-theater-review-911161",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (18): home, sunset boulevard, purpose, company, summer...",
-    "textLength": 6992,
-    "timestamp": "2026-02-04T15:26:16.744Z"
-  },
-  {
-    "reviewId": "grey-gardens-2006/variety--charles-isherwood.json",
-    "showId": "grey-gardens-2006",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2006/legit/reviews/grey-gardens-1200514649/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): purpose, summer, cats, the present, high...",
-    "textLength": 7482,
-    "timestamp": "2026-02-04T15:27:51.490Z"
-  },
-  {
     "reviewId": "gypsy-2008/nytimes--ben-brantley.json",
     "showId": "gypsy-2008",
     "outlet": "The New York Times",
@@ -12710,18 +12686,6 @@
     "garbageReason": "Multiple shows mentioned (14): king lear, sweat, eclipsed, the audience, act one...",
     "textLength": 13798,
     "timestamp": "2026-02-05T03:27:31.037Z"
-  },
-  {
-    "reviewId": "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "showId": "hamilton-2015",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton-theater-813145/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): redwood, smash, 1776, spring awakening, something rotten!...",
-    "textLength": 6046,
-    "timestamp": "2026-02-05T03:27:33.942Z"
   },
   {
     "reviewId": "hands-on-a-hardbody-2013/hollywood-reporter--david-rooney.json",
@@ -18446,5 +18410,77 @@
     "garbageReason": "Multiple shows mentioned (8): appropriate, significant other, misery, the crucible, once...",
     "textLength": 3533,
     "timestamp": "2026-02-06T06:17:56.288Z"
+  },
+  {
+    "reviewId": "grand-horizons-2020/vulture--helen-shaw.json",
+    "showId": "grand-horizons-2020",
+    "outlet": "Vulture",
+    "critic": "Helen Shaw",
+    "url": "https://www.vulture.com/2020/01/theater-review-the-sparkle-and-glow-of-grand-horizons.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): proof, home, purpose, the prom, the crucible...",
+    "textLength": 10269,
+    "timestamp": "2026-02-06T06:18:01.724Z"
+  },
+  {
+    "reviewId": "grey-gardens-2006/hollywood-reporter--unknown.json",
+    "showId": "grey-gardens-2006",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/grey-gardens-theater-review-911161",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (18): home, sunset boulevard, purpose, company, summer...",
+    "textLength": 6992,
+    "timestamp": "2026-02-06T06:19:58.144Z"
+  },
+  {
+    "reviewId": "grey-gardens-2006/variety--charles-isherwood.json",
+    "showId": "grey-gardens-2006",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2006/legit/reviews/grey-gardens-1200514649/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): summer, cats, the present, high, race...",
+    "textLength": 7489,
+    "timestamp": "2026-02-06T06:21:43.160Z"
+  },
+  {
+    "reviewId": "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "showId": "hamilton-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton-theater-813145/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): redwood, smash, 1776, spring awakening, something rotten!...",
+    "textLength": 6046,
+    "timestamp": "2026-02-06T06:21:46.740Z"
+  },
+  {
+    "reviewId": "hamilton-2015/nyt-theater--jonathan-mandell.json",
+    "showId": "hamilton-2015",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2019/03/08/hamilton-on-broadway-2019-new-cast-new-clarity/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): aladdin, the audience, the performers, once, rain...",
+    "textLength": 7739,
+    "timestamp": "2026-02-06T06:21:55.239Z"
+  },
+  {
+    "reviewId": "heisenberg-2016/culturevulture--emily-s-mendel.json",
+    "showId": "heisenberg-2016",
+    "outlet": "culturevulture",
+    "critic": "Emily S. Mendel",
+    "url": "https://culturevulture.net/theater/heisenberg/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): proof, appropriate, english, the curious incident of the dog in the night-time, constellations...",
+    "textLength": 3981,
+    "timestamp": "2026-02-06T06:24:59.023Z"
   }
 ]
