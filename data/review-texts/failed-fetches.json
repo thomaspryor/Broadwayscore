@@ -10708,42 +10708,6 @@
     "timestamp": "2026-02-04T15:18:37.803Z"
   },
   {
-    "reviewId": "good-night-and-good-luck-2025/newyorker--helen-shaw.json",
-    "showId": "good-night-and-good-luck-2025",
-    "outlet": "The New Yorker (Helen Shaw)",
-    "critic": "Helen Shaw",
-    "url": "https://www.newyorker.com/magazine/2025/04/14/glengarry-glen-ross-good-night-and-good-luck-theatre-review-broadway",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): sweat, the audience, hair, rain, elling...",
-    "textLength": 8357,
-    "timestamp": "2026-02-04T15:20:32.643Z"
-  },
-  {
-    "reviewId": "good-night-and-good-luck-2025/nyt-theater--jonathan-mandell.json",
-    "showId": "good-night-and-good-luck-2025",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2025/04/03/good-night-and-good-luck-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, network, the audience, gigi, hair...",
-    "textLength": 8989,
-    "timestamp": "2026-02-04T15:20:41.568Z"
-  },
-  {
-    "reviewId": "good-night-and-good-luck-2025/nytimes--jesse-green.json",
-    "showId": "good-night-and-good-luck-2025",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2025/04/03/theater/good-night-and-good-luck-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): company, network, once, rain, high...",
-    "textLength": 8358,
-    "timestamp": "2026-02-04T15:20:48.417Z"
-  },
-  {
     "reviewId": "grey-gardens-2006/hollywood-reporter--unknown.json",
     "showId": "grey-gardens-2006",
     "outlet": "Hollywood Reporter",
@@ -12638,18 +12602,6 @@
     "garbageReason": "Multiple shows mentioned (12): giant, english, the lehman trilogy, summer, all the way...",
     "textLength": 8014,
     "timestamp": "2026-02-05T03:20:47.478Z"
-  },
-  {
-    "reviewId": "good-night-and-good-luck-2025/variety--frank-rizzo.json",
-    "showId": "good-night-and-good-luck-2025",
-    "outlet": "Variety",
-    "critic": "Frank Rizzo",
-    "url": "https://variety.com/2025/legit/reviews/good-night-and-good-luck-review-george-clooney-broadway-3-1236354970/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): appropriate, purpose, network, the front page, the present...",
-    "textLength": 6279,
-    "timestamp": "2026-02-05T03:21:06.292Z"
   },
   {
     "reviewId": "good-night-oscar-2023/nyt-theater--jonathan-mandell.json",
@@ -18410,5 +18362,89 @@
     "garbageReason": "Multiple shows mentioned (9): giant, appropriate, something rotten!, violet, hair...",
     "textLength": 6058,
     "timestamp": "2026-02-06T06:09:28.121Z"
+  },
+  {
+    "reviewId": "good-night-and-good-luck-2025/newyorker--helen-shaw.json",
+    "showId": "good-night-and-good-luck-2025",
+    "outlet": "The New Yorker (Helen Shaw)",
+    "critic": "Helen Shaw",
+    "url": "https://www.newyorker.com/magazine/2025/04/14/glengarry-glen-ross-good-night-and-good-luck-theatre-review-broadway",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): chicago, glengarry glen ross, 1984, sweat, the audience...",
+    "textLength": 8555,
+    "timestamp": "2026-02-06T06:12:14.551Z"
+  },
+  {
+    "reviewId": "good-night-and-good-luck-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "good-night-and-good-luck-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/04/03/good-night-and-good-luck-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, network, the audience, gigi, hair...",
+    "textLength": 8989,
+    "timestamp": "2026-02-06T06:12:23.440Z"
+  },
+  {
+    "reviewId": "good-night-and-good-luck-2025/nytimes--jesse-green.json",
+    "showId": "good-night-and-good-luck-2025",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2025/04/03/theater/good-night-and-good-luck-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): company, network, once, rain, high...",
+    "textLength": 8358,
+    "timestamp": "2026-02-06T06:12:28.558Z"
+  },
+  {
+    "reviewId": "good-night-and-good-luck-2025/variety--frank-rizzo.json",
+    "showId": "good-night-and-good-luck-2025",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2025/legit/reviews/good-night-and-good-luck-review-george-clooney-broadway-3-1236354970/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): appropriate, purpose, network, the band's visit, the front page...",
+    "textLength": 5971,
+    "timestamp": "2026-02-06T06:12:44.618Z"
+  },
+  {
+    "reviewId": "grand-horizons-2020/nytg--joe-dziemianowicz.json",
+    "showId": "grand-horizons-2020",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/review-of-second-stage-theaters-grand-horizons-on-broadway",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, linda vista, the audience, once, rain...",
+    "textLength": 5540,
+    "timestamp": "2026-02-06T06:15:25.279Z"
+  },
+  {
+    "reviewId": "grand-horizons-2020/nytimes--unknown.json",
+    "showId": "grand-horizons-2020",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2020/01/23/theater/grand-horizons-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): home, plaza suite, the crucible, the river, the audience...",
+    "textLength": 6913,
+    "timestamp": "2026-02-06T06:16:35.271Z"
+  },
+  {
+    "reviewId": "grand-horizons-2020/variety--marilyn-stasio.json",
+    "showId": "grand-horizons-2020",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2020/legit/reviews/grand-horizons-review-broadway-1203479081/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): appropriate, significant other, misery, the crucible, once...",
+    "textLength": 3533,
+    "timestamp": "2026-02-06T06:17:56.288Z"
   }
 ]
