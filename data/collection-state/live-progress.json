@@ -1,56 +1,57 @@
 {
-  "updatedAt": "2026-02-06T15:26:04.364Z",
-  "processed": 10,
-  "failed": 100,
-  "successRate": "9.1%",
+  "updatedAt": "2026-02-06T15:35:03.222Z",
+  "processed": 24,
+  "failed": 116,
+  "successRate": "17.1%",
   "tierBreakdown": {
-    "playwright": 2,
-    "browserbase": 2,
-    "scrapingbee": 5,
-    "brightdata": 3,
-    "archive": 2
+    "playwright": 4,
+    "browserbase": 3,
+    "scrapingbee": 4,
+    "brightdata": 7,
+    "archive": 9
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-06T13:55:33.576Z",
+      "t": "2026-02-06T13:54:00.510Z",
       "event": "bb-session",
-      "session": "d1c5c9ad",
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
+      "session": "6716a4b4",
+      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
     },
     {
-      "t": "2026-02-06T13:56:08.350Z",
+      "t": "2026-02-06T13:56:20.682Z",
       "event": "bb-session",
-      "session": "469d0cda",
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-the-neil-diamond-musica"
+      "session": "f338c30d",
+      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
     },
     {
-      "t": "2026-02-06T13:58:16.457Z",
-      "event": "bb-session",
-      "session": "59277549",
-      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
-    },
-    {
-      "t": "2026-02-06T13:58:18.597Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-06T13:59:14.733Z",
-      "event": "bb-session",
-      "session": "7b4c109e",
-      "url": "http://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-1256271"
-    },
-    {
-      "t": "2026-02-06T14:01:30.786Z",
-      "event": "bb-session",
-      "session": "db1e540b",
-      "url": "https://www.newyorker.com/magazine/2022/12/19/a-christmas-carol-theatre-review"
-    },
-    {
-      "t": "2026-02-06T14:01:33.389Z",
+      "t": "2026-02-06T13:56:22.929Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-06T13:58:38.999Z",
+      "event": "bb-session",
+      "session": "4a4d02fb",
+      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
+    },
+    {
+      "t": "2026-02-06T13:59:24.346Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770386330878\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA_8pSDModsUMALPe1oA==&cid=aPqmi3Ur_f8IGh_so850HH~9012ihl5CcGs5ygiGf0GHcB6QCfWZyaXci61CWfzfyKEAqY2Y06jAK~HwT0z6~LJCabyuurtSF9oysjCE6yfOKvf~aZ0mqyqjuui5bKd_&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770386330878\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770386330878\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA_8pSDModsUMALPe1oA==&cid=aPqmi3Ur_f8IGh_so850HH~9012ihl5CcGs5ygiGf0GHcB6QCfWZyaXci61CWfzfyKEAqY2Y06jAK~HwT0z6~LJCabyuurtSF9oysjCE6yfOKvf~aZ0mqyqjuui5bKd_&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770386330878\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770386330878\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA_8pSDModsUMALPe1oA==&cid=aPqmi3Ur_f8IGh_so850HH~9012ihl5CcGs5ygiGf0GHcB6QCfWZyaXci61CWfzfyKEAqY2Y06jAK~HwT0z6~LJCabyuurtSF9oysjCE6yfOKvf~aZ0mqyqjuui5bKd_&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770386330878\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-06T14:00:07.582Z",
+      "event": "bb-session",
+      "session": "1524ad3d",
+      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+    },
+    {
+      "t": "2026-02-06T14:00:23.984Z",
+      "event": "bb-session",
+      "session": "c26d33ec",
+      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
     }
   ]
 }
