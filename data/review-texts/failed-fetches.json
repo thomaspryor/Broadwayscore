@@ -12892,42 +12892,6 @@
     "timestamp": "2026-02-05T04:37:21.378Z"
   },
   {
-    "reviewId": "prince-of-broadway-2017/hollywood-reporter--david-rooney.json",
-    "showId": "prince-of-broadway-2017",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/theater-review-prince-broadway-1033519/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): appropriate, home, purpose, company, hair...",
-    "textLength": 9294,
-    "timestamp": "2026-02-05T04:37:58.797Z"
-  },
-  {
-    "reviewId": "prince-of-broadway-2017/variety--marilyn-stasio.json",
-    "showId": "prince-of-broadway-2017",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2017/legit/reviews/prince-of-broadway-review-1202533339/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"prince of broadway\" not mentioned in text; No theater-related keywords in short text",
-    "textLength": 1714,
-    "timestamp": "2026-02-05T04:39:27.317Z"
-  },
-  {
-    "reviewId": "prince-of-broadway-2017/vulture--sara-holdren.json",
-    "showId": "prince-of-broadway-2017",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "http://www.vulture.com/2017/08/review-prince-of-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (16): merrily we roll along, sweeney todd, company, west side story, sweat...",
-    "textLength": 9952,
-    "timestamp": "2026-02-05T04:39:38.118Z"
-  },
-  {
     "reviewId": "purpose-2025/hollywood-reporter--lovia-gayarkye.json",
     "showId": "purpose-2025",
     "outlet": "Hollywood Reporter",
@@ -19538,5 +19502,53 @@
     "garbageReason": "Multiple shows mentioned (7): the price, the audience, hair, high, race...",
     "textLength": 7340,
     "timestamp": "2026-02-06T09:09:28.472Z"
+  },
+  {
+    "reviewId": "prince-of-broadway-2017/hollywood-reporter--david-rooney.json",
+    "showId": "prince-of-broadway-2017",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/theater-review-prince-broadway-1033519/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): appropriate, home, purpose, hair, once...",
+    "textLength": 9299,
+    "timestamp": "2026-02-06T09:10:29.457Z"
+  },
+  {
+    "reviewId": "prince-of-broadway-2017/nytimes--unknown.json",
+    "showId": "prince-of-broadway-2017",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2017/08/24/theater/prince-of-broadway-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (18): appropriate, parade, sweeney todd, company, west side story...",
+    "textLength": 7698,
+    "timestamp": "2026-02-06T09:13:35.242Z"
+  },
+  {
+    "reviewId": "prince-of-broadway-2017/variety--marilyn-stasio.json",
+    "showId": "prince-of-broadway-2017",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2017/legit/reviews/prince-of-broadway-review-1202533339/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"prince of broadway\" not mentioned in text; No theater-related keywords in short text",
+    "textLength": 1848,
+    "timestamp": "2026-02-06T09:14:08.461Z"
+  },
+  {
+    "reviewId": "prince-of-broadway-2017/vulture--sara-holdren.json",
+    "showId": "prince-of-broadway-2017",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "http://www.vulture.com/2017/08/review-prince-of-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): merrily we roll along, sweeney todd, company, west side story, sweat...",
+    "textLength": 9952,
+    "timestamp": "2026-02-06T09:14:16.067Z"
   }
 ]
