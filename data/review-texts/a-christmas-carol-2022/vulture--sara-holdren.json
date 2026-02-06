@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Christmas Carol is built around spectacle, and the spectacle is genuinely spectacular. But spectacle alone cannot carry a show, and when the bells and whistles quiet down, what's left feels oddly hollow.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Christmas Carol is built around spectacle, and the spectacle is genuinely spectacular. But spectacle alone cannot carry a show, and when the bells and whistles quiet down, what's left feels oddly hollow.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "spectacle alone cannot carry a show, and when the bells and whistles quiet down, what's left feels oddly hollow.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Mixed assessment praising spectacular production values but finding the core experience hollow and insufficient. Single excerpt warning requires caution. | GPT-4o: The review acknowledges the impressive spectacle but criticizes the show for feeling hollow beyond that. The single excerpt suggests mixed feelings, with praise for the spectacle but disappointment in the overall substance. | Gemini: The review praises the spectacle but ultimately finds the show hollow, indicating a mixed reaction. Given the limited text, a score in the middle of the 'Mixed' bucket seems appropriate. | Kimi: The excerpt praises the spectacle as 'genuinely spectacular' but concludes the show feels 'oddly hollow' without the bells and whistles, indicating significant reservations about the production's substance despite impressive visuals.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:24:12.577Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

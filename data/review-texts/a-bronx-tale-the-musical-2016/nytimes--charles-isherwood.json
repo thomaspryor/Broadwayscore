@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.nytimes.com/2016/02/25/theater/review-a-bronx-tale-the-musical-doo-wops-down-mean-streets.html?partner=rss&emc=rss&_r=0"
+  "playbillVerdictUrl": "http://www.nytimes.com/2016/02/25/theater/review-a-bronx-tale-the-musical-doo-wops-down-mean-streets.html?partner=rss&emc=rss&_r=0",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sometimes plain old pasta with red sauce is just what the doctor ordered.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The comfort food metaphor suggests a positive but modest recommendation - satisfying and enjoyable without being groundbreaking. However, the excerpt cuts off mid-sentence and may not reflect the full verdict. | GPT-4o: The excerpt suggests the show is comforting and enjoyable, akin to 'comfort food.' While it doesn't break new ground, the tone is positive, indicating a mild recommendation. | Gemini: The review compares the show to \"plain old pasta with red sauce\", suggesting it is enjoyable but not groundbreaking. Given the limited excerpt, confidence is low, but the overall tone is positive. | Kimi: The 'comfort food' and 'just what the doctor ordered' metaphors indicate a mild recommendation—enjoyable and satisfying despite not breaking ground or dazzling. Single excerpt availability warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:17:03.214Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

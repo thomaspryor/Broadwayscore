@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "A Christmas Story succeeds as well as it does because it doesn't try to be anything more than what it is: a gentle, sweet, and ultimately satisfying look at one boy's holiday dreams.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A Christmas Story succeeds as well as it does because it doesn't try to be anything more than what it is: a gentle, sweet, and ultimately satisfying look at one boy's holiday dreams.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Christmas Story succeeds as well as it does because it doesn't try to be anything more than what it is: a gentle, sweet, and ultimately satisfying look at one boy's holiday dreams.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('succeeds', 'satisfying') with appreciation for the show's modest but effective approach. Single excerpt warning suggests this represents a favorable overall assessment. | GPT-4o: The excerpt provides a positive evaluation, describing the show as 'gentle, sweet, and ultimately satisfying.' Given the single excerpt warning, the score is placed on the higher end of the Positive range. | Gemini: The excerpt uses positive language such as \"gentle, sweet, and ultimately satisfying\", suggesting a positive recommendation. Given the single excerpt, confidence is low, but the positive tone warrants a score on the higher end of the positive range. | Kimi: Single excerpt offers clear endorsement with 'succeeds' and 'ultimately satisfying,' though with modest praise suggesting solid rather than exceptional achievement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:25:06.024Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

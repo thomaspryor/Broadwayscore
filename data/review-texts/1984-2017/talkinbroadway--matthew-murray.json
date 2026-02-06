@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This 1984 is designed to pummel you into submission, and it succeeds so thoroughly that you may find yourself wondering whether you've been entertained or merely endured something.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This 1984 is designed to pummel you into submission, and it succeeds so thoroughly that you may find yourself wondering whether you've been entertained or merely endured something.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 1984 is designed to pummel you into submission, and it succeeds so thoroughly that you may find yourself wondering whether you've been entertained or merely endured something.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the production succeeds at its intent but questions whether this creates entertainment or mere endurance. This ambivalence about the audience experience suggests a mixed verdict rather than clear recommendation. | GPT-4o: The excerpt suggests a strong impact but leaves ambiguity about whether the experience is positive or negative, indicating a mixed reception. | Gemini: The excerpt suggests a powerful but potentially unpleasant experience, leaving the reviewer questioning whether it's entertainment or endurance. This indicates a mixed reaction. | Kimi: The excerpt acknowledges the production's effectiveness in achieving its intense goals ('succeeds so thoroughly'), but expresses significant ambivalence about the viewing experience, questioning whether audiences will feel entertained or merely like they 'endured' a punishing show. With only one curated excerpt available, the overall verdict remains unclear but leans neither toward clear recommendation nor rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:05:03.780Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

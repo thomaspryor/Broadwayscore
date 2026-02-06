@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a punishingly intense evening of theater that will leave you shaken—and should leave you thinking as well.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The result is a punishingly intense evening of theater that will leave you shaken—and should leave you thinking as well.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a punishingly intense evening of theater that will leave you shaken—and should leave you thinking as well.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language about theatrical impact ('punishingly intense', 'leave you shaken', 'should leave you thinking') suggests recommendation despite intensity. Single excerpt limits confidence, but quote indicates upper Positive range. | GPT-4o: The excerpt describes the show as 'punishingly intense' and impactful, suggesting a strong, positive reaction. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt describes the show as \"punishingly intense\" and says it \"will leave you shaken,\" indicating a strong, positive experience. Given the single excerpt, I'm scoring it at the higher end of the positive range. | Kimi: The excerpt offers strong praise for the production's emotional impact and intellectual resonance, describing it as 'punishingly intense' and effective in leaving audiences shaken and thoughtful. While clearly positive, the single-excerpt limitation prevents a higher confidence rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:09:08.081Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 87,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

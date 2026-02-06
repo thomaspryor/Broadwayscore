@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Eclecticism has always been essential to Mr. Guare's writing, which at its best juggles mismatched elements of culture, high and low, with daring and dizzying skill.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Single excerpt praising the playwright's skill but appearing to set up contrast with 'But here' - suggests qualified praise. Low confidence due to truncated text and single excerpt warning. | GPT-4o: The excerpt praises the eclectic nature of Mr. Guare's writing but lacks a clear recommendation or overall assessment of the current production. The absence of a full review and the single excerpt warning suggest a mixed evaluation. | Gemini: The excerpt praises the writer's past work but the sentence is cut off, so it's hard to determine the overall recommendation. I am placing it in the mixed bucket with low confidence. | Kimi: The excerpt establishes high regard for John Guare's past writing ('daring and dizzying skill') but cuts off at a contrasting 'But here,' leaving the specific assessment of this production unresolved. Given truncation warnings against low scores, this registers as mildly positive pending the unseen verdict. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T09:58:59.863Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

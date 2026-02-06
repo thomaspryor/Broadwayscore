@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Much of it is raucously enjoyable—it received a sincere standing ovation—and the heart of Palminteri's original remains intact",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this appears positive ('raucously enjoyable', standing ovation) but notes the soul 'seems compromised'. Lower end of Positive bucket due to excerpt limitation and mixed signals. | GPT-4o: The review excerpt highlights enjoyment and a positive audience reaction, suggesting a positive reception. However, it also notes that the soul seems compromised, indicating some reservations. Given the single excerpt and text quality warning, a low confidence score at the lower end of the Positive range is appropriate. | Gemini: The review states that much of the show is \"raucously enjoyable\" and that the heart of the original remains intact. However, it also mentions that the soul seems compromised by the big-budget production, indicating reservations. Given it's a single excerpt, I'm scoring it cautiously. | Kimi: While the critic praises the show as 'raucously enjoyable' with 'pumped-up gusto' and acknowledges its audience appeal (standing ovation), the criticism that its 'soul seems compromised' by commercialization indicates a qualified rather than enthusiastic recommendation, fitting the lower end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:05:04.396Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

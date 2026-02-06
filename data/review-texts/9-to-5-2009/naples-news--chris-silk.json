@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What's fresh? The wheelbarrow-load of new songs and the score Parton wrote - including a rousing first-act curtain number.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows qualified praise for Parton's score and songs, but acknowledges lack of novelty in plot. Positive elements outweigh reservations, but limited text and mixed signals warrant lower end of Positive range. | GPT-4o: The excerpt suggests a mixed view: it notes the lack of novelty but acknowledges new songs and a standout number. Without a clear recommendation or discouragement, it fits the Mixed bucket. | Gemini: The review suggests that the musical is not wholly new, but the new songs and score are fresh. Given that this is the only excerpt available, the recommendation is mildly positive. | Kimi: Single excerpt indicates the show offers nothing new plot-wise but praises Parton's score as 'rousing,' suggesting a qualified recommendation based on the music despite unoriginal material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:17:50.289Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.ew.com/ew/article/0,,20364394_20874829,00.html"
+  "playbillVerdictUrl": "http://www.ew.com/ew/article/0,,20364394_20874829,00.html",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "MacKinnon's feisty if occasionally restless revival makes intriguing work of Albee.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it a 'feisty revival' that 'makes intriguing work' and praises the 'shimmering character work' from the cast, though notes pacing inconsistencies. The positive language outweighs the reservations. Confidence is low due to truncated excerpt format. | GPT-4o: The review praises the production as 'feisty' and 'intriguing' with 'shimmering character work,' indicating a positive reception. However, it notes occasional restlessness and oscillating speeds, suggesting some reservations. The excerpt's brevity and lack of a full conclusion lower confidence. | Gemini: The review uses positive language like \"intriguing work\" and praises the \"shimmering character work,\" but also notes that the production \"can feel like it's oscillating speeds,\" suggesting a qualified recommendation. Confidence is low due to the truncated text. | Kimi: The critic praises the shimmering character work and strong cast while noting occasional pacing inconsistencies, resulting in a qualified but clear recommendation to see the revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:26:19.191Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

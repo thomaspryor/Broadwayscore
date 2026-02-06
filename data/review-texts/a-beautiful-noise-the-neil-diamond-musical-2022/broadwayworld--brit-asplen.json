@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unlike many biographical jukebox musicals (that are also excellent in their own rights), including Beautiful: A Carole King Musical, On Your Feet!, and Jersey Boys, A Beautiful Noise is based more in reflection rather than a direct story.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Single excerpt comparing favorably to other successful musicals suggests positive assessment, but excerpt is too brief and descriptive rather than evaluative to determine full verdict strength. | GPT-4o: The excerpt does not provide a clear recommendation or strong evaluative language. It compares the show to other musicals but does not clearly praise or criticize it, suggesting a mixed or neutral stance. | Gemini: The excerpt compares the show to other jukebox musicals, noting it's based more in reflection than a direct story. Without more context, it's difficult to determine a clear recommendation, suggesting a mixed or neutral assessment. | Kimi: Single curated excerpt places the show alongside excellent company and suggests its reflective narrative structure offers a thoughtful alternative to standard biographical formulas, though truncated text prevents assessment of explicit verdict language. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:19:52.039Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

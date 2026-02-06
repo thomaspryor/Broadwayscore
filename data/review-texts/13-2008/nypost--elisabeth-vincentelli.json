@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A spectacular folly has just crash-landed at Lincoln Center Theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt describes the show as both 'spectacular' and a 'folly' that 'crash-landed,' combining praise for ambition with clear criticism. Single excerpt warning applies - this appears genuinely mixed in tone. | GPT-4o: The excerpt describes the show as 'ambitious, awkward, fascinating, lumbering,' which indicates a mix of positive and negative elements. The term 'spectacular folly' suggests both grandeur and failure, leading to a mixed verdict. | Gemini: The review excerpt describes the play as \"ambitious, awkward, fascinating, lumbering,\" which suggests a mixed reaction. The lack of a clear recommendation and the contradictory adjectives point to a score in the mixed range. | Kimi: The excerpt describes the show as a 'spectacular folly' that 'crash-landed,' using negative descriptors like 'awkward' and 'lumbering,' though it acknowledges the work is 'ambitious' and 'fascinating.' Given the truncation and single-excerpt limitations, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T09:57:02.503Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

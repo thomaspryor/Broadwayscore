@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Well-seasoned with comedy and sentiment, 'A Doll's House, Part 2' is worth seeing, but how you now feel about Nora is totally up to you.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation ('worth seeing') but qualified tone and emphasis on ambiguity ('no concrete answers', outcome 'totally up to you') suggests mild positive. Single excerpt warning requires caution - this appears genuinely qualified positive rather than cherry-picked enthusiasm. | GPT-4o: The excerpt provides a positive recommendation ('worth seeing') with praise for performances and dialogue. However, the lack of concrete answers and the open-ended nature of the play suggest some reservations. Given the single excerpt and text quality warning, confidence is low. | Gemini: The review states the play is \"worth seeing\" but notes that the audience's feelings about the character are subjective, indicating a recommendation with reservations. Given the single excerpt, confidence is medium. | Kimi: The excerpt provides a clear recommendation ('worth seeing') along with strong praise for the performances ('zest and authority,' 'winning') and writing ('crisp dialogue'), though it notes the ambiguous ending. As a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:36:21.001Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 77,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

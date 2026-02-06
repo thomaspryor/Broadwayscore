@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/robert-de-niro-co-directs-bronx-tale-musical-article-1.2533368"
+  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/robert-de-niro-co-directs-bronx-tale-musical-article-1.2533368",
+  "assignedScore": 55,
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The main takeaway of the new Broadway musical 'A Bronx Tale' is that talent is a terrible thing to waste.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The opening line suggests the show wastes the talent of its notable creators (Palminteri, De Niro), which is a negative assessment. However, with only one truncated excerpt available, confidence is low as the full verdict may be cut off. | GPT-4o: The excerpt suggests a mixed sentiment, highlighting a theme of wasted talent, which implies some level of disappointment. However, without more context, it's unclear if the review leans more positive or negative, leading to a low confidence score. | Gemini: The excerpt suggests the show isn't utilizing its talent effectively, implying a mixed or slightly negative assessment. Given the limited text, confidence is low. | Kimi: The critic implies that the production wastes the abilities of its high-profile creators and cast (Palminteri and De Niro), indicating a disappointing outcome despite strong ingredients. Score is mid-range Negative due to single-excerpt truncation limiting full context. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:16:04.383Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.nytimes.com/2016/02/25/theater/review-a-bronx-tale-the-musical-doo-wops-down-mean-streets.html?partner=rss&emc=rss&_r=0"
+  "playbillVerdictUrl": "http://www.nytimes.com/2016/02/25/theater/review-a-bronx-tale-the-musical-doo-wops-down-mean-streets.html?partner=rss&emc=rss&_r=0",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it captures both the milieu it evokes and the colorful characters who populate it with a buoyancy and humor that ultimately won me over",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict with 'won me over' despite acknowledging formulaic aspects. Praises score, professionalism, and energy but notes it doesn't break new ground. | GPT-4o: The review acknowledges formulaic and sentimental aspects but praises the score and overall energy, concluding with a positive note that it 'ultimately won me over.' The lack of full text and potential for more context lowers confidence. | Gemini: The review acknowledges formulaic aspects but ultimately expresses being \"won over\" by the buoyancy and humor, indicating a positive but not rave recommendation. | Kimi: While the critic notes the show doesn't break ground and has formulaic elements, the praise for the 'wonderful score,' 'infectious energy,' and the decisive verdict that it 'ultimately won me over' constitute a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:52:09.895Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

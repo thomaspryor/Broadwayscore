@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"A smart, funny and utterly engrossing new play...Features a magnificent Laurie Metcalf leading one of the best casts in town...Mr. Hnath approaches what might seem like a hubristic project with the humility and avidity of an engaged Everyreader...He has written an endlessly open debate. Which for the record never feels like a debate, such is the emotional commitment of the cast and the immediacy of Mr. Gold’s fine, sensitive production.\"\n\nRead more"
+  "showScoreExcerpt": "\"A smart, funny and utterly engrossing new play...Features a magnificent Laurie Metcalf leading one of the best casts in town...Mr. Hnath approaches what might seem like a hubristic project with the humility and avidity of an engaged Everyreader...He has written an endlessly open debate. Which for the record never feels like a debate, such is the emotional commitment of the cast and the immediacy of Mr. Gold’s fine, sensitive production.\"\n\nRead more",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A smart, funny and utterly engrossing new play...Features a magnificent Laurie Metcalf leading one of the best casts in town",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong praise with superlatives ('magnificent', 'one of the best casts in town', 'utterly engrossing') and enthusiastic tone throughout. However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt is highly positive, praising the play as 'smart, funny and utterly engrossing' with a 'magnificent' lead performance. The language suggests a strong recommendation, but confidence is low due to the single excerpt warning. | Gemini: The excerpt is overwhelmingly positive, using words like \"magnificent\", \"best\", \"smart, funny and utterly engrossing\". Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt contains strong superlatives ('utterly engrossing', 'magnificent', 'best casts') indicating an enthusiastic recommendation, but per the single excerpt warning, this is capped at the upper Positive range due to risk of cherry-picking. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:47:09.481Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

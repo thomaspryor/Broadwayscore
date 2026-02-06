@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A reasonably enjoyable period piece…But whereas some shows swing for the fences, this is one doesn’t aim much further than second base. This is a premiere that feels more like a revival and comes shrink-wrapped in its own nostalgia…Most of the pop, ballad and doo-wop numbers are satisfying, though forgettable...There’s not much that’s surprising in the show’s look or its dance sequences...It is well served by its leads, particularly the rumble-voiced Cordero.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But whereas some shows swing for the fences, this is one doesn't aim much further than second base.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review finds the show 'reasonably enjoyable' but consistently emphasizes its lack of ambition and memorable qualities. Phrases like 'doesn't aim much further than second base,' 'feels more like a revival,' and 'forgettable' songs indicate lukewarm assessment without clear recommendation. | GPT-4o: The review describes the show as 'reasonably enjoyable' but lacking ambition and surprise, with satisfying but forgettable music. The praise for the leads is counterbalanced by the overall lack of excitement or innovation. | Gemini: The review is generally positive, calling it \"reasonably enjoyable\" and highlighting the leads. However, it also notes that it's not particularly ambitious or surprising, and the songs are \"satisfying, though forgettable.\" | Kimi: While the critic calls the show 'reasonably enjoyable' and praises the leads, the review emphasizes significant limitations: the material is 'forgettable,' the staging 'not much surprising,' and the overall ambition limited to 'second base' rather than swinging for the fences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:59:50.898Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

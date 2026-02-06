@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "90 minutes of smart, witty, entertaining theater we need more of. Don't miss it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Clear rave language with superlatives ('freshest playwriting', 'ingeniously conceived') and explicit must-see recommendation ('Don't miss it'). Despite being a single excerpt, the enthusiasm and direct recommendation warrant high rave scoring. | GPT-4o: The excerpt uses strong positive language ('freshest playwriting', 'ingeniously conceived', 'don't miss it') indicating a highly enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses strong positive language such as \"freshest playwriting,\" \"ingeniously conceived,\" \"smart, witty, entertaining,\" and \"Don't miss it,\" indicating a strong recommendation. | Kimi: Single excerpt contains superlatives ('freshest playwriting on Broadway this season') and an explicit imperative recommendation ('Don’t miss it'), placing it firmly in rave territory. Score reflects the enthusiastic tone while accounting for the possibility of cherry-picking in curated excerpts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:48:49.735Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

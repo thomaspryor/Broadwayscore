@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Hnath’s compact and provocative comedy...It's his best work to date...The issues aren't new but presented in intriguing ways...Metcalf, a seasoned stage vet who's known for the sitcom 'Roseanne,' can clown with the best of them. Just saying the word 'no,' Metcalf’s face is an avalanche of motion...Nora was—and is—a woman who bends and breaks rules and lives by her own terms. Fifteen years later, everything and nothing has changed.\"\n\nRead more"
+  "showScoreExcerpt": "\"Hnath’s compact and provocative comedy...It's his best work to date...The issues aren't new but presented in intriguing ways...Metcalf, a seasoned stage vet who's known for the sitcom 'Roseanne,' can clown with the best of them. Just saying the word 'no,' Metcalf’s face is an avalanche of motion...Nora was—and is—a woman who bends and breaks rules and lives by her own terms. Fifteen years later, everything and nothing has changed.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's his best work to date",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling it the playwright's 'best work to date' and 'compact and provocative,' with enthusiastic description of lead performance. Single excerpt warning applies - this appears cherry-picked positive content, so scoring upper end of Positive range. | GPT-4o: The excerpt praises the play as Hnath's best work to date and highlights intriguing presentation of themes, suggesting a strong positive reception. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt contains strong praise such as \"best work to date\" and \"intriguing ways\", suggesting a positive recommendation. The limited text makes confidence medium. | Kimi: The excerpt offers strong praise calling the play Hnath's best work to date with intriguing presentation and an excellent lead performance, meriting the upper end of the Positive bucket per the single-excerpt guideline for clearly positive quotes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:46:02.867Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

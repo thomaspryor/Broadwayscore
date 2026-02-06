@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical adaptation, directed by Michael Arden, turns the Lyceum Theatre into a Victorian wonderland, with snow falling on the audience and actors weaving through the aisles.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,58 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new musical adaptation, directed by Michael Arden, turns the Lyceum Theatre into a Victorian wonderland, with snow falling on the audience and actors weaving through the aisles.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new musical adaptation, directed by Michael Arden, turns the Lyceum Theatre into a Victorian wonderland.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | GPT-4o: The excerpt describes a visually impressive production with immersive elements, suggesting a positive experience. However, due to the single excerpt warning, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt describes the set design in a positive light, but without more text, it's difficult to determine the overall recommendation. I'm scoring it as mildly positive due to the descriptive but positive language.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:21:01.044Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 74,
+    "geminiScore": 72,
+    "kimiScore": null,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  }
 }

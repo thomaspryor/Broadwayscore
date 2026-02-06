@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'A Bronx Tale' does exactly what it sets out to do: paint a loving picture of a bygone era with bittersweet hues",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear appreciation ('loving picture', 'immersive, realistic') and states the show achieves its goals. However, with only one curated excerpt available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt praises the show for achieving its goals and creating an immersive experience, indicating a strong positive sentiment. However, the single excerpt warning suggests caution, so the score is set at the upper end of the Positive range. | Gemini: The review excerpt uses positive language such as \"loving picture\", \"bittersweet hues\", \"amazingly, completely accurate\", and \"immersive, realistic trip down memory lane.\" Given the single excerpt warning, I am scoring this on the higher end of the positive bucket. | Kimi: The excerpt offers clear, warm praise for the show's authenticity, music, and emotional resonance, describing it as an 'immersive, realistic trip down memory lane.' While the tone is clearly positive rather than ecstatic (lacking 'must-see' superlatives), the appreciation for its execution and charm places it in the upper range of Positive. Confidence is low due to the single-excerpt format.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:02:11.063Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

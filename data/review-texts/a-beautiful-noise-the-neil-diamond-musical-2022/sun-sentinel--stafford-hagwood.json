@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Neil Diamond's facets hit the spotlight, some of them funny and endearing, some not-too-flattering.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt presents a balanced view with both positive ('funny and endearing') and negative ('not-too-flattering') elements, suggesting mixed feelings. Low confidence due to limited text and potential for cherry-picking. | GPT-4o: The excerpt presents a balanced view, highlighting both positive and less flattering aspects of the show. Without a clear positive or negative tilt, it suggests a mixed review. | Gemini: The excerpt suggests a balanced portrayal, with both positive and less flattering aspects of Neil Diamond's life being highlighted. Given the single excerpt and BroadwayWorld's aggregator verdict of 'Up,' I'm scoring it as mildly positive. | Kimi: The excerpt describes a nuanced, warts-and-all portrayal of the subject, suggesting the show offers an honest, multifaceted view rather than hagiography. While descriptive rather than explicitly evaluative, the tone is not negative, and the BroadwayWorld 'Up' aggregator rating supports a positive classification. Scored at the lower end of the Positive bucket due to the excerpt's mild, observational nature rather than enthusiastic recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:29:13.569Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

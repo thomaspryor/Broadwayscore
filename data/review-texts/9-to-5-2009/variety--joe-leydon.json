@@ -16,5 +16,11 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T10:18:50.017Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is explicitly about a touring company production, not the current Broadway run; openai: The review is about a touring company production, not the current Broadway run.; kimi: The text explicitly reviews a 'touring company production' of the show, not the current Broadway run. Per the rejection criteria, reviews of touring productions are not scoreable when scoring for Broadway.",
+  "promptVersion": "5.2.0"
 }

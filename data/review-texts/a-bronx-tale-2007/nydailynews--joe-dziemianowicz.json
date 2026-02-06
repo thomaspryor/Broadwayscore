@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/robert-de-niro-co-directs-bronx-tale-musical-article-1.2533368"
+  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/robert-de-niro-co-directs-bronx-tale-musical-article-1.2533368",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "packs some tasty ear candy and fine performances, but it's as conventional as it gets",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises performances and music but criticizes lack of imagination and conventionality. Mixed assessment with no clear recommendation, and truncated text limits confidence in verdict. | GPT-4o: The review acknowledges the show's strengths in music and performances but criticizes it for being conventional and lacking imagination. The mixed tone suggests neither a strong recommendation nor a discouragement. | Gemini: The review notes 'tasty ear candy and fine performances' but also states it's 'as conventional as it gets' and 'could use a surprise or two,' indicating a mixed assessment. The truncated nature lowers confidence. | Kimi: The critic acknowledges strong performances and enjoyable music but finds the production overly conventional and predictable, lacking imaginative surprises.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:49:54.150Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

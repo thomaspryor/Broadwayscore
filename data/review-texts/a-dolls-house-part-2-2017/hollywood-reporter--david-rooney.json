@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"It delivers explosive laughs while also posing thoughtful questions...Directed with stylish austerity by Sam Gold, the play provides a corker of a role for the indomitable Laurie Metcalf...As much an ingenious elaboration and deconstruction of 'A Doll's House' as a sequel, and it stands perfectly well on its own...In Gold's zesty staging, the lightness of touch in the writing carries through to the direction and performances, nowhere more so than with Metcalf.\"\n\nRead more"
+  "showScoreExcerpt": "\"It delivers explosive laughs while also posing thoughtful questions...Directed with stylish austerity by Sam Gold, the play provides a corker of a role for the indomitable Laurie Metcalf...As much an ingenious elaboration and deconstruction of 'A Doll's House' as a sequel, and it stands perfectly well on its own...In Gold's zesty staging, the lightness of touch in the writing carries through to the direction and performances, nowhere more so than with Metcalf.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It delivers explosive laughs while also posing thoughtful questions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistently positive language throughout: 'explosive laughs,' 'corker of a role,' 'ingenious elaboration,' 'zesty staging,' 'lightness of touch.' However, confidence is low due to single curated excerpt warning - this may not represent the full review verdict. | GPT-4o: The excerpt praises the show for its humor, thoughtful questions, and direction, with specific commendation for Laurie Metcalf's role. The tone is clearly positive, but the single excerpt limits confidence. | Gemini: The review uses strong positive language such as \"explosive laughs\", \"thoughtful questions\", \"indomitable Laurie Metcalf\", and \"zesty staging\", indicating a positive recommendation. | Kimi: Single excerpt contains strong praise for performances, direction, and writing, though limited context warrants reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:40:37.404Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 83,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Funny and thoroughly engaging...It's a fun piece of playful writing, not too deep but it does carry a healthy dose of profoundness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('funny and thoroughly engaging', 'fun piece') with praise for Metcalf and thematic resonance, though notes one performer doesn't match the others. Single excerpt warning requires caution - scoring at upper end of positive range given the enthusiastic tone. | GPT-4o: The excerpt praises the show as 'funny and thoroughly engaging' with strong performances, particularly by Metcalf. Despite some reservations about Cooper, the overall tone is positive and recommends the show for its engaging writing and thematic resonance. | Gemini: The review is generally positive, calling the play \"funny and thoroughly engaging\" and praising Metcalf's performance. However, it also notes that Cooper doesn't reach the same level as the other actresses, indicating some reservations. | Kimi: The excerpt offers enthusiastic praise for Metcalf's performance ('incredible') and finds the writing 'thoroughly engaging' and profound, though it notes one performer doesn't rise to the same level and the piece is 'not too deep.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:40:02.654Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 81,
+    "geminiScore": 79,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

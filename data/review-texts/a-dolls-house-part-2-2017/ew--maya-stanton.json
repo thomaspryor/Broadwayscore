@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Humor abounds in playwright Lucas Hnath’s creative sequel...Metcalf's Nora is a woman who knows her own mind and isn’t afraid to say so. It’s a revelatory performance, rife with physicality and determination...Literary fanfic of the highest caliber, Hnath’s script is an irreverent yet respectful take on the source material...A worthy companion piece to the original, 'A Doll’s House, Part 2' is an imaginative postscript to a well-loved standard.\"\n\nRead more"
+  "showScoreExcerpt": "\"Humor abounds in playwright Lucas Hnath’s creative sequel...Metcalf's Nora is a woman who knows her own mind and isn’t afraid to say so. It’s a revelatory performance, rife with physicality and determination...Literary fanfic of the highest caliber, Hnath’s script is an irreverent yet respectful take on the source material...A worthy companion piece to the original, 'A Doll’s House, Part 2' is an imaginative postscript to a well-loved standard.\"\n\nRead more",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A worthy companion piece to the original, 'A Doll's House, Part 2' is an imaginative postscript to a well-loved standard.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise throughout: 'revelatory performance', 'literary fanfic of the highest caliber', 'worthy companion piece'. Single excerpt warning noted - scored at upper end of Positive range due to clearly enthusiastic tone. | GPT-4o: The excerpt praises the humor, script, and Metcalf's performance, calling it 'revelatory'. Describes the play as a 'worthy companion piece', indicating a strong recommendation. Due to the single excerpt, confidence is low. | Gemini: The review uses phrases like \"humor abounds\", \"revelatory performance\", and \"literary fanfic of the highest caliber\", indicating a strong positive recommendation. The phrase \"worthy companion piece\" further reinforces this assessment. | Kimi: The excerpt contains enthusiastic praise ('highest caliber,' 'revelatory performance,' 'worthy companion piece') indicating a strong recommendation, though confidence is reduced due to the single curated excerpt format.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:38:04.089Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

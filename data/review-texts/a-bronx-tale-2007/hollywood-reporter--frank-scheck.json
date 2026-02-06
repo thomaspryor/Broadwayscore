@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
+  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though hardly sophisticated entertainment, 'A Bronx Tale' has genuine charms.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review acknowledges flaws (rushed second half, stereotypes, no breakout songs) but concludes positively with 'genuine charms' and notes it works better as a musical. The qualified praise suggests lower end of Positive range. | GPT-4o: The review acknowledges both strengths and weaknesses: it praises the story's fit as a musical and the show's charm, but criticizes its melodramatic pacing and lack of standout songs. The mixed tone and lack of a strong recommendation place it in the Mixed bucket. | Gemini: The review notes stereotypical aspects and a rushed feeling, but ultimately concludes that the musical has genuine charms and works better than previous incarnations. This suggests a positive, but not rave, recommendation. | Kimi: The critic finds the musical adaptation superior to previous versions and praises its tuneful score, but notes the second half feels rushed and unconvincing. The 'genuine charms' verdict suggests a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:45:14.083Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.amny.com/entertainment/a-bronx-tale-review-chazz-palminteri-s-saga-becomes-musical-1.11474950"
+  "playbillVerdictUrl": "http://www.amny.com/entertainment/a-bronx-tale-review-chazz-palminteri-s-saga-becomes-musical-1.11474950",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The characters are simple, the storytelling is derivative of better-known musicals and the tone is excessively sentimental and solemn.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The excerpt lists multiple significant criticisms (simple characters, derivative storytelling, excessive sentiment) but appears truncated mid-sentence with 'But' suggesting possible counterpoints. Given the single excerpt limitation and truncation, scoring conservatively in Negative range with low confidence. | GPT-4o: The excerpt criticizes the show for being derivative and overly sentimental, suggesting a negative view. However, with only one excerpt available, the confidence is low. | Gemini: The review excerpt describes the show as derivative, excessively sentimental, and solemn, indicating a negative assessment. Given the limited text, confidence is low. | Kimi: The excerpt lists substantial criticisms (derivative plot, excessively sentimental tone) but cuts off after 'But,' suggesting a potential pivot to positive qualities. Given the truncation warning and single-excerpt caution, scored in Mixed range to account for the unclear final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:13:53.018Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 66,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 21,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

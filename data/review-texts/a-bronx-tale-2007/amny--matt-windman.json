@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.amny.com/entertainment/a-bronx-tale-review-chazz-palminteri-s-saga-becomes-musical-1.11474950"
+  "playbillVerdictUrl": "http://www.amny.com/entertainment/a-bronx-tale-review-chazz-palminteri-s-saga-becomes-musical-1.11474950",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But 'A Bronx Tale' is nevertheless an entertaining crowd-pleaser and a poignant piece of theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging flaws (simple characters, derivative storytelling), the critic ultimately recommends it as entertaining and poignant, praising the staging and score. The 'but' construction shows the positive verdict overrides the criticisms. | GPT-4o: The review acknowledges flaws in the storytelling and tone but ultimately describes the show as entertaining and poignant, with a fresh score. The positive aspects outweigh the negatives, leading to a positive verdict with some reservations. | Gemini: Despite noting simplicity and derivative storytelling, the review calls it \"entertaining\" and \"poignant\" with a \"heartwarming aura,\" indicating a positive recommendation. The truncated text lowers confidence. | Kimi: The review opens with criticism (simple characters, derivative plot) but pivots with 'but' to a clear recommendation, praising the staging as 'tight and high-powered' and the score as 'fresh and flavorful.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:32:46.255Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

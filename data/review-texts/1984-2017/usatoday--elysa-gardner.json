@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Broadway adaptation of George Orwell's dystopian classic is a visceral, unnerving experience that feels unnervingly relevant to our current political climate.",
   "originalScore": 75,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Broadway adaptation of George Orwell's dystopian classic is a visceral, unnerving experience that feels unnervingly relevant to our current political climate.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Broadway adaptation of George Orwell's dystopian classic is a visceral, unnerving experience that feels unnervingly relevant to our current political climate.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes the adaptation positively as 'visceral' and 'unnerving' (in context, these are theatrical compliments), emphasizing its relevance. Given the 75 rating and strong descriptive language suggesting impact, this falls in the upper Positive range. | GPT-4o: The excerpt describes the show as a 'visceral, unnerving experience' and highlights its relevance, suggesting a positive view. The original rating of 75 aligns with a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt warning, confidence is low. | Gemini: The review excerpt describes the show as a \"visceral, unnerving experience\" and relevant, suggesting a positive, but not overwhelmingly enthusiastic, recommendation. Given the single excerpt, confidence is medium. | Kimi: The excerpt uses strong positive descriptors ('visceral,' 'relevant') to praise the production's political impact and effectiveness, placing it in the upper range of Positive per the single-excerpt guidance for clearly favorable quotes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:08:23.335Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 75,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

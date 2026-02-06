@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This handsome new musical adaptation of Charles Dickens' beloved holiday tale is a solid, if not spectacular, addition to Broadway's Christmas offerings.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This handsome new musical adaptation of Charles Dickens' beloved holiday tale is a solid, if not spectacular, addition to Broadway's Christmas offerings.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This handsome new musical adaptation of Charles Dickens' beloved holiday tale is a solid, if not spectacular, addition to Broadway's Christmas offerings.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified positive assessment - 'solid' recommendation but explicitly 'not spectacular'. With only one curated quote available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt describes the show as 'solid', indicating a positive but not enthusiastic recommendation. The lack of superlatives suggests a lower end of the Positive bucket. Confidence is low due to the single excerpt warning. | Gemini: The review calls the show \"solid, if not spectacular,\" which indicates a positive but not enthusiastic recommendation. Given the single excerpt and the cautionary note, I've placed the score at the lower end of the Positive bucket. | Kimi: The excerpt offers qualified praise ('handsome,' 'solid') while explicitly noting it falls short of spectacular, indicating a mild recommendation rather than an enthusiastic endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:21:26.910Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This adaptation of Orwell's dystopian masterpiece is a visceral theatrical experience that uses every theatrical trick in the book to make the audience complicit in Winston's torture.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This adaptation of Orwell's dystopian masterpiece is a visceral theatrical experience that uses every theatrical trick in the book to make the audience complicit in Winston's torture.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This adaptation of Orwell's dystopian masterpiece is a visceral theatrical experience that uses every theatrical trick in the book to make the audience complicit in Winston's torture.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show as a 'visceral theatrical experience' using 'every theatrical trick in the book' - positive assessment of theatrical craft and impact. However, confidence is low due to limited text and potential for cherry-picked quote. | GPT-4o: The excerpt describes the show as a 'visceral theatrical experience,' suggesting a strong, positive impact. However, due to the single excerpt warning, the confidence is low and the score is at the lower end of the Positive bucket. | Gemini: The excerpt describes the show as a \"visceral theatrical experience\" and praises its use of theatrical tricks, suggesting a positive recommendation. Given that this is a single excerpt, I am scoring it at the higher end of the positive bucket. | Kimi: The excerpt strongly praises the production's visceral impact and technical effectiveness, using words like 'visceral' and emphasizing the successful use of theatrical techniques to achieve its goals. However, as a single curated excerpt, confidence is reduced per instructions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:03:19.253Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

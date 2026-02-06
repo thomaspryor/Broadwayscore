@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "The strengths of the show? Depth of intimacy. There is something very arresting about hearing these famous old lines given this kind of immediacy. The cast is made up of highly skilled and experienced actors and it’s really and truly something to hear how well all of them handle the need for dramati...",
-  "bwwRoundupUrl": null
+  "bwwRoundupUrl": null,
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is something very arresting about hearing these famous old lines given this kind of immediacy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for cast skills and production intimacy, but text cuts off mid-sentence making full verdict unclear. Given single excerpt warning and positive language, scoring at lower end of Positive bucket. | GPT-4o: The excerpt praises the cast's skill and the show's intimacy, suggesting a positive impression. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The excerpt praises the intimacy and the actors' skill, suggesting a positive experience. However, due to the limited text, the confidence is low, and the score is placed in the lower end of the positive range. | Kimi: Single excerpt praises the show's intimacy and acting as 'arresting' and 'highly skilled', indicating a clear recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:28:27.196Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

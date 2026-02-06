@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a warm, funny, touching and altogether entertaining evening that captures the essence of the neighborhood where author Chazz Palminteri grew up in the 1960s.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "sources": [
     "web-search",
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a warm, funny, touching and altogether entertaining evening that captures the essence of the neighborhood where author Chazz Palminteri grew up in the 1960s.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('warm, funny, touching and altogether entertaining') suggests strong recommendation, but confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt describes the show as 'warm, funny, touching and altogether entertaining,' indicating a positive recommendation. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt uses very positive language such as \"warm, funny, touching and altogether entertaining\", which indicates a strong positive review. Given that it is only one excerpt, I am scoring it at the higher end of the positive range with low confidence. | Kimi: Single excerpt contains strong positive descriptors ('warm,' 'funny,' 'touching,' 'entertaining') indicating a clear recommendation. Following the guidance for clearly positive single excerpts, scored in the upper Positive range (80-84) with low confidence due to limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:53:27.606Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

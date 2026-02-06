@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"The play resembles a 90-minute sketch comedy adapted from an undergraduate essay dissecting Ibsen’s play...Director Sam Gold provides a spare production with spirited performances from the four-member cast...As a theater history buff, I found the play interesting, but hardly as engrossing and muscular as Hnath’s work from last season. I look forward to seeing more plays by Hnath — but hopefully not more sequels.\"\n\nRead more"
+  "showScoreExcerpt": "\"The play resembles a 90-minute sketch comedy adapted from an undergraduate essay dissecting Ibsen’s play...Director Sam Gold provides a spare production with spirited performances from the four-member cast...As a theater history buff, I found the play interesting, but hardly as engrossing and muscular as Hnath’s work from last season. I look forward to seeing more plays by Hnath — but hopefully not more sequels.\"\n\nRead more",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As a theater history buff, I found the play interesting, but hardly as engrossing and muscular as Hnath's work from last season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds it 'interesting' and praises the performances as 'spirited', but dismisses it as resembling 'a 90-minute sketch comedy' and calls it less 'engrossing and muscular' than the playwright's previous work. The lukewarm 'interesting but hardly engrossing' verdict places this in mixed territory. | GPT-4o: The review describes the play as interesting but not engrossing, with a spare production and spirited performances. The critic expresses interest in seeing more of the playwright's work but not more sequels, indicating a mixed reception. | Gemini: The review acknowledges spirited performances and an interesting premise, but ultimately finds the play lacking in comparison to the playwright's previous work. The phrase \"hardly as engrossing\" indicates a mixed reaction. | Kimi: The critic offers faint praise for the 'spirited performances' and calls the play 'interesting,' but dismisses it as resembling 'sketch comedy' from an 'undergraduate essay' and explicitly prefers the playwright's previous work, ultimately discouraging future sequels.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:33:05.741Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

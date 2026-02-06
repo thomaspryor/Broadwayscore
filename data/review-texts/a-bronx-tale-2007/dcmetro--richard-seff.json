@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Clearly Mr. Palminteri’s biographical play has served him well, and now his good fortune is being spread to a marvelous group of featured actors and a gifted ensemble. It’s a dark tale, at first glance seemingly hardly the stuff on which to base a Broadway musical. But every choice in fashioning it into a very good musical has been the right one…The conflicts are the building blocks that make this a solid story, told without compromise, a first-rate drama.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Every choice in fashioning it into a very good musical has been the right one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows strong praise calling it 'a very good musical' and 'first-rate drama' with consistent positive language, but limited text warrants caution about full review sentiment. | GPT-4o: The excerpt praises the production choices and describes the show as a 'first-rate drama'. Despite the limited excerpt, the language suggests a strong positive recommendation. | Gemini: The excerpt uses phrases like \"marvelous group\", \"gifted ensemble\", \"very good musical\", and \"first-rate drama\", indicating a strong positive assessment. However, due to the single excerpt and truncated nature, confidence is low. | Kimi: The excerpt offers strong praise for the adaptation and performances, calling the show 'very good' and 'first-rate' with 'marvelous' actors, though the single-excerpt format limits certainty about the full review's tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:38:05.626Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This adaptation of George Orwell's dystopian novel is a punishing, visceral experience that will leave you emotionally drained — and that's exactly the point.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This adaptation of George Orwell's dystopian novel is a punishing, visceral experience that will leave you emotionally drained — and that's exactly the point.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This adaptation of George Orwell's dystopian novel is a punishing, visceral experience that will leave you emotionally drained — and that's exactly the point.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes the show as achieving its intended effect ('that's exactly the point'), suggesting artistic success. The original 87 rating confirms this is a strong positive recommendation despite the challenging subject matter. | GPT-4o: The excerpt describes the show as a 'punishing, visceral experience' which aligns with the critic's original rating of 87, suggesting a strong positive recommendation. The phrase 'that's exactly the point' indicates the production successfully achieves its intended impact. | Gemini: The excerpt describes the show as a \"punishing, visceral experience\" but clarifies that this is intentional and \"exactly the point,\" indicating a positive assessment despite the potentially negative descriptors. Given the single excerpt, I am placing it at the higher end of the positive range. | Kimi: The excerpt validates the show's intense emotional impact as intentional and successful, indicating strong approval. The original rating of 87 supports a high Positive score, though confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:02:04.499Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

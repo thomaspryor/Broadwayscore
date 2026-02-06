@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Jean Shepherd's beloved memoir manages to capture much of the charm and humor of the classic holiday film, with strong performances and clever staging bringing Ralphie's quest for a Red Ryder BB gun to vivid theatrical life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of Jean Shepherd's beloved memoir manages to capture much of the charm and humor of the classic holiday film, with strong performances and clever staging bringing Ralphie's quest for a Red Ryder BB gun to vivid theatrical life.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation manages to capture much of the charm and humor of the classic holiday film, with strong performances and clever staging.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive assessment praising the adaptation's success in capturing source material qualities, with specific compliments for performances and staging. Single excerpt warning requires caution, but tone is clearly positive without major reservations, suggesting upper-positive range. | GPT-4o: The excerpt praises the adaptation for capturing the charm and humor of the original film, with strong performances and clever staging. This suggests a positive recommendation, though the single excerpt limits confidence. | Gemini: The excerpt praises the show's ability to capture the charm and humor of the film, highlighting strong performances and clever staging. Given the single excerpt warning, I'm scoring towards the higher end of the positive range. | Kimi: The excerpt offers clear praise for the adaptation's charm, strong performances, and clever staging, indicating a positive recommendation. However, as a single curated excerpt, confidence is reduced per scoring guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T11:25:33.157Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

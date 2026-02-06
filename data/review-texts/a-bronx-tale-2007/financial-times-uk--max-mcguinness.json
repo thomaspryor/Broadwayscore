@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Arouses the faint suspicion that its creators may be more interested in reliving past glories rather than scaling new triumphs...Witty tune 'Nicky Machiavelli' hints at how the musical form might have given 'A Bronx Tale' an extra dimension. Alas, the rest of the 19 numbers feel dated and serve only to emphasise the story’s mawkish sentimentality. Under De Niro and Jerry Zaks’s co-direction, the transitions between music, exposition and dialogue also tend to be clumsy.\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the rest of the 19 numbers feel dated and serve only to emphasise the story's mawkish sentimentality",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds fundamental flaws in the score, direction, and execution, with only one song ('Nicky Machiavelli') receiving praise. The overall assessment is negative despite acknowledging isolated moments. | GPT-4o: The review expresses disappointment with the musical's dated numbers and clumsy transitions, suggesting a lack of recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review highlights a single witty tune but criticizes the rest of the music as dated and the transitions as clumsy. This suggests a mixed experience with some positive elements but overall falling short. | Kimi: The critic finds the majority of the score dated, the story mawkish, and the direction clumsy, offering only faint praise for a single tune while questioning the creators' ambition.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:43:06.467Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The reason this show truly does live up to its title, is 'Neil-Then,' aka, the amazingly voiced Nick Fradiani.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises the lead performer as 'amazingly voiced' and says the show 'truly does live up to its title' because of him. However, this is only one curated quote and may not represent the full verdict. The aggregator context suggests a 'Flat' review, so scoring conservatively in lower Positive range. | GPT-4o: The excerpt praises Nick Fradiani's performance, suggesting it elevates the show. However, the lack of full context and the aggregator's 'Flat' verdict suggest a mild positive recommendation with reservations. | Gemini: The review excerpt focuses on the strength of the lead performer, suggesting the show is worth seeing for his performance. Given it's a single excerpt and the aggregator verdict is 'Flat', I'm scoring it as a slightly positive recommendation with reservations. | Kimi: The excerpt offers strong praise for Nick Fradiani's \"superstar performance\" and states the show \"truly does live up to its title,\" clearly recommending it based on the lead's work. However, confidence is low given this is a single curated excerpt that may not capture the full review's balance, and the aggregator context notes a \"Flat\" verdict elsewhere.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:32:04.275Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

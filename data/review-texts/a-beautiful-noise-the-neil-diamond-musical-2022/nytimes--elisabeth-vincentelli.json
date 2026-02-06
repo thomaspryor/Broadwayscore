@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"It all looks and sounds great, but the clock is ticking — therapy! — and we are no closer to understanding the real Neil.\"\n\nRead more"
+  "showScoreExcerpt": "\"It all looks and sounds great, but the clock is ticking — therapy! — and we are no closer to understanding the real Neil.\"\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It all looks and sounds great, but the clock is ticking — therapy! — and we are no closer to understanding the real Neil.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt praises production values ('looks and sounds great') but expresses significant frustration with character development and story resolution. The 'but' construction and therapy reference suggest the show fails to deliver meaningful insight despite good execution. | GPT-4o: The excerpt praises the production's aesthetics but criticizes its lack of depth or insight into the subject. The single quote suggests a balanced view, neither fully positive nor negative, indicating a mixed sentiment. | Gemini: The review excerpt acknowledges positive aspects (\"looks and sounds great\") but ultimately expresses a lack of deeper understanding, suggesting a mixed or lukewarm assessment. The truncated nature of the text lowers the confidence. | Kimi: The excerpt offers genuine praise for the production values ('looks and sounds great') but delivers significant criticism regarding the show's failure to illuminate its subject ('no closer to understanding the real Neil'). The 'but' construction suggests the aesthetic merits are undercut by narrative shortcomings, placing it in the Mixed bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:27:02.492Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"As a lifelong fan of Diamond, I wish I could tell you that 'A Beautiful Noise' is 'so good. so good. so good.' Sadly, it’s not, but it’s a mostly enjoyable outing thanks largely to Swenson’s impeccable characterization and the songwriter’s enduring brilliance.\"\n\nRead more"
+  "showScoreExcerpt": "\"As a lifelong fan of Diamond, I wish I could tell you that 'A Beautiful Noise' is 'so good. so good. so good.' Sadly, it’s not, but it’s a mostly enjoyable outing thanks largely to Swenson’s impeccable characterization and the songwriter’s enduring brilliance.\"\n\nRead more",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I wish I could tell you that 'A Beautiful Noise' is 'so good. so good. so good.' Sadly, it's not, but it's a mostly enjoyable outing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic explicitly states they wish they could recommend it but sadly cannot, though finds it 'mostly enjoyable' due to specific elements. This suggests a disappointed but not entirely negative assessment. Single excerpt warning requires caution about overall verdict. | GPT-4o: The review expresses disappointment but ultimately finds the show 'mostly enjoyable' due to Swenson's performance and the songwriter's work. The excerpt suggests a positive but qualified recommendation. | Gemini: The review states that the show is \"mostly enjoyable\" but not \"so good, so good, so good.\" Due to the limited excerpt, the confidence is low, and the score is in the lower end of the positive range. | Kimi: The critic expresses disappointment that the show isn't great ('sadly, it's not') but delivers a qualified recommendation calling it 'mostly enjoyable,' attributing the success to the lead performance and songs rather than the production itself. As a single mildly positive excerpt, this falls in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T10:23:43.024Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

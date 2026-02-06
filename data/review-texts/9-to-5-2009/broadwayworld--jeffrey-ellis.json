@@ -11,10 +11,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-9-TO-5-2009",
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-06T10:13:35.722Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a truncated sentence fragment that cuts off mid-thought and contains no evaluative content or verdict about the show.; openai: The excerpt discusses a production that is distinct from the Broadway version, indicating it is not about the current Broadway run.; kimi: The text explicitly contrasts 'this production' against 'the Broadway version,' indicating this is a review of a regional, touring, or previous production rather than the current Broadway run.",
+  "promptVersion": "5.2.0"
 }
