@@ -6,7 +6,7 @@
   "url": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-jordan-e-cooper-1235436028/",
   "publishDate": "December 4, 2022",
   "fullText": null,
-  "isFullReview": false,
+  "isFullReview": true,
   "dtliExcerpt": "Cooper's antic comedy is built on a provocative premise: What if the U.S. government offered free one-way plane tickets to Africa for any Black Americans who wanted to leave?",
   "originalScore": null,
   "assignedScore": null,
@@ -16,11 +16,56 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cooper's antic comedy is built on a provocative premise: What if the U.S. government offered free one-way plane tickets to Africa for any Black Americans who wanted to leave?",
-  "contentTier": "invalid",
+  "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "rejectedAt": "2026-02-05T20:56:47.321Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is only a plot summary describing the show's premise, with no critical evaluation or verdict about the production's quality.; openai: The text provided is a description of the premise of the show, not an evaluation or critique of the production.; gemini: The provided text is a premise description, not a review with evaluative content.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "textWordCount": 325,
+  "archivePath": "data/archives/reviews/aint-no-mo-2022/variety--charles-isherwood_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T14:26:13.038Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The Directors Guild of America told members Thursday that it is preparing to fight for gains in the next contract, but acknowledged that economic headwinds present an “extremely challenging negotiating environment.”\n\nRussell Hollander, the national executive director, and Jon Avnet, the co-chair of the negotiating committee, cited inflation and a possible recession as factors in the upcoming talks. The current contract expires on June 30, 2023.\n\n \n \n \n\n \n \n \n\n \n \n\n \n\n \n \n \n Related Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Alex Honnold Was Paid Less Than $1 Million for 'Skyscraper Live' — Why So Little? \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n ‘Brokeback Mountain’ Producer James Schamus Talks ‘Inspiring’ Minnesota Community, Warns Netflix-Warner Bros. Deal Will ‘Be Bad News For a While’\n\n\"Our industry and the entire country are challenged by inflation, economic headwinds and a possible recession, and the Employers are focused on their bottom lines,\" the leaders said. \"This will not be an ordinary negotiation.\"\n\n \n Popular on Variety\n\nThe DGA leadership told members that its top issues include increasing streaming residuals “based on real-world global value,” as well as cost of living increases and securing the pension and health plan.\n\n“The industry has changed and the pace of that change has accelerated significantly since we concluded our last agreements in March, 2020 as each of the major studios have now launched their own streaming platforms and are prioritizing those streaming platforms over everything else,” the union leaders said.\n\nThe letter also stated that the union’s negotiating goals include addressing set safety, diversity, transparency from the studios, and “the role and vision of all directors, and in particular, television directors.”\n\nThe union said that it has a history of making real progress in contract negotiations, even in “tough environments.”\n\n“We are ready for negotiations and, if necessary, we are prepared for a fight,” the leaders said. “These negotiations will shape the future of our industry.”\n\nThe SAG-AFTRA contract also expires on June 30. The DGA traditionally goes first in talks with the Alliance of Motion Picture and Television Producers, which represents the studios."
 }
