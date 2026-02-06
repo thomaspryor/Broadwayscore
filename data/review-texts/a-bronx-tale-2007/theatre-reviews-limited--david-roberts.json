@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A stunning new musical that combines realism with just the right amount of moral ambiguity and rich enduring questions to make a delicious theatrical event worth seeing once if not twice...Mr. De Niro and Mr. Zaks provide rich direction to the ensemble cast and keep the action moving forward at an appropriate pace. The realistic conflicts of each character drive a believable plot full of wonderful dramatic surprises that give the story interesting twists and turns.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A stunning new musical that combines realism with just the right amount of moral ambiguity and rich enduring questions to make a delicious theatrical event worth seeing once if not twice",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language including 'stunning,' 'delicious theatrical event,' and explicit recommendation to see it 'once if not twice.' Praises direction, cast, and plot. Single excerpt warning noted, but tone is clearly enthusiastic. | GPT-4o: The excerpt provides strong praise for the musical, highlighting its realism, moral ambiguity, and engaging plot. The direction and ensemble cast are also praised, indicating a high level of enthusiasm. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses very positive language such as \"stunning\", \"delicious\", and \"worth seeing once if not twice\", indicating a strong recommendation. | Kimi: The excerpt offers enthusiastic praise ('stunning', 'delicious', 'wonderful') and explicitly recommends seeing the show twice, indicating strong approval. However, confidence is low due to the availability of only a single curated excerpt that may not represent the full review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:50:35.103Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

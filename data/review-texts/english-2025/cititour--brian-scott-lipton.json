@@ -35,5 +35,59 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 589,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Knud Adams is to be commended for guiding this excellent cast in doing uniformly fine work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Review praises the Pulitzer Prize-winning play as 'oh-so-smart,' compliments all performances as 'excellent' and 'uniformly fine work,' but criticizes the set design as 'unnecessarily distracting' and 'severely ill-advised.' Overall positive with reservations. | Gemini: The review praises the acting and direction, but criticizes the set design. Overall, the tone is positive, highlighting the play's smartness and the cast's fine work. | Kimi: The critic offers enthusiastic praise for the Pulitzer-winning play as 'oh-so-smart' with uniformly excellent performances from the entire cast, though significant criticism of the distracting, 'severely ill-advised' set design prevents it from being an unqualified rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:14:17.094Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

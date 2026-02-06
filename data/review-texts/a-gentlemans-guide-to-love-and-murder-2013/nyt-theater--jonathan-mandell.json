@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The musical’s influences would lead one to expect a quick-witted comedy set in Edwardian England, and A Gentleman’s Guide delivers on this expectation. Jefferson Mays’ track record as a master of multiple characters promises some jolly acting, and A Gentleman’s Guide delivers on that promise. The musical is well-designed, well-acted, and well enough plotted (with some twists that are well-crafted.) Yet for all its cleverness and wicked charm, this is an entertainment I could easily have skipped.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yet for all its cleverness and wicked charm, this is an entertainment I could easily have skipped.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges multiple positive elements (well-designed, well-acted, delivers on expectations) but concludes with a clear statement that they could have easily skipped it, indicating they don't recommend seeing it despite its merits. | GPT-4o: The review acknowledges the show's cleverness, charm, and quality performances but ultimately suggests it is not essential viewing. The single excerpt limits confidence in the overall sentiment. | Gemini: The review acknowledges positive aspects like design, acting, and plot, but ultimately concludes it's skippable, indicating a mixed recommendation. | Kimi: While the critic acknowledges the show is well-crafted, well-acted, and delivers on its promises, the final verdict explicitly states it is an entertainment they 'could easily have skipped,' indicating a recommendation against seeing it despite the isolated praise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:20:42.611Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 68,
+    "geminiScore": 65,
+    "kimiScore": 52,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

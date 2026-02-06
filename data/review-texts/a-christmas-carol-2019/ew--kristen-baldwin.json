@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Broadway revival of A Christmas Carol is a visual feast that successfully marries Dickens' timeless tale with modern theatrical magic, though it occasionally gets lost in its own spectacle.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Broadway revival of A Christmas Carol is a visual feast that successfully marries Dickens' timeless tale with modern theatrical magic, though it occasionally gets lost in its own spectacle.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Broadway revival of A Christmas Carol is a visual feast that successfully marries Dickens' timeless tale with modern theatrical magic, though it occasionally gets lost in its own spectacle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the production as a 'visual feast' that 'successfully marries' classic and modern elements, but the qualifier 'though it occasionally gets lost in its own spectacle' suggests reservations. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt describes the show as a 'visual feast' and 'successfully marries' elements, indicating strong praise. The original rating of 87 suggests a high positive score, and the excerpt aligns with this sentiment despite noting minor reservations. | Gemini: The review is generally positive, calling the production a 'visual feast' that 'successfully marries' the story with modern magic. However, the phrase 'occasionally gets lost in its own spectacle' indicates a reservation, placing it in the lower-middle of the Positive bucket. | Kimi: The excerpt offers strong praise ('visual feast', 'theatrical magic') with only a minor caveat about spectacle, placing it in the upper Positive range per single-excerpt guidance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:57:48.919Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

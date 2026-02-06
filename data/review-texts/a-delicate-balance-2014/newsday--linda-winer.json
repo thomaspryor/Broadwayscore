@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play still dazzles with wit, gorgeous writing and the lurking terror of mortality",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises the play's core qualities ('dazzles with wit, gorgeous writing') but expresses disappointment with the direction's approach. Single excerpt warning and truncated text suggest low confidence. | GPT-4o: The excerpt praises the play's wit and writing, indicating a positive view, but notes a lack of shock and subtlety compared to expectations. Given the single excerpt and text quality warning, the score is on the lower end of Positive. | Gemini: The review acknowledges the play's strengths but criticizes the direction, suggesting a mixed experience. The single excerpt and truncated nature of the text lowers confidence. | Kimi: The excerpt praises Albee's text as 'dazzling' and 'gorgeous' but criticizes director Pam MacKinnon for explicit staging that lacks the subtlety and accumulating shock of previous productions. Given the single-excerpt warning and truncated ending, this represents a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:03:42.717Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

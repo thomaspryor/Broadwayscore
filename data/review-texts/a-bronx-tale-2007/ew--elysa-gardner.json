@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-06T01:45:13.151Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The text is clearly truncated mid-sentence and provides no evaluative content - just setup about the composers' background with no verdict about the current production.; openai: The text provided is an incomplete excerpt that does not contain any evaluative content or a clear verdict about the show.",
+  "promptVersion": "5.2.0"
 }

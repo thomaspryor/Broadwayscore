@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://variety.com/2016/legit/reviews/a-bronx-tale-review-musical-1201706762/"
+  "playbillVerdictUrl": "http://variety.com/2016/legit/reviews/a-bronx-tale-review-musical-1201706762/",
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this ill-advised musical version, with an anemic score by Alan Menken and Glenn Slater, isn't going to send 'em dancing up the aisles",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the musical 'ill-advised' with an 'anemic score' and 'soggy' music, while acknowledging some 'fun things' like the Doo-Wop Guys. This is clearly negative overall despite isolated praise. | GPT-4o: The review highlights significant issues with the musical, such as an 'anemic score' and 'soggy' music, despite acknowledging some fun elements. The overall tone suggests the production is not recommended. | Gemini: The review excerpt clearly indicates a negative assessment due to the weak score and choreography, despite some positive aspects like the casting. | Kimi: While praising the casting and some fun moments, the critic pans the anemic score, soggy music, and snooze-worthy choreography, clearly concluding the show fails to deliver.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:51:47.355Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

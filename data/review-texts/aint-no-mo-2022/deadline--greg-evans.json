@@ -12,5 +12,60 @@
   ],
   "dtliExcerpt": "First, the good news: Ain’t No Mo’, the audacious Broadway debut of writer-performer Jordan E. Cooper powerfully directed by Broadway newcomer Stevie Walker-Webb, is a marvel, compelling even when its considerable reach exceeds its grasp, a mix of sketch comedy, satire, social commentary, drama and tour de force performances that places Ain’t No Mo’ are the forefront of the outlandish, take-no-prisoners style of Black theater pioneered by The Colored Museum and more recently joined by Slave Play and A Strange Loop.",
   "dtliThumb": "UP",
-  "publishDate": "December 4, 2022"
+  "publishDate": "December 4, 2022",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ain't No Mo' is a marvel, compelling even when its considerable reach exceeds its grasp.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling it 'a marvel' and 'compelling' with 'tour de force performances,' placing it among acclaimed groundbreaking works. Single excerpt warning requires caution, but language suggests strong positive recommendation. | GPT-4o: The excerpt praises the show as a 'marvel' and 'compelling,' indicating a strong positive recommendation despite acknowledging some overreach. The enthusiasm and comparison to notable works suggest a high score within the Positive range. | Gemini: The review uses strong positive language such as \"marvel\" and \"tour de force performances\", placing it in the positive bucket. Given the single excerpt warning, I've placed the score towards the higher end of the range. | Kimi: Single excerpt contains enthusiastic praise ('marvel,' 'tour de force') warranting upper Positive range, though the caveat about reach exceeding grasp and limited excerpt context prevent Rave classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:55:27.927Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

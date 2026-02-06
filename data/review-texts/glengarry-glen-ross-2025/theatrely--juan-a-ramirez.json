@@ -34,5 +34,60 @@
   "archiveOrgTimestamp": "20250909203029",
   "archiveOrgUrl": "http://web.archive.org/web/20250909203029/https://www.theatrely.com/post/a-curiously-beta-glengarry-glen-ross-review",
   "wordCount": 603,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Polished, starry, and with nothing to say, this Glengarry sells a McMansion, neither a scam nor a Palace.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds this production 'curiously cucked' and sanitized, lacking the essential machismo and sleaze that makes Mamet's play work. While acknowledging some individual strengths, the overall verdict is that it's polished but toothless. | GPT-4o: The review criticizes the production for lacking the necessary intensity and insight, describing it as polished but ultimately empty. The negative tone and lack of strong recommendation place it in the Negative bucket. | Gemini: The review is largely negative, criticizing the production's lack of depth and impact. While acknowledging some strengths, the overall assessment is that it's a polished but ultimately empty experience. | Kimi: While acknowledging competent performances from Culkin and Burr, the critic finds the production fatally lacks the necessary 'machismo' and sleaze, calling it 'cucked,' 'low-key,' and ultimately 'inoffensive' where it should be dangerous, concluding it has 'nothing to say.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:16:39.747Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

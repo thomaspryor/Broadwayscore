@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of the beloved 1983 movie captures the sweet nostalgia and gentle humor of the original while adding some theatrical pizzazz that works more often than not.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of the beloved 1983 movie captures the sweet nostalgia and gentle humor of the original while adding some theatrical pizzazz that works more often than not.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation of the beloved 1983 movie captures the sweet nostalgia and gentle humor of the original while adding some theatrical pizzazz that works more often than not.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows positive sentiment ('captures the sweet nostalgia', 'works more often than not') but the qualifier 'more often than not' suggests some reservations. Given this is one curated quote and may not represent full verdict, scoring at lower end of Positive range with low confidence. | GPT-4o: The excerpt indicates a positive reception, highlighting nostalgia, humor, and theatrical pizzazz. However, the phrase 'works more often than not' suggests some reservations, leading to a mildly positive score. | Gemini: The review states that the musical captures the nostalgia and humor of the original movie, and that the added theatrical pizzazz works more often than not, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic praises the adaptation for capturing the original's charm and adding effective theatrical elements, though the qualification that the pizzazz 'works more often than not' indicates minor reservations. Given this is a single excerpt, the score reflects a mildly positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:59:46.236Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

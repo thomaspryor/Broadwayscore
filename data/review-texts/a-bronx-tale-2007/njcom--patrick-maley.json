@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.nj.com/entertainment/index.ssf/2016/02/a_bronx_tale_review_paper_mill_playhouse_robert_de.html"
+  "playbillVerdictUrl": "http://www.nj.com/entertainment/index.ssf/2016/02/a_bronx_tale_review_paper_mill_playhouse_robert_de.html",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show takes a gritty, complex story and renders it trite, maudlin, and moralistic",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the adaptation fundamentally flawed despite praising individual elements like songs and choreography. The recommendation to see the movie instead clearly discourages seeing the Broadway show. | GPT-4o: The review criticizes the show for being 'trite, maudlin, and moralistic' despite praising some elements like songs and choreography. The final recommendation suggests the movie is a better experience, indicating a negative verdict. | Gemini: Despite praising some elements like the songs and choreography, the reviewer ultimately finds the show trite and recommends experiencing the story as a movie instead, indicating a negative overall assessment. | Kimi: Although the critic praises the catchy songs and lively choreography, the overall verdict finds the adaptation trite and moralistic, explicitly recommending the movie version instead.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:46:27.008Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

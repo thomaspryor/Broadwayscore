@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of the 1963 musical based on N. Richard Nash's play 'The Rainmaker' is a sweet-natured but dramatically inert evening that never generates the heat suggested by its title.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of the 1963 musical based on N. Richard Nash's play 'The Rainmaker' is a sweet-natured but dramatically inert evening that never generates the heat suggested by its title.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of the 1963 musical based on N. Richard Nash's play 'The Rainmaker' is a sweet-natured but dramatically inert evening that never generates the heat suggested by its title.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic finds the revival 'dramatically inert' and says it 'never generates the heat' - clear negative assessment despite acknowledging it's 'sweet-natured'. Single excerpt limits confidence but the verdict is clearly unfavorable. | GPT-4o: The review describes the revival as 'sweet-natured' but 'dramatically inert,' indicating a lack of strong recommendation. The use of 'never generates the heat' suggests it falls short of expectations, leading to a mixed verdict. | Gemini: The review excerpt describes the production as \"dramatically inert\" and failing to generate heat, indicating a negative assessment. | Kimi: The excerpt presents a balanced but lukewarm assessment, acknowledging the production's gentle charm ('sweet-natured') while criticizing its fundamental lack of dramatic energy and vitality ('dramatically inert'). Without a clear recommendation to attend and with significant reservations about the show's impact, the review falls into mixed territory. | Buckets: claude=Negative, openai=Mixed, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:38:12.705Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 58,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

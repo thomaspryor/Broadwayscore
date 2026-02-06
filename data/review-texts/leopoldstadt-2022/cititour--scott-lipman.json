@@ -37,5 +37,59 @@
   "sourceMethod": "scrapingbee",
   "duplicateTextOf": "cititour--brian-scott-lipton.json",
   "wordCount": 706,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That changes with 'Leopoldstadt,' now getting its U.S. premiere at Broadway's Longacre Theatre, which magnificently succeeds at both challenging the brain and piercing the heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Strong rave with superlatives like 'magnificently succeeds,' 'spectacular,' and 'inspiration.' The critic emphasizes both intellectual and emotional impact, with extensive praise for performances and direction throughout. | Gemini: The review is overwhelmingly positive, using words like \"magnificently succeeds\" and \"inspiration.\" The critic also states it is \"worth the sometimes-painful effort to sit for two-plus hours without intermission.\" | Kimi: The review offers unqualified enthusiasm for the play's emotional and intellectual impact, direction, and performances, using superlatives like 'magnificently succeeds' and 'simply spectacular' while explicitly stating it is worth seeing despite the demanding runtime.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:21:50.123Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

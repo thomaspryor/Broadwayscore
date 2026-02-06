@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A slick, intelligent, splendidly acted discussion drama that’s fun to watch though not entirely believable...It clearly germinated in the shallows of the play’s popular reputation...To Hnath’s credit, all of these are independent, self-aware people who hold their own with pushy Nora...At bottom, Hnath’s characters feel too much like pieces on a polemical gameboard to be wholly credible as people. What keeps their artifice from overwhelming things is the superb acting.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A slick, intelligent, splendidly acted discussion drama that's fun to watch though not entirely believable",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed praise calling it 'slick, intelligent, splendidly acted' and 'fun to watch' but with significant reservations about believability and character artifice. Single excerpt limits confidence in overall verdict. | GPT-4o: The review praises the acting and describes the play as fun to watch, indicating a positive sentiment. However, it also notes issues with believability and character credibility, suggesting reservations. The single excerpt warning and lack of full context lower confidence. | Gemini: The review praises the acting and calls the play \"fun to watch\" but notes that the characters feel like \"pieces on a polemical gameboard.\" This suggests a positive but qualified recommendation. | Kimi: The critic offers qualified praise, highlighting superb acting and calling it fun to watch and intelligent, but expresses significant reservations about the characters' credibility and the script's artificial, polemical nature. As a single excerpt with strong caveats, this represents a mildly positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:11:16.247Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

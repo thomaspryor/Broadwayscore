@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The first truly, thoroughly enjoyable show of the 2016 fall season...The music and lyrics by Alan Menken and Glenn Slater capture the mood, feel, and essence of the 1960s doo-wop and rock-and-roll sound to perfection...Sure, the story seems familiar, but it is done in a fresh way, and that fresh thing is sincerity...DeNiro and Zaks have taken the story and directed it without any frills, just fine-tuned it to let the tale unfold in the most simplistic and realistic of ways.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The first truly, thoroughly enjoyable show of the 2016 fall season",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong opening endorsement calling it 'truly, thoroughly enjoyable' with praise for music, direction, and sincerity. However, confidence is medium due to single excerpt warning and potential for cherry-picked quotes. | GPT-4o: The excerpt provides strong praise for the show, highlighting its enjoyable nature and the effective music and lyrics. The direction is also praised for its simplicity and realism. Despite the single excerpt warning, the positive tone suggests a strong recommendation. | Gemini: The review excerpt contains strong positive language such as \"truly, thoroughly enjoyable\" and praises the music, direction, and freshness of the story. Given it's a single excerpt, I'm scoring on the higher end of the positive range, but with low confidence. | Kimi: The excerpt offers strong praise ('thoroughly enjoyable', 'to perfection', 'fresh') without the extreme superlatives that would qualify as a Rave. Given this is a single curated excerpt that may be cherry-picked, the score falls at the upper end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:48:38.765Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

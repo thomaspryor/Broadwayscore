@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Metcalf is over the top, playing this narcissistic woman to the hilt. It is clear she is enjoying playing this role, but I would have liked to see some subtlety...Cooper gives us the longing of a man who is clueless as to why his love is never enough. Our hearts break for him…I kept wanting to know why was the house so bare, Gold did however in this case bring out terrific performances. Hnath is a talented writer and his script is biting, sarcastic and like a whip.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Gold did however in this case bring out terrific performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Mixed assessment praising performances and writing ('terrific performances', 'talented writer', 'biting, sarcastic') while noting specific criticisms ('over the top', wanting 'subtlety'). Single excerpt limits confidence but overall tone leans positive. | GPT-4o: The review praises the performances and writing but notes a lack of subtlety and questions the set design. The excerpt suggests a mix of positive and critical observations, leading to a mixed verdict. | Gemini: The review praises the performances and the script, but also expresses a desire for more subtlety in Metcalf's portrayal. Given the limited excerpt, it's a cautiously positive assessment. | Kimi: While noting a desire for more subtlety from Metcalf and questioning the set design, the critic praises the terrific performances under Gold's direction, Cooper's emotionally affecting turn, and Hnath's sharp writing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:17:06.831Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

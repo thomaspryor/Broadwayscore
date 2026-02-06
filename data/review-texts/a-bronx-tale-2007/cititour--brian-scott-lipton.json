@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"For all the work’s flaws, one can’t doubt the well-meaning efforts of co-directors DeNiro and Zaks...Still, you would think such accomplished men might realize that cold-blooded murder, racial unrest and pseudo-Motown mix kind of like gin and Diet Coke...As engaging as a few of the musical numbers are they diminish Palminteri’s core story...It seems to aspire to match 'West Side Story's' achievement–and how far short it falls of that aim. It’s not even half as good as 'Jersey Boys.'\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It seems to aspire to match 'West Side Story's' achievement–and how far short it falls of that aim.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite acknowledging 'well-meaning efforts' and some engaging musical numbers, the critic finds fundamental flaws in mixing serious themes with musical theater, says it diminishes the core story, and explicitly states it falls far short of its aspirations and isn't even half as good as comparable shows. | GPT-4o: The review highlights significant flaws and shortcomings compared to other shows, despite acknowledging some engaging musical numbers. The overall tone suggests disappointment and a lack of recommendation. | Gemini: The review highlights flaws and shortcomings, comparing it unfavorably to other musicals. The excerpt suggests a negative overall assessment. | Kimi: While the critic acknowledges 'engaging' musical numbers and 'well-meaning efforts,' the overall verdict is clearly negative: the genre mix is compared unfavorably to 'gin and Diet Coke,' the songs diminish the core story, and the show is judged 'not even half as good as Jersey Boys,' indicating a recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:43:43.179Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

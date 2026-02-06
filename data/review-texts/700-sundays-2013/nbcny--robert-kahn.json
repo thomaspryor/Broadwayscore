@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's next to impossible to experience Billy Crystal's still side-splitting \"700 Sundays\" without recalling the absurdist characters and hallmark moments of your own youth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt describes the show as 'still side-splitting' and emphasizes its emotional resonance, suggesting strong positive reception. However, this is only one curated excerpt and may not represent the full verdict, hence low confidence. | GPT-4o: The excerpt describes the show as 'still side-splitting' and evokes a strong personal connection, suggesting a highly positive experience. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses the phrase \"still side-splitting\" which indicates a positive sentiment. Given the single excerpt warning, I am scoring it at the higher end of the positive range. | Kimi: The excerpt employs strong positive language ('side-splitting') praising the show's humor and emotional resonance, warranting the upper end of the Positive bucket. However, confidence is reduced due to the single-excerpt limitation and truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:41:57.923Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

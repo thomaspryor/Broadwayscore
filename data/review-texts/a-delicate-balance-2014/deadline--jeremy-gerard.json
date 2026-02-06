@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A storm rages at the center of the Broadway revival of Edward Albee's A Delicate Balance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt uses powerful, dramatic imagery to describe Lithgow's performance as a 'storm' and 'neutron bomb,' suggesting intense praise for his central role. However, with only one truncated excerpt available, confidence is low as the full critical verdict is unclear. | GPT-4o: The excerpt uses vivid imagery to describe the impact of the production, suggesting a powerful and engaging experience. Given the lack of a full review and the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt praises John Lithgow's performance and describes the play's impact as powerful, suggesting a positive but potentially unsettling experience. Given the limited text, confidence is low. | Kimi: Single excerpt provides enthusiastic praise for John Lithgow's performance using powerful metaphors ('storm,' 'neutron bomb'), indicating a clearly positive assessment of the revival's central element. Confidence is low due to single-excerpt limitation and truncation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:02:18.862Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

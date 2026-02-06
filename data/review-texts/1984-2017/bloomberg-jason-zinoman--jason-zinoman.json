@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Yet the most forceful theatrical response to the administration is now on Broadway, with a nerve-jangling adaptation of George Orwell's classic novel 1984, which just opened at the Hudson Theatre. This harrowing production stages what might be the most famous picture of a totalitarian future, one th...",
-  "bwwRoundupUrl": null
+  "bwwRoundupUrl": null,
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yet the most forceful theatrical response to the administration is now on Broadway, with a nerve-jangling adaptation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic calls it 'the most forceful theatrical response' and 'nerve-jangling,' indicating strong theatrical impact. However, this is only one excerpt from a longer review, so confidence is low. | GPT-4o: The excerpt describes the production as 'harrowing' and 'forceful', suggesting a strong and impactful adaptation. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt describes the production as a \"forceful theatrical response\" and \"nerve-jangling adaptation\", suggesting a positive, albeit potentially unsettling, experience. Given the single excerpt, confidence is low. | Kimi: The excerpt employs strongly positive descriptors ('most forceful', 'nerve-jangling', 'harrowing') indicating the production is effective and impactful, warranting a score in the upper Positive range, though limited context necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:39:21.881Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

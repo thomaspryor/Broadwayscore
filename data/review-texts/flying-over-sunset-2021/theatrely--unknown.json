@@ -36,5 +36,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20260102060330/https://www.theatrely.com/post/flying-over-sunset-on-a-smoothed-out-trip-review",
   "contentTier": "complete",
   "wordCount": 890,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "struggles to prove its two-and-a-half-hour runtime",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges excellent performances and production values but finds the book 'thudding' and score 'tediously monotone', with basic psychological revelations that fail to capture the profound nature of the subject matter. | GPT-4o: The review highlights strong performances and production elements but criticizes the book and score for lacking depth and engagement. The overall tone is mixed, acknowledging both strengths and significant weaknesses. | Gemini: The review acknowledges strong performances and production elements but criticizes the book and score as uninspired, resulting in a mixed overall assessment. | Kimi: The critic offers enthusiastic praise for the leading performances and design elements but criticizes the book and score as dull, unimaginative, and failing to deliver on the show's psychedelic potential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:15:01.741Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

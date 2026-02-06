@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jordan E. Cooper's 'Ain't No Mo'' is a furious, funny and deeply affecting piece of theater that uses broad comedy to examine the Black experience in America.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jordan E. Cooper's 'Ain't No Mo'' is a furious, funny and deeply affecting piece of theater that uses broad comedy to examine the Black experience in America.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jordan E. Cooper's 'Ain't No Mo'' is a furious, funny and deeply affecting piece of theater that uses broad comedy to examine the Black experience in America.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('furious, funny and deeply affecting') with clear artistic merit recognition. Single excerpt warning requires caution, but the praise is substantive and unqualified. | GPT-4o: The excerpt describes the show as 'furious, funny and deeply affecting,' indicating strong praise. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses strong positive language such as \"furious, funny and deeply affecting\" to describe the play, indicating a positive recommendation. Given it's a single excerpt, I've placed it at the higher end of the positive bucket. | Kimi: The excerpt uses strongly positive evaluative language ('deeply affecting', 'furious, funny') indicating a clear recommendation, but confidence is low as only one curated excerpt is available and may not represent the full review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:57:06.280Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

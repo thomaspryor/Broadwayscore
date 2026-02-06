@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The stage adaptation of George Orwell's novel, directed by Robert Icke and Duncan Macmillan, is a thrilling and visceral experience that makes the audience complicit in Winston Smith's psychological breakdown.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The stage adaptation of George Orwell's novel, directed by Robert Icke and Duncan Macmillan, is a thrilling and visceral experience that makes the audience complicit in Winston Smith's psychological breakdown.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The stage adaptation of George Orwell's novel, directed by Robert Icke and Duncan Macmillan, is a thrilling and visceral experience that makes the audience complicit in Winston Smith's psychological breakdown.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('thrilling and visceral experience') suggests enthusiastic recommendation, but single excerpt warning requires caution about representativeness of full review. | GPT-4o: The excerpt uses strong positive language ('thrilling', 'visceral') indicating a highly favorable view of the production. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"thrilling and visceral experience\", suggesting a positive review. Given it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt employs enthusiastic descriptors ('thrilling,' 'visceral') and praises the production's immersive psychological impact. Following the single-excerpt guidance for clearly positive quotes, the score falls in the upper Positive range, though confidence remains low due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:39:56.783Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

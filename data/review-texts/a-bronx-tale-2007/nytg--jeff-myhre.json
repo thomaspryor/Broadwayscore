@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The performers can’t possibly be better, but I wish Alan Menken and Glenn Slater had given them something more to deliver on. There are a couple of songs that are standouts, but given the time and the place, they could have mined the rich vein of American music that included doo-wop and Motown…The music tends toward traditional Broadway show tunes...The artistic choices made in this production have almost without exception been the wise ones.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The artistic choices made in this production have almost without exception been the wise ones.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed verdict with strong praise for performers and artistic choices, but significant criticism of the music. Single excerpt warning suggests caution about overall sentiment. | GPT-4o: The excerpt praises the performers and acknowledges some standout songs, but criticizes the music for not fully utilizing the potential of American music styles. The overall tone suggests a positive view of the production's artistic choices, though with some reservations about the music. | Gemini: The review praises the performers and artistic choices, but expresses disappointment with the music. Due to the limited excerpt, confidence is low, and the score is at the lower end of the positive range. | Kimi: The excerpt offers superlative praise for the performers ('can't possibly be better') and production choices ('almost without exception been the wise ones'), but criticizes the score material. As a single curated excerpt with mixed signals, this represents a mildly positive recommendation in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:46:55.431Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

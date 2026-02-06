@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"You will be thrilled by the performances, even if you disagree with how the characters are written...Despite how good they are, for me Hnath took the wrong track with his play...By going for the laughs he has detracted from what might have been a very interesting discussion of how a woman...unaware of how society worked, survived and prospered...While 'A Doll’s House, Part II' is an enjoyable evening particularly because of the fine acting, it could have been so much more.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While 'A Doll's House, Part II' is an enjoyable evening particularly because of the fine acting, it could have been so much more.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic praises performances but criticizes the playwright's choices and expresses disappointment that the show 'could have been so much more.' This signals enjoyable but flawed, placing it in Mixed range. Low confidence due to single excerpt warning. | GPT-4o: The review praises the performances but criticizes the play's direction and missed potential. The excerpt suggests enjoyment but with significant reservations about the writing, leading to a mixed verdict. | Gemini: The review states it is an \"enjoyable evening\" due to the acting, but expresses disappointment with the play's direction, indicating a positive but not rave review. Confidence is low due to the single excerpt. | Kimi: The critic praises the acting as thrilling and calls the show an enjoyable evening, but criticizes the playwright's choices and unfulfilled potential, indicating a qualified recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:07:49.138Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

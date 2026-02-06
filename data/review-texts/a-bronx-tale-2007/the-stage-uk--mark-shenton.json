@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"This latest incarnation feels derivative and threatens to drown a resonant personal story in musical theatre cliche...Alan Menken's jaunty pastiche-laden score provides some diversion, but this is not, as one of the songs is titled, 'One of the Great Ones.' There's neither much in the way of dramatic or musical lift-off, though choreographer Sergio Trujillo does what he can to propel the songs forward.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This latest incarnation feels derivative and threatens to drown a resonant personal story in musical theatre cliche.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative assessment calling the show 'derivative' with 'neither much dramatic or musical lift-off.' Even acknowledges some positives (Menken's score provides 'some diversion') but overall verdict is against recommendation. | GPT-4o: The excerpt criticizes the show as derivative and lacking dramatic or musical impact, with only limited praise for the score and choreography. The overall tone suggests a negative view, though the single excerpt limits confidence. | Gemini: The review excerpt suggests a mixed reception. While acknowledging some diversion from the score and Trujillo's choreography, it ultimately finds the production lacking in dramatic and musical lift-off. | Kimi: The critic describes the show as cliched and lacking dramatic or musical lift-off, with only faint praise for the score providing 'some diversion' and the choreographer's efforts. The single excerpt presents a clear negative verdict, though with low confidence given the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:49:29.237Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The play—under Sam Gold’s direction—often attains a screwball comedy tone, with modern thinking and behavior mixed in and some wacky interactions that make things seem very now...The resulting debates are fresh and entertaining, and there’s also pathos in the fact that Nora is still seeking validation...Metcalf commands the stage, using all her expert comic and dramatic skills to create one of the season’s most indelible performances.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Metcalf commands the stage, using all her expert comic and dramatic skills to create one of the season's most indelible performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction, performances, and overall entertainment value, but single excerpt warning requires caution about full review sentiment. | GPT-4o: The excerpt praises the play's direction, tone, and performances, particularly highlighting Metcalf's standout role. The positive language ('fresh and entertaining', 'indelible performances') suggests a strong recommendation. Given the single excerpt warning, the score is set at the upper end of the Positive range. | Gemini: The excerpt praises the direction, the debates, and Metcalf's performance, calling it one of the season's most indelible. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt describes the production as 'fresh and entertaining' with strong praise for direction and an 'indelible' lead performance, indicating a clear recommendation despite the limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:12:21.883Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

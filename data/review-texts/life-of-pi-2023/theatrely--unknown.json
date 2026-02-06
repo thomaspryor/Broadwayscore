@@ -34,5 +34,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251011133429/https://www.theatrely.com/post/life-of-pi-awash-in-possibilities-review",
   "contentTier": "complete",
   "wordCount": 637,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Life of Pi falls a bit short of the endless possibility suggested by its lead's name.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the visual spectacle, puppetry, and technical elements extensively, but criticizes the dramatic core for lacking depth in exploring the man-beast relationship and losing momentum. The mixed recommendation 'Bring the kids, bring the edibles, and prepare to have your ship gently rocked' suggests conditional enjoyment rather than enthusiasm. | Gemini: The review praises the visual aspects and puppetry but criticizes the lack of exploration of deeper themes and the impact of the intermission on the show's momentum, leading to a mixed assessment. | Kimi: The reviewer praises the jaw-dropping puppetry, video design, and stagecraft as remarkable, but criticizes the play for losing narrative momentum and thematic depth after the intermission. Despite falling 'a bit short' of its potential, the final invitation to 'bring the kids' indicates a clear recommendation based on visual achievement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:22:22.586Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 65,
+    "kimiScore": 77,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

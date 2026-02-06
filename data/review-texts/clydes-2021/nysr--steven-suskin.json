@@ -23,5 +23,60 @@
   "dtliThumb": "UP",
   "showScoreExcerpt": "\"4 stars!...The sandwiches—and these kitchen dreamers continually play at conjuring up ultra-tasty-sounding delights while filling less exalted orders rifled through the counter window by the cigarette-smoking dragon of a proprietor—are not sandwiches, per se. They are metaphors for life, specifically the life faced by these ex-cons struggling along the halfway-house treadmill to life outside.\"\n\nRead more",
   "bwwExcerpt": "Frequent Nottage collaborator Kate Whoriskey (director of Ruined and Sweat) has staged a fine production, with a properly \"liminal\" set (as specifically called for by the playwright) from set designer Takeshi Kata and properly mystical touches from lighting designer Christopher Akerlind. Jennifer Mo...",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CLYDES-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211123"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CLYDES-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211123",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Clyde's demonstrates that the twice-Pulitzered, MacArthur-winning author remains high among our most accomplished playwrights. And how.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with extensive praise for the playwright, direction, and most performances. Despite one reservation about the title character, the critic celebrates the production and concludes with emphatic praise for Nottage's continued excellence. | GPT-4o: The review praises the production and performances, particularly highlighting the playwright's skill and the staging. However, it notes a weak link in the character of Clyde and the performance by Uzo Aduba, suggesting some reservations. The original 4/5 stars and overall positive tone place it in the Positive bucket. | Gemini: The review is mostly positive, highlighting the performances and staging, but it also notes a weak link in the character of Clyde. Given the truncated text and 4/5 stars, I'm scoring it as positive but with reservations. | Kimi: The critic awards 4/5 stars and offers strong praise for Nottage's writing, Whoriskey's direction, and most of the cast—described as 'sublime'—though singles out Uzo Aduba's performance as a 'weak link' that is 'less than convincing.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:12:12.316Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

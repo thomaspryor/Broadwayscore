@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As sumptuous visually as it is vocally, with a respectful, almost reverent feel without being stodgy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows strong praise for visual/vocal elements and production design with positive descriptors like 'sumptuous' and 'luminous.' However, confidence is low due to truncated text and single excerpt warning. | GPT-4o: The excerpt praises the visual and vocal elements of the production, describing it as 'sumptuous' and 'luminous'. The positive language suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The excerpt describes the production as \"sumptuous visually as it is vocally\" and having a \"respectful, almost reverent feel without being stodgy,\" indicating a positive assessment. Given that this is the only excerpt, I am scoring it on the higher end of the positive range, but with low confidence. | Kimi: The excerpt offers strong praise for the visual and vocal elements, describing the production as 'sumptuous' and 'luminous' while appreciating the successful balance of reverence and playfulness in the direction and design.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:22:57.183Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

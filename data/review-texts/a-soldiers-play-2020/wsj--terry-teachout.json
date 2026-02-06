@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Race Relations and Wartime Woes: In this Broadway revival, the 1944 murder of a black sergeant has an investigator wondering if he was killed by the Klan or one of his own men.\"\n\nRead more",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "invalid",
+  "contentTierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-06T02:31:38.202Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a plot summary with a 'Read more' prompt, containing no critical evaluation or verdict about the production; openai: The provided text is a plot summary without any evaluative content or opinion from the critic.; gemini: This is a plot summary with no evaluative content.; kimi: The provided excerpt consists solely of plot description describing the premise of the show (a 1944 murder investigation involving a black sergeant) without any evaluative language regarding production quality, performances, or critical verdict.",
+  "promptVersion": "5.2.0"
 }

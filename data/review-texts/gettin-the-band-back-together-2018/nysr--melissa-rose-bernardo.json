@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2018/08/13/gettin-the-band-back-together-deja-vu-all-over-again/",
-  "showScoreExcerpt": "\"An overwhelming feeling of déjà vu—or, to quote one of Mark Allen’s more insightful lyrics—'disappointment mixed with déjà vu'—underscores 'Gettin’ the Band Back Together'...Though a Mazel-Tov call and response might not be everyone’s cup of Manischewitz, 'GTBBT’s' best moments are its most ridiculous...And the show’s worst moments are its most sincere.\"  \n\nRead more"
+  "showScoreExcerpt": "\"An overwhelming feeling of déjà vu—or, to quote one of Mark Allen’s more insightful lyrics—'disappointment mixed with déjà vu'—underscores 'Gettin’ the Band Back Together'...Though a Mazel-Tov call and response might not be everyone’s cup of Manischewitz, 'GTBBT’s' best moments are its most ridiculous...And the show’s worst moments are its most sincere.\"  \n\nRead more",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An overwhelming feeling of déjà vu—or, to quote one of Mark Allen's more insightful lyrics—'disappointment mixed with déjà vu'—underscores 'Gettin' the Band Back Together'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with language emphasizing disappointment and déjà vu. The critic finds the show's 'best moments' are when it's 'ridiculous' and 'worst moments' when sincere, suggesting fundamental problems with the material's tone and execution. | GPT-4o: The critic's 2/5 star rating suggests a negative review. The excerpt highlights disappointment and a lack of originality, with the best moments described as 'ridiculous' and the worst as 'sincere'. | Gemini: The critic uses the phrase \"disappointment mixed with déjà vu\" to describe the show. The 2/5 star rating and the mixed comments suggest a negative review. | Kimi: The 2/5 star rating and explicit criticism of the show's sincere moments as its worst, combined with an overall tone of disappointment, indicate a negative assessment despite acknowledging some ridiculous high points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:15:55.529Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 41,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

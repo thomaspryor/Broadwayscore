@@ -43,5 +43,60 @@
   "textStatus": "truncated",
   "sourceMethod": "brightdata",
   "wordCount": 805,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Time can reshape how some emotional material lands, and I can't help but notice how 'Wicked' ricochets in new and unexpected ways.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows critic finding contemporary relevance and impact in the show, suggesting positive engagement, but without clear recommendation language or full context, confidence is low. | GPT-4o: The excerpt suggests that 'Wicked' resonates differently over time, with some contemporary relevance, but it does not provide a clear recommendation or strong praise. The single excerpt and lack of a definitive verdict lead to a mixed classification with low confidence. | Gemini: The excerpt suggests the reviewer found the show relevant and thought-provoking, implying a positive, though perhaps not enthusiastic, recommendation. Due to the single excerpt and lack of explicit recommendation, confidence is low. | Kimi: The critic praises the show's timely thematic resonance with present-day culture wars, noting its emotional impact lands with fresh unexpected power. However, as a single curated excerpt without explicit recommendation language, the overall verdict remains uncertain.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:35:46.029Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "A Christmas Story: The Musical is a sweet, nostalgic show that captures the spirit of the beloved 1983 movie without being slavishly devoted to it.",
   "originalScore": 83,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A Christmas Story: The Musical is a sweet, nostalgic show that captures the spirit of the beloved 1983 movie without being slavishly devoted to it.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Christmas Story: The Musical is a sweet, nostalgic show that captures the spirit of the beloved 1983 movie without being slavishly devoted to it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's 83 rating clearly indicates a positive recommendation. The language 'sweet, nostalgic' and praise for capturing the source material's spirit while maintaining independence suggests solid approval, placing this in the upper-positive range. | GPT-4o: The excerpt describes the show as 'sweet' and 'nostalgic,' capturing the spirit of the original movie. The critic's original rating of 83 aligns with a strong positive recommendation, despite the limited excerpt. | Gemini: The review excerpt is positive, calling the show 'sweet' and 'nostalgic' while also praising its ability to capture the spirit of the movie. Given the single excerpt, I'm placing it in the upper end of the positive range, but with low confidence. | Kimi: The excerpt offers warm praise, describing the show as 'sweet' and 'nostalgic' while noting its successful adaptation of the source material. The original rating of 83 supports an upper-Positive classification, though confidence is lowered due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:58:58.163Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 83,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

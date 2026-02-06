@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The breakthrough play that the theater world has been waiting for from Hnath...This fast-moving play could so easily have lapsed into superficial theater games. This never occurs...This is due in part to a playwright’s provocative, funny and, ultimately, generous consideration of the implications of Nora’s actions and to a director, Sam Gold, who has helped each of the actors home in with psychological marksmanship on the core motivations of their characters.\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The breakthrough play that the theater world has been waiting for from Hnath.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it a 'breakthrough play' with compliments for playwright, director, and actors. Single excerpt warning suggests caution, but language is clearly enthusiastic. | GPT-4o: The excerpt describes the play as a 'breakthrough' and praises the playwright and director for their work, suggesting a highly positive view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises the play as a \"breakthrough\" and highlights the playwright's and director's contributions, indicating a positive assessment. Given the single excerpt warning, I'm scoring on the higher end of the positive range. | Kimi: The excerpt offers strong praise calling the work a 'breakthrough' that avoids superficiality, highlighting the playwright's provocative and generous writing alongside precise direction, though as a single curated quote the overall verdict may not be fully represented.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:18:40.254Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

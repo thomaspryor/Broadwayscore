@@ -31,5 +31,11 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 542,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T01:35:57.564Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a national tour production of 'Wicked' at the Peace Center, not the current Broadway run.; kimi: This review covers the national tour production at the Peace Center in Greenville, not the current Broadway production. The text explicitly references 'the national tour' and a regional venue rather than a Broadway theater.",
+  "promptVersion": "5.2.0"
 }

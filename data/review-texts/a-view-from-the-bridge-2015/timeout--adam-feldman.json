@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ivo van Hove's staging is a marvel of focused intensity, stripping away everything extraneous to expose the play's elemental power. Mark Strong gives a towering performance as Eddie Carbone, a man whose destructive obsessions consume him and everyone around him.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ivo van Hove's staging is a marvel of focused intensity, stripping away everything extraneous to expose the play's elemental power. Mark Strong gives a towering performance as Eddie Carbone, a man whose destructive obsessions consume him and everyone around him.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ivo van Hove's staging is a marvel of focused intensity, stripping away everything extraneous to expose the play's elemental power.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises direction as 'marvel' and lead performance as 'towering,' but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt praises the staging as a 'marvel' and highlights a 'towering performance' by Mark Strong, indicating strong positive sentiment. The original rating of 80 supports a high Positive score. | Gemini: The review excerpt uses strong positive language such as \"marvel of focused intensity\" and \"towering performance,\" indicating a positive recommendation. Given the limited text, the score is placed towards the higher end of the positive range. | Kimi: The excerpt offers strong praise for the direction ('marvel of focused intensity') and lead performance ('towering'), aligning with the critic's 80/100 rating. However, confidence is low due to reliance on a single curated excerpt that may not represent the full review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:49:50.172Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

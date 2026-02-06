@@ -38,5 +38,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 700,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pierce overplays Willy's almost-constant anger making him less-than-sympathetic and, at times, almost insufferable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The excerpt praises Clarke as 'peerless' but criticizes Pierce's central performance as overplayed and insufferable. Text is truncated mid-sentence, limiting confidence in overall verdict. | GPT-4o: The excerpt highlights significant issues with the casting and performance, particularly Pierce's portrayal of Willy, which is described as 'less-than-sympathetic' and 'almost insufferable'. This suggests a negative impression overall, though the single excerpt limits confidence. | Gemini: The review excerpt expresses reservations about the casting and portrayal of Willy Loman, suggesting a mixed assessment. The truncated text and single excerpt lower confidence. | Kimi: The critic delivers harsh criticism of the lead performance ('insufferable,' 'overplays') while praising supporting cast members, resulting in a negative verdict. Low confidence due to single-excerpt truncation. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:13:44.731Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

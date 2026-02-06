@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Watching James Lapine's long, laborious and, well, hackneyed, Lincoln Center adaptation of Hart's book, you are constantly struck by the notion that Hart himself, had he been a creative consultant on the project, would have been leaping out of his seat, ready to cut some of his own scenes (plenty!),...",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic describes the adaptation as 'long, laborious and hackneyed' and suggests the original author would want to cut scenes, indicating clear disappointment. However, confidence is low due to single excerpt warning - this could be setup criticism before a more positive verdict. | GPT-4o: The excerpt describes the production as 'long, laborious and hackneyed,' suggesting a negative view. However, with only a single excerpt available, the confidence is low. | Gemini: The excerpt uses negative language like \"long, laborious, and hackneyed,\" suggesting a negative overall assessment. Given that it's a single excerpt, confidence is low, but the language points to a negative bucket. | Kimi: The critic applies strongly negative descriptors ('laborious,' 'hackneyed') to the adaptation and implies the production is overlong and poorly paced, suggesting even the original author would wish to trim it. Given this is a single excerpt, the score reflects solid criticism while acknowledging potential missing context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:53:31.080Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

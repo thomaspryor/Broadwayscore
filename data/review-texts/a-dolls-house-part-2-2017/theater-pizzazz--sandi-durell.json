@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Playwright Lucas Hnath thinks he has the answers in this smarty-pants sequel to the 1879 Ibsen classic 'A Doll’s House'...The sharp and intelligent dialogue, filled with today’s vulgarities, is helmed by director Sam Gold who brings it to sizzling life in separate encounters, one-on-one...Laurie Metcalf, as Nora, is thrilling to watch and listen to, as her soliloquies on the joys of freedom reach limitless proportions of pulsating emotions and skill.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Laurie Metcalf, as Nora, is thrilling to watch and listen to, as her soliloquies on the joys of freedom reach limitless proportions of pulsating emotions and skill.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt shows strong praise for dialogue ('sharp and intelligent'), direction ('brings it to sizzling life'), and especially lead performance ('thrilling to watch'). However, single excerpt warning requires caution - setting confidence to low due to limited text. | GPT-4o: The excerpt praises the dialogue, direction, and especially Laurie Metcalf's performance, using strong positive language. However, the single excerpt warning suggests caution, so the score is on the higher end of Positive but not Rave. | Gemini: The review uses strong positive language such as \"thrilling\", \"limitless proportions\", and \"sizzling life\", indicating a positive recommendation. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the lead performance ('thrilling', 'limitless proportions') and direction ('sizzling life'), warranting a high Positive score, though confidence is reduced due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:15:03.766Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

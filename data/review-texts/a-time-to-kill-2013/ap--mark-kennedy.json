@@ -16,5 +16,54 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly advises 'Save your money' when comparing ticket prices to cheaper alternatives, indicating a clear negative recommendation. However, confidence is low due to truncated text that cuts off mid-sentence when mentioning 'talented cast' and 'standouts.' | GPT-4o: The excerpt advises to 'save your money,' suggesting a negative recommendation despite acknowledging a talented cast. The lack of a full review and the single excerpt warning lead to a low confidence score. | Gemini: The review starts with \"Save your money,\" which is a clear indication of a negative recommendation. The truncated text makes it difficult to assess the full extent of the negativity, but the initial statement is strong enough to place it in the negative bucket. | Kimi: The excerpt explicitly advises readers to save their money rather than purchase tickets, despite acknowledging the cast's talents, indicating a negative overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:32:47.393Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“The antivenin needed by audiences weary of the parade of over-produced Broadway theatre...Metcalf is giving a true star turn here...[It] does sputter out towards the end, where it wraps up without truly concluding in a meaningful way, as though Hnath simply got bored after awhile of writing, but a mediocre five minutes are no reason to skip eighty-five thrilling ones...The type of show that Broadway needs more of: a crowd-pleaser where eggheads and tourists will walk out with like delight.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a mediocre five minutes are no reason to skip eighty-five thrilling ones",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling it 'antivenin' to over-production, 'thrilling' content, and 'crowd-pleaser' with clear recommendation to see despite acknowledging the ending weakness. Single excerpt requires caution but tone is clearly positive. | GPT-4o: Despite acknowledging a weak conclusion, the review praises the show as a needed antidote to over-produced theater, highlighting Metcalf's performance and the show's broad appeal. The excerpt suggests strong positive sentiment. | Gemini: Despite a minor criticism about the ending, the review is overwhelmingly positive, calling it an 'antivenin' and a 'crowd-pleaser' that Broadway needs more of. Metcalf's performance is also highlighted as a 'true star turn.' | Kimi: The excerpt offers enthusiastic praise for the production and lead performance, calling it 'thrilling' and a 'crowd-pleaser,' with only a minor reservation about the ending that the critic dismisses as insignificant.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:16:27.128Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

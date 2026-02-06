@@ -33,5 +33,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251212034054/https://www.theatrely.com/post/kpop-the-musical-shines-on-broadway-review",
   "duplicateTextOf": "theatrely--amanda-marie-miller.json",
   "wordCount": 972,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "KPOP is a must see, shining star, of what is possible.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Enthusiastic recommendation with superlatives throughout ('most exciting show on Broadway right now', 'can't-miss', 'must see'). The critic explicitly states audiences should attend and celebrates this as the future of Broadway, with minimal reservations. | GPT-4o: The review is filled with superlative praise and enthusiasm, describing the show as 'the most exciting, interesting, and alive show on Broadway right now' and a 'must see, shining star.' The critic's tone is unambiguously positive, with no significant reservations. | Gemini: The review is overwhelmingly positive, using phrases like \"most exciting, interesting, and alive show on Broadway right now\", \"exhilarating musical\", and \"must see, shining star\". It strongly recommends the show to both K-pop fans and those interested in the future of theatre. | Kimi: The critic offers unqualified enthusiasm throughout, explicitly calling the show a 'must see' and 'can't-miss' while praising every element from performances to choreography, with only minor caveats that are immediately dismissed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:21:05.093Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

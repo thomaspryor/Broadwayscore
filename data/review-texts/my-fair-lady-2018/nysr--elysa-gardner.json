@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "“If Ambrose’s turn as Eliza Dolittle was a revelation, Benanti’s is just as thrilling...Her elegance and sharp wit; her willingness to wax goofy, with the adroitness that only the smartest actors and comedians can manage; and of course, that glorious, silvery soprano...Benanti serves Shaw’s original vision, and his wit, with as much zest as her predecessor—and, it must be said, more palpable joy...The production retains the directional and design elements that made it both ravishing and wise.”\n\nRead more"
+  "showScoreExcerpt": "“If Ambrose’s turn as Eliza Dolittle was a revelation, Benanti’s is just as thrilling...Her elegance and sharp wit; her willingness to wax goofy, with the adroitness that only the smartest actors and comedians can manage; and of course, that glorious, silvery soprano...Benanti serves Shaw’s original vision, and his wit, with as much zest as her predecessor—and, it must be said, more palpable joy...The production retains the directional and design elements that made it both ravishing and wise.”\n\nRead more",
+  "assignedScore": 90,
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If Ambrose's turn as Eliza Dolittle was a revelation, Benanti's is just as thrilling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with superlative language ('thrilling', 'glorious', 'ravishing and wise') and unqualified praise for lead performance and production elements. Despite being a single excerpt, the enthusiasm level and perfect rating clearly indicate a rave. | GPT-4o: The excerpt provides high praise for Benanti's performance, describing it as 'thrilling' and full of 'palpable joy,' and commends the production's design and direction. The original 5/5 stars rating supports a Rave classification. | Gemini: The review uses words like \"thrilling\", \"glorious\", and \"ravishing\" to describe the performance and production, indicating a rave review. The 5/5 star rating also supports this classification. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:26:28.499Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

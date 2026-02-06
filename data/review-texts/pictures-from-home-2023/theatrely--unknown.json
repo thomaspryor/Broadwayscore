@@ -36,5 +36,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250916130414/https://www.theatrely.com/post/pictures-from-home-captures-the-essence-of-family-review",
   "contentTier": "complete",
   "wordCount": 790,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "creates an often moving portrait of family as an uncapturable, captivating subject",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the veteran actors' performances and finds the production 'often moving' and 'compelling,' but notes structural issues like underdeveloped elements and formulaic dynamics. | Gemini: The review is generally positive, highlighting the performances and the play's exploration of family dynamics, but notes some formulaic aspects and a missed opportunity to develop one of the characters more fully. Overall, it's a recommendation with reservations. | Kimi: The reviewer praises the veteran cast's performances (particularly Lane and Burstein) and Bartlett Sher's direction, calling the work 'often moving' and 'compelling,' though significant reservations about the underutilization of Zoë Wanamaker and formulaic writing choices prevent a full rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:29:16.874Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

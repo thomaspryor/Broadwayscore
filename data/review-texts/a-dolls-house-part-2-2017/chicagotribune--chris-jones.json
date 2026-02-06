@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Hnath has created a fascinating and frequently very funny little play that is less about the issues raised in 'A Doll's House,' and more about returning to greet your former responsibilities...The other takeaway of this quite compelling little exercise is that acts of revolution can flow from privilege...This really is a multilayered performance: you can see Ibsen's Nora herein, plus the woman Nora became and the compassionate cracks in her armor. And Rashad rises up to meet her.\"  \n\nRead more"
+  "showScoreExcerpt": "\"Hnath has created a fascinating and frequently very funny little play that is less about the issues raised in 'A Doll's House,' and more about returning to greet your former responsibilities...The other takeaway of this quite compelling little exercise is that acts of revolution can flow from privilege...This really is a multilayered performance: you can see Ibsen's Nora herein, plus the woman Nora became and the compassionate cracks in her armor. And Rashad rises up to meet her.\"  \n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hnath has created a fascinating and frequently very funny little play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic calls the play 'fascinating,' 'frequently very funny,' and 'quite compelling,' with strong praise for multilayered performances. Clear positive language throughout the excerpt. | GPT-4o: The excerpt highlights the play as 'fascinating', 'very funny', and 'compelling', with praise for the performance. Despite the single excerpt warning, the language suggests a strong positive sentiment. | Gemini: The review excerpt praises the play as \"fascinating\" and \"compelling,\" and highlights a multilayered performance. Given the single excerpt, I am scoring it at the higher end of the positive range. | Kimi: The excerpt offers strong praise for both the play ('fascinating,' 'quite compelling') and Condola Rashad's lead performance, indicating a clear recommendation despite the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:08:46.502Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

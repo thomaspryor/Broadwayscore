@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"This honey-and-spice-on-the-breeze musical is one of a kind...High among the myriad treasures of 'The Band’s Visit' is the score, deceptively gentle but filled with yearning; and the unexpectedly vibrant performance of Katrina Lenk. Both elements continue to enchant and grow richer, even after repeated viewings...It is safe to say that Sasson gives an equally expert performance. What is perhaps unexpected is that his presence adds a new flavor to the piece.\"\n\nRead more"
+  "showScoreExcerpt": "\"This honey-and-spice-on-the-breeze musical is one of a kind...High among the myriad treasures of 'The Band’s Visit' is the score, deceptively gentle but filled with yearning; and the unexpectedly vibrant performance of Katrina Lenk. Both elements continue to enchant and grow richer, even after repeated viewings...It is safe to say that Sasson gives an equally expert performance. What is perhaps unexpected is that his presence adds a new flavor to the piece.\"\n\nRead more",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Band's Visit remains the best new musical on Broadway since Dear Evan Hansen.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with unqualified praise throughout. Calls it 'superlative,' 'splendid,' 'best new musical,' and 'most beautiful.' Despite being truncated, the verdict is crystal clear from extensive positive language and the star rating. | GPT-4o: The review is overwhelmingly positive, with phrases like 'superlative', 'splendid entertainment', and 'best new musical on Broadway'. The original 5/5 stars rating also supports a high score in the Rave bucket. Despite the truncation warning, the available text provides a clear and enthusiastic recommendation. | Gemini: The critic states that the show \"remains the best new musical on Broadway\" and calls it \"surprising, strange, and unexpectedly most beautiful\", indicating a rave review. The 5/5 star rating also supports this classification. | Kimi: The 5/5 star review declares it 'Broadway's best musical of 2017' and 'superlative,' offering unreserved praise for the score, direction, and performances while noting it 'continues to enchant and grow richer' even on repeated viewings.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:31:57.502Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 97,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

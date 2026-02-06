@@ -39,5 +39,11 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 605,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-06T01:33:30.820Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a touring production of 'The Lion King' in Denver, not the current Broadway run.; kimi: This review covers the touring production of The Lion King in Denver, not the current Broadway run in New York.",
+  "promptVersion": "5.2.0"
 }

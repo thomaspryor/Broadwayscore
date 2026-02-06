@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Funny, wise, intriguing, brilliant, and damn crackling good. And as directed by Gold with a fine cast of four it is the speediest 90 minutes on Broadway...The play, in both setting and speech, is a somehow-it-works mash-up of 19th and 21st centuries...The arguments and stories are of their time, yet of ours as well. Just when did Nora slam that door—1879, 1979, or was it last year?...The discussions and arguments and fights we had back then are still with us, and probably always will be.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Funny, wise, intriguing, brilliant, and damn crackling good.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Multiple superlatives (brilliant, crackling good) with enthusiastic tone and praise for direction/cast, but single excerpt warning requires caution about representativeness. | GPT-4o: The excerpt uses strong positive language ('brilliant', 'crackling good') and praises the direction and cast. Despite the limited text, the tone suggests a highly enthusiastic recommendation. | Gemini: The excerpt is overwhelmingly positive, using strong adjectives like \"brilliant\" and \"crackling good,\" suggesting a strong recommendation. Given that it is only one excerpt, I am scoring it with low confidence. | Kimi: The single excerpt employs strong superlatives ('brilliant,' 'crackling good') and praises the production's pacing and direction, indicating a highly favorable verdict, though the limited context warrants conservative confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:19:30.146Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

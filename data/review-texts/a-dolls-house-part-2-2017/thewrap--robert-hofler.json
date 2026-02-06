@@ -42,5 +42,60 @@
   "contentTier": "truncated",
   "wordCount": 51,
   "tierReason": "Short text (51 words)",
-  "showScoreExcerpt": "\"The highest praise you can give Hnath is that he should now write a sequel to 'Streetcar'...A major miracle of Sam Gold’s direction is that each of actor comes from his or her own individual space to do battle. And that conflict of styles galvanizes the play...Hnath keeps defying our expectations...These fine actors’ very different approaches to their roles are what Hnath’s script calls for. That they rub together to produce such humor and warmth is the achievement of a master director.\" \n\nRead more"
+  "showScoreExcerpt": "\"The highest praise you can give Hnath is that he should now write a sequel to 'Streetcar'...A major miracle of Sam Gold’s direction is that each of actor comes from his or her own individual space to do battle. And that conflict of styles galvanizes the play...Hnath keeps defying our expectations...These fine actors’ very different approaches to their roles are what Hnath’s script calls for. That they rub together to produce such humor and warmth is the achievement of a master director.\" \n\nRead more",
+  "assignedScore": 85,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The highest praise you can give Hnath is that he should now write a sequel to 'Streetcar'.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for playwright and direction with terms like 'major miracle' and 'master director.' Single excerpt warning noted - placing in upper Positive range due to superlative language. | GPT-4o: The excerpt praises the direction as a 'major miracle' and credits the director with achieving humor and warmth, indicating a strong positive sentiment. The suggestion for a sequel and the praise for defying expectations further support a rave classification. | Gemini: The review praises the direction and acting, calling the conflict of styles \"galvanizing\" and the director a \"master.\" Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers unqualified praise with superlatives like 'major miracle' and 'master director,' indicating a rave review, though the single-excerpt format necessitates low confidence. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:08:29.643Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

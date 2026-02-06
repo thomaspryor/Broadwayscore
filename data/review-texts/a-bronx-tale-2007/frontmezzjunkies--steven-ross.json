@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"All these actors are great, singing and dancing up a storm, and giving us a totally solid show. This solidness is maybe the only complaint I have with this show. It is so well done, a total professional piece of musical theatre, but somewhere along the way it fails to be something special. I can’t say that I didn’t enjoy myself at any given moment, but I was never swept away...There doesn’t seem to be any stand out numbers.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is so well done, a total professional piece of musical theatre, but somewhere along the way it fails to be something special.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Critic acknowledges professional quality and enjoyment but explicitly states it fails to be special, lacks standout moments, and never swept them away. This is classic mixed territory - competent but unremarkable. | GPT-4o: The review praises the performances and describes the show as 'totally solid' and 'well done,' indicating a positive experience overall. However, it notes a lack of something special and no standout numbers, suggesting some reservations. | Gemini: The review praises the actors and calls the show \"solid\" and \"professional,\" but also states that it \"fails to be something special\" and that the reviewer was \"never swept away.\" This suggests a positive but not enthusiastic recommendation. | Kimi: Single excerpt praises the cast and professionalism while criticizing the show for lacking specialness or standout moments, representing a qualified, mildly positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:45:47.523Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

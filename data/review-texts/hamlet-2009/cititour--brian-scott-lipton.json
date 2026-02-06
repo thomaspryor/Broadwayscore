@@ -32,7 +32,12 @@
   "textIssues": [
     "Word count too low: 141 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 141,
-  "tierReason": "Truncation detected: paywall_or_login_prompt"
+  "tierReason": "Truncation detected: paywall_or_login_prompt",
+  "rejectedAt": "2026-02-06T01:16:52.673Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be website navigation content mixed with promotional text about Cititour.com rather than a complete review. The actual review content is minimal and cuts off mid-sentence.; openai: The review is about a production of Hamlet at the Park Avenue Armory, not a Broadway production.; kimi: This review covers a production at the Park Avenue Armory, not a Broadway theatre. Broadway productions occur in specific venues in the Theater District, while the Armory is an Off-Broadway/alternative venue.",
+  "promptVersion": "5.2.0"
 }

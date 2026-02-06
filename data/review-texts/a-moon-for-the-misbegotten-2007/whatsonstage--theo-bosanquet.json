@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Although the bagginess of the play remains a sticking point, this is a valuable chance to see it delivered with dynamism and no small amount of humour from an ensemble of the very highest quality\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is a valuable chance to see it delivered with dynamism and no small amount of humour from an ensemble of the very highest quality",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges a significant flaw ('bagginess remains a sticking point') but ultimately recommends seeing it as a 'valuable chance' with praise for the ensemble's quality and the production's dynamism. Single excerpt with mixed signals warrants lower end of Positive bucket. | GPT-4o: The excerpt acknowledges a flaw ('bagginess') but highlights the show's dynamic delivery and humor, suggesting a positive recommendation despite reservations. Due to the single excerpt warning, confidence is low. | Gemini: The review acknowledges a significant flaw (\"bagginess\") but praises the dynamism and humor of the ensemble, suggesting a qualified recommendation. Given the single excerpt, confidence is low. | Kimi: The excerpt provides a qualified recommendation, offering strong praise for the ensemble and staging ('very highest quality', 'dynamism') while acknowledging structural flaws ('bagginess'), placing it in the upper-positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:25:05.782Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-06T01:55:17.406Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This excerpt is purely descriptive information about the production team and venue history, with no evaluative content or critical assessment of the show.; openai: The text provided is a description of the production team and history, not an evaluative review of the Broadway show.; gemini: This is just a production note, not a review with any evaluative content.; kimi: The excerpt contains only production background information (directors, playwright, previous venue) with no evaluative content or critical opinion about the show's quality. It reads as contextual setup or a cast/creative listing rather than a review.",
+  "promptVersion": "5.2.0"
 }

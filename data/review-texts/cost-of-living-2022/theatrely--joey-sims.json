@@ -34,5 +34,60 @@
   "archiveOrgTimestamp": "20251011134250",
   "archiveOrgUrl": "http://web.archive.org/web/20251011134250/https://www.theatrely.com/post/cost-of-living-considers-love-and-mutual-care-review",
   "wordCount": 915,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Majok's 2018 Pulitzer Prize winner is mostly sublime on Broadway, save for a few missteps.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling the play 'mostly sublime' with praise for direction, cast, and writing, though acknowledging some specific weaknesses in one storyline and the ending. | GPT-4o: The review praises the play's writing, direction, and performances, particularly highlighting its emotional impact and thematic depth. However, it notes some issues with the parallel story and character dynamics, indicating a strong but not unqualified recommendation. | Gemini: The review is generally positive, praising the writing, direction, and performances, but notes some issues with one of the storylines. The phrase \"mostly sublime\" indicates a strong positive leaning, but the acknowledged missteps prevent a Rave score. | Kimi: The critic praises the play as 'deeply moving' and 'sublime' with excellent performances (particularly Zayas and Sullivan), but notes significant issues with the secondary storyline between Jess and John, keeping the recommendation qualified.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:12:41.364Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

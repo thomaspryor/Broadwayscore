@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -39,5 +39,60 @@
   ],
   "duplicateTextOf": "washpost--peter-marks.json",
   "wordCount": 111,
-  "tierReason": "Short text (111 words)"
+  "tierReason": "Short text (111 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wicked makes endearingly whimsical noises, the sounds of a bona fide crowd-pleaser.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review acknowledges the show as a 'bona fide crowd-pleaser' when Chenoweth performs, but criticizes it as a 'muddy spectacle' that 'pursues its rather charmless agenda' much of the time. The mixed praise and criticism with no clear recommendation places this in the mixed category. | GPT-4o: The review praises Chenoweth's performance and some aspects of the show as a crowd-pleaser but criticizes the overall execution as lacking charm and magic. This suggests a mixed verdict with notable positive elements. | Gemini: The review praises Chenoweth's performance and calls the show a \"bona fide crowd-pleaser,\" but also notes that \"the magic fades\" at times. This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The review offers strong praise for Kristin Chenoweth's performance but criticizes the show overall as 'muddy' and 'charmless' with fading magic when she isn't on stage, resulting in a conflicted assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:37:14.669Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

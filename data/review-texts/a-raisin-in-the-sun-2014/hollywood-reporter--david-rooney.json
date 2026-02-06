@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kenny Leon's lovingly staged revival of A Raisin in the Sun so alive with authentic feeling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the direction as 'lovingly staged' and describes the production as 'so alive with authentic feeling' with 'impeccably matched ensemble.' However, this is only a single excerpt and may be truncated, warranting low confidence. | GPT-4o: The excerpt praises the ensemble and staging, suggesting a strong positive impression. The use of 'lovingly staged' and 'alive with authentic feeling' indicates a high level of enthusiasm. | Gemini: The excerpt praises the ensemble, direction, and overall feeling of the production, suggesting a strong positive recommendation. Given the single excerpt, confidence is low, but the language points to the upper end of the positive range. | Kimi: The excerpt offers strong praise for the ensemble ('impeccably matched') and direction ('lovingly staged'), describing the production as 'alive with authentic feeling.' Despite the limitation of a single curated quote, the language clearly indicates an enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:26:27.701Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

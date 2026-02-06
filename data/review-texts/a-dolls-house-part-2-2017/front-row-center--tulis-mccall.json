@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“A stupendous creation in nearly every way…Metcalf is beyond brilliant…Before you can put up a defense, these characters are there putting down roots in your head and your heart. Sam Gold’s direction pulls these extraordinary cast members together into an ensemble that summons the Spirits of the Small Moments to the table to create a banquet. This is a feast all around. 'A Doll’s House Part 2' is a reminder of why theatre–or art itself–is, at its best, a life-altering experience.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a feast all around.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Overwhelming praise with superlatives ('stupendous', 'beyond brilliant', 'life-altering experience'). Single excerpt warning noted, but the language is unmistakably rapturous without any caveats or reservations. | GPT-4o: The excerpt uses superlatives like 'stupendous', 'beyond brilliant', and 'a feast all around', indicating a highly enthusiastic recommendation. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The review uses extremely positive language such as \"stupendous creation,\" \"beyond brilliant,\" and \"life-altering experience,\" indicating a rave review. | Kimi: The excerpt contains superlative praise ('stupendous', 'beyond brilliant', 'life-altering'), warranting a high Positive score. However, confidence is low due to availability of only a single curated excerpt which may not represent the full review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:10:33.989Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jordan E. Cooper's 'Ain't No Mo'' is a wild, uneven, sometimes brilliant satire that takes no prisoners in its scathing indictment of American racism.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jordan E. Cooper's 'Ain't No Mo'' is a wild, uneven, sometimes brilliant satire that takes no prisoners in its scathing indictment of American racism.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jordan E. Cooper's 'Ain't No Mo'' is a wild, uneven, sometimes brilliant satire that takes no prisoners in its scathing indictment of American racism.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls it 'sometimes brilliant' and praises its uncompromising satirical approach, but acknowledges it's 'uneven'. The positive descriptors ('brilliant', 'takes no prisoners') suggest recommendation despite flaws. Single excerpt warning requires caution - using upper Positive range as this sounds clearly positive overall. | GPT-4o: The excerpt describes the show as 'wild' and 'uneven,' indicating a mix of strengths and weaknesses. The mention of 'sometimes brilliant' suggests some positive elements, but the overall tone is mixed due to the unevenness. | Gemini: The review uses the terms \"wild, uneven, sometimes brilliant\" which indicates a mixed review. Given that it is only one excerpt, the confidence is low. | Kimi: The excerpt contains qualified praise ('sometimes brilliant') alongside explicit criticism ('uneven'), indicating the production has significant strengths but inconsistent quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T02:56:29.256Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 67,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 19,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }
