@@ -8308,18 +8308,6 @@
     "timestamp": "2026-02-03T22:49:01.310Z"
   },
   {
-    "reviewId": "between-riverside-and-crazy-2022/nytimes--jesse-green.json",
-    "showId": "between-riverside-and-crazy-2022",
-    "outlet": "The New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2022/12/19/theater/between-riverside-and-crazy-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): chicago, home, company, what the constitution means to me, hair...",
-    "textLength": 7543,
-    "timestamp": "2026-02-03T23:06:44.926Z"
-  },
-  {
     "reviewId": "cabaret-2014/vulture--sara-holdren.json",
     "showId": "cabaret-2014",
     "outlet": "Vulture",
@@ -11044,18 +11032,6 @@
     "timestamp": "2026-02-04T19:35:11.775Z"
   },
   {
-    "reviewId": "beautiful-the-carole-king-musical-2014/hollywood-reporter--unknown.json",
-    "showId": "beautiful-the-carole-king-musical-2014",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/beautiful-carole-king-musical-theater-670124",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): mamma mia!, rocky, bullets over broadway, once, rain...",
-    "textLength": 7739,
-    "timestamp": "2026-02-04T19:38:48.378Z"
-  },
-  {
     "reviewId": "beetlejuice-2019/hollywood-reporter--david-rooney.json",
     "showId": "beetlejuice-2019",
     "outlet": "The Hollywood Reporter",
@@ -11738,30 +11714,6 @@
     "garbageReason": "Multiple shows mentioned (7): mamma mia!, home, rocky, 33 variations, primo...",
     "textLength": 5786,
     "timestamp": "2026-02-05T01:55:43.937Z"
-  },
-  {
-    "reviewId": "between-riverside-and-crazy-2022/variety--aramide-tinubu.json",
-    "showId": "between-riverside-and-crazy-2022",
-    "outlet": "Variety",
-    "critic": "Aramide Tinubu",
-    "url": "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-1235447099/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): chicago, company, hair, once, rain...",
-    "textLength": 5529,
-    "timestamp": "2026-02-05T01:58:03.954Z"
-  },
-  {
-    "reviewId": "between-riverside-and-crazy-2022/variety--naveen-kumar.json",
-    "showId": "between-riverside-and-crazy-2022",
-    "outlet": "Variety",
-    "critic": "Naveen Kumar",
-    "url": "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-common-stephen-adly-guirgis-mckinley-henderson-1235465956/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): company, hair, once, rain, high...",
-    "textLength": 5230,
-    "timestamp": "2026-02-05T01:58:18.408Z"
   },
   {
     "reviewId": "bronx-bombers-2014/hollywood-reporter--unknown.json",
@@ -19802,5 +19754,89 @@
     "garbageReason": "Legal/privacy page: \"©2026 Dow Jones & Company, Inc. All Rights Reserved\"",
     "textLength": 604,
     "timestamp": "2026-02-06T14:41:02.552Z"
+  },
+  {
+    "reviewId": "beautiful-the-carole-king-musical-2014/hollywood-reporter--unknown.json",
+    "showId": "beautiful-the-carole-king-musical-2014",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/beautiful-carole-king-musical-theater-670124",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): mamma mia!, bullets over broadway, once, rain, elling...",
+    "textLength": 7690,
+    "timestamp": "2026-02-06T14:42:50.690Z"
+  },
+  {
+    "reviewId": "beautiful-the-carole-king-musical-2014/nyt-theater--jonathan-mandell.json",
+    "showId": "beautiful-the-carole-king-musical-2014",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "http://newyorktheater.me/2014/01/12/beautiful-the-carole-king-musical-review-broadway-by-the-numbers/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, carousel, bullets over broadway, hair, once...",
+    "textLength": 7106,
+    "timestamp": "2026-02-06T14:42:58.164Z"
+  },
+  {
+    "reviewId": "beautiful-the-carole-king-musical-2014/nytimes--unknown.json",
+    "showId": "beautiful-the-carole-king-musical-2014",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2014/01/13/theater/beautiful-the-carole-king-musical-at-sondheim-theater.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): mamma mia!, purpose, parade, evita, elling...",
+    "textLength": 6874,
+    "timestamp": "2026-02-06T14:44:11.059Z"
+  },
+  {
+    "reviewId": "beautiful-the-carole-king-musical-2014/vulture--unknown.json",
+    "showId": "beautiful-the-carole-king-musical-2014",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2014/01/theater-review-beautiful-carole-king.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, funny girl, bandstand, once, evita...",
+    "textLength": 8856,
+    "timestamp": "2026-02-06T14:44:15.332Z"
+  },
+  {
+    "reviewId": "between-riverside-and-crazy-2022/nytimes--jesse-green.json",
+    "showId": "between-riverside-and-crazy-2022",
+    "outlet": "The New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2022/12/19/theater/between-riverside-and-crazy-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chicago, home, company, what the constitution means to me, hair...",
+    "textLength": 7543,
+    "timestamp": "2026-02-06T14:44:37.288Z"
+  },
+  {
+    "reviewId": "between-riverside-and-crazy-2022/variety--aramide-tinubu.json",
+    "showId": "between-riverside-and-crazy-2022",
+    "outlet": "Variety",
+    "critic": "Aramide Tinubu",
+    "url": "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-1235447099/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): company, hair, once, rain, high...",
+    "textLength": 5483,
+    "timestamp": "2026-02-06T14:45:47.318Z"
+  },
+  {
+    "reviewId": "between-riverside-and-crazy-2022/variety--naveen-kumar.json",
+    "showId": "between-riverside-and-crazy-2022",
+    "outlet": "Variety",
+    "critic": "Naveen Kumar",
+    "url": "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-common-stephen-adly-guirgis-mckinley-henderson-1235465956/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): company, hair, once, rain, high...",
+    "textLength": 5315,
+    "timestamp": "2026-02-06T14:46:00.741Z"
   }
 ]
