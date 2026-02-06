@@ -862,6 +862,12 @@ function saveReview(showId, reviewData, options = {}) {
 // ---------------------------------------------------------------------------
 
 async function processShow(show, showId, options = {}) {
+  // Skip shows in previews — they haven't opened yet, any scraped reviews are wrong-production
+  if (show.status === 'previews') {
+    console.log(`  [SKIP] ${showId}: Show is in previews (opens ${show.openingDate})`);
+    return { reviews: [], roundup: [] };
+  }
+
   const showOpeningYear = show.openingDate ? new Date(show.openingDate).getFullYear() : null;
   const results = { reviews: [], roundup: [] };
 
