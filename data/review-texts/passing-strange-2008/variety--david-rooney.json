@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2008/legit/reviews/passing-strange-1200472342/",
   "publishDate": "February 29, 2008",
-  "fullText": "This exuberant rock musical about a young black artist's journey of self-discovery crackles with authenticity, humor and heart.",
-  "isFullReview": false,
+  "fullText": "Espionage thriller \"Secrets of State\" tosses a fresh glass of Bordeaux in the face of anyone still ordering a side of \"freedom fries.\"\n\nGoing to great lengths to promote France’s engagement in the global war on terror, espionage thriller “Secrets of State” tosses a fresh glass of Bordeaux in the face of anyone still ordering a side of “freedom fries.” Gripping suspenser from scribe-helmer Philippe Haim pits a rookie Nikita against a homegrown jihad recruit, using frenzied direction and multiple plot twists to reveal the human capital expended in the murky conflict. Still, for anyone who’s already seen “Syriana,” “Body of Lies” or “24,” there’s a strong sense of deja vu here. Pic assails Gaul Dec. 10.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Lionsgate Hires First Chief AI Officer \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Rotten Tomatoes Owner Says 'Melania' 99% Audience Score Is Not 'Bot Manipulation': 'Reviews Are Verified... Users Bought a Ticket to the Film'\n\nFrench-language addition to Hollywood’s recent slew of terrorist-themed blockbusters focuses on the down-and-dirty methods of the DGSE, Gaul’s version of the CIA. Based on extensive research involving seven credited consultants, the script provides a more detailed portrait of the undercover agency than has been previously featured onscreen, but is less convincing in its depiction of the bomb-rigging, video-making baddies.\n\nA fragmented opening sequence promptly introduces the story’s three protags, whose lives will criss-cross, break apart and eventually collide by the end of the narrative.\n\nDiane (Vahina Giocante), an ex-prostitute turned Arab translator, fails a college exam and finds herself coerced by no-joke DGSA trainer Alex (vet Gerard Lanvin) into becoming a secret agent. Miles away in the northern city of Lille, drug dealer Pierre (Nicolas Duvauchelle) gets incarcerated, and his awful prison experience (think “Oz”) leads him to embrace a band of Islamist recruiters.\n\nMiddle section follows Diane’s and Pierre’s parallel trajectories as they learn, often less than willingly, to embody their newfound identities.\n\nA more conventional subplot involves the attempts of two other agents (Medhi Nebbou, Rachida Brakni) to pin down terrorist mastermind Al-Barad (Simon Abkarian). When their efforts fail, Alex convinces Diane to step up to the plate to prevent a chemical bomb from penetrating France’s borders.\n\nHelmer/co-writer Philippe Haim (“The Daltons”) manages to add some unexpected nuance to what is basically a race-against-the-clock scenario, and thesps Giocante and Duvauchelle give their characters a touch of tragic innocence that’s rare for the genre. But as with so much recent Hollywood fare, the terrorism theme is merely an all-purpose MacGuffin, its origins explained in the kind of cliche scene where several bearded men sit in a room and talk about how much they hate the West.\n\nA truly gut-wrenching finale set in the Paris metro adds to the pic’s pulsating tone, which is maintained by ace editor Sylvie Landra’s (“The Professional”) rapid-fire cutting. D.p. Jerome Almeras gives the material an edgy contempo look and pulls off a few breathtaking cityscape shots.\n\nMusic by Alexandre Azaria vaguely recalls “The Bourne Ultimatum,” as does an even more familiar cell phone-in-pocket gag and open-space situation room.",
+  "isFullReview": true,
   "dtliExcerpt": "This exuberant rock musical about a young black artist's journey of self-discovery crackles with authenticity, humor and heart.",
   "originalScore": null,
   "assignedScore": 82,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This exuberant rock musical about a young black artist's journey of self-discovery crackles with authenticity, humor and heart.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (18 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "llmScore": {
     "score": 82,
     "confidence": "medium",
@@ -76,5 +76,52 @@
   },
   "sources": [
     "web-search"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "textWordCount": 501,
+  "archivePath": "data/archives/reviews/passing-strange-2008/variety--david-rooney_2026-02-06.html",
+  "textFetchedAt": "2026-02-06T18:44:13.570Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 501,
+  "tierReason": "Full review text"
 }
