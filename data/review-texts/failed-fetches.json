@@ -12904,42 +12904,6 @@
     "timestamp": "2026-02-05T04:22:10.836Z"
   },
   {
-    "reviewId": "othello-2025/nytimes--jesse-green.json",
-    "showId": "othello-2025",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2025/03/23/theater/othello-broadway-review-washington-gyllenhaal.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): redwood, company, betrayal, betrayal, once...",
-    "textLength": 7919,
-    "timestamp": "2026-02-05T04:36:02.697Z"
-  },
-  {
-    "reviewId": "othello-2025/variety--unknown.json",
-    "showId": "othello-2025",
-    "outlet": "Variety",
-    "critic": "Unknown",
-    "url": "https://variety.com/2025/legit/reviews/othello-review-denzel-washington-jake-gyllenhaal-broadway-1236345962/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): romeo + juliet, english, betrayal, betrayal, once...",
-    "textLength": 5683,
-    "timestamp": "2026-02-05T04:36:21.123Z"
-  },
-  {
-    "reviewId": "othello-2025/vulture--unknown.json",
-    "showId": "othello-2025",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "https://www.vulture.com/article/theater-review-denzel-washington-in-othello.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): english, once, evita, elling, race...",
-    "textLength": 11260,
-    "timestamp": "2026-02-05T04:36:25.296Z"
-  },
-  {
     "reviewId": "pal-joey-2008/nytimes--ben-brantley.json",
     "showId": "pal-joey-2008",
     "outlet": "The New York Times",
@@ -19418,5 +19382,65 @@
     "garbageReason": "Multiple shows mentioned (5): company, once, rain, company, rent",
     "textLength": 1917,
     "timestamp": "2026-02-06T08:46:55.796Z"
+  },
+  {
+    "reviewId": "othello-2025/nytimes--jesse-green.json",
+    "showId": "othello-2025",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2025/03/23/theater/othello-broadway-review-washington-gyllenhaal.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): redwood, company, betrayal, betrayal, once...",
+    "textLength": 7919,
+    "timestamp": "2026-02-06T08:47:36.535Z"
+  },
+  {
+    "reviewId": "othello-2025/variety--unknown.json",
+    "showId": "othello-2025",
+    "outlet": "Variety",
+    "critic": "Unknown",
+    "url": "https://variety.com/2025/legit/reviews/othello-review-denzel-washington-jake-gyllenhaal-broadway-1236345962/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): romeo + juliet, english, betrayal, betrayal, once...",
+    "textLength": 5770,
+    "timestamp": "2026-02-06T08:47:53.515Z"
+  },
+  {
+    "reviewId": "othello-2025/vulture--david-fox.json",
+    "showId": "othello-2025",
+    "outlet": "Vulture",
+    "critic": "David Fox",
+    "url": "https://www.vulture.com/article/theater-review-denzel-washington-in-othello.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): english, once, evita, elling, race...",
+    "textLength": 11260,
+    "timestamp": "2026-02-06T08:47:57.750Z"
+  },
+  {
+    "reviewId": "othello-2025/vulture--unknown.json",
+    "showId": "othello-2025",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "https://www.vulture.com/article/theater-review-denzel-washington-in-othello.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): english, once, evita, elling, race...",
+    "textLength": 11260,
+    "timestamp": "2026-02-06T08:48:00.884Z"
+  },
+  {
+    "reviewId": "our-town-2024/nyt-theater--unknown.json",
+    "showId": "our-town-2024",
+    "outlet": "New York Theater",
+    "critic": "Unknown",
+    "url": "https://newyorktheater.me/2024/10/17/our-town-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): wicked, the cottage, the audience, hair, once...",
+    "textLength": 8847,
+    "timestamp": "2026-02-06T08:50:51.458Z"
   }
 ]
