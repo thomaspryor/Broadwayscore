@@ -329,7 +329,13 @@ Each file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 
 **Quality flags:** `wrongProduction`, `wrongShow`, `isRoundupArticle` — excluded from reviews.json.
 
-**Wrong-production prevention (3 layers):** (1) `production-verifier.js` checks date/text in gather-reviews, (2) `isNotBroadway()` streaming/TV filter in playbill-verdict, (3) cross-production URL dedup via global URL index.
+**Wrong-production prevention (4 layers):**
+1. **Scraper-level:** Year param + preview skip in gather-reviews.js, scrape-playbill-verdict.js, scrape-bww-reviews.js
+2. **Write-time:** 30-day date guard in gather-reviews.js; `isNotBroadway()` streaming/TV filter; cross-production URL dedup
+3. **Rebuild-time** (`rebuild-all-reviews.js`): 30-day date guard + `multiProdDirectorGuard` — pre-computed map for multi-production show groups. Reviews in older dirs mentioning newer production's director = auto-skipped. `allowEarlyDate: true` on source file bypasses date guard.
+4. **Automated audit:** `audit-wrong-production.js` runs report-only in `rebuild-reviews.yml` after every rebuild
+
+**Pre-Broadway/transfer reviews excluded by design** — out-of-town tryouts, off-Broadway transfers, and venue transfers are filtered by the 30-day date guard. These are not Broadway reviews.
 
 **Review-text dirs use versioned show IDs** from shows.json (e.g., `bug-2026/`, not `bug/`).
 

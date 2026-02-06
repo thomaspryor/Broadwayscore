@@ -92,11 +92,13 @@ For each comment, determine:
    IMPORTANT: If comment discusses a different show BY NAME, mark not relevant. But if it says "I saw it" or "the show" without naming another show, assume it's about "${showTitle}".
 
 2. sentiment (only if is_relevant is true):
-   - enthusiastic: Strong positive (amazing, incredible, must-see, 10/10)
-   - positive: Generally liked it (enjoyed, good, recommend)
-   - mixed: Both good and bad aspects
-   - negative: Disappointed, boring, wouldn't recommend
-   - neutral: Mentioned seeing it but no clear opinion
+   - enthusiastic: Strong positive - superlatives like amazing, incredible, best, 10/10, life-changing, cried happy tears
+   - positive: Liked it - enjoyed, good, fun, recommend, worth seeing, glad I went, seeing it again, taking friends/family
+   - mixed: Explicitly mentions both good AND bad aspects in the same comment
+   - negative: Disappointed, boring, not worth it, wouldn't recommend, waste of money, walked out
+   - neutral: ONLY if truly no opinion expressed (rare) - just factual statements with zero sentiment
+
+   NOTE: If someone says "saw it twice" or "going back" or "taking my mom", that implies POSITIVE sentiment - they wouldn't return if they didn't like it. Don't mark these neutral.
 ${schemaNote}
 Comments to classify:
 ${formatted}
