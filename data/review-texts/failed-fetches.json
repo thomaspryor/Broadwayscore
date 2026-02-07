@@ -10360,18 +10360,6 @@
     "timestamp": "2026-02-04T15:33:45.324Z"
   },
   {
-    "reviewId": "how-i-learned-to-drive-2022/nytimes--maya-phillips.json",
-    "showId": "how-i-learned-to-drive-2022",
-    "outlet": "New York Times",
-    "critic": "Maya Phillips",
-    "url": "https://www.nytimes.com/2022/04/19/theater/how-i-learned-to-drive-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, summer, the audience, all the way, hair...",
-    "textLength": 7712,
-    "timestamp": "2026-02-04T15:52:31.241Z"
-  },
-  {
     "reviewId": "how-i-learned-to-drive-2022/vulture--helen-shaw.json",
     "showId": "how-i-learned-to-drive-2022",
     "outlet": "Vulture",
@@ -20176,78 +20164,6 @@
     "timestamp": "2026-02-07T07:38:37.827Z"
   },
   {
-    "reviewId": "honeymoon-in-vegas-2015/hollywood-reporter--david-rooney.json",
-    "showId": "honeymoon-in-vegas-2015",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/tony-danza-honeymoon-vegas-theater-764133",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): the last five years, tina, the present, bandstand, the audience...",
-    "textLength": 7662,
-    "timestamp": "2026-02-07T07:38:54.261Z"
-  },
-  {
-    "reviewId": "honeymoon-in-vegas-2015/hollywood-reporter--unknown.json",
-    "showId": "honeymoon-in-vegas-2015",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/tony-danza-honeymoon-vegas-theater-764133",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): mamma mia!, the last five years, tina, the present, bandstand...",
-    "textLength": 8119,
-    "timestamp": "2026-02-07T07:39:26.828Z"
-  },
-  {
-    "reviewId": "honeymoon-in-vegas-2015/nytimes--ben-brantley.json",
-    "showId": "honeymoon-in-vegas-2015",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "http://www.nytimes.com/2015/01/16/theater/honeymoon-in-vegas-with-tony-danza-opens-on-broadway.html?partner=rss&emc=rss&_r=0",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (5): frozen, rain, high, race, well",
-    "textLength": 2230,
-    "timestamp": "2026-02-07T07:39:35.754Z"
-  },
-  {
-    "reviewId": "honeymoon-in-vegas-2015/nytimes--unknown.json",
-    "showId": "honeymoon-in-vegas-2015",
-    "outlet": "The New York Times",
-    "critic": "Unknown",
-    "url": "http://www.nytimes.com/2015/01/16/theater/honeymoon-in-vegas-with-tony-danza-opens-on-broadway.html?_r=0",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (5): frozen, rain, high, race, well",
-    "textLength": 2230,
-    "timestamp": "2026-02-07T07:39:39.086Z"
-  },
-  {
-    "reviewId": "honeymoon-in-vegas-2015/variety--marilyn-stasio.json",
-    "showId": "honeymoon-in-vegas-2015",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2015/legit/reviews/honeymoon-in-vegas-review-1201414814/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): rocky, chaplin, hair, once, rain...",
-    "textLength": 4927,
-    "timestamp": "2026-02-07T07:39:56.829Z"
-  },
-  {
-    "reviewId": "honeymoon-in-vegas-2015/vulture--jesse-green.json",
-    "showId": "honeymoon-in-vegas-2015",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "http://www.vulture.com/2015/01/theater-review-honeymoon-in-vegas.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): parade, tina, summer, eclipsed, the bridges of madison county...",
-    "textLength": 9419,
-    "timestamp": "2026-02-07T07:40:02.985Z"
-  },
-  {
     "reviewId": "hughie-2016/newyorker--hilton-als.json",
     "showId": "hughie-2016",
     "outlet": "The New Yorker",
@@ -24122,5 +24038,89 @@
     "garbageReason": "Multiple shows mentioned (11): home, dead outlaw, tina, the prom, frozen...",
     "textLength": 9975,
     "timestamp": "2026-02-07T13:13:57.807Z"
+  },
+  {
+    "reviewId": "honeymoon-in-vegas-2015/hollywood-reporter--david-rooney.json",
+    "showId": "honeymoon-in-vegas-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/tony-danza-honeymoon-vegas-theater-764133",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): mamma mia!, the last five years, tina, the present, bandstand...",
+    "textLength": 8119,
+    "timestamp": "2026-02-07T13:18:50.051Z"
+  },
+  {
+    "reviewId": "honeymoon-in-vegas-2015/hollywood-reporter--unknown.json",
+    "showId": "honeymoon-in-vegas-2015",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/tony-danza-honeymoon-vegas-theater-764133",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): mamma mia!, the last five years, tina, the present, bandstand...",
+    "textLength": 8119,
+    "timestamp": "2026-02-07T13:19:09.408Z"
+  },
+  {
+    "reviewId": "honeymoon-in-vegas-2015/nytimes--ben-brantley.json",
+    "showId": "honeymoon-in-vegas-2015",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "http://www.nytimes.com/2015/01/16/theater/honeymoon-in-vegas-with-tony-danza-opens-on-broadway.html?partner=rss&emc=rss&_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): parade, frozen, the bridges of madison county, chaplin, rain...",
+    "textLength": 7020,
+    "timestamp": "2026-02-07T13:19:23.666Z"
+  },
+  {
+    "reviewId": "honeymoon-in-vegas-2015/nytimes--unknown.json",
+    "showId": "honeymoon-in-vegas-2015",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2015/01/16/theater/honeymoon-in-vegas-with-tony-danza-opens-on-broadway.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): frozen, rain, high, race, well",
+    "textLength": 2230,
+    "timestamp": "2026-02-07T13:19:27.730Z"
+  },
+  {
+    "reviewId": "honeymoon-in-vegas-2015/variety--marilyn-stasio.json",
+    "showId": "honeymoon-in-vegas-2015",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2015/legit/reviews/honeymoon-in-vegas-review-1201414814/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): rocky, chaplin, hair, once, rain...",
+    "textLength": 5013,
+    "timestamp": "2026-02-07T13:19:53.729Z"
+  },
+  {
+    "reviewId": "honeymoon-in-vegas-2015/vulture--jesse-green.json",
+    "showId": "honeymoon-in-vegas-2015",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2015/01/theater-review-honeymoon-in-vegas.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): parade, tina, summer, eclipsed, the bridges of madison county...",
+    "textLength": 9419,
+    "timestamp": "2026-02-07T13:19:58.048Z"
+  },
+  {
+    "reviewId": "how-i-learned-to-drive-2022/nytimes--maya-phillips.json",
+    "showId": "how-i-learned-to-drive-2022",
+    "outlet": "The New York Times",
+    "critic": "Maya Phillips",
+    "url": "https://www.nytimes.com/2022/04/19/theater/how-i-learned-to-drive-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, summer, the audience, all the way, hair...",
+    "textLength": 7712,
+    "timestamp": "2026-02-07T13:20:03.256Z"
   }
 ]
