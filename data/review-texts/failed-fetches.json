@@ -15436,18 +15436,6 @@
     "timestamp": "2026-02-06T08:18:21.011Z"
   },
   {
-    "reviewId": "november-2008/nytimes--ben-brantley.json",
-    "showId": "november-2008",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2008/01/18/theater/reviews/18nove.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): glengarry glen ross, company, the audience, glengarry glen ross, once...",
-    "textLength": 7751,
-    "timestamp": "2026-02-06T08:21:25.970Z"
-  },
-  {
     "reviewId": "motown-the-musical-2016/hollywood-reporter--frank-scheck.json",
     "showId": "motown-the-musical-2016",
     "outlet": "The Hollywood Reporter",
@@ -24374,5 +24362,101 @@
     "garbageReason": "Multiple shows mentioned (7): home, the audience, lucky guy, rain, elling...",
     "textLength": 7574,
     "timestamp": "2026-02-07T14:20:28.194Z"
+  },
+  {
+    "reviewId": "noises-off-2016/variety--marilyn-stasio.json",
+    "showId": "noises-off-2016",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2016/legit/reviews/noises-off-review-broadway-1201700876/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): home, company, the price, misery, the performers...",
+    "textLength": 6616,
+    "timestamp": "2026-02-07T14:23:32.724Z"
+  },
+  {
+    "reviewId": "noises-off-2016/vulture--unknown.json",
+    "showId": "noises-off-2016",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2016/01/theater-review-a-near-perfect-noises-off.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): home, english, company, heisenberg, act one...",
+    "textLength": 9283,
+    "timestamp": "2026-02-07T14:23:38.209Z"
+  },
+  {
+    "reviewId": "november-2008/nytimes--ben-brantley.json",
+    "showId": "november-2008",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2008/01/18/theater/reviews/18nove.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): glengarry glen ross, company, the audience, glengarry glen ross, once...",
+    "textLength": 7751,
+    "timestamp": "2026-02-07T14:23:41.911Z"
+  },
+  {
+    "reviewId": "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "showId": "oh-mary-2024",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): oh, mary!, appropriate, home, company, network...",
+    "textLength": 6936,
+    "timestamp": "2026-02-07T14:23:44.926Z"
+  },
+  {
+    "reviewId": "oh-mary-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "oh-mary-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): oh, mary!, the audience, cabaret, evita, november...",
+    "textLength": 5469,
+    "timestamp": "2026-02-07T14:26:04.512Z"
+  },
+  {
+    "reviewId": "oh-mary-2024/nytimes--jesse-green.json",
+    "showId": "oh-mary-2024",
+    "outlet": "The New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): oh, mary!, appropriate, summer, cabaret, once...",
+    "textLength": 6205,
+    "timestamp": "2026-02-07T14:26:16.173Z"
+  },
+  {
+    "reviewId": "oh-mary-2024/variety--christian-lewis.json",
+    "showId": "oh-mary-2024",
+    "outlet": "Variety",
+    "critic": "Christian Lewis",
+    "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): oh, mary!, proof, purpose, the audience, cabaret...",
+    "textLength": 7837,
+    "timestamp": "2026-02-07T14:26:31.920Z"
+  },
+  {
+    "reviewId": "oh-mary-2024/vulture--jackson-mchenry.json",
+    "showId": "oh-mary-2024",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): oh, mary!, here lies love, the music man, the audience, cabaret...",
+    "textLength": 7620,
+    "timestamp": "2026-02-07T14:28:05.186Z"
   }
 ]
