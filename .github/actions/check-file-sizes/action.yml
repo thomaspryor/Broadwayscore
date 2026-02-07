@@ -13,6 +13,7 @@ runs:
           ! -name 'master-review-list.json' \
           ! -name 'llm-scoring-runs.json' \
           ! -name 'llm-scoring-garbage-skips.json' \
+          ! -name 'reviews.json' \
           ! -name '*.html' \
           2>/dev/null || true)
         if [ -n "$LARGE" ]; then
