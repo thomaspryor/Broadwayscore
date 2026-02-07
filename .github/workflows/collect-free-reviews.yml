@@ -95,14 +95,15 @@ jobs:
             console.log(JSON.stringify({ total, showCount: Object.keys(showCounts).length }));
             fs.writeFileSync('/tmp/show-counts.json', JSON.stringify(showCounts));
           "
-          TOTAL=$(node -e "console.log(JSON.parse(require('fs').readFileSync('/tmp/show-counts.json','utf8')).total || Object.values(JSON.parse(require('fs').readFileSync('/tmp/show-counts.json','utf8'))).reduce((a,b)=>a+b,0))" 2>/dev/null || echo "0")
+          TOTAL=$(node -e "const c=JSON.parse(require('fs').readFileSync('/tmp/show-counts.json','utf8'));console.log(Object.values(c).reduce((a,b)=>a+b,0))")
           echo "total=$TOTAL" >> $GITHUB_OUTPUT
           echo "Eligible free-outlet reviews: $TOTAL"
 
       - name: Build partition matrix
         id: partition
+        env:
+          JOBS: ${{ inputs.parallel_jobs }}
         run: |
-          JOBS=${{ inputs.parallel_jobs }}
           node -e "
             const fs = require('fs');
             const counts = JSON.parse(fs.readFileSync('/tmp/show-counts.json', 'utf8'));
@@ -120,7 +121,7 @@ jobs:
               .map((p, i) => ({ partition: i + 1, shows: p.shows.join(','), review_count: p.count }));
             console.log(JSON.stringify(matrix));
             fs.writeFileSync('/tmp/matrix.json', JSON.stringify(matrix));
-          " JOBS=$JOBS
+          "
           MATRIX=$(cat /tmp/matrix.json)
           echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
           echo "Partitions: $MATRIX"
