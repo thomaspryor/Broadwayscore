@@ -16612,18 +16612,6 @@
     "timestamp": "2026-02-06T15:41:01.266Z"
   },
   {
-    "reviewId": "elling-2010/vulture--scott-brown.json",
-    "showId": "elling-2010",
-    "outlet": "New York Magazine",
-    "critic": "Scott Brown",
-    "url": "http://nymag.com/daily/entertainment/2010/11/theater_review_the_low-key_ple.html",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): english, take me out, oslo, the father, of mice and men...",
-    "textLength": 6559,
-    "timestamp": "2026-02-06T15:45:28.306Z"
-  },
-  {
     "reviewId": "fish-in-the-dark-2015/hollywood-reporter--david-rooney.json",
     "showId": "fish-in-the-dark-2015",
     "outlet": "The Hollywood Reporter",
@@ -20078,78 +20066,6 @@
     "garbageReason": "Multiple shows mentioned (7): the prom, the children, mean girls, the audience, rain...",
     "textLength": 5277,
     "timestamp": "2026-02-07T07:12:19.833Z"
-  },
-  {
-    "reviewId": "elf-2024/variety--unknown.json",
-    "showId": "elf-2024",
-    "outlet": "Variety",
-    "critic": "Unknown",
-    "url": "http://variety.com/2014/tv/reviews/tv-review-elf-buddys-musical-christmas-1201376770/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (5): smash, evita, elling, well, rent",
-    "textLength": 2243,
-    "timestamp": "2026-02-07T07:12:34.143Z"
-  },
-  {
-    "reviewId": "elf-2024/vulture--jackson-mchenry.json",
-    "showId": "elf-2024",
-    "outlet": "Vulture",
-    "critic": "Jackson McHenry",
-    "url": "https://www.vulture.com/article/theater-review-elf-musical-broadway-return.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): wicked, the lion king, aladdin, giant, shucked...",
-    "textLength": 6121,
-    "timestamp": "2026-02-07T07:12:39.290Z"
-  },
-  {
-    "reviewId": "escape-to-margaritaville-2018/hollywood-reporter--frank-scheck.json",
-    "showId": "escape-to-margaritaville-2018",
-    "outlet": "The Hollywood Reporter",
-    "critic": "Frank Scheck",
-    "url": "https://www.hollywoodreporter.com/review/escape-margaritaville-theater-review-1094721",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): home, network, frozen, come from away, bright star...",
-    "textLength": 6603,
-    "timestamp": "2026-02-07T07:12:56.595Z"
-  },
-  {
-    "reviewId": "escape-to-margaritaville-2018/nytimes--unknown.json",
-    "showId": "escape-to-margaritaville-2018",
-    "outlet": "The New York Times",
-    "critic": "Unknown",
-    "url": "https://www.nytimes.com/2018/03/15/theater/escape-to-margaritaville-review-jimmy-buffett-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): home, frozen, cats, the audience, hair...",
-    "textLength": 6334,
-    "timestamp": "2026-02-07T07:16:02.415Z"
-  },
-  {
-    "reviewId": "escape-to-margaritaville-2018/variety--marilyn-stasio.json",
-    "showId": "escape-to-margaritaville-2018",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2018/legit/reviews/escape-to-margaritaville-review-1202740963/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): chicago, home, spongebob squarepants, bright star, once...",
-    "textLength": 5006,
-    "timestamp": "2026-02-07T07:16:22.225Z"
-  },
-  {
-    "reviewId": "escape-to-margaritaville-2018/vulture--sara-holdren.json",
-    "showId": "escape-to-margaritaville-2018",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "http://www.vulture.com/2018/03/theater-review-when-margaritaville-comes-to-times-square.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): giant, home, purpose, head over heels, network...",
-    "textLength": 9486,
-    "timestamp": "2026-02-07T07:18:02.567Z"
   },
   {
     "reviewId": "eureka-day-2024/nyt-theater--jonathan-mandell.json",
@@ -24050,5 +23966,101 @@
     "garbageReason": "Multiple shows mentioned (7): home, network, an american in paris, once, rain...",
     "textLength": 6405,
     "timestamp": "2026-02-07T12:50:17.239Z"
+  },
+  {
+    "reviewId": "elf-2024/variety--unknown.json",
+    "showId": "elf-2024",
+    "outlet": "Variety",
+    "critic": "Unknown",
+    "url": "http://variety.com/2014/tv/reviews/tv-review-elf-buddys-musical-christmas-1201376770/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): smash, evita, elling, well, rent",
+    "textLength": 2573,
+    "timestamp": "2026-02-07T12:53:55.162Z"
+  },
+  {
+    "reviewId": "elf-2024/vulture--jackson-mchenry.json",
+    "showId": "elf-2024",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/article/theater-review-elf-musical-broadway-return.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): wicked, the lion king, aladdin, giant, shucked...",
+    "textLength": 6121,
+    "timestamp": "2026-02-07T12:53:59.522Z"
+  },
+  {
+    "reviewId": "elling-2010/nytimes--charles-isherwood.json",
+    "showId": "elling-2010",
+    "outlet": "The New York Times",
+    "critic": "Charles Isherwood",
+    "url": "https://www.nytimes.com/2010/11/22/theater/reviews/22elling.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): home, english, take me out, company, oslo...",
+    "textLength": 7542,
+    "timestamp": "2026-02-07T12:54:03.432Z"
+  },
+  {
+    "reviewId": "elling-2010/vulture--scott-brown.json",
+    "showId": "elling-2010",
+    "outlet": "New York Magazine",
+    "critic": "Scott Brown",
+    "url": "http://nymag.com/daily/entertainment/2010/11/theater_review_the_low-key_ple.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): english, take me out, oslo, the father, of mice and men...",
+    "textLength": 5771,
+    "timestamp": "2026-02-07T12:54:06.898Z"
+  },
+  {
+    "reviewId": "escape-to-margaritaville-2018/hollywood-reporter--frank-scheck.json",
+    "showId": "escape-to-margaritaville-2018",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "https://www.hollywoodreporter.com/review/escape-margaritaville-theater-review-1094721",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): home, network, frozen, come from away, bright star...",
+    "textLength": 6603,
+    "timestamp": "2026-02-07T12:54:22.188Z"
+  },
+  {
+    "reviewId": "escape-to-margaritaville-2018/nytimes--unknown.json",
+    "showId": "escape-to-margaritaville-2018",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2018/03/15/theater/escape-to-margaritaville-review-jimmy-buffett-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): home, frozen, cats, the audience, hair...",
+    "textLength": 6334,
+    "timestamp": "2026-02-07T12:55:34.330Z"
+  },
+  {
+    "reviewId": "escape-to-margaritaville-2018/variety--marilyn-stasio.json",
+    "showId": "escape-to-margaritaville-2018",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2018/legit/reviews/escape-to-margaritaville-review-1202740963/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, home, spongebob squarepants, bright star, once...",
+    "textLength": 5284,
+    "timestamp": "2026-02-07T12:56:09.144Z"
+  },
+  {
+    "reviewId": "escape-to-margaritaville-2018/vulture--sara-holdren.json",
+    "showId": "escape-to-margaritaville-2018",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "http://www.vulture.com/2018/03/theater-review-when-margaritaville-comes-to-times-square.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): giant, home, purpose, head over heels, network...",
+    "textLength": 9486,
+    "timestamp": "2026-02-07T12:57:55.840Z"
   }
 ]
