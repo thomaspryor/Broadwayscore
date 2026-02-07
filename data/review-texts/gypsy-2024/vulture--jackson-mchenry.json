@@ -3,9 +3,9 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jackson McHenry",
-  "url": "https://www.vulture.com/article/gypsy-broadway-review-audra-mcdonald.html",
+  "url": "https://www.vulture.com/article/theater-review-audra-mcdonald-gypsy-momma-rose.html",
   "publishDate": "December 20, 2024",
-  "fullText": "McDonald's Rose is a master class in controlled intensity, building from charming manipulator to desperate monster with such precision that you barely notice the transformation until it's complete.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "McDonald's Rose is a master class in controlled intensity, building from charming manipulator to desperate monster with such precision that you barely notice the transformation until it's complete.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "McDonald's Rose is a master class in controlled intensity, building from charming manipulator to desperate monster with such precision that you barely notice the transformation until it's complete.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
     "score": 82,
@@ -76,5 +76,45 @@
   "sources": [
     "web-search",
     "nyc-theatre"
-  ]
+  ],
+  "previousUrl": "https://www.vulture.com/article/gypsy-broadway-review-audra-mcdonald.html",
+  "urlDiscoveredAt": "2026-02-07T13:15:44.921Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/gypsy-2024/vulture--jackson-mchenry_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T13:15:44.928Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }
