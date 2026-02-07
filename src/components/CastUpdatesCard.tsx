@@ -67,6 +67,31 @@ function formatEventDate(dateStr: string): string {
   return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
 
+function formatDateRanges(dates: string[]): string {
+  if (dates.length === 0) return '';
+  if (dates.length === 1) return formatEventDate(dates[0]);
+  const sorted = [...dates].sort();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const groups: string[][] = [[sorted[0]]];
+  for (let i = 1; i < sorted.length; i++) {
+    const prev = new Date(sorted[i - 1]);
+    const curr = new Date(sorted[i]);
+    if ((curr.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24) <= 1.5) {
+      groups[groups.length - 1].push(sorted[i]);
+    } else {
+      groups.push([sorted[i]]);
+    }
+  }
+  return groups.map(group => {
+    if (group.length === 1) return formatEventDate(group[0]);
+    const s = new Date(group[0]), e = new Date(group[group.length - 1]);
+    if (s.getUTCFullYear() === e.getUTCFullYear() && s.getUTCMonth() === e.getUTCMonth()) {
+      return `${months[s.getUTCMonth()]} ${s.getUTCDate()}\u2013${e.getUTCDate()}, ${s.getUTCFullYear()}`;
+    }
+    return `${formatEventDate(group[0])} \u2013 ${formatEventDate(group[group.length - 1])}`;
+  }).join(', ');
+}
+
 function getEventConfig(event: CastEvent): {
   colorClass: string;
   bgClass: string;
@@ -143,7 +168,7 @@ function CastEventRow({ event }: { event: CastEvent }) {
               </span>
             )}
             {event.dates && event.dates.length > 0 && (
-              <span>{event.dates.map(formatEventDate).join(', ')}</span>
+              <span>{formatDateRanges(event.dates)}</span>
             )}
           </div>
 
