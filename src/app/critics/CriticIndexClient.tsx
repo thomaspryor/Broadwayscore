@@ -32,7 +32,7 @@ function CriticCard({ critic }: { critic: CriticSummary }) {
   return (
     <Link
       href={`/critics/${critic.slug}`}
-      className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-raised/80 transition-colors group"
+      className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group"
     >
       {/* Avatar */}
       <div className="w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
@@ -43,28 +43,26 @@ function CriticCard({ critic }: { critic: CriticSummary }) {
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 flex-wrap">
-          <h2 className="font-bold text-white group-hover:text-brand transition-colors truncate text-sm sm:text-base">
-            {critic.name}
-          </h2>
+        <h2 className="font-bold text-white group-hover:text-brand transition-colors truncate text-sm sm:text-base">
+          {critic.name}
           {critic.isFreelancer && (
-            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-purple-500/20 text-purple-400 border-purple-500/30">
+            <span className="ml-2 text-[10px] font-medium px-1.5 py-0.5 rounded border bg-purple-500/20 text-purple-400 border-purple-500/30 align-middle">
               Freelancer
             </span>
           )}
-        </div>
-        <p className="text-gray-400 text-xs sm:text-sm truncate">
+        </h2>
+        <p className="text-gray-500 text-xs sm:text-sm truncate mt-0.5">
           {critic.outlets.join(' · ')}
         </p>
       </div>
 
       {/* Reviews count */}
-      <div className="w-14 text-right flex-shrink-0">
+      <div className="w-12 sm:w-14 text-center flex-shrink-0">
         <p className="text-lg font-bold text-white">{critic.reviewCount}</p>
       </div>
 
       {/* Avg Score */}
-      <div className="w-11 flex-shrink-0">
+      <div className="w-10 flex-shrink-0">
         <div className={`w-10 h-10 text-sm rounded-lg ${getScoreClass(critic.avgScore)} flex items-center justify-center font-bold`}>
           {Math.round(critic.avgScore)}
         </div>
@@ -160,13 +158,13 @@ export default function CriticIndexClient({ critics, totalReviews }: { critics: 
       </div>
 
       {/* Column Headers */}
-      <div className="flex items-center gap-3 px-3 sm:px-4 mb-2" role="row" aria-label="Column headers">
+      <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2" role="row" aria-label="Column headers">
         <div className="w-10 flex-shrink-0" />
         <div className="flex-1 min-w-0" />
-        <div className="w-14 text-right flex-shrink-0">
+        <div className="w-12 sm:w-14 text-center flex-shrink-0">
           <span role="columnheader" className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Reviews</span>
         </div>
-        <div className="w-11 flex-shrink-0">
+        <div className="w-10 text-center flex-shrink-0">
           <span role="columnheader" className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Avg</span>
         </div>
       </div>
