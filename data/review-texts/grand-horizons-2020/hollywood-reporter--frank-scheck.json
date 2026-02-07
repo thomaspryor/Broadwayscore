@@ -15,8 +15,8 @@
   "isFullReview": true,
   "textWordCount": 772,
   "archivePath": "data/archives/reviews/grand-horizons-2020/hollywood-reporter--frank-scheck_2026-02-07.html",
-  "textFetchedAt": "2026-02-07T07:46:08.127Z",
-  "fetchMethod": "scrapingbee",
+  "textFetchedAt": "2026-02-07T13:00:30.129Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
@@ -27,16 +27,22 @@
     {
       "tier": 2,
       "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 2,
+  "fetchTier": 3,
   "textQuality": "truncated",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee",
+  "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 772,
   "tierReason": "Full review text",
