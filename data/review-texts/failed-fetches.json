@@ -11776,18 +11776,6 @@
     "timestamp": "2026-02-05T03:34:12.546Z"
   },
   {
-    "reviewId": "mike-birbiglia-the-old-man-and-the-pool-2022/nyt-theater--jonathan-mandell.json",
-    "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2022/11/13/review-mike-birbiglia-the-old-man-the-pool/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): proof, home, kimberly akimbo, shucked, mean girls...",
-    "textLength": 5946,
-    "timestamp": "2026-02-05T03:34:20.099Z"
-  },
-  {
     "reviewId": "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--elisabeth-vincentelli.json",
     "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
     "outlet": "New York Times",
@@ -11966,18 +11954,6 @@
     "garbageReason": "Multiple article boundaries detected (3)",
     "textLength": 5821,
     "timestamp": "2026-02-05T04:13:21.681Z"
-  },
-  {
-    "reviewId": "mamma-mia-2025/nytimes--elisabeth-vincentelli.json",
-    "showId": "mamma-mia-2025",
-    "outlet": "The New York Times",
-    "critic": "Elisabeth Vincentelli",
-    "url": "https://www.nytimes.com/2025/08/15/theater/abba-mamma-mia-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): wicked, & juliet, chess, appropriate, beetlejuice...",
-    "textLength": 6692,
-    "timestamp": "2026-02-05T04:17:32.423Z"
   },
   {
     "reviewId": "pal-joey-2008/nytimes--ben-brantley.json",
@@ -22826,5 +22802,89 @@
     "garbageReason": "Multiple shows mentioned (9): king lear, carousel, disgraced, rain, elling...",
     "textLength": 5615,
     "timestamp": "2026-02-07T08:14:43.053Z"
+  },
+  {
+    "reviewId": "macbeth-2013/nytg--joe-dziemianowicz.json",
+    "showId": "macbeth-2013",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/macbeth-broadway-review-daniel-craig-ruth-negga",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): hadestown, othello, company, king lear, the audience...",
+    "textLength": 3790,
+    "timestamp": "2026-02-07T08:16:16.074Z"
+  },
+  {
+    "reviewId": "macbeth-2013/nytimes--charles-isherwood.json",
+    "showId": "macbeth-2013",
+    "outlet": "The New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://theater.nytimes.com/2013/04/22/theater/reviews/macbeth-with-alan-cumming-at-the-barrymore-theater.html?ref=arts",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): summer, sweat, the audience, cabaret, hair...",
+    "textLength": 6684,
+    "timestamp": "2026-02-07T08:19:09.636Z"
+  },
+  {
+    "reviewId": "mamma-mia-2025/nytimes--elisabeth-vincentelli.json",
+    "showId": "mamma-mia-2025",
+    "outlet": "The New York Times",
+    "critic": "Elisabeth Vincentelli",
+    "url": "https://www.nytimes.com/2025/08/15/theater/abba-mamma-mia-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): wicked, & juliet, chess, appropriate, beetlejuice...",
+    "textLength": 6692,
+    "timestamp": "2026-02-07T08:22:15.274Z"
+  },
+  {
+    "reviewId": "mary-jane-2024/hollywood-reporter--david-rooney.json",
+    "showId": "mary-jane-2024",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/mary-jane-review-rachel-mcadams-broadway-debut-1235879665/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): cabaret at the kit kat club, the notebook, home, mean girls, cabaret...",
+    "textLength": 5307,
+    "timestamp": "2026-02-07T08:22:56.731Z"
+  },
+  {
+    "reviewId": "mary-jane-2024/hollywood-reporter--lovia-gyarkye.json",
+    "showId": "mary-jane-2024",
+    "outlet": "Hollywood Reporter",
+    "critic": "Lovia Gyarkye",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/mary-jane-review-rachel-mcadams-broadway-debut-1235879665/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): mamma mia!, the notebook, home, mean girls, annie...",
+    "textLength": 5281,
+    "timestamp": "2026-02-07T08:23:12.144Z"
+  },
+  {
+    "reviewId": "mary-jane-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "mary-jane-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/04/28/mary-jane-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): the notebook, home, mean girls, hair, rain...",
+    "textLength": 7322,
+    "timestamp": "2026-02-07T08:23:18.764Z"
+  },
+  {
+    "reviewId": "mike-birbiglia-the-old-man-and-the-pool-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/11/13/review-mike-birbiglia-the-old-man-the-pool/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): proof, home, kimberly akimbo, shucked, mean girls...",
+    "textLength": 5946,
+    "timestamp": "2026-02-07T08:23:26.003Z"
   }
 ]
