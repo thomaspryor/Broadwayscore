@@ -11,7 +11,7 @@
   ],
   "bwwExcerpt": "In the electric revival that opened on Thursday at Circle in the Square, Teach is embodied with coiled and then terrifyingly uncoiled ferocity by Sam Rockwell, making a great occasion of a great role. When he first skitters into the junk shop run by his poker buddy Don - Laurence Fishburne in a beautifully considered performance - he's already seething about a petty insult and stalking the joint like a rat-peacock hybrid. By the time he inserts himself into a heist Don is planning with his dim y",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "assignedScore": 82,
   "llmScore": {
     "score": 82,
@@ -67,5 +67,36 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
   },
-  "playbillVerdictUrl": "https://www.nytimes.com/2022/04/14/theater/american-buffalo-review.html"
+  "playbillVerdictUrl": "https://www.nytimes.com/2022/04/14/theater/american-buffalo-review.html",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "fullText": "On Sunday’s edition of the Fox News show “Life, Liberty & Levin,” David Mamet, the playwright turned Trumpite culture warrior, made an incendiary comment.\n\n“Teachers are inclined, particularly men because men are predators, to pedophilia,” he said, citing no evidence. “If there’s no community control of the schools, what we have is kids being not only indoctrinated but groomed.”\n\nIt was not a traditional way of publicizing the Broadway revival of one of your best plays, but perhaps Mamet was thinking not of teachers per se but of a character called Teach. In “American Buffalo,” Teach is a thug prone to crackpot theories, bordering on paranoia, about his friends and associates and human nature in general.\n\nIn the electric revival that opened on Thursday at Circle in the Square, Teach is embodied with coiled and then terrifyingly uncoiled ferocity by Sam Rockwell, making a great occasion of a great role. When he first skitters into the junk shop run by his poker buddy Don — Laurence Fishburne in a beautifully considered performance — he’s already seething about a petty insult and stalking the joint like a rat-peacock hybrid. By the time he inserts himself into a heist Don is planning with his dim young gofer and protégé, Bobby, played by the angelic if underpowered Darren Criss, he is so hopped up on delusions of profit that he endangers the operation he means to abet.\n\nWhen “American Buffalo” first hit the stage, in Chicago in 1975, its portrait of lowlifes like Teach — two-bit grifters aping the realpolitik of American business — was a game changer. Though it did not quite induce sympathy for a man who would strike a kid in the face with an iron, it did make audiences queasy about the respectable entrepreneurs whose behavior Teach was translating to his own turf. In language as crass and cadenced as gunfire, Mamet turned their man-eat-man philosophy, which some call capitalism, into brutal prole poetry: a poetry of predation, you might even say.\n\nTo see “American Buffalo” now, in a time when everyone seems to talk like Teach, is to be unsurprised — and thus, in a way, more harrowed. What could be more terrible than to realize we’ve acclimated to the ideas the play introduced?\n\nJesse Green is the chief theater critic. Before joining The Times in 2017, he was the theater critic for New York magazine and a contributing editor. He is the author of a novel, “O Beautiful,” and a memoir, “The Velveteen Father.”",
+  "isFullReview": true,
+  "textWordCount": 417,
+  "archivePath": "data/archives/reviews/american-buffalo-2008/nytimes--jesse-green_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T05:33:43.534Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 417,
+  "tierReason": "Missing proper ending or other signals"
 }

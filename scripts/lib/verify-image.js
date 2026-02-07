@@ -235,9 +235,17 @@ async function verifyImage(imageInput, showTitle, options = {}) {
     imageData = imageInput;
     mimeType = options.mimeType || 'image/jpeg';
   } else if (typeof imageInput === 'string') {
-    // URL — download first
+    // URL — download first (strip query params that can break Gemini's image download)
+    let fetchUrl = imageInput;
     try {
-      const resp = await fetch(imageInput, {
+      const parsed = new URL(imageInput);
+      if (parsed.search) {
+        fetchUrl = parsed.origin + parsed.pathname;
+      }
+    } catch { /* use original URL if parsing fails */ }
+
+    try {
+      const resp = await fetch(fetchUrl, {
         signal: AbortSignal.timeout(15000),
         headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' },
       });

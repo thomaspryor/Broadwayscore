@@ -34,46 +34,22 @@
   "urlDiscoveredAt": "2026-02-03T23:25:16.348Z",
   "urlDiscoveryMethod": "google-serp",
   "textWordCount": 894,
-  "archivePath": "data/archives/reviews/blackbird-2016/hollywood-reporter--david-rooney_2026-02-06.html",
-  "textFetchedAt": "2026-02-06T15:16:09.075Z",
-  "fetchMethod": "brightdata",
+  "archivePath": "data/archives/reviews/blackbird-2016/hollywood-reporter--david-rooney_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T06:02:18.999Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "timeout of 60000ms exceeded"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 4,
   "truncationSignals": [
     "no_ending_punctuation"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251119132230",
   "archiveOrgUrl": "http://web.archive.org/web/20251119132230/https://www.hollywoodreporter.com/news/general-news/jeff-daniels-michelle-williams-blackbird-873962/",
   "wordCount": 894,

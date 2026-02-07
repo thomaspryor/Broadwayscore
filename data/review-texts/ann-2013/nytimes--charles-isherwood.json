@@ -10,7 +10,7 @@
   ],
   "bwwExcerpt": "To put it as the plain-talking Richards might, this one-dynamo show — Ms. Taylor is the lone cast member — is neither a shapely work of drama nor a deeply probing character study. But admirers of Richards probably won’t give a darn. She was a brightly shining political star and an inspiring figure during the years of her renown, and Ms. Taylor is essentially just giving this beloved dame one more chance to bask in the spotlight.",
   "bwwScore": 7,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "assignedScore": 63,
   "llmScore": {
     "score": 63,
@@ -65,5 +65,55 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 63,
+  "fullText": "https://www.nytimes.com/2013/03/08/theater/reviews/ann-with-holland-taylor-at-vivian-beaumont-theater.htmlShare full articleAdvertisement\n\nShe was a memorable figure even before she opened her mouth — that sculptured meringue of hair seemed to enter the room before she did — and an unforgettable one when she opened it, as salty wisecracks poured forth like popcorn from a machine. She was politically as blue as they come, but managed to win the leadership of a state as red-trending as any in the land. She acquired a national political profile without holding national office, and openly discussed her alcoholism before this became a rite of passage for famous figures from across the political spectrum.\n\nUnless you slept through the late 1980s and the 1990s, folks, you probably know by now that I refer to Ann Richards, the onetime governor of Texas, whose life and career are being given a ticker tape parade on the stage of the Vivian Beaumont Theater, where the new Broadway show “Ann,” written by and starring Holland Taylor, opened on Thursday night.\n\nTo put it as the plain-talking Richards might, this one-dynamo show — Ms. Taylor is the lone cast member — is neither a shapely work of drama nor a deeply probing character study. But admirers of Richards probably won’t give a darn. She was a brightly shining political star and an inspiring figure during the years of her renown, and Ms. Taylor is essentially just giving this beloved dame one more chance to bask in the spotlight.\n\nAs a performer, Ms. Taylor also emerges from this two-hour pep rally smelling like a rose (a yellow one, let us say). In a Broadway season sadly deficient, at this late juncture, in impressive leading performances from women (not that notable women’s roles have been thick on the ground), Ms. Taylor’s lively, funny, humane Ann Richards looks mighty formidable, despite the unshaded if colorful writing and the slack direction of Benjamin Endsley Klein.\n\nThe solo format is challenging to negotiate even for seasoned playwrights, of course. Ms. Taylor divides the show into distinct sections: the first half-hour or so consists of a speech Richards is giving at a college graduation in some imaginary “present,” as the program has it. (Richards died in 2006.) The device allows Richards to retail folksy advice to a new generation, but mostly to reminisce about her unlikely path from contentedly domesticated housewife to high-office holder.\n\nHer history runs along well-worn lines that make good bio copy for American politicians to this day: “simple as a crayon drawing,” as Ms. Taylor’s Ann puts it. A Depression-era baby, she was born in rural Texas to a doting father who was “pure sunlight,” and a mother who kept pointing out the clouds in the sky. She skirts smoothly over her divorce from David Richards, a civil rights lawyer whose unwillingness to run for a particular office instigated his wife’s full-ahead plunge into the “contact sport” that is Texas politics. Even her battle with alcoholism is dispatched with a few jokes and a few home truths.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
+  "textWordCount": 521,
+  "archivePath": "data/archives/reviews/ann-2013/nytimes--charles-isherwood_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T05:44:02.550Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 521,
+  "tierReason": "Full review text"
 }

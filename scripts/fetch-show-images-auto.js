@@ -18,7 +18,7 @@
  *
  * No hardcoded IDs - works for any show!
  *
- * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing] [--bad-images]
+ * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images]
  */
 
 const https = require('https');
@@ -31,6 +31,7 @@ const PLAYBILL_URLS_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.jso
 const IBDB_IMAGE_CACHE_PATH = path.join(__dirname, '..', 'data', 'ibdb-image-cache.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
+const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 
 // ============================================================
 // PINNED IMAGES — Manually curated thumbnails, NEVER overwrite
@@ -82,6 +83,17 @@ const PINNED_IMAGES = new Set([
   'wicked-2003',
 ]);
 
+// ============================================================
+// PRE-BROADWAY VENUE SHOWS — Accept venue-branded art for these
+// These shows only have pre-Broadway venue branding available
+// (e.g., Steppenwolf, NYTW). Gemini's "non_broadway" rejection
+// is overridden for listed shows. Add as discovered.
+// ============================================================
+const PRE_BROADWAY_VENUE_SHOWS = new Set([
+  'the-minutes-2022',           // Steppenwolf
+  'august-osage-county-2007',   // Steppenwolf
+]);
+
 // Broadway.org CDN image transforms
 const BROADWAY_ORG_TRANSFORMS = {
   square:    '?width=1080&height=1080&fit=cover&quality=85',
@@ -128,6 +140,74 @@ function fetchViaScrapingBee(url, { premiumProxy = false } = {}) {
       response.on('error', reject);
     }).on('error', reject);
   });
+}
+
+// Fetch a page via Bright Data scraping browser (fallback when ScrapingBee is exhausted)
+function fetchViaBrightData(url) {
+  return new Promise((resolve, reject) => {
+    if (!BRIGHTDATA_TOKEN) {
+      reject(new Error('BRIGHTDATA_TOKEN not set'));
+      return;
+    }
+
+    const apiUrl = `https://api.brightdata.com/request`;
+    const postData = JSON.stringify({
+      zone: 'scraping_browser',
+      url: url,
+      format: 'raw',
+    });
+
+    const req = https.request(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(postData),
+      },
+    }, (response) => {
+      if (response.statusCode !== 200) {
+        let errData = '';
+        response.on('data', chunk => errData += chunk);
+        response.on('end', () => reject(new Error(`Bright Data HTTP ${response.statusCode}: ${errData.substring(0, 200)}`)));
+        return;
+      }
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => resolve(data));
+      response.on('error', reject);
+    });
+    req.on('error', reject);
+    req.write(postData);
+    req.end();
+  });
+}
+
+// Fetch page with fallback: ScrapingBee → Bright Data
+async function fetchPageWithFallback(url, opts = {}) {
+  // Try ScrapingBee first
+  if (SCRAPINGBEE_API_KEY) {
+    try {
+      return await fetchViaScrapingBee(url, opts);
+    } catch (sbErr) {
+      if (BRIGHTDATA_TOKEN) {
+        console.log(`   ⚠ ScrapingBee failed (${sbErr.message}), trying Bright Data...`);
+      } else {
+        throw sbErr;
+      }
+    }
+  }
+  // Bright Data fallback
+  return await fetchViaBrightData(url);
+}
+
+// Download image directly from URL (no proxy needed for public CDN images)
+async function downloadImageDirect(url) {
+  const resp = await fetch(url, {
+    signal: AbortSignal.timeout(15000),
+    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' },
+  });
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  return Buffer.from(await resp.arrayBuffer());
 }
 
 // Search Google via ScrapingBee SERP API for TodayTix pages (works for closed shows)
@@ -335,7 +415,7 @@ async function fetchFromIBDB(show) {
 
   // Step 2: Scrape IBDB page (needs premium proxy)
   try {
-    const html = await fetchViaScrapingBee(ibdbUrl, { premiumProxy: true });
+    const html = await fetchPageWithFallback(ibdbUrl, { premiumProxy: true });
 
     // Check for redirect to homepage (production not found)
     if (html.includes('Opening Nights in History') && !html.includes('Opening Date')) {
@@ -550,7 +630,7 @@ async function discoverTodayTixId(showTitle) {
   const searchUrl = `https://www.todaytix.com/nyc/shows?q=${encodeURIComponent(showTitle)}`;
 
   try {
-    const html = await fetchViaScrapingBee(searchUrl);
+    const html = await fetchPageWithFallback(searchUrl);
 
     // Look for show links in format: /nyc/shows/{id}-{slug}
     const showLinkMatch = html.match(/\/nyc\/shows\/(\d+)-([a-z0-9-]+)/i);
@@ -579,9 +659,6 @@ async function discoverTodayTixId(showTitle) {
     const serpData = await searchGoogleForTodayTix(showTitle);
     const results = serpData?.organic_results || serpData?.results || [];
 
-    // Normalize title for matching: "The Pirate Queen" -> ["pirate", "queen"]
-    const titleWords = showTitle.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
-
     for (const result of results) {
       const url = result.url || result.link || '';
       // Match NYC show URLs only (reject /london/, /chicago/, etc.)
@@ -589,12 +666,6 @@ async function discoverTodayTixId(showTitle) {
       if (match) {
         const id = parseInt(match[1]);
         const slug = match[2];
-        // Verify slug contains at least one significant word from the title
-        const slugMatches = titleWords.some(word => slug.includes(word));
-        if (!slugMatches) {
-          console.log(`   ⚠ Skipping mismatched TodayTix result: ${slug}`);
-          continue;
-        }
         console.log(`   ✓ Found TodayTix ID via Google: ${id} (${slug})`);
         return { id, slug };
       }
@@ -821,7 +892,7 @@ async function fetchFromPlaybill(show) {
   if (cachedUrl) {
     console.log(`   Trying cached Playbill URL: ${cachedUrl}`);
     try {
-      const html = await fetchViaScrapingBee(cachedUrl);
+      const html = await fetchPageWithFallback(cachedUrl);
       const imageUrl = extractOgImage(html);
       if (imageUrl) {
         console.log(`   ✓ Found via cached Playbill: ${imageUrl.substring(0, 60)}...`);
@@ -840,7 +911,7 @@ async function fetchFromPlaybill(show) {
     console.log(`   Trying Playbill: ${playbillUrl}`);
 
     try {
-      const html = await fetchViaScrapingBee(playbillUrl);
+      const html = await fetchPageWithFallback(playbillUrl);
       const imageUrl = extractOgImage(html);
 
       if (imageUrl) {
@@ -862,7 +933,7 @@ async function fetchFromPlaybill(show) {
   const searchUrl = `https://www.google.com/search?q=site:playbill.com/production+"${encodeURIComponent(show.title)}"+broadway`;
 
   try {
-    const searchHtml = await fetchViaScrapingBee(searchUrl);
+    const searchHtml = await fetchPageWithFallback(searchUrl);
     const urlMatch = searchHtml.match(/https:\/\/playbill\.com\/production\/[a-z0-9-]+-broadway[a-z0-9-]*/i);
 
     if (urlMatch) {
@@ -870,7 +941,7 @@ async function fetchFromPlaybill(show) {
       console.log(`   Found via Google: ${discoveredUrl}`);
 
       await sleep(2000);
-      const html = await fetchViaScrapingBee(discoveredUrl);
+      const html = await fetchPageWithFallback(discoveredUrl);
       const imageUrl = extractOgImage(html);
 
       if (imageUrl) {
@@ -917,7 +988,7 @@ function extractDirectImageUrl(url) {
   return url;
 }
 
-function searchGoogleImages(query) {
+function searchGoogleImagesSB(query) {
   return new Promise((resolve, reject) => {
     if (!SCRAPINGBEE_API_KEY) {
       reject(new Error('SCRAPINGBEE_API_KEY not set'));
@@ -943,117 +1014,193 @@ function searchGoogleImages(query) {
   });
 }
 
-async function fetchFromGoogleImages(show) {
-  const year = show.openingDate ? show.openingDate.substring(0, 4) : '';
-  // Sanitize title: escape quotes that would break SERP query
-  const safeTitle = show.title.replace(/"/g, '');
-
-  // Simple search - "Title Broadway poster" usually finds the right thing
-  const query = year ? `"${safeTitle}" Broadway ${year} poster` : `"${safeTitle}" Broadway poster`;
-  console.log(`   Trying Google Images: "${query}"`);
-
-  let results;
-  try {
-    results = await searchGoogleImages(query);
-  } catch (err) {
-    console.log(`   ⚠ Google Images search failed: ${err.message}`);
-    return null;
+// Search Google Images via Bright Data (fallback — returns direct URLs, not base64)
+async function searchGoogleImagesBD(query) {
+  if (!BRIGHTDATA_TOKEN) throw new Error('BRIGHTDATA_TOKEN not set');
+  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&tbm=isch&num=20`;
+  const html = await fetchViaBrightData(googleUrl);
+  const results = [];
+  // Google embeds image metadata as JSON arrays: ["URL", width, height]
+  const imgRegex = /\["(https?:\/\/[^"]+\.(?:jpg|jpeg|png|webp)[^"]*)",\s*(\d+),\s*(\d+)\]/gi;
+  let match;
+  while ((match = imgRegex.exec(html)) !== null) {
+    const imgUrl = match[1];
+    const width = parseInt(match[2]);
+    const height = parseInt(match[3]);
+    if (width < 100 || height < 100) continue;
+    if (imgUrl.includes('gstatic.com') || imgUrl.includes('google.com')) continue;
+    let domain = '';
+    try { domain = new URL(imgUrl).hostname; } catch {}
+    if (/ebay|etsy|pinterest|redbubble|teepublic|amazon\.com\/dp/i.test(domain)) continue;
+    results.push({ image: null, imageUrl: imgUrl, url: imgUrl, title: '', domain, width, height, _brightdata: true });
+    if (results.length >= 10) break;
   }
+  return results;
+}
 
-  await sleep(1500);  // Rate limit after SERP call
-
-  if (!results || results.length === 0) {
-    console.log(`   ✗ No Google Images results`);
-    return null;
+// Unified Google Images search: ScrapingBee → Bright Data fallback
+async function searchGoogleImages(query) {
+  if (SCRAPINGBEE_API_KEY) {
+    try {
+      return await searchGoogleImagesSB(query);
+    } catch (sbErr) {
+      if (BRIGHTDATA_TOKEN) {
+        console.log(`   ⚠ ScrapingBee Images failed (${sbErr.message}), trying Bright Data...`);
+      } else {
+        throw sbErr;
+      }
+    }
   }
+  return await searchGoogleImagesBD(query);
+}
 
-  // ScrapingBee Google Images SERP returns:
-  //   url: source page URL (not direct image)
-  //   image: base64-encoded thumbnail (data:image/jpeg;base64,...)
-  //   title, domain, position
-  // We use the base64 thumbnails directly — they're 10-25 KB JPEG images,
-  // sufficient for our thumbnail format (resized to WebP by archive script).
-  // This avoids extra ScrapingBee page-scrape calls per candidate.
-  const candidates = results
+// Helper: extract valid image buffer from Google Images result
+// Handles both ScrapingBee (base64 inline) and Bright Data (direct URL) results
+async function extractImageBuffer(result) {
+  // ScrapingBee format: base64 data URI
+  if (result.image && result.image.startsWith('data:image/')) {
+    const commaIdx = result.image.indexOf(',');
+    if (commaIdx === -1) return null;
+    const buffer = Buffer.from(result.image.substring(commaIdx + 1), 'base64');
+    if (buffer.length < 3000 || !isImageBuffer(buffer)) return null;
+    return buffer;
+  }
+  // Bright Data format: direct image URL — download it
+  if (result._brightdata && result.imageUrl) {
+    try {
+      const buffer = await downloadImageDirect(result.imageUrl);
+      if (buffer.length < 3000 || !isImageBuffer(buffer)) return null;
+      return buffer;
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+// Helper: filter Google Images results to usable candidates
+// Handles both ScrapingBee (base64 image) and Bright Data (imageUrl) formats
+function filterGoogleCandidates(results, maxCount = 10) {
+  return (results || [])
     .filter(r => {
-      if (!r.image || !r.image.startsWith('data:image/')) return false;
+      // ScrapingBee: has base64 data URI
+      const hasSBImage = r.image && r.image.startsWith('data:image/');
+      // Bright Data: has direct URL
+      const hasBDImage = r._brightdata && r.imageUrl;
+      if (!hasSBImage && !hasBDImage) return false;
       const domain = (r.domain || r.url || '').toLowerCase();
-      // Skip merchandise sites and low-quality sources
       if (/ebay|etsy|pinterest|redbubble|teepublic|amazon\.com\/dp/i.test(domain)) return false;
       return true;
     })
-    .slice(0, 5);  // Top 5 candidates max
+    .slice(0, maxCount);
+}
 
-  if (candidates.length === 0) {
-    console.log(`   ✗ No usable image results`);
+async function fetchFromGoogleImages(show) {
+  const year = show.openingDate ? show.openingDate.substring(0, 4) : '';
+  const safeTitle = show.title.replace(/"/g, '');
+  const showDir = path.join(IMAGES_DIR, show.id);
+  fs.mkdirSync(showDir, { recursive: true });
+
+  let thumbnailBuffer = null;
+  let thumbnailResult = null;
+  let posterBuffer = null;
+  let squareCandidates = [];
+  let posterCandidates = [];
+
+  // ============================================================
+  // SEARCH 1: Square images (for homepage thumbnail cards)
+  // ============================================================
+  const squareQuery = `${safeTitle} Broadway square`;
+  console.log(`   Trying Google Images (square): "${squareQuery}"`);
+
+  try {
+    const squareResults = await searchGoogleImages(squareQuery);
+    squareCandidates = filterGoogleCandidates(squareResults, 10);
+    console.log(`   Found ${squareCandidates.length} square candidates`);
+
+    for (const result of squareCandidates) {
+      const buffer = await extractImageBuffer(result);
+      if (buffer) {
+        console.log(`   ✓ Valid square image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}`);
+        thumbnailBuffer = buffer;
+        thumbnailResult = result;
+        break;
+      }
+    }
+  } catch (err) {
+    console.log(`   ⚠ Square search failed: ${err.message}`);
+  }
+
+  await sleep(1500);
+
+  // ============================================================
+  // SEARCH 2: Poster images (for show detail pages)
+  // ============================================================
+  const posterQuery = `${safeTitle} Broadway poster`;
+  console.log(`   Trying Google Images (poster): "${posterQuery}"`);
+
+  try {
+    const posterResults = await searchGoogleImages(posterQuery);
+    posterCandidates = filterGoogleCandidates(posterResults, 10);
+    console.log(`   Found ${posterCandidates.length} poster candidates`);
+
+    for (const result of posterCandidates) {
+      const buffer = await extractImageBuffer(result);
+      if (buffer) {
+        console.log(`   ✓ Valid poster image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}`);
+        posterBuffer = buffer;
+        break;
+      }
+    }
+  } catch (err) {
+    console.log(`   ⚠ Poster search failed: ${err.message}`);
+  }
+
+  // ============================================================
+  // Save results - need at least one image
+  // ============================================================
+  if (!thumbnailBuffer && !posterBuffer) {
+    console.log(`   ✗ No usable images found`);
     return null;
   }
 
-  console.log(`   Found ${candidates.length} candidate images`);
+  // Save thumbnail (prefer square, fall back to poster)
+  const finalThumbnailBuffer = thumbnailBuffer || posterBuffer;
+  const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
+  fs.writeFileSync(thumbnailPath, finalThumbnailBuffer);
+  console.log(`   ✓ Saved thumbnail${thumbnailBuffer ? ' (native square)' : ' (from poster)'}`);
 
-  // Try each candidate — decode base64 and validate
-  for (const result of candidates) {
-    try {
-      const b64Data = result.image;
-      // Extract raw bytes from data URL: "data:image/jpeg;base64,/9j/4AAQ..."
-      const commaIdx = b64Data.indexOf(',');
-      if (commaIdx === -1) {
-        console.log(`     Skip: invalid data URL — ${result.title?.substring(0, 50)}...`);
-        continue;
-      }
-      const buffer = Buffer.from(b64Data.substring(commaIdx + 1), 'base64');
-
-      if (buffer.length < 3000) {
-        console.log(`     Skip: too small (${buffer.length} bytes) — ${result.title?.substring(0, 50)}...`);
-        continue;
-      }
-
-      // Validate magic bytes
-      if (!isImageBuffer(buffer)) {
-        console.log(`     Skip: invalid image data — ${result.title?.substring(0, 50)}...`);
-        continue;
-      }
-
-      console.log(`   ✓ Valid image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}: ${result.title?.substring(0, 50)}`);
-
-      // Save the image directly to the show's image directory
-      // (archive-show-images.js will convert to WebP and skip if already exists)
-      const showDir = path.join(IMAGES_DIR, show.id);
-      fs.mkdirSync(showDir, { recursive: true });
-      const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
-      fs.writeFileSync(thumbnailPath, buffer);
-      console.log(`   ✓ Saved thumbnail to ${thumbnailPath}`);
-
-      // Return local path as thumbnail + buffer for LLM verification
-      // Return ALL remaining candidates so tier chain can try the next one if rejected
-      const remaining = candidates.slice(candidates.indexOf(result) + 1);
-      return {
-        thumbnail: `/images/shows/${show.id}/thumbnail.jpg`,
-        poster: null,
-        hero: null,
-        _verifyBuffer: buffer,  // Used by verifyAndCollect for LLM gate
-        _remainingCandidates: remaining,  // For retry if this one is rejected
-      };
-    } catch (err) {
-      console.log(`     Skip: ${err.message} — ${result.title?.substring(0, 50)}...`);
-      continue;
-    }
+  // Save poster if we have one distinct from thumbnail
+  let posterPath = null;
+  if (posterBuffer && posterBuffer !== finalThumbnailBuffer) {
+    posterPath = path.join(showDir, 'poster.jpg');
+    fs.writeFileSync(posterPath, posterBuffer);
+    console.log(`   ✓ Saved poster`);
   }
 
-  console.log(`   ✗ All candidate images failed validation`);
-  return null;
+  // Build remaining candidates for retry (combine both searches)
+  const usedResults = [thumbnailResult].filter(Boolean);
+  const allRemaining = [...squareCandidates, ...posterCandidates]
+    .filter(r => !usedResults.includes(r));
+
+  return {
+    thumbnail: `/images/shows/${show.id}/thumbnail.jpg`,
+    poster: posterPath ? `/images/shows/${show.id}/poster.jpg` : null,
+    hero: null,
+    _verifyBuffer: finalThumbnailBuffer,
+    _remainingCandidates: allRemaining,
+    _hasNativeSquare: !!thumbnailBuffer,
+  };
 }
 
 // Try next Google Images candidate after rejection
 // Re-uses the remaining candidates from the initial search
+// Handles both ScrapingBee (base64) and Bright Data (direct URL) results
 async function tryNextGoogleCandidate(show, remainingCandidates) {
   for (const result of remainingCandidates) {
     try {
-      const b64Data = result.image;
-      const commaIdx = b64Data.indexOf(',');
-      if (commaIdx === -1) continue;
-      const buffer = Buffer.from(b64Data.substring(commaIdx + 1), 'base64');
-      if (buffer.length < 3000 || !isImageBuffer(buffer)) continue;
+      const buffer = await extractImageBuffer(result);
+      if (!buffer) continue;
 
       console.log(`   ✓ Trying next Google Images candidate (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}: ${result.title?.substring(0, 50)}`);
 
@@ -1121,12 +1268,25 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
     rateLimiter: verifyCtx.rateLimiter,
   });
 
-  // Reject production photos — we only want poster art
+  // Fix 2: Override non_broadway rejection for pre-Broadway venue shows
+  if (result.match === false
+      && result.issues?.includes('non_broadway')
+      && PRE_BROADWAY_VENUE_SHOWS.has(show.id)) {
+    console.log(`   ⚠ VENUE OVERRIDE: Accepting pre-Broadway venue art for ${show.id}`);
+    const score = scoreCandidate({ ...result, match: true }, urlToVerify);
+    verifyCtx.verified = (verifyCtx.verified || 0) + 1;
+    verifyCtx.venueOverrides = (verifyCtx.venueOverrides || 0) + 1;
+    return { images, verifyResult: result, url: urlToVerify, tierName, score };
+  }
+
+  // Fix 3: Track production photos as fallback instead of rejecting outright
   if (result.imageType === 'production_still') {
-    console.log(`   ✗ REJECTED (production photo): ${result.description} — we want poster art, not stage photos`);
-    verifyCtx.rejected = (verifyCtx.rejected || 0) + 1;
+    const bufSize = Buffer.isBuffer(imageInput) ? imageInput.length : 0;
+    console.log(`   ⚠ DEFERRED (production photo): ${result.description} — will use as fallback if no poster art`);
     verifyCtx.productionPhotos = (verifyCtx.productionPhotos || 0) + 1;
-    return null;
+    verifyCtx.productionPhotoFallbacks = verifyCtx.productionPhotoFallbacks || [];
+    verifyCtx.productionPhotoFallbacks.push({ images, verifyResult: result, url: urlToVerify, tierName, score: -5, bufSize });
+    return null;  // Don't add to main candidates yet
   }
 
   if (result.match === true) {
@@ -1155,12 +1315,8 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
 async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   console.log(`\n📽️  ${show.title}`);
 
-  // When verification is active, collect candidates from all tiers and pick the best
-  // instead of returning on first success. This prefers promotional art over production stills.
-  const candidates = [];
-
   // Step 1: Try TodayTix API data (native square images, no HTTP call needed)
-  // Now verified like other sources — title matching can fail
+  // TRUSTED SOURCE — skip verification
   if (apiData) {
     console.log(`   Found in TodayTix API: "${apiData.displayName}" (ID: ${apiData.id})`);
 
@@ -1181,30 +1337,19 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
       console.log(`     - Portrait (poster): ${poster ? 'from API' : 'not available'}`);
       console.log(`     - Landscape (hero): ${hero ? 'from API' : 'not available'}`);
 
-      const apiImages = {
+      return {
         hero: addWebp(hero),
         thumbnail: addWebp(thumbnail),
         poster: addWebp(poster),
       };
-
-      // Verify API images too — title matching can fail
-      const candidate = await verifyAndCollect(apiImages, show, 'TodayTix API', verifyCtx);
-      if (candidate) {
-        candidates.push(candidate);
-        // High-confidence promotional art from API = accept immediately
-        if (candidate.verifyResult?.imageType === 'promotional_art' &&
-            candidate.verifyResult?.confidence === 'high') {
-          console.log(`   ★ Promotional art from API at high confidence — using this`);
-          return candidate.images;
-        }
-        // Without verify context, first success wins (original behavior)
-        if (!verifyCtx) return candidate.images;
-      }
-      if (verifyCtx && !candidate) console.log(`   API image rejected, trying other sources...`);
-    } else {
-      console.log(`   API match found but missing image data, falling back to page scrape`);
     }
+
+    console.log(`   API match found but missing image data, falling back to page scrape`);
   }
+
+  // When --verify is active, collect candidates from all tiers and pick the best
+  // instead of returning on first success. This prefers promotional art over production stills.
+  const candidates = [];
 
   // Step 2: Try TodayTix page scrape if we have an ID
   // NEEDS VERIFICATION — scraped images may be from wrong show/production
@@ -1214,7 +1359,7 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     console.log(`   Fetching: ${url}`);
 
     try {
-      const html = await fetchViaScrapingBee(url);
+      const html = await fetchPageWithFallback(url);
       const images = extractAllImageFormats(html);
 
       if (images && (images.square || images.portrait || images.landscape)) {
@@ -1339,6 +1484,22 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     return candidates[0].images;
   }
 
+  // Fix 4: Last resort — use production photo fallback with 3 safety guards
+  const existingThumb = show.images?.thumbnail;
+  const isPinned = PINNED_IMAGES.has(show.id);
+  if (!existingThumb                                      // GUARD 1: Don't overwrite existing images
+      && !isPinned                                         // GUARD 2: Never override pinned images
+      && verifyCtx?.productionPhotoFallbacks?.length > 0) {
+    const best = verifyCtx.productionPhotoFallbacks[0];
+    if (best.bufSize > 5000) {                             // GUARD 3: Quality floor (>5KB)
+      console.log(`   ⚠ LAST RESORT: Using production photo — no poster art available (${(best.bufSize/1024).toFixed(0)} KB)`);
+      verifyCtx.lastResort = (verifyCtx.lastResort || 0) + 1;
+      return best.images;
+    } else {
+      console.log(`   ✗ Production photo too small/no buffer (${best.bufSize} bytes), skipping`);
+    }
+  }
+
   return null;
 }
 
@@ -1382,7 +1543,8 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
 
 // Process shows in batches with concurrency.
 // API-sourced shows (instant) are separated from scrape-needing shows.
-async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx) {
+// checkpoint() is called every 25 shows to save progress to disk.
+async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, checkpoint) {
   const results = { success: [], failed: [], skipped: [] };
 
   // Separate API-matched shows (instant, no rate limit needed) from scrape-needed shows
@@ -1442,13 +1604,21 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
       console.log(`   [${processed}/${scrapeShows.length}] ${results.success.length} success, ${results.failed.length} failed`);
     }
 
+    // Checkpoint every 25 shows to save progress (protects against timeout)
+    if (checkpoint && processed % 25 < scrapeConcurrency && results.success.length > 0) {
+      console.log(`\n   💾 CHECKPOINT at ${processed}/${scrapeShows.length} — saving progress...`);
+      saveTodayTixIds(todayTixIds);
+      if (ibdbImageCache) saveIbdbImageCache(ibdbImageCache);
+      checkpoint();
+    }
+
     // Rate limit between batches (not between individual shows within a batch)
     if (i + scrapeConcurrency < scrapeShows.length) {
       await sleep(2000);
     }
   }
 
-  // Save caches once at end (not per-show)
+  // Final save of caches
   saveTodayTixIds(todayTixIds);
   if (ibdbImageCache) saveIbdbImageCache(ibdbImageCache);
 
@@ -1472,15 +1642,21 @@ function applyImages(show, images) {
 async function main() {
   const args = process.argv.slice(2);
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
-  const onlyMissing = args.includes('--missing');
+  const onlyMissing = args.includes('--missing') || args.includes('--missing-only');
   const badImagesOnly = args.includes('--bad-images');
   const concurrency = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '5', 10);
   // Verification is ON by default — use --no-verify to skip (faster but less safe)
   const verifyEnabled = !args.includes('--no-verify');
 
-  if (!SCRAPINGBEE_API_KEY) {
-    console.error('ERROR: Set SCRAPINGBEE_API_KEY environment variable');
+  if (!SCRAPINGBEE_API_KEY && !BRIGHTDATA_TOKEN) {
+    console.error('ERROR: Set SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN environment variable');
     process.exit(1);
+  }
+  if (!SCRAPINGBEE_API_KEY) {
+    console.log('⚠ SCRAPINGBEE_API_KEY not set — using Bright Data only');
+  }
+  if (BRIGHTDATA_TOKEN) {
+    console.log('Bright Data fallback: ENABLED');
   }
 
   // Initialize LLM verification gate (on by default)
@@ -1535,14 +1711,20 @@ async function main() {
 
   console.log(`\nProcessing ${shows.length} shows...\n`);
 
-  // Use concurrent processing for large batches, sequential for small
-  const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx);
-
-  // Save updated shows
-  if (results.success.length > 0) {
+  // Checkpoint callback — saves shows.json to disk so progress survives timeouts
+  const saveShowsData = () => {
     showsData._meta = showsData._meta || {};
     showsData._meta.lastUpdated = new Date().toISOString().split('T')[0];
     fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    console.log(`   💾 shows.json saved (${showsData.shows.length} shows)`);
+  };
+
+  // Use concurrent processing for large batches, sequential for small
+  const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, saveShowsData);
+
+  // Final save
+  if (results.success.length > 0) {
+    saveShowsData();
   }
 
   // Summary
@@ -1562,17 +1744,19 @@ async function main() {
     console.log(`\n🔍 Verification Stats:`);
     console.log(`  Verified (accepted): ${verifyCtx.verified}`);
     console.log(`  Rejected (wrong image): ${verifyCtx.rejected}`);
-    if (verifyCtx.productionPhotos > 0) {
-      console.log(`    ↳ Production photos rejected: ${verifyCtx.productionPhotos}`);
-    }
+    console.log(`  Production photos deferred: ${verifyCtx.productionPhotos || 0}`);
     console.log(`  Uncertain (accepted anyway): ${verifyCtx.uncertain}`);
+    if (verifyCtx.venueOverrides > 0) {
+      console.log(`  Venue overrides (pre-Broadway): ${verifyCtx.venueOverrides}`);
+    }
     if (verifyCtx.lastResort > 0) {
-      console.log(`  Last resort (Playbill, accepted with warning): ${verifyCtx.lastResort}`);
+      console.log(`  Last resort used: ${verifyCtx.lastResort}`);
     }
     if (verifyCtx.imageTypes) {
-      console.log(`\n📊 Image Type Distribution (accepted only):`);
+      console.log(`\n📊 Image Type Distribution:`);
       const types = verifyCtx.imageTypes;
       console.log(`  Promotional art: ${types.promotional_art || 0}`);
+      console.log(`  Production stills: ${types.production_still || 0}`);
       console.log(`  Headshot/cast: ${types.headshot_cast || 0}`);
       console.log(`  Other: ${types.other || 0}`);
     }

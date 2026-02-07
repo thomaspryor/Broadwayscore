@@ -44,7 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -60,6 +60,7 @@ jobs:
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
           ARGS=""
           if [ -n "${{ inputs.show_id }}" ]; then
@@ -77,6 +78,7 @@ jobs:
           node scripts/fetch-show-images-auto.js $ARGS --concurrency=$CONCURRENCY $VERIFY_FLAG
 
       - name: Archive images locally
+        if: always()
         run: |
           echo "Downloading CDN images to local storage..."
           ARCHIVE_ARGS=""
@@ -86,6 +88,7 @@ jobs:
           node scripts/archive-show-images.js $ARCHIVE_ARGS
 
       - name: Check for changes
+        if: always()
         id: changes
         run: |
           if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard public/images/shows/)" ]; then
@@ -98,8 +101,9 @@ jobs:
           fi
 
       - name: Commit and push if changed
-        if: steps.changes.outputs.changed == 'true'
+        if: always() && steps.changes.outputs.changed == 'true'
         run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/ public/images/shows/
@@ -113,16 +117,16 @@ jobs:
 
           # Robust push retry — handles conflicts from parallel workflows
           for i in 1 2 3 4 5; do
-            if git push origin main; then
+            if git push origin HEAD:$BRANCH; then
               echo "Push succeeded on attempt $i"
               break
             fi
             echo "Push failed (attempt $i), pulling and rebasing..."
             git checkout -- . && git clean -fd
-            git pull --rebase -X theirs origin main || {
+            git pull --rebase -X theirs origin $BRANCH || {
               echo "Rebase failed, aborting and retrying..."
               git rebase --abort 2>/dev/null || true
-              git pull --rebase origin main || git rebase --abort 2>/dev/null
+              git pull --rebase origin $BRANCH || git rebase --abort 2>/dev/null
             }
             # Re-stage our image changes
             git add data/ public/images/shows/
@@ -133,6 +137,7 @@ jobs:
           done
 
       - name: Summary
+        if: always()
         run: |
           echo "## Image Fetch Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY

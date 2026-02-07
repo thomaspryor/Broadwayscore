@@ -32,6 +32,13 @@ Never give approximate ranges. If you can't access a source, say so.
 ### 6. NEVER Extract Metadata from URLs
 **URL structure is wildly inconsistent.** NEVER extract years, production info, or identifiers from URL patterns. A 2021 URL can contain a 2024 review; `/6910/` is an article ID, not a year. **DO** use publish date, review text content, and exact URL matching instead. Multiple past sessions have introduced bugs by assuming URL years indicate production years.
 
+### 7. Batch Scripts MUST Checkpoint
+**Any script that processes >10 items in CI MUST save progress incrementally.** A 3-hour workflow that only writes results at the end will lose everything on timeout. Required pattern:
+- **Script:** Save output files (e.g., `shows.json`) every 25 items
+- **Workflow:** Use `if: always()` on archive/commit/push steps so partial progress is committed on timeout or failure
+- **Push:** Use 5-retry loop with `--rebase -X theirs` (see `gather-reviews.yml` pattern)
+- Before shipping any new batch script or workflow, verify: "If this times out at 50%, do we keep the first 50%?" If no, add checkpointing.
+
 ---
 
 ## Project Overview

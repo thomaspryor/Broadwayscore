@@ -12,7 +12,7 @@
   ],
   "bwwExcerpt": "The pungency of sign language is not the subject of Mark Medoff's 'Children of a Lesser God,' which opened on Wednesday at Studio 54 in a mixed bag of a Broadway revival directed by Kenny Leon. But it's a wonderful bonus to the play's fierce rivalry between those who promote spoken English as the highest attainable form of communication and those who are staunch partisans of silence.",
   "bwwScore": 7,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-CHILDREN-OF-A-LESSER-GOD-on-Broadway-20180411",
   "assignedScore": 64,
   "llmScore": {
@@ -69,5 +69,50 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "showScoreExcerpt": "\"A knockout professional debut performance by Ridloff...A lovely performance by Jackson...Leon’s direction seems random...The play falters badly in its second act...Eventually you realize that Mr. Medoff simply did not have the wherewithal to dramatize the fundamental conflict any further because James is his hero but Sarah is right. The play, written when it was, can’t quite support that — not because of its deaf politics, but because of its sexual politics.\"\n\nRead more"
+  "showScoreExcerpt": "\"A knockout professional debut performance by Ridloff...A lovely performance by Jackson...Leon’s direction seems random...The play falters badly in its second act...Eventually you realize that Mr. Medoff simply did not have the wherewithal to dramatize the fundamental conflict any further because James is his hero but Sarah is right. The play, written when it was, can’t quite support that — not because of its deaf politics, but because of its sexual politics.\"\n\nRead more",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 64,
+  "fullText": "Aside from a brief prologue, the first thing the character Sarah says in “Children of a Lesser God” is — well, I can’t tell you.\n\nEven if I could, it wouldn’t be as funny or as powerful as the way she delivers it, using a combination of poetically vulgar gestures to paint her friend Orin as a suck-up.\n\nThat’s because Sarah speaks American Sign Language, and I have only polite English at my disposal. A.S.L. wins, hands down — or, as the case may be, hands up.\n\nThe pungency of sign language is not the subject of Mark Medoff’s “Children of a Lesser God,” which opened on Wednesday at Studio 54 in a mixed bag of a Broadway revival directed by Kenny Leon. But it’s a wonderful bonus to the play’s fierce rivalry between those who promote spoken English as the highest attainable form of communication and those who are staunch partisans of silence.\n\nSarah, 26 and deaf since birth, is one of those partisans. For 21 years, the school where the play takes place has tried to push speech and lip-reading on her, only hardening her resolve not to learn them. “I don’t do things that I can’t do well,” she explains.\n\nThat would seem like rationalization if Sarah weren’t so smart and, in a knockout professional debut performance by Lauren Ridloff, so superb at A.S.L. Her fluency and expressiveness make the English speakers around her seem, as one of them actually calls her, dumb.",
+  "isFullReview": false,
+  "textWordCount": 246,
+  "archivePath": "data/archives/reviews/children-of-a-lesser-god-2018/nytimes--jesse-green_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T06:16:19.567Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 264 (min: 300)"
+  ],
+  "duplicateTextOf": "nytimes--unknown.json",
+  "wordCount": 246,
+  "tierReason": "Short but structurally complete review"
 }

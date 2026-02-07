@@ -80,45 +80,29 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 379,
-  "archivePath": "data/archives/reviews/a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--unknown_2026-02-06.html",
-  "textFetchedAt": "2026-02-06T14:11:42.769Z",
-  "fetchMethod": "brightdata",
+  "archivePath": "data/archives/reviews/a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--unknown_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T05:29:34.013Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
       "success": false,
-      "error": "No archive snapshot available"
+      "error": "timeout of 60000ms exceeded"
     },
     {
       "tier": 0.5,
       "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "Parse Error: Header overflow"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 4,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "archive",
   "wordCount": 379,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "archiveOrgTimestamp": "20241112045857",
+  "archiveOrgUrl": "http://web.archive.org/web/20241112045857/https://www.nytimes.com/2024/11/11/theater/a-wonderful-world-review-louis-armstrong.html"
 }

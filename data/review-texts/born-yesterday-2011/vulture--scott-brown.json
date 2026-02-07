@@ -11,7 +11,7 @@
   ],
   "bwwExcerpt": "And then there's Arianda, the play's animating ambrosia and, without a doubt, the most exciting find of the Broadway season. To my regret, I missed her in last season's Venus in Fur, but seeing her now, I understand the already radiant reputation this absurdly talented performer has quickly and justly earned. Channeling just a dram of Judy Holliday's legendary performance-her original Billie's strangled Betty Boop soprano, her ditzy-like-a-fox scene pivots-Arianda takes the physical comedy further, but never too far: Whether she's trying to outrun the train of her peignoir or pouring herself a brimming water glass of gin, she invests everything she touches with comic energy.",
   "bwwScore": 9,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "assignedScore": 82,
   "llmScore": {
     "score": 82,
@@ -66,5 +66,46 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "fullText": "Things you buy through our links may earn Vox Media a commission.\n\nPhoto: Carol Rosegg/?CarolRosegg Robert Sean Leonard and Jim Belushi in Born Yesterday. Photo: Carol Rosegg/?CarolRosegg A lot’s changed since Born Yesterday opened in 1946. Back then, a heartfelt social comedy could delight audiences for four solid years with wiseacre patriotism, pleasantly pedantic digressions on social justice, and some good-natured knuckle-rapping of thuggish profiteers and the venal Washington politicians who enable them. Writing at the daybreak of postwar American empire, playwright Garson Kanin (who’d go on to pen Adam’s Rib and similarly high-minded stuff) could scarcely have imagined the great betrayals of Vietnam and Watergate, not to mention the unofficial subordination of democracy to a newly deified free market, the Humpty Dumpty splintering of the electorate, the business lobby’s consolidated thrall over know-nothing populism, and the breezy advancement of privatization as a cure-all for the crumbling public trust. But a few things are still the same: The notion of Washington as an open-air farmers’ market of corruption, for example, seems evergreen, as does the indignation of a dazed, buggered American public struggling to both wise up and preserve its innocence. And here’s something that’s thankfully unaltered: the power of a bravura performance to reclaim a classic that’s well past its expiration date, transforming it into a night of (hell, let’s call it what it is) inspirational entertainment. For this reason, I hereby nominate the luminous laugh-goddess Nina Arianda for president, running on the Ditz Savant ticket.\n\nYour product is saved! You’ll receive emails when your saved products go on sale. Manage preferences.\n \n \n\n \n \n\n \n \n\n Things you buy through our links may earn Vox Media a commission.",
+  "isFullReview": true,
+  "textWordCount": 275,
+  "archivePath": "data/archives/reviews/born-yesterday-2011/vulture--scott-brown_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T06:21:45.001Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 275,
+  "tierReason": "Short but structurally complete review"
 }
