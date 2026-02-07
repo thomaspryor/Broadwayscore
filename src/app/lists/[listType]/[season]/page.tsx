@@ -54,7 +54,12 @@ export function generateMetadata({ params }: { params: { listType: string; seaso
       title: `${config.title} — ${params.season}`,
       description,
       url: `${BASE_URL}/lists/${params.listType}/${params.season}`,
-      images: [{ url: `${BASE_URL}/og-image.png`, width: 1200, height: 630 }],
+      images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary',
+      title: `${config.title} — ${params.season}`,
+      description,
     },
   };
 }

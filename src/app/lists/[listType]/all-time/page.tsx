@@ -44,7 +44,12 @@ export function generateMetadata({ params }: { params: { listType: string } }): 
       title: `${config.title} — All-Time`,
       description,
       url: `${BASE_URL}/lists/${params.listType}/all-time`,
-      images: [{ url: `${BASE_URL}/og-image.png`, width: 1200, height: 630 }],
+      images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary',
+      title: `${config.title} — All-Time`,
+      description,
     },
   };
 }

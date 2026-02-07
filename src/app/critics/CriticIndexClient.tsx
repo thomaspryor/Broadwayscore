@@ -44,9 +44,9 @@ function CriticCard({ critic }: { critic: CriticSummary }) {
       {/* Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <h3 className="font-bold text-white group-hover:text-brand transition-colors truncate">
+          <h2 className="font-bold text-white group-hover:text-brand transition-colors truncate text-sm sm:text-base">
             {critic.name}
-          </h3>
+          </h2>
           {critic.isFreelancer && (
             <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-purple-500/20 text-purple-400 border-purple-500/30">
               Freelancer

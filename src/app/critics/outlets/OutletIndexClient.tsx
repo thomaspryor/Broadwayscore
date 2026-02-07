@@ -51,6 +51,8 @@ function OutletCard({ outlet }: { outlet: OutletSummary }) {
           alt=""
           aria-hidden="true"
           className="w-8 h-8 rounded flex-shrink-0"
+          width={32}
+          height={32}
           loading="lazy"
         />
       ) : (
@@ -65,9 +67,9 @@ function OutletCard({ outlet }: { outlet: OutletSummary }) {
       {/* Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <h3 className="font-bold text-white group-hover:text-brand transition-colors truncate">
+          <h2 className="font-bold text-white group-hover:text-brand transition-colors truncate text-sm sm:text-base">
             {outlet.name}
-          </h3>
+          </h2>
           <TierBadgeSmall tier={outlet.tier} />
         </div>
         <p className="text-gray-400 text-xs sm:text-sm">
