@@ -10552,18 +10552,6 @@
     "timestamp": "2026-02-04T17:25:14.813Z"
   },
   {
-    "reviewId": "aint-no-mo-2022/variety--naveen-kumar.json",
-    "showId": "aint-no-mo-2022",
-    "outlet": "Variety",
-    "critic": "Naveen Kumar",
-    "url": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): 1776, chicken & biscuits, the audience, hair, once...",
-    "textLength": 6539,
-    "timestamp": "2026-02-04T17:41:36.832Z"
-  },
-  {
     "reviewId": "all-in-comedy-about-love-2024/nytimes--elisabeth-vincentelli.json",
     "showId": "all-in-comedy-about-love-2024",
     "outlet": "New York Times",
@@ -14582,42 +14570,6 @@
     "garbageReason": "Multiple shows mentioned (8): purpose, king lear, the audience, hair, elling...",
     "textLength": 7041,
     "timestamp": "2026-02-05T18:44:56.621Z"
-  },
-  {
-    "reviewId": "all-my-sons-2019/hollywood-reporter--david-rooney.json",
-    "showId": "all-my-sons-2019",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/culture-news/all-my-sons-broadway-review-1205449/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (6): home, english, disgraced, hair, high...",
-    "textLength": 1327,
-    "timestamp": "2026-02-05T18:45:31.034Z"
-  },
-  {
-    "reviewId": "all-my-sons-2019/hollywood-reporter--frank-scheck.json",
-    "showId": "all-my-sons-2019",
-    "outlet": "Hollywood Reporter",
-    "critic": "Frank Scheck",
-    "url": "http://www.hollywoodreporter.com/review/all-my-sons-theater-review-1203756",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): company, high, race, august: osage county, company...",
-    "textLength": 4837,
-    "timestamp": "2026-02-05T18:45:43.885Z"
-  },
-  {
-    "reviewId": "all-my-sons-2019/nytg--mark-shenton.json",
-    "showId": "all-my-sons-2019",
-    "outlet": "New York Theatre Guide",
-    "critic": "Mark Shenton",
-    "url": "https://www.newyorktheatreguide.com/reviews/review-of-all-my-sons-starring-annette-bening-tracy-letts-on-broadway",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): company, evita, high, august: osage county, company...",
-    "textLength": 5831,
-    "timestamp": "2026-02-05T18:45:50.221Z"
   },
   {
     "reviewId": "all-my-sons-2019/vulture--sara-holdren.json",
@@ -22082,5 +22034,53 @@
     "garbageReason": "Multiple shows mentioned (8): 1776, chicken & biscuits, the audience, hair, once...",
     "textLength": 6664,
     "timestamp": "2026-02-07T05:35:48.290Z"
+  },
+  {
+    "reviewId": "aint-no-mo-2022/variety--naveen-kumar.json",
+    "showId": "aint-no-mo-2022",
+    "outlet": "Variety",
+    "critic": "Naveen Kumar",
+    "url": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): 1776, chicken & biscuits, the audience, hair, once...",
+    "textLength": 6051,
+    "timestamp": "2026-02-07T05:36:38.650Z"
+  },
+  {
+    "reviewId": "all-my-sons-2019/hollywood-reporter--david-rooney.json",
+    "showId": "all-my-sons-2019",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/culture-news/all-my-sons-broadway-review-1205449/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (6): home, english, disgraced, hair, high...",
+    "textLength": 1327,
+    "timestamp": "2026-02-07T05:39:00.502Z"
+  },
+  {
+    "reviewId": "all-my-sons-2019/hollywood-reporter--frank-scheck.json",
+    "showId": "all-my-sons-2019",
+    "outlet": "Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/all-my-sons-theater-review-1203756",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, high, race, august: osage county, company...",
+    "textLength": 4746,
+    "timestamp": "2026-02-07T05:39:18.625Z"
+  },
+  {
+    "reviewId": "all-my-sons-2019/nytg--mark-shenton.json",
+    "showId": "all-my-sons-2019",
+    "outlet": "New York Theatre Guide",
+    "critic": "Mark Shenton",
+    "url": "https://www.newyorktheatreguide.com/reviews/review-of-all-my-sons-starring-annette-bening-tracy-letts-on-broadway",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, evita, high, august: osage county, company...",
+    "textLength": 5831,
+    "timestamp": "2026-02-07T05:41:54.126Z"
   }
 ]
