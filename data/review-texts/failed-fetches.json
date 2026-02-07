@@ -11752,18 +11752,6 @@
     "timestamp": "2026-02-05T03:33:50.449Z"
   },
   {
-    "reviewId": "meteor-shower-2017/vulture--sara-holdren.json",
-    "showId": "meteor-shower-2017",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "http://www.vulture.com/2017/11/theater-amy-schumer-in-steve-martins-meteor-shower.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): appropriate, home, company, latin history for morons, spongebob squarepants...",
-    "textLength": 8592,
-    "timestamp": "2026-02-05T03:34:12.546Z"
-  },
-  {
     "reviewId": "on-a-clear-day-you-can-see-forever-2011/variety--steven-suskin.json",
     "showId": "on-a-clear-day-you-can-see-forever-2011",
     "outlet": "Variety",
@@ -22898,5 +22886,65 @@
     "garbageReason": "Multiple shows mentioned (17): home, the minutes, betrayal, oklahoma!, sweat...",
     "textLength": 7535,
     "timestamp": "2026-02-07T08:35:56.151Z"
+  },
+  {
+    "reviewId": "meteor-shower-2017/vulture--sara-holdren.json",
+    "showId": "meteor-shower-2017",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "http://www.vulture.com/2017/11/theater-amy-schumer-in-steve-martins-meteor-shower.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): appropriate, home, company, latin history for morons, spongebob squarepants...",
+    "textLength": 8592,
+    "timestamp": "2026-02-07T08:38:21.978Z"
+  },
+  {
+    "reviewId": "miss-saigon-2017/hollywood-reporter--david-rooney.json",
+    "showId": "miss-saigon-2017",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/miss-saigon-theater-review-987015/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): giant, home, english, the nap, cats...",
+    "textLength": 10214,
+    "timestamp": "2026-02-07T08:38:45.860Z"
+  },
+  {
+    "reviewId": "miss-saigon-2017/nytimes--ben-brantley.json",
+    "showId": "miss-saigon-2017",
+    "outlet": "New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2017/03/23/theater/miss-saigon-on-broadway-review.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): the book of mormon, real women have curves, appropriate, sunset boulevard, purpose...",
+    "textLength": 8176,
+    "timestamp": "2026-02-07T08:38:49.184Z"
+  },
+  {
+    "reviewId": "miss-saigon-2017/nytimes--unknown.json",
+    "showId": "miss-saigon-2017",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2017/03/23/theater/miss-saigon-on-broadway-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): the book of mormon, appropriate, purpose, betrayal, the audience...",
+    "textLength": 8031,
+    "timestamp": "2026-02-07T08:39:00.924Z"
+  },
+  {
+    "reviewId": "miss-saigon-2017/variety--marilyn-stasio.json",
+    "showId": "miss-saigon-2017",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2017/legit/reviews/miss-saigon-review-broadway-revival-1202013026/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"miss saigon\" not mentioned in text; No theater-related keywords in short text",
+    "textLength": 725,
+    "timestamp": "2026-02-07T08:39:30.148Z"
   }
 ]
