@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The joy of experiencing 'Bandstand' is seeing an original musical...The subject matter is familiar but still relevant today...The book seems contrived and you can see how things are going to fall in place. However, the score is transporting and the sound of the big band/swing era is exhilarating...With 'Bandstand' you may feel you’ve seen this plot before, but who cares? Among the swing music, vitality, sound, Ms. Osnes and Mr. Cott, it is an evening of sheer delight.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Among the swing music, vitality, sound, Ms. Osnes and Mr. Cott, it is an evening of sheer delight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Acknowledges plot contrivances but concludes with enthusiastic praise calling it 'sheer delight' and 'transporting.' The critic asks 'who cares?' about the familiar plot, indicating the positives outweigh negatives. Single excerpt requires caution, but the final verdict is clearly positive. | GPT-4o: The review excerpt praises the score and performances, calling the evening 'sheer delight' despite noting a contrived book. The positive tone suggests a strong recommendation. | Gemini: Despite mentioning a contrived book, the reviewer uses strong positive language like \"sheer delight\" and \"exhilarating,\" indicating a strong recommendation. Given the single excerpt warning, I'm placing the score towards the higher end of the positive range. | Kimi: The critic acknowledges the book is contrived but dismisses this flaw with 'who cares?' and emphasizes the transporting score, exhilarating music, and sheer delight of the evening, indicating a strong recommendation in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:17:41.723Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

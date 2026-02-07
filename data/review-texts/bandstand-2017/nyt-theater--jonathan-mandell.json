@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The cast is pitch-perfect...The catchy, beat-happy score pays homage to the big band era...Director and choreographer Andy Blankenbuehler seamlessly nods to 1940s popular dances in coming up with some lively, inventive moves, performed by some terrific dancers...All of this terrific entertainment and artistry is arranged around a plot that also recalls the 1940s, but ultimately not in a good way...The more the singing contest takes over the plot...the more the plot stumbles.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All of this terrific entertainment and artistry is arranged around a plot that also recalls the 1940s, but ultimately not in a good way.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Review praises cast, score, and choreography as 'pitch-perfect' and 'terrific' but clearly states the plot 'stumbles' and is problematic. The structure suggests significant reservation despite praising individual elements. | GPT-4o: The review praises the cast, score, and choreography but criticizes the plot, indicating a mixed reception. The excerpt suggests strong production elements but significant plot issues. | Gemini: The review praises the cast, score, and choreography, but notes that the plot stumbles. Due to the limited excerpt, confidence is low, and the score is at the lower end of the positive range. | Kimi: While the excerpt ends with criticism of the stumbling plot, the critic explicitly calls the show 'terrific entertainment and artistry' with a 'pitch-perfect' cast and inventive direction, indicating a recommendation based on performance and production values despite book issues. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:14:53.307Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 74,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

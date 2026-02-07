@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new musical about World War II veterans trying to make it as a swing band has more good intentions than good songs. But it succeeds in capturing the era's conflicted feelings about returning soldiers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new musical about World War II veterans trying to make it as a swing band has more good intentions than good songs. But it succeeds in capturing the era's conflicted feelings about returning soldiers.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new musical about World War II veterans trying to make it as a swing band has more good intentions than good songs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show's flaws ('more good intentions than good songs') but finds merit in its thematic success ('succeeds in capturing the era's conflicted feelings'). With only one excerpt available, this appears genuinely mixed rather than clearly positive or negative. | GPT-4o: The excerpt indicates a mix of positive and negative elements, noting good intentions but lacking strong songs. The focus on capturing the era's feelings suggests some merit, but the overall tone is mixed. | Gemini: The review notes more good intentions than good songs, suggesting a mixed assessment. The success in capturing the era's conflicted feelings adds a positive element, but the lack of strong songs tempers the recommendation. | Kimi: The excerpt presents a balanced but critical view, praising the show's historical authenticity while noting the songs fail to match its ambitions. Single excerpt limits certainty.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:15:43.149Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

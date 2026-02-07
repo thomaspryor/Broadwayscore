@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"While it flirts with cliche almost to the point of marriage, 'Bandstand' manages to stay on message and deliver a genuinely heartfelt and affecting story about the greatest generation's return home from World War II...Together this cast keep the energy high and the story blasting forward. Where 'Bandstand' succeeds to its fullest is in the music. Whether it's played by the orchestra or the cast, it's nothing short of perfect...'Bandstand' is so good that you don't think about its blindspots.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bandstand' is so good that you don't think about its blindspots.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for music ('nothing short of perfect'), cast energy, and overall impact ('so good'). Despite flirting with cliche, the verdict is clearly positive. Single excerpt warning requires caution, but tone is enthusiastic enough for upper Positive range. | GPT-4o: The excerpt highlights strong praise for the music and overall impact, despite acknowledging some cliches. The positive tone suggests a strong recommendation, but confidence is low due to the single excerpt warning. | Gemini: The review is generally positive, highlighting the heartfelt story, energetic cast, and perfect music. Despite mentioning it flirts with cliche, the overall tone is enthusiastic, suggesting a strong positive recommendation. | Kimi: The excerpt offers enthusiastic praise for the music ('nothing short of perfect'), cast energy, and emotional impact, acknowledging minor flaws but delivering a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:16:43.221Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

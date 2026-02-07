@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Taylor and Oberacker did a fine job turning the story into a deeply engaging and moving work. With high intensity and just the right touch of humor, they deal sensitively with the emotional issues plaguing each of the characters, while director/choreographer Andy Blankenbuehler put it into exhilarating motion…The music is appealingly catchy...With nary a false note in this production, 'Bandstand' creates sweet harmony from the dissonance of war.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With nary a false note in this production, 'Bandstand' creates sweet harmony from the dissonance of war.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise throughout with 'deeply engaging and moving,' 'exhilarating motion,' 'appealingly catchy music,' and 'nary a false note.' The excerpt shows consistent enthusiasm despite being a single curated quote. | GPT-4o: The excerpt praises the production as 'deeply engaging and moving' with 'exhilarating motion' and 'appealingly catchy' music, suggesting a strong recommendation. However, the single excerpt warning indicates potential cherry-picking, so confidence is low. | Gemini: The review uses very positive language such as \"deeply engaging and moving work\", \"high intensity\", \"exhilarating motion\", and \"appealingly catchy\". The phrase \"with nary a false note\" indicates a strong positive recommendation. | Kimi: The excerpt offers enthusiastic praise for the writing, direction, and music, describing the show as 'deeply engaging,' 'moving,' and 'exhilarating' with 'nary a false note.' While clearly positive, the single curated excerpt warrants reduced confidence regarding the full review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:14:01.063Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

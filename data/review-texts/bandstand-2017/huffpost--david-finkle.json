@@ -19,5 +19,60 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.huffingtonpost.com/michael-giltz/theater-upbeat-bandstand_b_8328446.html"
+  "playbillVerdictUrl": "http://www.huffingtonpost.com/michael-giltz/theater-upbeat-bandstand_b_8328446.html",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Arguably the best new musical of the season",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified superlatives including 'enthralling,' 'arguably the best new musical of the season,' and 'performance of her career' with comparisons to classic shows like South Pacific indicate a strong rave review. | GPT-4o: The review uses superlatives like 'enthralling', 'best new musical of the season', and praises performances highly. The tone is overwhelmingly positive, indicating a strong recommendation. | Gemini: The excerpt contains very positive language, including calling it arguably the best new musical of the season and comparing it to South Pacific. While truncated, the tone suggests a strong positive recommendation. | Kimi: The excerpt contains unqualified superlatives, comparing the show to the masterpiece 'South Pacific' and hailing it as arguably the best new musical of the season, with exceptional praise for the lead performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:10:52.136Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

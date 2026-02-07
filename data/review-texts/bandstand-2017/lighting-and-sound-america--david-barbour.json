@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"All of these songs unfold in an onstage world jittery with energy, maddened by an irresistible swing beat, thanks to the tightly coiled staging of director/choreographer Blankenbuehler...Cott drives the action as Donny, offering galvanic vocals...Osnes finds a surprising (and welcome) amount of steel in Julia...Even in its more formulaic moments, the show continues to surprise. And its central point remains steadfast: These men risked everything for their country—attention must be paid.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even in its more formulaic moments, the show continues to surprise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction, choreography, and lead performances with energetic language ('galvanic,' 'jittery with energy'). Acknowledges formulaic elements but emphasizes surprises and meaningful message. Single excerpt from curated source warrants upper-positive range. | GPT-4o: The excerpt praises the energy, staging, and performances, and notes that the show surprises even in formulaic moments. The tone is clearly positive, suggesting a strong recommendation. | Gemini: The review praises the staging, vocals, and performances, highlighting the show's ability to surprise despite formulaic moments. The concluding statement about the show's central point being steadfast further supports a positive assessment. | Kimi: The excerpt offers strong praise for the staging ('tightly coiled,' 'jittery with energy'), performances ('galvanic vocals'), and emotional impact, with only minor reservations about formulaic elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:12:47.771Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

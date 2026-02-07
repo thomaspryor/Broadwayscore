@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"There is great music; spectacular singing; a healthy, lively pulse; and athletic, creative dancing. The only problem in this show is that the creators barely give the piece a moment to catch its breath, constantly driving forward without a pause...It is in the calmer moments, sometimes too few and far between, that we can really feel attached to these tortured souls...The director needs to have more faith in our attention span.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is great music; spectacular singing; a healthy, lively pulse; and athletic, creative dancing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises multiple production elements but identifies significant pacing issues. Single excerpt warning applies - this sounds mildly positive with notable reservations about direction. | GPT-4o: The excerpt praises the music, singing, and dancing but notes pacing issues and a lack of calmer moments. The positive elements dominate, but the critique of pacing suggests some reservations. | Gemini: The review praises the music, singing, and dancing, but criticizes the pacing. Due to the limited excerpt, confidence is low, but the positive elements outweigh the negative. | Kimi: The excerpt offers strong praise for the production's core elements ('spectacular', 'great', 'creative') outweighing the criticism about pacing, indicating a positive recommendation despite the noted directorial issues.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:10:01.605Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

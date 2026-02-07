@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Has all the ingredients necessary to make a Broadway hit: catchy songs that stay in your head...extraordinary choreography and a captivating story of war, love, and perseverance...Although undoubtedly an excellent piece of theater, there seems to be something somewhat dated about it...Although it’s possible that you’ll foresee a plot twist, embrace it, as 'Bandstand' is just as likely to jolt you alert, reduce you to tears, and ultimately, bring you to your feet.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Has all the ingredients necessary to make a Broadway hit: catchy songs that stay in your head...extraordinary choreography and a captivating story",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear recommendation with praise for songs, choreography, and story, calling it 'excellent theater' that will 'bring you to your feet.' The 'dated' concern is minor compared to the overall positive assessment. Low confidence due to single excerpt warning. | GPT-4o: The review highlights strong elements like catchy songs, choreography, and an engaging story, suggesting a positive recommendation. However, it notes a dated aspect, indicating some reservation. Given the single excerpt warning, the score is at the upper end of Positive. | Gemini: The review highlights several positive aspects such as catchy songs, choreography, and a captivating story, but also notes that it feels somewhat dated. The overall tone suggests a recommendation with reservations. | Kimi: The reviewer praises the production as an 'excellent piece of theater' with 'extraordinary choreography' and promises it will 'bring you to your feet,' while offering only mild criticism that the material feels somewhat dated.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:17:17.747Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

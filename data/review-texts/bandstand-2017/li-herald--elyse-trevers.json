@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Bandstand' begins with a promising premise...The musicians are terrific, even those making their acting debuts...Blankenbuehler includes some exciting swing dancing, and there is a creative number featuring dancers who follow the soldiers as if they are shadows of their younger selves in combat...The show goes on too long, with what feels like extraneous scenes and music. What started out so promising in 'Bandstand' gets clichéd in the end.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What started out so promising in 'Bandstand' gets clichéd in the end.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises individual elements (musicians, choreography, creative staging) but criticizes pacing and finds the overall result clichéd and disappointing. The arc from 'promising premise' to 'clichéd in the end' suggests mixed-to-negative assessment. | GPT-4o: The review praises the musicians and choreography but criticizes the show for becoming clichéd and overly long. The single excerpt suggests a mixed impression, with both positive and negative elements. | Gemini: The review starts with praise for the premise and musicians, but then states the show goes on too long and becomes clichéd. Due to the limited excerpt, confidence is low. | Kimi: The excerpt praises the musicians, swing dancing, and creative staging but criticizes the show's excessive length and disappointing, clichéd conclusion. With only one curated excerpt available that ends on a negative note, the overall recommendation is ambiguous but leans mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:12:00.832Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

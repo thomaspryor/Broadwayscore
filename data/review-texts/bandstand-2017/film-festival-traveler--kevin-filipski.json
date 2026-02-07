@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Sentimental but affecting...Osnes is the emotional center of a show that also generously allows each of the bandsmen to work out his demons by playing the music he loves. And Blankenbuehler has ingeniously visualized those ghosts and the weight on each vet’s shoulders with astonishingly effective choreographed movements...Richard Oberacher’s toe-tappingly swing-inflected music at times digs into a well of melody and emotion.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sentimental but affecting...Osnes is the emotional center of a show that also generously allows each of the bandsmen to work out his demons by playing the music he loves.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows consistent praise for lead performance, choreography, and music with specific superlatives like 'astonishingly effective' and 'ingeniously visualized'. However, confidence is low due to limited text and potential cherry-picking of positive quotes. | GPT-4o: The excerpt praises the emotional impact and choreography, with positive mentions of the music and performances. The tone is clearly positive, suggesting a strong recommendation. | Gemini: The review uses positive language such as \"affecting,\" \"generously allows,\" \"astonishingly effective,\" and \"toe-tappingly swing-inflected music.\" Given the single excerpt and positive tone, I'm scoring it at the higher end of the positive range, but with low confidence. | Kimi: Despite noting the show is 'sentimental,' the excerpt offers strong praise for the lead performance, direction ('ingeniously,' 'astonishingly effective'), and music, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:08:34.619Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
