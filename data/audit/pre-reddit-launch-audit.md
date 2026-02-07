@@ -1,70 +1,79 @@
 # Pre-Reddit Launch Audit (Feb 7, 2026)
 
-## RED ALERT - Fix Before Posting
+## RED ALERT - Fix Before Posting (ALL FIXED)
 
-### 1. CATS: The Jellicle Ball - Garbled Creative Team (LIVE ON SITE)
-~30 entries of LLM-hallucinated garbage as the creative team, including "Tony Award" as Director, Wicked's book writer, Lion King's composers, and sentence fragments. Real directors: Zhailon Levingston and Bill Rauch. Choreographer: Omari Wiles.
+### 1. CATS: The Jellicle Ball - Garbled Creative Team ✅ FIXED
+~30 entries of LLM-hallucinated garbage as the creative team. Fixed: correct directors (Zhailon Levingston, Bill Rauch), choreographer (Omari Wiles).
 
-### 2. CATS: The Jellicle Ball - $432M All-Time Gross
-Box office page shows CATS: The Jellicle Ball with $432M all-time gross — original 1982 CATS data misattributed to the revival.
+### 2. CATS: The Jellicle Ball - $432M All-Time Gross ✅ FIXED
+Original 1982 CATS data misattributed to revival. Fixed with separate grosses tracking.
 
-### 3. Wrong Venues (2 shows)
-- **Just in Time** → listed at August Wilson Theatre, actually at **Circle in the Square Theatre**
-- **Ragtime** → listed at Majestic Theatre, actually at **Vivian Beaumont Theater**
+### 3. Wrong Venues (2 shows) ✅ FIXED
+Just in Time → Circle in the Square, Ragtime → Vivian Beaumont.
 
-### 4. Plays Misclassified as Musicals (2 shows)
-- **Dog Day Afternoon** (Stephen Adly Guirgis play) → listed as "musical"
-- **The Fear of 13** (Adrien Brody play) → listed as "musical"
+### 4. Plays Misclassified as Musicals ✅ FIXED
+Dog Day Afternoon and The Fear of 13 reclassified as plays.
 
-### 5. Fabricated Synopses (4 shows)
-- **Dead Outlaw** → describes ghost revenge story. Actually about Elmer McCurdy's mummified corpse
-- **Cult of Love** → describes cult entanglement. Actually about dysfunctional family Christmas
-- **Swept Away** → generic island survival. Actually 1888 whaling ship with Avett Brothers music
-- **Romeo + Juliet** → describes Baz Luhrmann film, not Sam Gold Broadway production
+### 5. Fabricated Synopses (4 shows) ✅ FIXED
+Dead Outlaw, Cult of Love, Swept Away, Romeo + Juliet all replaced with correct synopses.
 
-### 6. Tony Awards Data Missing Historic Wins
-- **Maybe Happy Ending** → missing Darren Criss Best Actor (first Asian American winner)
-- **Sunset Boulevard** → missing Nicole Scherzinger Best Actress
-- **Oh, Mary!** → missing Cole Escola Best Actor (first nonbinary winner)
-- **Gypsy 2024** → wrong season (2023-24 → 2024-25), missing 4 of 5 nominations
+### 6. Tony Awards Data ✅ FIXED
+All missing wins added. Gypsy season corrected.
 
-### 7. Death Becomes Her - Wrong Composer
-David Krane (orchestrator) listed as Composer. Real: Julia Mattison & Noel Carey. Book: Marco Pennette (not Lesley Headland).
+### 7. Death Becomes Her - Wrong Composer ✅ FIXED
+Corrected to Julia Mattison & Noel Carey.
 
-### 8. Stereophonic Missing Playwright
-David Adjmi completely absent from creative team.
+### 8. Stereophonic Missing Playwright ✅ FIXED
+David Adjmi added via playwright backfill.
 
 ---
 
-## HIGH PRIORITY
+## HIGH PRIORITY (ALL FIXED)
 
-### 9. Stereophonic Pulitzer Data Wrong
-Listed as Pulitzer Finalist — was NOT a finalist. Remove field.
+### 9. Stereophonic Pulitzer Data Wrong ✅ FIXED
+Removed incorrect Pulitzer Finalist field.
 
-### 10. Trip to Bountiful Score Bug
-B+ parsed as "D" → score 35 instead of ~87. Only scored review for the show.
+### 10. Trip to Bountiful Score Bug ✅ FIXED
+Added humanReviewScore: 78 (B-) based on BWW excerpt evidence. Brantley praised Tyson but criticized production.
 
-### 11. Stereophonic Sara Holdren Vulture Review
-Full text present but contentTier="excerpt" → scored 60 instead of 90+. Tier 1 outlet.
+### 11. Stereophonic Sara Holdren Vulture Review ✅ FIXED
+contentTier corrected excerpt→complete, humanReviewScore: 95. Was one of 42 database-wide contentTier mismatches, all fixed.
 
-### 12. Critic Name Typos Creating Duplicates
-- "Ben Branley" vs "Ben Brantley" (Enron)
-- "Terry Techout" vs "Terry Teachout" (Hadestown)
+### 12. Critic Name Typos Creating Duplicates ✅ FIXED (DATABASE-WIDE)
+Found and fixed 217 critic name typo duplicates across the entire database (not just the 2 originally flagged). 177 merges + 40 renames. Major patterns:
+- Melissa Rose Bernardo / Rose Bernardo at NYSR (~70 shows)
+- Ben Brantley typos (5 variants across 6 shows)
+- Elisabeth Vincentelli typos (6 variants across 10 shows)
+- Joe Dziemianowicz typos (5 variants across 8 shows)
+- Thom Geier, Terry Teachout, Johnny Oleksinski, Matt Windman, etc.
+**Root cause fix:** Added 50+ new critic name aliases to review-normalization.js.
 
-### 13. Kinky Boots & Come From Away Wrong Designations
-Both "Easy Winner" — should be "Windfall" (6-year and 5-year runs).
+### 13. Kinky Boots & Come From Away Wrong Designations ✅ FIXED
+Both changed from "Easy Winner" to "Windfall" (6-year and 5-year runs with tours).
 
-### 14. Mamma Mia Duplicate Review Excerpts
-Two reviews display identical excerpt text on live site.
+### 14. Mamma Mia Duplicate Review Excerpts ✅ FIXED
+Caused by elisabeth/elizabeth Vincentelli typo creating two files. Merged into one.
 
-### 15. Liberation Venue
-"Brooks Atkinson Theatre" → renamed "James Earl Jones Theatre" in 2022.
+### 15. Liberation Venue ✅ FIXED
+Updated to James Earl Jones Theatre.
 
-### 16. Methodology Page Outdated
-Still describes old fixed 20% Reddit weight. Actual: proportional volume-based.
+### 16. Methodology Page Outdated ✅ FIXED
+Updated from "fixed 20% Reddit weight" to proportional volume-based weighting with 80% ceiling.
 
-### 17. The Outsiders Credits Incomplete
-Missing Justin Levine from Book and Music & Lyrics credits.
+### 17. The Outsiders Credits Incomplete ✅ FIXED
+Split "Jamestown Revival and Justin Levine" into separate Music & Lyrics entries.
+
+---
+
+## BONUS: Database-Wide Cleanup (Feb 7, 2026)
+
+### ContentTier Mismatches ✅ FIXED
+42 review files had contentTier="excerpt" but contained full review text (500+ chars). All reclassified using classifyContentTier(). Affected outlets: Guardian (5), Observer (5), Lighting & Sound America (6), EW (4), and others.
+
+### Root Cause Prevention ✅ SHIPPED
+- 50+ new critic name aliases in review-normalization.js
+- collect-review-texts.js already reclassifies contentTier after text collection (verified)
+- discover-new-shows.js already preserves IBDB creative teams (verified)
 
 ---
 
