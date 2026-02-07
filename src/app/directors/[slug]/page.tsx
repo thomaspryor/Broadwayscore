@@ -57,6 +57,7 @@ export default function DirectorDetailPage({ params }: { params: { slug: string 
       <CreativeDetailClient
         profile={profile}
         categoryLabel={config.label}
+        categoryLabelPlural={config.labelPlural}
         routePath={config.routePath}
         rank={rank}
       />

@@ -57,6 +57,7 @@ export default function PlaywrightDetailPage({ params }: { params: { slug: strin
       <CreativeDetailClient
         profile={profile}
         categoryLabel={config.label}
+        categoryLabelPlural={config.labelPlural}
         routePath={config.routePath}
         rank={rank}
       />
