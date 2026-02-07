@@ -18880,18 +18880,6 @@
     "timestamp": "2026-02-06T18:10:56.657Z"
   },
   {
-    "reviewId": "shucked-2023/vulture--jackson-mchenry.json",
-    "showId": "shucked-2023",
-    "outlet": "Vulture",
-    "critic": "Jackson McHenry",
-    "url": "https://www.vulture.com/2023/04/theater-review-shucked-musical-broadway-corn.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): the book of mormon, proof, the collaboration, tina, tootsie...",
-    "textLength": 7512,
-    "timestamp": "2026-02-06T18:12:50.053Z"
-  },
-  {
     "reviewId": "some-like-it-hot-2022/culture-vulture--jackson-mchenry.json",
     "showId": "some-like-it-hot-2022",
     "outlet": "culture-vulture",
@@ -23294,5 +23282,101 @@
     "garbageReason": "Multiple shows mentioned (15): cats: the jellicle ball, giant, company, betrayal, summer...",
     "textLength": 7789,
     "timestamp": "2026-02-07T09:48:33.981Z"
+  },
+  {
+    "reviewId": "shucked-2023/vulture--jackson-mchenry.json",
+    "showId": "shucked-2023",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/2023/04/theater-review-shucked-musical-broadway-corn.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): the book of mormon, proof, the collaboration, tina, tootsie...",
+    "textLength": 7512,
+    "timestamp": "2026-02-07T09:50:02.438Z"
+  },
+  {
+    "reviewId": "significant-other-2017/nyt-theater--jonathan-mandell.json",
+    "showId": "significant-other-2017",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2017/03/02/significant-other-review-dating-in-the-age-of-bridezilla-and-marriage-equality/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): smash, summer, spring awakening, rain, high...",
+    "textLength": 4195,
+    "timestamp": "2026-02-07T09:51:03.633Z"
+  },
+  {
+    "reviewId": "significant-other-2017/nytimes--ben-brantley.json",
+    "showId": "significant-other-2017",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2017/03/02/theater/significant-other-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): chicago, purpose, company, rain, elling...",
+    "textLength": 6923,
+    "timestamp": "2026-02-07T09:51:07.978Z"
+  },
+  {
+    "reviewId": "significant-other-2017/nytimes--unknown.json",
+    "showId": "significant-other-2017",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2017/03/02/theater/significant-other-review.html?_r=0",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): purpose, company, rain, elling, race...",
+    "textLength": 6232,
+    "timestamp": "2026-02-07T09:52:33.814Z"
+  },
+  {
+    "reviewId": "skylight-2015/hollywood-reporter--david-rooney.json",
+    "showId": "skylight-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/skylight-theater-review-773189/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): the great gatsby, mamma mia!, english, sweat, hair...",
+    "textLength": 6559,
+    "timestamp": "2026-02-07T09:53:05.596Z"
+  },
+  {
+    "reviewId": "skylight-2015/nytimes--unknown.json",
+    "showId": "skylight-2015",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2015/04/03/theater/review-skylight-with-carey-mulligan-and-bill-nighy-opens-on-broadway.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): the great gatsby, home, the audience, hair, once...",
+    "textLength": 7178,
+    "timestamp": "2026-02-07T09:54:41.986Z"
+  },
+  {
+    "reviewId": "skylight-2015/vulture--jesse-green.json",
+    "showId": "skylight-2015",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2015/04/theater-review-an-illuminating-skylight.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): home, waitress, betrayal, cats, sweat...",
+    "textLength": 8961,
+    "timestamp": "2026-02-07T09:54:47.545Z"
+  },
+  {
+    "reviewId": "skylight-2015/vulture--unknown.json",
+    "showId": "skylight-2015",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2015/04/theater-review-an-illuminating-skylight.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): home, waitress, betrayal, cats, sweat...",
+    "textLength": 8961,
+    "timestamp": "2026-02-07T09:54:50.657Z"
   }
 ]
