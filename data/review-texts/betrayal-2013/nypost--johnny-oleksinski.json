@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A sexy Tom Hiddleston leads Broadway's 'Betrayal'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 3/4 stars indicates a positive recommendation. Single excerpt with star rating and positive descriptive language ('sexy') suggests clear endorsement, but limited text requires low confidence. | GPT-4o: The 3/4 star rating suggests a positive review. The excerpt highlights Tom Hiddleston's performance, indicating a recommendation, but the lack of full context and single excerpt warning necessitates a cautious, low-confidence score. | Gemini: The review excerpt includes a 3/4 star rating and the phrase \"A sexy Tom Hiddleston leads Broadway's 'Betrayal',\" which indicates a positive assessment of the show, particularly Hiddleston's performance. Given the single excerpt warning, I'm placing the score in the upper end of the positive range. | Kimi: The 3/4 star rating indicates a clear positive recommendation for this production, placing it in the solid-if-not-ecstatic range, though the limited single excerpt prevents a more nuanced assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:02:34.627Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 73,
+    "geminiScore": 81,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

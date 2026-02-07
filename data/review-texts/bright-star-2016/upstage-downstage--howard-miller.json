@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Bright Star' boasts a lively and lovely bluegrass score...If you like the toe-tapping sounds of banjos, fiddles, and guitars, there’s plenty of that on hand, and it’s all good. The story Brickell and Martin tell falls in tone somewhere between realism and folk tale, a mix that doesn’t always blend smoothly but one that gets the job done and opens the way for the excellent cast to win our hearts...Cusack's is one of those magical debuts that can launch a performer to stardom.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The story falls in tone somewhere between realism and folk tale, a mix that doesn't always blend smoothly but one that gets the job done.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for score ('lively and lovely'), cast ('excellent'), and star performance ('magical debut'). Mixed tone issues noted but overall assessment is positive with strong performance highlights. | GPT-4o: The review excerpt praises the score and cast, indicating a positive view. However, it notes some tonal blending issues, suggesting reservations. The limited excerpt and warning about potential cherry-picking reduce confidence. | Gemini: The review highlights the lively bluegrass score and excellent cast, but also notes that the story's tone doesn't always blend smoothly. This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: Strong praise for the bluegrass score ('lively and lovely') and excellent cast outweighs minor reservations about the story's tonal blending. Single excerpt warrants caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:57:17.241Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

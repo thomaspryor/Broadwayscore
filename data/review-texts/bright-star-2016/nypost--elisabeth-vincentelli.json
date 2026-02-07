@@ -19,5 +19,60 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://nypost.com/2016/03/24/steve-martins-bluegrass-musical-bright-star-has-a-strangely-intense-plot/"
+  "playbillVerdictUrl": "http://nypost.com/2016/03/24/steve-martins-bluegrass-musical-bright-star-has-a-strangely-intense-plot/",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As a gentle fable, 'Bright Star' has a quirky charm, but its stubborn refusal to face up to its dark side diminishes it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges appeal and charm but identifies significant structural problems that prevent a recommendation. The final verdict balances positives against substantial negatives without clear guidance to see or skip it. | GPT-4o: The review acknowledges the show's charm and appeal to fans of Martin's humor, but also notes significant drawbacks such as its refusal to engage with darker themes. This suggests a mixed verdict with both positive and negative elements. | Gemini: The review highlights both positive and negative aspects of the show. It acknowledges the show's charm and appeal but also points out its shortcomings, resulting in a mixed assessment. | Kimi: The review acknowledges the show's 'quirky charm' and appeal for fans of Steve Martin's humor, but criticizes the tonal mismatch between the over-the-top plot and low-key production, noting the show 'ambles along' and fails to engage with its darker elements. The mixed signals and qualified praise place it in the Mixed bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:40:15.136Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

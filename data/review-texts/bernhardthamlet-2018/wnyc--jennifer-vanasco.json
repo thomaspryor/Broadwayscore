@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But most are likely to be frustrated with the drama's muddy story and emphasis on low-hanging fruit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review acknowledges strong elements (McTeer's performance, production design) but explicitly states most audiences will be 'frustrated' with core dramatic issues. Mixed verdict with significant reservations. | GPT-4o: The review highlights both positive elements (detailed sets, eloquent costumes, Janet McTeer's performance) and significant negatives (muddy story, low-hanging fruit). The overall tone suggests a mixed reception, with notable praise for specific aspects but frustration with the core drama. | Gemini: The review praises some elements (sets, costumes, McTeer's performance) but criticizes the story. The overall sentiment is mixed, with the play being 'saved' by the actor but still having significant flaws. Confidence is low due to the limited excerpt. | Kimi: While criticizing the muddy story and low-hanging fruit, the reviewer concludes the play is 'saved' by Janet McTeer's stunning performance, indicating a qualified recommendation primarily for the lead actor's turn.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:56:51.884Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "\"Bluegrass-y, Southern-Gothic-y 'Bright Star,' which is directed by Walter Bobbie and choreographed by Josh Rhodes with a sleekness that makes your head spin with giddy delight...When an audience member is inspired to think ahead of the creative team it can make a protracted second act that much longer. It felt like I was waiting for the inevitable to occur...On the formidable plus-side, there’s much more to say of the 'Bright Star' score...Yet the real heroes here are Bobbie and Rhodes\"\n\nRead more",
   "isRoundupArticle": true,
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "When an audience member is inspired to think ahead of the creative team it can make a protracted second act that much longer.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The excerpt shows both praise (direction/choreography that creates 'giddy delight', 'formidable plus-side' of the score) and significant criticism (predictable plot, dragging second act). With only one curated excerpt available, the mixed signals suggest a qualified recommendation at best. | GPT-4o: The review praises the direction and choreography but criticizes the pacing and predictability of the second act. The excerpt suggests mixed feelings, with notable positives but significant reservations. | Gemini: The review has both positive and negative elements, but overall leans slightly positive due to the praise for the direction and choreography. However, the truncated nature of the text and the mention of a protracted second act suggest reservations. | Kimi: The excerpt offers enthusiastic praise for the direction, choreography, and score ('giddy delight,' 'formidable plus-side'), but includes significant criticism of a 'protracted second act' where the audience can predict the outcome. This represents a qualified, mildly positive recommendation typical of the 70-74 range. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:49:24.022Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

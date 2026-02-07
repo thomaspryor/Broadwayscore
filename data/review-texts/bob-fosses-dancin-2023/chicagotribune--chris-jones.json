@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "That truth surely dances around your head at 'Bob Fosse’s Dancin’,' the fascinating, if deeply conflicted, new Broadway revival of the hit 1978 revue 'Dancin’.' It’s now more tightly branded around its famous, or infamous, choreographer and restaged at the Music Box Theatre by Wayne Cilento, an orig...",
-  "bwwRoundupUrl": null
+  "bwwRoundupUrl": null,
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That truth surely dances around your head at 'Bob Fosse's Dancin',' the fascinating, if deeply conflicted, new Broadway revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic calls it 'fascinating' but immediately qualifies with 'deeply conflicted,' suggesting mixed feelings. With only a truncated excerpt available, confidence is low as the full verdict may be cut off. | GPT-4o: The excerpt describes the show as 'fascinating' but also 'deeply conflicted,' indicating a mixed review. The lack of a full review or clear rating lowers confidence. | Gemini: The excerpt calls the revival \"fascinating, if deeply conflicted.\" This suggests a mixed reaction, leaning towards the positive due to the \"fascinating\" descriptor. However, the lack of a clear recommendation and the \"deeply conflicted\" aspect place it in the Mixed bucket. | Kimi: The excerpt offers qualified praise ('fascinating') alongside significant criticism ('deeply conflicted'), suggesting a mixed reception. As a single truncated excerpt, the full verdict may differ.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:19:10.925Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

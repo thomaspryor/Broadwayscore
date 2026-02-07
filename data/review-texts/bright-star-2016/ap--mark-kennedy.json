@@ -19,5 +19,60 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://abcnews.go.com/Entertainment/wireStory/review-bright-star-cliche-ridden-eager-show-37913013"
+  "playbillVerdictUrl": "http://abcnews.go.com/Entertainment/wireStory/review-bright-star-cliche-ridden-eager-show-37913013",
+  "assignedScore": 20,
+  "llmScore": {
+    "score": 20,
+    "confidence": "high",
+    "range": {
+      "low": 15,
+      "high": 25
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show never hits an honest note and seems to have been written by two people who adore classic Broadway musicals but who have intentionally decided to make a third-rate version.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating critique calling it 'third-rate' with 'weak music' and 'feeble' book/lyrics. The vivid closing metaphor about knocking 'the corndog out of your hand' shows total dismissal. | GPT-4o: The review is highly critical, describing the show as a 'third-rate version' with 'weak' music and 'feeble' book and lyrics. The tone suggests a strong negative verdict, but the excerpt is limited, so confidence is low. | Gemini: The review is overwhelmingly negative, describing the show as a \"third-rate version\" with weak music, feeble book and lyrics, and a forced happy ending. The overall tone indicates a strong disapproval and a recommendation to avoid. | Kimi: The excerpt offers a scathing assessment with no redeeming qualities mentioned, describing the show as 'third-rate' and 'feeble' with 'graceless' writing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:22:14.308Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 22,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

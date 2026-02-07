@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-blackbird-broadway-review-ent-0310-20160310-column.html"
+  "playbillVerdictUrl": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-blackbird-broadway-review-ent-0310-20160310-column.html",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For some of those attracted by the bold-face names, it surely will come as a sparse shock, a tough, toxic 80-minute ride",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt warning applies. The critic describes the show as a 'sparse shock' and 'tough, toxic ride' which suggests challenging material that may not satisfy all audiences. The warning about disappointing star-seekers indicates mixed reception potential. | GPT-4o: The excerpt suggests a challenging and potentially off-putting experience despite the star power, indicating a mixed reception. The single excerpt and lack of a clear positive or negative verdict necessitate a cautious approach. | Gemini: The review excerpt suggests a challenging and potentially off-putting experience, but doesn't explicitly discourage seeing it. The phrase \"sparse shock\" and \"tough, toxic ride\" indicate a mixed reaction. | Kimi: The excerpt warns that despite star power, the show offers a 'sparse' and 'toxic' experience likely to disappoint mainstream audiences. With only one curated excerpt available, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:10:12.410Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

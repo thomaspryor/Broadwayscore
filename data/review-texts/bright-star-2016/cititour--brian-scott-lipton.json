@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A certain percentage of theatergoers won’t really be able to get past Martin’s overly earnest, structurally muddled and often tonally questionable libretto...Cusack flawlessly embodies Murphy in both periods with grit and vulnerability, which goes a long way to helping us overlook the show’s flaws...As for Martin and Brickell’s score, it pleases the ear on first listening...That’s why I am glad they still make CDs, because I really couldn’t make it through a second viewing of 'Bright Star.'\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I really couldn't make it through a second viewing of 'Bright Star.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising Cusack's performance and the music, the critic calls the libretto 'muddled' and 'questionable' and explicitly states they couldn't sit through it again - a clear negative recommendation. | GPT-4o: The critic highlights significant issues with the libretto and expresses a reluctance to see the show again, despite some praise for performances and music. The single excerpt suggests a negative overall verdict. | Gemini: The review praises Cusack's performance and the score, but criticizes the libretto and expresses a reluctance to see the show again, indicating a mixed overall impression. | Kimi: Despite praising the lead performance as 'flawless' and the score as pleasing, the critic explicitly states they could not endure a second viewing and implies the soundtrack is a better investment than the stage production, constituting a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:25:00.330Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

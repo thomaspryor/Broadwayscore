@@ -12,5 +12,60 @@
   "bwwExcerpt": "'Bloody Bloody Andrew Jackson' is a not-exactly-history play in which the life of America's seventh president is given what might be called the Jon Stewart treatment (i.e., lots and lots of Irony Lite) and set to the style of rock known as 'emo' (i.e., unabashed emotion accompanied by a just-kidding wink that draws the deadly sting of sincerity). And what are the results? Mixed—but also, if a middle-age critic may dare to say so, hugely encouraging.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "publishDate": "October 14, 2010"
+  "publishDate": "October 14, 2010",
+  "assignedScore": 67,
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 62,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And what are the results? Mixed—but also, if a middle-age critic may dare to say so, hugely encouraging.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic explicitly states results are 'Mixed' but adds 'hugely encouraging,' suggesting qualified optimism. Single excerpt warning requires caution about incomplete verdict. | GPT-4o: The review describes the results as 'mixed' but also 'hugely encouraging'. This suggests a mixed verdict with some positive elements, placing it at the high end of the Mixed bucket. | Gemini: The review excerpt explicitly states the results are \"mixed\" but also \"hugely encouraging.\" Due to the limited text, confidence is low. | Kimi: The critic explicitly labels the theatrical results as 'Mixed' but offers the strong qualification 'hugely encouraging,' suggesting appreciation for the show's risks and energy despite reservations about its effectiveness. With only a single excerpt available, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:18:46.924Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 69,
+    "geminiScore": 65,
+    "kimiScore": 68,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

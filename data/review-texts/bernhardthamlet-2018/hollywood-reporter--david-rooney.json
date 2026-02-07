@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "sources": [
     "show-score-playwright",
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play in most respects is a missed opportunity, despite the pleasure of watching the willowy, silver-tongued McTeer careen from high camp into righteous hauteur.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic states the play 'doesn't add up to a play' and calls it 'a missed opportunity,' clearly negative verdicts. While praising McTeer's performance and acknowledging some directorial effort, the overall assessment is disappointment with the writing and structure. | GPT-4o: The review highlights structural issues and describes the play as a 'missed opportunity,' indicating a negative assessment despite some praise for McTeer's performance. The text is an excerpt, so confidence is low. | Gemini: The review states that the play \"doesn't add up to a play\" and is a \"missed opportunity,\" indicating a negative assessment despite praising the lead performance. | Kimi: The critic finds the play structurally unsatisfying ('doesn't add up to a play') and a 'missed opportunity,' though they praise Janet McTeer's performance and the dialogue. The overall verdict discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:46:40.759Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

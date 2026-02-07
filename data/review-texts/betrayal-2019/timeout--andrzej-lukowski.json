@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/betrayal"
+  "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/betrayal",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Really, though, the triumph here belongs to director Jamie Lloyd.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt uses the word 'triumph' to describe Lloyd's direction and suggests deep understanding of Pinter, indicating strong praise. However, with only one truncated excerpt available, confidence is low. | GPT-4o: The excerpt provides strong praise for the director, describing his understanding of Pinter as unparalleled. This suggests a highly positive view of the production, fitting the Rave bucket. | Gemini: The excerpt praises the director's work as a \"triumph,\" indicating a strong positive sentiment. Given the single excerpt, confidence is low, but the positive language warrants a high score within the positive bucket. | Kimi: The excerpt employs strong positive language ('triumph') praising the director's mastery of the material, indicating a clear recommendation. Confidence is low due to limited text availability and truncation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:07:31.212Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

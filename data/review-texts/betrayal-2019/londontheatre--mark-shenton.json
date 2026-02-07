@@ -16,5 +16,59 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is stylishly staged with minimal sets and props",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt praises the production's stylish staging and innovative use of minimal sets and props. However, due to the single excerpt warning, the confidence is low, and the score is set at the lower end of the Positive bucket. | Gemini: The review excerpt describes the production as stylishly staged, suggesting a positive assessment. However, due to the limited text, confidence is low. | Kimi: The excerpt offers strong praise for the production's stripped-back physical staging and emotional impact, using superlatives that suggest a clear recommendation, though as a single curated quote the full verdict remains uncertain.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:06:20.596Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 80,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

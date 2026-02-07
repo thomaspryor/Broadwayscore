@@ -19,5 +19,60 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.ew.com/article/2016/03/24/bright-star-broadway-review"
+  "playbillVerdictUrl": "http://www.ew.com/article/2016/03/24/bright-star-broadway-review",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Not every song is a winner, but there are stirring ballads and toe-tapping numbers throughout that audience members will enjoy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Acknowledges significant flaws ('verges on corny') but praises the music as 'the brightest star' and suggests audiences 'will enjoy' it. The positive elements outweigh criticisms, indicating a qualified recommendation. Low confidence due to truncated text. | GPT-4o: The review acknowledges some corniness in the plot but praises the music as the standout element. The positive tone towards the music suggests a recommendation, albeit with some reservations about the plot. | Gemini: The review excerpt praises the music as the 'brightest star' but notes the show 'often verges on corny'. This suggests a positive but qualified recommendation. | Kimi: While the review criticizes the plot as 'corny' and notes that not every song succeeds, it strongly praises the bluegrass score as beautiful and explicitly states that 'audience members will enjoy' the stirring ballads, indicating a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:28:36.650Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

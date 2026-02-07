@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's rock score by Michael Friedman is catchy and well-performed by the cast, but the book by Alex Timbers lacks focus and coherence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's rock score by Michael Friedman is catchy and well-performed by the cast, but the book by Alex Timbers lacks focus and coherence.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's rock score by Michael Friedman is catchy and well-performed by the cast, but the book by Alex Timbers lacks focus and coherence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows praise for music and performances balanced against criticism of the book's focus and coherence. Classic mixed review structure with clear positives and negatives. | GPT-4o: The excerpt highlights positive elements (catchy score, well-performed) but criticizes the book for lacking focus and coherence. The mixed nature of the review suggests neither a strong recommendation nor a discouragement. | Gemini: The review excerpt praises the music and performances but criticizes the book, indicating a mixed assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt presents balanced praise for the musical elements and performances against significant criticism of the book's structure, without a clear overall recommendation to see or skip the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:16:47.230Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

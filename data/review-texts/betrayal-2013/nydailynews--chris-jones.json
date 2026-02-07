@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,59 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/music-arts/betrayal-theater-review-article-1.1496753"
+  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/music-arts/betrayal-theater-review-article-1.1496753",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tom Hiddleston is perfectly cast in riveting revival of Harold Pinter’s 'Betrayal' on Broadway",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt describes the production as 'riveting' and praises Tom Hiddleston's casting as 'perfectly cast', indicating strong enthusiasm. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is strongly positive, using words like \"perfectly cast\" and \"riveting\". Given the limited text, I'm scoring it high in the positive range with low confidence. | Kimi: The excerpt uses strongly positive evaluative language ('perfectly cast', 'riveting') indicating a clear recommendation for this revival, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:01:31.059Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 85,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-07T13:07:48.683Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be corrupted JSON/metadata with repeated timestamp strings, not actual review content; openai: The provided text is incomplete and consists of repeated timestamps, not a review.; gemini: The provided text is not a review, but rather appears to be metadata or code related to the publication date.; kimi: The text provided consists only of technical metadata (schema markup with repeated date stamps) and the show title. No evaluative content, critical opinions, or review prose is present.",
+  "promptVersion": "5.2.0"
 }

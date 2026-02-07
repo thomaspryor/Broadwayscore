@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "web-search",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://online.wsj.com/article/AP33d95e788ba1493d9b702142144b4aac.html"
+  "playbillVerdictUrl": "http://online.wsj.com/article/AP33d95e788ba1493d9b702142144b4aac.html",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "not because of any dramatic excitement",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic explicitly states the show lacks 'dramatic excitement' despite sellout crowds, suggesting audiences are drawn by stars rather than quality. However, this is only an excerpt so confidence is low. | GPT-4o: The excerpt suggests the production is popular due to star power rather than dramatic quality, indicating a lack of excitement. This points to a mixed review, but the single excerpt limits confidence. | Gemini: The excerpt suggests the play is relying on star power rather than dramatic merit, implying a negative assessment. Given the limited text, confidence is low. | Kimi: The critic explicitly attributes the show's sellout crowds solely to star power while stating it lacks dramatic excitement, indicating a negative assessment of the production's quality. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:05:27.114Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

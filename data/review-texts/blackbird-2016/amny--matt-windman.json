@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.amny.com/entertainment/blackbird-review-jeff-daniels-michelle-williams-amaze-1.11559940"
+  "playbillVerdictUrl": "http://www.amny.com/entertainment/blackbird-review-jeff-daniels-michelle-williams-amaze-1.11559940",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is a lean and muscular piece of drama, where two emotionally damaged characters with a terrible past are brought together for an uncomfortable reunion that is sure to end in further disaster and trauma.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses positive descriptors like 'lean and muscular piece of drama' and praises the director's ability to draw out 'fully-developed performances from great actors.' However, confidence is low due to single excerpt warning and potential cherry-picking. | GPT-4o: The excerpt praises the direction and performances, indicating a positive view. However, the single excerpt and lack of full context limit confidence, suggesting a lower-end positive score. | Gemini: The review excerpt describes the play as a \"lean and muscular piece of drama\" and praises the director's ability to draw out fully-developed performances. Given the limited text, I'm scoring it as positive but with low confidence. | Kimi: The excerpt offers clear praise for the production's dramatic construction and direction, describing it as 'lean and muscular' with 'fully-developed performances,' indicating a positive recommendation despite the limited excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:09:00.403Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -16,5 +16,59 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a theatrical assemblage that quickly sold out its run.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The excerpt highlights the show's popularity and high ticket prices but does not provide a clear evaluative statement on the quality of the production itself. The text suggests interest due to demand but lacks a definitive recommendation, leading to a mixed classification. | Gemini: The excerpt discusses the high ticket prices and demand, but doesn't offer a clear recommendation or discouragement. The truncated nature makes it difficult to assess the overall sentiment, so I've classified it as mixed with low confidence. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:01:05.815Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 62,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A slickly produced, well-cast musical with superb arrangements, great playing from a bluegrass band augmented by strings, and two catchy numbers by the music writers. But there’s a catch. All this talent and care has been lavished on a product that should still be in the workshop... A weak book wouldn’t be such an impediment if the lyrics were great, but Brickell isn’t up to the task of putting simple yet eloquent words into the mouths of ordinary folks.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All this talent and care has been lavished on a product that should still be in the workshop.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises production values, cast, and music but fundamentally criticizes the book and lyrics as unready. Single excerpt warning requires caution about overall verdict. | GPT-4o: The review praises the production quality and music but criticizes the book and lyrics, indicating a mixed reception. The single excerpt suggests both positive and negative elements, leading to a mixed verdict. | Gemini: The review praises the production, cast, arrangements, and music, but criticizes the book and lyrics. The overall tone suggests a mixed experience, leaning slightly negative due to the book issues. | Kimi: The excerpt offers strong praise for the production values, cast, and musical arrangements but delivers a significant criticism that the show feels unfinished and the book and lyrics are weak, creating a balanced mixed verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:31:22.189Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

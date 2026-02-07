@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Bright Star' is a very special show, one to be cherished and recalled from now on, the sort of reward that avid theatregoers dream of...There are some suggestions I might make. The song about the baby being taken away needs to be replaced. I’m still wondering about whatever happened to the mayor and the sister. But actually, this is one of those shows that you really don’t want to mess with. A very, VERY special show.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bright Star' is a very special show, one to be cherished and recalled from now on, the sort of reward that avid theatregoers dream of.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite being a single excerpt, the language is unambiguously superlative - 'very special', 'to be cherished', 'reward that theatregoers dream of', 'very, VERY special'. Minor nitpicks don't diminish the overwhelming enthusiasm. | GPT-4o: The excerpt describes the show as 'very special' and 'a reward that avid theatregoers dream of,' indicating strong praise. Despite minor suggestions for improvement, the overall tone is highly enthusiastic. | Gemini: The review excerpt is overwhelmingly positive, calling the show \"very special\" and a \"reward.\" Despite some minor suggestions, the overall tone is enthusiastic, suggesting a strong recommendation. | Kimi: The critic uses enthusiastic superlatives ('very special,' 'cherished,' 'dream of') and emphasizes the show is 'one of those shows that you really don't want to mess with,' indicating strong unqualified praise despite minor quibbles about specific plot elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:44:31.574Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 87,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

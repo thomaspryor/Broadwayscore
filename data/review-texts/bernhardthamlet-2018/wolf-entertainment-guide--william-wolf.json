@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Very funny and intellectually stimulating",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear positive language ('very funny', 'intellectually stimulating', praise for McTeer's performance and direction) despite acknowledging the play gets 'too talky' at times. However, confidence is low due to single excerpt warning and potential cherry-picking of positive quotes. | GPT-4o: The excerpt praises the humor, performances, and direction, with only a minor reservation about the play being 'too talky' at times. The overall tone is clearly positive, recommending the show for its intellectual stimulation and strong performances. | Gemini: The review is mostly positive, highlighting the humor, performances, and direction, but notes that the play gets \"somewhat too talky.\" Given the single excerpt and the caveat, a score of 79 seems appropriate. Confidence is low due to the limited text. | Kimi: The excerpt offers strong praise for the performances and direction, calling the show 'very funny and intellectually stimulating,' while noting only minor issues with the play being occasionally 'too talky.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:58:07.341Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

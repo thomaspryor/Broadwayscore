@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play itself provides numerous pleasures including several entertaining backstage hijinks staged with wit. But it doesn't hold together.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic praises the lead performance highly and finds entertainment value, but clearly states the play 'doesn't hold together' and criticizes the playwright's choices. This is classic mixed territory - acknowledging strengths while identifying fundamental flaws. Single excerpt limits confidence. | GPT-4o: The excerpt praises the lead actress and some elements of the play but criticizes the overall coherence and plot structure. The single excerpt warning suggests caution, so a mixed score with low confidence is appropriate. | Gemini: The review praises the lead actress and the backstage hijinks, but notes that the play doesn't hold together and sabotages its own message. Given the limited excerpt, I'm scoring it as positive with reservations. | Kimi: The critic strongly praises the lead performance and notes 'numerous pleasures' in the production, but offers significant criticism of the play's structure and messaging, suggesting a qualified recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:53:47.115Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

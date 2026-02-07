@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Within the realm of bluegrass, 'Bright Star' presents a medley of high energy songs that effectively pull at the heartstrings with every pluck of the banjo, but in the end, it’s still bluegrass; if that’s not a preferred genre for the listener, then it’s difficult to fully appreciate the experience...The performance is worth a trip down to Balboa Park, especially for anyone who holds an affinity for country music or would like to try something unconventional as well.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The performance is worth a trip down to Balboa Park, especially for anyone who holds an affinity for country music or would like to try something unconventional as well.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear recommendation ('worth a trip') but heavily qualified by genre preferences. Single excerpt warning applies - this appears to be a conditional positive recommendation. | GPT-4o: The review excerpt suggests a positive recommendation, particularly for fans of the genre or those open to new experiences. However, it acknowledges that the genre may not appeal to everyone, indicating some reservations. | Gemini: The review recommends the performance, particularly for those who enjoy country music or are open to unconventional experiences. However, it acknowledges that the bluegrass genre may not appeal to everyone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:56:15.149Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

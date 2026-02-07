@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hiddleston as Robert far surpasses his most famous reputation as Loki in both Thor and The Avengers, giving a nuanced and ever-changing performance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performances as 'nuanced' and 'surpassing' expectations suggests positive recommendation, but extremely limited text requires low confidence and upper-positive scoring per guidelines. | GPT-4o: The excerpt praises the performances of Hiddleston and Cox, highlighting their nuanced and subtle portrayals. However, the lack of a full review and the single excerpt warning suggest caution, leading to a lower score within the Positive range. | Gemini: The excerpt focuses on the strong performances of the two leads, using superlatives like \"far surpasses\" and \"subtleties that elude most actors.\" Given the single excerpt and strong positive language, I'm placing it in the upper end of the positive range, but with low confidence due to the limited text. | Kimi: The excerpt offers strong, unqualified praise for the lead performances, describing them as nuanced and subtle with superlatives ('far surpasses'), indicating a clear recommendation based on the acting quality, though the limited excerpt prevents assessment of the full production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:05:05.445Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And there's simply no one better suited to embody Bernhardt than Janet McTeer",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance with superlative language ('no one better suited', 'titanic Tony-winning turn'). However, this is only one excerpt focusing on the star, so confidence is low and may not represent full review verdict. | GPT-4o: The excerpt provides strong praise for Janet McTeer's performance, suggesting a positive reception. However, due to the single excerpt warning, confidence is low and the score is set at the lower end of the positive range. | Gemini: The excerpt strongly praises Janet McTeer's performance, suggesting a positive overall experience. Given the single excerpt, confidence is low, but the praise is strong. | Kimi: Single excerpt offers enthusiastic praise for Janet McTeer's performance, describing her as perfectly cast and referencing her previous Tony-winning work, but limited context from only one curated quote warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:49:25.642Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

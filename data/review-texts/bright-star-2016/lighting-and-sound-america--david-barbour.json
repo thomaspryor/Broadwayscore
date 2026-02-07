@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Bright Star' is filled with people busily coming and going, but not acquiring any interest or complexity. Near the end, when the big secret is out, there should be plenty of displacement and upset to go around; instead, everyone is hustled into a happy-ending tableau that feels almost comically unearned. What allure 'Bright Star' has comes from Martin and Brickell's music, which has the melancholy pull of a great country ballad...Brickell's lyrics are another matter.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What allure 'Bright Star' has comes from Martin and Brickell's music, which has the melancholy pull of a great country ballball.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Single excerpt shows significant criticism of book/characters ('not acquiring any interest', 'comically unearned' ending) but praises the music. Mixed verdict with low confidence due to limited text and 'Read more' truncation. | GPT-4o: The review criticizes the lack of interest and complexity in the characters and describes the ending as 'comically unearned'. Although the music is praised, the overall tone suggests disappointment with the production. | Gemini: The review excerpt criticizes the plot and ending, and while it praises the music, it also criticizes the lyrics. The overall tone suggests a negative assessment. | Kimi: The excerpt offers high praise for Martin and Brickell's music but heavily criticizes the book's lack of character complexity and 'comically unearned' ending, suggesting the show's appeal is limited to its score. | Buckets: claude=Mixed, openai=Negative, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:33:06.671Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

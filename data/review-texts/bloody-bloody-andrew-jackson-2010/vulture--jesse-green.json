@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is both deeply silly and surprisingly smart, a punk-rock musical about our seventh president that manages to be both historically aware and completely anachronistic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is both deeply silly and surprisingly smart, a punk-rock musical about our seventh president that manages to be both historically aware and completely anachronistic.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is both deeply silly and surprisingly smart, a punk-rock musical about our seventh president that manages to be both historically aware and completely anachronistic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses 'surprisingly smart' and 'manages to be' suggesting the show successfully balances contrasting elements. The tone indicates appreciation for the show's paradoxical nature rather than criticism. Single excerpt limits confidence but language leans clearly positive. | GPT-4o: The excerpt suggests a positive tone, highlighting the show's intelligence and unique style. However, the single excerpt warning and lack of full context necessitate a lower confidence and score within the Positive range. | Gemini: The excerpt suggests a positive but qualified recommendation due to the limited context. The description of the show as \"deeply silly and surprisingly smart\" indicates a mixed but ultimately positive experience. | Kimi: The excerpt praises the musical's clever balance of contradictory elements, calling it 'surprisingly smart' and appreciating its anachronistic style. As a single curated excerpt, this represents a mildly positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:17:11.352Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

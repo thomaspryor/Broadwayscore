@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"There is something winning and infectious about 'Bright Star'...Even with a sweet ending that’s predictable by intermission, its charms are enough to engage viewers along the way...The assembled cast is uniformly strong, but the show belongs to Ms. Cusack...Martin brings a clever hand to the musical’s book, mixing earnest, sometimes poetic storytelling with welcome laughs...But I do have to say—and I really wish I didn’t—that it’s aggravatingly vanilla.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But I do have to say—and I really wish I didn't—that it's aggravatingly vanilla.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows mixed signals: praises cast, book, and 'winning' qualities, but ends with significant criticism calling it 'aggravatingly vanilla.' The apologetic tone ('I really wish I didn't') suggests disappointment outweighs the positives. | GPT-4o: The excerpt highlights positive aspects like the 'winning and infectious' nature and engaging charms of the show, but also notes a predictable plot and describes it as 'aggravatingly vanilla'. The mixed elements suggest a mildly positive review. | Gemini: The review states there is \"something winning and infectious\" about the show and that its charms are enough to engage viewers, but also notes that it is \"aggravatingly vanilla.\" This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The review praises the cast as 'uniformly strong' and the book as 'clever' with 'welcome laughs,' calling the show 'winning and infectious,' but the single excerpt ends with the significant reservation that it's 'aggravatingly vanilla' and notes a predictable plot, suggesting a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:56:00.985Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

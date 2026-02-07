@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.theguardian.com/stage/2016/mar/24/bright-star-steve-martin-bluegrass-broadway-review"
+  "playbillVerdictUrl": "http://www.theguardian.com/stage/2016/mar/24/bright-star-steve-martin-bluegrass-broadway-review",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The staging and the music, playful and lovely, sometimes struggle to fill the house.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed signals - describes music as 'playful and lovely' but identifies 'issues of scale' and struggling to fill the house. With only one excerpt available and no clear recommendation, this appears mixed with slight negative lean. | GPT-4o: The excerpt highlights both positive aspects (playful and lovely music) and issues (struggling to fill the house), suggesting a mixed review. The single excerpt and lack of full context reduce confidence. | Gemini: The review notes both positive aspects (tender story, playful and lovely music) and negative aspects (struggles to fill the house, issues of scale), suggesting a mixed reception. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The critic praises the 'playful and lovely' staging and music but emphasizes significant reservations about the show's scale on Broadway, noting it 'sometimes struggle[s] to fill the house,' indicating neither a clear recommendation nor dismissal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:29:49.240Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

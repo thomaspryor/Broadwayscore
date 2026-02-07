@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Martin and Brickell’s score is a celebration of American folk music, filled with soaring string arrangements...At its core, Ms. Cusack delivers a beautifully honest performance...Its final scenes may push the suspension of disbelief in a way that doesn’t necessarily serve the greater story...But one dissonant chord cannot deny the show’s genuine charm. 'Bright Star' delivers a unique voice in a season full of heavy hitters. Hopefully it will find its audience and continue to shine bright.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bright Star' delivers a unique voice in a season full of heavy hitters.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation despite acknowledging flaws. The critic praises the score, lead performance, and overall charm while noting only one issue with believability. The final verdict expresses hope for the show's success. | GPT-4o: The excerpt praises the score and performance, acknowledges a flaw, but concludes with a positive outlook. Given the curated nature and positive tone, it fits the upper end of the Positive range. | Gemini: The review praises the score and lead performance, acknowledges a flaw in the final scenes, but ultimately concludes that the show has genuine charm and hopes it finds an audience. | Kimi: The reviewer praises the folk music score and Cusack's 'beautifully honest' performance, acknowledges minor issues with the final scenes, but ultimately champions the show's 'genuine charm' and unique voice, hoping it finds its audience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:24:13.328Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

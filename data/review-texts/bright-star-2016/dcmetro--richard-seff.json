@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"I found their story engrossing, entertaining, and very moving...The music is lively, but the fiddle and the banjo can only go so far to interestingly cover some twenty songs...I thought the melodies embellished the story more than the lyrics did, but the story itself, though somewhat predictable, is neatly told and very well crafted…There isn’t a lemon in this boatload of performing talent...Walter Bobbie has blended them all together into a refreshing smoothie of a musical.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I found their story engrossing, entertaining, and very moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses strong positive language ('engrossing, entertaining, and very moving', 'refreshing smoothie') and praises the performances ('isn't a lemon in this boatload of performing talent'), though notes some limitations with the music. Overall assessment is clearly positive with enthusiasm. | GPT-4o: The review excerpt praises the story and performances, describing the show as 'engrossing, entertaining, and very moving' with a 'refreshing smoothie' of a musical. However, there are reservations about the music's ability to sustain interest across twenty songs. The single excerpt and text quality warning suggest a positive but cautious score. | Gemini: The excerpt is overwhelmingly positive, using terms like \"engrossing, entertaining, and very moving\", \"neatly told and very well crafted\", and \"refreshing smoothie of a musical\". Given the single excerpt and positive tone, I'm scoring it on the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise ('engrossing, entertaining, and very moving,' 'refreshing smoothie') for the story, cast, and direction, though with minor caveats about the predictable plot and lyrical weaknesses.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:26:30.053Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

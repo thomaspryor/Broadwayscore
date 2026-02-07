@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.newsday.com/entertainment/theater/blackbird-review-jeff-daniels-michelle-williams-in-searing-drama-1.11558700"
+  "playbillVerdictUrl": "http://www.newsday.com/entertainment/theater/blackbird-review-jeff-daniels-michelle-williams-in-searing-drama-1.11558700",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They are both so wired, so damaged, so residually attractive that the current between them seems to singe whatever pro...",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt focuses on character analysis with vivid, engaged language about the performers' dynamic. The critic is clearly invested and finds the performances compelling, but limited text and truncation requires caution - placing at lower end of Positive range. | GPT-4o: The excerpt describes the characters as 'wired' and 'damaged' with a 'current between them,' suggesting an intense but possibly uneven dynamic. The lack of a full review and the single excerpt warning suggest a mixed review with some positive elements. | Gemini: The excerpt describes the characters in a way that suggests a positive assessment of the performances and character development, but the truncated nature of the text makes it difficult to determine the overall verdict with high confidence. | Kimi: The excerpt offers vivid praise for the lead performances, describing them as magnetically charged and residually attractive with intense chemistry, though the truncated single-excerpt format limits certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:12:33.858Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

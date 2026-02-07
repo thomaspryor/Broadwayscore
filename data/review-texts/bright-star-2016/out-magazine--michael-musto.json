@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Country hokum gets some slick packaging with 'Bright Star'...The plot veers back and forth between the two eras, sometimes intertwining them, buoyed by the lilting country and bluegrass influenced score (which only bogs down in melodramatic moments) and fluid direction...It’s nicely pulled off though the characters and plot sometimes come off a little mushy, as if out of a Hallmark movie.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's nicely pulled off though the characters and plot sometimes come off a little mushy, as if out of a Hallmark movie.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Balanced positive elements (slick packaging, lilting score, fluid direction) against clear negatives (mushy characters/plot, Hallmark comparison). Single excerpt with truncated verdict makes assessment difficult. | GPT-4o: The review acknowledges the show's strengths in its score and direction but criticizes the plot and characters as 'mushy'. The mixed evaluation suggests neither a strong recommendation nor a discouragement. | Gemini: The review notes that the show is \"nicely pulled off\" with \"fluid direction\" and a \"lilting country and bluegrass influenced score.\" However, it also mentions the plot and characters can be \"a little mushy,\" indicating a recommendation with reservations. Given the single excerpt, I'm scoring at the lower end of positive. | Kimi: The critic offers qualified praise for the production values and score while criticizing the plot as 'mushy' and 'hokum,' resulting in a mild recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:41:08.234Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

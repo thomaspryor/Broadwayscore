@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"It's a sweet, romantic, sepia-toned look back to the first half of the 20th century that's beautifully supported by the score Martin and Brickell have written...Director Walter Bobbie, working with choreographer Josh Rhodes, deploys the structure that houses the band to help give the show a sweeping cinematic feel...The appealingly tuneful journey to the show's conclusion proves to be consistently satisfying and ultimately moving.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The appealingly tuneful journey to the show's conclusion proves to be consistently satisfying and ultimately moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language throughout: 'beautifully supported', 'sweeping cinematic feel', 'consistently satisfying and ultimately moving'. However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt provides positive feedback on the score, direction, and overall experience, describing it as 'consistently satisfying and ultimately moving.' The lack of a full review and single excerpt warning suggest using the upper end of the Positive bucket. | Gemini: The review uses positive language such as \"sweet, romantic\", \"beautifully supported\", \"sweeping cinematic feel\", and \"consistently satisfying and ultimately moving\", indicating a strong positive recommendation. | Kimi: The excerpt offers unqualified praise for the score, direction, and emotional impact, using words like 'beautifully supported,' 'sweeping cinematic feel,' and 'ultimately moving.' Following the single-excerpt guidance for clearly positive quotes, this falls in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:20:19.990Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

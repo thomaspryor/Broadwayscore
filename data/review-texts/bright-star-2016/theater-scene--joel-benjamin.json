@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Bright Star' rises—just barely—above Hallmark Network romance level thanks to its energetic score...and an astonishing, charismatic performance by Carmen Cusack...The problem is that an evening of bluegrass and banjo strumming can verge on the monotonous...Brickell’s lyrics also tend toward the repetitious and trite...Walter Bobbie keeps the pace moving without stinting on the drama or comedy. His first-rate production almost makes the surprising plot devices credible.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bright Star' rises—just barely—above Hallmark Network romance level thanks to its energetic score.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic acknowledges the show 'rises above' its material and praises the score, lead performance, and direction as 'first-rate,' but qualifies this with 'just barely' and notes significant flaws like monotonous music and trite lyrics. The positive elements outweigh negatives but reservations are substantial. | GPT-4o: The review acknowledges strengths like the energetic score and Cusack's performance but criticizes the lyrics and potential monotony. The overall tone is mixed, with both positive and negative elements. | Gemini: The review praises Cusack's performance and the production, but criticizes the lyrics and repetitiveness. The overall tone is mixed, not strongly positive or negative. | Kimi: The excerpt offers qualified praise, highlighting an 'astonishing' lead performance and 'first-rate' direction while criticizing the 'repetitious' lyrics and 'monotonous' score; the 'rises just barely' framing indicates a mild, conditional recommendation. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:52:50.860Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

@@ -19,5 +19,60 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.amny.com/entertainment/steve-martin-s-bright-star-a-heartwarming-crowd-pleaser-1.11615489"
+  "playbillVerdictUrl": "http://www.amny.com/entertainment/steve-martin-s-bright-star-a-heartwarming-crowd-pleaser-1.11615489",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nevertheless, it is a heartwarming and crowd-pleasing musical, sporting many pleasant country songs, a sunny disposition and a Southern Gothic flavor.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges significant flaws (jumbled storytelling, undeveloped characters, sappy) but counters with positive qualities (heartwarming, crowd-pleasing, pleasant songs). The 'Nevertheless' structure indicates mixed feelings without a clear recommendation either way. | GPT-4o: The review acknowledges significant flaws in storytelling and character development but ultimately describes the show as heartwarming and crowd-pleasing. The mixed tone suggests a conditional recommendation. | Gemini: The review acknowledges flaws like jumbled storytelling and undeveloped characters, but also highlights heartwarming qualities and pleasant songs, resulting in a mixed assessment. | Kimi: While the critic notes significant weaknesses in storytelling and character development, the 'Nevertheless' signals a positive verdict, calling the show 'heartwarming and crowd-pleasing' with pleasant music. As an excerpt, the full context is limited.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:20:54.190Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/blackbird"
+  "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/blackbird",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there I was at the Belasco, craning forward, then recoiling, as Jeff Daniels and Michelle Williams clawed at each other's psyches and bodies",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic describes being physically engaged and affected by the performances, suggesting the production successfully creates visceral impact. However, this is only a brief excerpt so confidence is low. | GPT-4o: The excerpt suggests an engaging and intense experience, indicating a positive reaction to the performances. However, the lack of full context and a single excerpt warning necessitates a cautious approach with a low confidence level. | Gemini: The excerpt describes a visceral reaction to the performance, but also suggests a potential loss of impact over time. This indicates a mixed, but potentially absorbing experience, placing it in the Mixed bucket. | Kimi: The critic emphasizes that despite the passage of time, the production remains intensely effective, describing physical reactions of engrossment and horror that indicate a successful, gripping theatrical experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:14:17.788Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 62,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

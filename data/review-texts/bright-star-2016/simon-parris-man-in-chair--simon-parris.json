@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Martin’s book contains many a welcome chuckle. Rob Berman’s music direction and vocal arrangements give the show the hint of a Broadway sound while maintaining the country feel...Anyone who watches soap operas will see where the story is going, but watching the elements fall into place is satisfying...Without a cynical note to be heard, 'Bright Star' is a warm and fuzzy, rose-coloured show for those who like to leave theatre with a smile.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Without a cynical note to be heard, 'Bright Star' is a warm and fuzzy, rose-coloured show for those who like to leave theatre with a smile.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review offers qualified praise with positive elements (chuckles, satisfying plotting, warm feeling) but frames it as niche appeal ('for those who like to leave theatre with a smile'). The predictable plot acknowledgment and conditional recommendation suggest lower end of Positive range. | GPT-4o: The excerpt praises the show's humor, satisfying story, and overall feel-good nature, suggesting a strong positive recommendation. However, the single excerpt warning indicates potential cherry-picking, so confidence is low. | Gemini: The review uses positive language such as \"welcome chuckle\" and \"satisfying\", and concludes that it is a \"warm and fuzzy\" show for those who want to leave with a smile. However, due to the limited excerpt, confidence is low. | Kimi: The excerpt offers clear praise for the book's humor and music direction, acknowledges the predictable plot but finds the execution satisfying, and explicitly recommends the show as a warm, smile-inducing experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:45:34.824Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Enjoyable as much of it is, ‘Bright Star’...may not shine as brightly in Broadway’s constellation as some of its more unique and noteworthy competitors. It’ll be interesting to see if its pleasing bluegrass score, strong performances, and smart staging are enough to compensate for its thin book, melodramatically coincidental premise, stereotypical Southern-fried characters, and conventional situations.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bright Star'...may not shine as brightly in Broadway's constellation as some of its more unique and noteworthy competitors.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic acknowledges positive elements (pleasing score, strong performances, smart staging) but identifies significant structural problems (thin book, melodramatic premise, stereotypical characters). The metaphor about not shining as brightly suggests modest expectations. Single excerpt warning applied - this balanced assessment falls in mixed range. | GPT-4o: The review acknowledges enjoyable elements like the score, performances, and staging, but also highlights significant drawbacks such as a thin book and conventional situations. The mixed evaluation suggests neither a strong recommendation nor a discouragement. | Gemini: The review acknowledges enjoyable aspects, strong performances, and smart staging, but also points out a thin book, melodramatic premise, and stereotypical characters. This suggests a positive but qualified recommendation. | Kimi: The critic acknowledges strong performances, a pleasing score, and smart staging but finds the book thin and the premise melodramatic, suggesting the show is enjoyable but flawed and not quite competitive with Broadway's best. Given this is a single excerpt, the score reflects a mildly positive recommendation at the lower end of the range. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:55:37.590Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

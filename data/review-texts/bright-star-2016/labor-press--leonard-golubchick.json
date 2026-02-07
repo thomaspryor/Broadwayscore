@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The show moves quickly under the creative direction of Walter Bobbie. The lead is Carmen Cusack, who provides us with a charismatic and energetic performance…The plot is quirky and uneven, but stays with the theme that love triumphs. The sweet bluegrass music is a treat, particularly for those who are unfamiliar with this delightful musical form. The music adds a nostalgic charm and melody to the show which is memorable.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The sweet bluegrass music is a treat, particularly for those who are unfamiliar with this delightful musical form.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive elements (charismatic lead, sweet music, memorable charm) but acknowledges plot issues (quirky and uneven). Single excerpt warning and qualified praise suggests lower end of Positive range. | GPT-4o: The excerpt praises the direction, lead performance, and music, suggesting an overall positive impression despite noting the plot's quirks and unevenness. Given the single excerpt warning, a lower end of the Positive range is appropriate. | Gemini: The review praises the lead performance, direction, and music, but notes the plot is \"quirky and uneven.\" Given the limited excerpt, a score in the lower-mid positive range seems appropriate. | Kimi: Despite noting the plot is 'uneven,' the excerpt offers clear praise for the creative direction, charismatic lead performance, and memorable music, indicating a favorable recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:31:38.976Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Initially, there are enjoyable elements. The onstage band is lively and quick-fingered, and director Walter Bobbie’s overall production has a fresh, whimsical feel...Sadly, Edie Brickell’s awkward and obvious lyrics are hobbled by cheap rhymes...You will see the eleventh-hour revelations coming from a country mile away...Steve Martin’s jaunty bluegrass score may get your toes tapping, but only if the sappy and sketchy plot does not drive you out at intermission.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Steve Martin's jaunty bluegrass score may get your toes tapping, but only if the sappy and sketchy plot does not drive you out at intermission.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Despite opening with praise for band and direction, the review criticizes lyrics as 'awkward and obvious', plot as 'sappy and sketchy', and suggests audiences might leave at intermission. The final verdict is clearly negative. | GPT-4o: The review acknowledges some positive elements like the lively band and fresh production, but overall criticizes the lyrics and plot, suggesting a negative experience. The excerpt's tone leans negative, but with only one excerpt, confidence is low. | Gemini: The review highlights both positive aspects (lively band, fresh feel, jaunty score) and negative aspects (awkward lyrics, predictable plot). The overall tone suggests a mixed experience, not strongly recommending or discouraging. | Kimi: The excerpt presents a balance of praise for the production, band, and score against significant criticism of the lyrics as 'awkward and obvious' with 'cheap rhymes' and the plot as 'sappy and sketchy,' ending with a warning that the show's weaknesses might cause audiences to leave at intermission. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:38:59.009Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"An old-fashioned Broadway musical with pleasing music, agreeable lyrics, and an engaging book...The musical’s story is also universal and engaging. Its themes are important and life-affirming…The cast, under Walter Bobbie’s careful direction is uniformly magnificent…'Bright Star' is not perfect–some of the story seems contrived and sometimes predictable–but director Walter Bobbie keeps the musical moving forward with an intensity and freshness that is remarkable and noteworthy.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bright Star' is not perfect–some of the story seems contrived and sometimes predictable–but director Walter Bobbie keeps the musical moving forward with an intensity and freshness that is remarkable and noteworthy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for music, lyrics, book, cast, and direction with clear positive language ('magnificent', 'remarkable', 'noteworthy'). Acknowledges flaws but frames them as minor within an overall positive assessment. | GPT-4o: The review excerpt praises the music, lyrics, book, and direction, calling the cast 'magnificent.' Despite noting some contrived and predictable elements, the overall tone is positive, recommending the show with some reservations. | Gemini: The review excerpt contains mostly positive statements, calling the music pleasing, the lyrics agreeable, and the book engaging. While it notes some contrived and predictable elements, it praises the direction and cast, leading to a positive but not rave recommendation. | Kimi: The excerpt offers consistent praise for the cast, direction, and material, calling the show 'remarkable and noteworthy' despite acknowledging some contrived plotting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:54:22.160Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

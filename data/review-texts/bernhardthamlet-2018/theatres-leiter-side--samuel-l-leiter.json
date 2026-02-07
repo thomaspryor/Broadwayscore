@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Only partly satisfying…Rebeck's dialogue is smart and engaging but the plot lumbers along…without much dramatic thrust",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Opens with 'only partly satisfying,' praises dialogue but criticizes plot as lacking dramatic thrust. Raves about McTeer's performance but overall assessment is balanced positive/negative. Single excerpt limits confidence. | GPT-4o: The review praises McTeer's performance but criticizes the plot's lack of dramatic thrust. The mixed tone suggests some positive elements but overall reservations. | Gemini: The review praises the dialogue and McTeer's performance but criticizes the plot's pacing and dramatic thrust, resulting in a mixed assessment. | Kimi: While the critic praises Janet McTeer's 'tour de force' performance and finds the dialogue 'smart and engaging,' the overall verdict is 'only partly satisfying' due to a plot that 'lumbers along' with little dramatic thrust. The strong performer praise is undercut by significant criticism of the play's structure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:55:48.218Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

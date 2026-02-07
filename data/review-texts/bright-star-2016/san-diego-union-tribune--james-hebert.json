@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Occasionally, 'Bright Star' can make you wonder whether some moments merit being turned into song at all...Still, it’s gratifying to see musical-theater newcomers step in and push the edges of the form with such fresh ideas. And 'Bright Star' is a show that brims with compelling elements. It might just need to find a better mix of storytelling fuel to keep its own light shining clear and true.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's gratifying to see musical-theater newcomers step in and push the edges of the form with such fresh ideas.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Mixed signals - praises fresh ideas and compelling elements but questions songwriting choices and suggests the show needs better storytelling fuel. Single excerpt warning requires caution about incomplete verdict. | GPT-4o: The excerpt acknowledges some shortcomings but highlights the show's fresh ideas and compelling elements. The positive aspects are emphasized, suggesting a recommendation despite reservations. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review acknowledges compelling elements but also expresses reservations about whether some moments merit being turned into song. The overall tone suggests a mixed assessment. | Kimi: While the excerpt notes storytelling imperfections and questions some musical choices, it praises the show's fresh ideas and compelling elements, indicating a qualified but genuine recommendation. | Buckets: claude=Mixed, openai=Positive, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:45:12.826Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

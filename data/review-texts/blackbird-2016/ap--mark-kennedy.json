@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://abcnews.go.com/Entertainment/wireStory/review-blackbird-daniels-williams-brilliant-37564523"
+  "playbillVerdictUrl": "http://abcnews.go.com/Entertainment/wireStory/review-blackbird-daniels-williams-brilliant-37564523",
+  "assignedScore": 90,
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the harrowing -- and absolutely brilliant -- revival of \"Blackbird\"",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite the single excerpt warning, the critic explicitly calls the revival 'absolutely brilliant' which is unambiguous rave language. The uncomfortable subject matter context doesn't diminish this clear superlative praise. | GPT-4o: The excerpt uses strong language ('absolutely brilliant') to describe the revival, indicating a highly positive assessment. Despite the single excerpt warning, the tone suggests a strong recommendation. | Gemini: The review excerpt calls the revival \"absolutely brilliant\", which indicates a rave review. The description of \"harrowing\" adds to the intensity of the recommendation. | Kimi: The single available excerpt offers strong praise ('absolutely brilliant') but limited context requires cautious scoring at the upper end of the Positive range per excerpt guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:09:36.152Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 92,
+    "geminiScore": 88,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

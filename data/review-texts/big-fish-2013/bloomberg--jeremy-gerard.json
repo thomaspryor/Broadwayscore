@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I doubt Broadway has ever seen a prettier, more sensuously kinetic musical than Susan Stroman's adaptation of Big Fish.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling it the prettiest musical Broadway has ever seen and 'enchanting,' but single excerpt warning requires caution about incomplete context. | GPT-4o: The excerpt provides strong praise for the musical's visual and kinetic qualities, describing it as 'enchanting'. Despite the caution about the pacing, the overall tone is clearly positive. | Gemini: The review excerpt praises the musical as \"prettier\" and \"enchanting,\" indicating a positive recommendation. The phrase \"sensuously kinetic\" further supports this assessment. | Kimi: The critic offers high praise for the show's visual and kinetic qualities ('prettier, more sensuously kinetic'), calling it 'enchanting,' though with a specific reservation about the first act's pacing before the positive verdict cuts off.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:08:32.538Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

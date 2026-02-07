@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“The simplicity of folksy ‘Bright Star’ is in the economy of Walter Bobbie’s direction and Eugene Lee’s set design...And while the musicians, including a standout fiddler, are only partially seen, their music is notable...Even for those who aren’t bluegrass fans, the score is a winner. ‘Bright Star’ is a traditional musical with a dark edge. No bells and whistles, just heart and soul.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bright Star' is a traditional musical with a dark edge. No bells and whistles, just heart and soul.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for direction, design, music, and score with the verdict calling it a 'winner' and praising its 'heart and soul.' Single excerpt limits confidence but tone is consistently positive. | GPT-4o: The excerpt praises the direction, set design, and music, highlighting the show's heart and soul. The positive tone suggests a recommendation, but confidence is low due to the single excerpt limitation. | Gemini: The review excerpt is overwhelmingly positive, praising the direction, set design, music, and overall heart and soul of the production. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers clear praise for the direction, set design, and musicianship, specifically calling the score 'a winner' and appreciating the show's 'heart and soul,' indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:30:37.097Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

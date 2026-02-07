@@ -13,5 +13,60 @@
   ],
   "showScoreExcerpt": "‘Under Von Stuelpnagel’s sumptuous direction, Rebeck/McTeer’s approach the material ultimately delivers despite some problems in the first act...Rebeck never fails to put great wit into her character’s mouth, making sure that Bernhardt wins every argument, but she risks turning Bernhardt’s audacious endeavor into a mere caprice...Something wonderful happens to McTeer’s performance in the second act. She grows the soul that Shaw found lacking in the real Bernhardt.\"\n\nRead more",
   "bwwExcerpt": "Under Moritz von Stuelpnagel's sumptuous direction and production (set and costume design by, respectively, Beowulf Boritt and Toni-Leslie James), Rebeck/McTeer's approach the material ultimately delivers despite some problems in the first act.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Von Stuelpnagel's sumptuous direction, Rebeck/McTeer's approach the material ultimately delivers despite some problems in the first act.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges first act problems but emphasizes that the production 'ultimately delivers' with 'sumptuous direction' and praises McTeer's transformative second act performance. The positive verdict outweighs the reservations. | GPT-4o: The review acknowledges issues in the first act but ultimately praises the direction and performance, indicating a positive recommendation with some reservations. The excerpt is limited, so confidence is low. | Gemini: The review indicates that the production 'ultimately delivers' despite some issues, suggesting a positive but not overwhelmingly enthusiastic recommendation. The truncated nature lowers confidence. | Kimi: The critic praises the 'sumptuous' direction and wit of the writing, noting the production 'ultimately delivers' despite first act issues, with particularly strong praise for McTeer's second act performance growing 'the soul that Shaw found lacking.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:56:09.127Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

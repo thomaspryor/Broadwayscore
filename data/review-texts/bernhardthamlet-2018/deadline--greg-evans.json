@@ -17,5 +17,60 @@
   "publishDate": "September 25, 2018",
   "showScoreExcerpt": "“Rebeck’s spirited, funny new play...As ‘Bernhardt/Hamlet’ widens its scope to examine the very nature of art itself...things get talky. Very talky. There are witticisms galore, and a good amount of genuine laughs, but points are made and remade...Rebeck is too good at her craft, though, to let the play slip away. An Act II surprise introduces another strand of theatrical history, bringing plots together, refocusing ideas into new shapes and, finally, pointing to a new world fast approaching.”\n\nRead more",
   "bwwExcerpt": "As Bernhardt/Hamlet widens its scope to examine the very nature of art itself, pitting actor against playwright, performer against critic, truth against commerce, things get talky. Very talky. There are witticisms galore - A woman who cannot do anything is nothing. A man who does nothing is Hamlet -...",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rebeck is too good at her craft, though, to let the play slip away.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite criticism of talky sections, the review praises Rebeck's craft and notes the play successfully refocuses in Act II. However, confidence is low due to truncated excerpt format. | GPT-4o: The review acknowledges the play's talkative nature but praises its wit and craftsmanship. The overall tone suggests a positive recommendation despite some reservations about pacing. | Gemini: The review acknowledges talkiness and repetition, but ultimately praises Rebeck's craft and the play's refocusing in Act II. Due to the truncated text, confidence is low. | Kimi: The critic praises the play as 'spirited' and 'funny' with 'genuine laughs' while acknowledging it becomes 'very talky' and repetitive, but ultimately credits the playwright's skill and satisfying Act II resolution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:44:53.354Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

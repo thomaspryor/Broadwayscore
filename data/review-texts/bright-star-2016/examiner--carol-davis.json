@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Martin and Brickell’s musical, banjo strumming, easy listening story, deftly directed by Walter Bobbie, takes us back to a time when things appeared to be simpler, but in the crisscrossing of the lives of the four central characters, it becomes more complicated than it needs to...That there are too many story lines is at the core of “Bright Stars” problems...'Bright Star' is captivating and inviting, original, creative and folksy, charming in an old-fashioned way as musicals go.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bright Star' is captivating and inviting, original, creative and folksy, charming in an old-fashioned way as musicals go.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review identifies structural problems ('too many story lines', 'more complicated than it needs to') but concludes with clear praise ('captivating', 'original', 'charming'). The positive verdict outweighs the criticisms, placing it in Positive bucket. Single excerpt warning and structural concerns keep it at lower end of range. | GPT-4o: The excerpt praises the musical as 'captivating and inviting' and 'charming,' suggesting a positive view despite noting issues with too many storylines. The single excerpt and text quality warning reduce confidence. | Gemini: The review is mostly positive, calling the musical \"captivating and inviting, original, creative and folksy, charming in an old-fashioned way.\" However, it also notes that there are too many story lines. Given that this is only an excerpt, I'm scoring it as a slightly positive review with reservations. | Kimi: The excerpt delivers strong final praise ('captivating,' 'original,' 'charming') that overrides earlier criticisms about plot complexity, indicating a solid recommendation with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:28:50.706Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Here's what I liked most: an extraordinarily likeable cast, choreography that draws on folk traditions but doesn't overdo those traditions, and a really kick-ass band. The biggest factor in my enjoyment was Walter Bobbie's direction, which is by any standard the definition of fluidity...'Bright Star' expertly wears its heart on its sleeve, and as long as you're willing to take it on its own terms you'll be won over.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bright Star' expertly wears its heart on its sleeve, and as long as you're willing to take it on its own terms you'll be won over.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('extraordinarily likeable', 'kick-ass', 'you'll be won over') with enthusiastic praise for multiple elements. Single excerpt warning requires caution, but the tone is genuinely enthusiastic rather than mildly positive. | GPT-4o: The excerpt provides strong praise for the cast, choreography, band, and direction. The phrase 'you'll be won over' suggests a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt praises the cast, choreography, band, and direction. The concluding sentence suggests a positive experience for those willing to embrace the show's style. | Kimi: The critic offers strong praise for the cast, choreography, band, and direction, calling the production 'expertly' crafted and promising audiences will be 'won over,' though with a caveat about taking the show on its own terms.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:48:26.184Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

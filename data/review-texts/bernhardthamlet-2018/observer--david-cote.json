@@ -13,5 +13,60 @@
   ],
   "showScoreExcerpt": "“Brimming with ideas and saucy banter, it’s lively but exhausting, manic and overstuffed...Rebeck opts for a grand, multi-layered affair with lots of exposition, ginned-up histrionics, and florid speechifying. But there’s not enough narrative...Scene after scene blows by...some of it witty and deft—but the drama itself hardly rolls forward...On the plus side, it’s a bouncy, handsome production, and the actors a merry bunch...McTeer struts and frets to swashbuckling perfection.”\n\nRead more",
   "bwwExcerpt": "I do wish Rebeck had taken her protagonist's utterances to heart in this energetic but scattershot period homage, Bernhardt/Hamlet. Brimming with ideas and saucy banter, it's lively but exhausting, manic and overstuffed, too much-possibly like the Divine Sarah was in life.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Brimming with ideas and saucy banter, it's lively but exhausting, manic and overstuffed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review balances significant criticisms (overstuffed, lacks narrative drive, doesn't move forward) with notable positives (bouncy production, good actors, McTeer's performance). Confidence low due to truncated text. | GPT-4o: The review describes the show as lively but also exhausting and overstuffed, indicating a mixed reaction. While there are positive notes about the production and performances, the critique of the narrative and pacing suggests a lack of strong recommendation. | Gemini: The review highlights both positive aspects (lively, handsome production, good actors) and negative ones (exhausting, overstuffed, not enough narrative). This suggests a mixed experience. | Kimi: The excerpt offers strong praise for the lead performance and production values ('bouncy, handsome production') but substantial criticism of the play's structure ('overstuffed,' 'not enough narrative,' 'hardly rolls forward'). Without a clear recommendation or the full review's conclusion, this reads as a balanced assessment of strengths and weaknesses.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:49:45.462Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

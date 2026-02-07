@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"An astoundingly uneven stew...Most of this glum narrative plays out in exceedingly sincere fashion...Still, it has its moments, but then come a series of relentlessly happy endings that not only challenge credibility but almost make the whole enterprise seem ridiculous. This unevenness is reflected in Walter Bobbie’s direction and Josh Rhodes’ choreography...What is spectacular about the show is the score.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An astoundingly uneven stew...Still, it has its moments, but then come a series of relentlessly happy endings that not only challenge credibility but almost make the whole enterprise seem ridiculous.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review calls the show 'astoundingly uneven' and criticizes the narrative as 'glum' and 'ridiculous,' but acknowledges 'it has its moments' and praises the score as 'spectacular.' Classic mixed verdict with no clear recommendation either way. | GPT-4o: The review describes the show as 'astoundingly uneven' with moments that are positive but overall challenged by credibility issues. The score is praised, but the direction and choreography are noted as uneven. The single excerpt suggests a mixed review, but the lack of full context lowers confidence. | Gemini: The review uses the phrase \"uneven stew\" and says that the happy endings challenge credibility. However, it also mentions that the score is spectacular, leading to a mixed classification. | Kimi: The excerpt describes an 'astoundingly uneven stew' with a 'glum narrative' and 'ridiculous' happy endings, yet acknowledges it 'has its moments' and singles out the 'spectacular' score as a saving grace, indicating a mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:36:27.271Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

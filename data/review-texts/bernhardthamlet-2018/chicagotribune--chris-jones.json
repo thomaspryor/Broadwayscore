@@ -17,5 +17,60 @@
   "publishDate": "September 25, 2018",
   "showScoreExcerpt": "“Rebeck’s lively, weaponized, often confusing and richly caustic new Broadway play...When the play sticks to the words that reside on the marquee...the work is a fascinating reminder that before any social change becomes mainstream, someone has to be a pioneer...McTeer mostly makes mincemeat of her pliant co-stars...The problem there is that everyone seems so cowed by Bernhardt/McTeer that this works against the main theme of the play.\"\n\nRead more",
   "bwwExcerpt": "Perhaps everyone was worried that would have limited the play's appeal, rendering it nerdy and overly Shakespearean. Come on, it's only the greatest play, ever. I say it would only have deepened its truths, and it would have freed McTeer in the process.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the work is a fascinating reminder that before any social change becomes mainstream, someone has to be a pioneer",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite calling the play 'often confusing,' the critic uses positive descriptors like 'lively,' 'weaponized,' 'richly caustic,' and 'fascinating,' with strong praise for McTeer's performance. However, confidence is low due to truncated text. | GPT-4o: The review describes the play as 'lively, weaponized, often confusing and richly caustic,' indicating a mix of positive and negative elements. The excerpt praises the thematic elements but also suggests complexity and potential confusion, leading to a mixed verdict. | Gemini: The review uses positive language such as \"lively\", \"weaponized\", \"fascinating reminder\", but also includes \"often confusing\". Given the limited excerpt, it seems like a positive review with reservations. | Kimi: The critic praises Janet McTeer as 'remarkable' and the historical subject as 'fascinating,' but explicitly calls the play 'often confusing' and implies it works best only when focused on its central premise, indicating a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:42:54.705Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"There’s warmth and anguish aplenty in the 'Bright Star'...Cusack turns in a dynamite performance...The score is delightful and much of it provides an authentic bluegrass feel...'Bright Star' is not perfect—the book needs work at points—but it does offer a powerful example of the effect family has on a person’s life and how, when a real and honest love is added to the mix, it can be a wonderful thing indeed.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bright Star is not perfect—the book needs work at points—but it does offer a powerful example of the effect family has on a person's life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance ('dynamite') and score ('delightful'), with acknowledgment of book issues but overall positive conclusion about the show's power. Single excerpt warning and clear positive elements suggest upper Positive range. | GPT-4o: The excerpt praises the performance and score, noting the show's warmth and emotional impact. While acknowledging some flaws in the book, the overall tone is positive and enthusiastic. | Gemini: The review praises the performances and score, but notes the book needs work. The overall tone is positive, but the reservation about the book keeps it from being a rave. Confidence is low due to the excerpted nature of the review. | Kimi: The excerpt offers enthusiastic praise for the lead performance ('dynamite') and score ('delightful'), with only minor caveats about the book, ultimately concluding the show is a 'wonderful thing indeed.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:27:52.238Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 79,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

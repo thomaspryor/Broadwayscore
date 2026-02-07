@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The lively hootenanny, hand- and thigh-slapping choreography is accomplished by the talents of Josh Rhodes, while director Walter Bobbie makes magic in moving this large cast around seamlessly…'Bright Star' has a down-home warmth that draws the audience into its glow, making the 2 hours, 30 minutes more than entertaining.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bright Star' has a down-home warmth that draws the audience into its glow, making the 2 hours, 30 minutes more than entertaining.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for choreography, direction, and overall warmth, with verdict that it's 'more than entertaining.' Single excerpt warning requires caution, but tone is solidly positive. | GPT-4o: The excerpt praises the choreography and direction, describing the show as 'more than entertaining' with 'down-home warmth'. The positive tone and specific commendations suggest a strong recommendation. | Gemini: The review excerpt praises the choreography, direction, and overall entertainment value of the show, indicating a positive recommendation. Given the single excerpt, I am placing it in the upper end of the positive range. | Kimi: The excerpt offers clear praise for the direction ('makes magic'), choreography ('lively'), and overall experience ('more than entertaining'), indicating a solid recommendation despite the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:51:46.393Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Affable and inoffensive…The best thing about 'Bright Star' is the lovely, delicate and even sometimes sophisticated bluegrass music…There’s a rich vein of melody…The words are not nearly as successful. The plot is predictable...I had a decent enough time at 'Bright Star.' I recommend it to you mostly because its charms, though not insignificant, might be easy to miss on today’s Broadway.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I recommend it to you mostly because its charms, though not insignificant, might be easy to miss on today's Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic explicitly recommends the show despite noting significant flaws like predictable plot and weak lyrics. The recommendation is qualified but clear, placing this in the lower end of Positive range. | GPT-4o: The excerpt offers mild praise for the music and a recommendation, albeit with reservations about the plot and overall impact. The tone is positive but not strongly enthusiastic. | Gemini: The review is generally positive, noting the charms and recommending it, but also acknowledges its predictability and potential to be missed. Given the single excerpt, I'm scoring it at the lower end of the positive range. | Kimi: The critic offers a qualified recommendation with faint praise ('affable,' 'decent enough'), praising the bluegrass music but criticizing the predictable plot and unsuccessful lyrics, resulting in a lukewarm positive verdict at the lower end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:27:03.455Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

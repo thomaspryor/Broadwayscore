@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“‘Bright Star’ isn’t the trendiest of new musicals, but it’s one of the most affecting that has opened in the pre-Tony nomination flood, not so much for its unapologetically traditional story or its wholesome, old-fashioned theme, but for its overall emotional coherence...Even though it’s not too too hard to figure how the play will conclude, I felt as if I had discovered something fresh and new.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I felt as if I had discovered something fresh and new.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the show's emotional impact and finds it 'fresh and new' despite predictable plotting. Single excerpt warning applies - this sounds clearly positive, so using upper end of Positive range. | GPT-4o: The review excerpt praises the emotional coherence and freshness of the show despite its traditional elements. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review states that the show is \"one of the most affecting\" and that the reviewer \"felt as if I had discovered something fresh and new,\" indicating a positive recommendation despite some reservations about its traditional story. | Kimi: While acknowledging the show isn't 'trendy' and follows a traditional structure, the critic praises it as 'one of the most affecting' musicals with 'emotional coherence' and a 'fresh' quality, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:40:48.954Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

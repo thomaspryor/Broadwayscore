@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"There’s a head-spinning amount of stuff going on, too much for the show’s own good. Locations shift on a dime, peripheral characters come and go without a trace and it all gets more confusing than necessary. That said, 'Bright Star' has a lot going for it: a fine cast of mostly Broadway veterans, a terrific orchestra, an imaginative set and excellent direction by Walter Bobbie...'Bright Star' has engaging characters, a listenable (if repetitive) score and gets a terrific production.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bright Star' has engaging characters, a listenable score and gets a terrific production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opens with significant structural criticisms ('too much for the show's own good', 'more confusing than necessary') but concludes positively, praising cast, production values, and overall experience. Single excerpt warning suggests caution about missing context. | GPT-4o: The review acknowledges issues with the show's complexity and pacing but ultimately praises the cast, orchestra, set, and direction. The positive elements are highlighted, suggesting a recommendation despite some reservations. | Gemini: The review notes some issues with the show being confusing and having too much going on, but it also praises the cast, orchestra, set, direction, and characters. Due to the limited excerpt, confidence is low. | Kimi: While the critic criticizes the show's overstuffed and confusing plot structure, the 'That said' pivot leads to strong praise for the cast, orchestra, direction, and overall production quality, ultimately recommending the show on the strength of these elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:44:12.746Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

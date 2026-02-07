@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The predictability is disappointing. Despite said predictability, the ending is moving because, well, we're humans...But the predictability equals a lack of investment, so while heading toward that moving ending, rather than rooting for the characters, you just feel like the train that's chugging along the top of the stage. It's not an entirely tedious ride, though...The stars of the show shine brightly, but the whole of 'Bright Star' just doesn't live up to the pedigree of its parts.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The stars of the show shine brightly, but the whole of 'Bright Star' just doesn't live up to the pedigree of its parts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review criticizes predictability and lack of investment while praising performances, concluding the show doesn't live up to its potential. Single excerpt warning reduces confidence. | GPT-4o: The review acknowledges strong performances but criticizes the predictability and lack of investment, leading to a mixed verdict. The excerpt suggests some positive elements but overall disappointment. | Gemini: The review acknowledges positive aspects like the performances, but ultimately finds the show disappointing due to predictability and a lack of investment. This indicates a mixed reaction. | Kimi: The critic praises the lead performances and acknowledges a moving ending, but emphasizes that the show's predictability creates a disappointing lack of investment and fails to live up to its pedigree. As a single excerpt, the full verdict remains unclear, but the tone suggests mixed reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:43:54.838Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

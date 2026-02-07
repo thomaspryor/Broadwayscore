@@ -19,5 +19,60 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://deadline.com/2016/03/bright-star-steve-martin-edie-brickell-broadway-review-1201725918/"
+  "playbillVerdictUrl": "http://deadline.com/2016/03/bright-star-steve-martin-edie-brickell-broadway-review-1201725918/",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Skip 'Bright Star,' the unfortunate musical...this earnest but soggy mess.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Opens with explicit 'skip it' recommendation and calls the show a 'soggy mess' that 'reeks of condescension.' Despite acknowledging some striking songs, concludes nothing 'takes flight' and it's 'earthbound.' | GPT-4o: The review advises skipping the show, describing it as a 'soggy mess' and 'earthbound'. While it notes the songs are 'striking', the overall tone is negative, suggesting the show doesn't succeed in its aims. | Gemini: The review uses strongly negative language like \"unfortunate musical\", \"soggy mess\", and \"reeks of condescension\", indicating a negative overall assessment despite acknowledging some positive aspects of the songs. | Kimi: The critic explicitly advises audiences to skip the show, calling it a 'soggy mess' that 'reeks of condescension' and is 'earthbound,' though acknowledges the songs are 'striking.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:26:53.065Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -19,5 +19,60 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.newsday.com/entertainment/theater/bright-star-review-steve-martin-s-musical-enchants-1.11611505"
+  "playbillVerdictUrl": "http://www.newsday.com/entertainment/theater/bright-star-review-steve-martin-s-musical-enchants-1.11611505",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Along with all that, however, 'Bright Star' is also downright wonderful.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging flaws ('cornball', 'implausibly romantic'), the critic calls it 'downright wonderful' and praises the score with 'deep satisfaction'. The 'however' structure shows these are minor caveats to an overall positive recommendation. | GPT-4o: The review acknowledges some sentimental and implausible elements but ultimately describes the show as 'downright wonderful' with a complex and satisfying score. The positive language suggests a strong recommendation despite the text quality warning. | Gemini: The review uses phrases like \"downright wonderful\" and praises the score's complexity and satisfaction, indicating a strong positive recommendation despite acknowledging some flaws. | Kimi: While the critic acknowledges the show's cornball sentimentality and implausible plot, the verdict is strongly positive with 'downright wonderful' and praise for the score's complexity and the story's depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:36:41.207Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

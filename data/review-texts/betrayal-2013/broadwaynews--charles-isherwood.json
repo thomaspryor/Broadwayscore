@@ -16,9 +16,14 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A love triangle turns inward in ‘Betrayal’\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "rejectedAt": "2026-02-07T12:58:39.672Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a headline and 'Read more' link, not actual review content to evaluate; openai: The provided text is a headline or title without any evaluative content or opinion about the show.; gemini: The provided text is a headline and a 'read more' link, not a review excerpt or summary.; kimi: The text provided is only a descriptive headline ('A love triangle turns inward in 'Betrayal'') with a 'Read more' link. It contains no critical evaluation, opinion, or recommendation regarding the production quality.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"An unconvincing mix of tender romance and harrowing tragedy...Brickell and Martin's story features two big twists, one of them completely bizarre and implausible, and the other painfully hokey and predictable. The effect is to drain any tension from the hurried second act, and to reduce these potentially complex characters to two-dimensional pawns...Still, the music steadily delivers...And with the lovely Cusack, making her Broadway debut, a star is born.\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An unconvincing mix of tender romance and harrowing tragedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review criticizes the book as implausible and hokey, reducing characters to pawns, but praises the music and lead performance. Single excerpt warning suggests this may not capture full verdict. | GPT-4o: The review criticizes the story for being implausible and predictable, reducing character complexity. However, it praises the music and Cusack's performance. The mixed signals and lack of full context suggest a mixed review with some positive elements. | Gemini: The review highlights both positive and negative aspects. It criticizes the story and plot twists but praises the music and the performance of Cusack. Due to the limited excerpt, confidence is low. | Kimi: The excerpt heavily criticizes the book's plot as 'bizarre' and 'hokey' and says it reduces characters to 'two-dimensional pawns,' but concedes that 'the music steadily delivers' and praises the lead performance as a 'star is born.' Without explicit recommendation language and with substantial reservations about the core storytelling, this falls in the Mixed bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:38:09.084Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

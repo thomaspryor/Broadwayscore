@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Those in the market for an old-fashioned, feel-good show should check out 'Bright Star,' Steve Martin and Edie Brickell's charming but somewhat underdeveloped new musical...The rhymes are often forced and the lyrics repetitive...Luckily, the delightful bluegrass music keeps us blissfully distracted most of the time...Judging from the moist eyes that surrounded me, these ham-fisted oversights won't do much to dampen the enjoyment Broadway audiences get from Bright Star, a joyous new show.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those in the market for an old-fashioned, feel-good show should check out 'Bright Star.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation to 'check out' the show, calling it 'charming' and 'joyous,' but acknowledges significant flaws like forced rhymes and being underdeveloped. Single excerpt limits confidence. | GPT-4o: The review excerpt suggests a positive recommendation for those seeking a feel-good show, despite noting some flaws in the lyrics and development. The overall tone is mildly positive, warranting a score at the lower end of the Positive range. | Gemini: The review acknowledges flaws (\"forced rhymes\", \"underdeveloped\") but ultimately concludes that audiences will enjoy the \"joyous\" show. The excerpt suggests a positive but not rave review. | Kimi: The critic explicitly recommends the show ('should check out') and calls it 'joyous' with 'delightful' music, though with significant reservations about the underdeveloped book and repetitive lyrics.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:53:43.127Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

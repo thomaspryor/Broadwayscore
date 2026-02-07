@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"I absolutely loved the show. It was one of the best that I have seen. I have a feeling that this will become an instant hit on Broadway...From the genius minds of Grammy winners Steve Martin and Edie Brickell, and Tony Award-winning director Walter Bobbie comes 'Bright Star,' a musical that will tug at your heart strings...I don't want to give too much away but there is heartache and loss. You will laugh and cry but the music will carry you through.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I absolutely loved the show. It was one of the best that I have seen.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('absolutely loved', 'one of the best') with prediction of Broadway success, but single excerpt warning requires low confidence despite enthusiastic tone. | GPT-4o: The excerpt expresses strong enthusiasm and high praise, calling it 'one of the best' and predicting it will be an 'instant hit'. However, the single excerpt warning suggests caution, so the score is on the lower end of the Rave range. | Gemini: The critic states that they \"absolutely loved the show\" and believes it will be an \"instant hit on Broadway,\" indicating a strong positive recommendation. | Kimi: Single excerpt displays unqualified enthusiasm ('absolutely loved', 'one of the best'), but confidence is reduced due to potential cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:33:21.925Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Bright Star' is unlikely to become part of the canon of groundbreaking musicals with memorably meaningful stories. But, it's chockablock with assets to make for an enjoyable, feel-good two hours...So give in to 'Bright Star's' charms, as I did, and let the nitpickers complain. Yes, it's headed from the get-go to an inevitably happy ending that relies on some pretty far-fetched contrivances...But with Carmen Cusack as Alice, this is your chance to see a-star-is-born Broadway debut.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's chockablock with assets to make for an enjoyable, feel-good two hours",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Recommends giving in to the show's charms and highlights strong lead performance, but acknowledges significant flaws like predictable plot and far-fetched contrivances. Single excerpt warning applied - cautious positive scoring. | GPT-4o: The review acknowledges that 'Bright Star' may not be groundbreaking but highlights its enjoyable and feel-good nature. The positive tone is tempered by mentions of contrivances, suggesting a mildly positive verdict. | Gemini: The review acknowledges flaws but ultimately recommends seeing the show for its enjoyable qualities and the lead performance, suggesting a positive but not rave experience. | Kimi: The critic explicitly recommends the show as an enjoyable, feel-good experience with standout performances, despite noting its reliance on contrivances and lack of groundbreaking status. Given only one excerpt is available, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:25:46.330Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

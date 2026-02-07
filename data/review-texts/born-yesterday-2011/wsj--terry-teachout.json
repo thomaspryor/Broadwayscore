@@ -12,5 +12,60 @@
   "bwwExcerpt": "The sound that you're hearing at the Cort Theatre these days is one of the rarest in the world: It's the collective purr of an audience falling in love with a brand-new face. Nina Arianda made a huge impression on everyone who saw her make her professional stage debut last year in the Off-Broadway premiere of David Ives's 'Venus in Fur.' Now she's playing the not-so-dumb-blonde in a Broadway revival of Garson Kanin's 'Born Yesterday,' the play that put Judy Holliday on the map in 1946 and is going to do the same thing for Ms. Arianda. Ms. Arianda is a charismatic comedienne who is as funny as she is sexy, and anyone capable of resisting her charms is both blind and deaf.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "publishDate": "April 5, 2011"
+  "publishDate": "April 5, 2011",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Arianda is a charismatic comedienne who is as funny as she is sexy, and anyone capable of resisting her charms is both blind and deaf.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the lead performance with superlative language ('rarest in the world', 'charismatic', irresistible charms). However, single excerpt warning applies - this could be cherry-picked praise from a more mixed review. | GPT-4o: The excerpt provides strong praise for Nina Arianda's performance, suggesting a highly positive reception. The description of the audience's reaction as a 'collective purr' indicates a rave review. However, due to the single excerpt warning, confidence is low. | Gemini: The review is overwhelmingly positive, praising Nina Arianda's performance and predicting it will make her a star. The critic clearly recommends seeing the show to witness her talent. | Kimi: Single excerpt contains glowing praise for the lead performance and predicts a star-making turn for Arianda, but per the Single Excerpt Warning, confidence is low and the score is capped at the upper end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:20:09.622Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

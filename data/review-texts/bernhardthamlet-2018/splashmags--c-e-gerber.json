@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McTeer is fully up to that thorny task at hand is reason enough, avid theatergoer, to march, walk, RUN...to witness this paean to an immortal actress",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Despite being a single excerpt, the language is unambiguously enthusiastic with superlatives ('remarkable,' 'electric thrill,' 'immortal') and an explicit urgent recommendation to 'RUN' to see it. The praise spans writing, staging, and performance. | GPT-4o: The excerpt contains strong praise for the playwriting, staging, and McTeer's performance, urging theatergoers to 'march, walk, RUN' to see the show, indicating a highly enthusiastic recommendation. However, confidence is low due to the single excerpt warning. | Gemini: The excerpt contains very enthusiastic language (\"electric thrill\", \"undoubted brilliance\", \"march, walk, RUN\"), indicating a strong positive recommendation. However, it is only a single excerpt, so confidence is low. | Kimi: Single excerpt contains urgent recommendation language ('RUN...to witness') and praise for performances, direction, and writing as 'electric' and 'imaginative,' but limited context necessitates caution. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:50:54.714Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

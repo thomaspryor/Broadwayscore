@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Let it suffice to say I was surprised. Pleasantly surprised. Wonderfully surprised with all aspects of the production...I wanted theater-goers to experience the musical without the filter of my critique and possibly come away exhilarated like myself. Therefore, my review is short, simple, and to the point. Go see 'Bright Star'. Be enchanted, moved, uplifted and maybe even shed a tear.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Go see 'Bright Star'. Be enchanted, moved, uplifted and maybe even shed a tear.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language with clear recommendation to 'go see' the show, expressing being 'wonderfully surprised' and wanting audiences to be 'exhilarated.' Despite being an excerpt, the enthusiasm is unqualified. | GPT-4o: The excerpt expresses strong enthusiasm and a clear recommendation to see the show, using words like 'enchanted', 'moved', and 'uplifted'. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The critic expresses being \"wonderfully surprised\" and encourages readers to see the show to experience enchantment and upliftment, indicating a strong positive recommendation. | Kimi: The critic explicitly urges readers to 'Go see' the show, describing being 'wonderfully surprised with all aspects' and hoping audiences will be 'exhilarated,' indicating a strong positive recommendation despite the limited excerpt available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:47:51.777Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

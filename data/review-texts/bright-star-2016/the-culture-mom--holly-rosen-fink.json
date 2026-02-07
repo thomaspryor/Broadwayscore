@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"I was ambivalent about the show and where it was taking me. But...during act 2, I was completely riveted...There are banjos, guitars and violins playing the score, something I may not have been used to at first but I realized at the end that it all worked really, really well and set out to do what it meant to: tell a powerful story that left me and every audience member shedding a tear…or two…or three...The cast is also perfection...Cheers to Cusack who is marvelous.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I realized at the end that it all worked really, really well and set out to do what it meant to: tell a powerful story.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic moves from ambivalence to being 'completely riveted,' calls cast 'perfection,' and concludes it 'worked really, really well.' Strong emotional impact noted. Single excerpt limits confidence. | GPT-4o: The excerpt shows a transformation from ambivalence to being 'completely riveted' with strong emotional impact. Despite initial reservations, the final assessment is highly positive, praising the story and performances. | Gemini: The review expresses initial ambivalence but ultimately describes being riveted and moved by the story, praising the music and cast. Given the single excerpt, I'm scoring it on the higher end of positive. | Kimi: Though initially ambivalent, the critic found the second act completely riveting, praised the storytelling as powerful and emotionally affecting, and described the cast as perfection, indicating a strong positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:51:07.210Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

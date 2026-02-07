@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"This little musical with a big heart and featuring lots of what one can call bluegrass music is really quite good, and the music and lyrics by Edie Brickell, which I thought I would hate, are terrific, just plain terrific…'Bright Star' could be the sleeper of the year in the world of musicals. It’s bright star should be shining a very long time on Broadway.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bright Star' could be the sleeper of the year in the world of musicals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'really quite good' and 'terrific', predicting it could be 'sleeper of the year'. However, single excerpt warning requires caution - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt is highly positive, praising the music and lyrics as 'terrific' and suggesting the show could be a standout hit. The language indicates strong enthusiasm, placing it in the Rave bucket. However, confidence is low due to the single excerpt warning. | Gemini: The excerpt is overwhelmingly positive, calling the music \"terrific\" and predicting it could be the \"sleeper of the year.\" Given the single excerpt warning, the confidence is low, but the positive sentiment is clear. | Kimi: The excerpt offers enthusiastic praise ('terrific, just plain terrific') and a strong endorsement of the show's Broadway potential ('sleeper of the year', 'shining a very long time'), warranting an upper-range Positive score per the single-excerpt guidance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:41:35.135Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

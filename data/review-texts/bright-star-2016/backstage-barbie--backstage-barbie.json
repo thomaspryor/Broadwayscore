@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Though the structure and pacing of the book have serious flaws, the dialogue itself is sharp, witty, and dripping with appropriate Southern colloquialisms. The score, both homey and evocative, is hands down the best I’ve heard in a show that uses the country vernacular. Walter Bobbie’s direction is as swift and seamless as the clunky book will allow, using stylized movement rather than codified dance to express the melodies and transition between timelines and scenes.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though the structure and pacing of the book have serious flaws, the dialogue itself is sharp, witty, and dripping with appropriate Southern colloquialisms.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt warning applies. The critic praises dialogue, score, and direction but identifies 'serious flaws' in structure and pacing. Mixed signals with both significant positives and negatives, but no clear recommendation. | GPT-4o: The review acknowledges serious flaws in the book's structure and pacing but praises the dialogue, score, and direction. The positive elements seem to outweigh the negatives, suggesting a recommendation with reservations. | Gemini: The review praises the dialogue and score, but notes serious flaws in the book's structure and pacing. The direction is also praised for being as swift and seamless as the book allows. Given the single excerpt, I'm scoring it as positive with reservations. | Kimi: While the excerpt notes serious structural flaws in the book, the critic offers superlative praise for the score and strong approval of the dialogue and direction, indicating a qualified but genuine recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:22:35.435Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

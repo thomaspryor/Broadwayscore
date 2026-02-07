@@ -16,10 +16,15 @@
   "bwwExcerpt": "\"YOU have to applaud Daniel Craig, a film icon (thank you, James Bond) who began in the theatre and returns there still. Across the Atlantic, he's been the best thing about his two New York stage ventures to date, and when Craig is allowed to feast on the emotionally famished world of Harold Pinter'...",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A Pinter Marathon Saves the Best for Last.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright",
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-07T13:03:06.366Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a headline and 'Read more' link with no actual review content to evaluate; openai: The text provided is a headline and does not contain evaluative content or a review of the show.; gemini: This is just a headline and a 'read more' link, not a review excerpt.; kimi: This text consists only of a headline ('A Pinter Marathon Saves the Best for Last') and a 'Read more' prompt. It contains no evaluative content, critique, or review body that would allow for scoring.",
+  "promptVersion": "5.2.0"
 }

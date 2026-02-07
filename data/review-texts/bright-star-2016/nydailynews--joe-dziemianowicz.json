@@ -19,5 +19,60 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/theater-review-bright-star-aims-heart-article-1.2573712"
+  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/theater-review-bright-star-aims-heart-article-1.2573712",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show isn't a bullseye. But it's sweet and tender and boasts a fine cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Opens with 'isn't a bullseye' but finds positive elements (sweet, tender, fine cast). However, notes repetitive score and pacing issues. Praises lead performance 'even when show doesn't shine.' Balanced positives and negatives suggest mixed verdict. Low confidence due to excerpt-only format. | GPT-4o: The review praises the cast and describes the show as 'sweet and tender,' but also notes repetitiveness and areas for improvement. The overall tone suggests a mixed reception, with positive elements but significant reservations. | Gemini: The review is generally positive, noting the show is \"sweet and tender\" and has a \"fine cast.\" However, it also mentions repetitiveness and suggests it could be shorter, indicating reservations. | Kimi: The critic praises the 'fine cast' and 'sweet and tender' tone but notes significant flaws including a repetitive score, pacing issues, and that the show 'isn't a bullseye,' ultimately finding the production inconsistent.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:39:46.755Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }
