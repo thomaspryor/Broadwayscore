@@ -326,3 +326,28 @@ export interface ShowLotteryRush {
   standingRoom: StandingRoomInfo | null;
   specialLottery?: SpecialLotteryInfo | null;
 }
+
+// Cast Changes
+export interface CastMember {
+  name: string;
+  role: string;
+  since?: string;
+}
+
+export interface CastEvent {
+  type: 'departure' | 'arrival' | 'absence' | 'note';
+  name: string;
+  role: string;
+  date?: string;
+  endDate?: string;
+  dates?: string[];
+  note?: string;
+  sourceUrl?: string;
+  sourceType?: string;
+  addedDate?: string;
+}
+
+export interface ShowCastChanges {
+  currentCast?: CastMember[];
+  upcoming?: CastEvent[];
+}
