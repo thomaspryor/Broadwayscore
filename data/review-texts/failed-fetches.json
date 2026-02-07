@@ -12448,42 +12448,6 @@
     "timestamp": "2026-02-05T05:35:16.661Z"
   },
   {
-    "reviewId": "stick-fly-2011/hollywood-reporter--david-rooney.json",
-    "showId": "stick-fly-2011",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/stick-fly-review-dule-hill-mekhi-phifer-alicia-keys-271508",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): mamma mia!, giant, harmony, company, the audience...",
-    "textLength": 6545,
-    "timestamp": "2026-02-05T05:44:16.491Z"
-  },
-  {
-    "reviewId": "summer-1976-2023/nytimes--unknown.json",
-    "showId": "summer-1976-2023",
-    "outlet": "New York Times",
-    "critic": "Unknown",
-    "url": "https://www.nytimes.com/2023/04/25/theater/summer-1976-review-laura-linney.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): proof, home, the children, the audience, hair...",
-    "textLength": 5986,
-    "timestamp": "2026-02-05T05:46:25.699Z"
-  },
-  {
-    "reviewId": "summer-1976-2023/vulture--unknown.json",
-    "showId": "summer-1976-2023",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "https://www.vulture.com/2023/04/theater-review-linney-hecht-auburn-summer-1976.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): purpose, the present, the audience, rain, elling...",
-    "textLength": 6093,
-    "timestamp": "2026-02-05T05:46:43.715Z"
-  },
-  {
     "reviewId": "summer-2018/hollywood-reporter--david-rooney.json",
     "showId": "summer-2018",
     "outlet": "The Hollywood Reporter",
@@ -18976,18 +18940,6 @@
     "timestamp": "2026-02-06T18:23:58.275Z"
   },
   {
-    "reviewId": "spring-awakening-2006/vulture--unknown.json",
-    "showId": "spring-awakening-2006",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2015/09/theater-review-a-signed-spring-awakening.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): appropriate, english, company, hello, dolly!, the gin game...",
-    "textLength": 8764,
-    "timestamp": "2026-02-06T18:25:18.412Z"
-  },
-  {
     "reviewId": "stephen-sondheims-old-friends-2025/nyt-theater--jonathan-mandell.json",
     "showId": "stephen-sondheims-old-friends-2025",
     "outlet": "New York Theater",
@@ -23378,5 +23330,77 @@
     "garbageReason": "Multiple shows mentioned (15): home, waitress, betrayal, cats, sweat...",
     "textLength": 8961,
     "timestamp": "2026-02-07T09:54:50.657Z"
+  },
+  {
+    "reviewId": "spring-awakening-2006/vulture--unknown.json",
+    "showId": "spring-awakening-2006",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2015/09/theater-review-a-signed-spring-awakening.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): appropriate, english, company, hello, dolly!, the gin game...",
+    "textLength": 8764,
+    "timestamp": "2026-02-07T09:56:16.516Z"
+  },
+  {
+    "reviewId": "stick-fly-2011/hollywood-reporter--david-rooney.json",
+    "showId": "stick-fly-2011",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/stick-fly-review-dule-hill-mekhi-phifer-alicia-keys-271508",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): mamma mia!, giant, harmony, company, the audience...",
+    "textLength": 6496,
+    "timestamp": "2026-02-07T09:56:35.105Z"
+  },
+  {
+    "reviewId": "summer-1976-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "summer-1976-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/04/28/summer-1976-broadway-review/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (26): two strangers (carry a cake across new york), the great gatsby, wicked, hamilton, chicago...",
+    "textLength": 14309,
+    "timestamp": "2026-02-07T09:58:43.098Z"
+  },
+  {
+    "reviewId": "summer-1976-2023/nytimes--unknown.json",
+    "showId": "summer-1976-2023",
+    "outlet": "New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2023/04/25/theater/summer-1976-review-laura-linney.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): proof, redwood, home, company, the children...",
+    "textLength": 6781,
+    "timestamp": "2026-02-07T09:58:48.312Z"
+  },
+  {
+    "reviewId": "summer-1976-2023/vulture--unknown.json",
+    "showId": "summer-1976-2023",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "https://www.vulture.com/2023/04/theater-review-linney-hecht-auburn-summer-1976.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): purpose, the present, the audience, rain, elling...",
+    "textLength": 6093,
+    "timestamp": "2026-02-07T09:58:52.636Z"
+  },
+  {
+    "reviewId": "swept-away-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "swept-away-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/11/19/swept-away-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): wicked, death becomes her, buena vista social club, harmony, home...",
+    "textLength": 6154,
+    "timestamp": "2026-02-07T09:59:00.173Z"
   }
 ]
