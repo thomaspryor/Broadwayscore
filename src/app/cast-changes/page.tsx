@@ -68,6 +68,31 @@ function formatEventDate(dateStr: string): string {
   return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
 
+function formatDateRanges(dates: string[]): string {
+  if (dates.length === 0) return '';
+  if (dates.length === 1) return formatEventDate(dates[0]);
+  const sorted = [...dates].sort();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const groups: string[][] = [[sorted[0]]];
+  for (let i = 1; i < sorted.length; i++) {
+    const prev = new Date(sorted[i - 1]);
+    const curr = new Date(sorted[i]);
+    if ((curr.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24) <= 1.5) {
+      groups[groups.length - 1].push(sorted[i]);
+    } else {
+      groups.push([sorted[i]]);
+    }
+  }
+  return groups.map(group => {
+    if (group.length === 1) return formatEventDate(group[0]);
+    const s = new Date(group[0]), e = new Date(group[group.length - 1]);
+    if (s.getUTCFullYear() === e.getUTCFullYear() && s.getUTCMonth() === e.getUTCMonth()) {
+      return `${months[s.getUTCMonth()]} ${s.getUTCDate()}\u2013${e.getUTCDate()}, ${s.getUTCFullYear()}`;
+    }
+    return `${formatEventDate(group[0])} \u2013 ${formatEventDate(group[group.length - 1])}`;
+  }).join(', ');
+}
+
 function getEventConfig(event: CastEvent) {
   switch (event.type) {
     case 'departure':
@@ -160,6 +185,9 @@ function ShowCastCard({ showWithCast, index }: { showWithCast: ShowWithCast; ind
                         {event.endDate && ` \u2013 ${formatEventDate(event.endDate)}`}
                       </span>
                     )}
+                    {event.dates && event.dates.length > 0 && (
+                      <span>{formatDateRanges(event.dates)}</span>
+                    )}
                   </div>
                   {event.note && <p className="mt-0.5 text-xs text-gray-400">{event.note}</p>}
                   {event.sourceUrl && (
@@ -198,8 +226,10 @@ export default function CastChangesPage() {
     .sort((a, b) => {
       // Sort by soonest event date first, shows without dates last
       const getEarliestDate = (events: CastEvent[]) => {
-        const dates = events.filter(e => e.date).map(e => e.date!);
-        return dates.length > 0 ? dates.sort()[0] : 'z';
+        const allDates = events
+          .map(e => e.date || (e.dates && e.dates.length > 0 ? e.dates.sort()[0] : null))
+          .filter((d): d is string => d !== null);
+        return allDates.length > 0 ? allDates.sort()[0] : 'z';
       };
       return getEarliestDate(a.events).localeCompare(getEarliestDate(b.events));
     });
