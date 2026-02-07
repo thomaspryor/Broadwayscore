@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The show hits its marks in terms of storytelling and characterization, with enough emotional connection to be engaging and occasionally moving. And while the evening is serious, it's neither solemn nor humorless. But there's the undeniable mediocrity of the material...The conflict between political ideology and human relationships is a staple of good drama, but the book delivers it in too many formulaic configurations. 'Allegiance' isn't dull or bad. It just doesn't matter as much as it ought to.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Allegiance isn't dull or bad. It just doesn't matter as much as it ought to.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges positive elements (hits storytelling marks, engaging, moving moments) but emphasizes 'undeniable mediocrity' and formulaic delivery. The final verdict that it 'doesn't matter as much as it ought to' suggests mild disappointment rather than recommendation. | GPT-4o: The review acknowledges some positive aspects like storytelling and emotional connection but criticizes the material as mediocre and formulaic. The verdict suggests the show is not dull or bad but lacks impact, fitting a mixed assessment. | Gemini: The review acknowledges some positive aspects like storytelling and emotional connection, but ultimately finds the material mediocre and formulaic, leading to a mixed assessment. | Kimi: The excerpt acknowledges the show is engaging and well-executed in basic storytelling terms, but criticizes the material as mediocre and formulaic, ultimately concluding that while not bad, it lacks the impact or importance it should have.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:46:40.515Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

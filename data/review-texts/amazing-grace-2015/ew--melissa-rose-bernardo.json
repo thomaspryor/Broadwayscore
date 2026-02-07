@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Lest you think that 'Amazing Grace' is one long celebration of the soul-stirring song, theatergoer beware. You’ll have to wait to hear those two little words—almost two and a half hours. The good news: It’s worth it...If only the rest of 'Amazing Grace' had such force. While by no means unpleasant, Smith’s songs are lifeless and forgettable.\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While by no means unpleasant, Smith's songs are lifeless and forgettable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The excerpt shows mixed sentiment - praising the climactic moment as 'worth it' but criticizing the songs as 'lifeless and forgettable.' Single excerpt with conflicting signals warrants low confidence. | GPT-4o: The review excerpt suggests that the show has a strong moment with the song 'Amazing Grace', but overall the songs are described as 'lifeless and forgettable'. This indicates a mixed review with some positive elements but significant reservations. | Gemini: The review states \"It's worth it\" but then expresses reservations about the songs being \"lifeless and forgettable.\" Due to the limited excerpt, confidence is low. | Kimi: The critic explicitly states the show is 'worth it' despite harsh criticism of the songs as 'lifeless and forgettable,' indicating a barely positive recommendation. Confidence is low due to availability of only a single excerpt. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:01:23.846Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

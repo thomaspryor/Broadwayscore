@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The three actors bring distinct energies to their roles, with Rockwell's twitchy, fast-talking Teach providing the play's manic engine, while Fishburne's Don anchors the evening with his steady, weathered presence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,59 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The three actors bring distinct energies to their roles, with Rockwell's twitchy, fast-talking Teach providing the play's manic engine.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | GPT-4o: The excerpt praises the performances of the actors but does not provide a clear overall verdict on the production. The lack of a full review text and the absence of strong evaluative language lead to a mixed classification with low confidence. | Gemini: The excerpt praises the actors' performances but doesn't offer a clear recommendation for the play itself. Without a more definitive statement, it's difficult to classify beyond a mixed assessment, and the limited text reduces confidence. | Kimi: The excerpt offers specific, appreciative evaluations of the lead actors' contributions, using theatrical terms like 'manic engine' and 'anchors the evening' that indicate effective performances. However, as a curated excerpt focusing solely on acting without broader context about the production's overall merit or the critic's final verdict, confidence remains low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:24:49.889Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 75,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

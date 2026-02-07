@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"It look me a while to warm to 'Amazing Grace' beyond my early admiration for its splendid physical and aural designs. But once the dramatic incidents started to pile up, the narrative became compulsive watching...Its affinity with the hymn “Amazing Grace” is inconsequential but no matter. The real John Newton may not recognize the biographical story we see on the stage, but the show has spirit, spectacle, ambition, and professionalism. I like its chances in the Big Apple.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show has spirit, spectacle, ambition, and professionalism. I like its chances in the Big Apple.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic admits taking time to warm to the show but ultimately finds it 'compulsive watching' with positive qualities and expresses confidence in its Broadway prospects. Clear positive recommendation despite initial reservations. | GPT-4o: The excerpt praises the show's design and narrative, highlighting its 'spirit, spectacle, ambition, and professionalism.' The critic expresses a positive outlook for its success, indicating a solid recommendation. | Gemini: The review indicates that the reviewer warmed up to the show and ultimately liked its chances in New York, suggesting a positive recommendation despite some initial reservations. The phrase \"compulsive watching\" indicates a strong positive element. | Kimi: While the critic notes it took time to warm to the show, the review ultimately praises its 'spirit, spectacle, ambition, and professionalism,' calling the narrative 'compulsive watching' and endorsing its Broadway prospects with 'I like its chances in the Big Apple.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:55:40.082Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

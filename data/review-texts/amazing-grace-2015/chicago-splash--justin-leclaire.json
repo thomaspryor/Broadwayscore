@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The best thing I can say about 'Amazing Grace,' the newest out of town “tryout” to reach Chicago, is that it’s not terrible. Does that mean 'Amazing Grace' is good? Well, I wouldn’t go quite that far. But 'Amazing Grace' does have a lot of satisfying potential right now: a majority of the cast is stunning, the vocals are astounding, the costumes are gorgeous, and most importantly there is a real sincere heart behind the work that is really admirable.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The best thing I can say about 'Amazing Grace' is that it's not terrible.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Opens with damning faint praise ('not terrible'), explicitly states 'I wouldn't go quite that far' when asked if it's good, but acknowledges 'satisfying potential' and praises cast/vocals. Single excerpt warning applies - this lukewarm assessment suggests mixed reception. | GPT-4o: The review acknowledges potential and praises elements like the cast and vocals, but stops short of calling the show good, indicating a mixed impression. | Gemini: The review states the show is \"not terrible\" but doesn't go as far as saying it's good. It highlights positive aspects like the cast, vocals, costumes, and sincerity, but the overall sentiment is mixed, suggesting potential rather than a strong recommendation. The truncated text and single excerpt reduce confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:56:56.852Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

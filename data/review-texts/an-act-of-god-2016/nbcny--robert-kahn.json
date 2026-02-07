@@ -11,12 +11,17 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Act-of-God-Jim-Parsons-305335191.html"
+  "playbillVerdictUrl": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Act-of-God-Jim-Parsons-305335191.html",
+  "rejectedAt": "2026-02-07T07:51:41.844Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a truncated sentence fragment that cuts off mid-word and provides no actual evaluative content about the show - just biographical context about the performer.; openai: The excerpt provided is more of a biographical context about the actor Sean Hayes rather than an evaluative review of the Broadway show.; gemini: This is a truncated excerpt that primarily describes the actor Sean Hayes and his role, rather than providing a comprehensive evaluation of the show itself. It lacks a clear verdict or critical assessment of the production as a whole.",
+  "promptVersion": "5.2.0"
 }

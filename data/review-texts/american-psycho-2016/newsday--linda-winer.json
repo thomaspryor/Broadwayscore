@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.newsday.com/entertainment/theater/american-psycho-review-benjamin-walker-terrific-in-musical-1.11718786"
+  "playbillVerdictUrl": "http://www.newsday.com/entertainment/theater/american-psycho-review-benjamin-walker-terrific-in-musical-1.11718786",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The answer is definitely yes, no and sometimes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows clear ambivalence with 'alternately dazzling and dull' and 'yes, no and sometimes' response. Mixed signals with both positive ('dazzling') and negative ('dull') elements, plus 'misgivings' mentioned. | GPT-4o: The excerpt indicates a mixed review with both positive and negative elements, describing the musical as 'alternately dazzling and dull.' The single excerpt warning suggests caution, leading to a low confidence score. | Gemini: The review excerpt presents a mixed assessment, describing the musical as \"alternately dazzling and dull.\" The \"yes, no, and sometimes\" verdict suggests an uneven experience, placing it in the Mixed bucket. | Kimi: The review describes the show as inconsistent ('alternately dazzling and dull') with qualified praise for the lead actor, indicating a balanced mixed assessment without clear recommendation or rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:29:59.267Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

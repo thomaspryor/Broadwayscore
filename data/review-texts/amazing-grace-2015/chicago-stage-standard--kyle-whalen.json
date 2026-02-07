@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Amazing Grace' seems to miss its story’s larger ramifications about the human condition...But in a show awash with rousing sentiment and “redemption,” such a blind spot diminished my opinion of the show. I nonetheless enjoyed 'Amazing Grace.' Though it’s problematic in a macro way, it nevertheless successfully examines personal relationships...'Amazing Grace' is a well-performed musical worth seeing.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Amazing Grace' is a well-performed musical worth seeing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite criticizing the show's larger themes and calling it 'problematic in a macro way,' the critic explicitly states they 'enjoyed' it and calls it 'worth seeing.' This is a qualified positive recommendation with significant reservations. | GPT-4o: The review acknowledges significant issues with the show's handling of its themes but ultimately recommends it for its performances and examination of personal relationships. The positive recommendation is qualified, placing it in the lower range of the Positive bucket. | Gemini: The review states that the show is \"worth seeing\" despite its flaws, which puts it in the positive bucket. The score is in the middle of the bucket because the review acknowledges significant problems. | Kimi: While the critic identifies significant thematic blind spots that 'diminished my opinion,' they explicitly state they 'nonetheless enjoyed' the show and deliver a clear verdict calling it 'worth seeing' due to strong performances. The single excerpt warrants conservative scoring at the lower end of Positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:57:25.228Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -17,5 +17,59 @@
   "bwwExcerpt": "Did it need to become a stage musical? Debatable. But one thing the effusive show gets right, like the movie that spawned it, is the infectious energy of rock 'n' roll at a transitional moment - 1973 - when the raw, rebellious spirit of great rock was making way for the slicker, more commercialized sound of mass-consumption superstardom. For many epochal bands and solo artists, that year was an artistic peak they would never again match. That gives Crowe's quasi-memoir, in both incarnations, a bittersweet undertow of simultaneous discovery and loss.",
   "bwwScore": 6,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103",
-  "publishDate": "November 4, 2022"
+  "publishDate": "November 4, 2022",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Almost Famous' will carry a dulcet pang of recognition.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt suggests a nostalgic appeal for fans of rock music but lacks a clear recommendation or strong praise. The tone is more reflective than enthusiastic, indicating a mixed reception. | Gemini: The quote suggests a positive, nostalgic experience for a specific audience, but the truncated text and lack of explicit recommendation language lowers confidence. | Kimi: The excerpt suggests the show successfully captures the nostalgic 70s rock culture with emotional resonance ('dulcet pang of recognition'), though the limited excerpt length prevents a definitive assessment of the overall recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:49:17.189Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

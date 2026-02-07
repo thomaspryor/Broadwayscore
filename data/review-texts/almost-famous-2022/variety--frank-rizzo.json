@@ -17,5 +17,60 @@
   "bwwExcerpt": "Kitt and Crowe also fashion several effective numbers sung by William's no-nonsense but supportive mother Elaine (Anika Larsen), a schoolteacher who frets from home. Here, she's given variations of the film's great monologues: One is a lecture to her class in which she memorably declares, 'Rock stars have kidnapped my son,' and in another, she gives Russell a dose of parental terror over the phone. Larsen lands both moments beautifully, with just the right comic gravitas and heart. But these skillful original songs only tell half the story. We never hear expressed - in a way that only musical theater can do - what this music means to these characters. Instead, at key dramatic moments we get renditions of the hits of the era, notably Elton John's 'Tiny Dancer' as a kind of carpool karaoke, Joni Mitchell's 'River' and Yusef Islam's (aka Cat Stevens) 'The Wind.' But even in minor moments the musical forgoes original songs and turns to tunes from Nancy Wilson, Ron Davies, Stevie Wonder, Greg Allman, Jimmy Page and Robert Point, among others.",
   "bwwScore": 5,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103",
-  "publishDate": "November 4, 2022"
+  "publishDate": "November 4, 2022",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's all entertaining enough — but there's nothing extraordinary in the transformation to the stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds it 'entertaining enough' but explicitly states there's 'nothing extraordinary' about it. This lukewarm assessment with qualified praise falls into mixed territory. Low confidence due to excerpt-only text. | GPT-4o: The review describes the show as 'entertaining enough' but lacking anything 'extraordinary,' suggesting a mixed reception. The lack of a full review text and the absence of a clear positive or negative recommendation leads to a low confidence score. | Gemini: The review states that the show is \"entertaining enough\" but lacks anything extraordinary, suggesting a mixed reaction. The truncated text and lack of a clear recommendation lead to low confidence. | Kimi: The critic offers faint praise ('entertaining enough') but emphasizes the show's lack of artistic distinction or innovation ('nothing extraordinary'), suggesting it appeals only to nostalgic audiences without being essential viewing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:51:18.727Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.nbcnewyork.com/entertainment/the-scene/Review-American-Psycho-Musical-376304131.html"
+  "playbillVerdictUrl": "http://www.nbcnewyork.com/entertainment/the-scene/Review-American-Psycho-Musical-376304131.html",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Alas, there's no drawing blood from a stone.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes the score as 'weak link' and 'inaccessible', with the phrase 'Alas, there's no drawing blood from a stone' suggesting fundamental problems. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt highlights a significant flaw in the score, suggesting it is a weak point of the production. The overall tone implies disappointment, but with only one excerpt, the confidence is low. | Gemini: The review excerpt focuses on the negative aspects of the show, specifically criticizing the score as inaccessible and comparing it unfavorably to the composer's other work. Given the single excerpt and negative tone, I've classified it as negative with low confidence. | Kimi: While acknowledging the show's satirical style and visual elements, the critic identifies the score as a fundamental weakness, calling it 'inaccessible' and unfavorably comparing it to the composer's previous work, with the phrase 'no drawing blood from a stone' suggesting the production cannot overcome its material deficiencies.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:29:25.484Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

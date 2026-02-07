@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Amazing Grace' is a diverse play that caters to the interests of history buffs and musical theater fans alike. Despite the awkward staging, the singing and the creative special effects made up for it. The ending number 'Amazing Grace' is sung by the whole company, and each diverse voice harmonizes together to sum up the the historical, spiritual play that brings to light the story of an acclaimed hymn.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite the awkward staging, the singing and the creative special effects made up for it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges significant staging issues but finds the singing and effects compensatory, with praise for the diverse cast and finale. Single excerpt limits confidence in full verdict. | GPT-4o: The review excerpt praises the play's appeal to specific audiences and highlights positive aspects like singing and special effects, despite noting awkward staging. The single excerpt suggests a mildly positive tone. | Gemini: The review acknowledges awkward staging but praises the singing and special effects, suggesting a positive but not overwhelmingly enthusiastic experience. The limited text and single excerpt lowers confidence. | Kimi: Single excerpt indicates a qualified recommendation—acknowledging staging weaknesses but praising singing and effects as compensatory strengths. Mildly positive tone suggests lower Positive range appropriate given excerpt limitations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:04:43.454Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 73,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

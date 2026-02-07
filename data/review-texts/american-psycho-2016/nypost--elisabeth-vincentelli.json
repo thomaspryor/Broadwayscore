@@ -14,5 +14,54 @@
   "bwwScore": 8,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
-  "publishDate": "April 22, 2016"
+  "publishDate": "April 22, 2016",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting the second act flags, the critic praises the score as strong, calls the music radical by Broadway standards, and concludes it's a worthy follow-up to Spring Awakening. The final verdict 'Somehow, it works' indicates a positive recommendation despite reservations. | GPT-4o: The excerpt highlights strong performances and a successful score, despite noting that the second act flags. The overall tone is positive, suggesting the show works despite some issues. | Gemini: The review praises the performances, score, and novelty of the production, but notes that the second act flags. The final verdict is positive ('somehow, it works'). | Kimi: The excerpt offers strong praise for Duncan Sheik's score as a 'worthy follow-up to Spring Awakening' and highlights excellent performances, while noting only that the second act flags; the overall verdict confirms the show 'works.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:31:36.856Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

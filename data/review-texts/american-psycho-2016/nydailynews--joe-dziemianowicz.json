@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/theater-review-american-psycho-starts-strong-loses-steam-article-1.2609875"
+  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/theater-review-american-psycho-starts-strong-loses-steam-article-1.2609875",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gives you a killer buzz - for a while. Euphoria sinks once corpses pile up",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt shows initial enthusiasm ('killer buzz', 'wicked wit', 'catchy ear candy') but indicates the show deteriorates ('Euphoria sinks once corpses pile up'). This suggests a mixed experience that starts strong but disappoints. Single excerpt warning requires caution - this could be from a longer negative review. | GPT-4o: The review excerpt highlights positive elements like 'wicked wit' and 'catchy ear candy' but notes that 'euphoria sinks' as the show progresses. This suggests a mixed experience with initial appeal that diminishes, leading to a mixed classification. | Gemini: The review starts with praise but then mentions the euphoria sinks, indicating a mixed opinion. The truncated text and single excerpt make it difficult to determine the overall recommendation with high confidence. | Kimi: The excerpt praises the show's style, music and cast but indicates the energy and appeal decline significantly as the violent plot progresses, suggesting an inconsistent experience rather than a full recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:30:57.275Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

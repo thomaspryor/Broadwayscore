@@ -12,5 +12,60 @@
   "bwwExcerpt": "The show has been updated to include a few new zingers. For instance, God announces that he knows full well that the crowd is only there because they couldn't get tickets to \"Hamilton.\" In fact, God can't snag a ticket, either. Even at just 90 minutes, \"An Act of God\" (directed by the prolific Joe Mantello) is long-winded and full of unoriginal jabs at easy targets, but it is cute and occasionally witty . Hayes, who appeared on Broadway six years ago in the musical \"Promises, Promises\" and is be",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606",
   "contentTier": "excerpt",
-  "showScoreExcerpt": "\"It's a very funny, very promising concept, but not much of a play or even a stand-up routine...Even at 90 minutes, 'An Act of God' is long-winded and full of unoriginal jabs at common targets. There may be a play to be drawn out of Javerbaum's work, but 'An Act of God' is not it.\"\n\nRead more"
+  "showScoreExcerpt": "\"It's a very funny, very promising concept, but not much of a play or even a stand-up routine...Even at 90 minutes, 'An Act of God' is long-winded and full of unoriginal jabs at common targets. There may be a play to be drawn out of Javerbaum's work, but 'An Act of God' is not it.\"\n\nRead more",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There may be a play to be drawn out of Javerbaum's work, but 'An Act of God' is not it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the concept promising but execution poor, calling it 'long-winded' with 'unoriginal jabs' and concluding it's 'not much of a play.' Clear negative recommendation despite acknowledging the concept's potential. | GPT-4o: The review criticizes the play for being long-winded and lacking originality, suggesting it fails to deliver on its promising concept. The tone is clearly negative, though not entirely dismissive, hence a score at the lower end of the Negative range. | Gemini: The review states that the show is \"not much of a play\" and \"long-winded and full of unoriginal jabs\", indicating a negative assessment. | Kimi: While acknowledging the concept is funny and promising, the critic delivers a clear negative verdict on the execution, calling it long-winded and unoriginal, ultimately concluding it fails as a theatrical work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:49:28.038Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

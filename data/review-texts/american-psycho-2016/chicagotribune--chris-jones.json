@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-american-psycho-broadway-review-0421-20160421-column.html"
+  "playbillVerdictUrl": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-american-psycho-broadway-review-0421-20160421-column.html",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "directed with relentless, sensationalist expediency by Rupert Goold",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt criticizes the direction as 'sensationalist expediency' and suggests choreography that 'evidences little' (presumably quality). While acknowledging it's 'highly unusual' and 'cleverly self-protected', the tone is critical. Single excerpt warning applies - this could be from a more positive review. | GPT-4o: The excerpt describes the show as 'highly unusual' and 'cleverly self-protected,' which suggests a mixed impression. The lack of a clear positive or negative recommendation and the single excerpt warning lead to a low confidence score in the Mixed bucket. | Gemini: The review excerpt acknowledges the show's unusual nature and cleverness, but the phrase \"self-protected against the aesthetic police\" suggests some reservations. Without the full review, it's difficult to determine a clear recommendation, so I've classified it as mixed with low confidence. | Kimi: The excerpt offers conflicting signals—acknowledging the show is 'cleverly self-protected' and 'highly unusual' but criticizing the direction as 'sensationalist' and employing 'expediency.' With only one truncated excerpt available, the final verdict is unclear, but the visible text suggests reservations about the artistic approach despite recognizing its distinctiveness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:26:16.824Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

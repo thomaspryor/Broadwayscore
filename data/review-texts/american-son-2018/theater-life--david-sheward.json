@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Wants to be a deep, complex examination of an immediate, vital issue and comes up short...The four characters...are more like representatives of viewpoints rather than flesh and blood. They speak to each other in talking points...Leon’s overheated direction turns the stage into a debate platform...The cast does their level best to humanize the proceedings, particularly Washington who filters Demos-Brown’s stagey dialogue through desperate mother love and a laser-like focus.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wants to be a deep, complex examination of an immediate, vital issue and comes up short.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The review criticizes the play for falling short of its ambitions, with characters described as mere viewpoint representatives and dialogue as stagey talking points. While praising individual performances (Washington), the overall assessment is clearly negative. | GPT-4o: The review excerpt criticizes the show for failing to achieve its intended depth and complexity, describing characters as mere viewpoints and the direction as overheated. While the cast is praised, the overall tone suggests the production is lacking, leading to a negative verdict. | Gemini: The review states the show \"comes up short\" and criticizes the characters and direction, despite acknowledging the cast's efforts. Due to the limited text, confidence is low. | Kimi: The critic finds the show fails to achieve its dramatic goals, criticizing the dialogue as stagey, characters as talking points, and direction as overheated, though acknowledging the cast's efforts to humanize the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:44:17.800Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "\"'Amazing Grace' has as strong a finish as any musical in recent or distant memory...but is it enough to forgive what’s gone before? With little reluctance, I have to say it isn’t...Audiences are required to sit through two dubious acts before being so rewarded...The prosaic rhyming is careless, the tunes Les Miserables-generic, and the emotions fall far short of what is needed for the characters to express themselves as they must.\"\n\nRead more",
   "isRoundupArticle": true,
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With little reluctance, I have to say it isn't enough to forgive what's gone before.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising the ending as exceptionally strong, the critic explicitly states it's not enough to redeem the show. Calls the writing 'prosaic' and 'careless,' music 'generic,' and emotions inadequate. | GPT-4o: The review acknowledges a strong finish but criticizes the overall experience, noting 'dubious acts', 'careless' rhyming, and 'generic' tunes. The positive aspect is outweighed by significant negative elements. | Gemini: The review acknowledges a strong finish but ultimately concludes that it's not enough to compensate for the preceding acts, citing careless writing and generic tunes. Given the negative assessment of the majority of the show, it is a negative review. | Kimi: The critic explicitly states that while the musical has a strong finish, it cannot forgive two 'dubious acts' of careless writing and generic music; the verdict clearly recommends against sitting through the show despite acknowledging one redeeming quality. Confidence is low due to single excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:11:23.995Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

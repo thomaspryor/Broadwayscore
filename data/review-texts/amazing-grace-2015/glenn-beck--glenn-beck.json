@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"This show has the power of the spirit without EVER preaching. It shows slavery for what is was but it also shows the evil black princess who was also part of the evil as she sold her own people in to slavery. None of it felt PC, nor did it feel forced or worse yet like it was trying to teach a lesson. If you are anywhere near New York you must see this show. It is worth the drive, the airfare or whatever it takes to get there. 'Amazing Grace' isn’t just amazing, it’s a miracle.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you are anywhere near New York you must see this show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Extremely enthusiastic recommendation with superlatives ('miracle', 'must see') and explicit travel endorsement, despite being a single excerpt which limits confidence. | GPT-4o: The excerpt uses strong, enthusiastic language suggesting a must-see recommendation, calling the show 'a miracle' and urging people to see it regardless of distance. | Gemini: The review uses strong positive language such as \"power of the spirit\", \"amazing\", and \"miracle\", and explicitly states that the reader \"must see this show.\" | Kimi: The excerpt offers unqualified praise with superlatives ('miracle', 'must see') and urges readers to travel for the show, warranting a high score, but confidence is low given it is a single curated excerpt that may not represent the full review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:02:19.985Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -15,5 +15,60 @@
   "bwwExcerpt": "Director Jeremy Herrin, best known for his work with grand epics like “Wolf Hall” and Shakespearean dramas, is out of his league here; too many scenes are just a muddle of movement with no center – helped none by Sarah O’Gleby’s almost amateurish choreography. Most shocking of all, the production even defeats the great set designer Derek McLane, who fills a butt-ugly steel cage with cheap-looking furniture and cardboard cutouts, and resorts to giant maps or huge photos to give us a sense of place. Still, the filmmaker, who wrote the musical’s book and lyrics, is primarily to blame. Not only is the script too cinematic in nature to work well on stage, but Crowe also simply fails to understand that great theater is about story, not atmosphere (which was the film’s strongest suit). What we should getting is a deeply moving coming-of-age story more firmly focused on William’s hard-earned life lessons about the dangers of meeting your heroes (even if one turns out to be nice in the end), the actual rigors of professional journalism, and the pain of young love.",
   "bwwScore": 3,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103",
-  "showScoreExcerpt": "\"Not only is the script too cinematic in nature to work well on stage, but Crowe also simply fails to understand that great theater is about story, not atmosphere.\"\n\nRead more"
+  "showScoreExcerpt": "\"Not only is the script too cinematic in nature to work well on stage, but Crowe also simply fails to understand that great theater is about story, not atmosphere.\"\n\nRead more",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Jeremy Herrin is out of his league here; too many scenes are just a muddle of movement with no center.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The review systematically criticizes direction, choreography, set design, and book/lyrics, calling the choreography 'almost amateurish' and the set 'butt-ugly.' While acknowledging this is only an excerpt, the overwhelming negativity suggests a clear negative recommendation. | GPT-4o: The review is overwhelmingly negative, criticizing the direction, choreography, set design, and script. It suggests a fundamental misunderstanding of theatrical storytelling, indicating a strong disapproval of the production. | Gemini: The review is largely negative, criticizing the direction, choreography, set design, and script. The critic believes the production fails to translate the story effectively to the stage. | Kimi: The critic delivers harsh criticism across all production elements including direction, choreography, set design, and book, finding the adaptation fails to translate the story effectively to stage with no redeeming qualities mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:47:30.629Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

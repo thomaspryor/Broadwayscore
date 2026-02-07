@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "https://nystagereview.com/2022/04/14/american-buffalo-david-mamets-classic-retains-its-classic-status/"
+  "playbillVerdictUrl": "https://nystagereview.com/2022/04/14/american-buffalo-david-mamets-classic-retains-its-classic-status/",
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 79,
+      "high": 89
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the third Broadway revival of the play contains sufficient deliberately grubby thrills to qualify as a must-see.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Despite acknowledging the production doesn't match past impact, the critic explicitly calls it a 'must-see,' which is strong recommendation language that places it firmly in positive territory. | GPT-4o: The critic describes the production as a 'must-see' despite noting it doesn't pack the same wallop as before. The use of 'must-see' indicates a strong recommendation, placing it in the Rave bucket. However, the confidence is low due to the limited excerpt. | Gemini: The review concludes that the revival contains sufficient thrills to qualify as a \"must-see,\" indicating a rave recommendation. | Kimi: While the critic notes this revival lacks the impact of previous productions, the explicit 'must-see' verdict constitutes a strong recommendation, though the qualification 'sufficient' and comparison to superior earlier versions keep it from unqualified Rave territory. | Buckets: claude=Positive, openai=Rave, gemini=Rave, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:17:33.134Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 85,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

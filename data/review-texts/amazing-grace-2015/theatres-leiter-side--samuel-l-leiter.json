@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The show is definitely blessed with a number of virtues that many will find sufficiently entertaining to keep them in their seats, including an important historical lesson , several big-chested songs, a remarkable underwater special effect, and, among other things, the beloved eponymous hymn...On the other hand, this tale is a fictionalized distortion of what actually happened, its narrative is awkward and clichéd, its characters broad stereotypes, and its wit almost an afterthought.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is definitely blessed with a number of virtues that many will find sufficiently entertaining to keep them in their seats",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Classic mixed review structure with 'on the other hand' construction. Lists specific positives (entertaining, historical lesson, songs, effects) but counters with significant negatives (fictionalized distortion, awkward narrative, stereotypical characters). Single excerpt warning applies - this balanced assessment suggests genuine ambivalence rather than clear recommendation. | GPT-4o: The review acknowledges entertaining elements and virtues but criticizes the narrative as clichéd and characters as stereotypes. The mixed tone suggests a balance of positive and negative aspects. | Gemini: The review highlights both positive and negative aspects, suggesting a mixed experience. It mentions entertaining elements but also criticizes the narrative and characters. | Kimi: The excerpt presents a mixed but mildly favorable view, acknowledging spectacle value and entertainment while criticizing the narrative as clichéd and stereotypical. Given the single excerpt limitation and faint praise ('sufficiently entertaining'), this represents a qualified recommendation at the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:13:20.533Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

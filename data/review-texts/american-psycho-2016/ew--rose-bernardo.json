@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.ew.com/article/2016/04/21/american-psycho-broadway-review"
+  "playbillVerdictUrl": "http://www.ew.com/article/2016/04/21/american-psycho-broadway-review",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you can resign yourself to the story's innate ambiguity, you're in for a perversely enjoyable experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it a 'perversely enjoyable experience' and praises the script for deftly capturing the source material, but the conditional phrasing 'if you can resign yourself' suggests reservations. Single excerpt limits confidence. | GPT-4o: The excerpt suggests a positive recommendation with the phrase 'perversely enjoyable experience,' despite acknowledging the story's ambiguity. The curated nature of the excerpt and lack of full context necessitate a cautious approach, placing the score at the lower end of the Positive range. | Gemini: The review suggests an enjoyable experience, but with the caveat of accepting the story's ambiguity. Given the single excerpt, confidence is low. | Kimi: The excerpt offers enthusiastic praise ('perversely enjoyable,' 'deftly skewers') despite a caveat about the story's ambiguity, indicating a positive recommendation. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:27:35.724Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

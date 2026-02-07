@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The best thing about this revival is that it reminds us of what a good play 'American Buffalo' really is, and how effectively it can work when performed by actors who understand that Mr. Mamet's tough-guy dialogue is a kind of music that must be played with absolute precision.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The best thing about this revival is that it reminds us of what a good play 'American Buffalo' really is, and how effectively it can work when performed by actors who understand that Mr. Mamet's tough-guy dialogue is a kind of music that must be played with absolute precision.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The best thing about this revival is that it reminds us of what a good play 'American Buffalo' really is, and how effectively it can work when performed by actors who understand that Mr. Mamet's tough-guy dialogue is a kind of music that must be played with absolute precision.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praise focuses on the revival's effectiveness and actor understanding of Mamet's work. Cherry-picked quote warning and positive tone suggests upper positive range, but limited text requires low confidence. | GPT-4o: The excerpt praises the revival for highlighting the quality of the play and the actors' understanding of the dialogue. However, due to the single excerpt warning, the confidence is low, and the score is at the lower end of the Positive range. | Gemini: The excerpt praises the play itself and the actors' understanding of the dialogue, suggesting a positive experience, but it's difficult to gauge the overall enthusiasm due to the limited text. | Kimi: The excerpt offers unambiguous praise for both the play and the performances, describing the work as 'good' and 'effective' with precise acting, indicating a clear recommendation to see the revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:20:58.759Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

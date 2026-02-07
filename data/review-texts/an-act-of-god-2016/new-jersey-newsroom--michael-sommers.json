@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"While such casting is perfect and the notion for this show is nifty, writer David Javerbaum doesn’t make nearly so much of these assets as might be hoped. The 90 minutes that ensue turn out to be fairly amusing as God convivially chats about creation...The humor is scattershot. The social satire is mild. The characterization of God as a curmudgeon whose mysterious ways are simply quixotic is scarcely profound. Expect light entertainment here rather than dark or dangerous comedy.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Expect light entertainment here rather than dark or dangerous comedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review acknowledges good casting and concept but finds execution disappointing with 'scattershot humor' and 'mild satire.' The conclusion explicitly sets lowered expectations. Single excerpt warning applies. | GPT-4o: The review describes the show as 'fairly amusing' with 'scattershot' humor and 'mild' satire, suggesting a mixed reception. The single excerpt indicates a lack of depth, leading to a mixed verdict. | Gemini: The review describes the show as \"fairly amusing\" and \"light entertainment\" but also notes that the humor is \"scattershot\" and the satire is \"mild,\" indicating a mixed overall impression. | Kimi: While praising the perfect casting and nifty concept, the critic finds the humor scattershot and the satire mild, offering only a lukewarm recommendation for light entertainment rather than profound comedy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:52:08.998Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

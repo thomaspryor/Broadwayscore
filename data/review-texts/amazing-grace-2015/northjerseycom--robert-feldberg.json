@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The authors load up on the atrocious behavior to make Newton’s redemption that much more impressive. But when it finally happens, it comes much too quickly...The songs and book of 'Amazing Grace' are no more than serviceable, but the show does offer theatrical pleasures. It moves with good energy, and there are vivid scenic effects.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The songs and book of 'Amazing Grace' are no more than serviceable, but the show does offer theatrical pleasures.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Mixed assessment calling songs/book merely 'serviceable' but acknowledging 'theatrical pleasures' and 'good energy.' Single excerpt warning requires caution about incomplete verdict. | GPT-4o: The review acknowledges some positive aspects like energy and scenic effects, but criticizes the songs and book as only 'serviceable' and notes issues with pacing. The excerpt suggests a mixed impression overall. | Gemini: The review excerpt presents a mixed assessment, noting that the songs and book are only \"serviceable\" but also acknowledging \"theatrical pleasures\" and \"good energy.\" Due to the limited excerpt, confidence is low. | Kimi: Single excerpt shows qualified praise: while criticizing the book and songs as merely adequate and noting pacing issues, the reviewer acknowledges 'theatrical pleasures,' 'good energy,' and 'vivid scenic effects' that make the show enjoyable despite its weaknesses.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:05:15.846Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Astonishing, awesome, stupendous, spectacular, thrilling, mesmerizing, extraordinary, exceptional, and incredible!...This is an amazing, lump-in-your-throat, tears-down-your-cheek wondrous production that on opening night had the audience bolting from their seats in cheering, thunderous applause.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is an amazing, lump-in-your-throat, tears-down-your-cheek wondrous production that on opening night had the audience bolting from their seats in cheering, thunderous applause.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Overwhelmingly positive language with multiple superlatives and description of standing ovation, but confidence is low due to single excerpt warning - this may be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses superlatives like 'astonishing', 'extraordinary', and 'incredible', indicating a highly enthusiastic recommendation. The description of the audience's reaction further supports a rave verdict. | Gemini: The excerpt uses a string of superlatives and describes a standing ovation, indicating a rave review. Despite only having a single excerpt, the language is strong enough to warrant a score in the Rave bucket. | Kimi: While the excerpt uses extreme superlatives (astonishing, spectacular, incredible) and describes a rapturous audience response, confidence is low due to the single-excerpt limitation which risks cherry-picking. The language places it at the top of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:04:23.397Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

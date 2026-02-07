@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The 1975 play American Buffalo, now onstage in a crackling revival, remains the quintessential Mamet experience, the one that should be seen to fully appreciate what has been lost.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong recommendation with 'crackling revival' and 'should be seen' language, plus appreciation for the production's effectiveness. Single excerpt warning applied with upper-end scoring due to clearly positive tone. | GPT-4o: The excerpt describes the revival as 'crackling' and 'quintessential', suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt describes the revival as a \"quintessential Mamet experience\" and a \"crackling revival\", indicating a positive assessment. However, due to the limited text, confidence is low. | Kimi: The excerpt employs enthusiastic descriptors ('crackling,' 'quintessential') and explicitly states the production 'should be seen,' indicating a clear recommendation in the upper Positive range, though confidence is reduced due to limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:19:52.765Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 81
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

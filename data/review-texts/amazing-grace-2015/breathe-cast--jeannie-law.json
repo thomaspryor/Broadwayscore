@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Amazing Grace' on Broadway is an unforgettable experience that will wow the critics, captivate the crowd, and inspire people to pursue love and freedom despite racial tensions in the country...Overall 'Amazing Grace' on Broadway is a show that we would gladly recommend to anyone...The acting allows the audience to go on this journey with Newton and it is a show with a rare voice not usually heard on Broadway.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Overall 'Amazing Grace' on Broadway is a show that we would gladly recommend to anyone.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('unforgettable experience', 'gladly recommend to anyone') with praise for acting and unique voice. Single excerpt warning noted but tone is consistently enthusiastic. | GPT-4o: The excerpt provides strong praise, describing the show as 'unforgettable' and recommending it to 'anyone'. The language suggests a solidly positive review, but the single excerpt warning reduces confidence. | Gemini: The excerpt contains strong positive language and a clear recommendation, but as it is only one excerpt, the confidence is low. | Kimi: The single available excerpt contains strongly positive language ('unforgettable', 'gladly recommend to anyone', 'wow the critics') indicating an enthusiastic recommendation. However, confidence is low due to the single-excerpt warning that the quote may be cherry-picked.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:53:37.134Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

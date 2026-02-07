@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The piece seems to have hopes of becoming an historical musical epic of the Les Misérables variety, but it lacks the latter's clarity of storytelling, compelling hero, or its rousing anthems or lovely ballads...The caliber of talent hired for the cast and creative team shows the producers have faith in the project. With some heavy rewriting of book and score, they might have a chance.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The piece seems to have hopes of becoming an historical musical epic of the Les Misérables variety, but it lacks the latter's clarity of storytelling, compelling hero, or its rousing anthems or lovely ballads",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic identifies fundamental flaws in storytelling, character development, and music quality compared to the show's apparent aspirations. While acknowledging talented cast/creative team, suggests 'heavy rewriting' is needed, indicating the current production falls short of recommendation. | GPT-4o: The review excerpt criticizes the show for lacking clarity, a compelling hero, and memorable music, suggesting significant shortcomings. The mention of potential improvement with rewriting indicates some hope, but the current production is not recommended. | Gemini: The review acknowledges the talent involved but points out significant flaws in the storytelling and music, suggesting potential with revisions but not a clear recommendation in its current state. Given the excerpt-only warning, I'm scoring cautiously. | Kimi: The single excerpt criticizes the show for failing to achieve its Les Misérables-style ambitions, citing deficiencies in storytelling, characters, and music. While acknowledging the cast's caliber, the critic suggests heavy rewriting is needed, indicating the current production is not recommended.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:10:36.004Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

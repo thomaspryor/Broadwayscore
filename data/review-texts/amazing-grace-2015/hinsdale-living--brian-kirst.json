@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"There are some obvious emotional denouements here and the shoehorned ending allows for no true examination into Newton’s creative songwriting process, resolving things on a slightly uneven note. But, overall, the delicious antics level out even the most deliriously religious aspects of the piece, making for an evening that even nonbelievers can enjoy...one of the most interesting spectacles of the fall season.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "making for an evening that even nonbelievers can enjoy...one of the most interesting spectacles of the fall season",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite criticizing the ending and songwriting examination, the critic calls it enjoyable and 'one of the most interesting spectacles of the fall season.' Single excerpt warning applied - positioned at lower end of Positive range due to mixed signals and significant reservations mentioned. | GPT-4o: Despite noting some structural issues, the review describes the show as enjoyable and interesting, suggesting a positive recommendation overall. The single excerpt limits confidence. | Gemini: The review acknowledges some issues with the ending but ultimately concludes that the show is enjoyable even for nonbelievers, suggesting a positive but not overwhelmingly enthusiastic recommendation. The truncated text and single excerpt lower the confidence. | Kimi: While acknowledging significant flaws in the ending, the critic ultimately recommends the show as a delicious spectacle with broad appeal, praising it as one of the fall season's most interesting offerings.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:03:03.241Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

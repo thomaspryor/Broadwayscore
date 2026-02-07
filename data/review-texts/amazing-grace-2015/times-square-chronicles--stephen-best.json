@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Epic, grand, lavish, powerful, the Pre-Broadway run of Amazing Grace has officially opened and what a musical debut it is...Amazing Grace shows immense promise. And one could easily predict this will join the other sweeping, epic productions like Les Miserables and Phantom of the Opera into Broadway History.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Amazing Grace shows immense promise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses multiple superlatives ('epic, grand, lavish, powerful') and compares it favorably to Broadway classics like Les Mis and Phantom, predicting it will join 'Broadway History.' However, confidence is medium due to single excerpt warning and the qualifying phrase about 'promise' suggesting potential rather than complete fulfillment. | GPT-4o: The excerpt uses strong, enthusiastic language ('epic, grand, lavish, powerful') and predicts the show will join iconic productions, indicating a highly positive assessment. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is overwhelmingly positive, using words like \"epic, grand, lavish, powerful\" and predicting it will join the ranks of Les Miserables and Phantom of the Opera. Given the single excerpt warning, I'm scoring it on the higher end of the positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:14:31.370Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": null,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

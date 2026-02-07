@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"TV actress Kerry Washington is superb in a role that plunges her into every imaginable checkpoint on the emotional scale, but it’s the ideas that come at you with a fast and furious frenzy that will escort you out of the theater dazed...Acted with dexterity by a great cast, directed with economy by Kenny Leon, and written with knowledge and sobering humanity by Christopher Demos-Brown...A profound and unforgettable evening at the theater that challenges the mind.\"\n\nRead more"
+  "showScoreExcerpt": "\"TV actress Kerry Washington is superb in a role that plunges her into every imaginable checkpoint on the emotional scale, but it’s the ideas that come at you with a fast and furious frenzy that will escort you out of the theater dazed...Acted with dexterity by a great cast, directed with economy by Kenny Leon, and written with knowledge and sobering humanity by Christopher Demos-Brown...A profound and unforgettable evening at the theater that challenges the mind.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A profound and unforgettable evening at the theater that challenges the mind.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout with superlatives like 'superb,' 'great cast,' and 'profound and unforgettable evening.' Clear recommendation despite being only an excerpt. | GPT-4o: The excerpt praises the performances, direction, and writing, culminating in a strong endorsement as 'profound and unforgettable.' Despite being a single excerpt, the language is highly enthusiastic, suggesting a rave review. | Gemini: The review uses strong positive language such as \"superb\", \"great cast\", \"sobering humanity\", and \"unforgettable evening\", indicating a strong recommendation. | Kimi: The excerpt delivers enthusiastic, unqualified praise for the performances ('superb,' 'great cast'), direction ('economy'), and writing ('knowledge and sobering humanity'), culminating in a 'profound and unforgettable' verdict. However, as a single curated excerpt, confidence is reduced per scoring guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:41:04.290Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -15,5 +15,60 @@
   "bwwExcerpt": "So, I'll resist analyzing 'American Buffalo,' avoid trying to figure out whether the original interpretations of it still hold up, given what we now know about Mamet's beliefs. That leaves me with a production that feels like little more than an acting exercise.",
   "bwwScore": 4,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
-  "showScoreExcerpt": "the challenge of the roles..is for the actors to master the timing of the street poetry in such a way that their performances are both thrilling and  believable as human beings. And only one of the three came close to doing all that for me: Sam Rockwell. Admittedly, he has it the easiest. With a trigger temper, arias of overreaction and a violent streak, Teach is the flashiest part…\n\nRead more"
+  "showScoreExcerpt": "the challenge of the roles..is for the actors to master the timing of the street poetry in such a way that their performances are both thrilling and  believable as human beings. And only one of the three came close to doing all that for me: Sam Rockwell. Admittedly, he has it the easiest. With a trigger temper, arias of overreaction and a violent streak, Teach is the flashiest part…\n\nRead more",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "only one of the three came close to doing all that for me: Sam Rockwell",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt suggests mixed feelings about the production - praising one performance (Rockwell) while indicating the other two actors didn't meet expectations. However, with only excerpted text ending in 'Read more', the full verdict may be missing, requiring low confidence. | GPT-4o: The review highlights a challenge in the roles and notes that only one actor, Sam Rockwell, came close to meeting it, suggesting a mixed performance overall. The excerpt is limited, so the confidence is low. | Gemini: The review excerpt focuses on the performances, with only one actor standing out. The truncated text makes it difficult to determine the overall recommendation, but the focus on a single positive performance suggests a mixed assessment. | Kimi: The critic singles out Sam Rockwell as the only cast member who successfully meets the challenges of the role, implying disappointment with the other two performances in this three-character play. With only excerpts available and the review truncated, the full verdict is unclear, but the visible criticism suggests a mixed assessment at best.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:24:00.279Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

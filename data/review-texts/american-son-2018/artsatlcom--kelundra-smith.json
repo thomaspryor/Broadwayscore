@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Far from perfect, but it feels like the right play at the right time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Multiple critics offer qualified praise ('effective', 'potent') but significant reservations ('too much on its plate', 'wish he was working with better material'). Single excerpt warning applies - these selected quotes show clear ambivalence rather than strong recommendation. | GPT-4o: The review acknowledges the play's effectiveness and timeliness but criticizes the material and lack of a firm message. The mixed sentiments suggest a balanced view without a strong recommendation. | Gemini: The review excerpt presents mixed opinions, calling it \"effective\" and \"thought-provoking\" but also noting it has \"too much on its plate\" and is \"far from perfect.\" The overall sentiment leans towards a qualified recommendation, placing it in the Mixed category. | Kimi: The excerpt praises the direction as 'some of Leon's best work' and calls the piece 'effective' and 'potent,' but criticizes the playwright's focus ('too much on its plate,' 'no firm sense') and wishes for 'better material,' indicating significant reservations about the writing quality despite appreciating the production's timeliness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:35:30.094Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

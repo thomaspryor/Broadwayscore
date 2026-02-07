@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Jim Parsons proves a surprisingly authoritative Supreme Being in the hilarious comedy 'An Act of God.' The script is both outrageously irreverent and deeply thoughtful in its exploration of religious issues. 'The Book of Mormon' seems almost restrained by comparison.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The script is both outrageously irreverent and deeply thoughtful in its exploration of religious issues.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'hilarious' with positive assessment of both script and lead performance. Comparison to 'Book of Mormon' suggests high quality. Single excerpt limits confidence but tone is clearly enthusiastic. | GPT-4o: The excerpt praises Jim Parsons' performance and the script's qualities, comparing it favorably to 'The Book of Mormon.' The tone is enthusiastic and suggests a strong recommendation, but confidence is low due to the single excerpt warning. | Gemini: The excerpt praises Jim Parsons' performance and describes the play as \"hilarious\" and \"deeply thoughtful,\" indicating a positive recommendation. The comparison to 'The Book of Mormon' suggests a high level of irreverent humor, further supporting a positive assessment. | Kimi: The excerpt features strong praise ('hilarious,' 'outrageously irreverent,' 'deeply thoughtful') and favorable comparison to 'The Book of Mormon,' indicating a solid recommendation despite limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:50:22.773Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

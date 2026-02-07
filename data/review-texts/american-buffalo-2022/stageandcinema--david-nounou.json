@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Under Neil Pepe's direction, the three actors create a convincing triumvirate of small-time hustlers whose bond is both their strength and their weakness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Under Neil Pepe's direction, the three actors create a convincing triumvirate of small-time hustlers whose bond is both their strength and their weakness.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Neil Pepe's direction, the three actors create a convincing triumvirate of small-time hustlers whose bond is both their strength and their weakness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises direction and performances as 'convincing' but with only one quote available, confidence is low. The tone suggests solid craft rather than enthusiasm. | GPT-4o: The excerpt praises the direction and the actors' performances, indicating a positive view of the production. However, the single excerpt warning suggests caution, so a lower score within the Positive range is appropriate. | Gemini: The excerpt praises the direction and acting, suggesting a positive experience, but without more context, it's hard to gauge the overall strength of the recommendation. I'm placing it in the lower end of the 'Positive' bucket due to the limited information. | Kimi: The single excerpt offers mild, measured praise for the direction and acting, describing the performances as 'convincing' but lacking the enthusiasm or superlatives of a strong recommendation. With only one curated quote available, confidence must remain low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:24:14.563Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
