@@ -1,15 +1,51 @@
 {
-  "updatedAt": "2026-02-07T23:44:16.516Z",
-  "processed": 9,
-  "failed": 171,
-  "successRate": "5.0%",
+  "updatedAt": "2026-02-07T23:50:41.571Z",
+  "processed": 27,
+  "failed": 433,
+  "successRate": "5.9%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 7
+    "playwright": 3,
+    "browserbase": 3,
+    "scrapingbee": 9,
+    "brightdata": 5,
+    "archive": 12
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-07T18:03:27.978Z",
+      "event": "bb-session",
+      "session": "0744d4c8",
+      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+    },
+    {
+      "t": "2026-02-07T18:04:05.604Z",
+      "event": "bb-session",
+      "session": "bcae4ca4",
+      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+    },
+    {
+      "t": "2026-02-07T18:07:44.242Z",
+      "event": "bb-session",
+      "session": "49096084",
+      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
+    },
+    {
+      "t": "2026-02-07T18:07:57.618Z",
+      "event": "bb-session",
+      "session": "ec29b5a7",
+      "url": "http://www.vulture.com/2013/11/theater-review-nostalgia-for-700-sundays.html"
+    },
+    {
+      "t": "2026-02-07T18:07:57.907Z",
+      "event": "bb-session",
+      "session": "bf789364",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
+    },
+    {
+      "t": "2026-02-07T18:07:59.695Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    }
+  ]
 }
