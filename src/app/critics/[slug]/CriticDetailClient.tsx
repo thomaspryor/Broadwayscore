@@ -8,7 +8,7 @@ import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix } from '@/l
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 
-function ReviewCard({ review }: { review: ProfileReview }) {
+function ReviewCard({ review, loading = 'lazy' }: { review: ProfileReview; loading?: 'eager' | 'lazy' }) {
   return (
     <article className="card p-4 flex items-center gap-4">
       {/* Thumbnail */}
@@ -18,7 +18,9 @@ function ReviewCard({ review }: { review: ProfileReview }) {
             src={getOptimizedImageUrl(review.showThumbnail, 'thumbnail')}
             alt={review.showTitle}
             className="w-full h-full object-cover"
-            loading="lazy"
+            width={56}
+            height={56}
+            loading={loading}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -181,8 +183,8 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
       {/* Review List */}
       <div className="space-y-2">
         {visibleReviews.length > 0 ? (
-          visibleReviews.map((review) => (
-            <ReviewCard key={`${review.showSlug}-${review.outletId}-${review.url}`} review={review} />
+          visibleReviews.map((review, index) => (
+            <ReviewCard key={`${review.showSlug}-${review.outletId}-${review.url}`} review={review} loading={index < 4 ? 'eager' : 'lazy'} />
           ))
         ) : (
           <div className="card p-8 text-center">
