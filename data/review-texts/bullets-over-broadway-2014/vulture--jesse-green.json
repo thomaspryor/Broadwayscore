@@ -5,7 +5,7 @@
   "criticName": "Jesse Green",
   "url": "https://www.vulture.com/2014/04/theater-review-bullets-over-broadway.html",
   "publishDate": "April 11, 2014",
-  "fullText": "The musical version of Bullets Over Broadway is a monument to the principle that you can't improve on perfection — or rather, that when you try, you risk losing what made the original so wonderful in the first place.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The musical version of Bullets Over Broadway is a monument to the principle that you can't improve on perfection — or rather, that when you try, you risk losing what made the original so wonderful in the first place.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical version of Bullets Over Broadway is a monument to the principle that you can't improve on perfection — or rather, that when you try, you risk losing what made the original so wonderful in the first place.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (39 words)",
   "llmScore": {
     "score": 44,
@@ -78,5 +78,41 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/bullets-over-broadway-2014/vulture--jesse-green_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T12:06:56.057Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }
