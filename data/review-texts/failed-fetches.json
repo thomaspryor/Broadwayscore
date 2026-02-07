@@ -18400,18 +18400,6 @@
     "timestamp": "2026-02-06T16:58:38.168Z"
   },
   {
-    "reviewId": "machinal-2014/vulture--jesse-green.json",
-    "showId": "machinal-2014",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "http://www.vulture.com/2014/01/theater-review-a-high-style-machinal.html?mid=googlenews",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): home, purpose, the music man, the audience, hair...",
-    "textLength": 6271,
-    "timestamp": "2026-02-06T17:01:57.100Z"
-  },
-  {
     "reviewId": "magicbird-2012/hollywood-reporter--david-rooney.json",
     "showId": "magicbird-2012",
     "outlet": "The Hollywood Reporter",
@@ -18458,30 +18446,6 @@
     "garbageReason": "Multiple shows mentioned (7): the price, the father, once, elling, high...",
     "textLength": 6370,
     "timestamp": "2026-02-06T17:06:49.981Z"
-  },
-  {
-    "reviewId": "mary-poppins-2006/hollywood-reporter--david-rooney.json",
-    "showId": "mary-poppins-2006",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/review/mary-poppins-returns-review-1167792",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): hamilton, chicago, proof, home, english...",
-    "textLength": 11888,
-    "timestamp": "2026-02-06T17:07:05.838Z"
-  },
-  {
-    "reviewId": "mary-poppins-2006/nytimes--ben-brantley.json",
-    "showId": "mary-poppins-2006",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2006/11/17/theater/reviews/17popp.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): the lion king, home, english, purpose, network...",
-    "textLength": 8510,
-    "timestamp": "2026-02-06T17:07:10.160Z"
   },
   {
     "reviewId": "mary-poppins-2006/variety--owen-glieberman.json",
@@ -22778,5 +22742,53 @@
     "garbageReason": "Multiple shows mentioned (9): home, parade, the prom, harvey, once...",
     "textLength": 6344,
     "timestamp": "2026-02-07T08:01:59.666Z"
+  },
+  {
+    "reviewId": "machinal-2014/vulture--jesse-green.json",
+    "showId": "machinal-2014",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2014/01/theater-review-a-high-style-machinal.html?mid=googlenews",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): home, purpose, the music man, the audience, hair...",
+    "textLength": 6271,
+    "timestamp": "2026-02-07T08:07:49.430Z"
+  },
+  {
+    "reviewId": "marvins-room-2017/nyt-theater--jonathan-mandell.json",
+    "showId": "marvins-room-2017",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2017/06/29/marvins-room-review-dying-and-laughing-and-loving/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): appropriate, home, skeleton crew, paradise square, the audience...",
+    "textLength": 6055,
+    "timestamp": "2026-02-07T08:08:11.826Z"
+  },
+  {
+    "reviewId": "mary-poppins-2006/hollywood-reporter--david-rooney.json",
+    "showId": "mary-poppins-2006",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/review/mary-poppins-returns-review-1167792",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): hamilton, chicago, proof, home, english...",
+    "textLength": 12205,
+    "timestamp": "2026-02-07T08:08:37.209Z"
+  },
+  {
+    "reviewId": "mary-poppins-2006/nytimes--ben-brantley.json",
+    "showId": "mary-poppins-2006",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2006/11/17/theater/reviews/17popp.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): the lion king, home, english, purpose, network...",
+    "textLength": 8510,
+    "timestamp": "2026-02-07T08:08:41.960Z"
   }
 ]
