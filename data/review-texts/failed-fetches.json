@@ -20464,66 +20464,6 @@
     "timestamp": "2026-02-07T09:32:33.427Z"
   },
   {
-    "reviewId": "smash-2025/nyt-theater--jonathan-mandell.json",
-    "showId": "smash-2025",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2025/04/10/smash-broadway-review/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (25): maybe happy ending, oh, mary!, wicked, hamilton, chicago...",
-    "textLength": 15591,
-    "timestamp": "2026-02-07T09:32:36.416Z"
-  },
-  {
-    "reviewId": "smash-2025/nytg--gillian-russo.json",
-    "showId": "smash-2025",
-    "outlet": "New York Theatre Guide",
-    "critic": "Gillian Russo",
-    "url": "https://www.newyorktheatreguide.com/reviews/smash-broadway-review",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): stranger things: the first shadow, dog day afternoon, new york, new york, scandalous, hair...",
-    "textLength": 7448,
-    "timestamp": "2026-02-07T09:32:40.064Z"
-  },
-  {
-    "reviewId": "smash-2025/nytimes--jesse-green.json",
-    "showId": "smash-2025",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2025/04/10/theater/review-smash-musical.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 7969,
-    "timestamp": "2026-02-07T09:32:43.504Z"
-  },
-  {
-    "reviewId": "smash-2025/variety--christian-lewis.json",
-    "showId": "smash-2025",
-    "outlet": "Variety",
-    "critic": "Christian Lewis",
-    "url": "https://variety.com/2025/legit/reviews/smash-review-broadway-musical-1236366477/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): parade, hair, once, high, race...",
-    "textLength": 7792,
-    "timestamp": "2026-02-07T09:32:46.762Z"
-  },
-  {
-    "reviewId": "smash-2025/vulture--unknown.json",
-    "showId": "smash-2025",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "https://www.vulture.com/article/broadway-smash-adaptation-nbc-musical-bombshell-timid.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): dear evan hansen, sweat, once, elling, race...",
-    "textLength": 11284,
-    "timestamp": "2026-02-07T09:32:51.500Z"
-  },
-  {
     "reviewId": "spamalot-2023/nyt-theater--jonathan-mandell.json",
     "showId": "spamalot-2023",
     "outlet": "New York Theater",
@@ -24974,5 +24914,89 @@
     "garbageReason": "Multiple shows mentioned (7): english, sylvia, hair, once, elling...",
     "textLength": 4751,
     "timestamp": "2026-02-07T16:13:57.506Z"
+  },
+  {
+    "reviewId": "six-degrees-of-separation-2017/hollywood-reporter--david-rooney.json",
+    "showId": "six-degrees-of-separation-2017",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/six-degrees-separation-theater-review-997204",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): home, company, cats, the encounter, the audience...",
+    "textLength": 8916,
+    "timestamp": "2026-02-07T16:20:52.978Z"
+  },
+  {
+    "reviewId": "six-degrees-of-separation-2017/vulture--jesse-green.json",
+    "showId": "six-degrees-of-separation-2017",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2017/04/theater-can-six-degrees-still-bring-home-the-bacon.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, cats, the audience, romeo and juliet, high...",
+    "textLength": 9446,
+    "timestamp": "2026-02-07T16:24:05.080Z"
+  },
+  {
+    "reviewId": "smash-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "smash-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/04/10/smash-broadway-review/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (25): maybe happy ending, oh, mary!, wicked, hamilton, chicago...",
+    "textLength": 15591,
+    "timestamp": "2026-02-07T16:24:08.434Z"
+  },
+  {
+    "reviewId": "smash-2025/nytg--gillian-russo.json",
+    "showId": "smash-2025",
+    "outlet": "New York Theatre Guide",
+    "critic": "Gillian Russo",
+    "url": "https://www.newyorktheatreguide.com/reviews/smash-broadway-review",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): stranger things: the first shadow, dog day afternoon, new york, new york, scandalous, hair...",
+    "textLength": 7448,
+    "timestamp": "2026-02-07T16:24:12.349Z"
+  },
+  {
+    "reviewId": "smash-2025/nytimes--jesse-green.json",
+    "showId": "smash-2025",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2025/04/10/theater/review-smash-musical.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 7969,
+    "timestamp": "2026-02-07T16:24:16.307Z"
+  },
+  {
+    "reviewId": "smash-2025/variety--christian-lewis.json",
+    "showId": "smash-2025",
+    "outlet": "Variety",
+    "critic": "Christian Lewis",
+    "url": "https://variety.com/2025/legit/reviews/smash-review-broadway-musical-1236366477/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): parade, hair, once, high, race...",
+    "textLength": 7792,
+    "timestamp": "2026-02-07T16:24:19.484Z"
+  },
+  {
+    "reviewId": "smash-2025/vulture--unknown.json",
+    "showId": "smash-2025",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "https://www.vulture.com/article/broadway-smash-adaptation-nbc-musical-bombshell-timid.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): dear evan hansen, sweat, once, elling, race...",
+    "textLength": 11284,
+    "timestamp": "2026-02-07T16:24:24.227Z"
   }
 ]

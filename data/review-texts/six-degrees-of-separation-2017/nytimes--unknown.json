@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "https://www.nytimes.com/2017/04/25/theater/six-degrees-of-separation-review.html?_r=0",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "That dangerous young man who calls himself Paul Poitier has grown up in the 27 years since he first set foot on a New York stage. All right, perhaps not “grown up,” since we’re still talking about a narcissistic con artist of adolescent fecklessness and zero self-knowledge. But there’s no doubt that he has grown in stature and, in a paradoxical way, truthfulness.\n\nThis is because Paul Poitier (not his real name) has been embodied with tremulous, searching sensitivity by the screen actor Corey Hawkins in the earthbound revival of John Guare’s marvelous “Six Degrees of Separation,” which opened on Tuesday night at the Ethel Barrymore Theater, with the estimable Allison Janney and John Benjamin Hickey as Paul’s plump society pigeons.\n\nEqual parts radiance and shadow, Mr. Hawkins transforms a fatally mixed-up character into something close to a tragic hero. With this production, directed by Trip Cullman, Paul takes his place more fully as one of the great pretenders, or less-than-great Gatsbys, who populate Mr. Guare’s work — the ravenously aspirational outsiders in a culture that worships wealth and celebrity.\n\nMind you, one of the points of “Six Degrees” is that everybody feels like an outsider, including those in the V.I.P. rooms. In this uncannily empathetic satire from 1990, a well-heeled couple on the Upper East Side of Manhattan — Flan Kittredge (Mr. Hickey), an art dealer, and his wife, Ouisa (Ms. Janney) — come to realize just how tenuous their foothold on the good life is, when Paul stumbles into their world one night.\n\nIt’s a strategic stumble. Paul arrives in a comme il faut navy blazer and a somewhat less presentable shirt, as it’s wet with blood. Paul has been stabbed by a mugger, it appears. But even in distress, he’s a charmer. And since he claims to be friends with Flan and Ouisa’s children at Harvard — and, oh, by the way, lets it slip that he’s the son of one Sidney Poitier — he winds up staying for dinner.\n\nAnd nobody’s life, as the ad copy for best-selling novels likes to say, will ever be the same again.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 63,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“An earthbound revival of Guare’s marvelous ‘Six Degrees of Separation’…Mr. Hawkins transforms a fatally mixed-up character into something close to a tragic hero…Ms. Janney is a highly credible Ouisa…The deception of the Kittredges and their society pals always had its farcical elements. But they have been heightened here at the expense of poignancy…It’s a tone that screeches as the play becomes darker, especially in the sequences involving Paul’s gulling of a naïve aspiring actor.”\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -75,5 +75,50 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 63,
+  "textWordCount": 376,
+  "archivePath": "data/archives/reviews/six-degrees-of-separation-2017/nytimes--unknown_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T16:24:00.874Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 376,
+  "tierReason": "Full review text"
 }
