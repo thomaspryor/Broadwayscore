@@ -1,51 +1,56 @@
 {
-  "updatedAt": "2026-02-07T19:41:57.379Z",
-  "processed": 8,
-  "failed": 132,
-  "successRate": "5.7%",
+  "updatedAt": "2026-02-07T19:50:14.670Z",
+  "processed": 13,
+  "failed": 137,
+  "successRate": "8.7%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 3,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 5
+    "playwright": 4,
+    "browserbase": 1,
+    "scrapingbee": 0,
+    "brightdata": 3,
+    "archive": 6
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-07T18:03:27.978Z",
+      "t": "2026-02-07T18:01:24.774Z",
       "event": "bb-session",
-      "session": "0744d4c8",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+      "session": "ada91e25",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/1776-broadway-review-1235228615"
     },
     {
-      "t": "2026-02-07T18:04:05.604Z",
+      "t": "2026-02-07T18:02:01.866Z",
       "event": "bb-session",
-      "session": "bcae4ca4",
-      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+      "session": "61abb195",
+      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
     },
     {
-      "t": "2026-02-07T18:07:44.242Z",
+      "t": "2026-02-07T18:04:11.853Z",
       "event": "bb-session",
-      "session": "49096084",
-      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
+      "session": "bdeb36cc",
+      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
     },
     {
-      "t": "2026-02-07T18:07:57.618Z",
-      "event": "bb-session",
-      "session": "ec29b5a7",
-      "url": "http://www.vulture.com/2013/11/theater-review-nostalgia-for-700-sundays.html"
-    },
-    {
-      "t": "2026-02-07T18:07:57.907Z",
-      "event": "bb-session",
-      "session": "bf789364",
-      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
-    },
-    {
-      "t": "2026-02-07T18:07:59.695Z",
+      "t": "2026-02-07T18:04:14.035Z",
       "event": "bb-login-uncertain",
-      "domain": "vulture.com"
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-07T18:06:49.222Z",
+      "event": "bb-session",
+      "session": "a28354e2",
+      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
+    },
+    {
+      "t": "2026-02-07T18:06:56.756Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-07T18:08:01.985Z",
+      "event": "bb-session",
+      "session": "c52761e8",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
     }
   ]
 }
