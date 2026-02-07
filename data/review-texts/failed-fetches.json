@@ -11356,18 +11356,6 @@
     "timestamp": "2026-02-05T02:39:32.701Z"
   },
   {
-    "reviewId": "fiddler-on-the-roof-2015/hollywood-reporter--unknown.json",
-    "showId": "fiddler-on-the-roof-2015",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/fiddler-roof-theater-review-850349",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): mamma mia!, home, cats, rocky, rain...",
-    "textLength": 12639,
-    "timestamp": "2026-02-05T02:44:12.925Z"
-  },
-  {
     "reviewId": "fiddler-on-the-roof-2015/nytimes--unknown.json",
     "showId": "fiddler-on-the-roof-2015",
     "outlet": "New York Times",
@@ -19828,18 +19816,6 @@
     "timestamp": "2026-02-07T06:34:22.381Z"
   },
   {
-    "reviewId": "fences-2010/variety--owen-gleiberman.json",
-    "showId": "fences-2010",
-    "outlet": "Variety",
-    "critic": "Owen Gleiberman",
-    "url": "http://variety.com/2016/film/reviews/fences-review-denzel-washington-1201921332/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): death of a salesman, home, death of a salesman, king lear, the present...",
-    "textLength": 6002,
-    "timestamp": "2026-02-07T06:37:43.297Z"
-  },
-  {
     "reviewId": "festen-2006/nytimes--ben-brantley.json",
     "showId": "festen-2006",
     "outlet": "The New York Times",
@@ -23990,5 +23966,77 @@
     "garbageReason": "Multiple shows mentioned (7): appropriate, company, network, high, company...",
     "textLength": 2872,
     "timestamp": "2026-02-07T12:41:56.664Z"
+  },
+  {
+    "reviewId": "fences-2010/variety--owen-gleiberman.json",
+    "showId": "fences-2010",
+    "outlet": "Variety",
+    "critic": "Owen Gleiberman",
+    "url": "http://variety.com/2016/film/reviews/fences-review-denzel-washington-1201921332/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): death of a salesman, home, death of a salesman, king lear, the present...",
+    "textLength": 6135,
+    "timestamp": "2026-02-07T12:42:19.295Z"
+  },
+  {
+    "reviewId": "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
+    "showId": "fiddler-on-the-roof-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/fiddler-roof-theater-review-850349?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Freviews%2Ftheater+%28The+Hollywood+Reporter+-+Theater+Reviews%29",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): mamma mia!, home, cats, rain, race...",
+    "textLength": 12590,
+    "timestamp": "2026-02-07T12:42:34.777Z"
+  },
+  {
+    "reviewId": "fiddler-on-the-roof-2015/hollywood-reporter--unknown.json",
+    "showId": "fiddler-on-the-roof-2015",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/fiddler-roof-theater-review-850349",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): mamma mia!, home, cats, rain, race...",
+    "textLength": 12590,
+    "timestamp": "2026-02-07T12:42:51.396Z"
+  },
+  {
+    "reviewId": "fiddler-on-the-roof-2015/nyt-theater--jonathan-mandell.json",
+    "showId": "fiddler-on-the-roof-2015",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "http://newyorktheater.me/2015/12/20/fiddler-on-the-roof-review-danny-burstein-in-broadway-revival/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, golden boy, once, high, south pacific...",
+    "textLength": 6729,
+    "timestamp": "2026-02-07T12:42:59.434Z"
+  },
+  {
+    "reviewId": "fiddler-on-the-roof-2015/nytg--marc-miller.json",
+    "showId": "fiddler-on-the-roof-2015",
+    "outlet": "New York Theatre Guide",
+    "critic": "Marc Miller",
+    "url": "http://nytheatreguide.com/2016/01/broadway-review-fiddler-on-the-roof-at-the-broadway-theatre/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): harmony, home, tina, finding neverland, once...",
+    "textLength": 45998,
+    "timestamp": "2026-02-07T12:43:13.210Z"
+  },
+  {
+    "reviewId": "fiddler-on-the-roof-2015/nytimes--charles-isherwood.json",
+    "showId": "fiddler-on-the-roof-2015",
+    "outlet": "The New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://www.nytimes.com/2015/12/21/theater/review-a-fiddler-on-the-roof-revival-with-an-echo-of-modernity.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, company, in transit, hair, evita...",
+    "textLength": 9417,
+    "timestamp": "2026-02-07T12:43:17.897Z"
   }
 ]
