@@ -280,6 +280,41 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
+      - name: Count eligible reviews
+        id: count
+        env:
+          DOMAIN_FILTER: ${{ matrix.domain }}
+        run: |
+          COUNT=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const domains = (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (!r.url) return;
+                  const textLen = r.fullText ? r.fullText.length : 0;
+                  const isTruncated = r.textQuality === 'truncated' || r.textStatus === 'truncated'
+                    || r.contentTier === 'truncated' || r.contentTier === 'needs-rescrape';
+                  if (!isTruncated && (r.isFullReview === true || r.textQuality === 'full' || textLen > 1500)) return;
+                  try {
+                    const urlDomain = new URL(r.url).hostname.replace(/^www\\./, '');
+                    if (domains.some(dd => urlDomain === dd || urlDomain.endsWith('.' + dd))) n++;
+                  } catch(e) {}
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "eligible=$COUNT" >> $GITHUB_OUTPUT
+          echo "Eligible reviews for ${{ matrix.domain }}: $COUNT"
+
       - name: Stagger start to avoid push conflicts
         run: |
           # Each domain gets a different delay (0-25s) to stagger initial pushes
@@ -294,6 +329,7 @@ jobs:
           done
 
       - name: Collect review texts for ${{ matrix.domain }}
+        if: ${{ inputs.dry_run != true }}
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
