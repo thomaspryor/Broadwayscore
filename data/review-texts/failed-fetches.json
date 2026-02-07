@@ -10588,30 +10588,6 @@
     "timestamp": "2026-02-04T18:00:29.178Z"
   },
   {
-    "reviewId": "american-psycho-2016/nytimes--unknown.json",
-    "showId": "american-psycho-2016",
-    "outlet": "New York Times",
-    "critic": "Unknown",
-    "url": "http://www.nytimes.com/2016/04/22/theater/review-american-psycho-hits-broadwayso-smooth-so-rich-so-ruthless.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): waitress, company, tina, spring awakening, waitress...",
-    "textLength": 9270,
-    "timestamp": "2026-02-04T18:28:27.157Z"
-  },
-  {
-    "reviewId": "american-psycho-2016/vulture--jesse-green.json",
-    "showId": "american-psycho-2016",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "https://www.vulture.com/2016/04/theater-review-american-psycho.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): purpose, sweeney todd, the audience, once, rain...",
-    "textLength": 11153,
-    "timestamp": "2026-02-04T18:28:52.333Z"
-  },
-  {
     "reviewId": "anastasia-2017/hollywood-reporter--david-rooney.json",
     "showId": "anastasia-2017",
     "outlet": "The Hollywood Reporter",
@@ -14942,30 +14918,6 @@
     "garbageReason": "Multiple shows mentioned (12): boop! the musical, home, kimberly akimbo, tootsie, falsettos...",
     "textLength": 4599,
     "timestamp": "2026-02-06T04:01:23.994Z"
-  },
-  {
-    "reviewId": "american-son-2018/hollywood-reporter--david-rooney.json",
-    "showId": "american-son-2018",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/review/american-son-theater-review-1157904",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): harvey, once, evita, rain, elling...",
-    "textLength": 7922,
-    "timestamp": "2026-02-06T04:01:46.781Z"
-  },
-  {
-    "reviewId": "american-son-2018/vulture--sara-holdren.json",
-    "showId": "american-son-2018",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "http://www.vulture.com/2018/11/theater-review-the-good-intentions-of-american-son.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, frozen, mean girls, the audience, rain...",
-    "textLength": 18291,
-    "timestamp": "2026-02-06T04:02:12.394Z"
   },
   {
     "reviewId": "baby-its-you-2011/hollywood-reporter--david-rooney.json",
@@ -22106,5 +22058,77 @@
     "garbageReason": "Multiple shows mentioned (17): wicked, appropriate, macbeth, tina, king charles iii...",
     "textLength": 10518,
     "timestamp": "2026-02-07T05:49:08.538Z"
+  },
+  {
+    "reviewId": "american-psycho-2016/nytimes--ben-brantley.json",
+    "showId": "american-psycho-2016",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "http://www.nytimes.com/2016/04/22/theater/review-american-psycho-hits-broadwayso-smooth-so-rich-so-ruthless.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): waitress, company, tina, spring awakening, waitress...",
+    "textLength": 9270,
+    "timestamp": "2026-02-07T05:51:42.458Z"
+  },
+  {
+    "reviewId": "american-psycho-2016/nytimes--unknown.json",
+    "showId": "american-psycho-2016",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2016/04/22/theater/review-american-psycho-hits-broadwayso-smooth-so-rich-so-ruthless.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): waitress, company, tina, spring awakening, waitress...",
+    "textLength": 9220,
+    "timestamp": "2026-02-07T05:51:45.453Z"
+  },
+  {
+    "reviewId": "american-son-2018/hollywood-reporter--david-rooney.json",
+    "showId": "american-son-2018",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/review/american-son-theater-review-1157904",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): harvey, once, evita, rain, elling...",
+    "textLength": 7771,
+    "timestamp": "2026-02-07T05:55:28.229Z"
+  },
+  {
+    "reviewId": "american-psycho-2016/vulture--jesse-green.json",
+    "showId": "american-psycho-2016",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2016/04/theater-review-american-psycho.html",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): purpose, sweeney todd, the audience, once, rain...",
+    "textLength": 8964,
+    "timestamp": "2026-02-07T05:55:45.051Z"
+  },
+  {
+    "reviewId": "american-son-2018/vulture--sara-holdren.json",
+    "showId": "american-son-2018",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "http://www.vulture.com/2018/11/theater-review-the-good-intentions-of-american-son.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, frozen, mean girls, the audience, rain...",
+    "textLength": 18291,
+    "timestamp": "2026-02-07T05:55:52.980Z"
+  },
+  {
+    "reviewId": "and-juliet-2022/nytg--joe-dziemianowicz.json",
+    "showId": "and-juliet-2022",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/and-juliet-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): appropriate, purpose, company, evita, high...",
+    "textLength": 6175,
+    "timestamp": "2026-02-07T05:55:59.861Z"
   }
 ]
