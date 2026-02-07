@@ -96,9 +96,10 @@ export default function OutletIndexClient({ outlets, totalReviews }: { outlets: 
   const [search, setSearch] = useState('');
   const [sortMode, setSortMode] = useState<SortMode>('reviews');
   const [tierFilter, setTierFilter] = useState<TierFilter>('all');
+  const [minReviews, setMinReviews] = useState(5);
 
   const filtered = useMemo(() => {
-    let list = outlets;
+    let list = outlets.filter(o => o.reviewCount >= minReviews);
     if (tierFilter !== 'all') {
       list = list.filter(o => o.tier === tierFilter);
     }
@@ -107,7 +108,7 @@ export default function OutletIndexClient({ outlets, totalReviews }: { outlets: 
       list = list.filter(o => o.name.toLowerCase().includes(q));
     }
     return list;
-  }, [search, outlets, tierFilter]);
+  }, [search, outlets, tierFilter, minReviews]);
 
   const sorted = useMemo(() => {
     const list = [...filtered];
@@ -198,6 +199,23 @@ export default function OutletIndexClient({ outlets, totalReviews }: { outlets: 
               }`}
             >
               {opt.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Minimum reviews">
+          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">MIN:</span>
+          {[1, 5, 10, 25].map(n => (
+            <button
+              key={n}
+              onClick={() => setMinReviews(n)}
+              className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
+                minReviews === n
+                  ? 'text-brand bg-brand/10 sm:bg-transparent'
+                  : 'text-gray-300 hover:text-white'
+              }`}
+            >
+              {n === 1 ? 'ALL' : `${n}+`}
             </button>
           ))}
         </div>
