@@ -12448,18 +12448,6 @@
     "timestamp": "2026-02-05T05:35:16.661Z"
   },
   {
-    "reviewId": "spamalot-2023/nyt-theater--jonathan-mandell.json",
-    "showId": "spamalot-2023",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2023/11/16/spamalot-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): the book of mormon, smash, parade, camelot, company...",
-    "textLength": 5768,
-    "timestamp": "2026-02-05T05:39:55.365Z"
-  },
-  {
     "reviewId": "spamalot-2023/vulture--jackson-mchenry.json",
     "showId": "spamalot-2023",
     "outlet": "Vulture",
@@ -23090,5 +23078,113 @@
     "garbageReason": "Multiple shows mentioned (8): chicago, appropriate, home, disgraced, the audience...",
     "textLength": 5830,
     "timestamp": "2026-02-07T09:26:47.601Z"
+  },
+  {
+    "reviewId": "skeleton-crew-2022/variety--ayanna-prescod.json",
+    "showId": "skeleton-crew-2022",
+    "outlet": "Variety",
+    "critic": "Ayanna Prescod",
+    "url": "https://variety.com/2022/legit/reviews/skeleton-crew-review-broadway-phylicia-rashad-1235164240/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): purpose, company, tina, sweat, the audience...",
+    "textLength": 4394,
+    "timestamp": "2026-02-07T09:30:58.217Z"
+  },
+  {
+    "reviewId": "skeleton-crew-2022/variety--marilyn-stasio.json",
+    "showId": "skeleton-crew-2022",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2022/legit/reviews/skeleton-crew-review-broadway-1235149737/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): purpose, company, tina, sweat, the audience...",
+    "textLength": 4462,
+    "timestamp": "2026-02-07T09:31:29.085Z"
+  },
+  {
+    "reviewId": "skeleton-crew-2022/vulture--helen-shaw.json",
+    "showId": "skeleton-crew-2022",
+    "outlet": "Vulture",
+    "critic": "Helen Shaw",
+    "url": "https://www.vulture.com/2022/01/theater-review-skeleton-crew-phylicia-rashad.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, sweat, the audience, once, elling...",
+    "textLength": 6693,
+    "timestamp": "2026-02-07T09:32:33.427Z"
+  },
+  {
+    "reviewId": "smash-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "smash-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/04/10/smash-broadway-review/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (25): maybe happy ending, oh, mary!, wicked, hamilton, chicago...",
+    "textLength": 15591,
+    "timestamp": "2026-02-07T09:32:36.416Z"
+  },
+  {
+    "reviewId": "smash-2025/nytg--gillian-russo.json",
+    "showId": "smash-2025",
+    "outlet": "New York Theatre Guide",
+    "critic": "Gillian Russo",
+    "url": "https://www.newyorktheatreguide.com/reviews/smash-broadway-review",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): stranger things: the first shadow, dog day afternoon, new york, new york, scandalous, hair...",
+    "textLength": 7448,
+    "timestamp": "2026-02-07T09:32:40.064Z"
+  },
+  {
+    "reviewId": "smash-2025/nytimes--jesse-green.json",
+    "showId": "smash-2025",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2025/04/10/theater/review-smash-musical.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 7969,
+    "timestamp": "2026-02-07T09:32:43.504Z"
+  },
+  {
+    "reviewId": "smash-2025/variety--christian-lewis.json",
+    "showId": "smash-2025",
+    "outlet": "Variety",
+    "critic": "Christian Lewis",
+    "url": "https://variety.com/2025/legit/reviews/smash-review-broadway-musical-1236366477/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): parade, hair, once, high, race...",
+    "textLength": 7792,
+    "timestamp": "2026-02-07T09:32:46.762Z"
+  },
+  {
+    "reviewId": "smash-2025/vulture--unknown.json",
+    "showId": "smash-2025",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "https://www.vulture.com/article/broadway-smash-adaptation-nbc-musical-bombshell-timid.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): dear evan hansen, sweat, once, elling, race...",
+    "textLength": 11284,
+    "timestamp": "2026-02-07T09:32:51.500Z"
+  },
+  {
+    "reviewId": "spamalot-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "spamalot-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/11/16/spamalot-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): the book of mormon, smash, parade, camelot, company...",
+    "textLength": 5768,
+    "timestamp": "2026-02-07T09:32:59.002Z"
   }
 ]
