@@ -4,13 +4,13 @@
     "lastUpdated": "2026-02-07",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 8188,
-      "skippedNoScore": 11802,
+      "totalReviews": 8186,
+      "skippedNoScore": 11800,
       "skippedDuplicate": 6,
-      "skippedDuplicateUrl": 250,
+      "skippedDuplicateUrl": 251,
       "skippedCrossOutletDuplicateUrl": 12,
       "skippedWrongProduction": 596,
-      "recoveredFromGarbage": 100,
+      "recoveredFromGarbage": 130,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 2,
@@ -18,9 +18,9 @@
         "explicit-letterGrade": 1,
         "human-review": 61,
         "originalScore-priority0": 970,
-        "llmScore": 3642,
+        "llmScore": 3625,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3360,
+        "llmScore-lowconf": 3375,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
@@ -103,7 +103,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 52,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "David Rooney",
@@ -1303,7 +1303,7 @@
       "pullQuote": "This is theater at its most punishing — and vital.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "1984-2017",
@@ -4251,7 +4251,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 76,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Marilyn Stasio",
@@ -4839,7 +4839,7 @@
       "pullQuote": "I feel a bit like Scrooge himself not to be fully embracing this production.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-christmas-carol-2022",
@@ -8358,7 +8358,7 @@
       "pullQuote": "The authors of the musical A Gentleman’s Guide to Love and Murder are aiming for droll comedy; especially in the knock-’em-dead performance of Jefferson Mays as various undearly departeds, they usually hit their mark.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-life-in-the-theatre-2010",
@@ -13152,7 +13152,7 @@
       "pullQuote": "Ivo van Hove's production of Arthur Miller's A View From the Bridge is a masterclass in theatrical intensity, with Mark Strong delivering a powerhouse performance as Eddie Carbone.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-view-from-the-bridge-2015",
@@ -14944,17 +14944,17 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
-      "url": "https://www.washingtonpost.com/theater-dance/2022/12/08/aint-no-mo-broadway-review/",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/09/19/aint-no-mo-woolly-review/",
       "publishDate": "December 8, 2022",
       "originalRating": null,
       "pullQuote": "Jordan E. Cooper's 'Ain't No Mo'' is a furious, funny and deeply affecting piece of theater that uses broad comedy to examine the Black experience in America.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "aint-no-mo-2022",
@@ -18696,7 +18696,7 @@
       "pullQuote": "It's thrilling to watch Cranston go from his default, comic stance of forward-thrust hips and slumped shoulders, to fearsome, chest-puffed, confrontation.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "all-the-way-2014",
@@ -23905,7 +23905,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 44,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Peter Marks",
@@ -23915,7 +23915,7 @@
       "pullQuote": "'American Psycho' creates another sub-genre - ersatz horror - an odd variation that fails to tingle your spine.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "american-psycho-2016",
@@ -24850,7 +24850,7 @@
       "pullQuote": "There is no shortage of jokes, and the hit rate is high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "an-act-of-god-2016",
@@ -29074,7 +29074,7 @@
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 78,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Thom Geier",
@@ -41825,7 +41825,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 84,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
@@ -52301,17 +52301,17 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 45,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Peter Marks",
-      "url": "https://www.washingtonpost.com/lifestyle/style/catch-me-if-you-can-on-broadway-the-long-con/2011/04/11/AFkUMzQD_story.html",
+      "url": "https://www.washingtonpost.com/lifestyle/style/peter_marks_reviews_war_horse_catch_me_if_you_can_and_more_on_broadway/2011/04/15/AFDsj5kD_story.html?itid=lk_inline_manual_5",
       "publishDate": "April 11, 2011",
       "originalRating": null,
       "pullQuote": "The show has the glossy, mechanized feel of a theme park attraction.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "catch-me-if-you-can-2011",
@@ -57350,7 +57350,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 63,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Charles Isherwood",
@@ -57588,7 +57588,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 63,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Marilyn Stasio",
@@ -77410,7 +77410,7 @@
       "pullQuote": "The result is both deeply silly and surprisingly moving.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -79504,7 +79504,7 @@
       "pullQuote": "Here Lies Love is a great, unsettling time.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "high-2011",
@@ -80582,7 +80582,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 81,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
@@ -84714,7 +84714,7 @@
       "outletId": "broadwaynews",
       "outlet": "Broadway News",
       "assignedScore": 79,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Brittani Samuel",
@@ -86721,7 +86721,7 @@
       "outletId": "next-magazine",
       "outlet": "Next Magazine",
       "assignedScore": 80,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Michael Hollett",
@@ -86755,7 +86755,7 @@
       "outletId": "the-globe-and-mail",
       "outlet": "The Globe and Mail",
       "assignedScore": 44,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Aisling Murphy",
@@ -89128,7 +89128,7 @@
       "pullQuote": "I have to admit (somewhat sadly) that the piece didn't fully satisfy me.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "lackawanna-blues-2021",
@@ -89792,23 +89792,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "legally-blonde-2007",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 72,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Charles Isherwood",
-      "url": "https://www.nytimes.com/2007/04/30/theater/reviews/30legal.html",
-      "publishDate": "April 30, 2007",
-      "originalRating": null,
-      "pullQuote": "The musical 'Legally Blonde' is as shiny, peppy and demanding of attention as its fame-seeking heroine.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "legally-blonde-2007",
@@ -93029,7 +93012,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 60,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Charles Isherwood",
@@ -93277,7 +93260,7 @@
       "pullQuote": "Starve a play and you don't have a play.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "lovemusik-2007",
@@ -95438,7 +95421,7 @@
       "pullQuote": "I sometimes felt her playing less the tragic has-been than the self-deluded never-was.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "matilda-the-musical-2013",
@@ -99826,7 +99809,7 @@
       "pullQuote": "A $28 million musical championing bohemian artists? Sounds perfectly logical when that show is the stage adaptation of Baz Luhrmann's blockbuster Moulin Rouge! The audacious director has never been afraid of stylish excess, as his vibrant, often dizzying 2001 film demonstrated.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "moulin-rouge-2019",
@@ -100473,7 +100456,7 @@
       "pullQuote": "Bartlett Sher's glowing revival of Lerner and Loewe's My Fair Lady has arrived at Lincoln Center to prove that it can be done.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "my-name-is-lucy-barton-2020",
@@ -114820,7 +114803,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 63,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Charles Isherwood",
@@ -122355,7 +122338,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 81,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Marilyn Stasio",
@@ -122450,7 +122433,7 @@
       "pullQuote": "John Doyle's production of Sweeney Todd is nothing short of brilliant.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "sweeney-todd-2023",
@@ -124799,23 +124782,6 @@
       "contentTier": "truncated"
     },
     {
-      "showId": "the-coast-of-utopia-2006",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 82,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Charles Isherwood",
-      "url": "https://variety.com/2007/legit/reviews/the-coast-of-utopia-part-3-salvage-1200558847/",
-      "publishDate": "March 26, 2007",
-      "originalRating": null,
-      "pullQuote": "Tom Stoppard's trilogy reaches its emotional and intellectual climax in this final installment, which finds the playwright at his most humanly accessible while maintaining his characteristic wit and philosophical depth.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
       "showId": "the-collaboration-2022",
       "outletId": "deadline",
       "outlet": "Deadline",
@@ -126836,7 +126802,7 @@
       "pullQuote": "...in an era of theatrical belt-tightening, that’s good enough for me.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-great-gatsby-2024",
@@ -127472,7 +127438,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 82,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -127482,7 +127448,7 @@
       "pullQuote": "Alan Bennett's witty, wise and deeply affecting play arrives on Broadway with its superb original cast intact.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-house-of-blue-leaves-2011",
@@ -132165,7 +132131,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 76,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -134206,7 +134172,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 82,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
