@@ -11404,54 +11404,6 @@
     "timestamp": "2026-02-05T02:13:14.959Z"
   },
   {
-    "reviewId": "floyd-collins-2025/nyt-theater--jonathan-mandell.json",
-    "showId": "floyd-collins-2025",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2025/05/11/floyd-collins-broadway-review-jeremy-jordan-trapped/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): operation mincemeat, chicago, redwood, home, swept away...",
-    "textLength": 6428,
-    "timestamp": "2026-02-05T02:21:00.581Z"
-  },
-  {
-    "reviewId": "floyd-collins-2025/variety--christian-lewis.json",
-    "showId": "floyd-collins-2025",
-    "outlet": "Variety",
-    "critic": "Christian Lewis",
-    "url": "https://variety.com/2025/legit/reviews/floyd-collins-review-jeremy-jordan-broadway-1236372883/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): redwood, days of wine and roses, home, tina, spongebob squarepants...",
-    "textLength": 6762,
-    "timestamp": "2026-02-05T02:21:34.524Z"
-  },
-  {
-    "reviewId": "floyd-collins-2025/vulture--sara-holdren.json",
-    "showId": "floyd-collins-2025",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "https://www.vulture.com/article/floyd-collins-is-beautiful-but-cant-break-free.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): home, dead outlaw, tina, the prom, frozen...",
-    "textLength": 9975,
-    "timestamp": "2026-02-05T02:21:39.365Z"
-  },
-  {
-    "reviewId": "follies-2011/hollywood-reporter--david-rooney.json",
-    "showId": "follies-2011",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/follies-theater-review-234184",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): chicago, mamma mia!, summer, rocky, the performers...",
-    "textLength": 7369,
-    "timestamp": "2026-02-05T02:21:56.562Z"
-  },
-  {
     "reviewId": "groundhog-day-2017/hollywood-reporter--david-rooney.json",
     "showId": "groundhog-day-2017",
     "outlet": "The Hollywood Reporter",
@@ -15482,18 +15434,6 @@
     "garbageReason": "Multiple shows mentioned (7): waitress, burn this, waitress, elling, race...",
     "textLength": 7817,
     "timestamp": "2026-02-06T05:29:41.348Z"
-  },
-  {
-    "reviewId": "fun-home-2015/hollywood-reporter--david-rooney.json",
-    "showId": "fun-home-2015",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/review/fun-home-broadway-review-790003",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): mamma mia!, harmony, here lies love, english, the children...",
-    "textLength": 10637,
-    "timestamp": "2026-02-06T05:29:57.115Z"
   },
   {
     "reviewId": "fun-home-2015/hollywood-reporter--unknown.json",
@@ -22322,5 +22262,101 @@
     "garbageReason": "Multiple shows mentioned (13): death of a salesman, home, death of a salesman, king lear, the present...",
     "textLength": 6002,
     "timestamp": "2026-02-07T06:37:43.297Z"
+  },
+  {
+    "reviewId": "festen-2006/nytimes--ben-brantley.json",
+    "showId": "festen-2006",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2006/04/10/theater/reviews/10fest.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, the audience, hair, once, elling...",
+    "textLength": 5048,
+    "timestamp": "2026-02-07T06:37:48.079Z"
+  },
+  {
+    "reviewId": "floyd-collins-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "floyd-collins-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/05/11/floyd-collins-broadway-review-jeremy-jordan-trapped/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): operation mincemeat, chicago, redwood, home, swept away...",
+    "textLength": 6428,
+    "timestamp": "2026-02-07T06:38:03.266Z"
+  },
+  {
+    "reviewId": "floyd-collins-2025/variety--christian-lewis.json",
+    "showId": "floyd-collins-2025",
+    "outlet": "Variety",
+    "critic": "Christian Lewis",
+    "url": "https://variety.com/2025/legit/reviews/floyd-collins-review-jeremy-jordan-broadway-1236372883/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): redwood, days of wine and roses, home, tina, spongebob squarepants...",
+    "textLength": 6354,
+    "timestamp": "2026-02-07T06:38:18.048Z"
+  },
+  {
+    "reviewId": "floyd-collins-2025/vulture--sara-holdren.json",
+    "showId": "floyd-collins-2025",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/floyd-collins-is-beautiful-but-cant-break-free.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): home, dead outlaw, tina, the prom, frozen...",
+    "textLength": 9975,
+    "timestamp": "2026-02-07T06:38:22.726Z"
+  },
+  {
+    "reviewId": "follies-2011/hollywood-reporter--david-rooney.json",
+    "showId": "follies-2011",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/follies-theater-review-234184",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, summer, the performers, once, rain...",
+    "textLength": 7105,
+    "timestamp": "2026-02-07T06:38:37.822Z"
+  },
+  {
+    "reviewId": "follies-2011/variety--david-rooney.json",
+    "showId": "follies-2011",
+    "outlet": "Variety",
+    "critic": "David Rooney",
+    "url": "https://variety.com/2011/legit/reviews/follies-2-1117946070/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, cats, evita, rain, high...",
+    "textLength": 5226,
+    "timestamp": "2026-02-07T06:42:36.426Z"
+  },
+  {
+    "reviewId": "follies-2011/variety--steven-suskin.json",
+    "showId": "follies-2011",
+    "outlet": "Variety",
+    "critic": "Steven Suskin",
+    "url": "http://www.variety.com/review/VE1117946070?refCatId=33",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, cats, evita, rain, high...",
+    "textLength": 5100,
+    "timestamp": "2026-02-07T06:42:49.890Z"
+  },
+  {
+    "reviewId": "fun-home-2015/hollywood-reporter--david-rooney.json",
+    "showId": "fun-home-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/review/fun-home-broadway-review-790003",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): mamma mia!, harmony, here lies love, english, the children...",
+    "textLength": 10637,
+    "timestamp": "2026-02-07T06:43:08.159Z"
   }
 ]
