@@ -121,12 +121,12 @@ WoW/YoY for capacity and ATP self-computed from `grosses-history.json`.
     sources: {
       showScore?: { score, reviewCount },
       mezzanine?: { score, reviewCount, starRating },
-      reddit?: { score, reviewCount, sentiment: {...}, positiveRate }
+      reddit?: { score, reviewCount, totalPosts, totalComments, sentiment: {...}, positiveRate }
     }
   }}
 }
 ```
-**Weighting:** Reddit fixed 20%. Show Score & Mezzanine split remaining proportionally by sample size.
+**Weighting:** All sources weighted proportionally by `reviewCount` volume. 80% ceiling on any single source. Solo source gets 100%. Shared module: `scripts/lib/audience-weighting.js`.
 
 ### Commercial Data Schema
 ```typescript

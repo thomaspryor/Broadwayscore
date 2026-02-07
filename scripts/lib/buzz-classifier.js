@@ -19,12 +19,32 @@ const https = require('https');
 // Zod-like schema validation (inline to avoid dependency)
 const VALID_SENTIMENTS = ['enthusiastic', 'positive', 'mixed', 'negative', 'neutral'];
 
+// Map common LLM synonym responses to valid sentiment values
+const SENTIMENT_ALIASES = {
+  'amazing': 'enthusiastic', 'incredible': 'enthusiastic', 'fantastic': 'enthusiastic',
+  'great': 'positive', 'good': 'positive', 'favorable': 'positive', 'loved': 'enthusiastic',
+  'okay': 'mixed', 'mediocre': 'mixed', 'meh': 'mixed', 'decent': 'mixed',
+  'bad': 'negative', 'terrible': 'negative', 'awful': 'negative', 'hated': 'negative',
+  'poor': 'negative', 'disappointing': 'negative',
+  'indifferent': 'neutral', 'bland': 'neutral'
+};
+
+function normalizeSentiment(sentiment) {
+  if (!sentiment) return sentiment;
+  const lower = sentiment.toLowerCase().trim();
+  return SENTIMENT_ALIASES[lower] || lower;
+}
+
 function validateClassification(item) {
   if (typeof item !== 'object' || item === null) return false;
   if (typeof item.id !== 'number') return false;
   if (typeof item.is_relevant !== 'boolean') return false;
-  if (item.is_relevant && item.sentiment && !VALID_SENTIMENTS.includes(item.sentiment)) {
-    return false;
+  if (item.is_relevant && item.sentiment) {
+    // Normalize before validating (maps "amazing"→"enthusiastic", etc.)
+    item.sentiment = normalizeSentiment(item.sentiment);
+    if (!VALID_SENTIMENTS.includes(item.sentiment)) {
+      return false;
+    }
   }
   return true;
 }
