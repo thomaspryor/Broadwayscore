@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Employing identically dressed chorus members, Blankenbuehler creates a shattered hall-of-mirrors vision of protagonist Donny’s wartime memories...The plot follows a cliched track...Fortunately, Taylor and Oberacker delve deep into the traumas suffered by Donny and his crew and the score cleverly uses period music to create mood and explore the theme of the vets’ alienation...'Bandstand' does sing a familiar tune, but it has drawn up some new and arresting arrangements.\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bandstand' does sing a familiar tune, but it has drawn up some new and arresting arrangements.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Final verdict is positive ('arresting arrangements') despite acknowledging cliches. Single excerpt warning requires caution - this sounds mildly positive so scored at lower end of Positive range. | GPT-4o: The review acknowledges the cliched plot but praises the depth of character exploration and clever use of music. The positive elements are highlighted, suggesting a recommendation despite some reservations. | Gemini: The review acknowledges cliches but praises the score and exploration of trauma, suggesting a qualified recommendation. The limited excerpt and 'read more' link reduce confidence. | Kimi: While the critic notes the plot follows a 'cliched track,' they praise the creative staging ('shattered hall-of-mirrors vision'), emotional depth, and clever use of period music, concluding that the show offers 'new and arresting arrangements' despite familiar material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:05:17.548Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A transcendent and timely production...One of the greatest plays ever written and certainly the most important of the past 25 years.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite single excerpt warning, the language is unambiguously rapturous with superlatives like 'transcendent,' 'masterful,' 'brilliantly funny,' and 'one of the greatest plays ever written.' Even acknowledging one minor criticism ('coolly clinical at times'), the overall assessment is clearly a rave. | GPT-4o: The excerpt includes strong praise with superlatives like 'transcendent', 'timely', and 'one of the greatest plays ever written'. Despite the warning about single excerpt bias, the language indicates a highly enthusiastic recommendation. | Gemini: The review excerpt is overwhelmingly positive, using terms like \"superb ensemble cast\", \"brilliantly funny\", \"masterful\", and \"transcendent\". Despite a minor reservation about being \"coolly clinical\", the overall sentiment is a strong recommendation. | Kimi: The excerpt overflows with superlatives ('transcendent,' 'masterful,' 'brilliantly funny') and declares the work one of the greatest plays ever written, indicating enthusiastic recommendation despite the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:43:14.491Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

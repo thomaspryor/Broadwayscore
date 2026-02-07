@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This quirky, heartfelt revival confirms that status alongside the masterworks of O'Neill, Williams, and Miller.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified superlatives throughout: 'startlingly relevant', 'stellar company', 'masterworks', 'you'll never forget'. Compares favorably to greatest American playwrights and calls it an unforgettable experience. | GPT-4o: The excerpt praises the production as 'highly theatrical and insightful', 'massive and intimate', and 'an experience you'll never forget', indicating a strong positive recommendation. The comparison to masterworks and the description of the experience as unforgettable suggest a rave review. | Gemini: The review uses strong positive language such as \"startlingly relevant\", \"highly theatrical and insightful\", \"massive and intimate\", and \"stellar company\". The critic also states that it's an experience you'll never forget, indicating a rave review. | Kimi: While the excerpt contains superlatives comparing the show to masterworks and promises an unforgettable experience, the single-excerpt warning necessitates capping the score in the upper Positive range (80-84) rather than Rave due to lack of full context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:46:28.804Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

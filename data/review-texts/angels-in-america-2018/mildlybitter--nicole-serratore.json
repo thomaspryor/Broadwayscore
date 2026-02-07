@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Elliott's production has become stronger and increasingly potent with this most recent outing on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review acknowledges both strengths (stronger production, buoyant text, hopeful message) and flaws (heavy-handed elements, self-seriousness) but the overall assessment is positive. Single excerpt warning applies, so using lower end of Positive range due to mixed elements mentioned. | GPT-4o: The excerpt indicates a generally positive view with some reservations about the direction and design elements. The mention of the production becoming 'stronger and increasingly potent' suggests improvement and a positive trajectory, but the text warns of potential cherry-picking, leading to a lower confidence score. | Gemini: The review notes some flaws but ultimately concludes that the production is \"stronger and increasingly potent\" and \"delivers a message of hope with open arms.\" The phrase \"don't sink the show\" suggests a positive, but not rave, assessment. | Kimi: The excerpt offers qualified praise, noting the production has grown stronger and delivers a hopeful message, though it acknowledges some heavy-handed design elements and occasional self-seriousness. Given only a single curated excerpt is available, the score reflects mildly positive sentiment at the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:33:25.377Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 79,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

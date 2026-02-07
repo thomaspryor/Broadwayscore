@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A work which offers many terrific parts, which is stuffed with insight and true heart, which makes one laugh and cry with delight, and which carries a strong political message...An unqualified triumph in every way, beautifully written, superbly directed, immaculately performed, and consummately engaging and absorbing...Across the board, the performances here are first rate in every respect...This is a masterpiece of musical theatre. It operates on many levels at once, and succeeds on all.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a masterpiece of musical theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Despite being a single excerpt, the language is unambiguously rapturous with multiple superlatives: 'unqualified triumph', 'masterpiece', 'beautifully written', 'superbly directed', 'immaculately performed'. The critic explicitly states it 'succeeds on all' levels. | GPT-4o: The excerpt uses superlatives and unqualified praise, calling it a 'masterpiece' and 'an unqualified triumph in every way'. The tone is enthusiastic and strongly recommends the show. | Gemini: The review uses extremely positive language such as \"unqualified triumph\", \"masterpiece\", and \"first rate in every respect\", indicating a rave review. | Kimi: The excerpt employs the strongest possible superlatives including 'masterpiece' and 'unqualified triumph' with comprehensive praise for all production elements, though the single-excerpt format necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:01:23.093Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

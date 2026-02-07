@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"In most cases the songs don’t make much sense and sometimes feel like they’ve been forced upon the scenes only to feature as many of them as they could... While it’s impossible to dislike 'An American in Paris,' it must be said that the show coasts on the familiarity of the songs and the stunning choreography which sometimes makes one wonder if it would’ve worked best as a full on ballet rather than a Broadway musical.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While it's impossible to dislike 'An American in Paris,' it must be said that the show coasts on the familiarity of the songs and the stunning choreography.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges positive elements (stunning choreography, likeable) but criticizes the songs as forced and questions whether it should have been a ballet instead of a musical. This suggests mixed feelings without clear recommendation. | GPT-4o: The review acknowledges the show's strengths in choreography but criticizes the integration of songs, suggesting a mixed assessment. The excerpt is limited, so confidence is low. | Gemini: The review acknowledges the familiarity of the songs and stunning choreography as positive aspects, but also suggests that the songs don't always make sense and questions whether it would have been better as a ballet. This indicates a mixed opinion. | Kimi: The excerpt offers mild endorsement ('impossible to dislike') and praises the 'stunning choreography,' but criticizes the forced integration of songs and suggests the production relies on familiarity rather than quality. Per the single-excerpt guidance for mildly positive reviews, scored at the lower end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:09:51.257Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

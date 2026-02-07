@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheerfully raunchy musical about the travails of finding your purpose in life when you're something of a loser is probably the most honest show about being young and single in the city since 'Company.'",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This cheerfully raunchy musical about the travails of finding your purpose in life when you're something of a loser is probably the most honest show about being young and single in the city since 'Company.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive comparison to the classic 'Company' suggests high recommendation. The phrase 'most honest show' since a landmark musical indicates significant praise, warranting upper Positive range despite single excerpt limitation. | GPT-4o: The excerpt provides a strong positive comparison to a classic show ('Company'), suggesting a high level of praise. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt compares the show favorably to \"Company,\" suggesting a positive, though potentially qualified, recommendation. Given the single excerpt and lack of full context, confidence is low. | Kimi: The excerpt offers high praise comparing the show to the classic 'Company', indicating a strong recommendation, though limited to a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:55:26.480Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

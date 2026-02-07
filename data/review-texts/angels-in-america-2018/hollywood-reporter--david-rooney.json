@@ -15,5 +15,60 @@
   "bwwExcerpt": "Lane brings yet another kind of volatility to Roy's spiky scenes with Belize (Nathan Stewart-Jarrett), a nurse at St. Vincent's Hospital and Prior's former drag sister. Stewart-Jarrett nails every laugh with his imperious attitude, bouncing Cohn's abuse right back at him. But his swishy attitude doesn't hide his wounded indignation over the disease that's ravaging the gay community, finding a worthy target in defensive Louis in one particularly memorable encounter.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
   "showScoreExcerpt": "\"In a superlative production like this one, directed with laser-like acuity by Marianne Elliott, it's the prescience of the writing that truly astonishes — no less than the harrowing beauty, the wildly imaginative flights and the acerbic humor of the drama, or the riveting work of a magnificent ensemble...What remains amazing is how much of this sprawling yet cohesive tapestry Kushner got so right...There are design masterstrokes that take your breath away.\"\n\nRead more",
-  "publishDate": "March 25, 2018"
+  "publishDate": "March 25, 2018",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In a superlative production like this one, directed with laser-like acuity by Marianne Elliott, it's the prescience of the writing that truly astonishes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Consistent superlative language throughout: 'superlative production,' 'laser-like acuity,' 'truly astonishes,' 'magnificent ensemble,' 'design masterstrokes that take your breath away.' Despite being excerpts, the tone is unambiguously celebratory with no caveats mentioned. | GPT-4o: The review excerpt contains highly enthusiastic praise for the production, direction, writing, and ensemble, using terms like 'superlative', 'astonishes', and 'riveting'. The lack of full text limits confidence, but the language suggests a strong recommendation. | Gemini: The review uses superlative language like \"superlative production\", \"truly astonishes\", \"harrowing beauty\", \"riveting work\", and \"design masterstrokes that take your breath away\", indicating a rave review. | Kimi: The excerpt contains unqualified superlatives including 'superlative production,' 'truly astonishes,' 'magnificent ensemble,' and 'design masterstrokes,' indicating an enthusiastic rave despite limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:31:19.025Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

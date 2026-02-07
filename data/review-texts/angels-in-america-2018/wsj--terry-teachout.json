@@ -13,5 +13,60 @@
   "bwwExcerpt": "I've written more than once in this space about the flaws of \"Angels.\" It's too long, too sentimental, too inclined to demonize at the expense of comprehension, too rigid in its Marx-flavored politics (\"Angels\" would be a richer play if Mr. Kushner had had the wit, not to mention the honesty, to portray Ethel Rosenberg as shamelessly guilty). Yet all these things notwithstanding, it remains a fixed star in the firmament of American drama, a testament to Mr. Kushner's willingness to take huge cha",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
   "contentTier": "excerpt",
-  "publishDate": "March 22, 2018"
+  "publishDate": "March 22, 2018",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yet all these things notwithstanding, it remains a fixed star in the firmament of American drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite listing multiple serious flaws ('too long, too sentimental'), the critic concludes it's 'a fixed star in the firmament of American drama,' indicating overall recommendation. Text is truncated and only one excerpt available, requiring low confidence. | GPT-4o: The review acknowledges significant flaws in 'Angels' but ultimately recognizes its importance in American drama. The excerpt is mixed, with both criticism and acknowledgment of its status, leading to a mixed classification. | Gemini: Despite acknowledging flaws, the critic states it remains a \"fixed star\", indicating a positive, though qualified, recommendation. Confidence is low due to the excerpted nature of the text. | Kimi: While the critic enumerates significant flaws (length, sentimentality, political rigidity), the ultimate verdict is that the play remains a 'fixed star in the firmament of American drama,' indicating a strong recommendation despite reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:52:44.027Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 68,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

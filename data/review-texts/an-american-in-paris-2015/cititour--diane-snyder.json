@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The show has a glorious Gershwin score going for it, not to mention exquisitely conceived and executed ballet numbers…But it’s the characters and their stories that elevate this show beyond mere musical extravaganza…The story unfolds with great finesse…The show looks as good as it sounds…The creators show they understand why people go to musicals— to be moved and dazzled with equal force. 'An American in Paris' is as smart and spirited as it is spectacular.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'An American in Paris' is as smart and spirited as it is spectacular.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout with 'glorious', 'exquisitely conceived', 'great finesse', and concluding that creators understand what makes musicals work. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt contains strong praise for multiple elements of the show, including the score, choreography, and storytelling. The language used ('smart and spirited', 'spectacular') suggests a highly positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is overwhelmingly positive, using words like \"glorious,\" \"exquisitely,\" \"elevate,\" \"finesse,\" \"spectacular,\" \"smart,\" and \"spirited.\" Given the single excerpt warning, I am scoring it high in the positive range. | Kimi: The excerpt offers strong praise for the Gershwin score, ballet numbers, storytelling, and production values using words like 'glorious,' 'exquisite,' and 'spectacular,' indicating a clear recommendation despite the limitation of having only a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:01:15.363Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

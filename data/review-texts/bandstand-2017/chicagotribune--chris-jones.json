@@ -14,5 +14,60 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
   "contentTier": "excerpt",
   "publishDate": "April 27, 2017",
-  "showScoreExcerpt": "“Blankenbuehler's production just never stops for a moment, sometimes at the expense of the narrative flow...The dancing is, however, spectacular…‘Bandstand’ has a serviceable score, although there is so much music that it often tends to blur…The book has moments of freshness and all kinds of potential, but it never strives enough for poetic heights or depth of characters…All in all, this is a show with some frustrations as well as many pleasures for the ear and eye.”\n\nRead more"
+  "showScoreExcerpt": "“Blankenbuehler's production just never stops for a moment, sometimes at the expense of the narrative flow...The dancing is, however, spectacular…‘Bandstand’ has a serviceable score, although there is so much music that it often tends to blur…The book has moments of freshness and all kinds of potential, but it never strives enough for poetic heights or depth of characters…All in all, this is a show with some frustrations as well as many pleasures for the ear and eye.”\n\nRead more",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All in all, this is a show with some frustrations as well as many pleasures for the ear and eye.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review balances positive elements (spectacular dancing, serviceable score) with significant criticisms (narrative flow issues, lack of character depth). The concluding 'frustrations as well as many pleasures' indicates a truly mixed verdict with no clear recommendation either way. | GPT-4o: The review highlights both positive aspects (spectacular dancing, pleasures for the ear and eye) and negatives (narrative flow issues, lack of depth). The overall tone suggests a mixed experience with notable strengths and weaknesses. | Gemini: The review highlights both positive aspects (spectacular dancing, serviceable score, moments of freshness) and negative aspects (narrative flow issues, lack of depth). The overall assessment is mixed. | Kimi: The critic explicitly balances criticisms (narrative flow issues, 'serviceable' score, lack of depth) against praises (spectacular dancing, visual pleasures), resulting in a verdict that acknowledges both strengths and weaknesses without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:04:50.584Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

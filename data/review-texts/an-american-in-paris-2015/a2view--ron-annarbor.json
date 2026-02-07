@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"It's a well-written book. The musical score is pure Gershwin. There are some great vocals. But that is not why people will flock to this musical — Its all about the dance — even the sets dance — things float, cross, move, flutter, sometimes all at the same time...This is not your typical Broadway musical — this is ballet set upon a Broadway stage, and it is simply remarkable...Come for the musical — stay for the ballet — and absolutely get tickets to this stunner of a show.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is not your typical Broadway musical — this is ballet set upon a Broadway stage, and it is simply remarkable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong recommendation with superlatives ('simply remarkable', 'stunner') and clear directive to 'absolutely get tickets'. However, single excerpt warning reduces confidence despite rave language. | GPT-4o: The excerpt provides enthusiastic praise, highlighting the unique blend of ballet and Broadway, and strongly recommends seeing the show. However, with only one excerpt available, the confidence is low. | Gemini: The review is overwhelmingly positive, using words like \"great,\" \"remarkable,\" and \"stunner.\" The critic clearly recommends seeing the show, especially for the dance elements. | Kimi: The excerpt features strong praise ('simply remarkable,' 'stunner') and an explicit imperative to buy tickets, warranting an upper-range Positive score. However, confidence is low due to the single-excerpt warning about potential cherry-picking. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:59:53.134Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 89,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

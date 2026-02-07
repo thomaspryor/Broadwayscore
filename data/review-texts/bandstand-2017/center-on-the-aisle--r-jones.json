@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A story infused with such heart and passion, it practically jumps off the page...It’s thrilling...Every step, whether it be choreographed or staged, has a purpose, a through-line to the story being told...The book is witty, clever, and expertly handled and executed...Cott is magnificent in the lead role...He has palpable chemistry with the effervescent Osnes, and their scenes are intimate and personal...Every bit his equal is Osnes...The supporting cast is uniformly strong.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A story infused with such heart and passion, it practically jumps off the page...It's thrilling",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with consistent praise including 'thrilling', 'magnificent', 'expertly handled', and strong cast commendations. However, confidence is low due to cherry-picked nature of single curated quote. | GPT-4o: The excerpt is filled with superlatives and strong praise for the story, performances, and execution. Despite the single excerpt warning, the language suggests an enthusiastic recommendation. | Gemini: The review excerpt is overwhelmingly positive, using words like \"thrilling\", \"magnificent\", \"effervescent\", and \"expertly handled\". Given the single excerpt warning, I'm scoring at the higher end of the positive range. | Kimi: The single excerpt contains strong praise for performances, book, and staging with words like 'magnificent' and 'thrilling,' indicating clear approval despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:04:22.984Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

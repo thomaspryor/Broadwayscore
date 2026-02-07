@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Blankenbuehler has directed and choreographed 'The Bandstand' with the necessary verve while demonstrating a vibrant flair for the times. His direction is largely defined by being able to keep up with the pace of the dancing, all of which gives the illusion of being not only non-stop and also un-stoppable...A major item missing from the show is humor...All told, the era of 'The Bandstand' appears perfectly grounded with its look and by its sounds.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Blankenbuehler has directed and choreographed 'The Bandstand' with the necessary verve while demonstrating a vibrant flair for the times.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows praise for direction/choreography and period authenticity, but notes missing humor as a flaw. Positive but qualified recommendation. Low confidence due to single curated excerpt. | GPT-4o: The review excerpt praises the direction and choreography with terms like 'verve' and 'vibrant flair', suggesting a positive view. However, it notes a lack of humor as a drawback. Given the single excerpt and text quality warning, the score is at the lower end of the Positive range. | Gemini: The review praises the direction and choreography but notes a lack of humor. Given the limited excerpt, it's a qualified positive. | Kimi: The excerpt offers clear praise for the direction ('verve,' 'vibrant flair'), choreography, and period production design, though it notes a significant flaw regarding the lack of humor. The summative 'All told' indicates an overall positive assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:06:16.900Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -19,5 +19,60 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.amny.com/entertainment/the-bandstand-is-a-delight-at-papermill-playhouse-1.10984023"
+  "playbillVerdictUrl": "http://www.amny.com/entertainment/the-bandstand-is-a-delight-at-papermill-playhouse-1.10984023",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The music is so tightly integrated into the script that 'Bandstand' becomes unusually powerful musical theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for score, script integration, and direction/choreography with words like 'stunning' and 'unusually powerful,' but confidence is medium due to excerpt-only format. | GPT-4o: The review excerpts use strong positive language, praising the score, integration of music, and direction/choreography. The tone suggests a highly positive verdict, but the lack of full text limits confidence. | Gemini: The review excerpt uses strong positive language such as \"urgent testimonial\", \"healing and restorative power\", \"swinging original score\", and \"stunning job\", indicating a positive recommendation. Given the truncated nature, confidence is medium. | Kimi: The excerpt contains unqualified superlatives including 'unusually powerful musical theater,' 'stunning job,' and 'urgent testimonial,' indicating the highest level of enthusiasm despite the limited text available. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:00:42.102Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a competently crafted jukebox musical that tells the story of Florence Greenberg, the suburban housewife who founded Scepter Records and helped launch the careers of the Shirelles and other girl groups.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a competently crafted jukebox musical that tells the story of Florence Greenberg, the suburban housewife who founded Scepter Records and helped launch the careers of the Shirelles and other girl groups.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a competently crafted jukebox musical that tells the story of Florence Greenberg",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt with neutral language - 'competently crafted' suggests adequate but uninspiring execution. This reads as factual description rather than recommendation, placing it in mixed territory. | GPT-4o: The excerpt describes the show as 'competently crafted,' which suggests adequacy but not strong praise. The lack of superlatives or strong recommendations indicates a mixed review. Confidence is low due to the single excerpt limitation. | Gemini: The phrase \"competently crafted\" suggests a mildly positive assessment. Given the single excerpt, I'm scoring it at the lower end of the positive range with low confidence. | Kimi: The excerpt offers faint praise describing the show as 'competently crafted,' suggesting adequate professional execution but lacking the enthusiasm of a full recommendation, consistent with a barely positive, qualified verdict. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:57:08.120Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

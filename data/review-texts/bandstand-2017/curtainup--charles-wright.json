@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Equally appealing to the ear and the eye. Since ‘Bandstand’ is emotionally complex and largely unsentimental, it's likely to connect with the intellect and the heart of spectators of many, perhaps all, ages. But what audiences will remember most is Blankenbuehler's stunning dances performed by a talented corps of idiosyncratic Broadway professionals…'Bandstand’ is superbly cast...A touching, funny, dry martini of a musical.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A touching, funny, dry martini of a musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise throughout - 'equally appealing', 'stunning dances', 'superbly cast', ending with the positive 'dry martini' metaphor. However, confidence is low due to single excerpt warning and potential cherry-picking of positive quotes. | GPT-4o: The excerpt praises the show as 'equally appealing to the ear and the eye' and highlights its emotional complexity and superb casting. The positive tone and use of 'stunning dances' and 'touching, funny' suggest a strong recommendation. However, confidence is low due to the single excerpt warning. | Gemini: The excerpt contains strong positive language such as \"Equally appealing to the ear and the eye\", \"superbly cast\", and \"touching, funny\". Given the single excerpt and positive tone, I've scored it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the choreography ('stunning'), casting ('superbly cast'), and emotional complexity, with sophisticated compliments indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:05:41.569Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Surreal collisions of song, dance and visual art capture the desires of young expats and Parisians to create something beautiful as they rediscover their city in the aftermath of World War II...It feels like two shows. One is a great ballet, the other an uneven musical...the book can be heavy-handed...These spoken scenes often give way to appealingly sung classics, but it's when dance is involved that the show truly takes off.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It feels like two shows. One is a great ballet, the other an uneven musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the dance/ballet elements as 'great' and says the show 'truly takes off' with dance, but finds the musical book 'heavy-handed' and 'uneven'. This split assessment with no clear recommendation lands in Mixed territory. Single excerpt warning requires caution about overall verdict. | GPT-4o: The review praises the dance elements but criticizes the musical aspects as uneven and the book as heavy-handed. The positive elements are balanced by significant reservations, indicating a mixed review. | Gemini: The review excerpt presents a mixed assessment, praising the dance elements while criticizing the book and overall structure. The phrase \"uneven musical\" indicates a lack of consistent quality, leading to a mixed classification. | Kimi: The critic describes a divided production where dance elements are praised as 'great' and 'truly take off,' while the book and spoken scenes are criticized as 'heavy-handed' and 'uneven.' Given only a single excerpt is available, the overall verdict remains ambiguous.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:04:26.953Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

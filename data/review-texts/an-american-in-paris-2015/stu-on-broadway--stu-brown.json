@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Director/choreographer Christopher Wheeldon, who has worked with ballet companies worldwide, has created one of the most extraordinary and spectacular works for the musical theater I have seen in many years. Working with librettist, Craig Lucas, he has fashioned a book musical that is utterly alive with song and dance.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director/choreographer Christopher Wheeldon has created one of the most extraordinary and spectacular works for the musical theater I have seen in many years.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong superlative language ('one of the most extraordinary and spectacular works...in many years') indicates enthusiastic praise. However, confidence is medium due to single excerpt limitation - the full review verdict may differ. | GPT-4o: The excerpt provides strong praise for the director/choreographer's work, calling it 'extraordinary and spectacular'. Despite the single excerpt warning, the language suggests a highly enthusiastic recommendation. | Gemini: The excerpt contains very strong positive language, calling the show \"extraordinary and spectacular.\" Given that it is a single excerpt, I am scoring it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt offers strong praise calling the work 'extraordinary,' 'spectacular,' and 'utterly alive,' indicating a clear recommendation. As a single curated excerpt, confidence is reduced per instructions. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:10:47.165Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A truly thrilling new work of high class and polish, \"An American in Paris\" is the rare new musical aimed mostly at a discerning adult audience...The production achieves an integration of artistic and creative elements that is thoroughly realised...As the show progresses, the methods of storytelling blend to the point that it does not matter whether the plot is being advanced by text, lyrics or dance. The audience is completely absorbed in the world on stage.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A truly thrilling new work of high class and polish",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with 'truly thrilling' and 'high class,' describing complete artistic integration and audience absorption. Single excerpt warning requires caution, but language is clearly positive with superlatives. | GPT-4o: The excerpt uses strong positive language ('truly thrilling', 'high class and polish') and describes the production as thoroughly realized and absorbing, indicating a highly favorable review. | Gemini: The excerpt uses strong positive language like \"truly thrilling\", \"high class and polish\", and \"thoroughly realised\", indicating a positive review. Given it's a single excerpt, I'm scoring at the higher end of the positive bucket. | Kimi: Single excerpt contains strongly positive evaluative language ('truly thrilling', 'high class', 'completely absorbed') indicating clear enthusiasm for the production's artistic integration, though limited context requires conservative scoring at upper end of Positive range per excerpt guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:07:36.281Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

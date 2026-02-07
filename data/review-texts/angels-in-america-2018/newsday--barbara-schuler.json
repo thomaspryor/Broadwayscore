@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "\"Angels\" presents a complicated story that covers nearly eight hours in two parts, a major commitment requiring audiences to maintain deep concentration just to keep up. But it's time well spent, if only to revel in the glories of Ian MacNeil's futuristic set and the spectacular performances of each actor, all of whom play multiple characters. Lane reverts to his comedic roots, portraying one of Prior's deceased relatives. In one of her several roles, Susan Brown becomes a spectral vision of Eth",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "showScoreExcerpt": "\"Kushner’s masterwork gets a high-impact revival...Lane gives an emotional, fierce portrayal of Cohn...'Angels' presents a complicated story that covers nearly eight hours in two parts, a major commitment requiring audiences to maintain deep concentration just to keep up. But it’s time well spent, if only to revel in the glories of Ian MacNeil’s futuristic set and the spectacular performances...My most significant takeaway is that the triumph of 'Angels' is its subliminal call to action.\"\n\nRead more"
+  "showScoreExcerpt": "\"Kushner’s masterwork gets a high-impact revival...Lane gives an emotional, fierce portrayal of Cohn...'Angels' presents a complicated story that covers nearly eight hours in two parts, a major commitment requiring audiences to maintain deep concentration just to keep up. But it’s time well spent, if only to revel in the glories of Ian MacNeil’s futuristic set and the spectacular performances...My most significant takeaway is that the triumph of 'Angels' is its subliminal call to action.\"\n\nRead more",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But it's time well spent, if only to revel in the glories of Ian MacNeil's futuristic set and the spectacular performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear positive recommendation despite acknowledging the show's demanding nature. Praises 'high-impact revival,' 'spectacular performances,' and calls time 'well spent.' Medium confidence due to excerpt-only text. | GPT-4o: The review praises the production as a 'high-impact revival' with 'spectacular performances' and a 'triumph'. Despite the challenge of its length, it's described as 'time well spent', indicating a strong recommendation. | Gemini: The review uses phrases like \"high-impact revival\" and \"triumph\" and praises the set and performances, indicating a positive recommendation. While truncated, the excerpt suggests a strong positive assessment. | Kimi: The critic employs superlatives including 'masterwork,' 'triumph,' and 'spectacular' to describe the revival, performances, and design, explicitly calling the experience 'time well spent' despite the demanding runtime. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:34:10.763Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

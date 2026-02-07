@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This stunning Broadway revival of Tony Kushner's masterpiece proves that great theater can still stop time and change hearts.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This stunning Broadway revival of Tony Kushner's masterpiece proves that great theater can still stop time and change hearts.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This stunning Broadway revival of Tony Kushner's masterpiece proves that great theater can still stop time and change hearts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified superlatives ('stunning', 'masterpiece') with powerful emotional impact claims ('stop time and change hearts'). However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more nuanced review. | GPT-4o: The excerpt uses strong positive language ('stunning', 'masterpiece', 'great theater') indicating a highly enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses the word \"masterpiece\" and \"stunning\" to describe the show, indicating a rave review. | Kimi: The single excerpt uses superlative language ('stunning,' 'masterpiece') and emphasizes transformative emotional impact. Per instructions for single curated excerpts, scored at the upper end of the Positive bucket with low confidence due to the risk of cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:41:12.236Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-07T08:57:20.720Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a cast/creative team listing describing the show's creators and songs, not an evaluative review of the production; openai: The text provided is a description of the musical's creative team and song list, not an evaluative review of the production.; gemini: The provided text is a plot summary and cast/crew listing, not a review with an evaluative verdict.; kimi: The text provided is solely a credits listing (book writer, composers, song titles) with no evaluative content, critical opinion, or recommendation regarding the production quality.",
+  "promptVersion": "5.2.0"
 }

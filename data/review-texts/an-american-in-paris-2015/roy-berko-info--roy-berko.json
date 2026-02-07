@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A visual, dance-driven Broadway story-telling creation that is gorgeous, enchanting, seamless and sophisticated. It is a tribute not only to the music of George and Ira Gershwin, but to the genius of director Christopher Wheeldon, and the performance abilities of a stellar cast.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A visual, dance-driven Broadway story-telling creation that is gorgeous, enchanting, seamless and sophisticated.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Uses four superlative adjectives (gorgeous, enchanting, seamless, sophisticated) and calls it a 'tribute' to both the source material and creative team. Despite being a single excerpt, the language is unqualifiedly celebratory, indicating a rave review. | GPT-4o: The excerpt uses highly positive language such as 'gorgeous', 'enchanting', and 'sophisticated', indicating a strong recommendation. However, with only one excerpt available, confidence is low. | Gemini: The excerpt is overwhelmingly positive, using words like \"gorgeous\", \"enchanting\", \"seamless\", and \"sophisticated\", indicating a strong recommendation. Given that it's a single excerpt, I'm scoring it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise using words like 'gorgeous,' 'enchanting,' and 'sophisticated,' and lauds the director's 'genius' and a 'stellar' cast. Per the single-excerpt guidance, this clearly positive quote warrants the upper range of the Positive bucket, though confidence is reduced due to the lack of full context. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:07:03.375Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 89,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

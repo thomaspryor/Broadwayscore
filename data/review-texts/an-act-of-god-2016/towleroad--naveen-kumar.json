@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Criticism of dogmatic extremes and intrinsically liberal voice ought to be rightfully welcomed with open arms, nary a cheap laugh escapes its blunt hand. Parsons' characterization, which is fixed and unchanging, is also not very likable — while this may be precisely the point, it doesn’t make an hour and a half spent listening to his smug diatribe all that enjoyable.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it doesn't make an hour and a half spent listening to his smug diatribe all that enjoyable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite acknowledging the show's critical intentions, the critic finds the lead character unlikable and the overall experience unenjoyable, clearly discouraging attendance. | GPT-4o: The excerpt criticizes the show for being unenjoyable due to an unlikable character and lack of humor. However, the single excerpt warning suggests caution, so the score is on the lower end of Negative. | Gemini: The review excerpt presents a mixed assessment. While it acknowledges the value of the criticism, it also notes that the character is not very likable and the experience of listening to his diatribe is not enjoyable. Given the single excerpt and mixed signals, confidence is low. | Kimi: The excerpt describes the show as a 'smug diatribe' that is 'not enjoyable' to sit through, with an 'unlikable' characterization and 'blunt' execution. This indicates a clear verdict against recommending the production, despite noting the thematic relevance of its subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:59:10.276Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

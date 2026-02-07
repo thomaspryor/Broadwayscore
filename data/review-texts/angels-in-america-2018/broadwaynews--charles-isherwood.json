@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Its vision of a pervading darkness haltingly giving way to light, of human loneliness resolving itself into either communal comfort or acceptance, remains as moving today as it did when the play first exploded into the national consciousness...There is not a weak or underpowered performance in the production...Visually, Elliott’s is not a remarkable or ambitious production...One’s in-the-moment quibbles tend to feel like feeble footnotes in the aftermath of the experience of the play.\"\n\nRead more"
+  "showScoreExcerpt": "\"Its vision of a pervading darkness haltingly giving way to light, of human loneliness resolving itself into either communal comfort or acceptance, remains as moving today as it did when the play first exploded into the national consciousness...There is not a weak or underpowered performance in the production...Visually, Elliott’s is not a remarkable or ambitious production...One’s in-the-moment quibbles tend to feel like feeble footnotes in the aftermath of the experience of the play.\"\n\nRead more",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "One's in-the-moment quibbles tend to feel like feeble footnotes in the aftermath of the experience of the play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the play's enduring power and performances ('not a weak or underpowered performance'), with minor criticism of visual production that the critic ultimately dismisses as insignificant compared to the overall impact. | GPT-4o: The excerpt highlights the play's enduring emotional impact and strong performances, despite noting some visual limitations. The overall tone suggests a strong recommendation. | Gemini: The review highlights the moving nature of the play and the strong performances, but also notes that the production is not visually remarkable. The overall sentiment is positive, but with reservations. | Kimi: While acknowledging the production is visually unambitious, the critic emphasizes the play remains deeply moving with uniformly strong performances, ultimately dismissing minor complaints as insignificant against the powerful overall experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:21:56.076Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

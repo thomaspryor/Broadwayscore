@@ -12,5 +12,60 @@
   "bwwExcerpt": "While the AIDS epidemic has certainly not been completely conquered, it is no longer the automatic death sentence it was in ANGELS IN AMERICA's mid-1980s setting, so in that respect the play can be seen as a bit of a history lesson. But, as the full title indicates, Kushner uses the plague as means by which to address themes that are still with us today; perhaps most prominently the commercialization of health care, the hypocrisy hidden by elected leaders and the effort to guide the country by r",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
   "contentTier": "excerpt",
-  "showScoreExcerpt": "\"Thrilling and heart-gripping...While there are some striking visuals, the focus is fully on Kushner's words and storytelling...An invigorating experience that seems to fly by...Beautiful work is done throughout by the company of eight actors, who all double as realistic characters and fantasia roles...Kushner uses the plague as means by which to address themes that are still with us today.\"\n\nRead more"
+  "showScoreExcerpt": "\"Thrilling and heart-gripping...While there are some striking visuals, the focus is fully on Kushner's words and storytelling...An invigorating experience that seems to fly by...Beautiful work is done throughout by the company of eight actors, who all double as realistic characters and fantasia roles...Kushner uses the plague as means by which to address themes that are still with us today.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Thrilling and heart-gripping...An invigorating experience that seems to fly by",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language like 'thrilling,' 'heart-gripping,' and 'invigorating experience' indicates clear recommendation. However, confidence is low due to truncated excerpt format. | GPT-4o: The review uses strong positive language such as 'thrilling,' 'heart-gripping,' and 'invigorating,' indicating a highly enthusiastic recommendation. The focus on Kushner's storytelling and the actors' performances suggests a powerful and engaging production. | Gemini: The review excerpt uses very positive language, such as \"thrilling\", \"heart-gripping\", and \"invigorating\", suggesting a strong recommendation. The focus on Kushner's words and the praise for the actors also contribute to this assessment. | Kimi: The excerpts express enthusiastic praise for the production's emotional impact and performances, describing it as 'thrilling,' 'heart-gripping,' and 'invigorating,' indicating a strong recommendation despite the limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:22:51.164Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

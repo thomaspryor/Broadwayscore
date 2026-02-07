@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "‘Brilliantly directed and choreographed…The cast of 'The Bandstand' delivers outstanding performances...The score is inventive and flawlessly performed with thrilling dance numbers…The numbers are wholly relevant to the story line and each song makes you yearn for the next...'The Bandstand' is an epic, patriotic musical that tells of struggle, loss and a special kind of heroism...A show that is sure to entertain and raise your spirits, a musical theatre fan's dream come true.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A show that is sure to entertain and raise your spirits, a musical theatre fan's dream come true.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Despite being a single excerpt, the language is overwhelmingly positive with superlatives like 'brilliantly directed,' 'outstanding performances,' 'flawlessly performed,' and 'dream come true,' indicating a rave review. | GPT-4o: The excerpt contains superlative praise for direction, choreography, performances, and the score. The language used ('brilliantly', 'outstanding', 'inventive', 'epic') indicates a strong recommendation, suggesting a must-see experience. | Gemini: The excerpt contains very positive language such as \"brilliantly directed\", \"outstanding performances\", \"inventive\", \"flawlessly performed\", and \"thrilling dance numbers\". Given that only one excerpt is available, the score is placed at the higher end of the positive range. | Kimi: Single excerpt contains unqualified rave language ('brilliantly', 'outstanding', 'flawlessly', 'dream come true'), but per instructions for cherry-picked single excerpts, scoring at upper end of Positive bucket rather than Rave. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:02:29.393Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

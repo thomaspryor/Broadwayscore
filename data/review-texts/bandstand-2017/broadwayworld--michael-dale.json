@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Exhilarating, adventurous and immensely moving...As toe-tapping entertaining as it is poignant...The writing and acting is perfectly on pitch...Director/choreographer Andy Blankenbuehler's slam-bang production, continually on the move, ingeniously uses his ensemble to not only express the new freedoms post-war Americans felt with the latest dance crazes, but also to symbolize the internal struggle of its heroic main characters.\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Exhilarating, adventurous and immensely moving...As toe-tapping entertaining as it is poignant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Multiple superlatives ('exhilarating', 'immensely moving') with unqualified praise for writing, acting, and direction. However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses strong positive language such as 'exhilarating', 'adventurous', and 'immensely moving', indicating a highly favorable view. The lack of full context suggests a low confidence, but the language supports a Rave classification. | Gemini: The excerpt is filled with positive adjectives and phrases, such as \"exhilarating,\" \"adventurous,\" \"immensely moving,\" and \"perfectly on pitch,\" indicating a strong recommendation. | Kimi: Single excerpt contains superlative praise ('exhilarating,' 'slam-bang,' 'ingeniously') indicating strong recommendation, though limited context requires caution. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:03:10.824Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

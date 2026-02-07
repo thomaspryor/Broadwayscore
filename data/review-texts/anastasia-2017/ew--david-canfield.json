@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Anastasia is a handsomely mounted production that succeeds in translating the animated film's epic scope to the stage, even if it doesn't quite capture the movie's emotional magic.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Anastasia is a handsomely mounted production that succeeds in translating the animated film's epic scope to the stage, even if it doesn't quite capture the movie's emotional magic.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Anastasia is a handsomely mounted production that succeeds in translating the animated film's epic scope to the stage, even if it doesn't quite capture the movie's emotional magic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - acknowledges production succeeds in adaptation but notes it falls short of the source material's emotional impact. Given only one excerpt available and the mixed praise/criticism, scoring at lower end of Positive bucket. | GPT-4o: The review excerpt praises the production's ability to translate the film's scope to the stage, indicating a positive reception. The original rating of 87 supports a strong positive classification, though the mention of not capturing the movie's emotional magic suggests some reservations. | Gemini: The review is positive, noting the production's success in translating the film's scope. However, it also mentions that it doesn't quite capture the movie's emotional magic, indicating a reservation. Given that it's a single excerpt, confidence is low. | Kimi: The excerpt offers qualified praise for the production's visual scope and mounting while explicitly noting a failure to capture the source material's emotional resonance, indicating a mildly positive recommendation. Confidence is low due to reliance on a single curated excerpt that may not reflect the full review context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:14:12.500Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

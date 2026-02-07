@@ -15,5 +15,60 @@
   "bwwExcerpt": "Each character, so precisely played, is worthy of investment. This is seven and a half hours of luxurious dramatic immersion, and in no way arid or plodding.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
   "showScoreExcerpt": "\"The emotional and political weave of Kushner’s writing is immaculately provocative of both head and heart...For all its ranginess, this production is a masterclass in storytelling clarity and profundity...This is seven and a half hours of luxurious dramatic immersion, and in no way arid or plodding. You will laugh a lot, which may surprise you. But this play is as streaked with humor as it is intellectual and emotional weightiness...This is theater at its most whole and embracing.\"\n\nRead more",
-  "publishDate": "March 26, 2018"
+  "publishDate": "March 26, 2018",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is theater at its most whole and embracing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with superlatives like 'masterclass,' 'immaculately provocative,' and 'luxurious dramatic immersion.' Despite being excerpts, the consistent tone of reverence and the final declaration about theater 'at its most whole' clearly indicates a rave review. | GPT-4o: The review uses superlatives like 'masterclass in storytelling clarity and profundity' and describes the production as 'luxurious dramatic immersion,' indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"masterclass\", \"luxurious dramatic immersion\", and \"theater at its most whole and embracing\", indicating a rave review. | Kimi: The excerpts contain unqualified superlatives ('masterclass,' 'immaculately provocative,' 'luxurious dramatic immersion') with no caveats, indicating an enthusiastic rave for this seven-and-a-half-hour production despite its length.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:25:24.173Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

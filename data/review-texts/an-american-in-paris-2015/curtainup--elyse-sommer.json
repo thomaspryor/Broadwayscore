@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"To paraphrase from one of the many gorgeous Gershwin tunes: It's got rhythm...it's got music...and it's got superb dancers and colorful, eye-popping settings for them to strut their fleet-footed stuff. Bottom line: It's a Wow!...The dancing in this new An American in Paris is sublime. Add the lovely, ear-hugging Gershwin tunes, the stunning stage craft and performances — and what you've got is a theatrical sweetshop filled to the brim with delectable eye and ear candy.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bottom line: It's a Wow!",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Clear rave language with 'Wow!', 'sublime', 'stunning', and 'delectable' describing multiple production elements. However, only excerpt available so confidence reduced. | GPT-4o: The excerpt uses highly enthusiastic language, praising the production as 'a Wow!' and 'sublime,' with no reservations mentioned. Despite the single excerpt warning, the tone is clearly a strong recommendation. | Gemini: The review excerpt is overwhelmingly positive, using phrases like \"sublime,\" \"stunning,\" and \"theatrical sweetshop.\" Given the single excerpt warning, I am scoring at the higher end of the positive range, but lowering the confidence. | Kimi: The excerpt delivers an enthusiastic verdict ('Wow!', 'sublime') with glowing praise for the dancing, Gershwin tunes, and staging, indicating a strong recommendation despite limited context. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:01:50.781Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

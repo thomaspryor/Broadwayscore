@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Every so often a gem the likes of “An American in Paris” is brought from screen to stage, and for a moment you can stop asking why so many movies are made into musicals. With exquisite performances and aesthetics, this ballet-musical theater hybrid makes good on a title with Oscar-winning clout. The similarities don’t end there — but this adaptation goes its own way and then some, with an innovative approach to staging and a breathtaking melding of art forms.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Every so often a gem the likes of 'An American in Paris' is brought from screen to stage, and for a moment you can stop asking why so many movies are made into musicals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it a 'gem' with 'exquisite performances' and 'breathtaking melding of art forms,' but confidence is low due to single excerpt warning and potential cherry-picking. | GPT-4o: The excerpt praises the show as a 'gem' with 'exquisite performances and aesthetics' and highlights its 'innovative approach to staging,' indicating a strong recommendation. However, the confidence is low due to the single excerpt warning. | Gemini: The review excerpt is overwhelmingly positive, using phrases like \"gem,\" \"exquisite performances,\" \"breathtaking melding of art forms,\" and \"innovative approach to staging.\" Given the single excerpt and positive tone, I am scoring it on the higher end of the positive range. | Kimi: The excerpt uses strongly positive language including 'gem,' 'exquisite,' and 'breathtaking' to praise the performances, aesthetics, and staging innovation. Following the single-excerpt guidance for clearly positive curated quotes, this warrants a high Positive score, though confidence remains low due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:06:32.706Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

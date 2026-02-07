@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A savvy, poetic cocktail of French chic and Broadway pizzazz is a perfect Christmas treat for the ballet-mad Parisians. Time will tell if this ambitious Franco-American co-production wows New York but it certainly deserves to become a repertoire standard...Craig Lucas’s wisecracking book fills out characters, changes names and shifts the story to the Liberation...I would beg, borrow or steal to see it all again.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I would beg, borrow or steal to see it all again.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite being a single excerpt, the critic's final statement 'I would beg, borrow or steal to see it all again' is an extremely enthusiastic endorsement that suggests a strong positive review, warranting upper Positive range. | GPT-4o: The excerpt provides strong praise, describing the show as a 'savvy, poetic cocktail' and a 'perfect Christmas treat'. The phrase 'beg, borrow or steal to see it all again' suggests an enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The critic calls it a \"perfect Christmas treat\" and says they \"would beg, borrow or steal to see it all again.\" Given the single excerpt and strong positive language, I am scoring it at the higher end of the positive range. | Kimi: The excerpt features effusive praise calling the show a 'perfect Christmas treat' and stating it 'deserves to become a repertoire standard,' alongside a passionate personal commitment to see it repeatedly. As a single curated excerpt, the score is capped in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:03:22.297Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

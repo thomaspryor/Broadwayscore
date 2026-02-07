@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "At nearly eight hours, unfolding over two parts, the Broadway revival of Tony Kushner's \"Angels in America\" is a significant commitment, temporal and financial. But one of the countless wonders of this instant-classic production is the way it energizes, instead of enervates, as it goes along, expanding in scale and scope, spinning out one surprise after another. By the time the stage literally cracks open near the end of the second part, and the main character Prior Walter (Andrew Garfield) asce",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "showScoreExcerpt": "\"One of the countless wonders of this instant-classic production is the way it energizes, instead of enervates, as it goes along, expanding in scale and scope, spinning out one surprise after another...As directed beautifully by Marianne Elliot, 'Angels in America' is also a rip-roaring, vastly entertaining melodrama...If there's any complaint here, it's that a few of the actors don't entirely sound American. The performances are all so committed and deeply felt that any initial reservations fade away.\"\n\nRead more"
+  "showScoreExcerpt": "\"One of the countless wonders of this instant-classic production is the way it energizes, instead of enervates, as it goes along, expanding in scale and scope, spinning out one surprise after another...As directed beautifully by Marianne Elliot, 'Angels in America' is also a rip-roaring, vastly entertaining melodrama...If there's any complaint here, it's that a few of the actors don't entirely sound American. The performances are all so committed and deeply felt that any initial reservations fade away.\"\n\nRead more",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "One of the countless wonders of this instant-classic production is the way it energizes, instead of enervates, as it goes along.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Calls it an 'instant-classic production' with 'countless wonders' and 'vastly entertaining melodrama.' Only complaint is minor accent issues that 'fade away.' Clear rave despite being excerpted. | GPT-4o: The review uses strong positive language like 'instant-classic', 'rip-roaring', and 'vastly entertaining'. The minor complaint about accents is outweighed by the overall enthusiastic praise. However, the confidence is low due to the text being an excerpt. | Gemini: The review uses strong positive language such as \"countless wonders\", \"instant-classic production\", \"energizes\", \"rip-roaring, vastly entertaining melodrama\", and \"beautifully directed\". The only complaint is minor and quickly dismissed. | Kimi: The excerpt offers unqualified praise, calling the production an 'instant-classic' and 'vastly entertaining' with only a minor reservation about accents that is immediately dismissed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:35:58.379Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The play is hip, topical and comically moralizing. You marvel at where he comes up with the mostly amusing, sometimes wickedly funny, revisionist views on biblical stories, of being omniscient, and much more. Director Mantello manages to walk a tightrope by giving Jim Parsons just enough room to maneuver without reining him in.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You marvel at where he comes up with the mostly amusing, sometimes wickedly funny, revisionist views on biblical stories.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows appreciation for the material ('marvel at', 'wickedly funny') and praises the direction, but qualified language like 'mostly amusing' and 'sometimes' suggests moderate enthusiasm. Single excerpt warning applies - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the play as 'hip, topical and comically moralizing' with 'mostly amusing, sometimes wickedly funny' content, indicating a positive reception. The direction and performance are also highlighted positively. Given the single excerpt warning, the score is set at the upper end of the Positive range. | Gemini: The review uses positive language such as \"mostly amusing\" and \"sometimes wickedly funny\" to describe the play. The director is also praised for managing Jim Parsons' performance well. | Kimi: The excerpt offers enthusiastic praise for the play's wit, topicality, and direction, describing it as 'wickedly funny' and a 'marvel,' though single-excerpt limitations prevent higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:54:18.534Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

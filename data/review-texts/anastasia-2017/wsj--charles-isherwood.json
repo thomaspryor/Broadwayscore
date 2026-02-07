@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Broadway adaptation of 'Anastasia' is a lavish spectacle that's easier on the eyes than the ears, with gorgeous costumes and sets that can't quite compensate for a score that rarely soars.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Broadway adaptation of 'Anastasia' is a lavish spectacle that's easier on the eyes than the ears, with gorgeous costumes and sets that can't quite compensate for a score that rarely soars.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Broadway adaptation of 'Anastasia' is a lavish spectacle that's easier on the eyes than the ears, with gorgeous costumes and sets that can't quite compensate for a score that rarely soars.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review balances positive visual elements ('lavish spectacle', 'gorgeous costumes and sets') against significant musical shortcomings ('score that rarely soars', 'can't quite compensate'). The structure suggests the negatives outweigh the positives, placing this in mixed territory rather than positive. | GPT-4o: The review praises the visual aspects of the production but criticizes the musical score, suggesting a mixed experience overall. The single excerpt limits confidence in fully capturing the critic's overall sentiment. | Gemini: The review praises the visuals but criticizes the score, indicating a mixed reception. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The critic offers strong praise for the production design ('lavish spectacle', 'gorgeous costumes') but explicitly states these elements cannot compensate for a score that 'rarely soars,' creating a balanced but unenthusiastic assessment. With only one excerpt available, the overall verdict remains uncertain.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:18:51.223Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

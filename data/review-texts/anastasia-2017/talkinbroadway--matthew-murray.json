@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Anastasia is a show that wants to have everything: romance, adventure, history, fantasy, family, revolution, and redemption. But in trying to be all things to all people, it ends up being not quite enough for anyone.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Anastasia is a show that wants to have everything: romance, adventure, history, fantasy, family, revolution, and redemption. But in trying to be all things to all people, it ends up being not quite enough for anyone.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But in trying to be all things to all people, it ends up being not quite enough for anyone.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Single excerpt warning applies. The critic identifies the show's ambition but concludes it fails to satisfy, suggesting neither recommendation nor strong discouragement - classic mixed territory. | GPT-4o: The excerpt suggests the show fails to deliver on its ambitious goals, indicating a negative assessment. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt suggests the show tries to do too much and doesn't fully succeed, indicating a mixed or neutral assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt criticizes the show for being unfocused and failing to deliver on its many ambitions, indicating it does not satisfy audiences. With only one curated quote available, confidence is low. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:16:13.793Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

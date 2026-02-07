@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Tony Kushner's masterpiece about the AIDS crisis in the 1980s feels as urgent and necessary as ever, with Nathan Lane and Andrew Garfield delivering powerhouse performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Tony Kushner's masterpiece about the AIDS crisis in the 1980s feels as urgent and necessary as ever, with Nathan Lane and Andrew Garfield delivering powerhouse performances.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of Tony Kushner's masterpiece about the AIDS crisis in the 1980s feels as urgent and necessary as ever, with Nathan Lane and Andrew Garfield delivering powerhouse performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Calls it a 'masterpiece' that feels 'urgent and necessary as ever' with 'powerhouse performances.' Strong praise despite being only an excerpt, warranting upper Positive range. | GPT-4o: The excerpt uses strong positive language ('masterpiece', 'urgent and necessary', 'powerhouse performances') suggesting a highly enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses the word \"masterpiece\" and praises the performances as \"powerhouse\", indicating a strong positive sentiment. However, since it is a single excerpt, the confidence is low. | Kimi: The excerpt offers strong praise ('masterpiece,' 'powerhouse performances,' 'urgent and necessary'), indicating an enthusiastic recommendation for this revival. However, as a single curated excerpt, the full context is unknown, warranting a high-positive score with low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:49:24.235Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

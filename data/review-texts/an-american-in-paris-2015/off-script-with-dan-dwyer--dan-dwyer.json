@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'An American In Paris' presents a new and remarkably effective book and new, breathtaking choreography...Lucas’s narrative succeeds so well because it’s dramatically character-driven...It’s all a thoroughly effervescent delight...The production design only enhances the emotional destinies of the characters and dramatic peaks of choreography. These elements, like every aspect of 'An American in Paris,' are sustained in perfect balance by Wheeldon. C’est magnifique.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's all a thoroughly effervescent delight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout with 'remarkably effective,' 'breathtaking,' 'thoroughly effervescent delight,' and 'C'est magnifique.' Single excerpt warning suggests upper range of Positive bucket, but medium confidence due to limited text. | GPT-4o: The excerpt uses superlatives like 'breathtaking', 'effervescent delight', and 'perfect balance', indicating strong praise. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses very positive language such as \"remarkably effective\", \"breathtaking\", \"thoroughly effervescent delight\", and \"C’est magnifique\" to describe the show, indicating a strong positive recommendation. | Kimi: The excerpt offers enthusiastic praise for the book, choreography, and production design, calling the show an 'effervescent delight' and 'magnifique,' though as a single curated excerpt, the full review context is unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:05:33.006Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

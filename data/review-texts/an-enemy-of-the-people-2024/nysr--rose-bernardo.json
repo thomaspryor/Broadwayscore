@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-07T08:13:15.630Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This excerpt only describes a protest incident during the performance and contains no critical evaluation of the show itself.; openai: The provided text is about an incident involving climate-change protesters during the performance, not an evaluation of the show itself.; gemini: This excerpt describes an audience disruption, not the show itself. There is no critical evaluation of the production.; kimi: The provided text consists solely of a description of climate protesters interrupting a performance ('no theater on a dead planet'). It contains no evaluative content, critical assessment, or opinion regarding the show's artistic merits, performances, direction, or production quality—only a factual account of an audience incident.",
+  "promptVersion": "5.2.0"
 }

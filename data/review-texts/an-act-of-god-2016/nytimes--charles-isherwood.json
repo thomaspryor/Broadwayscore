@@ -14,5 +14,60 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606",
   "contentTier": "excerpt",
   "showScoreExcerpt": "\"God is really killing it up there. How funny is the guy? He’s Jon Stewart funny, plus Stephen Colbert funny. (Mr. Javerbaum has written for both.) More obviously, it might be said that Mr. Parsons as Mr. Javerbaum’s tell-it-like-it-is God is, yes, divinely funny.\"\n\nRead more",
-  "publishDate": "May 28, 2016"
+  "publishDate": "May 28, 2016",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Parsons as Mr. Javerbaum's tell-it-like-it-is God is, yes, divinely funny.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt shows clear praise for the lead performance with humor comparisons to top comedians, but the truncated nature and lack of broader show assessment limits confidence in the overall verdict. | GPT-4o: The excerpt provides strong praise for the humor and performance, comparing it to well-known comedians and describing it as 'divinely funny'. However, due to the limited text, confidence is low. | Gemini: The review excerpt focuses on praising the humor and the performance of Jim Parsons. Given the limited text, it's difficult to gauge the overall recommendation strength, but the positive tone suggests a score in the positive range. | Kimi: The excerpt offers enthusiastic praise for the lead performance and writing, comparing the humor to Jon Stewart and Stephen Colbert, though as a curated excerpt the full critical verdict may contain additional context or reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:53:51.335Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

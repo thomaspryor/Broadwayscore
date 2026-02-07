@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"There is an airy and dizzying quality to Christopher Wheeldon’s wonderfully imaginative production of \"An American in Paris.\" It feels something like a first gasp of air after holding your breath for a long, long time. Broadway is currently awash in questionable movie-to-musical marquees, but a stage version of the 1952 Oscar-winning picture starring Gene Kelly feels like a foregone conclusion held in suspension. And over half a century later, the wait was worth every minute.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And over half a century later, the wait was worth every minute.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language including 'wonderfully imaginative,' 'worth every minute,' and 'first gasp of air' suggests enthusiastic recommendation. However, confidence is low due to single excerpt warning and incomplete review text. | GPT-4o: The excerpt provides strong praise for the production, describing it as 'wonderfully imaginative' and worth the wait. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is overwhelmingly positive, using phrases like \"wonderfully imaginative production\" and \"the wait was worth every minute.\" Given the single excerpt, I'm scoring it as positive but with low confidence. | Kimi: The excerpt offers strong praise ('wonderfully imaginative') and declares the adaptation 'worth every minute,' indicating a clear recommendation despite the critic's general skepticism toward movie-to-musical transfers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:12:41.246Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

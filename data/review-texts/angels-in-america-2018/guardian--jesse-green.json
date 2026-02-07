@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Broadway revival of Tony Kushner's epic AIDS drama is a stunning achievement, with Andrew Garfield delivering a performance of breathtaking vulnerability and power.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Broadway revival of Tony Kushner's epic AIDS drama is a stunning achievement, with Andrew Garfield delivering a performance of breathtaking vulnerability and power.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Broadway revival of Tony Kushner's epic AIDS drama is a stunning achievement, with Andrew Garfield delivering a performance of breathtaking vulnerability and power.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with 'stunning achievement' and 'breathtaking' performance description indicates clear recommendation. Single excerpt warning requires caution, but language is unambiguously positive. | GPT-4o: The excerpt uses strong positive language ('stunning achievement', 'breathtaking vulnerability and power') indicating a rave review. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses strong positive language like \"stunning achievement\" and \"breathtaking vulnerability and power,\" indicating a highly favorable impression. Given the single excerpt warning, I've placed the score at the higher end of the positive range. | Kimi: The excerpt employs rave-level superlatives ('stunning achievement', 'breathtaking'), but as a single curated quote that may be cherry-picked, the score is capped at the high end of Positive with low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:30:39.531Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

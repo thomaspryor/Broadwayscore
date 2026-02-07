@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, which opened Thursday at the Broadhurst Theatre, is a sumptuous spectacle that makes the most of its fairy-tale romance while acknowledging the historical tragedy that inspired it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, which opened Thursday at the Broadhurst Theatre, is a sumptuous spectacle that makes the most of its fairy-tale romance while acknowledging the historical tragedy that inspired it.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is a sumptuous spectacle that makes the most of its fairy-tale romance while acknowledging the historical tragedy that inspired it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show as 'sumptuous spectacle' and praises how it 'makes the most of' its elements. Since this is a curated positive excerpt, scoring at upper end of Positive range, but low confidence due to limited text. | GPT-4o: The excerpt describes the show as a 'sumptuous spectacle' and highlights its effective use of romance and historical context, indicating a positive view. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt describes the show as a \"sumptuous spectacle\" and acknowledges both the romance and tragedy, suggesting a positive but not overwhelmingly enthusiastic review. Given it's a single excerpt, confidence is low. | Kimi: The excerpt offers clear praise ('sumptuous spectacle,' 'makes the most of') indicating a solid recommendation, though the single curated quote limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:13:39.429Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

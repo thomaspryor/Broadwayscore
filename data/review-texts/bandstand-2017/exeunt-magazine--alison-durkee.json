@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Successfully toes the line between nostalgia and refreshing realism…The show’s cast manages to capture these characters as both charismatic underdogs and the complex survivors whose joy always has a darker tinge…Audiences looking forward to buoyant swing dance numbers won’t be let down here…The choreography works as an equal collaborator that elevates the book and score…The choreography physically expresses the Big Band beats of Oberacker’s score.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Successfully toes the line between nostalgia and refreshing realism",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistently positive language throughout: 'successfully,' 'won't be let down,' 'elevates,' with praise for cast, choreography, and overall execution. Single excerpt warning noted, but tone is clearly positive with multiple elements praised. | GPT-4o: The excerpt highlights strong praise for the cast and choreography, suggesting a positive reception. The use of 'successfully' and 'won’t be let down' indicates a solid recommendation. | Gemini: The excerpt uses positive language such as \"successfully toes the line\", \"charismatic\", and \"elevates the book and score.\" Given the single excerpt, I am placing the score on the higher end of the positive bucket, but with low confidence. | Kimi: The excerpt offers strong praise for the cast and choreography, describing the show as successfully balancing nostalgia with realism and delivering satisfying entertainment. Despite limited context, the tone is clearly appreciative and recommendatory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T09:08:03.638Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

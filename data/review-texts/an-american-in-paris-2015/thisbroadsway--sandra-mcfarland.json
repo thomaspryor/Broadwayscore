@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Fairchild and Cope are beautifully paired, and it’s a visual feast to see the two of them float across the stage...You will find the journey very enjoyable and easy to follow thanks to flawless direction and choreography by Christopher Wheeldon...This marvelous cast and ensemble all take a leading role in this exquisite production that will leave you standing on your feet, violently clapping, smiling from ear to ear with tears rolling down your cheeks. Who could ask for anything more?\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This marvelous cast and ensemble all take a leading role in this exquisite production that will leave you standing on your feet, violently clapping, smiling from ear to ear with tears rolling down your cheeks.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Despite being a single excerpt, the language is unqualifiedly rapturous with superlatives ('marvelous', 'exquisite') and promises an overwhelming emotional experience. The rhetorical question 'Who could ask for anything more?' signals complete satisfaction. However, confidence is medium due to single-excerpt limitation. | GPT-4o: The excerpt is filled with superlatives and vivid imagery suggesting an overwhelmingly positive experience. Despite being a single excerpt, the language indicates a strong recommendation. | Gemini: The review uses strong positive language such as \"beautifully paired\", \"flawless direction\", and \"exquisite production\", indicating a strong recommendation. | Kimi: This single excerpt contains unqualified enthusiasm for the performances, direction, and emotional impact, using words like 'exquisite,' 'flawless,' and 'marvelous.' However, as a sole curated excerpt, it warrants the upper end of the Positive bucket rather than a Rave classification due to potential cherry-picking. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:12:15.669Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

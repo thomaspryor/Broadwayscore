@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Lane adds Falstaffian wit and vulnerability. What we see here is a monster who is also a victim. That spirit of ambiguity animates Marianne Elliott’s staging, which uses expressionistic design to blur the division between fantasy and verisimilitude...Amid innumerable costume changes, the eight speaking cast members, who all play multiple roles, seem inspired by divine theatrical energy.\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the eight speaking cast members, who all play multiple roles, seem inspired by divine theatrical energy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows strong praise for lead performance, direction, and ensemble work with phrases like 'Falstaffian wit', 'inspired by divine theatrical energy'. However, low confidence due to limited text from curated excerpt. | GPT-4o: The excerpt praises the performances and staging, describing them as animated and inspired. The use of 'divine theatrical energy' suggests a strong positive impression despite the limited context. | Gemini: The excerpt praises the lead performance and the staging, suggesting a positive experience. Due to the limited text, confidence is low, but the positive language warrants a score on the higher end of the positive bucket. | Kimi: The excerpt contains enthusiastic praise for Nathan Lane's performance, Marianne Elliott's direction, and the ensemble's energy, using words like 'divine theatrical energy' and 'animates' that indicate a clear recommendation. However, as only a single curated excerpt is available, confidence is reduced per instructions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:29:15.026Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What 'Anastasia' offers instead is a procession of lovely pictures, enough to compensate for a book that doesn't delve nearly deeply enough into the search for identity that is at the musical's core.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What 'Anastasia' offers instead is a procession of lovely pictures, enough to compensate for a book that doesn't delve nearly deeply enough into the search for identity that is at the musical's core.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What 'Anastasia' offers instead is a procession of lovely pictures, enough to compensate for a book that doesn't delve nearly deeply enough into the search for identity that is at the musical's core.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows mixed assessment - praises visual elements but criticizes the book's lack of depth. The word 'compensate' suggests flaws are balanced by positives, indicating mixed reception rather than clear recommendation. | GPT-4o: The review excerpt highlights the visual appeal of the production as a compensating factor for its narrative shortcomings. This suggests a mildly positive view, acknowledging strengths despite notable weaknesses. | Gemini: The review excerpt suggests a positive experience due to the visuals, but acknowledges a weakness in the book. Given the single excerpt and the critic's statement that the visuals compensate for the book, I'm placing it in the lower end of the positive bucket. | Kimi: The critic offers qualified praise, noting that the visual elements are lovely enough to compensate for the book's lack of depth, suggesting a conditional recommendation based on production values rather than the writing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:16:40.130Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

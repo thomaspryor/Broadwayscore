@@ -18,5 +18,59 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/jim-parsons-divine-act-god-article-1.2239119"
+  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/jim-parsons-divine-act-god-article-1.2239119",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Occasionally characters say something so right that you can't help but nod in complete agreement.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt suggests a positive reaction to the dialogue, indicating moments of resonance. However, without more context, the overall sentiment is unclear, leading to a cautious, mildly positive score. | Gemini: The excerpt suggests a positive experience due to relatable dialogue, but the single excerpt and lack of explicit recommendation lead to a lower confidence and a score in the lower-middle of the positive range. | Kimi: Single available excerpt offers mild, specific praise for the show's dialogue/lyrics ('in sync with what's inside your head'), suggesting the writing lands effectively. However, with only one curated excerpt available, the overall recommendation strength remains uncertain; scoring at the lower end of Positive per guidance for mildly positive isolated quotes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T07:53:12.844Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -14,5 +14,60 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
   "contentTier": "excerpt",
   "showScoreExcerpt": "\"Lane is extraordinary in a staging that, in some other ways, too badly wants to pull a text that still demands to be at the center of the political discourse in the direction of the theatrically quixotic...Garfield takes theatrical command of Prior in a way that initially jars, but ultimately elevates the character...Lane may have the most dominant performance, but Garfield’s revisionist and ennobling work is perhaps the most conceptually successful element of this new production.\"\n\nRead more",
-  "publishDate": "March 26, 2018"
+  "publishDate": "March 26, 2018",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lane is extraordinary in a staging that, in some other ways, too badly wants to pull a text",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Praises lead performances as 'extraordinary' and 'conceptually successful' but criticizes directorial choices. Truncated text limits confidence in full verdict. | GPT-4o: The review praises individual performances, particularly Lane and Garfield, but also notes issues with the staging. The text suggests a mix of strong performances with some conceptual challenges, indicating a mixed overall impression. | Gemini: The review praises Lane's performance as extraordinary and Garfield's work as conceptually successful, but also mentions the staging wanting to pull the text in a theatrically quixotic direction, indicating a positive but not rave review. | Kimi: While the excerpt criticizes the staging as overly quixotic, it offers unreserved praise for the central performances, calling Lane 'extraordinary' and Garfield's work 'ennobling' and 'conceptually successful,' indicating a recommendation based on the acting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T08:23:34.633Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
