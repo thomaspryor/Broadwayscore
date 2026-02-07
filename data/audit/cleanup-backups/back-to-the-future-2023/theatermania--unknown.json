@@ -1,0 +1,73 @@
+{
+  "showId": "back-to-the-future-2023",
+  "outletId": "theatermania",
+  "outlet": "Theatre Mania",
+  "criticName": "Unknown",
+  "url": "https://www.theatermania.com/news/review-back-to-the-future-the-musical-is-stuck-in-the-past_1710869/?fbclid=IwAR1zwYSvNeM4C8kbZnyw2rK_4WQhOCUo2WXK7sgH343crU3ZAr6XEANK_CQ",
+  "nycTheatreExcerpt": "It's a perfectly disorienting sensory overload, and Chris Fisher takes full advantage with his eye-popping illusions.",
+  "source": "nyc-theatre",
+  "sources": [
+    "nyc-theatre",
+    "playbill-verdict"
+  ],
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a perfectly disorienting sensory overload, and Chris Fisher takes full advantage with his eye-popping illusions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the visual/technical elements as 'eye-popping' and 'perfectly disorienting' in a positive way, but extremely limited text makes full verdict unclear. | GPT-4o: The excerpt praises the show as a 'perfectly disorienting sensory overload' with 'eye-popping illusions,' suggesting a strong positive impression. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt describes the show as a \"perfectly disorienting sensory overload\" and praises the illusions. Due to the single excerpt, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the production's illusions and sensory design using words like 'perfectly' and 'eye-popping,' indicating a clearly positive assessment of this element, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:33:23.267Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "contentTier": "stub",
+  "contentTierReason": "No text content",
+  "playbillVerdictUrl": "https://www.theatermania.com/news/review-back-to-the-future-the-musical-is-stuck-in-the-past_1710869/?fbclid=IwAR1zwYSvNeM4C8kbZnyw2rK_4WQhOCUo2WXK7sgH343crU3ZAr6XEANK_CQ"
+}

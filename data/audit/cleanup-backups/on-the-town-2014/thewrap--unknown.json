@@ -1,0 +1,101 @@
+{
+  "showId": "on-the-town-2014",
+  "outletId": "thewrap",
+  "outlet": "The Wrap",
+  "criticName": "Unknown",
+  "url": "http://www.thewrap.com/on-the-town-theater-review-sailors-on-leave-broads-on-the-make/",
+  "playbillVerdictUrl": "http://www.thewrap.com/on-the-town-theater-review-sailors-on-leave-broads-on-the-make/",
+  "source": "playbill-verdict",
+  "sources": [
+    "playbill-verdict",
+    "bww-reviews",
+    "bww-roundup"
+  ],
+  "fullText": "From “Urinetown” to “On the Town,” director John Rando has finally returned to Broadway with another big hit. There’s a nice symmetry to the bookends of those two Gotham “town” tuners, the Leonard Bernstein revival having opened Thursday at the Lyric Theatre.\n\nRando brings a whimsical irreverence to everything he directs, often with a healthy dollop of vulgarity, and for “On the Town” he doesn’t stint on emphasizing the randiness of the New York City streets during World War II.",
+  "isFullReview": false,
+  "textWordCount": 80,
+  "archivePath": "data/archives/reviews/on-the-town-2014/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:07:20.238Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 86 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 80,
+  "tierReason": "Short text (80 words)",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "director John Rando has finally returned to Broadway with another big hit",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls it 'another big hit' and praises Rando's direction, but this appears to be an opening excerpt with limited evaluative content about the full production. | Gemini: The review explicitly states that the show is a \"big hit\" and praises the director's work, indicating a positive recommendation. | Kimi: The text unambiguously declares the production a 'big hit' and praises director John Rando's whimsical, vulgar irreverence and commitment to the material's randiness, though the extreme brevity suggests this is likely an excerpt rather than a complete review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:56:26.560Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "bwwExcerpt": "Rando brings a whimsical irreverence to everything he directs, often with a healthy dollop of vulgarity, and for 'On the Town' he doesn't stint on emphasizing the randiness of the New York City streets during World War II. And that's just the broads, as they say in the Navy!...Beowulf Boritt's set and projection designs are sparse yet expansive; they tantalize with the visual suggestion that the vast stage is always about to be filled with dancers, great dancers. The 1,800-seat Lyric Theatre is never kind to comedy; its cavernous space eats up the laughter, but Rando brings the action downstage and into the auditorium as often as possible, and as soon as the chorus breaks into dance the theater bursts with contagious energy. The new Lyric Theatre, something of a white elephant, works for the first time in its short history on 42nd Street...Whenever Comden and Green's book begins to sag, there's another great ballet, not to mention Bernstein's music, just waiting around the corner.",
+  "bwwScore": 8,
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ON-THE-TOWN-Opens-on-Broadway-Updating-LIVE-20141016"
+}

@@ -1,0 +1,97 @@
+{
+  "showId": "american-buffalo-2022",
+  "outletId": "thewrap",
+  "outlet": "The Wrap",
+  "criticName": "Christian Holub",
+  "url": "https://www.thewrap.com/american-buffalo-broadway-review-sam-rockwell-and-laurence-fishburne-explore-mamets-dark-side/",
+  "source": "bww-reviews",
+  "sources": [
+    "bww-reviews"
+  ],
+  "bwwExcerpt": "In particular, director Neil Pepe and his top-shelf cast of three explore how underclass grifters adopt the language of Big Business, how demonstrations of masculinity and bravado can calcify into toxicity and how individuals can be misled by conspiracy theories and lies into shocking acts of violence. (Scott Pask’s set also helps to underscore the message, as we follow the action in the theater’s in-the-round staging through stalactites and stalagmites of junk-shop objects that suggest the detritus of American excess.)",
+  "bwwScore": 7,
+  "contentTier": "truncated",
+  "fullText": "When David Mamet first emerged on the theater scene in the 1970s, with fast-talking dramas like “Glengarry Glen Ross” and “American Buffalo,” he earned a reputation not only for his rat-a-tat dialogue but also his incisive critique of 20th-century American capitalism and how the little guy (and let’s face it, his focus was almost always on guys) tended to get crushed amid the cutthroat demands of their corporate overlords.",
+  "isFullReview": false,
+  "textWordCount": 69,
+  "archivePath": "data/archives/reviews/american-buffalo-2022/thewrap--christian-holub_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T06:18:51.306Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 75 (min: 300)"
+  ],
+  "wordCount": 69,
+  "tierReason": "Short text (69 words)",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "director Neil Pepe and his top-shelf cast of three explore how underclass grifters adopt the language of Big Business",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the 'top-shelf cast' and director's exploration of themes, with positive language about the production's interpretive depth and design elements that 'help underscore the message.' | Gemini: The review highlights the exploration of themes and the quality of the cast, suggesting a positive experience despite the potentially negative aspects of the subject matter. | Kimi: The critic praises the 'top-shelf cast' and effective staging that underscores the play's themes, though the excerpt appears truncated without a final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:58:12.156Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
+}

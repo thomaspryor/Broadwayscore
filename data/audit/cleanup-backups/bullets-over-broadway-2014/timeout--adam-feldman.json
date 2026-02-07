@@ -1,0 +1,115 @@
+{
+  "showId": "bullets-over-broadway-2014",
+  "outletId": "timeout",
+  "outlet": "Time Out New York",
+  "criticName": "Adam Feldman",
+  "url": "https://www.timeout.com/newyork/theater/bullets-over-broadway",
+  "publishDate": "April 10, 2014",
+  "fullText": "Bullets Over Broadway\n Photograph: Jason Bell\n\nWoody Allen's 1994 period comedy about gangsters, playwrights and the Great White Way becomes the musical it was always destined to be. This stage adaptation features a book by Allen and Douglas McGrath and direction and choreography by the peerless Susan Stroman (The Producers). The tunes are jazz standards from the 1920s. Zach Braff and Marin Mazzie star.\n\nSt. James Theatre\n \n 246 W 44th St\n \n \n Midtown West\n \n New York\n\nbetween Broadway and Eighth Ave\n\nSubway: A, C, E to 42nd St–Port Authority; N, Q, R, 42nd St S, 1, 2, 3, 7 to 42nd St–Times Sq\n\nTheater. Musicals",
+  "isFullReview": false,
+  "dtliExcerpt": "Bullets Over Broadway is a delightfully screwball musical that fires on most cylinders. The show captures the zany spirit of Woody Allen's 1994 film while adding enough theatrical pizzazz to justify its existence as a stage musical.",
+  "originalScore": 80,
+  "assignedScore": 80,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Bullets Over Broadway is a delightfully screwball musical that fires on most cylinders. The show captures the zany spirit of Woody Allen's 1994 film while adding enough theatrical pizzazz to justify its existence as a stage musical.",
+  "contentTier": "truncated",
+  "contentTierReason": "Short text (37 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bullets Over Broadway is a delightfully screwball musical that fires on most cylinders.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating combined with enthusiastic language like 'delightfully screwball' and 'fires on most cylinders' indicates a solid positive recommendation that justifies the stage adaptation. | GPT-4o: The review describes the show as 'delightfully screwball' and 'fires on most cylinders', indicating a strong positive recommendation. The original rating of 80 aligns with the Positive bucket. | Gemini: The review is positive, calling the show \"delightfully screwball\" and saying it \"fires on most cylinders.\" The critic's rating of 80 aligns with a positive assessment. | Kimi: The critic delivers an enthusiastic endorsement with strong praise for the show's theatricality and spirit, and the provided 80-point rating confirms a solid positive recommendation in the 70-84 range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:52:54.711Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/bullets-over-broadway",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ],
+  "textWordCount": 104,
+  "archivePath": "data/archives/reviews/bullets-over-broadway-2014/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:07:47.103Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20140305184856",
+  "archiveOrgUrl": "http://web.archive.org/web/20140305184856/http://www.timeout.com:80/newyork/theater/bullets-over-broadway",
+  "textIssues": [
+    "Word count too low: 104 (min: 300)"
+  ],
+  "misattributedFullText": true,
+  "extractedByline": "Times Sq",
+  "expectedCritic": "Adam Feldman",
+  "wordCount": 104,
+  "tierReason": "Short text (104 words)"
+}

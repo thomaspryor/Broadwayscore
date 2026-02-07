@@ -1,0 +1,106 @@
+{
+  "showId": "a-dolls-house-2023",
+  "outletId": "thewrap",
+  "outlet": "The Wrap",
+  "criticName": "Benjamin Lindsay",
+  "url": "https://www.thewrap.com/a-dolls-house-broadway-review-jessica-chastain/",
+  "source": "bww-roundup",
+  "sources": [
+    "bww-roundup",
+    "show-score-playwright",
+    "nyc-theatre"
+  ],
+  "bwwExcerpt": "Other than the music and Chastain’s extremely emotive performance, Jamie Lloyd’s direction is a parody of minimalism in the theater. Props are banished. A few minor characters have been dropped. The actors all wear black (very Banana Republic), the costumes designed by Soutra Gilmour and Enver Chakartash. Gilmour’s set is not really a set, but an empty stage that has been painted the ubiquitous black, with a band of white spread across the bottom of the upstage brick wall so that Jon Clark’s sev",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DOLLS-HOUSE-Opens-On-Broadway-Starring-Jessica-Chastain-20230309",
+  "contentTier": "truncated",
+  "fullText": "Theater audiences are used to writers taking the classics and completely overhauling them. Last month, Off Broadway saw the openings of Thomas Bradshaw’s “The Seagull/Woodstock, NY” and Marcus Gardley’s “Black Odyssey.” And next month on Broadway, the Bard’s moody Dane is transported to a backyard barbecue in the Deep South in James Ijames’ Pulitzer Prize-winning “Fat Ham.”",
+  "isFullReview": false,
+  "textWordCount": 57,
+  "archivePath": "data/archives/reviews/a-dolls-house-2023/thewrap--benjamin-lindsay_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T18:09:26.520Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 63 (min: 300)",
+    "Show title not found in text"
+  ],
+  "duplicateTextOf": "thewrap--robert-hofler.json",
+  "wordCount": 57,
+  "tierReason": "Short text (57 words)",
+  "assignedScore": 47,
+  "llmScore": {
+    "score": 47,
+    "confidence": "medium",
+    "range": {
+      "low": 42,
+      "high": 52
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jamie Lloyd's direction is a parody of minimalism in the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt clearly criticizes the direction as 'a parody' and dismisses most design elements, though it praises Chastain's performance and music. Single excerpt limits confidence in overall verdict. | GPT-4o: The review excerpt criticizes the direction as a 'parody of minimalism' and describes the set as 'not really a set,' indicating a negative view. However, it acknowledges the music and Chastain's performance positively. The single excerpt and lack of full context lower confidence. | Gemini: The review excerpt praises Chastain's performance but strongly criticizes the direction and minimalist staging, suggesting an overall negative experience. Given the single excerpt, confidence is low. | Kimi: The critic praises Jessica Chastain's performance and the music but heavily criticizes the direction as 'a parody of minimalism' and dismisses the set design, suggesting the production fails to support its assets. Limited to a single truncated excerpt, the overall verdict appears negative but confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:53:44.591Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 52,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  },
+  "showScoreExcerpt": "\"Other than the music and Chastain’s extremely emotive performance, Jamie Lloyd’s direction is a parody of minimalism in the theater.\"\n\nRead more",
+  "nycTheatreExcerpt": "Ultimately, McAdams gets her big theatrical moment, but much of the play's power comes from Herzog's scheme to withhold that moment. We expect Mary Jane to break down, explode, get pissed off long before she does. What sets her off is unexpected. It's worth the wait."
+}

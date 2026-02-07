@@ -1,0 +1,100 @@
+{
+  "showId": "china-doll-2015",
+  "outletId": "thewrap",
+  "outlet": "The Wrap",
+  "criticName": "Unknown",
+  "url": "https://www.thewrap.com/china-doll-broadway-review-al-pacino-david-mamet/",
+  "playbillVerdictUrl": "https://www.thewrap.com/china-doll-broadway-review-al-pacino-david-mamet/",
+  "source": "playbill-verdict",
+  "sources": [
+    "playbill-verdict",
+    "bww-reviews"
+  ],
+  "fullText": "David Mamet has written a devastating portrait of a David Koch/Sheldon Adelson-style tycoon whose deep pockets fund at least one prominent governor. In essence, that portrait is Mamet’s new play, “China Doll,” which stars Al Pacino as Mickey Ross and opens Friday at Broadway’s Schoenfeld Theatre.\n\nThere’s only one other character in the play, Ross’ assistant (Christopher Denham), who is merely a prop for most of the play’s two hours — until he becomes something much more.",
+  "isFullReview": false,
+  "textWordCount": 77,
+  "archivePath": "data/archives/reviews/china-doll-2015/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:37:09.692Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 83 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 77,
+  "tierReason": "Short text (77 words)",
+  "bwwExcerpt": "David Mamet has written a devastating portrait of a David Koch/Sheldon Adelson-style tycoon whose deep pockets fund at least one prominent governor...There's only one other character in the play, Ross' assistant (Christopher Denham), who is merely a prop for most of the play's two hours -- until he becomes something much more...What's most fascinating about 'China Doll' is Mamet's leisurely drawn-out exposition...It's a very slow burning first act under Pam MacKinnon's direction, but along the way Ross drops tidbits...The carefully parsed-out details that we do learn, however, make for a riveting second act. Much of the language is sublime and there are great one liners along the way...But would 'China Doll' work without Pacino or a star of his caliber? No way...In 'China Doll,' [Pacino] brings out his entire arsenal of shtick: the popping eyes, extremes in vocal register, exaggerated dipthongs, overly punctuated words.",
+  "bwwScore": 8,
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What's most fascinating about 'China Doll' is Mamet's leisurely drawn-out exposition.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review praises Mamet's writing as 'devastating' and 'sublime' with a 'riveting second act,' but criticizes the slow first act and acknowledges the show wouldn't work without Pacino's star power, indicating mixed feelings overall. | GPT-4o: The review highlights both strengths and weaknesses: a slow first act but a riveting second act, sublime language, and Pacino's performance. However, it questions the play's effectiveness without a star like Pacino, indicating a mixed reception. | Gemini: The review notes a slow first act but a riveting second act, with sublime language and great one-liners. However, it questions whether the play would work without Pacino, suggesting mixed feelings. | Kimi: While criticizing the slow first act and the supporting character as 'merely a prop,' the reviewer ultimately praises Mamet's 'sublime' language, 'devastating portrait,' and 'riveting' second act, suggesting the strengths outweigh the weaknesses.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:23:03.130Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 77,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
+}

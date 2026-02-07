@@ -1,0 +1,115 @@
+{
+  "showId": "into-the-woods-2022",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Helen Shaw",
+  "url": "https://www.vulture.com/2022/07/theater-review-into-the-woods-sondheim-lapine-bareilles-broadway-2022.html",
+  "publishDate": "July 11, 2022",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "This production is gorgeous to look at — Jordan Roth and the Jujamcyn folks have installed a kind of theme-park magic in the St. James Theatre — but it's also weirdly lifeless.",
+  "originalScore": null,
+  "assignedScore": 60,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "This production is gorgeous to look at — Jordan Roth and the Jujamcyn folks have installed a kind of theme-park magic in the St. James Theatre — but it's also weirdly lifeless.",
+  "contentTier": "excerpt",
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production is gorgeous to look at — Jordan Roth and the Jujamcyn folks have installed a kind of theme-park magic in the St. James Theatre — but it's also weirdly lifeless.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review balances praise for the visual spectacle with a significant criticism that the production lacks life, resulting in a mixed assessment with no clear recommendation either way. | GPT-4o: The review praises the visual aspects but criticizes the overall energy, indicating a mixed impression without a clear recommendation. | Gemini: The review presents a mixed assessment, praising the visual aspects while criticizing the overall lack of vitality. | Kimi: The review praises the visual spectacle and production design as 'gorgeous' with 'theme-park magic' but criticizes the show as 'weirdly lifeless,' indicating a split verdict without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:12:16.345Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "previousUrl": "https://www.vulture.com/2022/07/theater-review-into-the-woods-on-broadway.html",
+  "urlDiscoveredAt": "2026-02-05T03:59:33.904Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/into-the-woods-2022/vulture--helen-shaw_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T03:59:33.912Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
+}

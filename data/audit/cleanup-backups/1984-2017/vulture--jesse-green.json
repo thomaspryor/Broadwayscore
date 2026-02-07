@@ -1,0 +1,120 @@
+{
+  "showId": "1984-2017",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Jesse Green",
+  "url": "https://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html",
+  "publishDate": "June 23, 2017",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "The production's immersive approach works better as a stunt than as theater, though it certainly succeeds in making you feel trapped and surveilled.",
+  "originalScore": null,
+  "assignedScore": 60,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The production's immersive approach works better as a stunt than as theater, though it certainly succeeds in making you feel trapped and surveilled.",
+  "contentTier": "excerpt",
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production's immersive approach works better as a stunt than as theater, though it certainly succeeds in making you feel trapped and surveilled.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Acknowledges the production succeeds at its intended effect but questions its theatrical value, suggesting a qualified experience rather than a recommendation. | GPT-4o: The review suggests the production has an interesting concept but falls short as a theatrical experience. The tone is neither strongly positive nor negative, indicating a mixed verdict. | Gemini: The review acknowledges the immersive approach's success in creating a feeling of being trapped and surveilled, but ultimately finds it more of a stunt than effective theater, suggesting a mixed assessment. | Kimi: The critic dismisses the production as gimmickry ('stunt') that fails to achieve legitimate theatrical merit, despite acknowledging it succeeds at creating a specific atmospheric effect. The implicit recommendation is against seeing it for substantive drama.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:22:17.006Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  },
+  "textQuality": "truncated",
+  "previousUrl": "https://www.vulture.com/2017/06/theater-review-1984-on-broadway.html",
+  "urlDiscoveredAt": "2026-02-03T23:06:55.646Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/1984-2017/vulture--jesse-green_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:06:55.652Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below.",
+  "_showNotMentionedDiscoveryAttempted": true,
+  "sources": [
+    "web-search"
+  ]
+}

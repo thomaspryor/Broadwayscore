@@ -1,0 +1,109 @@
+{
+  "showId": "jekyll-and-hyde-2013",
+  "outletId": "timeout",
+  "outlet": "Time Out",
+  "criticName": "Unknown",
+  "url": "http://www.timeout.com/newyork/theater/jekyll-hyde",
+  "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/jekyll-hyde",
+  "source": "playbill-verdict",
+  "sources": [
+    "playbill-verdict",
+    "bww-reviews",
+    "bww-roundup"
+  ],
+  "fullText": "Theater review by Adam Feldman. Marquis Theatre (Broadway). Book and lyrics by Leslie Bricusse. Music by Frank Wildhorn. Dir. Jeff Calhoun. With Constantine Maroulis, Deborah Cox, Teal Wicks. 2hrs 30mins. One intermission.\n\nGood people of New York, be warned: The execrable 1990s musical Jekyll & Hyde has returned to Broadway for what we’ve been promised will be a limited run. Any performance of Frank Wildhorn and Leslie Bricusse’s horror show, mind, could correctly be described as limited: by the infantile storytelling, which drags Robert Louis Stevenson’s 1886 mad-scientist tale through a sludge of dreary portentousness; by the ceaseless aural aggression of the score, in which most songs end in some form of screaming; by the dunderheaded lyrics, thick with clunky rhymes. (“I need to know why man plays this strange double game! His hand always close to the flame! It’s a deal with the devil he cannot disclaim! But what’s his aim?”) Has any musical so essentially ridiculous been graced with a revival?\n\nYet Wildhorn, the Stephen Sondheim of Bizarro World, continues to be produced despite a string of flops, and Jekyll & Hyde has accrued a following. So here it is again, in a form that will satisfy few. Director Jeff Calhoun and his cast struggle bravely and pitiably in the straitjacket. Playing the self-divided central role, Constantine Maroulis adopts an awkward demeanor as Jekyll, and a rock-star swagger and Scottish brogue as Hyde—who in this account seeks bloody revenge on hospital board members who have thwarted his research. (We’re supposed to dislike them because they’re snooty, even though they’re right.) Deborah Cox brings substantial vocal dynamism to her insulting part as a dance-hall whore that Hyde slaps around; Teal Wicks locates some spirit in Jekyll’s emptily devoted fiancée.\n\nAccenting Jekyll & Hyde’s best asset—Wildhorn’s rousing melodies—and hitting the rest at off angles whenever possible, Calhoun and his crew excise much of the original production’s most ostentatious terribleness, leaving mere very-badness in its place. The Act II opener, for instance, is now less ludicrously jaunty, and the big “Confrontation” between our antihero’s two identities is no longer (alas for camp followers!) performed as a hair-flipping coup de théâtre. But the show’s bathetic nadir-climax is intact. “Damn you, Hyde!” Jekyll screams. “Take all your evil deeds and rot in hell!” Hyde retorts: “I’ll see you there, Jekyll!” Godspeed.—Adam Feldman",
+  "isFullReview": true,
+  "textWordCount": 389,
+  "archivePath": "data/archives/reviews/jekyll-and-hyde-2013/timeout--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:29:51.635Z",
+  "originalScore": "1/5",
+  "originalScoreNormalized": 20,
+  "scoreSource": "star-icon",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20140221021436",
+  "archiveOrgUrl": "http://web.archive.org/web/20140221021436/http://www.timeout.com:80/newyork/theater/jekyll-hyde",
+  "misattributedFullText": true,
+  "extractedByline": "Adam Feldman",
+  "expectedCritic": "Unknown",
+  "contentTier": "truncated",
+  "wordCount": 389,
+  "tierReason": "Missing proper ending or other signals",
+  "bwwExcerpt": "Has any musical so essentially ridiculous been graced with a revival? Yet Wildhorn, the Stephen Sondheim of Bizarro World, continues to be produced despite a string of flops, and Jekyll & Hyde has accrued a following. So here it is again, in a form that will satisfy few. Director Jeff Calhoun and his cast struggle bravely and pitiably in the straitjacket...Accenting Jekyll & Hyde's best asset-Wildhorn's rousing melodies-and hitting the rest at off angles whenever possible, Calhoun and his crew excise much of the original production's most ostentatious terribleness, leaving mere very-badness in its place.",
+  "bwwScore": 2,
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "high",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Good people of New York, be warned: The execrable 1990s musical Jekyll & Hyde has returned to Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Despite the 1/5 rating and truncation warning, this is a complete devastating pan. Feldman calls it 'execrable,' warns audiences away, and describes it as essentially ridiculous with only 'very-badness' remaining after improvements. The final 'Godspeed' is clearly dismissive. | GPT-4o: The review is overwhelmingly negative, describing the musical as 'execrable' with 'infantile storytelling' and 'dunderheaded lyrics.' The critic's 1/5 rating supports a Pan classification. Despite the text being truncated, the provided excerpts and the tone suggest a strong negative verdict. | Gemini: The review is overwhelmingly negative, calling the show an \"execrable horror show\" with \"infantile storytelling\" and \"dunderheaded lyrics.\" The 1/5 star rating confirms this is a pan. | Kimi: The 1/5 rating and sustained criticism of the infantile storytelling, dunderheaded lyrics, and 'very-badness' of the production indicate a strong recommendation against seeing the show, despite acknowledging the cast's efforts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:24:46.927Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  },
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JEKYLL-HYDE-Opens-on-Broadway-Updating-LIVE-20130418"
+}

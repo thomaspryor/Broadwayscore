@@ -1,0 +1,79 @@
+{
+  "showId": "the-color-purple-2005",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "http://www.nytimes.com/2015/12/11/theater/review-the-color-purple-on-broadway-stripped-to-its-essence.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 88,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"'The Color Purple' has been born again, and its conversion is a glory to behold…The current version is a slim, fleet-footed beauty...There’s a deep wealth of power within its restraint…It takes hard work, ruthless editing and a spark of genius to make a miracle on Broadway. That’s certainly true of this 'Color Purple'...Celie may have started off cowed, but we’ve always sensed that there’s a rare spirit inside. That about sums up Mr. Doyle’s relationship, too, to this vitally reincarnated musical.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The current version is a slim, fleet-footed beauty.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Extreme praise with words like 'glory', 'miracle', 'genius', and 'vitally reincarnated'. Despite being a single excerpt, the consistent superlatives indicate a strong rave review. | GPT-4o: The excerpt uses strong positive language such as 'glory to behold', 'beauty', and 'miracle on Broadway', indicating a highly enthusiastic recommendation. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The excerpt uses strong positive language like \"glory to behold\", \"deep wealth of power\", and \"miracle on Broadway\", indicating a positive review. Given that it's a single excerpt, I'm scoring it at the higher end of the positive range. | Kimi: The excerpt employs superlatives like 'glory,' 'genius,' and 'miracle,' indicating strong enthusiasm for the production. As a single curated excerpt, the score is capped at the upper end of the Positive range per scoring guidelines. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:42:17.561Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
+}
