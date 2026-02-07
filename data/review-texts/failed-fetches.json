@@ -11692,18 +11692,6 @@
     "timestamp": "2026-02-05T04:13:18.173Z"
   },
   {
-    "reviewId": "sweeney-todd-2005/nytimes--ben-brantley.json",
-    "showId": "sweeney-todd-2005",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2005/11/04/theater/reviews/04swee.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 5821,
-    "timestamp": "2026-02-05T04:13:21.681Z"
-  },
-  {
     "reviewId": "pal-joey-2008/nytimes--ben-brantley.json",
     "showId": "pal-joey-2008",
     "outlet": "The New York Times",
@@ -12038,18 +12026,6 @@
     "garbageReason": "Multiple shows mentioned (8): frozen, the color purple, the audience, once, elling...",
     "textLength": 10312,
     "timestamp": "2026-02-05T05:50:51.973Z"
-  },
-  {
-    "reviewId": "sunday-in-the-park-with-george-2017/vulture--jesse-green.json",
-    "showId": "sunday-in-the-park-with-george-2017",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "http://www.vulture.com/2017/02/theater-jake-gyllenhaal-in-sunday-in-the-park-with-george.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): chicago, merrily we roll along, sweeney todd, 1984, act one...",
-    "textLength": 11187,
-    "timestamp": "2026-02-05T05:52:52.792Z"
   },
   {
     "reviewId": "the-bands-visit-2017/hollywood-reporter--david-rooney.json",
@@ -20824,18 +20800,6 @@
     "timestamp": "2026-02-07T09:58:52.636Z"
   },
   {
-    "reviewId": "swept-away-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "swept-away-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/11/19/swept-away-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): wicked, death becomes her, buena vista social club, harmony, home...",
-    "textLength": 6154,
-    "timestamp": "2026-02-07T09:59:00.173Z"
-  },
-  {
     "reviewId": "the-apple-tree-2006/nytimes--charles-isherwood.json",
     "showId": "the-apple-tree-2006",
     "outlet": "The New York Times",
@@ -24866,5 +24830,89 @@
     "garbageReason": "Multiple shows mentioned (16): chicago, redwood, harmony, home, sunset boulevard...",
     "textLength": 8690,
     "timestamp": "2026-02-07T15:56:23.988Z"
+  },
+  {
+    "reviewId": "sunday-in-the-park-with-george-2017/vulture--jesse-green.json",
+    "showId": "sunday-in-the-park-with-george-2017",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2017/02/theater-jake-gyllenhaal-in-sunday-in-the-park-with-george.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): chicago, merrily we roll along, sweeney todd, 1984, act one...",
+    "textLength": 11187,
+    "timestamp": "2026-02-07T15:56:29.249Z"
+  },
+  {
+    "reviewId": "sweat-2017/hollywood-reporter--david-rooney.json",
+    "showId": "sweat-2017",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/sweat-review-943563",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): english, company, once, race, company...",
+    "textLength": 7068,
+    "timestamp": "2026-02-07T15:56:48.594Z"
+  },
+  {
+    "reviewId": "sweat-2017/newyorker--hilton-als.json",
+    "showId": "sweat-2017",
+    "outlet": "The New Yorker",
+    "critic": "Hilton Als",
+    "url": "http://www.newyorker.com/magazine/2016/11/28/black-lives-matter-onstage",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): home, english, company, summer, the iceman cometh...",
+    "textLength": 10967,
+    "timestamp": "2026-02-07T15:56:54.313Z"
+  },
+  {
+    "reviewId": "sweeney-todd-2005/nytimes--ben-brantley.json",
+    "showId": "sweeney-todd-2005",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2005/11/04/theater/reviews/04swee.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 5821,
+    "timestamp": "2026-02-07T15:58:32.721Z"
+  },
+  {
+    "reviewId": "swept-away-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "swept-away-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/11/19/swept-away-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): wicked, death becomes her, buena vista social club, harmony, home...",
+    "textLength": 6154,
+    "timestamp": "2026-02-07T15:58:40.140Z"
+  },
+  {
+    "reviewId": "swept-away-2024/nytg--allison-considine.json",
+    "showId": "swept-away-2024",
+    "outlet": "New York Theatre Guide",
+    "critic": "Allison Considine",
+    "url": "https://www.newyorktheatreguide.com/reviews/swept-away-broadway-review-avett-brothers",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, spring awakening, the audience, once, high...",
+    "textLength": 5044,
+    "timestamp": "2026-02-07T15:58:49.278Z"
+  },
+  {
+    "reviewId": "swept-away-2024/nytimes--unknown.json",
+    "showId": "swept-away-2024",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2024/11/19/arts/swept-away-review-avett-brothers.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (19): oh, mary!, hamilton, home, english, purpose...",
+    "textLength": 8407,
+    "timestamp": "2026-02-07T16:01:17.445Z"
   }
 ]
