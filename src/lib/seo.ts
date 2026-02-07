@@ -476,13 +476,31 @@ export function generateOutletSchema(outlet: {
   slug: string;
   reviewCount: number;
   avgScore: number;
+  tier: 1 | 2 | 3;
+  logoDomain?: string | null;
+  criticCount?: number;
 }) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: outlet.name,
     url: `${BASE_URL}/critics/outlets/${outlet.slug}`,
-    description: `${outlet.name} has published ${outlet.reviewCount} Broadway reviews with an average score of ${outlet.avgScore}/100.`,
+    ...(outlet.logoDomain && {
+      logo: {
+        '@type': 'ImageObject',
+        url: `https://www.google.com/s2/favicons?domain=${outlet.logoDomain}&sz=128`,
+      },
+    }),
+    description: `${outlet.name} has published ${outlet.reviewCount} Broadway reviews with an average score of ${outlet.avgScore}/100. Tier ${outlet.tier} publication.`,
+    knowsAbout: 'Broadway Theater Reviews',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: toFiveStarScale(outlet.avgScore),
+      bestRating: 5,
+      worstRating: 1,
+      reviewCount: outlet.reviewCount,
+    },
+    ...(outlet.criticCount && { numberOfEmployees: outlet.criticCount }),
   };
 }
 
@@ -492,6 +510,8 @@ export function generateCriticSchema(critic: {
   slug: string;
   primaryOutlet: string;
   reviewCount: number;
+  avgScore: number;
+  outlets?: string[];
 }) {
   return {
     '@context': 'https://schema.org',
@@ -499,11 +519,148 @@ export function generateCriticSchema(critic: {
     name: critic.name,
     url: `${BASE_URL}/critics/${critic.slug}`,
     jobTitle: 'Theater Critic',
-    worksFor: {
-      '@type': 'Organization',
-      name: critic.primaryOutlet,
+    knowsAbout: 'Broadway Theater',
+    worksFor: critic.outlets && critic.outlets.length > 1
+      ? critic.outlets.map(o => ({ '@type': 'Organization' as const, name: o }))
+      : { '@type': 'Organization', name: critic.primaryOutlet },
+    description: `${critic.name} is a Broadway theater critic at ${critic.primaryOutlet} with ${critic.reviewCount} reviews and an average score of ${critic.avgScore}/100.`,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: toFiveStarScale(critic.avgScore),
+      bestRating: 5,
+      worstRating: 1,
+      reviewCount: critic.reviewCount,
     },
-    description: `${critic.name} is a Broadway theater critic at ${critic.primaryOutlet} with ${critic.reviewCount} reviews on Broadway Scorecard.`,
+  };
+}
+
+// ItemList Schema - For critic/outlet index pages
+export function generateCriticItemListSchema(critics: {
+  name: string;
+  slug: string;
+  primaryOutlet: string;
+  reviewCount: number;
+  avgScore: number;
+}[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Broadway Theater Critics',
+    numberOfItems: critics.length,
+    itemListElement: critics.slice(0, 50).map((critic, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Person',
+        name: critic.name,
+        url: `${BASE_URL}/critics/${critic.slug}`,
+        jobTitle: 'Theater Critic',
+        worksFor: { '@type': 'Organization', name: critic.primaryOutlet },
+      },
+    })),
+  };
+}
+
+export function generateOutletItemListSchema(outlets: {
+  name: string;
+  slug: string;
+  reviewCount: number;
+  tier: 1 | 2 | 3;
+}[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Broadway Review Publications',
+    numberOfItems: outlets.length,
+    itemListElement: outlets.slice(0, 50).map((outlet, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Organization',
+        name: outlet.name,
+        url: `${BASE_URL}/critics/outlets/${outlet.slug}`,
+      },
+    })),
+  };
+}
+
+// FAQ Schema - For critic detail pages
+export function generateCriticFAQSchema(critic: {
+  name: string;
+  primaryOutlet: string;
+  outlets: string[];
+  reviewCount: number;
+  avgScore: number;
+  highScore: number;
+  lowScore: number;
+  isFreelancer: boolean;
+}) {
+  const faqs: { question: string; answer: string }[] = [];
+
+  faqs.push({
+    question: `How many Broadway shows has ${critic.name} reviewed?`,
+    answer: `${critic.name} has reviewed ${critic.reviewCount} Broadway shows on Broadway Scorecard, with an average score of ${critic.avgScore}/100.`,
+  });
+
+  faqs.push({
+    question: `What outlet does ${critic.name} write for?`,
+    answer: critic.outlets.length > 1
+      ? `${critic.name} writes for ${critic.outlets.join(', ')}. Their primary outlet is ${critic.primaryOutlet}.${critic.isFreelancer ? ` ${critic.name} is a freelance critic.` : ''}`
+      : `${critic.name} writes for ${critic.primaryOutlet}.`,
+  });
+
+  faqs.push({
+    question: `What is ${critic.name}'s highest and lowest Broadway score?`,
+    answer: `${critic.name}'s highest score is ${critic.highScore}/100 and lowest score is ${critic.lowScore}/100, with an average of ${critic.avgScore}/100.`,
+  });
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  };
+}
+
+// FAQ Schema - For outlet detail pages
+export function generateOutletFAQSchema(outlet: {
+  name: string;
+  tier: 1 | 2 | 3;
+  reviewCount: number;
+  avgScore: number;
+  criticCount: number;
+  highScore: number;
+  lowScore: number;
+}) {
+  const tierLabel = outlet.tier === 1 ? 'Tier 1 (highest weight)' : outlet.tier === 2 ? 'Tier 2' : 'Tier 3';
+  const faqs: { question: string; answer: string }[] = [];
+
+  faqs.push({
+    question: `How many Broadway reviews has ${outlet.name} published?`,
+    answer: `${outlet.name} has published ${outlet.reviewCount} Broadway reviews on Broadway Scorecard, with an average score of ${outlet.avgScore}/100.`,
+  });
+
+  faqs.push({
+    question: `What tier is ${outlet.name} on Broadway Scorecard?`,
+    answer: `${outlet.name} is classified as ${tierLabel}. Tier 1 outlets (like The New York Times and Variety) carry the highest weight in composite scores.`,
+  });
+
+  faqs.push({
+    question: `How many critics write for ${outlet.name}?`,
+    answer: `${outlet.criticCount} different critic${outlet.criticCount !== 1 ? 's' : ''} have published Broadway reviews through ${outlet.name}.`,
+  });
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
   };
 }
 

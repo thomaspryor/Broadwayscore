@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { getScoreClass, TierBadgeSmall } from '@/lib/critic-page-utils';
 
 type SortMode = 'reviews' | 'highest' | 'lowest' | 'alpha';
 type TierFilter = 'all' | 1 | 2 | 3;
@@ -21,28 +22,6 @@ interface OutletSummary {
   logoDomain: string | null;
   logoColor: string | null;
   logoAbbrev: string | null;
-}
-
-function getScoreClass(score: number): string {
-  const r = Math.round(score);
-  if (r >= 85) return 'score-must-see';
-  if (r >= 75) return 'score-great';
-  if (r >= 65) return 'score-good';
-  if (r >= 55) return 'score-tepid';
-  return 'score-skip';
-}
-
-function TierBadge({ tier }: { tier: 1 | 2 | 3 }) {
-  const cls = tier === 1
-    ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
-    : tier === 2
-    ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
-    : 'bg-gray-500/20 text-gray-400 border-gray-500/30';
-  return (
-    <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded border ${cls}`}>
-      T{tier}
-    </span>
-  );
 }
 
 const SORT_OPTIONS: { value: SortMode; label: string }[] = [
@@ -69,8 +48,10 @@ function OutletCard({ outlet }: { outlet: OutletSummary }) {
       {outlet.logoDomain ? (
         <img
           src={`https://www.google.com/s2/favicons?domain=${outlet.logoDomain}&sz=64`}
-          alt={outlet.name}
+          alt=""
+          aria-hidden="true"
           className="w-8 h-8 rounded flex-shrink-0"
+          loading="lazy"
         />
       ) : (
         <div
@@ -87,19 +68,19 @@ function OutletCard({ outlet }: { outlet: OutletSummary }) {
           <h3 className="font-bold text-white group-hover:text-brand transition-colors truncate">
             {outlet.name}
           </h3>
-          <TierBadge tier={outlet.tier} />
+          <TierBadgeSmall tier={outlet.tier} />
         </div>
         <p className="text-gray-400 text-xs sm:text-sm">
           {outlet.criticCount} critic{outlet.criticCount !== 1 ? 's' : ''}
         </p>
       </div>
 
-      {/* Reviews count — fixed width for alignment */}
+      {/* Reviews count */}
       <div className="w-14 text-right flex-shrink-0">
         <p className="text-lg font-bold text-white">{outlet.reviewCount}</p>
       </div>
 
-      {/* Avg Score — fixed width for alignment */}
+      {/* Avg Score */}
       <div className="w-11 flex-shrink-0">
         <div className={`w-10 h-10 text-sm rounded-lg ${getScoreClass(outlet.avgScore)} flex items-center justify-center font-bold`}>
           {Math.round(outlet.avgScore)}
@@ -139,12 +120,12 @@ export default function OutletIndexClient({ outlets, totalReviews }: { outlets: 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       {/* Breadcrumb */}
-      <nav className="text-sm text-gray-500 mb-6 flex items-center gap-1.5">
-        <Link href="/" className="hover:text-brand transition-colors">Home</Link>
-        <span>/</span>
-        <Link href="/critics" className="hover:text-brand transition-colors">Critics</Link>
-        <span>/</span>
-        <span className="text-gray-300">Outlets</span>
+      <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
+        <ol className="flex items-center gap-1.5">
+          <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
+          <li className="before:content-['/'] before:mx-1.5"><Link href="/critics" className="hover:text-brand transition-colors">Critics</Link></li>
+          <li className="before:content-['/'] before:mx-1.5 text-gray-300" aria-current="page">Outlets</li>
+        </ol>
       </nav>
 
       {/* Header */}
@@ -182,7 +163,7 @@ export default function OutletIndexClient({ outlets, totalReviews }: { outlets: 
         />
       </div>
 
-      {/* Filter Controls — plain text, matching homepage */}
+      {/* Filter Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-5 text-sm">
         <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Filter by tier">
           <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">TIER:</span>
@@ -220,14 +201,14 @@ export default function OutletIndexClient({ outlets, totalReviews }: { outlets: 
       </div>
 
       {/* Column Headers */}
-      <div className="flex items-center gap-3 px-3 sm:px-4 mb-2">
+      <div className="flex items-center gap-3 px-3 sm:px-4 mb-2" role="row" aria-label="Column headers">
         <div className="w-8 flex-shrink-0" />
         <div className="flex-1 min-w-0" />
         <div className="w-14 text-right flex-shrink-0">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Reviews</span>
+          <span role="columnheader" className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Reviews</span>
         </div>
         <div className="w-11 flex-shrink-0">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Avg</span>
+          <span role="columnheader" className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Avg</span>
         </div>
       </div>
 

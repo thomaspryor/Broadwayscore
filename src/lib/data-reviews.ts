@@ -128,7 +128,9 @@ for (const review of reviews) {
     showType: show.type,
     outletId: review.outletId,
     outlet: review.outlet,
+    outletSlug: '', // filled in after outlet profiles built
     criticName: review.criticName || null,
+    criticSlug: null, // filled in after critic profiles built
     url: review.url,
     publishDate: review.publishDate || null,
     parsedDate,
@@ -316,6 +318,32 @@ criticProfilesList.forEach((p, i) => { p.volumeRank = i + 1; });
 // Generosity rank
 const criticsByGenerosity = [...criticProfilesList].sort((a, b) => b.avgScore - a.avgScore);
 criticsByGenerosity.forEach((p, i) => { p.generosityRank = i + 1; });
+
+// ============================================
+// Back-fill outletSlug and criticSlug on reviews
+// ============================================
+
+// Build outletId → slug lookup from outlet profiles
+const outletIdToSlug = new Map<string, string>();
+for (const outlet of outletProfilesList) {
+  outletIdToSlug.set(outlet.outletId, outlet.slug);
+}
+
+// Build criticName → slug lookup from critic profiles
+const criticNameToSlug = new Map<string, string>();
+for (const critic of criticProfilesList) {
+  criticNameToSlug.set(critic.name, critic.slug);
+}
+
+// Fill in slugs on all reviews (shared objects, so both outlet and critic profile reviews updated)
+for (const reviews of Array.from(outletReviewsMap.values())) {
+  for (const r of reviews) {
+    r.outletSlug = outletIdToSlug.get(r.outletId) || slugify(r.outlet);
+    if (r.criticName) {
+      r.criticSlug = criticNameToSlug.get(r.criticName) || null;
+    }
+  }
+}
 
 // ============================================
 // Exported functions

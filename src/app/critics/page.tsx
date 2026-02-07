@@ -1,15 +1,33 @@
 import { Metadata } from 'next';
 import { getAllCritics } from '@/lib/data-reviews';
-import { generateBreadcrumbSchema } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateCriticItemListSchema, BASE_URL } from '@/lib/seo';
 import CriticIndexClient from './CriticIndexClient';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+export function generateMetadata(): Metadata {
+  const allCritics = getAllCritics();
+  const totalReviews = allCritics.reduce((sum, c) => sum + c.reviewCount, 0);
 
-export const metadata: Metadata = {
-  title: 'Broadway Critics & Reviewers | Broadway Scorecard',
-  description: 'Browse all Broadway critics and reviewers. See review counts, average scores, and full review histories for every critic.',
-  alternates: { canonical: `${BASE_URL}/critics` },
-};
+  const title = `${allCritics.length} Broadway Critics & Reviewers | Broadway Scorecard`;
+  const description = `Browse ${allCritics.length} Broadway critics with ${totalReviews.toLocaleString()} reviews. See average scores, review counts, and full review histories for every theater critic.`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `${BASE_URL}/critics` },
+    openGraph: {
+      title: 'Broadway Critics & Reviewers',
+      description,
+      url: `${BASE_URL}/critics`,
+      type: 'website',
+      images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary',
+      title: 'Broadway Critics & Reviewers',
+      description,
+    },
+  };
+}
 
 export default function CriticIndexPage() {
   const allCritics = getAllCritics();
@@ -23,11 +41,19 @@ export default function CriticIndexPage() {
     { name: 'Critics', url: `${BASE_URL}/critics` },
   ]);
 
+  const itemListSchema = generateCriticItemListSchema(allCritics.map(c => ({
+    name: c.name,
+    slug: c.slug,
+    primaryOutlet: c.primaryOutlet,
+    reviewCount: c.reviewCount,
+    avgScore: c.avgScore,
+  })));
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, itemListSchema]) }}
       />
       <CriticIndexClient critics={criticSummaries} totalReviews={totalReviews} />
     </>
