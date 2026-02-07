@@ -142,6 +142,10 @@ function computeCriticalGold(season, uncapped = false) {
       rank: 0, value: rounded, displayValue: rounded.toFixed(1),
       season, venue: show.venue, type: show.type,
       thumbnail: show.images?.thumbnail || null,
+      openingDate: show.openingDate || null,
+      closingDate: show.closingDate || null,
+      status: show.status || null,
+      isRevival: !!(show.tags && show.tags.includes('revival')),
     });
   }
 
@@ -164,6 +168,10 @@ function computeAudienceGold(season, uncapped = false) {
       showId: show.id, title: show.title, slug: show.slug,
       rank: 0, value: data.combinedScore, displayValue: String(data.combinedScore),
       season, venue: show.venue, type: show.type, thumbnail: show.images?.thumbnail || null,
+      openingDate: show.openingDate || null,
+      closingDate: show.closingDate || null,
+      status: show.status || null,
+      isRevival: !!(show.tags && show.tags.includes('revival')),
     });
   }
 
@@ -190,6 +198,10 @@ function computeBoxOfficeGold(season, uncapped = false) {
       rank: 0, value: Math.round(grossPerPerf),
       displayValue: '$' + Math.round(grossPerPerf).toLocaleString('en-US'),
       season, venue: show.venue, type: show.type, thumbnail: show.images?.thumbnail || null,
+      openingDate: show.openingDate || null,
+      closingDate: show.closingDate || null,
+      status: show.status || null,
+      isRevival: !!(show.tags && show.tags.includes('revival')),
     });
   }
 
@@ -234,6 +246,10 @@ function computeHotTicketGold(season, uncapped = false) {
       showId: show.id, title: show.title, slug: show.slug,
       rank: 0, value: rounded, displayValue: rounded.toFixed(1) + '%',
       season, venue: show.venue, type: show.type, thumbnail: show.images?.thumbnail || null,
+      openingDate: show.openingDate || null,
+      closingDate: show.closingDate || null,
+      status: show.status || null,
+      isRevival: !!(show.tags && show.tags.includes('revival')),
     });
   }
 

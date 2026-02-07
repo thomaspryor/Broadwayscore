@@ -2,7 +2,7 @@
  * /lists/[listType]/all-time — Gold List all-time page
  * Shows top 25 qualifying shows across all seasons
  *
- * Uses the same card layout as /browse/ pages: RankBadge + thumbnail + info + ScoreBadge
+ * Matches homepage card layout: pills + dates + larger thumbnails + real ScoreBadge
  */
 
 import Link from 'next/link';
@@ -15,8 +15,17 @@ import {
   getSeasonsForList,
 } from '@/lib/data-gold-list-badges';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { ScoreBadge } from '@/components/show-cards/ScoreBadge';
+import { FormatPill, StatusBadge, ProductionPill } from '@/components/show-cards/ShowPills';
+import { getAudienceGrade } from '@/lib/data-audience';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+
+function formatDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+}
 
 export function generateStaticParams() {
   return GOLD_LIST_TYPES.map(listType => ({ listType }));
@@ -43,11 +52,10 @@ export function generateMetadata({ params }: { params: { listType: string } }): 
   };
 }
 
-// Standard RankBadge — matches /browse/ pages exactly
 function RankBadge({ rank }: { rank: number }) {
   const isTop3 = rank <= 3;
   return (
-    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 ${
       isTop3 ? 'bg-accent-gold text-gray-900' : 'bg-surface-overlay text-gray-400 border border-white/10'
     }`}>
       {rank}
@@ -55,33 +63,6 @@ function RankBadge({ rank }: { rank: number }) {
   );
 }
 
-// Score badge for critic/audience scores — matches /browse/ ScoreBadge exactly
-function ScoreBadge({ score }: { score: number | null }) {
-  if (score == null) {
-    return (
-      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-base sm:text-lg rounded-lg sm:rounded-xl">
-        -
-      </div>
-    );
-  }
-
-  const roundedScore = Math.round(score);
-  let colorClass: string;
-
-  if (roundedScore >= 85) colorClass = 'score-must-see';
-  else if (roundedScore >= 75) colorClass = 'score-great';
-  else if (roundedScore >= 65) colorClass = 'score-good';
-  else if (roundedScore >= 55) colorClass = 'score-tepid';
-  else colorClass = 'score-skip';
-
-  return (
-    <div className={`w-10 h-10 sm:w-12 sm:h-12 ${colorClass} flex items-center justify-center font-bold text-base sm:text-lg rounded-lg sm:rounded-xl`}>
-      {roundedScore}
-    </div>
-  );
-}
-
-// Value badge for box office / capacity — uses the same box shape
 function ValueBadge({ displayValue, label }: { displayValue: string; label: string }) {
   return (
     <div className="flex-shrink-0 text-right">
@@ -89,6 +70,28 @@ function ValueBadge({ displayValue, label }: { displayValue: string; label: stri
         <div className="text-white font-bold text-xs sm:text-sm leading-tight">{displayValue}</div>
       </div>
       <div className="text-[10px] text-gray-500 mt-0.5 text-center">{label}</div>
+    </div>
+  );
+}
+
+function AudienceGradeBadge({ score }: { score: number }) {
+  const grade = getAudienceGrade(score);
+  return (
+    <div className="flex-shrink-0 flex flex-col items-center gap-0.5">
+      <div
+        className={`score-badge w-11 h-11 text-lg rounded-lg font-bold${grade.grade === 'A+' ? ' audience-top-grade' : ''}`}
+        style={grade.grade === 'A+' ? {} : {
+          backgroundColor: grade.color,
+          color: grade.textColor,
+          boxShadow: `0 2px 8px ${grade.color}4d`,
+        }}
+        title={grade.tooltip}
+      >
+        {grade.grade}
+      </div>
+      <span className="text-[9px] font-semibold uppercase tracking-wide" style={{ color: grade.color }}>
+        {grade.label}
+      </span>
     </div>
   );
 }
@@ -103,7 +106,8 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
   const config = GOLD_LIST_MAP[listType as GoldListType];
   const entries = getComputedGoldList(listType, 'all-time');
   const allSeasons = getSeasonsForList(listType);
-  const isScoreList = listType === 'critical-gold' || listType === 'audience-gold';
+  const isAudienceList = listType === 'audience-gold';
+  const isCriticList = listType === 'critical-gold';
 
   return (
     <div className="min-h-screen bg-surface">
@@ -177,29 +181,29 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
           ))}
         </div>
 
-        {/* Show List — same card format as /browse/ pages */}
+        {/* Show List */}
         {entries.length > 0 ? (
           <div className="space-y-3 sm:space-y-4">
-            {entries.map(entry => (
+            {entries.map((entry, index) => (
               <Link
                 key={`${entry.showId}-${entry.season}`}
                 href={`/show/${entry.slug}`}
-                className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group min-h-[72px]"
+                className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group"
               >
                 <RankBadge rank={entry.rank} />
 
-                {/* Thumbnail — smaller on mobile */}
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                {/* Thumbnail */}
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
                   {entry.thumbnail ? (
                     <img
                       src={getOptimizedImageUrl(entry.thumbnail, 'thumbnail')}
                       alt={`${entry.title} Broadway ${entry.type || 'show'}`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading={index < 4 ? 'eager' : 'lazy'}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-xl sm:text-2xl">🎭</span>
+                      <span className="text-2xl">🎭</span>
                     </div>
                   )}
                 </div>
@@ -209,17 +213,35 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
                   <h2 className="font-bold text-white text-sm sm:text-base group-hover:text-brand transition-colors truncate">
                     {entry.title}
                   </h2>
-                  <p className="text-gray-400 text-xs sm:text-sm truncate">
-                    {entry.venue} {entry.type && `· ${entry.type}`}
-                  </p>
-                  <p className="text-gray-500 text-xs mt-0.5">
-                    {entry.season}
+                  <div className="flex flex-wrap items-center gap-1 mt-1">
+                    {entry.type && <FormatPill type={entry.type} />}
+                    {entry.isRevival !== undefined && <ProductionPill isRevival={entry.isRevival} />}
+                    {entry.status && <StatusBadge status={entry.status} />}
+                  </div>
+                  <p className="text-xs text-gray-400 mt-1.5 truncate">
+                    {entry.openingDate ? (
+                      <>
+                        {entry.status === 'closed' && entry.closingDate ? (
+                          <>
+                            <span className="text-gray-500">Closed {formatDate(entry.closingDate)}</span>
+                            <span className="text-gray-500"> · Opened {formatDate(entry.openingDate)}</span>
+                          </>
+                        ) : (
+                          <>Opened {formatDate(entry.openingDate)}</>
+                        )}
+                        <span className="text-gray-500"> · {entry.season}</span>
+                      </>
+                    ) : (
+                      <span className="text-gray-500">{entry.venue} · {entry.season}</span>
+                    )}
                   </p>
                 </div>
 
-                {/* Score — standard badge for critic/audience, value box for box office/capacity */}
-                {isScoreList ? (
-                  <ScoreBadge score={entry.value} />
+                {/* Score/Value */}
+                {isCriticList ? (
+                  <ScoreBadge score={entry.value} size="sm" status={entry.status || undefined} />
+                ) : isAudienceList ? (
+                  <AudienceGradeBadge score={entry.value} />
                 ) : (
                   <ValueBadge displayValue={entry.displayValue} label={config.metricLabel} />
                 )}
