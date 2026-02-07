@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The injustices they and their neighbors endure can be felt through songs that tug at the heartstrings of the audience...When the denouement eventually drops, it does so in a torrent of emotions, leaving audience members with lumps in throats and tears flowing...My advice is: go see it sooner than later. When it eventually sells out, you’ll be proud to say that you saw this groundbreaking American musical.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "My advice is: go see it sooner than later.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive recommendation with explicit advice to see it, predicting sellout success and calling it 'groundbreaking.' Despite being a single excerpt, the language is clearly enthusiastic. | GPT-4o: The excerpt provides strong praise, describing the show as 'groundbreaking' and urging audiences to see it before it sells out. Despite the single excerpt warning, the language suggests a highly positive recommendation. | Gemini: The review uses strong positive language such as \"tug at the heartstrings\", \"torrent of emotions\", \"groundbreaking American musical\", and explicitly advises the reader to see the show. | Kimi: Single excerpt provides explicit recommendation to see the show urgently and praises it as 'groundbreaking' with strong emotional impact ('tears flowing'), indicating clear positivity despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:36:01.176Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

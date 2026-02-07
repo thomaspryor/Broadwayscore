@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Allegiance' is both intimate and sweeping in scope. Director Stafford Arima keeps the action moving at a swift pace...Other elements have needlessly been polished to a Broadway shine, which undermines the story’s truthfulness...'Allegiance,' above all, has heart. And though it sometimes feels as though it’s been molded to fit a preconceived idea of what a Broadway show 'should' look like, the musical’s relevance is a haunting reminder of how fragile and fleeting our freedom can be.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Allegiance,' above all, has heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows mixed assessment - praises heart and relevance but criticizes Broadway polish undermining truthfulness and formulaic approach. Low confidence due to limited text. | GPT-4o: The review acknowledges both positive aspects ('heart', 'relevance') and criticisms ('needlessly polished', 'molded to fit'). The overall tone suggests a positive recommendation with reservations. | Gemini: The review acknowledges flaws but ultimately emphasizes the musical's heart and relevance, suggesting a positive but qualified recommendation. The single excerpt and truncated text reduce confidence. | Kimi: While criticizing the over-polished Broadway production elements that undermine truthfulness, the reviewer ultimately praises the show's heart and powerful relevance, ending on a note that affirms its value despite stylistic flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:24:27.285Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

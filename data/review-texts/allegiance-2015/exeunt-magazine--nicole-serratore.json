@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Allegiance' still manages to be moving at times, but overall the uninspired music and slight lyrics fail to deliver the impact of this important story...With facile, obvious rhymes and not much musical color, the songs fail to intensify the emotion or advance our understanding of the story. Later book scenes strain credulity and the unbelievable plot machinations required to wrap-up the story threaten to undermine the whole undertaking. There are however some bright lights in this show.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the uninspired music and slight lyrics fail to deliver the impact of this important story",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite acknowledging some bright spots and calling it 'moving at times,' the critic finds the music uninspired, lyrics slight, and plot unbelievable, concluding the show fails to deliver on its important story. | GPT-4o: The review excerpt criticizes the music and lyrics as uninspired and failing to deliver impact, with plot issues undermining the story. Despite some bright spots, the overall tone is negative. | Gemini: The review points out flaws in the music and lyrics, but also acknowledges that the show is moving at times and has some bright lights. Due to the limited excerpt, confidence is low. | Kimi: While the critic acknowledges the show is occasionally moving and has some bright lights, the excerpt emphasizes fundamental failures in the music, lyrics, and book that undermine the production, indicating a recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:26:48.392Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

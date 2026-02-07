@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Feels almost as fresh and disturbing as when it first saw the light of day in 1947...The three leads have all created beautifully rich performances, both as individuals and in their interactions with one another...All told, this fine production demonstrates with great clarity that 'All My Sons' holds up to this day, a remarkable work that was Arthur Miller's first breakthrough success two years ahead of 'Death of a Salesman.'\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this fine production demonstrates with great clarity that 'All My Sons' holds up to this day",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for performances ('beautifully rich') and production quality ('fine production'), emphasizing the play's enduring relevance and freshness. Single excerpt limitation requires medium confidence. | GPT-4o: The excerpt praises the production as 'fine' and highlights the 'beautifully rich performances' of the leads, indicating a strong recommendation. The caution about a single excerpt suggests using the upper end of the Positive range. | Gemini: The review excerpt uses phrases like \"fresh and disturbing,\" \"beautifully rich performances,\" and \"fine production,\" indicating a strong positive assessment. The phrase \"holds up to this day, a remarkable work\" further reinforces this positive sentiment. | Kimi: The excerpt offers unambiguous praise for the acting and deems the production 'fine' and the play 'remarkable,' warranting a high-positive score, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:09:53.163Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -54,5 +54,59 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 437,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Izzard's performance is smart and sensitive, but it generally feels more submissive than subversive.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds Izzard's performance disappointing compared to expectations, calls the play 'often glib and mechanical,' and notes technical issues with line delivery, but acknowledges some smart elements and one scene that 'flies.' | Gemini: The review is mixed, praising Izzard's performance in some aspects but noting a lack of the usual Mamet energy and some uncertainty with lines. It acknowledges improvements with Williamson but overall feels somewhat lukewarm. | Kimi: While the critic praises Izzard's intelligence and sensitivity, he finds the performance lacks subversive energy and notes technical issues with line delivery. The play is described as 'glib and mechanical' with only one scene that 'flies,' suggesting significant reservations despite some positive elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:21:33.204Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

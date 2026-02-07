@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cranston's performance is a master class in character embodiment, capturing Johnson's crude magnetism and political cunning with startling authenticity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.washingtonpost.com/entertainment/theater_dance/bryan-cranston-making-good-as-lbj/2014/03/06/79d1ea94-a578-11e3-b865-38b254d92063_story.html"
+  "playbillVerdictUrl": "http://www.washingtonpost.com/entertainment/theater_dance/bryan-cranston-making-good-as-lbj/2014/03/06/79d1ea94-a578-11e3-b865-38b254d92063_story.html",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cranston proves so effortlessly captivating that you could imagine pulling a lever for him",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Cranston's performance with vivid, enthusiastic language. However, confidence is low due to truncated excerpt that may not reflect the full verdict. | GPT-4o: The excerpt provides strong praise for Cranston's performance, describing it as 'effortlessly captivating.' However, due to the lack of full review text, the confidence is set to low. | Gemini: The excerpt focuses on Cranston's performance and suggests it's captivating, implying a positive experience, but the truncated nature limits confidence. | Kimi: The excerpt offers enthusiastic praise for Bryan Cranston's performance, describing him as 'effortlessly captivating' with strong political metaphors suggesting a transformative stage presence. As this is a curated excerpt focusing primarily on the lead actor, confidence is low regarding the full production assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:20:17.244Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-07T06:41:48.646Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a single phrase describing the historical subject matter of the show, not an evaluative review or critique of the theatrical production.; openai: The text provided is not a review but a historical reference to the internment of Japanese-Americans during World War II.; gemini: The provided text is just a topic description, not a review with any evaluative content.; kimi: The provided text is purely descriptive, identifying the historical subject matter (Japanese-American internment during WWII) without any critical evaluation, opinion, or recommendation regarding the production quality or whether audiences should see the show.",
+  "promptVersion": "5.2.0"
 }

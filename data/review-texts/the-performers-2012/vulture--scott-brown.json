@@ -38,5 +38,60 @@
   "archiveOrgTimestamp": "20210308011344",
   "archiveOrgUrl": "http://web.archive.org/web/20210308011344/https://www.vulture.com/2012/11/theater-review-the-performers.html",
   "wordCount": 808,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Performers is basically a delivery mechanism for flaccid double entendres, trumped-up sitcom couple squabbles, and soupy makeups.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the play 'entirely insubstantial' and 'acceptably funny...if you disconnect most of your brain.' While acknowledging some successful jokes and performances, the overall assessment is clearly negative, calling it disappointingly safe and irrelevant. | GPT-4o: The review criticizes the play for being insubstantial and lacking depth, with humor that falls flat. While there are some moments of humor, the overall tone is dismissive, indicating a negative recommendation. | Gemini: The review is largely negative, describing the play as \"insubstantial\", \"sexless\", and full of \"flaccid double entendres\". While acknowledging some humor and Winkler's performance, the overall assessment is unfavorable. | Kimi: The critic delivers a devastating pan of the play's insubstantial writing, sexless comedy, and wasted premise, employing contemptuous metaphors like 'cock-withering irrelevance' and 'drilling for corn,' despite acknowledging isolated funny performances from Henry Winkler and Ari Graynor.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:50:05.057Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 22,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

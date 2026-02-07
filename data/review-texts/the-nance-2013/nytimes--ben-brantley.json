@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Lane gives what may be the performance of his career, finding the aching soul within the seemingly debased comic stereotype.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -73,5 +73,60 @@
   "rejectionReasoning": "claude: The review text is cut off mid-sentence and ends with a technical error message about retrieving content and enabling JavaScript, making it impossible to determine the critic's verdict.; openai: The text is incomplete and includes a technical error message about enabling JavaScript, indicating it is not a full review.",
   "promptVersion": "5.2.0",
   "archiveOrgTimestamp": "20241216075714",
-  "archiveOrgUrl": "http://web.archive.org/web/20241216075714/https://www.nytimes.com/2013/04/16/theater/reviews/the-nance-starring-nathan-lane-at-lyceum-theater.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241216075714/https://www.nytimes.com/2013/04/16/theater/reviews/the-nance-starring-nathan-lane-at-lyceum-theater.html",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Lane gives what may be the performance of his career, finding the aching soul within the seemingly debased comic stereotype.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Lane's performance ('performance of his career') suggests positive assessment, but with only one sentence available and warning about excerpts, confidence is low as the overall verdict may not be captured. | GPT-4o: The excerpt praises Nathan Lane's performance highly, suggesting a strong positive element. However, without more context, it's unclear if the rest of the production matches this level of acclaim. The confidence is low due to the limited text. | Gemini: The excerpt focuses on a standout performance, suggesting a positive aspect of the show. However, without the full review, it's difficult to determine the overall recommendation, so confidence is low. | Kimi: The excerpt offers superlative praise for Nathan Lane's performance ('performance of his career'), suggesting a strong endorsement, though as an isolated excerpt the overall assessment of the production remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:45:37.754Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

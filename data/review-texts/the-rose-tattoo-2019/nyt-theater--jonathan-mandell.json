@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -41,5 +41,60 @@
     "Word count too low: 222 (min: 300)"
   ],
   "wordCount": 222,
-  "tierReason": "Short text (222 words)"
+  "tierReason": "Short text (222 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "meant to be funny and charming and heartwarming but presents these Italian-Americans as something less than the fully human characters",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Calls the revival 'overly broad' and the play 'dated,' criticizes fundamental character work. Despite single excerpt warning, the criticism of core dramatic elements indicates negative assessment. | GPT-4o: The excerpt criticizes the revival for being 'overly broad' and failing to present fully human characters, indicating a negative view. However, the single excerpt warning suggests caution, so a low confidence score is appropriate. | Gemini: The review excerpt describes the revival as \"overly broad\" and the characters as \"something less than fully human,\" indicating a negative assessment. The limited text and the warning about curated excerpts reduce confidence. | Kimi: The excerpt criticizes the production as overly broad, the source material as dated, and faults the characterization as lacking full humanity. With only one curated excerpt available, the full verdict may differ, but the provided text clearly discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:55:15.994Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

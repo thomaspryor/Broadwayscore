@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Creators of new musicals often don’t push themselves to achieve greatness. Settling for complacency and an easy buck has become far too fashionable. Fortunately, Allegiance doesn’t fall into that category. But in striving for something epic and original, the show’s creators may have bitten off more than they can chew...I applaud Allegiance for being as daring as it is. Perhaps in subsequent productions this show will be honed and new songs will be added, making the show truly special.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But in striving for something epic and original, the show's creators may have bitten off more than they can chew.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the show's ambition and daring but clearly indicates execution problems with 'bitten off more than they can chew.' The hopeful note about future productions suggests current version is incomplete. Single excerpt limits confidence. | GPT-4o: The review acknowledges the show's ambition and daring nature but suggests it may have overreached. It implies potential for improvement in future productions, indicating a mixed verdict with some positive elements. | Gemini: The review praises the show's ambition but suggests it falls short of greatness, indicating a mixed assessment. The truncated nature lowers confidence. | Kimi: The critic praises the show's ambition and daring nature but explicitly states the creators failed to fully achieve their goals ('bitten off more than they can chew') and suggests future productions might fix the problems. Single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:29:48.438Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

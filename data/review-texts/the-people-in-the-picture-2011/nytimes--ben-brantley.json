@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Margulies has created characters who register as genuine people, not just pegs on which to hang a thesis. And she has found a theatrical language that accommodates both the mundane and the mythic aspects of her story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -53,5 +53,59 @@
   "archiveOrgTimestamp": "20241216014826",
   "archiveOrgUrl": "http://web.archive.org/web/20241216014826/https://www.nytimes.com/2011/04/29/theater/reviews/the-people-in-the-picture-with-donna-murphy-review.html",
   "wordCount": 1184,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Without Ms. Murphy this well-meaning Roundabout Theater Company production would be thin treacle indeed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Brantley extensively praises Donna Murphy's performance but finds the show itself problematic - calling it 'thin treacle,' criticizing the 'oomph-free' score, 'vague and utterly resistible' ballads, and noting Murphy 'has trouble generating the kind of energy that makes an audience sit up and smile.' The praise for Murphy doesn't overcome his clear disappointment with the production overall. | Gemini: The review praises Donna Murphy's performance but finds the overall production lacking, calling it \"thin treacle\" without her. The reviewer acknowledges the show's good intentions but ultimately gives a mixed assessment. | Kimi: Brantley delivers extensive praise for Donna Murphy's dual performance but heavily criticizes the book as 'thin treacle,' the score as 'oomph-free,' and the direction as an 'emotional bulldozer on autopilot,' indicating the show is only worthwhile for its star.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:48:27.213Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

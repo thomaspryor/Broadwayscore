@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play is a memory piece about Jewish-American family life that feels both deeply personal and universal in its portrait of how time changes people and relationships.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -58,5 +58,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 1268,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This funny-sad comedy as unexpectedly affecting as it is entertaining.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review offers strong praise for the production, performances (especially Hecht and Light), and direction, calling it 'affecting' and 'entertaining' with 'considerable emotional heft.' Despite acknowledging some artificial elements, the overall assessment is clearly positive. | GPT-4o: The review praises the play's cleverness, warmth, and performances, particularly highlighting the anchoring performances of Jessica Hecht and Judith Light. The production is described as expertly gauged and emotionally affecting, indicating a strong positive recommendation. | Gemini: The review is generally positive, highlighting the play's cleverness, warmth, and the performances of the leads. While noting some potential artificiality, the overall assessment is favorable. | Kimi: The critic consistently praises the play's writing, direction, and performances (particularly Jessica Hecht and Judith Light), calling it 'lovely,' 'wonderful,' and 'intensely moving' while appreciating its emotional depth and expert production values.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:29:12.766Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“Best Show of the Broadway Season...A polished, moving and beautifully mounted revival...Told in restrained but intensely emotional terms...the play still delivers a gut punch...So many things to applaud in the heart-stopping dramatic impact of this exemplary production...You can start with the most fabulous set...You can applaud O’Brien’s fluid direction...And finally, there’s the cast...’All My Sons' soars again, with its original values intact, stronger and tougher than ever.”\n\nRead more"
+  "showScoreExcerpt": "“Best Show of the Broadway Season...A polished, moving and beautifully mounted revival...Told in restrained but intensely emotional terms...the play still delivers a gut punch...So many things to applaud in the heart-stopping dramatic impact of this exemplary production...You can start with the most fabulous set...You can applaud O’Brien’s fluid direction...And finally, there’s the cast...’All My Sons' soars again, with its original values intact, stronger and tougher than ever.”\n\nRead more",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Best Show of the Broadway Season...A polished, moving and beautifully mounted revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Opens with 'Best Show of the Broadway Season' and uses superlatives like 'exemplary production,' 'fabulous set,' 'heart-stopping dramatic impact.' Despite being an excerpt, the consistent high praise across multiple elements warrants a high Rave score. | GPT-4o: The excerpt is highly positive, using superlatives like 'Best Show of the Broadway Season' and 'exemplary production'. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The review uses superlatives like \"Best Show of the Broadway Season\", \"beautifully mounted revival\", and \"heart-stopping dramatic impact\", indicating a rave review. | Kimi: The excerpt contains unqualified superlatives ('Best Show of the Broadway Season', 'heart-stopping dramatic impact', 'exemplary production') indicating an enthusiastic must-see recommendation, though confidence is reduced given only a single curated excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:14:56.192Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

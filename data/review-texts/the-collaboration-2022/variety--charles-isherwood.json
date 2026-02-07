@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play succeeds in capturing something essential about the creative process, the way two artists from vastly different worlds found common ground in their shared commitment to making art that mattered.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -43,5 +43,60 @@
   "tierReason": "Full review text",
   "previousUrl": "https://variety.com/2022/legit/reviews/the-collaboration-review-broadway-paul-bettany-jeremy-pope-1235438069/",
   "urlDiscoveredAt": "2026-02-06T19:00:27.166Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's hard to call this gushing fountain of clever talk a play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises both lead performances extensively and finds the dialogue fascinating, but repeatedly emphasizes the fundamental flaw that there's 'no dramatic shape,' 'no plot, no event, no conflict, no danger.' This creates a mixed verdict - appreciating elements while questioning the work's basic theatrical effectiveness. | GPT-4o: The review praises the performances and character depth but criticizes the lack of dramatic structure and conflict. This results in a mixed verdict, appreciating elements but noting significant drawbacks. | Gemini: The review praises the acting and character development but criticizes the lack of plot and dramatic structure, resulting in a mixed assessment. | Kimi: The critic offers high praise for the lead performances by Pope and Bettany and finds the shop talk fascinating, but fundamentally criticizes the work for lacking plot, conflict, and dramatic shape.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:33:35.860Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

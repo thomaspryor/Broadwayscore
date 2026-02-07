@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical Once, based on the 2007 Irish film, is a love story that's both heartbreaking and healing, told through songs that seem to emerge naturally from the characters' souls.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,59 @@
   "archiveOrgTimestamp": "20231003174110",
   "archiveOrgUrl": "http://web.archive.org/web/20231003174110/https://www.vulture.com/2012/03/theater-reviews-once-wins-over-the-twee-averse.html",
   "wordCount": 1023,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They make us forget, for hours at a stretch, that we're watching a show that's simply falling slowly in love with itself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the show's flaws ('brazenly twee', 'relentlessly self-congratulatory') but ultimately praises the lead performances as transformative and admits the show won him over 'nearly against my will', returning him to 'youthful fields of blarney'. | Gemini: The review acknowledges flaws and manipulations but ultimately expresses a positive sentiment, especially regarding the performances and some creative aspects. The phrase \"nearly against my will\" suggests a recommendation with reservations. | Kimi: While the critic critiques the source material's tweeness and the second act's bloat, he ultimately praises the stage adaptation's emotional power, the performers' tremendous appeal, and the creative team's work, recommending the show as a moving experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:18:25.563Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

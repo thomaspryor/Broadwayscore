@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"It's a shame 'Allegiance' isn't doing better at the box office because no other show on Broadway right now speaks more directly to this moment...It's all well-intentioned stuff and, under Stafford Arima's forthright direction, it's prettily presented but 'Allegiance' lacks the spark that would make it a must-see. Maybe it just isn't angry enough. And there's plenty to be angry about.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Allegiance' lacks the spark that would make it a must-see.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds the show timely and well-intentioned with good direction, but explicitly states it lacks the spark to be must-see. This is a mixed assessment that neither recommends nor discourages. | GPT-4o: The excerpt suggests the show is well-intentioned and prettily presented but lacks the necessary impact to be compelling. The critique indicates a mixed review, noting the absence of a 'spark' and sufficient emotional intensity. | Gemini: The review acknowledges good intentions and presentation but ultimately finds the show lacking a crucial spark, stopping short of a clear recommendation. | Kimi: The excerpt praises the show's timely relevance and pretty presentation but explicitly states it lacks the spark to be essential viewing, resulting in a middle-ground assessment that acknowledges merit while noting significant shortcomings.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:23:56.893Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 66,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

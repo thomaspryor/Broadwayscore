@@ -52,7 +52,12 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "wordCount": 357,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-07T05:32:40.678Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a truncated excerpt that only provides plot summary and character description without any critical evaluation or verdict about the production's quality.; openai: The text includes navigation menus and promotional content, not a coherent review.",
+  "promptVersion": "5.2.0"
 }

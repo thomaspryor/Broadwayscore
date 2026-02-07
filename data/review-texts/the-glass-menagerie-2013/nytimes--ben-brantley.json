@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This production, directed by John Tiffany, turns Williams's memory play into a fever dream of longing and regret, filtered through a lens of theatrical poetry that makes the familiar feel revelatory.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -52,5 +52,59 @@
   "archiveOrgTimestamp": "20140107125154",
   "archiveOrgUrl": "http://web.archive.org/web/20140107125154/http://www.nytimes.com/2013/09/27/theater/reviews/the-glass-menagerie-stars-cherry-jones-and-zachary-quinto.html",
   "wordCount": 851,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 'Menagerie' promises to be the most revealing revival of a cornerstone classic for many a year to come.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Brantley uses superlatives throughout ('stunning production', 'career-defining performances', 'one for the ages') and calls it the most revealing revival in years. Despite being moved to tears, he frames this as testament to the production's power, not a criticism. | Gemini: The review is overwhelmingly positive, using words like \"stunning,\" \"career-defining,\" and \"devastating.\" The critic also states that Cherry Jones' performance is \"one for the ages,\" indicating a very high level of praise. | Kimi: Brantley declares this 'stunning' production the most revealing revival of this classic in years, praising 'career-defining' performances by Jones and Quinto that left him in tears, with no significant reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:38:24.546Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

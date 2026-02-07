@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Though locked in a specific time and place, the play's themes are as relevant and haunting today...A shattering production...As written, directed and performed, it's as devastating a scene as you're ever likely to see on a Broadway stage. What could so easily turn melodramatic is directed by O'Brien to maximum dramatic effect without sacrificing emotional honesty...The three principals, acting their hearts out, seem right at home.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A shattering production...it's as devastating a scene as you're ever likely to see on a Broadway stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with superlatives like 'shattering' and 'devastating,' highlighting exceptional direction and performances. Single excerpt warning applied - this reads as enthusiastic recommendation placing it in upper Positive range. | GPT-4o: The excerpt uses strong positive language ('shattering production', 'devastating scene') and praises the direction and performances. Despite the single excerpt warning, the language suggests a highly enthusiastic recommendation. | Gemini: The excerpt contains very strong positive language such as \"shattering production\" and \"devastating scene\", indicating a strong recommendation. Given it's a single excerpt, confidence is low. | Kimi: The excerpt contains unqualified superlatives like 'shattering' and 'devastating' alongside praise for direction and performances, but is scored in the high Positive range per the single-excerpt warning guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:07:47.429Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

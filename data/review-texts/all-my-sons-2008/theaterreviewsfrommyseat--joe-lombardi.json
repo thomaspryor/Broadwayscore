@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“O’Brien has staged a truly impressive revival of this play. The play is wildly melodramatic which could make this seem preachy and perhaps even naively nostalgic. Not here. The actors are all excellent. Their relationships are effortlessly believable. The tension builds and builds and builds, slowly and continually. I did not see a moment that was not perfectly rendered. 'All My Sons' is a time capsule of yesterday and also a hazy reflection into a mirror of our society today.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I did not see a moment that was not perfectly rendered.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for direction, acting, and execution with superlative language ('truly impressive', 'all excellent', 'perfectly rendered'). Single excerpt warning noted, but tone is consistently enthusiastic throughout. | GPT-4o: The review excerpt praises the production as 'truly impressive' and highlights the excellence of the actors and the effective build-up of tension. Despite the warning about potential melodrama, the critic finds no fault in the execution, indicating a strong recommendation. The single excerpt suggests a very positive view, but confidence is low due to the limited text. | Gemini: The review uses strong positive language like \"truly impressive revival\", \"actors are all excellent\", and \"perfectly rendered\", indicating a strong recommendation. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt contains strong praise ('truly impressive', 'perfectly rendered', 'all excellent') indicating an enthusiastic recommendation, though the single-excerpt warning necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:12:15.836Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

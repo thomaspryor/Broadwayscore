@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"This is a production which features extraordinary talent. Broadway audiences are familiar with the stellar singing of Lea Salonga, and fans everywhere know George Takei as 'Star Trek’s' Sulu. The real eye opener is Telly Leung, who possesses not only a full, rich voice, but also first class dance moves...The rest of the ensemble is uniformly excellent; this is definitely a heartfelt experience for both those in the cast and audience members.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is definitely a heartfelt experience for both those in the cast and audience members.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for performances with superlatives ('extraordinary talent', 'stellar', 'uniformly excellent') and clear positive verdict about audience experience. However, confidence is low due to single excerpt warning - this could be cherry-picked praise from a more mixed review. | GPT-4o: The excerpt praises the talent and performances, describing the experience as 'heartfelt' and highlighting the excellence of the ensemble. Given the positive tone and lack of reservations, it fits the upper range of the Positive bucket. | Gemini: The review excerpt praises the talent, singing, and dancing, calling it a \"heartfelt experience.\" Given the limited text, I'm scoring it as positive with a higher score due to the strong positive language. | Kimi: Strong praise for the cast's extraordinary talent and the production's heartfelt impact warrants an upper-range Positive score, though the excerpt-only format limits certainty.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:43:24.289Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

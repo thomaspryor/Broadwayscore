@@ -36,5 +36,60 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 736,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonald and Lewis make it reasonably entertaining, but this 'Porgy Lite' is not nearly as electrifying as the real thing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The review consistently criticizes the adaptation's changes to Gershwin's original while praising individual performances. The critic finds it 'moderately entertaining' but 'wrongheaded' and inferior to the original, indicating a clear negative recommendation despite acknowledging some merits. | GPT-4o: The review criticizes the production for its significant alterations to the original, detracting from its impact. While there is praise for individual performances, the overall tone is negative, noting that the production fails to capture the majesty of the original. | Gemini: The review acknowledges some entertainment value from the leads but ultimately finds the production lacking compared to the original, calling it \"Porgy Lite\" and criticizing the changes made to the music and characters. | Kimi: While praising the lead performances by Audra McDonald and Norm Lewis, the critic heavily criticizes the adaptation's changes to Gershwin's score, the staging, and the overall concept, viewing it as a diminished 'Lite' version that lacks the majesty and thrill of the original folk opera. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:37:32.077Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

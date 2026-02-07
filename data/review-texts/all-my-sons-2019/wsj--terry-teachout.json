@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"It’s one of the best Miller revivals I’ve ever seen, a staging so magnetic that it overwhelmed my lingering doubts about a play that can feel preachy when it isn’t done as well as this...The supporting cast is uniformly strong, with next-best-in-show honors going to Benjamin Walker and Hampton Fluker, both of whom are more than up to the task of sharing a stage with Mr. Letts and Ms. Bening without getting washed into the valley.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's one of the best Miller revivals I've ever seen, a staging so magnetic that it overwhelmed my lingering doubts",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong superlative praise ('one of the best Miller revivals I've ever seen', 'so magnetic') with high-end positive language. Single excerpt warning noted, but the enthusiasm level suggests upper Positive range. | GPT-4o: The excerpt provides strong praise, calling it one of the best revivals, with a magnetic staging that overcomes any doubts about the play's preachiness. The positive tone suggests a rave, but confidence is low due to the single excerpt warning. | Gemini: The excerpt contains very strong praise, calling it \"one of the best Miller revivals I’ve ever seen\" and praising the staging as \"magnetic.\" Given the single excerpt warning, I am scoring at the higher end of the positive range. | Kimi: Despite being a single excerpt, the critic offers superlative praise calling this one of the best Miller revivals they have seen, describing the staging as 'magnetic' and praising the uniformly strong supporting cast, indicating a high recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:17:13.643Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

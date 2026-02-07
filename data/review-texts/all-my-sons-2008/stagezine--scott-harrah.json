@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Letts and Walker have superb onstage chemistry as father and son. One of their last scenes is especially effective and riveting...O’Brien keeps things straightforward here, with a simple black and white video projection of war planes preceding the first act. O’Brien keeps the focus on the story. Although not all cast members are up to the par of the task at hand, O’Brien gets superlative performances from the actors playing the lead roles.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "O'Brien gets superlative performances from the actors playing the lead roles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises lead performances as 'superb' and 'superlative' and calls scenes 'effective and riveting,' but notes 'not all cast members are up to the par of the task.' Single excerpt warning requires caution - this reads as qualified positive recommendation. | GPT-4o: The excerpt praises the chemistry between the lead actors and the director's focus on the story, despite some cast members not meeting expectations. The positive tone and emphasis on strong lead performances suggest a positive review, but the single excerpt limits confidence. | Gemini: The review praises the lead actors' performances and the director's focus on the story, but notes that not all cast members are up to par. Given the limited excerpt, I'm scoring it as positive with reservations. | Kimi: The excerpt contains strong praise ('superb,' 'superlative,' 'riveting') for the leads and direction, with only a minor caveat about supporting cast. As a single curated excerpt that is truncated, confidence is low despite the clearly positive tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:09:09.170Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

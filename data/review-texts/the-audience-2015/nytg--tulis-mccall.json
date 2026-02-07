@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "textStatus": "truncated",
   "sourceMethod": "playwright",
   "wordCount": 1201,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those of you who like a bit of Royal Fantasy should hurry up and get your tickets to this delicious bit of sweets",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opens with clear recommendation to 'hurry up and get your tickets' and calls it 'delicious,' but acknowledges 'many scenes feel contrived.' Single excerpt limits full assessment. | GPT-4o: The review suggests a recommendation for fans of the genre, praising Helen Mirren's performance, but notes that many scenes feel contrived. The single excerpt and lack of full context lead to a low confidence score. | Gemini: The review states that the production excels due to Helen Mirren's performance, but also mentions that many scenes feel contrived, suggesting a mixed but overall positive experience. Given the limited excerpt, confidence is low. | Kimi: The critic explicitly urges readers to buy tickets and calls the show a 'delicious bit of sweets,' though notes some scenes feel contrived. Given only one excerpt is available, confidence is lowered.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:29:42.023Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The writing is so naturalistic and crisp that the plotting actually keeps you riveted. The new Broadway revival, directed by Jack O’Brien, does powerful things with the material, starting with Santo Loquasto’s realistic backyard set and continuing into the acting by a tight ensemble...If you think the Mueller Report exonerates Trump, you’ll believe Joe Keller is innocent, too—and in that case, this revival isn’t for you. Everyone else, dig in.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway revival, directed by Jack O'Brien, does powerful things with the material",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for writing ('crisp', 'riveted'), direction, design, and acting. The 'dig in' recommendation is enthusiastic. Single excerpt warning applied - using upper end of Positive bucket. | GPT-4o: The excerpt praises the writing, direction, set design, and ensemble acting, indicating a strong positive recommendation. The final line suggests it's a must-see for most audiences. Due to the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The review praises the writing, direction, set design, and acting, indicating a positive experience. The final line suggests a strong recommendation for most audiences. | Kimi: The excerpt offers strong praise for the play's construction, direction, and ensemble, with an explicit directive to see the show ('Everyone else, dig in'). Confidence is low due to reliance on a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:06:41.403Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

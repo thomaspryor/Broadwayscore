@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Shaw doesn't just inhabit this role; she becomes a force of nature within it, channeling a mother's anger and bewilderment with an intensity that makes the theater feel too small to contain her.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -53,5 +53,59 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This text appears to be a garbled mix of website navigation elements, subscription prompts, and fragments of multiple articles rather than a coherent review; openai: The text is primarily navigation menus and unrelated content, not a coherent review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That it doesn't quite work out that way ranks as one of the greater disappointments in a season that has made a practice of dashing hopes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Brantley praises Shaw's performance and Toibin's script but finds Warner's direction cluttered and literal-minded, preventing the production from achieving its potential. The review expresses clear disappointment while acknowledging the artists' talents. | Gemini: The review praises Fiona Shaw's performance and the script's grounding of familiar tales, but criticizes the director's literal-mindedness and the distracting set design, resulting in a mixed assessment. | Kimi: While praising Fiona Shaw's commanding performance and Colm Toibin's script as remarkable and trenchant, the critic finds Deborah Warner's direction heavy-handed and literal-minded, with obstructive production design that undercuts the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:56:05.851Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

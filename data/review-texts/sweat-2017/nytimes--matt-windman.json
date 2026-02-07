@@ -30,12 +30,12 @@
   "archiveOrgTimestamp": "20250427123333",
   "archiveOrgUrl": "http://web.archive.org/web/20250427123333/https://www.nytimes.com/2017/03/26/theater/sweat-review-broadway.html?_r=0",
   "duplicateTextOf": "nytimes--ben-brantley.json",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 331,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-06T16:20:33.989Z",
+  "rejectedAt": "2026-02-07T05:27:15.023Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about JavaScript and content retrieval issues; openai: The text includes a technical error message about retrieving article content, indicating it is not a complete review.",
+  "rejectionReasoning": "claude: The review text is truncated and ends with a technical error message about retrieving content and enabling JavaScript; openai: The text includes a technical error message and lacks a clear evaluative conclusion about the show.",
   "promptVersion": "5.2.0"
 }

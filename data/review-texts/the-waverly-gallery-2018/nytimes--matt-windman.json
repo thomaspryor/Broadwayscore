@@ -44,5 +44,60 @@
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about retrieving content and enabling JavaScript, making it impossible to determine the critic's verdict; openai: The text is an incomplete article with a technical issue message, not a full review.",
   "promptVersion": "5.2.0",
-  "designation": "Critics_Pick"
+  "designation": "Critics_Pick",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Neugebauer has assembled a dream cast to embody the collective madness that seems to descend on those closest to Gladys.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout for performances, direction, and writing with only minor technical quibbles. Calls it Lonergan's 'wonderful play' with 'dream cast' and 'near perfect' performances, clearly recommending despite brief set design criticisms. | GPT-4o: The review is filled with superlatives and praises the performances, direction, and writing, describing the play as 'wonderful' and 'a work of such hard, compassionate clarity.' | Gemini: The review is overwhelmingly positive, praising Elaine May's performance and the play's compassionate clarity. While there are minor criticisms about the set and pacing, the overall recommendation is strong. | Kimi: The reviewer offers enthusiastic praise for Elaine May's triumphant return to Broadway and Lonergan's wonderful play, describing the cast as 'dream' quality and the performances as 'near perfect,' with minor technical quibbles ultimately dissolving in the face of the production's emotional power. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:56:44.588Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 91,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

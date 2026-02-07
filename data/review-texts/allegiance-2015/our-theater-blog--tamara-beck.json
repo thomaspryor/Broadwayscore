@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"For a chunk of the first act of 'Allegiance,' despite the best efforts of its very capable cast, and the sincerity of the text, it was not easy to emotionally connect to the characters’ plight. Somewhere along the line, all that changed...By the strong second act, 'Allegiance' exploded as an engaging and moving story.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "By the strong second act, 'Allegiance' exploded as an engaging and moving story.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear positive verdict despite first act issues. Critic finds it ultimately 'engaging and moving' but acknowledges significant pacing problems. Low confidence due to single excerpt limitation. | GPT-4o: The excerpt indicates initial difficulty in connecting with the story, but ultimately describes the second act as 'engaging and moving'. Given the single excerpt warning and lack of full context, the score is on the lower end of the Positive range. | Gemini: The review describes a weak first act but a strong second act, indicating a positive but mixed experience. Given the limited excerpt, confidence is low. | Kimi: The excerpt acknowledges first act connection issues but delivers a clear positive verdict on the second act ('exploded as an engaging and moving story'), recommending the overall experience. However, the single excerpt limitation requires low confidence and a lower-end Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:34:38.123Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

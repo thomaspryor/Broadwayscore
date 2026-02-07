@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "needs-rescrape",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
@@ -19,9 +19,9 @@
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "As bio-musicals go, A Wonderful World doesn't break any new ground, and the book by Aurin Squire is pretty much by-the-numbers, hitting most of the highs and lows spanning 70 years in Armstrong's storied career. But as conceived by Andrew Delaplaine along with Christopher Renshaw (who also directed), there's so much charm, artistry and buoyant entertainment here that we are riveted for the entirety of the show's two and a half hour running time.",
-  "rejectedAt": "2026-02-06T18:12:05.060Z",
+  "rejectedAt": "2026-02-07T06:03:56.747Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This appears to be a fragment discussing song details and chart positions rather than evaluative review content about the show's quality or recommendation; openai: The text provided is a description of songs included in the show, not an evaluative review of the production.; gemini: This excerpt describes song choices and context, but offers no evaluative statements about the production itself.; kimi: The text consists solely of plot/content description (listing songs and their placement in the show) without any evaluative language, critical assessment, or recommendation regarding the production's quality.",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be plot summary/description of song content rather than critical evaluation of the production; openai: The text discusses Armstrong's 'Hello, Dolly!' and 'What a Wonderful World,' which are not related to the target show.; kimi: The text describes specific songs being performed and their placement in the show ('Hello, Dolly!' reprised as a singalong, 'What a Wonderful World' as a finale) but contains no evaluative language regarding the quality of performances, direction, or overall production. It reads as descriptive plot/content summary rather than critical assessment.",
   "promptVersion": "5.2.0"
 }

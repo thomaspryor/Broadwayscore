@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Director Stafford Arima takes us through all this handily with a semi-expressionistic approach to staging...There are times, though, when following the development of the play’s two love stories gets a little thorny and the actual sequencing of events seems a bit muddled. Despite this, I found enough genuine earnestness in the storytelling and enough artfulness and strength in its sometimes overwrought music to let this show win my allegiance.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I found enough genuine earnestness in the storytelling and enough artfulness and strength in its sometimes overwrought music to let this show win my allegiance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging narrative issues ('thorny', 'muddled'), the critic ultimately states the show 'win my allegiance' - a clear positive verdict. Single excerpt warning noted - scored at lower end of Positive range due to qualified recommendation. | GPT-4o: The critic acknowledges issues with the play's structure but ultimately finds the storytelling and music compelling enough to recommend the show. Given the single excerpt and potential for cherry-picking, confidence is low. | Gemini: The review acknowledges some issues with the plot but ultimately states that the reviewer found enough positive qualities to \"let this show win my allegiance,\" indicating a recommendation with reservations. | Kimi: While the critic notes issues with muddled plotting and overwrought music, the final verdict clearly recommends the show with the explicit statement that it 'won my allegiance' due to genuine earnestness and artfulness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:32:37.074Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

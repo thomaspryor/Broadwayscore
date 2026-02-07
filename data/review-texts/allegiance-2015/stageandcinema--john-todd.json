@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Allegiance misses its opportunity to take us on a sweeping, sobering, and redemptive journey through a national shame: The internment of Japanese-American citizens into camps during World War II. Tepid storytelling of a powerful event and colorless lyrics, which often repeat what we already know about the characters, keep an interesting story from becoming a good musical.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tepid storytelling of a powerful event and colorless lyrics keep an interesting story from becoming a good musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the show a 'missed opportunity' with 'tepid storytelling' and 'colorless lyrics.' The critic finds the material compelling but the execution lacking. | GPT-4o: The excerpt criticizes the storytelling and lyrics, suggesting the musical fails to capitalize on its potential. The lack of a full review and the single excerpt warning lower confidence in the verdict. | Gemini: The review excerpt uses negative language such as \"tepid storytelling\" and \"colorless lyrics\" to describe the musical, indicating a negative overall assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt offers unambiguous criticism of the show's execution ('tepid,' 'colorless') and explicitly states it fails to be good, indicating a negative verdict. Confidence is low due to single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:41:18.875Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

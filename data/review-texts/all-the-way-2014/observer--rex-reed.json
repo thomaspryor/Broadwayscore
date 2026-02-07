@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bryan Cranston's towering, Tony Award-caliber performance as Lyndon B. Johnson is so powerful and mesmerizing that it transforms Robert Schenkkan's otherwise ordinary biographical play into something close to greatness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bryan Cranston's towering, Tony Award-caliber performance as Lyndon B. Johnson is so powerful and mesmerizing that it transforms Robert Schenkkan's otherwise ordinary biographical play into something close to greatness.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bryan Cranston's towering, Tony Award-caliber performance as Lyndon B. Johnson is so powerful and mesmerizing that it transforms Robert Schenkkan's otherwise ordinary biographical play into something close to greatness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: While calling the play itself 'otherwise ordinary,' the critic emphasizes that Cranston's 'towering, Tony Award-caliber performance' transforms it into 'something close to greatness.' This suggests a strong positive recommendation driven by the lead performance. | GPT-4o: The excerpt highlights Cranston's performance as transformative, elevating the play significantly. The strong praise for Cranston suggests a positive recommendation, though the overall play is described as 'ordinary'. | Gemini: The review praises Cranston's performance highly, stating it elevates the play to \"something close to greatness.\" While acknowledging the play itself is \"otherwise ordinary,\" the strength of the performance warrants a positive score. Confidence is low due to the excerpt-only nature of the review. | Kimi: The critic offers superlative praise for Cranston's performance ('towering,' 'Tony Award-caliber') and states it elevates the material to 'close to greatness,' though the play itself is deemed 'ordinary.' Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:19:16.910Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

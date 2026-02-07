@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -41,5 +41,60 @@
     "Word count too low: 246 (min: 300)"
   ],
   "wordCount": 246,
-  "tierReason": "Short text (246 words)"
+  "tierReason": "Short text (246 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The strength of these monologues lies in their modesty",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising 'strength' of performances and production values, but qualified language ('modesty', 'quiet') suggests measured approval rather than enthusiasm. Low confidence due to limited text. | GPT-4o: The excerpt praises the monologues, production, and performances, suggesting a positive view. However, the lack of full context and the single excerpt warning necessitate a cautious approach, leading to a lower score within the Positive range. | Gemini: The review excerpt praises the modesty and nuance of the production and performances, suggesting a positive but not overwhelmingly enthusiastic recommendation. Due to the limited text, confidence is low. | Kimi: The excerpt offers clear praise for the production's bare staging, quiet and nuanced performances, and humbled characters, indicating a solid positive recommendation despite the measured tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:23:45.583Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

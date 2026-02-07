@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mike Bartlett's King Charles III is a fascinating speculative drama that imagines the future monarch's reign beginning with a constitutional crisis over press freedom.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "previousUrl": "https://newyorktheater.me/2015/11/01/king-charles-iii-review/",
   "urlDiscoveredAt": "2026-02-06T16:17:55.521Z",
@@ -49,5 +49,10 @@
     "Word count too low: 224 (min: 300)"
   ],
   "wordCount": 224,
-  "tierReason": "Short text (224 words)"
+  "tierReason": "Short text (224 words)",
+  "rejectedAt": "2026-02-07T05:07:38.811Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a truncated excerpt with navigation elements and WordPress login prompts rather than a complete review with critical evaluation.; openai: The text is mostly navigation and login prompts, not a coherent review.",
+  "promptVersion": "5.2.0"
 }

@@ -65,5 +65,60 @@
   "rejectionReasoning": "claude: The review text is cut off mid-sentence and ends with a JavaScript error message, making it impossible to determine the critic's final verdict or recommendation.; openai: The text appears to be incomplete and includes navigation instructions and error messages, indicating it is not a full review.; gemini: The review is cut off before a clear verdict is given. The text ends mid-sentence, preventing a proper assessment of the critic's overall opinion.",
   "promptVersion": "5.2.0",
   "showScoreExcerpt": "\"Though sometimes mesmerizing, “Flying Over Sunset,” the new musical about LSD that opened there on Monday, is mostly bewildering, and further proof that transcendence can’t be shared.\"\n\nRead more",
-  "publishDate": "December 14, 2021"
+  "publishDate": "December 14, 2021",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though sometimes mesmerizing, \"Flying Over Sunset\" is mostly bewildering.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Balanced critique acknowledging positive moments ('sometimes mesmerizing') but finding the overall experience problematic ('mostly bewildering'). Set to low confidence due to truncated excerpt that may not capture full verdict. | GPT-4o: The review describes the show as 'sometimes mesmerizing' but 'mostly bewildering,' suggesting a mixed experience. The lack of a full review and the ambiguous tone result in a low confidence score. | Gemini: The critic states the show is \"mostly bewildering\" despite being \"sometimes mesmerizing\", indicating a negative overall assessment. Confidence is low due to the truncated text. | Kimi: The review acknowledges 'mesmerizing' elements but the dominant verdict is 'mostly bewildering,' suggesting an uneven experience that fails to achieve its transcendental goals. As this is a curated excerpt, the full verdict may differ.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:01:23.884Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

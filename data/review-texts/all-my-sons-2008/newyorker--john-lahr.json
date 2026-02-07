@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Simon McBurney, transforms Miller's realistic family drama into something more expressionistic and haunting.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by Simon McBurney, transforms Miller's realistic family drama into something more expressionistic and haunting.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production, directed by Simon McBurney, transforms Miller's realistic family drama into something more expressionistic and haunting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes a successful transformation of the source material in positive terms ('transforms into something more expressionistic and haunting'), but with only one curated quote available, confidence is low and score stays in lower Positive range. | GPT-4o: The excerpt praises the production's transformation into a more expressionistic and haunting piece, suggesting a positive reception. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt indicates a positive transformation of the play, suggesting a worthwhile production. However, due to the limited text, confidence is low. | Kimi: The excerpt praises the director's transformative vision, describing the result as 'expressionistic and haunting'—language that indicates a successful, atmospheric production worth seeing, though the limited excerpt prevents a higher confidence rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:07:14.656Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

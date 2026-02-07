@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Diane Lane brings a touching vulnerability to Ranevskaya, the aristocratic landowner who must sell her beloved estate to pay off her debts, but can't bring herself to face the reality of her situation.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "textWordCount": 936,
   "archivePath": "data/archives/reviews/the-cherry-orchard-2016/variety--marilyn-stasio_2026-02-06.html",
@@ -58,5 +58,10 @@
     "Show title not found in text"
   ],
   "wordCount": 936,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-07T05:30:24.335Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a website navigation menu or aggregated content feed with repeated text about Aretha Franklin documentaries and various unrelated entertainment news, not a coherent theater review; openai: The text provided is a mix of unrelated content, including movie reviews, music album reviews, and news snippets, with no coherent review of a Broadway show.; gemini: This appears to be a collection of unrelated headlines and short blurbs about various topics, not a review of a specific Broadway show.; kimi: The text provided is a jumbled collection of entertainment news headlines, movie reviews, TV reviews, and brief snippets from multiple Variety articles, not a coherent single review of a target Broadway show. It appears to be navigation menus or a homepage index rather than a review article.",
+  "promptVersion": "5.2.0"
 }

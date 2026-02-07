@@ -35,7 +35,12 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 329,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-07T05:46:41.688Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The text cuts off mid-review with an error message about retrieving article content and JavaScript settings, making it impossible to determine the critic's final verdict.; openai: The text includes navigation instructions and an error message about retrieving content, indicating it is not a complete review.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "John Lithgow and Dianne Wiest bring nuanced intensity to Arthur Miller's 1947 drama about a manufacturer who sold defective airplane parts to the military during World War II.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "John Lithgow and Dianne Wiest bring nuanced intensity to Arthur Miller's 1947 drama about a manufacturer who sold defective airplane parts to the military during World War II.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "John Lithgow and Dianne Wiest bring nuanced intensity to Arthur Miller's 1947 drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performances with 'nuanced intensity' suggests positive recommendation, but limited text prevents fuller assessment of overall verdict. | GPT-4o: The excerpt praises the performances of Lithgow and Wiest, suggesting a positive view of the production. However, due to the single excerpt warning, the score is on the lower end of the Positive range to account for potential cherry-picking. | Gemini: The excerpt praises the performances of Lithgow and Wiest, suggesting a positive aspect of the production. Given the limited text, a score in the lower-middle of the 'Positive' range seems appropriate. | Kimi: Single excerpt praises the lead actors' performances with 'nuanced intensity' but offers limited evaluative context on the production overall. Given the single-excerpt warning that such quotes may be cherry-picked, this warrants a conservative score in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:13:28.403Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Stage veterans Jonathan Pryce and Eileen Atkins play a long-married couple facing their final curtain in the latest English-language export from French literary star Florian Zeller.\"\n\nRead more",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -52,5 +52,10 @@
   "textStatus": "truncated",
   "sourceMethod": "brightdata",
   "wordCount": 661,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-07T05:39:30.332Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a brief plot summary/description with no critical evaluation or recommendation about the show's quality.; openai: The text provided is a brief description of the play's premise without any evaluative content or opinion.; gemini: This is a plot summary with no evaluative content or critical opinion. It describes the actors and the premise but does not offer a recommendation.; kimi: The excerpt provided is purely descriptive, listing the cast and plot premise ('Stage veterans Jonathan Pryce and Eileen Atkins play a long-married couple facing their final curtain') without any evaluative language or critical opinion about the production's quality, performances, or direction.",
+  "promptVersion": "5.2.0"
 }

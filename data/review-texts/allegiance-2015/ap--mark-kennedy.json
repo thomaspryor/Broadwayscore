@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.heraldextra.com/entertainment/review-musical-allegiance-is-heavy-handed-missed-chance/article_1957324c-9f35-5d4a-be23-fd8d1375a8c1.html"
+  "playbillVerdictUrl": "http://www.heraldextra.com/entertainment/review-musical-allegiance-is-heavy-handed-missed-chance/article_1957324c-9f35-5d4a-be23-fd8d1375a8c1.html",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The heavy-handed, cliche-driven 'Allegiance' tries to take on all three — but does so unsuccessfully in a bombastic and generic Broadway musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict calling the show 'unsuccessful,' 'heavy-handed,' 'cliche-driven,' 'bombastic and generic.' However, confidence is medium due to truncated excerpt - the full review might contain additional context or qualification. | GPT-4o: The review excerpt criticizes the show as 'heavy-handed,' 'cliche-driven,' 'bombastic,' and 'generic,' indicating a strongly negative assessment. However, due to the limited text, confidence is low. | Gemini: The review excerpt clearly states that the musical is unsuccessful, bombastic, and generic, indicating a negative assessment. The truncated nature lowers confidence. | Kimi: The excerpt delivers a clear negative verdict, criticizing the show as heavy-handed, clichéd, and generic in its execution of ambitious themes, with no redeeming qualities mentioned in the available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:22:15.124Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

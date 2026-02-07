@@ -62,5 +62,11 @@
     "Word count too low: 203 (min: 300)"
   ],
   "wordCount": 203,
-  "tierReason": "Short text (203 words)"
+  "tierReason": "Short text (203 words)",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-07T05:53:01.788Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: The main text is about a film acquisition, not a Broadway show review. The brief additional context about 'The Play That Goes Wrong' is insufficient for scoring.; openai: The text primarily discusses the film 'A Woman, A Part' and only briefly mentions 'The Play That Goes Wrong' without providing a review or evaluation of it.; kimi: The provided text is a Variety article about Strand Releasing acquiring rights to the feature film 'A Woman, A Part,' not a review of a Broadway production. While a brief excerpt about 'The Play That Goes Wrong' appears in the additional context, the primary content concerns film industry news and a movie plot summary, making it unscorable as a Broadway theater review.",
+  "promptVersion": "5.2.0"
 }

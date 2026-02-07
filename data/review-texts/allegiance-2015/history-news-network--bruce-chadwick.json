@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The musical is one of the best history musicals in years. The story of the relocation, and all of its problems, full of triumph and tragedy, is told eloquently. It is full of history and, at the same time, with superb acting, a strong plot and fine music, a pleasing stage musical for all...'Allegiance' is a must see for history lovers. It is a history lesson, but it is also stellar drama and good music in a bone-chilling and yet heart-warming story.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Allegiance' is a must see for history lovers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong superlatives ('one of the best history musicals in years', 'stellar drama') combined with explicit 'must see' recommendation clearly indicates a rave review. | GPT-4o: The excerpt describes the musical as one of the best history musicals in years, with superb acting, strong plot, and fine music. The phrase 'must see for history lovers' indicates a strong recommendation. However, the confidence is low due to the single excerpt warning. | Gemini: The review uses strong positive language such as \"one of the best\", \"superb acting\", \"strong plot\", and \"must see for history lovers\", indicating a rave review. | Kimi: Single excerpt offers strong praise including 'must see,' 'superb acting,' and 'stellar drama,' warranting a high Positive score, though confidence is reduced due to potential cherry-picking of this curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:28:04.657Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 90,
+    "geminiScore": 88,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

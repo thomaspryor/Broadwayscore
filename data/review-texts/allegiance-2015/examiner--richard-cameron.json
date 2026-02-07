@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Love prevails in 'Allegiance,' giving America and the globe one of the most important musicals ever written...The book by Lorenzo Thione is nuclear and deafening. Every word chosen propels the plot of each character leaving not one second for misunderstanding. The music, lyrics and book by Jay Kuo is triumphant! Every song takes a moving journey and with Andrew Palermo's choreography the outcome is entertaining, heartfelt, stylized for the historic times that it brings to life.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Love prevails in 'Allegiance,' giving America and the globe one of the most important musicals ever written",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Extreme superlatives ('one of the most important musicals ever written', 'triumphant', 'nuclear and deafening') indicate a rave. However, confidence is medium due to single excerpt warning and potential cherry-picking of most positive quote. | GPT-4o: The excerpt contains strong praise with terms like 'one of the most important musicals ever written' and 'triumphant,' indicating a highly positive assessment. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is overwhelmingly positive, using words like \"triumphant\", \"entertaining\", \"heartfelt\", and \"important\". Given the single excerpt warning, I'm scoring at the higher end of the positive range. | Kimi: Single excerpt contains extreme superlatives ('most important musicals ever written', 'triumphant') and unqualified praise for the book, music, and choreography, indicating strong enthusiasm. However, confidence is low given this is a single curated quote that may not represent the full review's balance. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:26:24.546Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

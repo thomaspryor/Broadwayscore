@@ -34,12 +34,12 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250426203852",
   "archiveOrgUrl": "http://web.archive.org/web/20250426203852/https://www.nytimes.com/2016/09/30/theater/the-encounter-review.html?_r=0",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 351,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-06T16:26:25.807Z",
+  "rejectedAt": "2026-02-07T05:36:48.176Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text ends with a technical error message about retrieving article content and enabling JavaScript, indicating this is incomplete/corrupted text rather than a full review.; openai: The text includes navigation instructions and an error message about retrieving content, indicating it is not a complete review.; gemini: The review text is incomplete and contains an error message indicating that the article content could not be retrieved.",
+  "rejectionReasoning": "claude: The text ends with an error message about trouble retrieving content and appears to be truncated web content rather than a complete review; openai: The text is incomplete and includes a message about having trouble retrieving the article content, indicating it's not a full review.; gemini: The article content could not be retrieved, and the provided text is incomplete and ends abruptly.",
   "promptVersion": "5.2.0"
 }

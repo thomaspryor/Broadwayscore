@@ -47,5 +47,11 @@
   "archiveOrgTimestamp": "20161207063828",
   "archiveOrgUrl": "http://web.archive.org/web/20161207063828/http://www.nytimes.com/2016/11/04/theater/review-the-jobs-are-gone-in-sweat-so-are-peoples-hopes.html?_r=0",
   "wordCount": 1037,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-07T05:26:31.962Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production of 'Sweat' at the Public Theater, not the current Broadway run.; kimi: This review covers the Off-Broadway premiere at the Public Theater, not the Broadway production. The text explicitly states the play opened at the Public Theater after originating at the Oregon Shakespeare Festival.",
+  "promptVersion": "5.2.0"
 }

@@ -44,5 +44,59 @@
   "rejectionReasoning": "claude: The review text is cut off mid-sentence and ends with a technical error message about retrieving article content and JavaScript settings.; openai: The text is truncated and ends abruptly, making it difficult to determine the final verdict or overall evaluation of the show.",
   "promptVersion": "5.2.0",
   "showScoreExcerpt": "\"The fish that figures in ads for the new play and can be seen on the drop curtain at the Cort Theater is pretty great, a charming and maddening creature destined to capture your heart. O.K., if you insist: It is pret-ty, pret-ty, pret-ty great. The show for which this fish stands? Not so much...I have been known to dissolve into incontinent giggles while watching episodes of “Curb” or of “Seinfeld.” During “Fish,” I laughed fully exactly once.\" \n\nRead more",
-  "playbillVerdictUrl": "http://www.nytimes.com/aponline/2015/03/05/arts/ap-us-theater-review-fish-in-the-dark.html"
+  "playbillVerdictUrl": "http://www.nytimes.com/aponline/2015/03/05/arts/ap-us-theater-review-fish-in-the-dark.html",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "During “Fish,” I laughed fully exactly once.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | GPT-4o: The review indicates that the play fails to deliver the expected humor, with the critic laughing only once. Despite acknowledging the appeal for fans of Larry David, the overall assessment is negative regarding the show's comedic value. | Gemini: The review is negative, stating the critic only laughed once and that the show may only appeal to those wanting to be in the same room as David. The text is truncated, but the overall tone is clear. | Kimi: Despite acknowledging Larry David's star power and one effective use of his signature catchphrase, Brantley found the comedy largely ineffective, contrasting his 'laughlessness' during this play with his usual enjoyment of David's television work. He suggests only celebrity worshippers will find satisfaction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:00:57.526Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

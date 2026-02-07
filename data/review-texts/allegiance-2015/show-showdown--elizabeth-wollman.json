@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"It's honest, earnest, and charming, and it manages to shed light on an ugly chapter in American history without being too pedantic on the one hand, or too flip on the other. It has some rough spots, sure, but they were hardly disruptive enough to keep me from rooting for its characters, connecting with its swiftly-paced plot, or surreptitiously swiping big fat tears from my eyes in the final moments.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's honest, earnest, and charming, and it manages to shed light on an ugly chapter in American history without being too pedantic on the one hand, or too flip on the other.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong emotional response (tears), praised pacing and characters, acknowledges flaws but dismisses them as minor. Single excerpt limits full context but tone is clearly positive recommendation. | GPT-4o: The excerpt praises the show for its charm and emotional impact, despite acknowledging some rough spots. The critic's emotional connection and rooting for the characters suggest a strong positive recommendation. | Gemini: The review is mostly positive, calling the show \"honest, earnest, and charming\" and noting that it manages to shed light on an ugly chapter in American history. The critic also mentions some \"rough spots,\" indicating a recommendation with reservations. | Kimi: The excerpt offers clear praise for the show's tone and emotional impact, noting it handles difficult history deftly while acknowledging minor 'rough spots' that don't prevent audience connection or tears. Single excerpt limitations apply.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:39:48.820Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

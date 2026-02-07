@@ -40,5 +40,60 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 745,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But it will surely provide a happy diversion for stressed-out theatergoers during the holiday season",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite calling it 'corny and predictable,' the critic recommends it as a 'happy diversion' and praises two showstopping numbers. The 'but' construction indicates the positive elements outweigh the flaws. | GPT-4o: The review acknowledges the show's predictability and corniness but highlights its entertainment value and ability to provide a happy diversion, indicating a positive recommendation with some reservations. | Gemini: The review acknowledges the show is \"corny and predictable\" but also says it \"succeeds in doing\" and provides a \"happy diversion.\" This suggests a positive but not rave review. | Kimi: While acknowledging the show is corny and predictable, the critic praises the 20 Irving Berlin songs and two showstopping numbers, ultimately recommending it as a sweetly wholesome seasonal diversion.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:03:58.049Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

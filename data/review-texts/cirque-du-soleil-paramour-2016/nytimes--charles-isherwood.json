@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
@@ -39,5 +39,10 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240413235304/https://www.nytimes.com/2016/05/26/theater/review-paramour-brings-cirque-du-soleil-to-broadway.html?_r=0",
   "duplicateTextOf": "nytimes--unknown.json",
   "wordCount": 317,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-07T04:58:17.990Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text is truncated and ends with an error message about retrieving article content and enabling JavaScript, indicating this is incomplete technical content rather than a full review.; openai: The review text is interrupted with a message about enabling JavaScript and verifying access, indicating incomplete content.",
+  "promptVersion": "5.2.0"
 }

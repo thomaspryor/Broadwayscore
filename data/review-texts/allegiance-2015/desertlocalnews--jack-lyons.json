@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"“How can they make a musical out of the injustice of interning native-born American citizens into forced relocation camps during WW II?” Fair question. The answer is: before you complain or dismiss the effort, go see this powerful and cathartic musical, which is beautifully staged, with triple-threat actors, who sing, who dance, and who also touch the heart.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "go see this powerful and cathartic musical, which is beautifully staged, with triple-threat actors",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('powerful', 'cathartic', 'beautifully staged') with clear recommendation to 'go see', but low confidence due to single excerpt warning and potential cherry-picking. | GPT-4o: The excerpt strongly recommends seeing the show, highlighting its powerful and cathartic nature, beautiful staging, and talented actors. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is strongly positive, calling the musical \"powerful and cathartic\" and praising the staging and actors. Given the single excerpt and the instruction to use the upper end of the bucket for clearly positive excerpts, I've assigned a score of 82. | Kimi: The excerpt provides an explicit recommendation to attend ('go see this') accompanied by strong praise ('powerful,' 'cathartic,' 'beautifully staged'), warranting an upper-range Positive score despite the limitation of having only a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:25:54.661Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

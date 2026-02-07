@@ -38,5 +38,11 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 481,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-07T05:42:40.481Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at Roundabout's Laura Pels Theater, which is an off-Broadway venue, not the current Broadway run.; kimi: The review explicitly locates the production at 'Roundabout's Laura Pels Theater,' which is an Off-Broadway venue. This reviews the 2015 Off-Broadway premiere, not the subsequent Broadway transfer.",
+  "promptVersion": "5.2.0"
 }

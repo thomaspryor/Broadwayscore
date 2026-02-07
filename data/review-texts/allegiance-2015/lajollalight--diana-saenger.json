@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Dynamic dialogue, backed by passionate energy to spotlight an injustice, lead to stimulating performances...The play also has brilliant lines of humor that provide a welcome relief from the heavy topic.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dynamic dialogue, backed by passionate energy to spotlight an injustice, lead to stimulating performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for dialogue, performances, and writing quality with terms like 'dynamic,' 'passionate energy,' and 'stimulating performances.' However, confidence is low due to limited text availability. | GPT-4o: The excerpt praises the dialogue, energy, and performances, indicating a strong positive impression. The mention of humor balancing the heavy topic suggests a well-rounded production. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt uses positive language such as \"dynamic dialogue,\" \"passionate energy,\" and \"stimulating performances.\" Given that this is the only excerpt available, I am scoring it on the higher end of the positive scale. | Kimi: The excerpt contains clearly positive evaluative language ('dynamic,' 'stimulating,' 'brilliant') praising the dialogue, performances, and humor, warranting the upper end of the Positive bucket. However, confidence is low given only a single curated excerpt is available, which may not represent the full review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:29:28.522Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

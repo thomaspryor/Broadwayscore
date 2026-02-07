@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play succeeds in large part because of two superb lead performances by Paul Bettany and Jeremy Pope, who create a believable artistic bond between two very different men.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -58,5 +58,60 @@
     "Show title not found in text"
   ],
   "wordCount": 936,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play succeeds in large part because of two superb lead performances by Paul Bettany and Jeremy Pope, who create a believable artistic bond between two very different men.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('succeeds', 'superb') praising lead performances. Single excerpt warning suggests this could be cherry-picked, but the language is definitively positive, warranting upper Positive range. | GPT-4o: The excerpt praises the lead performances as superb, suggesting a positive view of the show. However, due to the single excerpt warning, the overall sentiment may not be fully represented, leading to a conservative score at the lower end of the Positive range. | Gemini: The review excerpt focuses solely on the positive aspects of the lead performances, suggesting a strong positive element. Given that it's the only available text, I'm placing it in the positive bucket with a higher score, but with low confidence due to the limited context. | Kimi: The excerpt offers enthusiastic praise for the lead performances ('superb') and indicates the play succeeds, but as a single curated quote potentially cherry-picked from a larger review, it warrants cautious scoring in the upper Positive range with low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:34:04.159Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

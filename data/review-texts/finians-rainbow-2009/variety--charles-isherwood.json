@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This impeccable revival of the 1947 musical serves as a gentle reminder that shows with something meaningful to say needn't sacrifice entertainment value to get their message across.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "tierReason": "Full review text",
   "previousUrl": "https://variety.com/2009/legit/reviews/finian-s-rainbow-1200476890/",
   "urlDiscoveredAt": "2026-02-06T16:02:32.728Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An infectious charmer that makes blissful surrender the only option.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Enthusiastic praise throughout with superlatives like 'infectious charmer,' 'revelation,' and 'enchanting package.' Clear recommendation despite acknowledging the show's whimsical nature. | GPT-4o: The review is filled with superlatives and praises the production's charm, casting, and musical elements. The critic describes it as an 'infectious charmer' and highlights the 'enveloping warmth' of the melodies, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the music, lyrics, casting, and direction. The critic uses terms like \"infectious charmer\" and describes the production as an \"enchanting package.\" | Kimi: The review offers unqualified praise for the cast, direction, choreography, and score, repeatedly urging 'blissful surrender' to this 'infectious charmer' and 'enchanting package' with no significant reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:00:28.951Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

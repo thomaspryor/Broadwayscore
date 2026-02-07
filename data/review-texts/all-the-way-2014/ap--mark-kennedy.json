@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bryan Cranston delivers a towering performance as Lyndon B. Johnson in 'All the Way,' capturing both the crude ambition and surprising vulnerability of the 36th president.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://abcnews.go.com/Entertainment/wireStory/review-bryan-cranston-superb-22811530%20%20"
+  "playbillVerdictUrl": "http://abcnews.go.com/Entertainment/wireStory/review-bryan-cranston-superb-22811530%20%20",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bryan Cranston delivers a towering performance as Lyndon B. Johnson",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Cranston's performance with vivid descriptors ('towering', 'capturing'), but this is only a curated excerpt with no broader assessment of the production, so confidence is low. | GPT-4o: The excerpt praises Cranston's performance, suggesting a positive view of the show. However, the lack of a full review and potential missing context lead to a low confidence score. | Gemini: The review excerpt focuses on Cranston's performance, which is highly praised. However, without the full review, it's difficult to determine the overall recommendation strength, so confidence is low. | Kimi: The excerpt offers enthusiastic praise for Cranston's 'towering' performance with specific evaluative details about his portrayal, indicating a strong positive assessment, though the limited excerpt prevents certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:18:06.403Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

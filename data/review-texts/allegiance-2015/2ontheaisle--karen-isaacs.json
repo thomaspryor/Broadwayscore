@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"If you just hear about the subject matter, you might think this was a depressing or dark show. Yet in the end you are amazed at the joy you will find while also considering the issue at hand...Director Stafford Arima has done an excellent job at letting us know exactly where we are, which is not as easy as it seems...'Allegiance' is a moving and touching story with some delightful music.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Allegiance' is a moving and touching story with some delightful music.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('excellent job', 'moving and touching', 'delightful music', 'amazed at the joy') but single excerpt warning requires caution about overall verdict representativeness. | GPT-4o: The excerpt praises the show as 'moving and touching' with 'delightful music' and commends the director's work, suggesting a strong positive recommendation. However, the single excerpt warning reduces confidence. | Gemini: The review excerpt indicates a positive experience, highlighting the joy found in the story and the director's excellent job. The phrase \"moving and touching story with some delightful music\" further supports a positive recommendation. | Kimi: The excerpt offers enthusiastic praise for the direction ('excellent job') and describes the show as 'moving and touching' with 'delightful music,' warranting a score in the upper Positive range despite limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:20:41.624Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

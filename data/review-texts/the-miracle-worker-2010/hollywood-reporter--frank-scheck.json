@@ -62,5 +62,60 @@
     "Word count too low: 188 (min: 300)"
   ],
   "wordCount": 188,
-  "tierReason": "Short text (188 words)"
+  "tierReason": "Short text (188 words)",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The emotional impact of the story of Helen Keller and Annie Sullivan still comes through in this uneven Broadway revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges emotional impact but explicitly calls the revival 'uneven,' suggesting neither a clear recommendation nor discouragement. Single excerpt warning applies - this may not represent the full verdict. | GPT-4o: The excerpt indicates an 'uneven' production but acknowledges the 'emotional impact' still comes through. The single excerpt and lack of full context suggest a mixed review with some positive elements. | Gemini: The review uses the word \"uneven,\" which indicates a mixed reaction. The emotional impact still coming through suggests it's not entirely negative. | Kimi: While the critic notes the production is 'uneven,' the emphasis on the story's emotional power remaining effective indicates a qualified recommendation rather than a dismissal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:44:15.674Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

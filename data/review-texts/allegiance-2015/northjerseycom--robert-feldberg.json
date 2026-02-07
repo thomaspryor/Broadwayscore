@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The production is hampered by the mixed signals it sends out. Are we supposed to become involved by outrage at what was done to these innocent people, or entertained by the performance of traditional Broadway musical routines?...It isn't clear, actually, why 'Allegiance' needed to be a musical at all. Most of the songs fall into a numbing pattern...The show's final scene is extremely touching. It's too bad the show couldn't find, and sustain, a similar tone much earlier.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It isn't clear, actually, why 'Allegiance' needed to be a musical at all.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic questions the show's fundamental premise, finds most songs in a 'numbing pattern,' and identifies 'mixed signals' as hampering the production. While acknowledging the touching final scene, the overall assessment is clearly negative. | GPT-4o: The review expresses significant criticism about the show's purpose and effectiveness, with phrases like 'numbing pattern' and questioning the need for it to be a musical. The positive note about the final scene is outweighed by the overall negative tone. | Gemini: The review points out mixed signals and a numbing pattern in the songs, but acknowledges a touching final scene, suggesting a mixed experience overall. The single excerpt and truncated nature of the text lower confidence. | Kimi: The critic questions the fundamental premise of adapting the material as a musical, criticizes the score as numbing, and identifies serious tonal inconsistencies, suggesting only the final scene succeeds.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:33:14.223Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

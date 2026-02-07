@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"In one seamless and stirring transition, Allegiance—A New American Musical holds the U.S.’s World War II-era shame up to scrutiny and takes our breath away...Yet Allegiance is not bound up in historical shock-and-awe. Its story of a wrongly displaced Japanese American family is a tender subtext to the big-picture injustice of the internments themselves.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In one seamless and stirring transition, Allegiance—A New American Musical holds the U.S.'s World War II-era shame up to scrutiny and takes our breath away",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt uses strong positive language ('seamless and stirring', 'takes our breath away', 'tender') with no caveats visible. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses strong positive language ('seamless and stirring', 'takes our breath away') indicating a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"seamless and stirring transition\" and \"takes our breath away,\" suggesting a favorable review. Given it's a single excerpt, confidence is low, but the strength of the language pushes the score towards the higher end of the positive range. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:38:54.322Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

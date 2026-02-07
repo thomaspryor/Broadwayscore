@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production succeeds largely on the strength of its cast, led by Jeremy Irons and Lesley Manville as Joe and Kate Keller, who bring a lived-in authenticity to their roles.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production succeeds largely on the strength of its cast, led by Jeremy Irons and Lesley Manville as Joe and Kate Keller, who bring a lived-in authenticity to their roles.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production succeeds largely on the strength of its cast, led by Jeremy Irons and Lesley Manville as Joe and Kate Keller, who bring a lived-in authenticity to their roles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this sounds positive but qualified ('largely on the strength of its cast' suggests other elements may be weaker). Given only one curated quote available, confidence is low and score reflects cautious positive assessment. | GPT-4o: The excerpt highlights the strong performances of the lead actors, suggesting a positive view of the production. However, the limited text and caution about cherry-picking reduce confidence. | Gemini: The excerpt focuses on the strength of the cast, suggesting a positive aspect of the production. However, with only one excerpt available, the overall verdict is uncertain, leading to a lower confidence score. | Kimi: The excerpt explicitly states the production 'succeeds' due to strong lead performances, indicating a clear positive recommendation despite being qualified.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:15:33.778Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

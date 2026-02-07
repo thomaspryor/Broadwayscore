@@ -43,5 +43,11 @@
   "archiveOrgTimestamp": "20250221071828",
   "archiveOrgUrl": "http://web.archive.org/web/20250221071828/https://www.nytimes.com/2016/02/27/theater/review-you-see-the-encounter-with-your-ears.html",
   "wordCount": 391,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-07T05:36:19.520Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is from 2016 about a London production at the Barbican Theater, not a current Broadway production.; openai: The review is about a production at the Barbican Theater in London, not the current Broadway run.; gemini: This is a review of a London production at the Barbican Theater, not a Broadway show.; kimi: This review covers the London production at the Barbican Theater ('LONDON — Someone is blowing in your ear...'), not the Broadway production. The text explicitly references the venue as the Barbican and the limited run there through March 6.",
+  "promptVersion": "5.2.0"
 }

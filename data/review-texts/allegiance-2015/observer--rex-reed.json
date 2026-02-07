@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"This is a musical? You bet, and a darned passionate one, too. The carefully researched book by Marc Acito, Lorenzo Thione and Jay Kuo, who also supplied the soaring music and intelligent lyrics, collates years of events into a gripping trajectory, while the stirring score perfectly illustrates the action, seamlessly staged by director Stafford Arima. \"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a musical? You bet, and a darned passionate one, too.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise with superlatives ('soaring music', 'gripping trajectory', 'stirring score', 'seamlessly staged') and enthusiastic tone. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the book, music, lyrics, and direction, describing the musical as 'passionate' and 'gripping'. The positive language suggests a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language such as \"darned passionate\", \"gripping trajectory\", and \"stirring score\", suggesting a positive review. Given that it's a single excerpt, I'm scoring it at the higher end of the positive range with low confidence. | Kimi: The excerpt provides enthusiastic praise for the production's passion, carefully researched book, soaring score, and seamless staging, using words like 'gripping' and 'stirring,' though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:34:08.981Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

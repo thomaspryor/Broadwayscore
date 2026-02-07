@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bryan Cranston's Lyndon Johnson is a towering achievement, a performance that captures both the president's crude ambition and his genuine desire to do good.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bryan Cranston's Lyndon Johnson is a towering achievement, a performance that captures both the president's crude ambition and his genuine desire to do good.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bryan Cranston's Lyndon Johnson is a towering achievement, a performance that captures both the president's crude ambition and his genuine desire to do good.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Cranston's performance as 'towering achievement' suggests strong positive review, but limited text makes full verdict uncertain. | GPT-4o: The excerpt praises Bryan Cranston's performance as a 'towering achievement,' indicating a strong recommendation. However, due to the single excerpt warning, the confidence is low, and the score is on the higher end of the Positive range. | Gemini: The excerpt praises Cranston's performance as a \"towering achievement,\" indicating a strong positive sentiment. Given the limited text, confidence is low, but the strength of the praise warrants a high score within the positive bucket. | Kimi: The excerpt offers enthusiastic praise for the central performance using superlatives like 'towering achievement,' indicating a clear recommendation. However, as a single curated quote focusing on one element, confidence is low regarding the full review's comprehensive verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:18:47.343Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

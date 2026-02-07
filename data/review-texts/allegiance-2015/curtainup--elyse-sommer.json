@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"You can't blame the creative team for opting for a conventional, emotion-grabbing way into the narrative — even though the focus on the romances and familial strife the relocations generated tends to weaken the well deserved indictment of those who relegated more than a hundred thousand fellow Americans to enemy alien status...The lyrics aren't especially clever or memorable, but the vocally strong cast sings the heck out of them.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The lyrics aren't especially clever or memorable, but the vocally strong cast sings the heck out of them.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows balanced criticism - acknowledges strong vocal performances but criticizes conventional approach and unmemorable lyrics. Mixed signals with no clear recommendation. | GPT-4o: The excerpt provides a mixed assessment: it acknowledges the strong vocal performances but criticizes the lyrics and narrative focus. The single excerpt warning suggests caution, so a mid-range Mixed score is appropriate. | Gemini: The review excerpt presents a mixed assessment, criticizing the narrative focus while praising the cast's vocal performance. Given the limited text, a 'Mixed' score with low confidence is appropriate. | Kimi: While praising the vocally strong cast, the critic criticizes the lyrics as unmemorable and the narrative focus for weakening the show's political indictment, suggesting a mixed assessment with significant reservations about the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:25:03.083Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

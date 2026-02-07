@@ -49,5 +49,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--peter-marks.json",
   "wordCount": 704,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is thrilling and essential theater that interrogates the present by laying bare how history is written.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlatives throughout: 'astonishing feat,' 'thrilling and essential theater,' 'among the best new plays on Broadway in years.' No reservations, only praise for writing, performances, and direction. | GPT-4o: The review is full of superlatives and unqualified praise, calling the play 'astonishing,' 'thrilling,' 'essential,' and 'among the best new plays on Broadway in years.' These strong endorsements place it firmly in the Rave category. | Gemini: The review is overwhelmingly positive, calling the play \"an astonishing feat\" and \"among the best new plays on Broadway in years.\" The critic emphasizes its dramatic cunning, essential nature, and sharp wit. | Kimi: The review offers unqualified praise across writing, direction, and performances, calling the play 'among the best new plays on Broadway in years' with superlatives like 'astonishing feat' and 'brilliant finesse' and no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:43:20.411Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

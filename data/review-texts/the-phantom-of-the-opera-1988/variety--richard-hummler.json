@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -50,5 +50,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 879,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a major achievement in the musical theater and a high water mark in the phenomenal Lloyd Webber career.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive review with consistent praise throughout. Calls it a 'major achievement,' praises performances, staging, and music extensively. While acknowledging it's not groundbreaking artistically, enthusiastically recommends it as 'gloriously old fashioned romantic musical spectacle.' | GPT-4o: The review praises the show as a 'major achievement' and 'gloriously old fashioned romantic musical spectacle,' with exceptional performances and stagecraft. The critic's tone is overwhelmingly positive, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the music, performances, staging, and overall spectacle. While acknowledging it's not groundbreaking, it calls it a 'major achievement' and a 'high water mark,' indicating a strong recommendation. | Kimi: The reviewer enthusiastically praises the production as a 'major achievement' with 'sensational' stagecraft, 'exceptional' singing, and 'brilliantly organized flair,' calling it a 'gloriously old fashioned romantic musical spectacle' that justifies its hype and will run for years. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:51:07.936Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

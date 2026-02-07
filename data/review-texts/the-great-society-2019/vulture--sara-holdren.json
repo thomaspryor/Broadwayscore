@@ -44,5 +44,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20191018070607/https://www.vulture.com/2019/10/theater-review-brian-cox-in-the-great-society-on-broadway.html",
   "contentTier": "complete",
   "wordCount": 1191,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Great Society is a lumbering, spiritless mess.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Devastating pan with harsh language throughout: 'lumbering, spiritless mess,' 'embarrassing,' 'slog,' 'hardly even a play.' Critics every major element from writing to direction to performances. | GPT-4o: The review is overwhelmingly negative, describing the play as a 'lumbering, spiritless mess' and criticizing the script, direction, and overall execution. The critic expresses a strong recommendation against seeing the show, with no redeeming qualities highlighted. | Gemini: The review is overwhelmingly negative, calling the play a \"lumbering, spiritless mess\" and a \"dramatized textbook.\" The critic finds the play cliché, shallow, and ultimately unsuccessful. | Kimi: The review is devastatingly critical throughout, calling the play a 'slog,' 'hardly even a play,' and 'practically self-parody,' with even the praised powerhouse performance of Brian Cox described as being trapped by a leaden, clichéd script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:39:05.255Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 20,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

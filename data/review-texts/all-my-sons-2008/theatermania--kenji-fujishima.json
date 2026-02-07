@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"If one is willing to overlook the incongruity of making George black but keeping Ann white, there's something empowering in Ogbuagu and Fluker playing the grim truth tellers amid a sea of white characters who are all suffering from varying degrees of self-delusion...However, this production is a straightforward presentation...Still, if seeing a powerful drama staged and performed well is enough of a reward, then this new production mostly satisfies.\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, if seeing a powerful drama staged and performed well is enough of a reward, then this new production mostly satisfies.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic offers qualified praise saying the production 'mostly satisfies' for those wanting 'powerful drama staged and performed well,' but notes concerns about casting choices and describes it as 'straightforward.' Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt suggests a positive view of the production's staging and performances, despite some noted incongruities. The recommendation is qualified, indicating a barely positive sentiment. | Gemini: The review acknowledges an \"incongruity\" but ultimately concludes that the production \"mostly satisfies\" if the viewer is looking for a well-staged and performed drama. Due to the limited excerpt, confidence is low. | Kimi: The critic acknowledges flaws (casting incongruity, straightforward presentation) but ultimately delivers a conditional recommendation, finding the production 'mostly satisfies' if one appreciates solid staging. The qualified praise ('if...enough of a reward') places this at the lower end of positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:11:38.353Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

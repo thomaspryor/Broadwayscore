@@ -38,5 +38,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 757,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mostly, though, the play still works because it has the power to move and disturb us.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic emphasizes the play's enduring power and relevance, stating it 'still works' and has the ability to 'move and disturb.' However, this is only a single excerpt which limits confidence in the full verdict. | GPT-4o: The excerpt praises the play's continued relevance and emotional impact, indicating a strong recommendation. However, with only one excerpt available, confidence is low. | Gemini: The review states the play \"still works\" and has the power to move and disturb, indicating a positive, but not overwhelmingly enthusiastic, recommendation. Given the single excerpt, confidence is low. | Kimi: The excerpt offers clear praise for the play's lasting urgency and emotional impact, noting it remains relevant rather than feeling like a historical artifact, though the single-excerpt format limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:47:31.226Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 14,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -38,5 +38,60 @@
     "Word count too low: 194 (min: 300)"
   ],
   "wordCount": 194,
-  "tierReason": "Short text (194 words)"
+  "tierReason": "Short text (194 words)",
+  "llmScore": {
+    "score": 14,
+    "confidence": "high",
+    "range": {
+      "low": 9,
+      "high": 19
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Do not pay Broadway prices",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating pan with explicit anti-recommendation ('Do not pay'), calling it 'Dumb, Expensive, Meaningless' and a 'RIP OFF of grand proportions.' Critic was 'bored and disgusted.' | GPT-4o: The review is overwhelmingly negative, criticizing the show as a 'RIP OFF' and 'pointless babbling.' The critic expresses strong dissatisfaction with the production, indicating a deep pan. | Gemini: The review is overwhelmingly negative, calling the show a \"rip off\", \"dumb, expensive, meaningless\", and a \"waste\". The critic clearly advises against seeing it. | Kimi: The critic explicitly urges readers not to pay Broadway prices, calling the 60-minute show a 'RIP OFF' and 'meaningless' waste of time, expressing disgust and boredom with the performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:05:12.089Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 12,
+    "geminiScore": 12,
+    "kimiScore": 15,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

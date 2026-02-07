@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Langella's Nixon is a fascinatingly contradictory creation: a man who seems to shrink and expand simultaneously, diminished by his great fall from grace yet made strangely magnificent by his very monstrousness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -54,5 +54,59 @@
     "Show title not found in text"
   ],
   "wordCount": 917,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "average theatergoers are likely to have a good time",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises Langella's 'titanic performance' and calls the play 'briskly entertaining' with 'momentum of a ticking-bomb thriller,' but criticizes Morgan for oversimplifying and taking liberties with facts for entertainment value. | Gemini: The review acknowledges flaws in historical accuracy but concludes that the play is entertaining and features superb performances, making it a positive but not rave review. | Kimi: While criticizing the script for blunt messaging and factual liberties, Brantley delivers strong praise for the production's 'ticking-bomb thriller' momentum, 'terrific' lighting, and 'superb' performances—particularly Langella's 'truly titanic' turn—concluding that theatergoers will have a good time.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:01:56.361Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

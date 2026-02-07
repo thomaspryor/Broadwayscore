@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"There are a few things that don't quite work - and a couple that are flat-out wrong - in 'Allegiance,' but every time the show threatens to succumb to sentimentality or formulaic musical comedy gestures, it surprises with something striking, even shocking...Even as it arrives at a reconciliation of sorts - which, if staged with more restraint, would be far more powerful - 'Allegiance' doesn't sugarcoat the events it portrays.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "every time the show threatens to succumb to sentimentality or formulaic musical comedy gestures, it surprises with something striking, even shocking",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt warning applies - this appears positive overall (praises surprises, striking moments, honest portrayal) but acknowledges significant flaws. Lower end of Positive bucket due to limited text. | GPT-4o: The review acknowledges flaws and moments that don't work, but also highlights surprising and striking elements. The overall tone suggests a mix of positive and negative aspects, leading to a mixed verdict. | Gemini: The review acknowledges flaws but highlights striking and shocking elements, suggesting a positive but qualified recommendation. Confidence is low due to the limited excerpt. | Kimi: While the critic notes significant flaws including elements that are 'flat-out wrong,' the review emphasizes that the show consistently delivers striking and surprising moments that overcome its sentimental tendencies, indicating a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:31:44.769Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

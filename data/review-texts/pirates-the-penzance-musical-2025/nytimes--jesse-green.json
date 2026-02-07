@@ -45,10 +45,10 @@
   "contentTier": "needs-rescrape",
   "wordCount": 375,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-06T16:06:36.224Z",
+  "rejectedAt": "2026-02-07T05:20:14.748Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text cuts off mid-sentence with an error message about JavaScript and retrieving article content, making it impossible to assess the critic's full verdict.; openai: The text includes a technical error message about retrieving content, indicating incomplete or inaccessible review content.; gemini: The review is cut off mid-sentence, preventing a clear understanding of the critic's final verdict. The article ends abruptly with a technical message.",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about retrieving article content and enabling JavaScript, indicating this is truncated/corrupted content rather than a complete review.; openai: The text includes a message about trouble retrieving the article content, indicating it is incomplete and not a full review.; gemini: The review is cut off mid-sentence, preventing a clear understanding of the critic's final verdict. The text ends abruptly, so it's impossible to determine the overall recommendation.",
   "promptVersion": "5.2.0",
   "showScoreExcerpt": "\"Though jolly enough, the latest Broadway incarnation... has a sweaty quality, bordering on frenzy, that’s hopelessly at odds with the cool wit of the original.\"\n\nRead more"
 }

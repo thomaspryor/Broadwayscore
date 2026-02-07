@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"“Allegiance,” with well-crafted music and lyrics, has Broadway aspirations and from the look of it is well on its way. Kuo’s score is a major strength, with many songs based on traditional Japanese melodies, others distinctly American in sound and feel...This is a polished production, with fine performances all around and Broadway veterans in the major roles...“Allegiance” tells a horrifying story in a most human and utterly engaging way. See the world premiere now.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "See the world premiere now.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong positive language throughout ('well-crafted', 'polished production', 'fine performances', 'utterly engaging') culminating in clear recommendation to see it. Single excerpt warning noted - scored in upper positive range due to enthusiastic tone. | GPT-4o: The excerpt praises the music, performances, and production quality, and strongly recommends seeing it. The phrase 'utterly engaging' and 'See the world premiere now' suggest a strong endorsement. | Gemini: The review uses phrases like \"well-crafted music and lyrics\", \"major strength\", \"polished production\", \"fine performances\", and \"utterly engaging way\", indicating a strong positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:36:29.197Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 86,
+    "geminiScore": 82,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Jack O'Brien, is handsomely mounted and well-acted, but it doesn't transcend the material's occasional creakiness or find new depths in its familiar moral terrain.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by Jack O'Brien, is handsomely mounted and well-acted, but it doesn't transcend the material's occasional creakiness or find new depths in its familiar moral terrain.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production is handsomely mounted and well-acted, but it doesn't transcend the material's occasional creakiness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Acknowledges production values and performances but criticizes the material itself and lack of fresh insight. The 'but' construction indicates qualified assessment rather than recommendation. | GPT-4o: The review acknowledges the production's quality in terms of direction and acting but notes it fails to overcome the material's limitations, suggesting a mixed reception. | Gemini: The review acknowledges positive aspects (handsomely mounted, well-acted) but ultimately finds the production lacking in depth and originality, resulting in a mixed assessment. Confidence is low due to the single excerpt. | Kimi: Single excerpt offers qualified praise for staging and acting while noting the production fails to overcome dated source material or find fresh insights, indicating a mild recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:16:38.953Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

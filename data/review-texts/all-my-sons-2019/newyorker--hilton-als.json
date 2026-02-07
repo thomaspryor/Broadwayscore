@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Jack O'Brien, is notable for its stellar cast, which includes Jeremy Jordan, Benjamin Walker, and Francesca Carpanini, but the real revelation is Annette Bening, who gives a performance of such subtlety and power that she transforms Miller's sometimes heavy-handed morality play into something approaching tragedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by Jack O'Brien, is notable for its stellar cast, which includes Jeremy Jordan, Benjamin Walker, and Francesca Carpanini, but the real revelation is Annette Bening, who gives a performance of such subtlety and power that she transforms Miller's sometimes heavy-handed morality play into something approaching tragedy.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The real revelation is Annette Bening, who gives a performance of such subtlety and power that she transforms Miller's sometimes heavy-handed morality play into something approaching tragedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises 'stellar cast' and calls Bening's performance a 'revelation' that elevates the material. However, single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises the production's cast, particularly highlighting Annette Bening's transformative performance. The strong language suggests a positive recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt focuses heavily on Annette Bening's performance, calling it a \"revelation\" and transformative. While it mentions the play itself is \"sometimes heavy-handed,\" the overall tone is positive due to Bening's contribution and the \"stellar cast.\" | Kimi: The excerpt offers strong praise for the cast ('stellar') and specifically Bening's transformative performance ('revelation', 'subtlety and power'), though it acknowledges the source material can be heavy-handed. As only a single curated excerpt is available, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:14:20.290Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Allegiance' is a sometimes moving, sometimes stodgy musical about this terrible injustice...George Takei has a strange way of growing on you. Even when he is the sullen older Sam he is movingly human, his face registering warmth and pain. He is heartbreaking in the finale. Stafford Arima’s direction keeps all the plot lines clear, smartly speeding things up in the second act so when all the emotional threads are woven together, the effect is quite moving.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even when he is the sullen older Sam he is movingly human, his face registering warmth and pain.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed language ('sometimes moving, sometimes stodgy') but ultimately positive verdict praising Takei's performance and direction. Single excerpt limits confidence, so scored at lower end of Positive range. | GPT-4o: The excerpt highlights both positive and negative aspects, describing the musical as 'sometimes moving, sometimes stodgy'. However, the direction and emotional impact are praised, suggesting a positive recommendation overall. The single excerpt and text quality warning necessitate a low confidence level. | Gemini: The review uses phrases like \"sometimes moving\" and \"heartbreaking\" to describe the show, indicating a positive but not overwhelmingly enthusiastic sentiment. The single excerpt and truncated nature of the review lower the confidence. | Kimi: The excerpt offers qualified praise, acknowledging the show is 'sometimes stodgy' but highlighting Takei's 'heartbreaking' performance and Arima's 'quite moving' direction, suggesting a mild recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:44:01.046Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

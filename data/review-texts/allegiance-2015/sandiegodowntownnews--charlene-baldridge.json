@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A composer could not ask for better singer/actors to perform his new musical. All are excellent, attractive actors who sing well and create rich, memorable characters. The situation and the relationships are complicated yet clear in director Stafford Arima’s fast-moving production...Is there a dry eye in the house? I think not...It’s difficult to tell on just one hearing if the musical score is up to the talent and the book. The entire endeavor is earnest, both to its credit and possible detriment.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A composer could not ask for better singer/actors to perform his new musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises performances and direction, notes emotional impact, but expresses uncertainty about the score and calls the show 'earnest' (potentially a backhanded compliment). Single excerpt limits confidence in overall verdict. | GPT-4o: The review excerpt praises the cast and direction, indicating a generally positive view. However, it also expresses uncertainty about the musical score and notes the earnestness as both a strength and a potential weakness, suggesting some reservations. | Gemini: The review praises the performers and direction, but expresses uncertainty about the musical score and book. The excerpt suggests a positive but qualified recommendation. | Kimi: Strong praise for the cast ('excellent,' 'could not ask for better') and direction ('fast-moving'), with emotional impact noted, though tempered by reservations about the musical score itself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:36:59.615Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

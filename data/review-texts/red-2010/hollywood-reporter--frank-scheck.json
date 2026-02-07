@@ -59,5 +59,60 @@
   "tierReason": "Full review text",
   "previousUrl": "http://www.hollywoodreporter.com/hr/film-reviews/red-theater-review-1004080230.story",
   "urlDiscoveredAt": "2026-02-06T18:51:48.553Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "assignedScore": 85,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This fascinating theatrical depiction should easily make audiences re-evaluate their notions about the artistic process.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Consistent praise throughout with superlatives like 'absolutely superb,' 'riveting production,' and 'tour-de-force scene.' Predicts Broadway success and awards potential. Confidence is medium due to truncation warning, but BWW excerpt confirms strong positive verdict. | GPT-4o: The review offers high praise for the performances, direction, and production design, indicating a strong recommendation. Despite the truncated text warning, the available content suggests a very positive assessment. | Gemini: The review is overwhelmingly positive, praising Molina's performance, the production, and the set design. The phrase \"should prove similarly successful here and stands to figure prominently this awards season\" indicates a strong recommendation. | Kimi: The review delivers consistent superlatives for the performances ('absolutely superb', 'shines'), direction ('riveting'), and design, predicting awards season prominence and describing the work as a 'fascinating theatrical depiction' and 'tour-de-force'. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:22:34.346Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

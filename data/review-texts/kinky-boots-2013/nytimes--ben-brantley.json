@@ -60,5 +60,59 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 359,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Try to resist if you must. But for at least the first act of this tale of lost souls in the shoe business, you might as well just give it up to the audience-hugging charisma of her songs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley praises Lauper's score as irresistible and commends the performances, but notes the second act becomes preachy with clichéd elements. Overall positive with clear reservations. | Gemini: The review is mostly positive, praising Lauper's score and the performances, but it notes that the second half becomes too preachy and relies on clichés, indicating a recommendation with reservations. | Kimi: The critic enthusiastically praises Cyndi Lauper's score and the leading performances as charismatic and heartfelt, while explicitly criticizing the second half of Harvey Fierstein's book as preachy and reliant on clichés. The overall recommendation is positive but qualified by the script's shortcomings.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:08:31.188Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

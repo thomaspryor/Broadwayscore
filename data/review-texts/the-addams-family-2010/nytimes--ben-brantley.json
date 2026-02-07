@@ -50,5 +50,59 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 278,
-  "tierReason": "Short text (278 words)"
+  "tierReason": "Short text (278 words)",
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "high",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Being in this genuinely ghastly musical must feel like going to a Halloween party in a strait-jacket.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: Brantley delivers a devastating pan, calling the show 'genuinely ghastly' and 'a collapsing tomb' that wastes talented performers. The extended metaphor of being trapped in uncomfortable costume conveys total rejection with no redeeming qualities offered. | Gemini: The review is overwhelmingly negative, describing the show as a \"collapsing tomb\" and \"genuinely ghastly.\" The critic expresses sympathy for the talented actors trapped in the production. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:28:35.291Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": null,
+    "geminiScore": 15,
+    "kimiScore": 20,
+    "claudeBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Pan"
+  }
 }

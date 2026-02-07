@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jez Butterworth's family drama is a sprawling, ambitious work that captures the dreams and disappointments of a working-class British family with remarkable emotional depth.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "previousUrl": "https://www.nytimes.com/2024/09/12/theater/the-hills-of-california-review.html",
   "urlDiscoveredAt": "2026-02-06T19:39:44.944Z",
@@ -41,5 +41,10 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250507133945/https://www.nytimes.com/2024/09/29/theater/the-hills-of-california-review.html",
   "duplicateTextOf": "nytimes--jesse-green.json",
   "wordCount": 300,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-07T05:42:05.489Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text is truncated with a technical error message about JavaScript and retrieving content, making it impossible to determine the critic's verdict; openai: The review text is interrupted by a technical issue message, indicating incomplete content.; gemini: The review is cut off mid-sentence, preventing a clear understanding of the critic's final verdict.",
+  "promptVersion": "5.2.0"
 }

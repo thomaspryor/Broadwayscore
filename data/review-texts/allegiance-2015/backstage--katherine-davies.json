@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"With more editing this show could work out its minor flaws, but even as it is, it successfully brings an often-overlooked part of American history to light in a way that is creative and affecting. And for its world premiere, the creators of this show could not have asked for a better group of actors.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With more editing this show could work out its minor flaws, but even as it is, it successfully brings an often-overlooked part of American history to light in a way that is creative and affecting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict praising the show as 'creative and affecting' and commending the cast, though acknowledging 'minor flaws' that could be improved. Single excerpt warning applied - using upper end of Positive bucket for clearly positive sentiment. | GPT-4o: The excerpt indicates a positive view of the show, highlighting its creativity and impact, despite mentioning minor flaws. The single excerpt warning suggests using the lower end of the Positive range. | Gemini: The review acknowledges flaws but ultimately praises the show for its creativity and impact, recommending it despite reservations. Confidence is low due to the single excerpt. | Kimi: While the critic notes minor flaws that could be fixed with editing, they ultimately praise the show as 'successful,' 'creative,' and 'affecting,' and commend the cast superlatively. The tone is clearly appreciative and recommends the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:22:53.644Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 72,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

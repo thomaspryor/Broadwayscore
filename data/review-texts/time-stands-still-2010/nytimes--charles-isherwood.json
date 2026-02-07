@@ -34,5 +34,59 @@
   "archiveOrgTimestamp": "20120624073822",
   "archiveOrgUrl": "http://web.archive.org/web/20120624073822/http://theater.nytimes.com/2010/10/08/theater/reviews/08time.html",
   "wordCount": 547,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With Ms. Linney and Mr. d'Arcy James bringing this intelligent, absorbing drama to such tortured life, attending 'Time Stands Still' can feel like eavesdropping on two cherished friends at their most vulnerable and emotionally exposed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for performances ('intensely fine,' 'superb actors') and the production ('intelligent, absorbing drama'). Critic emphasizes the emotional power and quality of the work with clear appreciation for the craft involved. | Gemini: The review is overwhelmingly positive, praising the performances and the play's emotional impact. The critic clearly recommends seeing the show, highlighting the actors' deep understanding of their roles. | Kimi: The critic offers enthusiastic praise for the lead performances ('superb,' 'intensely fine'), the 'intelligent, absorbing' writing, and the production's 'enriched emotional resonance,' describing the experience as emotionally powerful and worth attending despite (or because of) its painful intensity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:59:13.031Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

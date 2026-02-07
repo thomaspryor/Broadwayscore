@@ -43,5 +43,11 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 941,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-07T05:08:46.795Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Donmar Warehouse in London, not the current Broadway run.; kimi: This review covers the Donmar Warehouse production in London, not the current Broadway run. The venue is explicitly listed as 'Donmar Warehouse, London' and the text discusses a potential 'West End transfer' and NT Live cinema screening, indicating this is a London production.",
+  "promptVersion": "5.2.0"
 }

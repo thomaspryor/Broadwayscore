@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play is funny in spots, but it's also deeply unpleasant, and not in a good way. Rebeck seems to think that making her characters awful will automatically make them interesting.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -56,5 +56,60 @@
   "promptVersion": "5.2.0",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is funny in spots, but it's also deeply unpleasant, and not in a good way.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the play 'deeply unpleasant' with unsuccessful character development, despite acknowledging some humor. However, with only one excerpt available, the full verdict may be more nuanced than this negative assessment suggests. | GPT-4o: The excerpt indicates a negative view, noting the play is 'deeply unpleasant' and criticizes the character development. However, the single excerpt limits confidence in the overall verdict. | Gemini: The review states the play is \"deeply unpleasant\" which indicates a negative sentiment. The review also suggests the characters are awful, further supporting a negative classification. | Kimi: The critic describes the play as 'deeply unpleasant, and not in a good way' and criticizes the playwright's approach to characterization, indicating a clear negative verdict despite acknowledging occasional humor.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:25:01.032Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

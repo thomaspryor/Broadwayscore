@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Allegiance' is a beautifully mounted production thanks to Stafford Arima’s masterful direction...And there are moments here that will haunt you, especially the 'Itetsuita' number in the second act...It was one of the most stunning moments I’ve ever witnessed on stage. Which is why it pains me to say that the music and lyrics don’t quite rise to the subject matter of this important and ambitious piece. But, despite that, I swear 'Allegiance' deserves your attention.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It pains me to say that the music and lyrics don't quite rise to the subject matter of this important and ambitious piece.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises direction and staging, calls one moment 'most stunning ever witnessed,' but explicitly states the music/lyrics don't measure up. Final verdict is 'deserves your attention' despite flaws - classic mixed review. | GPT-4o: The excerpt praises the production and direction, highlighting a stunning moment, but notes the music and lyrics fall short. Despite this, it concludes with a recommendation, suggesting the show is worth seeing. | Gemini: The review acknowledges shortcomings in the music and lyrics but ultimately recommends the show, calling it an \"important and ambitious piece\" and praising the direction and specific moments. | Kimi: While the critic notes that the music and lyrics don't fully serve the subject matter, they praise the 'masterful direction' and 'stunning' staging, ending with a clear recommendation that the show 'deserves your attention.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:33:40.364Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

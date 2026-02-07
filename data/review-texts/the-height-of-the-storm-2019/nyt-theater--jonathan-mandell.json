@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -41,5 +41,60 @@
     "Word count too low: 138 (min: 300)"
   ],
   "wordCount": 138,
-  "tierReason": "Short text (138 words)"
+  "tierReason": "Short text (138 words)",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "their performances were not enough compensation for sitting through Zeller's trickster writing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Praises the actors' performances but finds the writing insufficient compensation for the overall experience. The phrase 'not enough compensation for sitting through' suggests the critic would not recommend it despite acknowledging quality elements. | GPT-4o: The excerpt praises the actors but criticizes the writing as a 'shtick,' indicating a negative overall impression. The lack of full context and single excerpt warning suggest caution, but the negative tone is clear. | Gemini: The review praises the actors' performances but criticizes the writing, suggesting a mixed experience overall. Given the limited excerpt, confidence is low. | Kimi: While praising the British actors' 'memorable moments of emotional power,' the critic explicitly dismisses Zeller's writing as 'trickster' and 'shtick,' stating the performances do not justify sitting through the show, indicating a clear negative recommendation. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T05:40:33.039Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 48,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

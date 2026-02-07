@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The production has its shortcomings, sure; but not in any hugely damaging way– not damaging enough to diminish its significance. Lyrically, some of the songs move the story from the sharply-focused struggles of Japanese Americans into broader sentiments that somewhat trivialize the gravity of the moments they occupy...Despite its creative miscues, 'Allegiance' brings an untold story to life with unexpected brilliance.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite its creative miscues, 'Allegiance' brings an untold story to life with unexpected brilliance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges shortcomings but emphasizes they're 'not hugely damaging' and concludes with 'unexpected brilliance,' indicating a positive recommendation despite reservations. | GPT-4o: The excerpt acknowledges shortcomings and creative miscues but ultimately praises the production for bringing an untold story to life with brilliance. The overall tone suggests a positive recommendation despite some reservations. | Gemini: The review acknowledges shortcomings but ultimately states the production brings an untold story to life with brilliance, indicating a positive recommendation with reservations. Confidence is low due to the excerpt-only nature of the text. | Kimi: While the excerpt acknowledges significant flaws (lyrical trivialization, creative miscues), the ultimate verdict emphasizes 'unexpected brilliance' and maintains the show's significance outweighs its shortcomings, indicating a clear recommendation with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T06:40:28.920Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

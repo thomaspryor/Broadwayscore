@@ -56,10 +56,10 @@
   "sourceMethod": "scrapingbee",
   "wordCount": 903,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-06T15:46:10.720Z",
+  "rejectedAt": "2026-02-07T05:14:40.563Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This appears to be a website navigation menu or aggregated content feed with multiple unrelated articles about Super Bowl ads, films, TV shows, and other topics - not a coherent Broadway review; openai: The text provided is a collection of unrelated headlines and snippets, not a coherent review of a Broadway show.; gemini: This is not a review; it's a collection of unrelated headlines and snippets from Variety.; kimi: The text provided is a concatenation of multiple unrelated article headlines, snippets, and navigation elements from Variety's website (including TV, film, and music coverage), not a coherent review of a single Broadway show. It does not contain a scoreable theater review.",
+  "rejectionReasoning": "claude: This appears to be a website navigation menu or aggregated content page with multiple unrelated articles about Super Bowl, movies, and TV shows - not a coherent Broadway review; openai: The text provided is a collection of unrelated headlines and snippets, not a coherent review of a Broadway show.; gemini: This is a list of unrelated articles and headlines, not a review of a specific show.; kimi: The text is a jumbled concatenation of unrelated entertainment news headlines, movie reviews, TV listings, and website navigation elements ('Popular on Variety') rather than a coherent Broadway theater review. It contains fragments about Super Bowl ads, Netflix shows, music albums, and random theater mentions without forming a complete review of any single show. The repeated passages and lack of narrative structure indicate a scraping error or navigation menu content, not a review article.",
   "promptVersion": "5.2.0",
   "sources": [
     "web-search"
