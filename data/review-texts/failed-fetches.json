@@ -15760,18 +15760,6 @@
     "timestamp": "2026-02-06T06:01:10.871Z"
   },
   {
-    "reviewId": "cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json",
-    "showId": "cat-on-a-hot-tin-roof-2008",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/a-streetcar-named-desire-theater-314871",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): home, network, sweat, the audience, once...",
-    "textLength": 7258,
-    "timestamp": "2026-02-06T06:01:28.590Z"
-  },
-  {
     "reviewId": "catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json",
     "showId": "catch-me-if-you-can-2011",
     "outlet": "The Hollywood Reporter",
@@ -18326,42 +18314,6 @@
     "garbageReason": "Multiple shows mentioned (9): company, misery, the father, the audience, high...",
     "textLength": 5344,
     "timestamp": "2026-02-06T15:22:45.698Z"
-  },
-  {
-    "reviewId": "carousel-2018/hollywood-reporter--david-rooney.json",
-    "showId": "carousel-2018",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/carousel-theater-1102253",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): giant, harmony, appropriate, smash, waitress...",
-    "textLength": 11832,
-    "timestamp": "2026-02-06T15:24:32.783Z"
-  },
-  {
-    "reviewId": "carousel-2018/newyorker--hilton-als.json",
-    "showId": "carousel-2018",
-    "outlet": "The New Yorker",
-    "critic": "Hilton Als",
-    "url": "https://www.newyorker.com/magazine/2018/04/23/the-dark-fantasies-of-carousel",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): wicked, harmony, home, oklahoma!, summer...",
-    "textLength": 8239,
-    "timestamp": "2026-02-06T15:24:41.941Z"
-  },
-  {
-    "reviewId": "carousel-2018/nytimes--ben-brantley.json",
-    "showId": "carousel-2018",
-    "outlet": "New York Times",
-    "critic": "Ben Brantley",
-    "url": "http://www.nytimes.com/2018/04/12/theater/carousel-review-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, violet, the performers, evita, the scottsboro boys...",
-    "textLength": 7457,
-    "timestamp": "2026-02-06T15:24:45.161Z"
   },
   {
     "reviewId": "dames-at-sea-2015/nytimes--charles-isherwood.json",
@@ -22214,5 +22166,77 @@
     "garbageReason": "Multiple shows mentioned (9): home, purpose, the audience, magic/bird, lombardi...",
     "textLength": 6606,
     "timestamp": "2026-02-07T06:09:35.233Z"
+  },
+  {
+    "reviewId": "carousel-2018/hollywood-reporter--david-rooney.json",
+    "showId": "carousel-2018",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/carousel-theater-1102253",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): giant, harmony, appropriate, smash, waitress...",
+    "textLength": 11593,
+    "timestamp": "2026-02-07T06:10:26.837Z"
+  },
+  {
+    "reviewId": "carousel-2018/newyorker--hilton-als.json",
+    "showId": "carousel-2018",
+    "outlet": "The New Yorker",
+    "critic": "Hilton Als",
+    "url": "https://www.newyorker.com/magazine/2018/04/23/the-dark-fantasies-of-carousel",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): wicked, harmony, home, oklahoma!, summer...",
+    "textLength": 8239,
+    "timestamp": "2026-02-07T06:10:31.010Z"
+  },
+  {
+    "reviewId": "carousel-2018/nytimes--ben-brantley.json",
+    "showId": "carousel-2018",
+    "outlet": "New York Times",
+    "critic": "Ben Brantley",
+    "url": "http://www.nytimes.com/2018/04/12/theater/carousel-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, violet, the performers, evita, the scottsboro boys...",
+    "textLength": 7457,
+    "timestamp": "2026-02-07T06:10:33.935Z"
+  },
+  {
+    "reviewId": "carousel-2018/nytimes--unknown.json",
+    "showId": "carousel-2018",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2018/04/12/theater/carousel-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, violet, the performers, evita, the scottsboro boys...",
+    "textLength": 7457,
+    "timestamp": "2026-02-07T06:11:48.744Z"
+  },
+  {
+    "reviewId": "cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json",
+    "showId": "cat-on-a-hot-tin-roof-2008",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/a-streetcar-named-desire-theater-314871",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mamma mia!, home, network, sweat, the audience...",
+    "textLength": 7430,
+    "timestamp": "2026-02-07T06:15:15.231Z"
+  },
+  {
+    "reviewId": "carousel-2018/vulture--sara-holdren.json",
+    "showId": "carousel-2018",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "http://www.vulture.com/2018/04/theater-review-can-carousel-be-brought-around.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"adblock\"",
+    "textLength": 13032,
+    "timestamp": "2026-02-07T06:15:35.122Z"
   }
 ]
