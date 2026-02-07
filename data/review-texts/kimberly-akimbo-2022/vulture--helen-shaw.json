@@ -3,9 +3,9 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Helen Shaw",
-  "url": "https://www.vulture.com/2022/11/theater-review-kimberly-akimbo-on-broadway.html",
+  "url": "https://www.vulture.com/2022/11/theater-review-kimberly-akimbo-broadway.html",
   "publishDate": "November 11, 2022",
-  "fullText": "The show has genuine sweetness without being cloying, and it treats its characters' pain with respect while still mining laughs from their circumstances.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The show has genuine sweetness without being cloying, and it treats its characters' pain with respect while still mining laughs from their circumstances.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show has genuine sweetness without being cloying, and it treats its characters' pain with respect while still mining laughs from their circumstances.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (23 words)",
   "llmScore": {
     "score": 77,
@@ -77,5 +77,45 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.vulture.com/2022/11/theater-review-kimberly-akimbo-on-broadway.html",
+  "urlDiscoveredAt": "2026-02-07T14:36:00.546Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/kimberly-akimbo-2022/vulture--helen-shaw_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T14:36:00.557Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }
