@@ -73,14 +73,14 @@
   "isFullReview": true,
   "textWordCount": 881,
   "archivePath": "data/archives/reviews/bengal-tiger-at-the-baghdad-zoo-2011/vulture--scott-brown_2026-02-07.html",
-  "textFetchedAt": "2026-02-07T05:58:21.213Z",
+  "textFetchedAt": "2026-02-07T11:55:29.751Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
       "success": false,
-      "error": "No archive snapshot available"
+      "error": "timeout of 60000ms exceeded"
     },
     {
       "tier": 0.5,
@@ -92,7 +92,7 @@
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+      "error": "Insufficient text extracted: 0 chars"
     },
     {
       "tier": 2,
