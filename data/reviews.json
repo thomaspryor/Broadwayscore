@@ -5,22 +5,22 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 8282,
-      "skippedNoScore": 11702,
+      "skippedNoScore": 11701,
       "skippedDuplicate": 6,
       "skippedDuplicateUrl": 251,
       "skippedCrossOutletDuplicateUrl": 12,
       "skippedWrongProduction": 598,
-      "recoveredFromGarbage": 128,
+      "recoveredFromGarbage": 127,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 2,
         "explicit-slash": 6,
         "explicit-letterGrade": 1,
         "human-review": 61,
-        "originalScore-priority0": 970,
-        "llmScore": 3633,
+        "originalScore-priority0": 971,
+        "llmScore": 3635,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3463,
+        "llmScore-lowconf": 3460,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
@@ -27219,18 +27219,18 @@
       "showId": "anastasia-2017",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/anastasia",
       "publishDate": "April 25, 2017",
-      "originalRating": null,
+      "originalRating": "4/5",
       "pullQuote": "Anastasia is a sweeping adventure, romance and historical epic whose fine craftsmanship will satisfy musical-theater fans beyond the show's ideal audience of teenage girls.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "anastasia-2017",
@@ -32594,7 +32594,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 54,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Charles Isherwood",
@@ -32604,7 +32604,7 @@
       "pullQuote": "‘Bad Cinderella’ both celebrates the discarding of traditional ideas of attractiveness, and what place they might take in relationships, and at the same time doubles back and affirms them. In any case, it’s not a musical that warrants serious analysis.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "bad-cinderella-2023",
@@ -60989,17 +60989,17 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
-      "url": "https://www.theatermania.com/broadway/reviews/death-of-a-salesman_56789.html",
+      "url": "https://www.theatermania.com/broadway/news/02-2012/broadways-death-of-a-salesman-cancels-first-previe_50255.html/",
       "publishDate": "March 16, 2012",
       "originalRating": null,
       "pullQuote": "His performance anchors this solid revival with remarkable emotional depth.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "death-of-a-salesman-2012",
@@ -61645,7 +61645,7 @@
       "pullQuote": "The Broadway musical about Princess Diana is a showcase for elaborate costumes and heartfelt performances, but the show struggles with tonal inconsistencies that undermine its emotional impact.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "diana-the-musical-2021",
@@ -82887,7 +82887,7 @@
       "pullQuote": "Forest Whitaker shines in O'Neill's moody meditation",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "hughie-2016",
@@ -83442,7 +83442,7 @@
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Thom Geier",
-      "url": "http://www.ew.com/ew/article/0,,20364394_20801613,00.html",
+      "url": "https://ew.com/article/2014/04/04/ifthen-ew-stage-review/?srsltid=AfmBOoq9tStUCKZTiJvO29NxvapSzgvbdUSN5DJSuzJgLQjOHEdv5rOQ",
       "publishDate": null,
       "originalRating": "B+",
       "pullQuote": "\"The show's exploration of fate and chance seldom rises above Hallmark-card sentimentality - and the characters have no more depth...But as even John Travolta must know by now, the real star here is Menzel, and she delivers a powerful bipolar performance that often masks the shallowness of the mater...",
@@ -105960,13 +105960,30 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Ben Brantley",
-      "url": "http://www.nytimes.com/2015/11/06/theater/review-on-your-feet-rides-the-rhythm-of-the-estefans.html?_r=0",
+      "url": "https://www.nytimes.com/2015/11/06/theater/review-on-your-feet-rides-the-rhythm-of-the-estefans.html",
       "publishDate": "November 5, 2015",
       "originalRating": null,
       "pullQuote": "This jukebox musical has an old-fashioned heart and a slick contemporary package, but it never quite finds its rhythm.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
+    },
+    {
+      "showId": "on-your-feet-2015",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 63,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Unknown",
+      "url": "http://www.nytimes.com/2015/11/06/theater/review-on-your-feet-rides-the-rhythm-of-the-estefans.html?_r=0",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "'On Your Feet!' ultimately falls somewhere in the middle of the hefty pack of jukebox musicals that have plugged in to Broadway's power strip.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "on-your-feet-2015",
@@ -119931,7 +119948,7 @@
       "pullQuote": "without a strong grounding in the source material, this Smash remains unmoored as it pursues a tangle of subplots, character arcs, and framing devices at once.",
       "dtliThumb": "MEH",
       "bwwThumb": "Meh",
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "smash-2025",
@@ -124542,23 +124559,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "sylvia-2015",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 61,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Charles Isherwood",
-      "url": "https://www.nytimes.com/2015/10/28/theater/review-sylvia-in-which-a-man-loves-a-dog-too-much.html",
-      "publishDate": "October 27, 2015",
-      "originalRating": null,
-      "pullQuote": "The gimmick of 'Sylvia,' which is indeed a comedy — albeit a trifling one",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "sylvia-2015",
