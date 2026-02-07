@@ -18448,18 +18448,6 @@
     "timestamp": "2026-02-06T17:06:49.981Z"
   },
   {
-    "reviewId": "mary-poppins-2006/variety--owen-glieberman.json",
-    "showId": "mary-poppins-2006",
-    "outlet": "Variety",
-    "critic": "Owen Glieberman",
-    "url": "https://variety.com/2018/film/reviews/mary-poppins-returns-review-emily-blunt-1203085530/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): chicago, home, gypsy, the children, the present...",
-    "textLength": 9284,
-    "timestamp": "2026-02-06T17:07:35.271Z"
-  },
-  {
     "reviewId": "maybe-happy-ending-2024/nyt-theater--jonathan-mandell.json",
     "showId": "maybe-happy-ending-2024",
     "outlet": "New York Theater",
@@ -22790,5 +22778,53 @@
     "garbageReason": "Multiple shows mentioned (14): the lion king, home, english, purpose, network...",
     "textLength": 8510,
     "timestamp": "2026-02-07T08:08:41.960Z"
+  },
+  {
+    "reviewId": "mary-poppins-2006/variety--owen-glieberman.json",
+    "showId": "mary-poppins-2006",
+    "outlet": "Variety",
+    "critic": "Owen Glieberman",
+    "url": "https://variety.com/2018/film/reviews/mary-poppins-returns-review-emily-blunt-1203085530/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): chicago, home, gypsy, the children, the present...",
+    "textLength": 8563,
+    "timestamp": "2026-02-07T08:09:15.215Z"
+  },
+  {
+    "reviewId": "mary-stuart-2009/nytimes--ben-brantley.json",
+    "showId": "mary-stuart-2009",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2009/04/20/theater/reviews/20mary.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): mamma mia!, home, english, company, rain...",
+    "textLength": 8061,
+    "timestamp": "2026-02-07T08:09:23.683Z"
+  },
+  {
+    "reviewId": "mcneal-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "mcneal-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/09/30/mcneal-review-robert-downey-jr-unravels-while-ai-ascends/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): the prom, king lear, junk, the price, disgraced...",
+    "textLength": 6026,
+    "timestamp": "2026-02-07T08:13:13.205Z"
+  },
+  {
+    "reviewId": "mcneal-2024/nytimes--unknown.json",
+    "showId": "mcneal-2024",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2024/09/30/theater/mcneal-review-ai-robert-downey-jr.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): king lear, carousel, disgraced, rain, elling...",
+    "textLength": 5615,
+    "timestamp": "2026-02-07T08:14:43.053Z"
   }
 ]
