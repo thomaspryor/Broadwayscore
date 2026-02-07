@@ -11476,30 +11476,6 @@
     "timestamp": "2026-02-05T03:12:18.031Z"
   },
   {
-    "reviewId": "holiday-inn-the-new-irving-berlin-musical-2016/variety--marilyn-stasio.json",
-    "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2016/legit/reviews/holiday-inn-review-1201896547/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): home, smash, parade, company, hello, dolly!...",
-    "textLength": 4582,
-    "timestamp": "2026-02-05T03:12:52.098Z"
-  },
-  {
-    "reviewId": "holiday-inn-the-new-irving-berlin-musical-2016/vulture--unknown.json",
-    "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2016/10/theater-review-holiday-inn.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): ragtime, home, american son, follies, rain...",
-    "textLength": 8294,
-    "timestamp": "2026-02-05T03:13:31.569Z"
-  },
-  {
     "reviewId": "ink-2019/vulture--sara-holdren.json",
     "showId": "ink-2019",
     "outlet": "Vulture",
@@ -20164,30 +20140,6 @@
     "timestamp": "2026-02-07T07:38:37.827Z"
   },
   {
-    "reviewId": "hughie-2016/newyorker--hilton-als.json",
-    "showId": "hughie-2016",
-    "outlet": "The New Yorker",
-    "critic": "Hilton Als",
-    "url": "http://www.newyorker.com/magazine/2016/03/07/eugene-oneils-hughie",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): junk, summer, the audience, rain, high...",
-    "textLength": 9246,
-    "timestamp": "2026-02-07T07:40:56.154Z"
-  },
-  {
-    "reviewId": "hughie-2016/nytg--jeff-myhre.json",
-    "showId": "hughie-2016",
-    "outlet": "New York Theatre Guide",
-    "critic": "Jeff Myhre",
-    "url": "http://nytheatreguide.com/2016/03/broadway-review-hughie-at-the-booth-theatre/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): harmony, home, tina, the present, the price...",
-    "textLength": 45998,
-    "timestamp": "2026-02-07T07:41:14.247Z"
-  },
-  {
     "reviewId": "in-the-heights-2008/nytimes--charles-isherwood.json",
     "showId": "in-the-heights-2008",
     "outlet": "The New York Times",
@@ -24122,5 +24074,65 @@
     "garbageReason": "Multiple shows mentioned (7): home, summer, the audience, all the way, hair...",
     "textLength": 7712,
     "timestamp": "2026-02-07T13:20:03.256Z"
+  },
+  {
+    "reviewId": "holiday-inn-the-new-irving-berlin-musical-2016/variety--marilyn-stasio.json",
+    "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2016/legit/reviews/holiday-inn-review-1201896547/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, smash, parade, company, hello, dolly!...",
+    "textLength": 4460,
+    "timestamp": "2026-02-07T13:24:07.012Z"
+  },
+  {
+    "reviewId": "holiday-inn-the-new-irving-berlin-musical-2016/vulture--jesse-green.json",
+    "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2016/10/theater-review-holiday-inn.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): ragtime, home, american son, follies, rain...",
+    "textLength": 8294,
+    "timestamp": "2026-02-07T13:24:14.767Z"
+  },
+  {
+    "reviewId": "holiday-inn-the-new-irving-berlin-musical-2016/vulture--unknown.json",
+    "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2016/10/theater-review-holiday-inn.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): ragtime, home, american son, follies, rain...",
+    "textLength": 8294,
+    "timestamp": "2026-02-07T13:24:17.401Z"
+  },
+  {
+    "reviewId": "hughie-2016/newyorker--hilton-als.json",
+    "showId": "hughie-2016",
+    "outlet": "The New Yorker",
+    "critic": "Hilton Als",
+    "url": "http://www.newyorker.com/magazine/2016/03/07/eugene-oneils-hughie",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): junk, summer, the audience, rain, high...",
+    "textLength": 9202,
+    "timestamp": "2026-02-07T13:25:03.104Z"
+  },
+  {
+    "reviewId": "hughie-2016/nytg--jeff-myhre.json",
+    "showId": "hughie-2016",
+    "outlet": "New York Theatre Guide",
+    "critic": "Jeff Myhre",
+    "url": "http://nytheatreguide.com/2016/03/broadway-review-hughie-at-the-booth-theatre/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): harmony, home, tina, the present, the price...",
+    "textLength": 45998,
+    "timestamp": "2026-02-07T13:25:14.520Z"
   }
 ]
