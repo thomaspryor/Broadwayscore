@@ -17224,30 +17224,6 @@
     "timestamp": "2026-02-06T17:04:58.367Z"
   },
   {
-    "reviewId": "man-and-boy-2011/hollywood-reporter--david-rooney.json",
-    "showId": "man-and-boy-2011",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/man-boy-theater-review-245989",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): mamma mia!, english, company, the prom, disgraced...",
-    "textLength": 5943,
-    "timestamp": "2026-02-06T17:05:17.750Z"
-  },
-  {
-    "reviewId": "man-and-boy-2011/vulture--scott-brown.json",
-    "showId": "man-and-boy-2011",
-    "outlet": "New York Magazine",
-    "critic": "Scott Brown",
-    "url": "http://nymag.com/daily/entertainment/2011/10/theater_review_an_overleverage.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): the price, the father, once, elling, high...",
-    "textLength": 6370,
-    "timestamp": "2026-02-06T17:06:49.981Z"
-  },
-  {
     "reviewId": "maybe-happy-ending-2024/nyt-theater--jonathan-mandell.json",
     "showId": "maybe-happy-ending-2024",
     "outlet": "New York Theater",
@@ -20354,30 +20330,6 @@
     "garbageReason": "Multiple shows mentioned (9): the notebook, home, mean girls, hair, rain...",
     "textLength": 7322,
     "timestamp": "2026-02-07T08:23:18.764Z"
-  },
-  {
-    "reviewId": "mike-birbiglia-the-old-man-and-the-pool-2022/nyt-theater--jonathan-mandell.json",
-    "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2022/11/13/review-mike-birbiglia-the-old-man-the-pool/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): proof, home, kimberly akimbo, shucked, mean girls...",
-    "textLength": 5946,
-    "timestamp": "2026-02-07T08:23:26.003Z"
-  },
-  {
-    "reviewId": "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--elisabeth-vincentelli.json",
-    "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
-    "outlet": "New York Times",
-    "critic": "Elisabeth Vincentelli",
-    "url": "https://www.nytimes.com/2022/11/13/theater/mike-birbiglia-the-old-man-the-pool-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, company, once, rain, elling...",
-    "textLength": 6122,
-    "timestamp": "2026-02-07T08:24:10.320Z"
   },
   {
     "reviewId": "mothers-and-sons-2014/vulture--jesse-green.json",
@@ -24314,5 +24266,65 @@
     "garbageReason": "Multiple shows mentioned (9): chicago, appropriate, company, sweat, the audience...",
     "textLength": 7223,
     "timestamp": "2026-02-07T13:59:19.572Z"
+  },
+  {
+    "reviewId": "macbeth-2013/vulture--unknown.json",
+    "showId": "macbeth-2013",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2013/04/theater-review-alan-cumming-as-macbeth.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+nymag%2Fvulture+(Vulture+-+nymag.com's+Entertainment+and+Culture+Blog)",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): wicked, appropriate, english, sweat, once...",
+    "textLength": 5764,
+    "timestamp": "2026-02-07T14:02:10.119Z"
+  },
+  {
+    "reviewId": "man-and-boy-2011/hollywood-reporter--david-rooney.json",
+    "showId": "man-and-boy-2011",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/man-boy-theater-review-245989",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): mamma mia!, english, company, the prom, disgraced...",
+    "textLength": 5943,
+    "timestamp": "2026-02-07T14:02:27.090Z"
+  },
+  {
+    "reviewId": "man-and-boy-2011/vulture--scott-brown.json",
+    "showId": "man-and-boy-2011",
+    "outlet": "New York Magazine",
+    "critic": "Scott Brown",
+    "url": "http://nymag.com/daily/entertainment/2011/10/theater_review_an_overleverage.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): the price, the father, once, elling, high...",
+    "textLength": 6370,
+    "timestamp": "2026-02-07T14:04:13.453Z"
+  },
+  {
+    "reviewId": "mike-birbiglia-the-old-man-and-the-pool-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/11/13/review-mike-birbiglia-the-old-man-the-pool/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): proof, home, kimberly akimbo, shucked, mean girls...",
+    "textLength": 5946,
+    "timestamp": "2026-02-07T14:04:20.237Z"
+  },
+  {
+    "reviewId": "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--elisabeth-vincentelli.json",
+    "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
+    "outlet": "New York Times",
+    "critic": "Elisabeth Vincentelli",
+    "url": "https://www.nytimes.com/2022/11/13/theater/mike-birbiglia-the-old-man-the-pool-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, company, once, rain, elling...",
+    "textLength": 6122,
+    "timestamp": "2026-02-07T14:04:23.884Z"
   }
 ]

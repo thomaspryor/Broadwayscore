@@ -1,57 +1,51 @@
 {
-  "updatedAt": "2026-02-07T13:59:19.587Z",
-  "processed": 11,
-  "failed": 209,
-  "successRate": "5.0%",
+  "updatedAt": "2026-02-07T14:06:25.964Z",
+  "processed": 16,
+  "failed": 244,
+  "successRate": "6.2%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 3,
-    "scrapingbee": 1,
-    "brightdata": 5,
-    "archive": 5
+    "playwright": 2,
+    "browserbase": 4,
+    "scrapingbee": 2,
+    "brightdata": 6,
+    "archive": 8
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-07T10:59:04.918Z",
+      "t": "2026-02-07T10:59:44.991Z",
       "event": "bb-session",
-      "session": "bc1712c2",
-      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
+      "session": "af5a7e99",
+      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
     },
     {
-      "t": "2026-02-07T11:01:05.667Z",
+      "t": "2026-02-07T11:00:02.091Z",
       "event": "bb-session",
-      "session": "0afd8cec",
-      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
+      "session": "20fa19b5",
+      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
     },
     {
-      "t": "2026-02-07T11:01:07.927Z",
+      "t": "2026-02-07T11:00:25.580Z",
+      "event": "bb-session",
+      "session": "4a976259",
+      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+    },
+    {
+      "t": "2026-02-07T11:04:33.205Z",
+      "event": "bb-session",
+      "session": "76986a79",
+      "url": "http://www.vulture.com/2013/11/theater-review-nostalgia-for-700-sundays.html"
+    },
+    {
+      "t": "2026-02-07T11:04:35.398Z",
       "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-07T11:03:23.882Z",
+      "t": "2026-02-07T11:04:37.803Z",
       "event": "bb-session",
-      "session": "a0e0c582",
-      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
-    },
-    {
-      "t": "2026-02-07T11:04:09.500Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770462216182\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAH9KYIxrk6EIANCKmrw==&cid=80v8oQ86xv8RAe4hlplYE_jx_QOtNb0JymxMPckq~LFKIPFPAnvjDjIv0OPpBmbc8qKtha6vkSLt7gUT3Fj~BV0V9kqfbEDTESOP~Or8FK_9KVbt_NEMDgGtJ56doVdc&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770462216182\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770462216182\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAH9KYIxrk6EIANCKmrw==&cid=80v8oQ86xv8RAe4hlplYE_jx_QOtNb0JymxMPckq~LFKIPFPAnvjDjIv0OPpBmbc8qKtha6vkSLt7gUT3Fj~BV0V9kqfbEDTESOP~Or8FK_9KVbt_NEMDgGtJ56doVdc&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770462216182\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770462216182\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAH9KYIxrk6EIANCKmrw==&cid=80v8oQ86xv8RAe4hlplYE_jx_QOtNb0JymxMPckq~LFKIPFPAnvjDjIv0OPpBmbc8qKtha6vkSLt7gUT3Fj~BV0V9kqfbEDTESOP~Or8FK_9KVbt_NEMDgGtJ56doVdc&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770462216182\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-07T11:05:07.791Z",
-      "event": "bb-session",
-      "session": "d996f3b3",
-      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-951987"
-    },
-    {
-      "t": "2026-02-07T11:06:11.855Z",
-      "event": "bb-session",
-      "session": "548bc756",
-      "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/"
+      "session": "a6816c8a",
+      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
     }
   ]
 }
