@@ -16120,54 +16120,6 @@
     "timestamp": "2026-02-06T07:51:25.822Z"
   },
   {
-    "reviewId": "mrs-doubtfire-2021/nytg--joe-dziemianowicz.json",
-    "showId": "mrs-doubtfire-2021",
-    "outlet": "New York Theatre Guide",
-    "critic": "Joe Dziemianowicz",
-    "url": "https://www.newyorktheatreguide.com/reviews/mrs-doubtfire-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): just in time, home, tootsie, the present, hello, dolly!...",
-    "textLength": 3871,
-    "timestamp": "2026-02-06T07:56:35.084Z"
-  },
-  {
-    "reviewId": "mrs-doubtfire-2021/variety--naveen-kamal.json",
-    "showId": "mrs-doubtfire-2021",
-    "outlet": "Variety",
-    "critic": "Naveen Kamal",
-    "url": "https://variety.com/2021/theater/reviews/mrs-doubtfire-review-musical-broadway-1235126621/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): company, carousel, something rotten!, chaplin, hair...",
-    "textLength": 5466,
-    "timestamp": "2026-02-06T07:58:09.014Z"
-  },
-  {
-    "reviewId": "mrs-doubtfire-2021/variety--naveen-kumar.json",
-    "showId": "mrs-doubtfire-2021",
-    "outlet": "Variety",
-    "critic": "Naveen Kumar",
-    "url": "https://variety.com/2021/theater/reviews/mrs-doubtfire-review-musical-broadway-1235126621/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): company, carousel, something rotten!, chaplin, hair...",
-    "textLength": 5585,
-    "timestamp": "2026-02-06T07:58:27.494Z"
-  },
-  {
-    "reviewId": "mrs-doubtfire-2021/vulture--helen-shaw.json",
-    "showId": "mrs-doubtfire-2021",
-    "outlet": "Vulture",
-    "critic": "Helen Shaw",
-    "url": "https://www.vulture.com/2021/12/mrs-doubtfire-broadway-musical-theater-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): home, parade, company, mean girls, summer...",
-    "textLength": 11033,
-    "timestamp": "2026-02-06T07:58:31.940Z"
-  },
-  {
     "reviewId": "my-name-is-lucy-barton-2020/hollywood-reporter--david-rooney.json",
     "showId": "my-name-is-lucy-barton-2020",
     "outlet": "Hollywood Reporter",
@@ -16214,18 +16166,6 @@
     "garbageReason": "Multiple shows mentioned (10): home, company, the little foxes, hair, once...",
     "textLength": 6611,
     "timestamp": "2026-02-06T07:59:22.868Z"
-  },
-  {
-    "reviewId": "network-2018/nytimes--unknown.json",
-    "showId": "network-2018",
-    "outlet": "The New York Times",
-    "critic": "Unknown",
-    "url": "https://www.nytimes.com/2018/12/06/theater/network-review-bryan-cranston.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (17): home, the minutes, betrayal, oklahoma!, sweat...",
-    "textLength": 7535,
-    "timestamp": "2026-02-06T08:02:58.899Z"
   },
   {
     "reviewId": "network-2018/variety--marilyn-stasio.json",
@@ -18470,30 +18410,6 @@
     "garbageReason": "Multiple article boundaries detected (4)",
     "textLength": 7603,
     "timestamp": "2026-02-06T17:20:03.784Z"
-  },
-  {
-    "reviewId": "mrs-doubtfire-2021/nyt-theater--jonathan-mandell.json",
-    "showId": "mrs-doubtfire-2021",
-    "outlet": "NewYorkTheater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2021/12/05/mrs-doubtfire-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): company, girl from the north country, tootsie, summer, the audience...",
-    "textLength": 9888,
-    "timestamp": "2026-02-06T17:20:17.093Z"
-  },
-  {
-    "reviewId": "mrs-doubtfire-2021/nyt-theater--jonthan-mandell.json",
-    "showId": "mrs-doubtfire-2021",
-    "outlet": "New York Theater",
-    "critic": "Jonthan Mandell",
-    "url": "https://newyorktheater.me/2021/12/05/mrs-doubtfire-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): company, girl from the north country, tootsie, summer, the audience...",
-    "textLength": 9888,
-    "timestamp": "2026-02-06T17:20:24.517Z"
   },
   {
     "reviewId": "no-mans-land-2013/vulture--unknown.json",
@@ -22898,5 +22814,89 @@
     "garbageReason": "Multiple shows mentioned (18): the music man, beetlejuice, mr. saturday night, tootsie, beetlejuice...",
     "textLength": 6876,
     "timestamp": "2026-02-07T08:32:01.663Z"
+  },
+  {
+    "reviewId": "mrs-doubtfire-2021/nyt-theater--jonathan-mandell.json",
+    "showId": "mrs-doubtfire-2021",
+    "outlet": "NewYorkTheater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2021/12/05/mrs-doubtfire-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): company, girl from the north country, tootsie, summer, the audience...",
+    "textLength": 9888,
+    "timestamp": "2026-02-07T08:32:11.006Z"
+  },
+  {
+    "reviewId": "mrs-doubtfire-2021/nyt-theater--jonthan-mandell.json",
+    "showId": "mrs-doubtfire-2021",
+    "outlet": "New York Theater",
+    "critic": "Jonthan Mandell",
+    "url": "https://newyorktheater.me/2021/12/05/mrs-doubtfire-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): company, girl from the north country, tootsie, summer, the audience...",
+    "textLength": 9888,
+    "timestamp": "2026-02-07T08:32:18.452Z"
+  },
+  {
+    "reviewId": "mrs-doubtfire-2021/nytg--joe-dziemianowicz.json",
+    "showId": "mrs-doubtfire-2021",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/mrs-doubtfire-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): just in time, home, tootsie, the present, hello, dolly!...",
+    "textLength": 3871,
+    "timestamp": "2026-02-07T08:32:26.783Z"
+  },
+  {
+    "reviewId": "mrs-doubtfire-2021/variety--naveen-kamal.json",
+    "showId": "mrs-doubtfire-2021",
+    "outlet": "Variety",
+    "critic": "Naveen Kamal",
+    "url": "https://variety.com/2021/theater/reviews/mrs-doubtfire-review-musical-broadway-1235126621/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, company, carousel, something rotten!, chaplin...",
+    "textLength": 5526,
+    "timestamp": "2026-02-07T08:33:37.703Z"
+  },
+  {
+    "reviewId": "mrs-doubtfire-2021/variety--naveen-kumar.json",
+    "showId": "mrs-doubtfire-2021",
+    "outlet": "Variety",
+    "critic": "Naveen Kumar",
+    "url": "https://variety.com/2021/theater/reviews/mrs-doubtfire-review-musical-broadway-1235126621/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, company, carousel, something rotten!, chaplin...",
+    "textLength": 5439,
+    "timestamp": "2026-02-07T08:33:59.172Z"
+  },
+  {
+    "reviewId": "mrs-doubtfire-2021/vulture--helen-shaw.json",
+    "showId": "mrs-doubtfire-2021",
+    "outlet": "Vulture",
+    "critic": "Helen Shaw",
+    "url": "https://www.vulture.com/2021/12/mrs-doubtfire-broadway-musical-theater-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): home, parade, company, mean girls, summer...",
+    "textLength": 11033,
+    "timestamp": "2026-02-07T08:34:02.892Z"
+  },
+  {
+    "reviewId": "network-2018/nytimes--unknown.json",
+    "showId": "network-2018",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2018/12/06/theater/network-review-bryan-cranston.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): home, the minutes, betrayal, oklahoma!, sweat...",
+    "textLength": 7535,
+    "timestamp": "2026-02-07T08:35:56.151Z"
   }
 ]
