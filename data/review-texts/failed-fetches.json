@@ -12256,18 +12256,6 @@
     "timestamp": "2026-02-05T05:21:53.678Z"
   },
   {
-    "reviewId": "the-lyons-2012/hollywood-reporter--david-rooney.json",
-    "showId": "the-lyons-2012",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/the-lyons-theater-review-315077",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): wicked, mamma mia!, rocky, hair, follies...",
-    "textLength": 5563,
-    "timestamp": "2026-02-05T05:22:13.431Z"
-  },
-  {
     "reviewId": "the-lyons-2012/nytimes--ben-brantley.json",
     "showId": "the-lyons-2012",
     "outlet": "New York Times",
@@ -12278,18 +12266,6 @@
     "garbageReason": "Multiple shows mentioned (8): home, company, once, rain, high...",
     "textLength": 6711,
     "timestamp": "2026-02-05T05:23:26.511Z"
-  },
-  {
-    "reviewId": "the-lyons-2012/variety--marilyn-stasio.json",
-    "showId": "the-lyons-2012",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2012/legit/reviews/the-lyons-1117947318/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): harvey, annie, follies, bonnie and clyde, elling...",
-    "textLength": 4084,
-    "timestamp": "2026-02-05T05:24:06.351Z"
   },
   {
     "reviewId": "the-piano-lesson-2022/hollywood-reporter--david-rooney.json",
@@ -23474,5 +23450,65 @@
     "garbageReason": "Multiple shows mentioned (14): liberation, home, parade, sweeney todd, company...",
     "textLength": 7786,
     "timestamp": "2026-02-07T10:04:16.898Z"
+  },
+  {
+    "reviewId": "the-elephant-man-2014/vulture--jesse-green.json",
+    "showId": "the-elephant-man-2014",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2014/12/theater-review-the-elephant-man.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): english, hair, once, rain, race...",
+    "textLength": 8070,
+    "timestamp": "2026-02-07T10:09:03.101Z"
+  },
+  {
+    "reviewId": "the-gershwins-porgy-and-bess-2012/vulture--scott-brown.json",
+    "showId": "the-gershwins-porgy-and-bess-2012",
+    "outlet": "New York Magazine",
+    "critic": "Scott Brown",
+    "url": "http://nymag.com/daily/entertainment/2012/01/theater-review-porgy-and-bess.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): swept away, summer, act one, picnic, once...",
+    "textLength": 6984,
+    "timestamp": "2026-02-07T10:09:08.471Z"
+  },
+  {
+    "reviewId": "the-lieutenant-of-inishmore-2006/variety--charles-isherwood.json",
+    "showId": "the-lieutenant-of-inishmore-2006",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2006/legit/reviews/the-lieutenant-of-inishmore-1200514088/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, sweeney todd, company, evita, rain...",
+    "textLength": 5891,
+    "timestamp": "2026-02-07T10:10:48.232Z"
+  },
+  {
+    "reviewId": "the-lyons-2012/hollywood-reporter--david-rooney.json",
+    "showId": "the-lyons-2012",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/the-lyons-theater-review-315077",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): wicked, mamma mia!, hair, follies, other desert cities...",
+    "textLength": 5514,
+    "timestamp": "2026-02-07T10:11:07.199Z"
+  },
+  {
+    "reviewId": "the-lyons-2012/variety--marilyn-stasio.json",
+    "showId": "the-lyons-2012",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2012/legit/reviews/the-lyons-1117947318/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): harvey, annie, follies, bonnie and clyde, elling...",
+    "textLength": 4272,
+    "timestamp": "2026-02-07T10:12:44.361Z"
   }
 ]
