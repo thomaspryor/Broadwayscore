@@ -8548,18 +8548,6 @@
     "timestamp": "2026-02-04T00:54:48.180Z"
   },
   {
-    "reviewId": "the-price-2017/hollywood-reporter--david-rooney.json",
-    "showId": "the-price-2017",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/price-theater-review-983915/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"the price\" not mentioned in text; No theater-related keywords in short text",
-    "textLength": 917,
-    "timestamp": "2026-02-04T00:56:13.065Z"
-  },
-  {
     "reviewId": "the-skin-of-our-teeth-2022/nyt-theater--jonathan-mandell.json",
     "showId": "the-skin-of-our-teeth-2022",
     "outlet": "New York Theater",
@@ -20836,78 +20824,6 @@
     "timestamp": "2026-02-07T10:29:59.573Z"
   },
   {
-    "reviewId": "the-piano-lesson-2022/nytimes--maya-phillips.json",
-    "showId": "the-piano-lesson-2022",
-    "outlet": "New York Times",
-    "critic": "Maya Phillips",
-    "url": "https://www.nytimes.com/2022/10/13/theater/the-piano-lesson-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (16): oh, mary!, home, sunset boulevard, tammy faye, cult of love...",
-    "textLength": 7473,
-    "timestamp": "2026-02-07T10:31:28.815Z"
-  },
-  {
-    "reviewId": "the-piano-lesson-2022/variety--charles-isherwood.json",
-    "showId": "the-piano-lesson-2022",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2022/legit/reviews/the-piano-lesson-review-broadway-samuel-l-jackson-1235404957/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, once, rain, elling, high...",
-    "textLength": 5294,
-    "timestamp": "2026-02-07T10:32:42.263Z"
-  },
-  {
-    "reviewId": "the-piano-lesson-2022/variety--marilyn-stasio.json",
-    "showId": "the-piano-lesson-2022",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2022/legit/reviews/the-piano-lesson-review-broadway-samuel-l-jackson-john-david-washington-danielle-brooks-1235402373/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, once, rain, elling, high...",
-    "textLength": 5335,
-    "timestamp": "2026-02-07T10:32:57.988Z"
-  },
-  {
-    "reviewId": "the-piano-lesson-2022/vulture--jackson-mchenry.json",
-    "showId": "the-piano-lesson-2022",
-    "outlet": "Vulture",
-    "critic": "Jackson McHenry",
-    "url": "https://www.vulture.com/2022/10/theater-review-august-wilson-piano-lesson-broadway-jackson-brooks.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): giant, appropriate, home, hair, once...",
-    "textLength": 7941,
-    "timestamp": "2026-02-07T10:33:02.430Z"
-  },
-  {
-    "reviewId": "the-picture-of-dorian-gray-2025/nyt-theater--jonathan-mandell.json",
-    "showId": "the-picture-of-dorian-gray-2025",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2025/03/27/the-picture-of-dorian-gray-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): maybe happy ending, chess, home, eureka day, gypsy...",
-    "textLength": 5779,
-    "timestamp": "2026-02-07T10:33:10.281Z"
-  },
-  {
-    "reviewId": "the-picture-of-dorian-gray-2025/vulture--sara-holdren.json",
-    "showId": "the-picture-of-dorian-gray-2025",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "https://www.vulture.com/article/theater-review-sarah-snook-picture-of-dorian-gray-nyc-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, company, romeo and juliet, once, high...",
-    "textLength": 10046,
-    "timestamp": "2026-02-07T10:33:18.292Z"
-  },
-  {
     "reviewId": "the-little-dog-laughed-2006/nytimes--ben-brantley.json",
     "showId": "the-little-dog-laughed-2006",
     "outlet": "The New York Times",
@@ -25010,5 +24926,101 @@
     "garbageReason": "Multiple shows mentioned (10): liberation, parade, fiddler on the roof, hair, once...",
     "textLength": 7279,
     "timestamp": "2026-02-07T16:39:31.750Z"
+  },
+  {
+    "reviewId": "the-piano-lesson-2022/nytimes--maya-phillips.json",
+    "showId": "the-piano-lesson-2022",
+    "outlet": "New York Times",
+    "critic": "Maya Phillips",
+    "url": "https://www.nytimes.com/2022/10/13/theater/the-piano-lesson-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): oh, mary!, home, sunset boulevard, tammy faye, cult of love...",
+    "textLength": 7473,
+    "timestamp": "2026-02-07T16:40:32.550Z"
+  },
+  {
+    "reviewId": "the-piano-lesson-2022/variety--charles-isherwood.json",
+    "showId": "the-piano-lesson-2022",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2022/legit/reviews/the-piano-lesson-review-broadway-samuel-l-jackson-1235404957/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, once, rain, elling, high...",
+    "textLength": 4941,
+    "timestamp": "2026-02-07T16:42:13.145Z"
+  },
+  {
+    "reviewId": "the-piano-lesson-2022/variety--marilyn-stasio.json",
+    "showId": "the-piano-lesson-2022",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2022/legit/reviews/the-piano-lesson-review-broadway-samuel-l-jackson-john-david-washington-danielle-brooks-1235402373/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, once, rain, elling, high...",
+    "textLength": 5335,
+    "timestamp": "2026-02-07T16:43:01.037Z"
+  },
+  {
+    "reviewId": "the-piano-lesson-2022/vulture--jackson-mchenry.json",
+    "showId": "the-piano-lesson-2022",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/2022/10/theater-review-august-wilson-piano-lesson-broadway-jackson-brooks.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): giant, appropriate, home, hair, once...",
+    "textLength": 7941,
+    "timestamp": "2026-02-07T16:43:40.440Z"
+  },
+  {
+    "reviewId": "the-picture-of-dorian-gray-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "the-picture-of-dorian-gray-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/03/27/the-picture-of-dorian-gray-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): maybe happy ending, chess, home, eureka day, gypsy...",
+    "textLength": 5779,
+    "timestamp": "2026-02-07T16:43:47.879Z"
+  },
+  {
+    "reviewId": "the-picture-of-dorian-gray-2025/vulture--sara-holdren.json",
+    "showId": "the-picture-of-dorian-gray-2025",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/theater-review-sarah-snook-picture-of-dorian-gray-nyc-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, company, romeo and juliet, once, high...",
+    "textLength": 10046,
+    "timestamp": "2026-02-07T16:43:57.973Z"
+  },
+  {
+    "reviewId": "the-price-2017/hollywood-reporter--chris-jones.json",
+    "showId": "the-price-2017",
+    "outlet": "Hollywood Reporter",
+    "critic": "Chris Jones",
+    "url": "http://www.hollywoodreporter.com/review/price-theater-review-986815",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): death of a salesman, death of a salesman, company, betrayal, betrayal...",
+    "textLength": 8893,
+    "timestamp": "2026-02-07T16:45:36.364Z"
+  },
+  {
+    "reviewId": "the-price-2017/hollywood-reporter--david-rooney.json",
+    "showId": "the-price-2017",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/price-theater-review-983915/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"the price\" not mentioned in text; No theater-related keywords in short text",
+    "textLength": 1190,
+    "timestamp": "2026-02-07T16:46:13.259Z"
   }
 ]
