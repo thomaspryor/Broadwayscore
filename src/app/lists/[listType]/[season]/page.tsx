@@ -19,6 +19,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards/ScoreBadge';
 import { FormatPill, StatusBadge, ProductionPill } from '@/components/show-cards/ShowPills';
 import { getAudienceGrade } from '@/lib/data-audience';
+import { SeasonSelect } from '@/components/SeasonSelect';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -181,27 +182,16 @@ export default function GoldListSeasonPage({ params }: { params: { listType: str
           ))}
         </div>
 
-        {/* Season Pills */}
-        <div className="flex overflow-x-auto gap-1.5 mb-6 pb-1 -mx-1 px-1">
+        {/* Season Selector */}
+        <div className="flex items-center gap-2 mb-6">
           <Link
             href={`/lists/${listType}/all-time`}
-            className="flex-shrink-0 px-2.5 py-1 rounded-md text-xs font-medium text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
           >
             All-Time
           </Link>
-          {allSeasons.slice(0, 8).map(s => (
-            <Link
-              key={s}
-              href={`/lists/${listType}/${s}`}
-              className={`flex-shrink-0 px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
-                s === season
-                  ? 'bg-white/10 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              {s}
-            </Link>
-          ))}
+          <span className="text-gray-600">|</span>
+          <SeasonSelect listType={listType} seasons={allSeasons} currentSeason={season} />
         </div>
 
         {/* Show List */}

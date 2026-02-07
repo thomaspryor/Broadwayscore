@@ -18,6 +18,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards/ScoreBadge';
 import { FormatPill, StatusBadge, ProductionPill } from '@/components/show-cards/ShowPills';
 import { getAudienceGrade } from '@/lib/data-audience';
+import { SeasonSelect } from '@/components/SeasonSelect';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -165,20 +166,13 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
           ))}
         </div>
 
-        {/* Season Pills */}
-        <div className="flex overflow-x-auto gap-1.5 mb-6 pb-1 -mx-1 px-1">
-          <span className="flex-shrink-0 px-2.5 py-1 rounded-md text-xs font-medium bg-white/10 text-white">
+        {/* Season Selector */}
+        <div className="flex items-center gap-2 mb-6">
+          <span className="px-3 py-1.5 rounded-lg text-sm font-medium bg-white/10 text-white">
             All-Time
           </span>
-          {allSeasons.slice(0, 8).map(s => (
-            <Link
-              key={s}
-              href={`/lists/${listType}/${s}`}
-              className="flex-shrink-0 px-2.5 py-1 rounded-md text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
-            >
-              {s}
-            </Link>
-          ))}
+          <span className="text-gray-600">|</span>
+          <SeasonSelect listType={listType} seasons={allSeasons} currentSeason="" />
         </div>
 
         {/* Show List */}
