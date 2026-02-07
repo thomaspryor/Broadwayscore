@@ -1,52 +1,62 @@
 {
-  "updatedAt": "2026-02-07T05:22:25.134Z",
-  "processed": 4,
-  "failed": 36,
-  "successRate": "10.0%",
+  "updatedAt": "2026-02-07T05:29:42.139Z",
+  "processed": 5,
+  "failed": 25,
+  "successRate": "16.7%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 3,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 4
+    "browserbase": 2,
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archive": 1
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-07T05:03:17.227Z",
+      "t": "2026-02-07T05:05:12.850Z",
       "event": "bb-session",
-      "session": "16b70fe3",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+      "session": "6e720a2d",
+      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
     },
     {
-      "t": "2026-02-07T05:03:32.436Z",
-      "event": "bb-session",
-      "session": "acbed073",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+      "t": "2026-02-07T05:05:18.898Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-07T05:03:53.853Z",
+      "t": "2026-02-07T05:05:56.733Z",
       "event": "bb-session",
-      "session": "589ec1de",
-      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+      "session": "c2af50aa",
+      "url": "http://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
     },
     {
-      "t": "2026-02-07T05:08:01.120Z",
+      "t": "2026-02-07T05:06:38.973Z",
       "event": "bb-session",
-      "session": "07dc05d0",
-      "url": "https://www.nytimes.com/2022/12/04/theater/a-beautiful-noise-review.html"
+      "session": "ebbe7a9d",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/behanding-spokane-theater"
     },
     {
-      "t": "2026-02-07T05:08:22.955Z",
+      "t": "2026-02-07T05:08:32.083Z",
       "event": "bb-session",
-      "session": "cec71a10",
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
+      "session": "67e6c924",
+      "url": "http://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als?"
     },
     {
-      "t": "2026-02-07T05:08:44.959Z",
+      "t": "2026-02-07T05:08:34.109Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-07T05:09:58.659Z",
+      "event": "bb-session",
+      "session": "c1b46660",
+      "url": "https://www.nytimes.com/2010/04/05/theater/reviews/05behanding.html"
+    },
+    {
+      "t": "2026-02-07T05:10:40.862Z",
       "event": "bb-login-fail",
       "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440891621\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAHgqdejfyuhUANBsspA==&cid=_NusBcEsQijsop_SBvdixw~mTv87tGM2YXe0xY2zMDFh0DMn8iPTTMlas9QxcjxlItDAJcS70ZuVfeE_WVkWS~MtZyd4AZR1IZwjBNZjku6jfySjsfKU2vW_RbzsSqpR&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440891621\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440891621\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAHgqdejfyuhUANBsspA==&cid=_NusBcEsQijsop_SBvdixw~mTv87tGM2YXe0xY2zMDFh0DMn8iPTTMlas9QxcjxlItDAJcS70ZuVfeE_WVkWS~MtZyd4AZR1IZwjBNZjku6jfySjsfKU2vW_RbzsSqpR&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440891621\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    27 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440891621\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAHgqdejfyuhUANBsspA==&cid=_NusBcEsQijsop_SBvdixw~mTv87tGM2YXe0xY2zMDFh0DMn8iPTTMlas9QxcjxlItDAJcS70ZuVfeE_WVkWS~MtZyd4AZR1IZwjBNZjku6jfySjsfKU2vW_RbzsSqpR&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440891621\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770441007721\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq4IUIagxmpAANA1qtA==&cid=Rfmzq0W~9HCOB4UuwZ097OmhBULIKpTenw3BDco7ZgA~lraeRNePnmH342HwyRGA9J1gysIzB5sA2mzO3fO8otFfj5RsiRs2HXExh7GIRtPXjBGkKB~3~ZPFAF89l~uC&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770441007721\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770441007721\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq4IUIagxmpAANA1qtA==&cid=Rfmzq0W~9HCOB4UuwZ097OmhBULIKpTenw3BDco7ZgA~lraeRNePnmH342HwyRGA9J1gysIzB5sA2mzO3fO8otFfj5RsiRs2HXExh7GIRtPXjBGkKB~3~ZPFAF89l~uC&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770441007721\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770441007721\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq4IUIagxmpAANA1qtA==&cid=Rfmzq0W~9HCOB4UuwZ097OmhBULIKpTenw3BDco7ZgA~lraeRNePnmH342HwyRGA9J1gysIzB5sA2mzO3fO8otFfj5RsiRs2HXExh7GIRtPXjBGkKB~3~ZPFAF89l~uC&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770441007721\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
     }
   ]
 }
