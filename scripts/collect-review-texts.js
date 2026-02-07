@@ -33,6 +33,7 @@
  *   SHOW_FILTER - Only process specific show ID
  *   RETRY_FAILED - 'true' to retry previously failed reviews
  *   DOMAIN_FILTER - Comma-separated domain(s) to filter by URL (e.g., 'theatermania.com,timeout.com')
+ *   EXCLUDE_DOMAINS - Comma-separated domain(s) to exclude (inverse of DOMAIN_FILTER)
  *
  * CLI Flags:
  *   --aggressive - Skip Playwright for known-blocked sites, start with ScrapingBee
@@ -137,6 +138,7 @@ const CONFIG = {
   outletTier: process.env.OUTLET_TIER || '', // Filter by outlet tier: tier1, tier2, tier3
   contentTierFilter: process.env.CONTENT_TIER_FILTER || '', // Filter by content tier: excerpt, truncated, needs-rescrape
   domainFilter: (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Filter by URL domain(s)
+  excludeDomains: (process.env.EXCLUDE_DOMAINS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Exclude these domains
   archiveFirst: process.env.ARCHIVE_FIRST === 'true', // Try Archive.org first for older reviews
 
   // API Keys
@@ -3166,6 +3168,16 @@ function findReviewsToProcess() {
           }
         }
 
+        // Apply domain exclusion filter (for free-outlet collection — exclude paywall domains)
+        if (CONFIG.excludeDomains.length > 0 && data.url) {
+          try {
+            const urlDomain = new URL(data.url).hostname.replace(/^www\./, '');
+            if (CONFIG.excludeDomains.some(d => urlDomain === d || urlDomain.endsWith('.' + d))) continue;
+          } catch (e) {
+            // Keep reviews with unparseable URLs when using exclusion mode
+          }
+        }
+
         // Parse publish date for archive-first logic
         let publishDate = null;
         if (data.publishDate) {
@@ -3886,6 +3898,9 @@ async function main() {
   console.log(`Flags: aggressive=${CLI.aggressive}, forceTier=${CLI.forceTier || 'auto'}`);
   if (CONFIG.domainFilter.length > 0) {
     console.log(`Domain filter: ${CONFIG.domainFilter.join(', ')}`);
+  }
+  if (CONFIG.excludeDomains.length > 0) {
+    console.log(`Excluding domains: ${CONFIG.excludeDomains.join(', ')}`);
   }
 
   // Load dependencies
