@@ -14344,18 +14344,6 @@
     "timestamp": "2026-02-06T04:17:54.872Z"
   },
   {
-    "reviewId": "come-back-little-sheba-2008/nytimes--ben-brantley.json",
-    "showId": "come-back-little-sheba-2008",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2008/01/25/theater/reviews/25sheb.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): 1984, picnic, the trip to bountiful, evita, high...",
-    "textLength": 8109,
-    "timestamp": "2026-02-06T04:23:51.499Z"
-  },
-  {
     "reviewId": "come-fly-away-2010/variety--david-rooney.json",
     "showId": "come-fly-away-2010",
     "outlet": "Variety",
@@ -14966,30 +14954,6 @@
     "garbageReason": "Multiple shows mentioned (10): into the woods, my fair lady, the audience, the king and i, rocky...",
     "textLength": 10060,
     "timestamp": "2026-02-06T05:53:48.761Z"
-  },
-  {
-    "reviewId": "casa-valentina-2014/vulture--jesse-green.json",
-    "showId": "casa-valentina-2014",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "http://www.vulture.com/2014/04/theater-review-casa-valentina.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (21): chicago, liberation, macbeth, betrayal, cats...",
-    "textLength": 7731,
-    "timestamp": "2026-02-06T06:01:08.128Z"
-  },
-  {
-    "reviewId": "casa-valentina-2014/vulture--unknown.json",
-    "showId": "casa-valentina-2014",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2014/04/theater-review-casa-valentina.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (21): chicago, liberation, macbeth, betrayal, cats...",
-    "textLength": 7731,
-    "timestamp": "2026-02-06T06:01:10.871Z"
   },
   {
     "reviewId": "good-night-and-good-luck-2025/newyorker--helen-shaw.json",
@@ -23918,5 +23882,89 @@
     "garbageReason": "Multiple shows mentioned (14): wicked, giant, appropriate, smash, parade...",
     "textLength": 5127,
     "timestamp": "2026-02-07T12:17:30.492Z"
+  },
+  {
+    "reviewId": "casa-valentina-2014/vulture--jesse-green.json",
+    "showId": "casa-valentina-2014",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2014/04/theater-review-casa-valentina.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (21): chicago, liberation, macbeth, betrayal, cats...",
+    "textLength": 7731,
+    "timestamp": "2026-02-07T12:20:56.510Z"
+  },
+  {
+    "reviewId": "casa-valentina-2014/vulture--unknown.json",
+    "showId": "casa-valentina-2014",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2014/04/theater-review-casa-valentina.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (21): chicago, liberation, macbeth, betrayal, cats...",
+    "textLength": 7731,
+    "timestamp": "2026-02-07T12:20:59.493Z"
+  },
+  {
+    "reviewId": "cats-1982/hollywood-reporter--jordan-riefe.json",
+    "showId": "cats-1982",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Jordan Riefe",
+    "url": "https://www.hollywoodreporter.com/review/cats-theater-1191508",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): hamilton, mamma mia!, just in time, english, company...",
+    "textLength": 5962,
+    "timestamp": "2026-02-07T12:21:26.902Z"
+  },
+  {
+    "reviewId": "cats-1982/vulture--jesse-green.json",
+    "showId": "cats-1982",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2016/07/theater-review-the-persistence-of-cats.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): hamilton, giant, home, english, company...",
+    "textLength": 8680,
+    "timestamp": "2026-02-07T12:22:54.518Z"
+  },
+  {
+    "reviewId": "chinglish-2011/hollywood-reporter--david-rooney.json",
+    "showId": "chinglish-2011",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/chinglish-theater-review-254309",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, appropriate, yellow face, m. butterfly, summer...",
+    "textLength": 5930,
+    "timestamp": "2026-02-07T12:23:08.588Z"
+  },
+  {
+    "reviewId": "chinglish-2011/nytimes--ben-brantley.json",
+    "showId": "chinglish-2011",
+    "outlet": "New York Times",
+    "critic": "Ben Brantley",
+    "url": "http://theater.nytimes.com/2011/10/28/theater/reviews/chinglish-by-david-henry-hwang-at-longacre-theater-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): appropriate, yellow face, english, company, m. butterfly...",
+    "textLength": 5352,
+    "timestamp": "2026-02-07T12:23:12.637Z"
+  },
+  {
+    "reviewId": "come-back-little-sheba-2008/nytimes--ben-brantley.json",
+    "showId": "come-back-little-sheba-2008",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2008/01/25/theater/reviews/25sheb.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, 1984, picnic, the trip to bountiful, evita...",
+    "textLength": 5884,
+    "timestamp": "2026-02-07T12:24:52.789Z"
   }
 ]
