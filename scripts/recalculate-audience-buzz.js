@@ -7,60 +7,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const { calculateCombinedScore } = require('./lib/audience-weighting');
 
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
-
-function calculateCombinedScore(sources) {
-  const hasShowScore = sources.showScore?.score != null;
-  const hasMezzanine = sources.mezzanine?.score != null;
-  const hasReddit = sources.reddit?.score != null;
-
-  if (!hasShowScore && !hasMezzanine && !hasReddit) {
-    return { score: null, weights: null };
-  }
-
-  // When only Reddit exists, give it 100% weight (not 20%)
-  if (!hasShowScore && !hasMezzanine && hasReddit) {
-    return {
-      score: Math.round(sources.reddit.score),
-      weights: { showScore: 0, mezzanine: 0, reddit: 100 }
-    };
-  }
-
-  const redditWeight = hasReddit ? 0.20 : 0;
-  const remainingWeight = 1 - redditWeight;
-
-  let showScoreWeight = 0;
-  let mezzanineWeight = 0;
-
-  if (hasShowScore && hasMezzanine) {
-    const ssCount = sources.showScore.reviewCount || 1;
-    const mezzCount = sources.mezzanine.reviewCount || 1;
-    const totalCount = ssCount + mezzCount;
-
-    showScoreWeight = (ssCount / totalCount) * remainingWeight;
-    mezzanineWeight = (mezzCount / totalCount) * remainingWeight;
-  } else if (hasShowScore) {
-    showScoreWeight = remainingWeight;
-  } else if (hasMezzanine) {
-    mezzanineWeight = remainingWeight;
-  }
-
-  let weightedSum = 0;
-  if (hasShowScore) weightedSum += sources.showScore.score * showScoreWeight;
-  if (hasMezzanine) weightedSum += sources.mezzanine.score * mezzanineWeight;
-  if (hasReddit) weightedSum += sources.reddit.score * redditWeight;
-
-  return {
-    score: Math.round(weightedSum),
-    weights: {
-      showScore: Math.round(showScoreWeight * 100),
-      mezzanine: Math.round(mezzanineWeight * 100),
-      reddit: Math.round(redditWeight * 100),
-    }
-  };
-}
 
 console.log('Recalculating all Audience Buzz scores with dynamic weighting...\n');
 
@@ -91,7 +41,7 @@ audienceBuzz._meta.designationThresholds = {
   'Shrugging': '68-77',
   'Loathing': '0-67'
 };
-audienceBuzz._meta.notes = 'Dynamic weighting: Reddit fixed 20%, Show Score & Mezzanine split remaining 80% by sample size';
+audienceBuzz._meta.notes = 'Proportional weighting by reviewCount volume (max 80% single source)';
 
 fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
 console.log(`\nUpdated ${updated} shows. Saved to audience-buzz.json`);

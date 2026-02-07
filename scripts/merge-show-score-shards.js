@@ -12,6 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { calculateCombinedScore } = require('./lib/audience-weighting');
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -20,53 +21,6 @@ const cleanup = args.includes('--cleanup');
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const urlsPath = path.join(__dirname, '../data/show-score-urls.json');
 const shardDir = path.join(__dirname, '../data/show-score-shards');
-
-/**
- * Calculate combined Audience Buzz score with dynamic weighting
- * (Same logic as in scrape-reddit-sentiment.js / merge-reddit-shards.js)
- */
-function calculateCombinedScore(sources) {
-  const hasShowScore = sources.showScore && sources.showScore.score != null;
-  const hasMezzanine = sources.mezzanine && sources.mezzanine.score != null;
-  const hasReddit = sources.reddit && sources.reddit.score != null;
-
-  if (!hasShowScore && !hasMezzanine && !hasReddit) {
-    return { score: null };
-  }
-
-  // Single-source cases
-  if (!hasMezzanine && !hasReddit && hasShowScore) {
-    return { score: Math.round(sources.showScore.score) };
-  }
-  if (!hasShowScore && !hasMezzanine && hasReddit) {
-    return { score: Math.round(sources.reddit.score) };
-  }
-
-  const redditWeight = hasReddit ? 0.20 : 0;
-  const remainingWeight = 1 - redditWeight;
-
-  let showScoreWeight = 0;
-  let mezzanineWeight = 0;
-
-  if (hasShowScore && hasMezzanine) {
-    const ssCount = sources.showScore.reviewCount || 1;
-    const mezzCount = sources.mezzanine.reviewCount || 1;
-    const totalCount = ssCount + mezzCount;
-    showScoreWeight = (ssCount / totalCount) * remainingWeight;
-    mezzanineWeight = (mezzCount / totalCount) * remainingWeight;
-  } else if (hasShowScore) {
-    showScoreWeight = remainingWeight;
-  } else if (hasMezzanine) {
-    mezzanineWeight = remainingWeight;
-  }
-
-  let weightedSum = 0;
-  if (hasShowScore) weightedSum += sources.showScore.score * showScoreWeight;
-  if (hasMezzanine) weightedSum += sources.mezzanine.score * mezzanineWeight;
-  if (hasReddit) weightedSum += sources.reddit.score * redditWeight;
-
-  return { score: Math.round(weightedSum) };
-}
 
 function main() {
   console.log('=== Show Score Shard Merger ===\n');

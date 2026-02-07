@@ -34,6 +34,7 @@ const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
 const { classifyAllComments } = require('./lib/buzz-classifier');
+const { calculateCombinedScore } = require('./lib/audience-weighting');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -54,7 +55,6 @@ const shardMode = shard !== null && totalShards !== null;
 
 // Config
 const SUBREDDIT = 'broadway';
-const MIN_ITEMS_FOR_SCORE = 15; // Minimum buzz items to include in combined score
 const MAX_POST_AGE_DAYS = 730;  // 2 years — filters out decade-old noise
 const TWO_YEARS_AGO = Date.now() / 1000 - (MAX_POST_AGE_DAYS * 86400); // Unix timestamp
 
@@ -68,7 +68,7 @@ let audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
 /**
  * Calculate buzz score from classifications
  */
-function calculateBuzzScore(classifications) {
+function calculateBuzzScore(classifications, totalPosts = 0, totalComments = 0) {
   const relevant = classifications.filter(c => c.is_relevant);
   if (relevant.length === 0) return null;
 
@@ -117,6 +117,8 @@ function calculateBuzzScore(classifications) {
   return {
     score: finalScore,
     reviewCount: relevant.length,
+    totalPosts,
+    totalComments,
     sentiment: {
       enthusiastic: Math.round(sentimentCounts.enthusiastic / relevant.length * 100) / 100,
       positive: Math.round(sentimentCounts.positive / relevant.length * 100) / 100,
@@ -210,6 +212,9 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000) {
   const seenIds = new Set();
   let totalSearched = 0;
   let filteredByDate = 0;
+  // Volume tracking: count ALL posts/comments before dedup/slicing (for display)
+  let rawTotalPosts = 0;
+  let rawTotalComments = 0;
 
   for (const query of searches) {
     if (audiencePosts.length >= maxPosts) break;
@@ -218,6 +223,12 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000) {
       // Fetch up to 300 per query (3 pages) to compensate for date filtering
       const posts = await searchAllPosts(subreddit, query, 300);
       totalSearched += posts.length;
+
+      // Track raw volume before dedup (for display: "Based on ~X Reddit discussions")
+      for (const post of posts) {
+        rawTotalPosts++;
+        rawTotalComments += (post.num_comments || 0);
+      }
 
       for (const post of posts) {
         if (seenIds.has(post.id)) continue;
@@ -257,7 +268,15 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000) {
     console.log(`    Added ${result.length - audiencePosts.length} neutral posts to reach ${result.length} total`);
   }
 
-  return result.slice(0, maxPosts);
+  // Deduplicated volume counts (unique posts only)
+  const dedupedTotalPosts = seenIds.size;
+  const dedupedTotalComments = [...audiencePosts, ...neutralPosts].reduce((sum, p) => sum + (p.num_comments || 0), 0);
+
+  return {
+    posts: result.slice(0, maxPosts),
+    totalPosts: dedupedTotalPosts,
+    totalComments: dedupedTotalComments
+  };
 }
 
 /**
@@ -269,15 +288,17 @@ async function processShow(show) {
   // 1. Search for posts with audience-focused queries
   console.log(`  Searching r/${SUBREDDIT} for audience reactions...`);
 
-  let posts;
+  let searchResult;
   try {
-    posts = await searchAudiencePosts(SUBREDDIT, show.title);
+    searchResult = await searchAudiencePosts(SUBREDDIT, show.title);
   } catch (e) {
     console.error(`  Search failed: ${e.message}`);
     return null;
   }
 
-  console.log(`  Found ${posts.length} posts from audience-focused searches (last 2 years)`);
+  const { posts, totalPosts, totalComments } = searchResult;
+
+  console.log(`  Found ${posts.length} posts from audience-focused searches (last 2 years), ${totalPosts} total unique, ${totalComments} total comments`);
 
   if (posts.length === 0) {
     return null;
@@ -286,7 +307,7 @@ async function processShow(show) {
   // 2. Select posts - use Reddit's relevance ordering from our audience-focused searches
   // Don't re-sort by engagement (that drowns out good posts with high-engagement meta threads)
   // The LLM will filter out irrelevant comments - we just need to give it good posts to work with
-  const topPosts = posts.slice(0, 150);  // Broader sample for better representation
+  const topPosts = posts.slice(0, 75);  // Broad enough for statistical stability
 
   if (verbose) {
     console.log(`  Top 5 posts (by Reddit search relevance):`);
@@ -351,7 +372,7 @@ async function processShow(show) {
     return null;
   }
 
-  const scoreData = calculateBuzzScore(classifications);
+  const scoreData = calculateBuzzScore(classifications, totalPosts, totalComments);
   if (!scoreData) {
     return null;
   }
@@ -378,71 +399,7 @@ async function processShow(show) {
   return scoreData;
 }
 
-/**
- * Calculate combined Audience Buzz score with dynamic weighting
- */
-function calculateCombinedScore(sources) {
-  const hasShowScore = sources.showScore?.score != null;
-  const hasMezzanine = sources.mezzanine?.score != null;
-  const hasReddit = sources.reddit?.score != null &&
-                   sources.reddit?.reviewCount >= MIN_ITEMS_FOR_SCORE;
-
-  // If no sources, return null
-  if (!hasShowScore && !hasMezzanine && !hasReddit) {
-    return { score: null, weights: null };
-  }
-
-  // When only Reddit exists and has enough data, give it 100% weight
-  if (!hasShowScore && !hasMezzanine && hasReddit) {
-    return {
-      score: Math.round(sources.reddit.score),
-      weights: { showScore: 0, mezzanine: 0, reddit: 100 }
-    };
-  }
-
-  // Reddit gets fixed 20% if available AND has enough items
-  const redditWeight = hasReddit ? 0.20 : 0;
-  const remainingWeight = 1 - redditWeight;
-
-  // Calculate Show Score and Mezzanine weights based on sample size
-  let showScoreWeight = 0;
-  let mezzanineWeight = 0;
-
-  if (hasShowScore && hasMezzanine) {
-    const ssCount = sources.showScore.reviewCount || 1;
-    const mezzCount = sources.mezzanine.reviewCount || 1;
-    const totalCount = ssCount + mezzCount;
-
-    showScoreWeight = (ssCount / totalCount) * remainingWeight;
-    mezzanineWeight = (mezzCount / totalCount) * remainingWeight;
-  } else if (hasShowScore) {
-    showScoreWeight = remainingWeight;
-  } else if (hasMezzanine) {
-    mezzanineWeight = remainingWeight;
-  }
-
-  // Calculate weighted average
-  let weightedSum = 0;
-
-  if (hasShowScore) {
-    weightedSum += sources.showScore.score * showScoreWeight;
-  }
-  if (hasMezzanine) {
-    weightedSum += sources.mezzanine.score * mezzanineWeight;
-  }
-  if (hasReddit) {
-    weightedSum += sources.reddit.score * redditWeight;
-  }
-
-  return {
-    score: Math.round(weightedSum),
-    weights: {
-      showScore: Math.round(showScoreWeight * 100),
-      mezzanine: Math.round(mezzanineWeight * 100),
-      reddit: Math.round(redditWeight * 100),
-    }
-  };
-}
+// calculateCombinedScore imported from ./lib/audience-weighting.js
 
 /**
  * Update audience-buzz.json with Reddit data
@@ -498,7 +455,7 @@ function saveAudienceBuzz() {
 
   audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
   audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
-  audienceBuzz._meta.notes = 'Dynamic weighting: Reddit fixed 20% (when >=15 items), Show Score & Mezzanine split remaining by sample size';
+  audienceBuzz._meta.notes = 'Proportional weighting by reviewCount volume (max 80% single source)';
 
   fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
   return true;
