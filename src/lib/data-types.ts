@@ -439,3 +439,35 @@ export interface CriticProfile {
   volumeRank: number;
   generosityRank: number;
 }
+
+// Creative team page types
+export type CreativeCategory = 'director' | 'playwright' | 'composer' | 'lyricist';
+
+export interface CreativeShowEntry {
+  title: string;
+  slug: string;
+  venue: string;
+  openingDate: string | null;
+  closingDate: string | null;
+  status: string;
+  type: string;
+  thumbnail: string | null;
+  isRevival: boolean;
+  season: string | null;
+  score: number | null;
+  role: string;
+}
+
+export interface CreativeProfile {
+  name: string;
+  slug: string;
+  category: CreativeCategory;
+  roles: string[];
+  shows: CreativeShowEntry[];
+  showCount: number;
+  avgScore: number | null;
+  highScore: number | null;
+  lowScore: number | null;
+  openShowCount: number;
+  closedShowCount: number;
+}
