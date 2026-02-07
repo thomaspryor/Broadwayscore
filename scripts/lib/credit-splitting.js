@@ -12,13 +12,24 @@ const { isValidCreativeTeamName } = require('./ibdb-dates');
 // Roles eligible for splitting into individual entries
 const SPLITTABLE_ROLES = new Set([
   'Director', 'Directors',
-  'Playwright', 'Written By', 'Writer',
+  'Playwright', 'Written By', 'Writer', 'Co-Writer',
   'Book', 'Book Writer',
-  'Music', 'Lyrics', 'Music & Lyrics',
+  'Music', 'Lyrics', 'Music & Lyrics', 'Music & Lyrics (catalog)',
+  'Book & Lyrics', 'Lyrics & Book',
+  'Book, Music & Lyrics', 'Music, Lyrics & Book',
   'Choreographer', 'Choreography', 'Choreographers',
-  'Composer', 'Lyricist',
+  'Composer', 'Lyricist', 'English Lyrics',
   'Adaptation',
 ]);
+
+// Manual overrides for names that can't be auto-split correctly
+// Maps combined name → array of individual names
+const MANUAL_SPLITS = {
+  'Keone & Mari Madrid': ['Keone Madrid', 'Mari Madrid'],
+  'Katori Hall with Frank Ketelaar and Kees Prins': ['Katori Hall', 'Frank Ketelaar', 'Kees Prins'],
+  'Oscar Hammerstein II and Joshua Logan': ['Oscar Hammerstein II', 'Joshua Logan'],
+  'Scott Graham, Steven Hoggett and Frantic Assembly': ['Scott Graham', 'Steven Hoggett'],
+};
 
 // Known combined names that should NOT be split (bands, duos, companies)
 const DO_NOT_SPLIT = new Set([
@@ -52,10 +63,12 @@ const COMPANY_INDICATORS = [
  */
 function hasCombinedNames(name) {
   if (DO_NOT_SPLIT.has(name)) return false;
+  // Manual overrides always split
+  if (MANUAL_SPLITS[name]) return true;
   // Skip names with parentheses (e.g., "ABBA (Benny Andersson & Björn Ulvaeus)")
   if (/\(.*[&].*\)/.test(name) || /\(.*\band\b.*\)/i.test(name)) return false;
-  // Must contain " and " or " & "
-  return / and /i.test(name) || / & /i.test(name);
+  // Must contain " and ", " & ", or " with "
+  return / and /i.test(name) || / & /i.test(name) || / with /i.test(name);
 }
 
 /**
@@ -65,6 +78,8 @@ function hasCombinedNames(name) {
  */
 function splitNames(name) {
   if (DO_NOT_SPLIT.has(name)) return null;
+  // Manual overrides — return pre-defined splits
+  if (MANUAL_SPLITS[name]) return MANUAL_SPLITS[name];
   // Skip names with parenthetical & or "and" (e.g., "ABBA (Benny Andersson & Björn Ulvaeus)")
   if (/\(.*[&].*\)/.test(name) || /\(.*\band\b.*\)/i.test(name)) return null;
 
@@ -101,6 +116,9 @@ function splitNames(name) {
   } else if (/ and /i.test(processedName)) {
     // Pattern: "X and Y"
     parts = processedName.split(/ and /i).map(s => s.trim());
+  } else if (/ with /i.test(processedName)) {
+    // Pattern: "X with Y" (rare, e.g. "Katori Hall with Frank Ketelaar and Kees Prins")
+    parts = processedName.split(/ with /i).map(s => s.trim());
   } else if (/ & /.test(processedName)) {
     // Pattern: "X & Y" (but not "Music & Lyrics" style role names)
     parts = processedName.split(/ & /).map(s => s.trim());

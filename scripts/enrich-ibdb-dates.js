@@ -22,6 +22,7 @@ const fs = require('fs');
 const path = require('path');
 const { lookupIBDBDates, batchLookupIBDBDates } = require('./lib/ibdb-dates');
 const { cleanup } = require('./lib/scraper');
+const { splitCombinedCredits } = require('./lib/credit-splitting');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
@@ -298,7 +299,8 @@ async function main() {
 
       for (const ch of c.changes) {
         if (ch.field === 'creativeTeam') {
-          showRecord.creativeTeam = ch.new; // ch.new is the array from IBDB
+          const { result } = splitCombinedCredits(ch.new);
+          showRecord.creativeTeam = result; // ch.new is the array from IBDB, split combined names
         } else {
           showRecord[ch.field] = ch.new;
         }
