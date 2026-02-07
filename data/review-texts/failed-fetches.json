@@ -19828,30 +19828,6 @@
     "timestamp": "2026-02-07T06:34:22.381Z"
   },
   {
-    "reviewId": "fences-2010/hollywood-reporter--unknown.json",
-    "showId": "fences-2010",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/fences-review-946013",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): home, tina, venus in fur, once, driving miss daisy...",
-    "textLength": 9075,
-    "timestamp": "2026-02-07T06:34:38.662Z"
-  },
-  {
-    "reviewId": "fences-2010/variety--david-rooney.json",
-    "showId": "fences-2010",
-    "outlet": "Variety",
-    "critic": "David Rooney",
-    "url": "https://variety.com/2010/legit/reviews/fences-1117942410/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): appropriate, company, network, high, company...",
-    "textLength": 2872,
-    "timestamp": "2026-02-07T06:37:21.743Z"
-  },
-  {
     "reviewId": "fences-2010/variety--owen-gleiberman.json",
     "showId": "fences-2010",
     "outlet": "Variety",
@@ -20306,66 +20282,6 @@
     "garbageReason": "Multiple shows mentioned (7): company, hair, once, high, company...",
     "textLength": 5160,
     "timestamp": "2026-02-07T07:18:20.905Z"
-  },
-  {
-    "reviewId": "eureka-day-2024/nytimes--unknown.json",
-    "showId": "eureka-day-2024",
-    "outlet": "The New York Times",
-    "critic": "Unknown",
-    "url": "https://www.nytimes.com/2024/12/16/theater/eureka-day-review-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): oh, mary!, death becomes her, just in time, cult of love, company...",
-    "textLength": 7195,
-    "timestamp": "2026-02-07T07:18:26.300Z"
-  },
-  {
-    "reviewId": "eureka-day-2024/variety--charles-isherwood.json",
-    "showId": "eureka-day-2024",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2024/legit/reviews/eureka-day-review-broadway-1236225847/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): company, the audience, once, high, company...",
-    "textLength": 7194,
-    "timestamp": "2026-02-07T07:19:17.862Z"
-  },
-  {
-    "reviewId": "eureka-day-2024/variety--daniel-daddario.json",
-    "showId": "eureka-day-2024",
-    "outlet": "Variety",
-    "critic": "Daniel D'Addario",
-    "url": "https://variety.com/2024/legit/reviews/eureka-day-review-broadway-1236250966/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): company, the audience, once, high, company...",
-    "textLength": 7206,
-    "timestamp": "2026-02-07T07:19:32.248Z"
-  },
-  {
-    "reviewId": "eureka-day-2024/variety--david-benedict.json",
-    "showId": "eureka-day-2024",
-    "outlet": "Variety",
-    "critic": "David Benedict",
-    "url": "https://variety.com/2022/legit/reviews/eureka-day-review-helen-hunt-1235383580/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): liberation, proof, once, evita, rain...",
-    "textLength": 4985,
-    "timestamp": "2026-02-07T07:20:01.746Z"
-  },
-  {
-    "reviewId": "eureka-day-2024/vulture--sara-holdren.json",
-    "showId": "eureka-day-2024",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "https://www.vulture.com/article/theater-review-jonathan-spector-eureka-day-jessica-hecht.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): appropriate, home, company, the audience, once...",
-    "textLength": 8579,
-    "timestamp": "2026-02-07T07:20:11.098Z"
   },
   {
     "reviewId": "fela-2009/nytimes--ben-brantley.json",
@@ -23990,5 +23906,89 @@
     "garbageReason": "Multiple shows mentioned (15): wicked, hamilton, home, smash, all my sons...",
     "textLength": 7014,
     "timestamp": "2026-02-07T12:33:01.232Z"
+  },
+  {
+    "reviewId": "eureka-day-2024/nytimes--unknown.json",
+    "showId": "eureka-day-2024",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2024/12/16/theater/eureka-day-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): oh, mary!, death becomes her, just in time, cult of love, company...",
+    "textLength": 7195,
+    "timestamp": "2026-02-07T12:37:23.450Z"
+  },
+  {
+    "reviewId": "eureka-day-2024/variety--charles-isherwood.json",
+    "showId": "eureka-day-2024",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2024/legit/reviews/eureka-day-review-broadway-1236225847/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, the audience, once, high, company...",
+    "textLength": 6746,
+    "timestamp": "2026-02-07T12:38:09.897Z"
+  },
+  {
+    "reviewId": "eureka-day-2024/variety--daniel-daddario.json",
+    "showId": "eureka-day-2024",
+    "outlet": "Variety",
+    "critic": "Daniel D'Addario",
+    "url": "https://variety.com/2024/legit/reviews/eureka-day-review-broadway-1236250966/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, the audience, once, high, company...",
+    "textLength": 7206,
+    "timestamp": "2026-02-07T12:38:26.365Z"
+  },
+  {
+    "reviewId": "eureka-day-2024/variety--david-benedict.json",
+    "showId": "eureka-day-2024",
+    "outlet": "Variety",
+    "critic": "David Benedict",
+    "url": "https://variety.com/2022/legit/reviews/eureka-day-review-helen-hunt-1235383580/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): liberation, proof, once, evita, rain...",
+    "textLength": 4943,
+    "timestamp": "2026-02-07T12:38:48.698Z"
+  },
+  {
+    "reviewId": "eureka-day-2024/vulture--sara-holdren.json",
+    "showId": "eureka-day-2024",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/theater-review-jonathan-spector-eureka-day-jessica-hecht.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): appropriate, home, company, the audience, once...",
+    "textLength": 8579,
+    "timestamp": "2026-02-07T12:39:01.980Z"
+  },
+  {
+    "reviewId": "fences-2010/hollywood-reporter--unknown.json",
+    "showId": "fences-2010",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/fences-review-946013",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): home, tina, venus in fur, once, driving miss daisy...",
+    "textLength": 8540,
+    "timestamp": "2026-02-07T12:39:20.067Z"
+  },
+  {
+    "reviewId": "fences-2010/variety--david-rooney.json",
+    "showId": "fences-2010",
+    "outlet": "Variety",
+    "critic": "David Rooney",
+    "url": "https://variety.com/2010/legit/reviews/fences-1117942410/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): appropriate, company, network, high, company...",
+    "textLength": 2872,
+    "timestamp": "2026-02-07T12:41:56.664Z"
   }
 ]
