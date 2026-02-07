@@ -1,62 +1,52 @@
 {
-  "updatedAt": "2026-02-07T06:55:54.380Z",
-  "processed": 16,
-  "failed": 134,
-  "successRate": "10.7%",
+  "updatedAt": "2026-02-07T07:02:48.423Z",
+  "processed": 14,
+  "failed": 126,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 2,
+    "playwright": 0,
+    "browserbase": 3,
     "scrapingbee": 3,
-    "brightdata": 5,
-    "archive": 6
+    "brightdata": 4,
+    "archive": 7
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-07T05:05:12.850Z",
+      "t": "2026-02-07T05:02:20.245Z",
       "event": "bb-session",
-      "session": "6e720a2d",
-      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
+      "session": "e809d975",
+      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
     },
     {
-      "t": "2026-02-07T05:05:18.898Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-07T05:05:56.733Z",
+      "t": "2026-02-07T05:02:35.014Z",
       "event": "bb-session",
-      "session": "c2af50aa",
-      "url": "http://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
+      "session": "94a4b05c",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
     },
     {
-      "t": "2026-02-07T05:06:38.973Z",
+      "t": "2026-02-07T05:04:52.884Z",
       "event": "bb-session",
-      "session": "ebbe7a9d",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/behanding-spokane-theater"
+      "session": "3a660dbb",
+      "url": "https://www.nytimes.com/2009/12/14/theater/reviews/14night.html"
     },
     {
-      "t": "2026-02-07T05:08:32.083Z",
-      "event": "bb-session",
-      "session": "67e6c924",
-      "url": "http://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als?"
-    },
-    {
-      "t": "2026-02-07T05:08:34.109Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-07T05:09:58.659Z",
-      "event": "bb-session",
-      "session": "c1b46660",
-      "url": "https://www.nytimes.com/2010/04/05/theater/reviews/05behanding.html"
-    },
-    {
-      "t": "2026-02-07T05:10:40.862Z",
+      "t": "2026-02-07T05:05:38.315Z",
       "event": "bb-login-fail",
       "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770441007721\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq4IUIagxmpAANA1qtA==&cid=Rfmzq0W~9HCOB4UuwZ097OmhBULIKpTenw3BDco7ZgA~lraeRNePnmH342HwyRGA9J1gysIzB5sA2mzO3fO8otFfj5RsiRs2HXExh7GIRtPXjBGkKB~3~ZPFAF89l~uC&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770441007721\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770441007721\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq4IUIagxmpAANA1qtA==&cid=Rfmzq0W~9HCOB4UuwZ097OmhBULIKpTenw3BDco7ZgA~lraeRNePnmH342HwyRGA9J1gysIzB5sA2mzO3fO8otFfj5RsiRs2HXExh7GIRtPXjBGkKB~3~ZPFAF89l~uC&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770441007721\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770441007721\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAq4IUIagxmpAANA1qtA==&cid=Rfmzq0W~9HCOB4UuwZ097OmhBULIKpTenw3BDco7ZgA~lraeRNePnmH342HwyRGA9J1gysIzB5sA2mzO3fO8otFfj5RsiRs2HXExh7GIRtPXjBGkKB~3~ZPFAF89l~uC&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770441007721\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440704980\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAagNhPhH8NnYANCKmrw==&cid=hinM2if_tRbWLO_eYFTWec0xUnZTUPsh2sUckqyD9OVrRv0PyfSN540CLv_bD8EzWHL2lWh2BNyhTDIavwdskSRJ1lNEMFXEn~fdkNyI8pzg42jYDduDEUFqJKgrhH_e&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440704980\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440704980\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAagNhPhH8NnYANCKmrw==&cid=hinM2if_tRbWLO_eYFTWec0xUnZTUPsh2sUckqyD9OVrRv0PyfSN540CLv_bD8EzWHL2lWh2BNyhTDIavwdskSRJ1lNEMFXEn~fdkNyI8pzg42jYDduDEUFqJKgrhH_e&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440704980\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440704980\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAagNhPhH8NnYANCKmrw==&cid=hinM2if_tRbWLO_eYFTWec0xUnZTUPsh2sUckqyD9OVrRv0PyfSN540CLv_bD8EzWHL2lWh2BNyhTDIavwdskSRJ1lNEMFXEn~fdkNyI8pzg42jYDduDEUFqJKgrhH_e&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440704980\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-07T05:07:00.028Z",
+      "event": "bb-session",
+      "session": "1793d2d0",
+      "url": "http://www.variety.com/review/VE1117941777.html?categoryid=3276&cs=1&nid=2580&ut"
+    },
+    {
+      "t": "2026-02-07T05:07:48.143Z",
+      "event": "bb-session",
+      "session": "2976a0ea",
+      "url": "http://www.hollywoodreporter.com/review/midnight-theater-review-652788"
     }
   ]
 }
