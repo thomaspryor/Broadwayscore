@@ -35,6 +35,7 @@ const DO_NOT_SPLIT = new Set([
   'Ryuichi Sakamoto and Alva Noto',
   'King James Bible and William Tyndale',
   'Max Martin and Friends',
+  'Bob & Bill',
 ]);
 
 // Words that suggest a company/collective rather than multiple people
@@ -67,12 +68,17 @@ function splitNames(name) {
   // Skip names with parenthetical & or "and" (e.g., "ABBA (Benny Andersson & Björn Ulvaeus)")
   if (/\(.*[&].*\)/.test(name) || /\(.*\band\b.*\)/i.test(name)) return null;
 
+  // Pre-process: protect "Jr." and "Sr." suffixes from comma splitting
+  // "Richard Maltby, Jr." → "Richard Maltby Jr." before splitting
+  let processedName = name
+    .replace(/,\s*(Jr\.?|Sr\.?|III|IV|II)\b/gi, ' $1');
+
   let parts;
 
   // Pattern: "X, Y, and Z" or "X, Y and Z" (Oxford comma optional)
-  if (/, /.test(name) && / and /i.test(name)) {
+  if (/, /.test(processedName) && / and /i.test(processedName)) {
     // Split on comma first, then split last part on " and "
-    const commaParts = name.split(/,\s*/);
+    const commaParts = processedName.split(/,\s*/);
     parts = [];
     for (const part of commaParts) {
       if (/ and /i.test(part)) {
@@ -81,9 +87,9 @@ function splitNames(name) {
         parts.push(part.trim());
       }
     }
-  } else if (/, /.test(name) && / & /.test(name)) {
+  } else if (/, /.test(processedName) && / & /.test(processedName)) {
     // Pattern: "X, Y & Z" (comma + ampersand)
-    const commaParts = name.split(/,\s*/);
+    const commaParts = processedName.split(/,\s*/);
     parts = [];
     for (const part of commaParts) {
       if (/ & /.test(part)) {
@@ -92,12 +98,12 @@ function splitNames(name) {
         parts.push(part.trim());
       }
     }
-  } else if (/ and /i.test(name)) {
+  } else if (/ and /i.test(processedName)) {
     // Pattern: "X and Y"
-    parts = name.split(/ and /i).map(s => s.trim());
-  } else if (/ & /.test(name)) {
+    parts = processedName.split(/ and /i).map(s => s.trim());
+  } else if (/ & /.test(processedName)) {
     // Pattern: "X & Y" (but not "Music & Lyrics" style role names)
-    parts = name.split(/ & /).map(s => s.trim());
+    parts = processedName.split(/ & /).map(s => s.trim());
   } else {
     return null;
   }
@@ -109,6 +115,9 @@ function splitNames(name) {
 
   // Validate each part
   for (const part of parts) {
+    // Single word is not a person name (except rare mononyms like "Kamauu")
+    if (part.split(/\s+/).length === 1 && part.length < 4) return null;
+
     // Too many words (likely a company/collective)
     if (part.split(/\s+/).length > 4) return null;
 
