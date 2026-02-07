@@ -15256,30 +15256,6 @@
     "timestamp": "2026-02-06T03:19:53.551Z"
   },
   {
-    "reviewId": "a-christmas-carol-2022/nyt-theater--jonathan-mandell.json",
-    "showId": "a-christmas-carol-2022",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2022/11/21/a-christmas-carol-broadway-review-jefferson-mays-as-scrooge-and-49-other-characters/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): the audience, hair, once, rain, november...",
-    "textLength": 4887,
-    "timestamp": "2026-02-06T03:42:46.412Z"
-  },
-  {
-    "reviewId": "a-christmas-carol-2022/nytimes--alexis-soloski.json",
-    "showId": "a-christmas-carol-2022",
-    "outlet": "The New York Times",
-    "critic": "Alexis Soloski",
-    "url": "https://www.nytimes.com/2022/11/21/theater/christmas-carol-review.html",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): home, oslo, the audience, once, rain...",
-    "textLength": 4984,
-    "timestamp": "2026-02-06T03:45:40.068Z"
-  },
-  {
     "reviewId": "a-christmas-carol-2022/nytimes--ben-brantley.json",
     "showId": "a-christmas-carol-2022",
     "outlet": "New York Times",
@@ -15302,18 +15278,6 @@
     "garbageReason": "Multiple shows mentioned (8): harry potter and the cursed child, the present, misery, the audience, hair...",
     "textLength": 4378,
     "timestamp": "2026-02-06T03:46:00.498Z"
-  },
-  {
-    "reviewId": "a-christmas-story-the-musical-2012/hollywood-reporter--david-rooney.json",
-    "showId": "a-christmas-story-the-musical-2012",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/a-christmas-story-musical-theater-393180",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): chicago, mamma mia!, appropriate, home, tina...",
-    "textLength": 8004,
-    "timestamp": "2026-02-06T03:49:50.147Z"
   },
   {
     "reviewId": "a-christmas-story-the-musical-2012/variety--marilyn-stasio.json",
@@ -22010,5 +21974,41 @@
     "garbageReason": "Multiple shows mentioned (17): harry potter and the cursed child, home, english, company, groundhog day...",
     "textLength": 9730,
     "timestamp": "2026-02-07T04:41:08.682Z"
+  },
+  {
+    "reviewId": "a-christmas-carol-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "a-christmas-carol-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/11/21/a-christmas-carol-broadway-review-jefferson-mays-as-scrooge-and-49-other-characters/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): the audience, hair, once, rain, november...",
+    "textLength": 4887,
+    "timestamp": "2026-02-07T04:43:39.122Z"
+  },
+  {
+    "reviewId": "a-christmas-carol-2022/nytimes--alexis-soloski.json",
+    "showId": "a-christmas-carol-2022",
+    "outlet": "The New York Times",
+    "critic": "Alexis Soloski",
+    "url": "https://www.nytimes.com/2022/11/21/theater/christmas-carol-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, oslo, the audience, once, rain...",
+    "textLength": 4817,
+    "timestamp": "2026-02-07T04:43:44.013Z"
+  },
+  {
+    "reviewId": "a-christmas-story-the-musical-2012/hollywood-reporter--david-rooney.json",
+    "showId": "a-christmas-story-the-musical-2012",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/a-christmas-story-musical-theater-393180",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chicago, mamma mia!, appropriate, home, tina...",
+    "textLength": 8004,
+    "timestamp": "2026-02-07T04:49:16.026Z"
   }
 ]
