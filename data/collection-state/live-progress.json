@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-07T18:06:37.599Z",
-  "processed": 0,
-  "failed": 10,
-  "successRate": "0%",
+  "updatedAt": "2026-02-07T18:08:20.674Z",
+  "processed": 1,
+  "failed": 19,
+  "successRate": "5.0%",
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-02-07T18:03:04.505Z",
@@ -40,6 +40,12 @@
       "event": "bb-session",
       "session": "83a6fafc",
       "url": "http://www.hollywoodreporter.com/review/a-dolls-house-part-2-theater-998160"
+    },
+    {
+      "t": "2026-02-07T18:07:16.881Z",
+      "event": "bb-session",
+      "session": "6df01b8e",
+      "url": "https://variety.com/2013/legit/reviews/a-gentlemans-guide-to-love-murder-1200814"
     }
   ]
 }
