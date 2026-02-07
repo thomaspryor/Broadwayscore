@@ -75,14 +75,19 @@ export default function CriticIndexClient({ critics, totalReviews }: { critics: 
   const [search, setSearch] = useState('');
   const [sortMode, setSortMode] = useState<SortMode>('reviews');
 
+  const [minReviews, setMinReviews] = useState(5);
+
   const filtered = useMemo(() => {
-    if (!search.trim()) return critics;
-    const q = search.toLowerCase();
-    return critics.filter(c =>
-      c.name.toLowerCase().includes(q) ||
-      c.outlets.some(o => o.toLowerCase().includes(q))
-    );
-  }, [search, critics]);
+    let list = critics.filter(c => c.reviewCount >= minReviews);
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      list = list.filter(c =>
+        c.name.toLowerCase().includes(q) ||
+        c.outlets.some(o => o.toLowerCase().includes(q))
+      );
+    }
+    return list;
+  }, [search, critics, minReviews]);
 
   const sorted = useMemo(() => {
     const list = [...filtered];
