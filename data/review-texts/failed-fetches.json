@@ -8572,18 +8572,6 @@
     "timestamp": "2026-02-04T00:56:13.065Z"
   },
   {
-    "reviewId": "the-seafarer-2007/hollywood-reporter--frank-scheck.json",
-    "showId": "the-seafarer-2007",
-    "outlet": "Hollywood Reporter",
-    "critic": "Frank Scheck",
-    "url": "http://www.hollywoodreporter.com/review/seafarer-theater-review-1103176",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): chicago, parade, company, once, high...",
-    "textLength": 5192,
-    "timestamp": "2026-02-04T00:59:48.871Z"
-  },
-  {
     "reviewId": "the-skin-of-our-teeth-2022/nyt-theater--jonathan-mandell.json",
     "showId": "the-skin-of-our-teeth-2022",
     "outlet": "New York Theater",
@@ -8618,18 +8606,6 @@
     "garbageReason": "Multiple shows mentioned (8): mamma mia!, rocky, once, evita, elling...",
     "textLength": 7287,
     "timestamp": "2026-02-04T01:05:19.089Z"
-  },
-  {
-    "reviewId": "the-thanksgiving-play-2023/nyt-theater--jonathan-mandell.json",
-    "showId": "the-thanksgiving-play-2023",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2023/04/20/the-thanksgiving-play-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): parade, hair, high, race, november...",
-    "textLength": 8489,
-    "timestamp": "2026-02-04T01:07:29.878Z"
   },
   {
     "reviewId": "the-trip-to-bountiful-2013/hollywood-reporter--david-rooney.json",
@@ -12146,42 +12122,6 @@
     "garbageReason": "Multiple shows mentioned (18): wicked, mamma mia!, ragtime, here lies love, purpose...",
     "textLength": 9134,
     "timestamp": "2026-02-05T05:12:46.772Z"
-  },
-  {
-    "reviewId": "the-snow-geese-2013/hollywood-reporter--david-rooney.json",
-    "showId": "the-snow-geese-2013",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/mary-louise-parkers-snow-geese-650649",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): mamma mia!, home, rocky, vanya and sonia and masha and spike, once...",
-    "textLength": 5753,
-    "timestamp": "2026-02-05T05:13:03.392Z"
-  },
-  {
-    "reviewId": "the-snow-geese-2013/nytimes--unknown.json",
-    "showId": "the-snow-geese-2013",
-    "outlet": "New York Times",
-    "critic": "Unknown",
-    "url": "http://www.nytimes.com/2013/10/25/theater/reviews/the-snow-geese-stars-mary-louise-parker.html?_r=0",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): proof, uncle vanya, frozen, high, hedda gabler...",
-    "textLength": 6558,
-    "timestamp": "2026-02-05T05:13:07.462Z"
-  },
-  {
-    "reviewId": "the-snow-geese-2013/vulture--jesse-green.json",
-    "showId": "the-snow-geese-2013",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "http://www.vulture.com/2013/10/theater-review-the-snow-geese.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): chess, uncle vanya, home, act one, vanya and sonia and masha and spike...",
-    "textLength": 6226,
-    "timestamp": "2026-02-05T05:13:20.284Z"
   },
   {
     "reviewId": "the-sound-inside-2019/hollywood-reporter--david-rooney.json",
@@ -23654,5 +23594,101 @@
     "garbageReason": "Multiple shows mentioned (10): english, company, act one, hair, once...",
     "textLength": 6338,
     "timestamp": "2026-02-07T10:41:39.441Z"
+  },
+  {
+    "reviewId": "the-seafarer-2007/hollywood-reporter--frank-scheck.json",
+    "showId": "the-seafarer-2007",
+    "outlet": "Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/seafarer-theater-review-1103176",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): chicago, parade, company, once, high...",
+    "textLength": 5192,
+    "timestamp": "2026-02-07T10:48:31.274Z"
+  },
+  {
+    "reviewId": "the-snow-geese-2013/hollywood-reporter--david-rooney.json",
+    "showId": "the-snow-geese-2013",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/mary-louise-parkers-snow-geese-650649",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): mamma mia!, home, vanya and sonia and masha and spike, once, november...",
+    "textLength": 5704,
+    "timestamp": "2026-02-07T10:49:17.274Z"
+  },
+  {
+    "reviewId": "the-snow-geese-2013/nytimes--ben-brantley.json",
+    "showId": "the-snow-geese-2013",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "http://www.nytimes.com/2013/10/25/theater/reviews/the-snow-geese-stars-mary-louise-parker.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): proof, uncle vanya, frozen, high, hedda gabler...",
+    "textLength": 6558,
+    "timestamp": "2026-02-07T10:49:22.095Z"
+  },
+  {
+    "reviewId": "the-snow-geese-2013/nytimes--unknown.json",
+    "showId": "the-snow-geese-2013",
+    "outlet": "New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2013/10/25/theater/reviews/the-snow-geese-stars-mary-louise-parker.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): proof, uncle vanya, frozen, high, hedda gabler...",
+    "textLength": 6558,
+    "timestamp": "2026-02-07T10:49:24.624Z"
+  },
+  {
+    "reviewId": "the-snow-geese-2013/vulture--jesse-green.json",
+    "showId": "the-snow-geese-2013",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2013/10/theater-review-the-snow-geese.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chess, uncle vanya, home, act one, vanya and sonia and masha and spike...",
+    "textLength": 9660,
+    "timestamp": "2026-02-07T10:49:28.636Z"
+  },
+  {
+    "reviewId": "the-thanksgiving-play-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "the-thanksgiving-play-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/04/20/the-thanksgiving-play-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): parade, hair, high, race, november...",
+    "textLength": 8489,
+    "timestamp": "2026-02-07T10:49:36.699Z"
+  },
+  {
+    "reviewId": "the-thanksgiving-play-2023/nytg--amelia-merrill.json",
+    "showId": "the-thanksgiving-play-2023",
+    "outlet": "New York Theatre Guide",
+    "critic": "Amelia Merrill",
+    "url": "https://www.newyorktheatreguide.com/reviews/the-thanksgiving-play-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, purpose, once, evita, elling...",
+    "textLength": 4419,
+    "timestamp": "2026-02-07T10:49:45.395Z"
+  },
+  {
+    "reviewId": "the-thanksgiving-play-2023/nytimes--jesse-green.json",
+    "showId": "the-thanksgiving-play-2023",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2023/04/20/theater/thanksgiving-play-review-larissa-fasthorse.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): parade, peter pan goes wrong, high, well, rent",
+    "textLength": 2453,
+    "timestamp": "2026-02-07T10:49:50.731Z"
   }
 ]
