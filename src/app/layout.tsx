@@ -226,6 +226,8 @@ export default function RootLayout({
                 <span className="text-lg font-bold text-gradient">Scorecard</span>
               </div>
               <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-sm text-gray-400">
+                <Link href="/about" className="hover:text-white transition-colors">About</Link>
+                <span className="text-gray-500 hidden sm:inline">|</span>
                 <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
                 <span className="text-gray-500 hidden sm:inline">|</span>
                 <span>Every show. Every review. One score.</span>
