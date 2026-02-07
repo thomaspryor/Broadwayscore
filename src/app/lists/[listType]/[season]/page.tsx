@@ -206,7 +206,7 @@ export default function GoldListSeasonPage({ params }: { params: { listType: str
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <h2 className="font-bold text-white text-sm sm:text-base group-hover:text-brand transition-colors truncate">
+                  <h2 className="font-bold text-white text-base sm:text-xl group-hover:text-brand transition-colors truncate">
                     {entry.title}
                   </h2>
                   <div className="flex flex-wrap items-center gap-1 mt-1">
