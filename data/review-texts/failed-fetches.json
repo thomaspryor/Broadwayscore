@@ -11656,18 +11656,6 @@
     "timestamp": "2026-02-05T03:47:40.555Z"
   },
   {
-    "reviewId": "she-loves-me-2016/vulture--jesse-green.json",
-    "showId": "she-loves-me-2016",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "https://www.vulture.com/2016/03/theater-review-she-loves-me.html",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): hamilton, home, summer, cats, the price...",
-    "textLength": 8630,
-    "timestamp": "2026-02-05T04:07:55.955Z"
-  },
-  {
     "reviewId": "side-show-2014/nytimes--charles-isherwood.json",
     "showId": "side-show-2014",
     "outlet": "New York Times",
@@ -20860,18 +20848,6 @@
     "timestamp": "2026-02-07T09:56:16.516Z"
   },
   {
-    "reviewId": "stick-fly-2011/hollywood-reporter--david-rooney.json",
-    "showId": "stick-fly-2011",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/stick-fly-review-dule-hill-mekhi-phifer-alicia-keys-271508",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): mamma mia!, giant, harmony, company, the audience...",
-    "textLength": 6496,
-    "timestamp": "2026-02-07T09:56:35.105Z"
-  },
-  {
     "reviewId": "summer-1976-2023/nyt-theater--jonathan-mandell.json",
     "showId": "summer-1976-2023",
     "outlet": "New York Theater",
@@ -24794,5 +24770,77 @@
     "garbageReason": "Multiple shows mentioned (7): appropriate, the audience, once, elling, high...",
     "textLength": 6272,
     "timestamp": "2026-02-07T15:44:29.175Z"
+  },
+  {
+    "reviewId": "she-loves-me-2016/nyt-theater--jonathan-mandell.json",
+    "showId": "she-loves-me-2016",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "http://newyorktheater.me/2016/03/17/she-loves-me-review-falling-in-love-with-laura-benanti/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): my fair lady, summer, fiddler on the roof, hair, once...",
+    "textLength": 7102,
+    "timestamp": "2026-02-07T15:46:11.154Z"
+  },
+  {
+    "reviewId": "she-loves-me-2016/nytg--jane-dentinger.json",
+    "showId": "she-loves-me-2016",
+    "outlet": "New York Theatre Guide",
+    "critic": "Jane Dentinger",
+    "url": "http://nytheatreguide.com/2016/03/broadway-review-she-loves-me-at-studio-54/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): harmony, home, tina, the present, the price...",
+    "textLength": 45998,
+    "timestamp": "2026-02-07T15:46:22.356Z"
+  },
+  {
+    "reviewId": "she-loves-me-2016/nytimes--unknown.json",
+    "showId": "she-loves-me-2016",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2016/03/18/theater/review-she-loves-me-is-a-daydream-of-the-ordinary.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): harmony, home, gypsy, company, frozen...",
+    "textLength": 7954,
+    "timestamp": "2026-02-07T15:47:53.404Z"
+  },
+  {
+    "reviewId": "she-loves-me-2016/variety--marilyn-stasio.json",
+    "showId": "she-loves-me-2016",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2016/legit/reviews/she-loves-me-review-broadway-revival-1201738146/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"she loves me\" not mentioned in text; No theater-related keywords in short text",
+    "textLength": 660,
+    "timestamp": "2026-02-07T15:48:13.642Z"
+  },
+  {
+    "reviewId": "she-loves-me-2016/vulture--jesse-green.json",
+    "showId": "she-loves-me-2016",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2016/03/theater-review-she-loves-me.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): hamilton, home, summer, cats, the price...",
+    "textLength": 8389,
+    "timestamp": "2026-02-07T15:48:19.491Z"
+  },
+  {
+    "reviewId": "stick-fly-2011/hollywood-reporter--david-rooney.json",
+    "showId": "stick-fly-2011",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/stick-fly-review-dule-hill-mekhi-phifer-alicia-keys-271508",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): giant, harmony, company, the audience, a raisin in the sun...",
+    "textLength": 6277,
+    "timestamp": "2026-02-07T15:48:43.630Z"
   }
 ]
