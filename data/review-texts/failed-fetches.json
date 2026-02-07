@@ -12028,30 +12028,6 @@
     "timestamp": "2026-02-05T05:23:26.511Z"
   },
   {
-    "reviewId": "plaza-suite-2022/hollywood-reporter--david-rooney.json",
-    "showId": "plaza-suite-2022",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/lifestyle/arts/plaza-suite-review-matthew-broderick-sarah-jessica-parker-neil-simon-broadway-1235119408/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): mamma mia!, purpose, sweat, rocky, once...",
-    "textLength": 8408,
-    "timestamp": "2026-02-05T05:35:09.554Z"
-  },
-  {
-    "reviewId": "plaza-suite-2022/nyt-theater--jonathan-mandell.json",
-    "showId": "plaza-suite-2022",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2022/03/28/plaza-suite-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): the audience, hair, once, high, brighton beach memoirs...",
-    "textLength": 5473,
-    "timestamp": "2026-02-05T05:35:16.661Z"
-  },
-  {
     "reviewId": "summer-2018/hollywood-reporter--david-rooney.json",
     "showId": "summer-2018",
     "outlet": "The Hollywood Reporter",
@@ -17534,42 +17510,6 @@
     "garbageReason": "Multiple shows mentioned (8): appropriate, english, company, my fair lady, the audience...",
     "textLength": 6998,
     "timestamp": "2026-02-06T17:56:58.760Z"
-  },
-  {
-    "reviewId": "plaza-suite-2022/nytg--joe-dziemianowicz.json",
-    "showId": "plaza-suite-2022",
-    "outlet": "New York Theatre Guide",
-    "critic": "Joe Dziemianowicz",
-    "url": "https://www.newyorktheatreguide.com/reviews/plaza-suite-broadway-review-sarah-jessica-parker-matthew-broderick",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): sylvia, annie, hair, once, the normal heart...",
-    "textLength": 3697,
-    "timestamp": "2026-02-06T17:57:50.521Z"
-  },
-  {
-    "reviewId": "plaza-suite-2022/nytimes--unknown.json",
-    "showId": "plaza-suite-2022",
-    "outlet": "The New York Times",
-    "critic": "Unknown",
-    "url": "https://www.nytimes.com/2022/03/28/theater/plaza-suite-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, frozen, the audience, rain, high...",
-    "textLength": 6871,
-    "timestamp": "2026-02-06T17:59:00.805Z"
-  },
-  {
-    "reviewId": "plaza-suite-2022/variety--daniel-daddario.json",
-    "showId": "plaza-suite-2022",
-    "outlet": "Variety",
-    "critic": "Daniel D'Addario",
-    "url": "https://variety.com/2022/legit/reviews/plaza-suite-review-sarah-jessica-parker-matthew-broderick-broadway-1235217050/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): appropriate, the audience, once, elling, high...",
-    "textLength": 6720,
-    "timestamp": "2026-02-06T17:59:08.077Z"
   },
   {
     "reviewId": "plaza-suite-2022/variety--frank-rizzo.json",
@@ -24770,5 +24710,89 @@
     "garbageReason": "Multiple shows mentioned (8): appropriate, home, smash, parade, elling...",
     "textLength": 7254,
     "timestamp": "2026-02-07T15:37:03.203Z"
+  },
+  {
+    "reviewId": "pictures-from-home-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "pictures-from-home-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/02/09/pictures-from-home-review-nathan-lane-and-zoe-wanamaker-as-danny-bursteins-dad-mom-and-subjects/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): english, leopoldstadt, some like it hot, junk, fiddler on the roof...",
+    "textLength": 4933,
+    "timestamp": "2026-02-07T15:39:47.951Z"
+  },
+  {
+    "reviewId": "pictures-from-home-2023/nytimes--jesse-green.json",
+    "showId": "pictures-from-home-2023",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2023/02/09/theater/pictures-from-home-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): redwood, company, sweat, the father, the audience...",
+    "textLength": 7430,
+    "timestamp": "2026-02-07T15:39:57.585Z"
+  },
+  {
+    "reviewId": "plaza-suite-2022/hollywood-reporter--david-rooney.json",
+    "showId": "plaza-suite-2022",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/plaza-suite-review-matthew-broderick-sarah-jessica-parker-neil-simon-broadway-1235119408/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): purpose, sweat, once, how to succeed in business without really trying, high...",
+    "textLength": 8199,
+    "timestamp": "2026-02-07T15:42:27.144Z"
+  },
+  {
+    "reviewId": "plaza-suite-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "plaza-suite-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/03/28/plaza-suite-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): the audience, hair, once, high, brighton beach memoirs...",
+    "textLength": 5473,
+    "timestamp": "2026-02-07T15:42:34.183Z"
+  },
+  {
+    "reviewId": "plaza-suite-2022/nytg--joe-dziemianowicz.json",
+    "showId": "plaza-suite-2022",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/plaza-suite-broadway-review-sarah-jessica-parker-matthew-broderick",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): sylvia, annie, hair, once, the normal heart...",
+    "textLength": 3697,
+    "timestamp": "2026-02-07T15:42:42.700Z"
+  },
+  {
+    "reviewId": "plaza-suite-2022/nytimes--unknown.json",
+    "showId": "plaza-suite-2022",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2022/03/28/theater/plaza-suite-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, frozen, the audience, rain, high...",
+    "textLength": 6871,
+    "timestamp": "2026-02-07T15:44:15.530Z"
+  },
+  {
+    "reviewId": "plaza-suite-2022/variety--daniel-daddario.json",
+    "showId": "plaza-suite-2022",
+    "outlet": "Variety",
+    "critic": "Daniel D'Addario",
+    "url": "https://variety.com/2022/legit/reviews/plaza-suite-review-sarah-jessica-parker-matthew-broderick-broadway-1235217050/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): appropriate, the audience, once, elling, high...",
+    "textLength": 6272,
+    "timestamp": "2026-02-07T15:44:29.175Z"
   }
 ]
