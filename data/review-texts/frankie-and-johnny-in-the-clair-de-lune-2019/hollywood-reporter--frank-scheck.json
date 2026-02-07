@@ -15,8 +15,8 @@
   "isFullReview": true,
   "textWordCount": 674,
   "archivePath": "data/archives/reviews/frankie-and-johnny-in-the-clair-de-lune-2019/hollywood-reporter--frank-scheck_2026-02-07.html",
-  "textFetchedAt": "2026-02-07T06:59:58.614Z",
-  "fetchMethod": "scrapingbee",
+  "textFetchedAt": "2026-02-07T13:27:34.484Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
@@ -27,16 +27,22 @@
     {
       "tier": 2,
       "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 2,
+  "fetchTier": 3,
   "textQuality": "truncated",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee",
+  "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 674,
   "tierReason": "Full review text",
