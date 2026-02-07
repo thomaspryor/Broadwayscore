@@ -1,57 +1,57 @@
 {
-  "updatedAt": "2026-02-07T10:45:16.925Z",
-  "processed": 38,
-  "failed": 442,
-  "successRate": "7.9%",
+  "updatedAt": "2026-02-07T10:49:50.745Z",
+  "processed": 34,
+  "failed": 476,
+  "successRate": "6.7%",
   "tierBreakdown": {
     "playwright": 4,
-    "browserbase": 3,
-    "scrapingbee": 6,
-    "brightdata": 15,
-    "archive": 16
+    "browserbase": 1,
+    "scrapingbee": 7,
+    "brightdata": 7,
+    "archive": 18
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-07T05:01:31.013Z",
+      "t": "2026-02-07T05:00:46.168Z",
       "event": "bb-session",
-      "session": "89718aef",
-      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
+      "session": "0a1f2e08",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/1776-broadway-review-1235228615"
     },
     {
-      "t": "2026-02-07T05:03:41.372Z",
+      "t": "2026-02-07T05:01:16.190Z",
       "event": "bb-session",
-      "session": "45fdb019",
-      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
+      "session": "708050e8",
+      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
     },
     {
-      "t": "2026-02-07T05:03:43.812Z",
+      "t": "2026-02-07T05:03:28.085Z",
+      "event": "bb-session",
+      "session": "5040017b",
+      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
+    },
+    {
+      "t": "2026-02-07T05:03:30.467Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-07T05:06:05.834Z",
+      "t": "2026-02-07T05:05:57.764Z",
       "event": "bb-session",
-      "session": "fc5e8780",
-      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
+      "session": "6204bfce",
+      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
     },
     {
-      "t": "2026-02-07T05:06:53.387Z",
+      "t": "2026-02-07T05:06:43.264Z",
       "event": "bb-login-fail",
       "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440779777\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA6D5TJhNmWf4ANCKmrw==&cid=sq8AHtAGCcVDaSpzHpFF7yr0QKB2ICpVTR2IDHCJTjsEOWe3VB0ufqlGZ10MCxxAn6oz5AVgNpY8z8LujUdGd7li5Dg1zVeEgiCrs7CEJfJT43_lsv~PKgyC6gSTawtw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440779777\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440779777\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA6D5TJhNmWf4ANCKmrw==&cid=sq8AHtAGCcVDaSpzHpFF7yr0QKB2ICpVTR2IDHCJTjsEOWe3VB0ufqlGZ10MCxxAn6oz5AVgNpY8z8LujUdGd7li5Dg1zVeEgiCrs7CEJfJT43_lsv~PKgyC6gSTawtw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440779777\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440779777\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA6D5TJhNmWf4ANCKmrw==&cid=sq8AHtAGCcVDaSpzHpFF7yr0QKB2ICpVTR2IDHCJTjsEOWe3VB0ufqlGZ10MCxxAn6oz5AVgNpY8z8LujUdGd7li5Dg1zVeEgiCrs7CEJfJT43_lsv~PKgyC6gSTawtw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440779777\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440769988\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA3OIIMM01pkEANBsspA==&cid=CriSUBHgPaB_Q2~KXkjkU4P76m6AU24Aa6Gbl3_aGLmqN~LWULuigqwJ7vLrEpfBUWDVXIV8BOrTuMH4SWzzwBTil~g2I6WCnIYFh0mIbrj5wx_LT5k4eQCFQ7RPS7F4&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440769988\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440769988\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA3OIIMM01pkEANBsspA==&cid=CriSUBHgPaB_Q2~KXkjkU4P76m6AU24Aa6Gbl3_aGLmqN~LWULuigqwJ7vLrEpfBUWDVXIV8BOrTuMH4SWzzwBTil~g2I6WCnIYFh0mIbrj5wx_LT5k4eQCFQ7RPS7F4&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440769988\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440769988\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA3OIIMM01pkEANBsspA==&cid=CriSUBHgPaB_Q2~KXkjkU4P76m6AU24Aa6Gbl3_aGLmqN~LWULuigqwJ7vLrEpfBUWDVXIV8BOrTuMH4SWzzwBTil~g2I6WCnIYFh0mIbrj5wx_LT5k4eQCFQ7RPS7F4&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440769988\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     },
     {
-      "t": "2026-02-07T05:07:31.668Z",
+      "t": "2026-02-07T05:07:39.211Z",
       "event": "bb-session",
-      "session": "8abbe19e",
-      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-951987"
-    },
-    {
-      "t": "2026-02-07T05:08:21.258Z",
-      "event": "bb-session",
-      "session": "2a3c7624",
-      "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/"
+      "session": "309aae2f",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
     }
   ]
 }
