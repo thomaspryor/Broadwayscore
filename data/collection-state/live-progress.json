@@ -1,52 +1,57 @@
 {
-  "updatedAt": "2026-02-07T07:02:48.423Z",
-  "processed": 14,
-  "failed": 126,
-  "successRate": "10.0%",
+  "updatedAt": "2026-02-07T07:10:00.497Z",
+  "processed": 13,
+  "failed": 137,
+  "successRate": "8.7%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 3,
-    "scrapingbee": 3,
-    "brightdata": 4,
-    "archive": 7
+    "scrapingbee": 2,
+    "brightdata": 6,
+    "archive": 6
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-07T05:02:20.245Z",
+      "t": "2026-02-07T05:01:31.013Z",
       "event": "bb-session",
-      "session": "e809d975",
-      "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/"
+      "session": "89718aef",
+      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
     },
     {
-      "t": "2026-02-07T05:02:35.014Z",
+      "t": "2026-02-07T05:03:41.372Z",
       "event": "bb-session",
-      "session": "94a4b05c",
-      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-re"
+      "session": "45fdb019",
+      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
     },
     {
-      "t": "2026-02-07T05:04:52.884Z",
-      "event": "bb-session",
-      "session": "3a660dbb",
-      "url": "https://www.nytimes.com/2009/12/14/theater/reviews/14night.html"
+      "t": "2026-02-07T05:03:43.812Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-07T05:05:38.315Z",
+      "t": "2026-02-07T05:06:05.834Z",
+      "event": "bb-session",
+      "session": "fc5e8780",
+      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
+    },
+    {
+      "t": "2026-02-07T05:06:53.387Z",
       "event": "bb-login-fail",
       "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440704980\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAagNhPhH8NnYANCKmrw==&cid=hinM2if_tRbWLO_eYFTWec0xUnZTUPsh2sUckqyD9OVrRv0PyfSN540CLv_bD8EzWHL2lWh2BNyhTDIavwdskSRJ1lNEMFXEn~fdkNyI8pzg42jYDduDEUFqJKgrhH_e&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440704980\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440704980\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAagNhPhH8NnYANCKmrw==&cid=hinM2if_tRbWLO_eYFTWec0xUnZTUPsh2sUckqyD9OVrRv0PyfSN540CLv_bD8EzWHL2lWh2BNyhTDIavwdskSRJ1lNEMFXEn~fdkNyI8pzg42jYDduDEUFqJKgrhH_e&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440704980\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440704980\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAagNhPhH8NnYANCKmrw==&cid=hinM2if_tRbWLO_eYFTWec0xUnZTUPsh2sUckqyD9OVrRv0PyfSN540CLv_bD8EzWHL2lWh2BNyhTDIavwdskSRJ1lNEMFXEn~fdkNyI8pzg42jYDduDEUFqJKgrhH_e&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440704980\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440779777\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA6D5TJhNmWf4ANCKmrw==&cid=sq8AHtAGCcVDaSpzHpFF7yr0QKB2ICpVTR2IDHCJTjsEOWe3VB0ufqlGZ10MCxxAn6oz5AVgNpY8z8LujUdGd7li5Dg1zVeEgiCrs7CEJfJT43_lsv~PKgyC6gSTawtw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440779777\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440779777\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA6D5TJhNmWf4ANCKmrw==&cid=sq8AHtAGCcVDaSpzHpFF7yr0QKB2ICpVTR2IDHCJTjsEOWe3VB0ufqlGZ10MCxxAn6oz5AVgNpY8z8LujUdGd7li5Dg1zVeEgiCrs7CEJfJT43_lsv~PKgyC6gSTawtw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440779777\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440779777\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA6D5TJhNmWf4ANCKmrw==&cid=sq8AHtAGCcVDaSpzHpFF7yr0QKB2ICpVTR2IDHCJTjsEOWe3VB0ufqlGZ10MCxxAn6oz5AVgNpY8z8LujUdGd7li5Dg1zVeEgiCrs7CEJfJT43_lsv~PKgyC6gSTawtw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440779777\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
     },
     {
-      "t": "2026-02-07T05:07:00.028Z",
+      "t": "2026-02-07T05:07:31.668Z",
       "event": "bb-session",
-      "session": "1793d2d0",
-      "url": "http://www.variety.com/review/VE1117941777.html?categoryid=3276&cs=1&nid=2580&ut"
+      "session": "8abbe19e",
+      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-951987"
     },
     {
-      "t": "2026-02-07T05:07:48.143Z",
+      "t": "2026-02-07T05:08:21.258Z",
       "event": "bb-session",
-      "session": "2976a0ea",
-      "url": "http://www.hollywoodreporter.com/review/midnight-theater-review-652788"
+      "session": "2a3c7624",
+      "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/"
     }
   ]
 }
