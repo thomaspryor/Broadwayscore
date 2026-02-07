@@ -10,6 +10,8 @@ export interface ComputedGoldListEntry {
   showId: string; title: string; slug: string; rank: number;
   value: number; displayValue: string; season: string;
   venue?: string; type?: string; thumbnail?: string | null;
+  openingDate?: string | null; closingDate?: string | null;
+  status?: string | null; isRevival?: boolean;
 }
 
 interface ComputedGoldLists {
