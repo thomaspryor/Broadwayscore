@@ -11524,42 +11524,6 @@
     "timestamp": "2026-02-05T03:20:47.478Z"
   },
   {
-    "reviewId": "good-night-oscar-2023/nyt-theater--jonathan-mandell.json",
-    "showId": "good-night-oscar-2023",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2023/04/24/good-night-oscar-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): purpose, cost of living, 1776, company, an american in paris...",
-    "textLength": 7752,
-    "timestamp": "2026-02-05T03:21:38.273Z"
-  },
-  {
-    "reviewId": "good-night-oscar-2023/variety--charles-isherwood.json",
-    "showId": "good-night-oscar-2023",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2023/legit/reviews/good-night-oscar-review-sean-hayes-broadway-1235592711/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, network, an american in paris, once, rain...",
-    "textLength": 5732,
-    "timestamp": "2026-02-05T03:23:10.233Z"
-  },
-  {
-    "reviewId": "good-night-oscar-2023/variety--christian-lewis.json",
-    "showId": "good-night-oscar-2023",
-    "outlet": "Variety",
-    "critic": "Christian Lewis",
-    "url": "https://variety.com/2023/legit/reviews/good-night-oscar-review-sean-hayes-broadway-1235592711/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, network, an american in paris, once, rain...",
-    "textLength": 6245,
-    "timestamp": "2026-02-05T03:23:29.496Z"
-  },
-  {
     "reviewId": "good-night-oscar-2023/vulture--unknown.json",
     "showId": "good-night-oscar-2023",
     "outlet": "Vulture",
@@ -14930,54 +14894,6 @@
     "garbageReason": "Multiple shows mentioned (10): into the woods, my fair lady, the audience, the king and i, rocky...",
     "textLength": 10060,
     "timestamp": "2026-02-06T05:53:48.761Z"
-  },
-  {
-    "reviewId": "good-night-and-good-luck-2025/newyorker--helen-shaw.json",
-    "showId": "good-night-and-good-luck-2025",
-    "outlet": "The New Yorker (Helen Shaw)",
-    "critic": "Helen Shaw",
-    "url": "https://www.newyorker.com/magazine/2025/04/14/glengarry-glen-ross-good-night-and-good-luck-theatre-review-broadway",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): chicago, glengarry glen ross, 1984, sweat, the audience...",
-    "textLength": 8555,
-    "timestamp": "2026-02-06T06:12:14.551Z"
-  },
-  {
-    "reviewId": "good-night-and-good-luck-2025/nyt-theater--jonathan-mandell.json",
-    "showId": "good-night-and-good-luck-2025",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2025/04/03/good-night-and-good-luck-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, network, the audience, gigi, hair...",
-    "textLength": 8989,
-    "timestamp": "2026-02-06T06:12:23.440Z"
-  },
-  {
-    "reviewId": "good-night-and-good-luck-2025/nytimes--jesse-green.json",
-    "showId": "good-night-and-good-luck-2025",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2025/04/03/theater/good-night-and-good-luck-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): company, network, once, rain, high...",
-    "textLength": 8358,
-    "timestamp": "2026-02-06T06:12:28.558Z"
-  },
-  {
-    "reviewId": "good-night-and-good-luck-2025/variety--frank-rizzo.json",
-    "showId": "good-night-and-good-luck-2025",
-    "outlet": "Variety",
-    "critic": "Frank Rizzo",
-    "url": "https://variety.com/2025/legit/reviews/good-night-and-good-luck-review-george-clooney-broadway-3-1236354970/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): appropriate, purpose, network, the band's visit, the front page...",
-    "textLength": 5971,
-    "timestamp": "2026-02-06T06:12:44.618Z"
   },
   {
     "reviewId": "grand-horizons-2020/nytg--joe-dziemianowicz.json",
@@ -24038,5 +23954,101 @@
     "garbageReason": "Multiple shows mentioned (10): home, company, in transit, hair, evita...",
     "textLength": 9417,
     "timestamp": "2026-02-07T12:43:17.897Z"
+  },
+  {
+    "reviewId": "good-night-and-good-luck-2025/newyorker--helen-shaw.json",
+    "showId": "good-night-and-good-luck-2025",
+    "outlet": "The New Yorker (Helen Shaw)",
+    "critic": "Helen Shaw",
+    "url": "https://www.newyorker.com/magazine/2025/04/14/glengarry-glen-ross-good-night-and-good-luck-theatre-review-broadway",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): chicago, glengarry glen ross, 1984, sweat, the audience...",
+    "textLength": 8555,
+    "timestamp": "2026-02-07T12:47:25.974Z"
+  },
+  {
+    "reviewId": "good-night-and-good-luck-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "good-night-and-good-luck-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/04/03/good-night-and-good-luck-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, network, the audience, gigi, hair...",
+    "textLength": 8989,
+    "timestamp": "2026-02-07T12:47:34.386Z"
+  },
+  {
+    "reviewId": "good-night-and-good-luck-2025/nytimes--jesse-green.json",
+    "showId": "good-night-and-good-luck-2025",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2025/04/03/theater/good-night-and-good-luck-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): company, network, once, rain, high...",
+    "textLength": 8358,
+    "timestamp": "2026-02-07T12:47:38.029Z"
+  },
+  {
+    "reviewId": "good-night-and-good-luck-2025/variety--frank-rizzo.json",
+    "showId": "good-night-and-good-luck-2025",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2025/legit/reviews/good-night-and-good-luck-review-george-clooney-broadway-3-1236354970/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): appropriate, purpose, network, the band's visit, the front page...",
+    "textLength": 5974,
+    "timestamp": "2026-02-07T12:47:57.019Z"
+  },
+  {
+    "reviewId": "good-night-oscar-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "good-night-oscar-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/04/24/good-night-oscar-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): purpose, cost of living, 1776, company, an american in paris...",
+    "textLength": 7752,
+    "timestamp": "2026-02-07T12:48:37.839Z"
+  },
+  {
+    "reviewId": "good-night-oscar-2023/nytimes--unknown.json",
+    "showId": "good-night-oscar-2023",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2023/04/24/theater/good-night-oscar-review-sean-hayes.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): redwood, home, company, network, the audience...",
+    "textLength": 7797,
+    "timestamp": "2026-02-07T12:49:47.776Z"
+  },
+  {
+    "reviewId": "good-night-oscar-2023/variety--charles-isherwood.json",
+    "showId": "good-night-oscar-2023",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2023/legit/reviews/good-night-oscar-review-sean-hayes-broadway-1235592711/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, network, an american in paris, once, rain...",
+    "textLength": 5732,
+    "timestamp": "2026-02-07T12:50:02.691Z"
+  },
+  {
+    "reviewId": "good-night-oscar-2023/variety--christian-lewis.json",
+    "showId": "good-night-oscar-2023",
+    "outlet": "Variety",
+    "critic": "Christian Lewis",
+    "url": "https://variety.com/2023/legit/reviews/good-night-oscar-review-sean-hayes-broadway-1235592711/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, network, an american in paris, once, rain...",
+    "textLength": 6405,
+    "timestamp": "2026-02-07T12:50:17.239Z"
   }
 ]
