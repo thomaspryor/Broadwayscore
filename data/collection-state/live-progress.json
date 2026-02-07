@@ -1,57 +1,62 @@
 {
-  "updatedAt": "2026-02-07T11:18:30.329Z",
-  "processed": 4,
-  "failed": 26,
-  "successRate": "13.3%",
+  "updatedAt": "2026-02-07T11:23:04.248Z",
+  "processed": 2,
+  "failed": 28,
+  "successRate": "6.7%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 3,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 2
+    "playwright": 1,
+    "browserbase": 2,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 0
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-07T10:59:04.918Z",
+      "t": "2026-02-07T11:01:14.128Z",
       "event": "bb-session",
-      "session": "bc1712c2",
-      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
+      "session": "18989754",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/behanding-spokane-theater"
     },
     {
-      "t": "2026-02-07T11:01:05.667Z",
+      "t": "2026-02-07T11:03:02.314Z",
       "event": "bb-session",
-      "session": "0afd8cec",
-      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
+      "session": "f2248486",
+      "url": "http://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als?"
     },
     {
-      "t": "2026-02-07T11:01:07.927Z",
+      "t": "2026-02-07T11:03:04.981Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-07T11:03:23.882Z",
+      "t": "2026-02-07T11:05:33.750Z",
       "event": "bb-session",
-      "session": "a0e0c582",
-      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
+      "session": "58b04720",
+      "url": "https://www.nytimes.com/2010/04/05/theater/reviews/05behanding.html"
     },
     {
-      "t": "2026-02-07T11:04:09.500Z",
+      "t": "2026-02-07T11:06:21.938Z",
       "event": "bb-login-fail",
       "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770462216182\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAH9KYIxrk6EIANCKmrw==&cid=80v8oQ86xv8RAe4hlplYE_jx_QOtNb0JymxMPckq~LFKIPFPAnvjDjIv0OPpBmbc8qKtha6vkSLt7gUT3Fj~BV0V9kqfbEDTESOP~Or8FK_9KVbt_NEMDgGtJ56doVdc&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770462216182\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770462216182\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAH9KYIxrk6EIANCKmrw==&cid=80v8oQ86xv8RAe4hlplYE_jx_QOtNb0JymxMPckq~LFKIPFPAnvjDjIv0OPpBmbc8qKtha6vkSLt7gUT3Fj~BV0V9kqfbEDTESOP~Or8FK_9KVbt_NEMDgGtJ56doVdc&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770462216182\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770462216182\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAH9KYIxrk6EIANCKmrw==&cid=80v8oQ86xv8RAe4hlplYE_jx_QOtNb0JymxMPckq~LFKIPFPAnvjDjIv0OPpBmbc8qKtha6vkSLt7gUT3Fj~BV0V9kqfbEDTESOP~Or8FK_9KVbt_NEMDgGtJ56doVdc&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770462216182\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770462348477\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAfm5NQOeh-0IANCnmLA==&cid=Xzypy4x4lvgr9Mvd3PRXmHjLFwSrBf3dp985BfIBhDcURGjX5mlYQchaGRXhnXupxmRYyMEPlPAq3D_aX98Nvuo6jyi_eDnZecg2k5WrmuQyj5MT2TVusNZo1Vqzg6Wk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770462348477\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770462348477\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAfm5NQOeh-0IANCnmLA==&cid=Xzypy4x4lvgr9Mvd3PRXmHjLFwSrBf3dp985BfIBhDcURGjX5mlYQchaGRXhnXupxmRYyMEPlPAq3D_aX98Nvuo6jyi_eDnZecg2k5WrmuQyj5MT2TVusNZo1Vqzg6Wk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770462348477\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    16 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770462348477\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAfm5NQOeh-0IANCnmLA==&cid=Xzypy4x4lvgr9Mvd3PRXmHjLFwSrBf3dp985BfIBhDcURGjX5mlYQchaGRXhnXupxmRYyMEPlPAq3D_aX98Nvuo6jyi_eDnZecg2k5WrmuQyj5MT2TVusNZo1Vqzg6Wk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770462348477\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     },
     {
-      "t": "2026-02-07T11:05:07.791Z",
+      "t": "2026-02-07T11:06:55.542Z",
       "event": "bb-session",
-      "session": "d996f3b3",
-      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-951987"
+      "session": "14dd162a",
+      "url": "http://www.variety.com/review/VE1117942352.html?categoryId=33&cs=1"
     },
     {
-      "t": "2026-02-07T11:06:11.855Z",
+      "t": "2026-02-07T11:10:34.719Z",
       "event": "bb-session",
-      "session": "548bc756",
-      "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/"
+      "session": "bd9dd86b",
+      "url": "https://www.newyorker.com/magazine/2010/11/29/in-living-color"
+    },
+    {
+      "t": "2026-02-07T11:10:37.126Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     }
   ]
 }
