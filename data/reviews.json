@@ -4,10 +4,10 @@
     "lastUpdated": "2026-02-07",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 8196,
-      "skippedNoScore": 11866,
+      "totalReviews": 8188,
+      "skippedNoScore": 11802,
       "skippedDuplicate": 6,
-      "skippedDuplicateUrl": 251,
+      "skippedDuplicateUrl": 250,
       "skippedCrossOutletDuplicateUrl": 12,
       "skippedWrongProduction": 596,
       "recoveredFromGarbage": 100,
@@ -16,11 +16,11 @@
         "explicit-outOf": 2,
         "explicit-slash": 6,
         "explicit-letterGrade": 1,
-        "human-review": 59,
-        "originalScore-priority0": 951,
-        "llmScore": 3618,
+        "human-review": 61,
+        "originalScore-priority0": 970,
+        "llmScore": 3642,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3413,
+        "llmScore-lowconf": 3360,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
@@ -766,7 +766,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
@@ -776,7 +776,7 @@
       "pullQuote": "The delightful ensemble owns the script and score of this 1969 musical as if the story of the signing of the Declaration of Independence were written explicitly about them.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "1776-2022",
@@ -2208,23 +2208,6 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "outletId": "gephardt-daily",
-      "outlet": "Gephardt Daily",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Van Valkenburg",
-      "url": null,
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "For fans of Diamond, the show has already fully delivered on its musical promise.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "houston-chronicle",
       "outlet": "Houston Chronicle",
       "assignedScore": 78,
@@ -2408,23 +2391,6 @@
       "pullQuote": "Fradiani fully embodies the role of Neil Diamond as he navigates his career.",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "outletId": "patch",
-      "outlet": "Patch",
-      "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Sasso Janis",
-      "url": null,
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Fradiani fully embodies the role of Neil Diamond as he navigates his career.",
-      "dtliThumb": null,
-      "bwwThumb": null,
       "contentTier": "excerpt"
     },
     {
@@ -4421,7 +4387,7 @@
       "outletId": "the-telegraph-uk",
       "outlet": "The Telegraph",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Tim Robey",
@@ -4431,7 +4397,7 @@
       "pullQuote": "pure jazz-hands joy serves a dazzling celebration of the ensemble",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-chorus-line-2006",
@@ -4707,23 +4673,6 @@
     },
     {
       "showId": "a-christmas-carol-2019",
-      "outletId": "newyorker",
-      "outlet": "The New Yorker",
-      "assignedScore": 73,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.newyorker.com/magazine/2019/12/23/a-christmas-carol-brings-dickens-to-broadway",
-      "publishDate": "December 16, 2019",
-      "originalRating": null,
-      "pullQuote": "The new musical adaptation, directed by Michael Arden, turns the Lyceum Theatre into a Victorian wonderland.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-christmas-carol-2019",
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 73,
@@ -4822,7 +4771,7 @@
       "pullQuote": "This Christmas Carol is a marvel of stagecraft, with flying spirits and a stage that transforms into a wonderland of Victorian London — but it's also surprisingly moving.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "a-christmas-carol-2019",
@@ -5145,7 +5094,7 @@
       "pullQuote": "The staging is almost absurdly—and perhaps unnecessarily—lavish, although children and adults now accustomed to television series and movies that pour on the atmospherics with a ladle must, I suppose, be catered to.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "a-christmas-carol-2022",
@@ -6023,7 +5972,7 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "David Cote",
-      "url": "http://www.timeout.com/newyork/theater/a-delicate-balance",
+      "url": "https://www.timeout.com/newyork/theater/a-delicate-balance",
       "publishDate": "November 20, 2014",
       "originalRating": 60,
       "pullQuote": "MacKinnon directs this solid revival with a keen ear for the curling, teasing rhythms of Albee's ornate lines, and the performances are top-notch.",
@@ -7396,7 +7345,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
@@ -7406,7 +7355,7 @@
       "pullQuote": "The breakthrough play that the theater world has been waiting for from Hnath.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-dolls-house-part-2-2017",
@@ -7923,7 +7872,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 85,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Terry Teachout",
@@ -7933,7 +7882,7 @@
       "pullQuote": "'A Free Man of Color' is one of the three or four most stirring new plays I've seen since I started writing this column seven years ago.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-free-man-of-color-2010",
@@ -9368,7 +9317,7 @@
       "outletId": "the-telegraph-uk",
       "outlet": "The Telegraph",
       "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Claire Allfree",
@@ -9378,7 +9327,7 @@
       "pullQuote": "Frecknall wreaths her characters in soft bursts of heavenly music and lights that seem to orbit the stage like stars without upsetting the play's rugged textures",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-moon-for-the-misbegotten-2007",
@@ -10082,7 +10031,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 74,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Ben Brantley",
@@ -10092,14 +10041,14 @@
       "pullQuote": "Mr. Washington's more laid-back approach has a persuasive emotional logic, and it adds a different kind of suspense to 'Raisin.'",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "a-raisin-in-the-sun-2014",
       "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 77,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Matt Wolf",
@@ -10109,7 +10058,7 @@
       "pullQuote": "The answer, for the most part, is yes.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "a-raisin-in-the-sun-2014",
@@ -10715,7 +10664,7 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2009/09/30/theater/reviews/30rain.html",
+      "url": "https://www.nytimes.com/2011/04/17/nyregion/a-steady-rain-is-at-theaterworks-in-hartford-review.html",
       "publishDate": "September 29, 2009",
       "originalRating": null,
       "pullQuote": "But they're fighting a losing battle against material that never allows them to dig beneath the surface.",
@@ -10728,7 +10677,7 @@
       "outletId": "uk-daily-telegraph",
       "outlet": "Uk Daily Telegraph",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Claire Stenhouse",
@@ -10738,7 +10687,7 @@
       "pullQuote": "Jackman was enthralling as the big hearted but corrupt cop.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-steady-rain-2009",
@@ -11204,7 +11153,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 94,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Peter Marks",
@@ -11214,7 +11163,7 @@
       "pullQuote": "Heck, give 'A Strange Loop' a lot of Tonys. That's only just, for the best Broadway musical of the season.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "a-strange-loop-2022",
@@ -11758,7 +11707,7 @@
       "pullQuote": "This bloated, relentlessly busy musical adaptation of the Dickens novel is a textbook example of how not to translate a literary classic to the stage.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "a-tale-of-two-cities-2008",
@@ -12649,7 +12598,7 @@
       "outletId": "financial-times-uk",
       "outlet": "Financial Times",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Sarah Hemming",
@@ -12659,7 +12608,7 @@
       "pullQuote": "Just as there is no escape for characters, there is none either for the actors and they are all magnificent.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-view-from-the-bridge-2015",
@@ -14128,7 +14077,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 77,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
@@ -14138,7 +14087,7 @@
       "pullQuote": "As 'Act One' would have it, no love is quite so intense and tempestuous as that between a playwright and his play.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "act-one-2014",
@@ -14183,7 +14132,7 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "David Cote",
-      "url": "http://www.timeout.com/newyork/theater/act-one",
+      "url": "https://www.timeout.com/newyork/theater/act-one",
       "publishDate": "April 17, 2014",
       "originalRating": 60,
       "pullQuote": "Lapine's stage adaptation of Hart's sprawling tale is quite faithful and wrought with abundant skill and empathy.",
@@ -15063,17 +15012,17 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Green",
-      "url": "https://www.theatermania.com/broadway/reviews/aint-no-mo-jordan-e-cooper_93179.html",
+      "url": "https://www.theatermania.com/news/review-jordan-e-coopers-scathing-comedy-aint-no-mo-imagines-a-black-migration-to-africa_94613/",
       "publishDate": "December 4, 2022",
       "originalRating": null,
       "pullQuote": "Cooper's play is a fierce, funny, and sometimes messy satire that uses the fantasy of Black exodus to examine the reality of Black existence in America.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "aint-no-mo-2022",
@@ -15427,7 +15376,7 @@
       "url": "https://nystagereview.com/2019/03/21/aint-too-proud-a-ball-of-confusion/",
       "publishDate": "2019-03-21T21:33:12",
       "originalRating": "2/5 stars",
-      "pullQuote": "Yet ATP possesses all the drama of a datebook; it’s a seemingly endless chronicle of entrances and exits, successes and flameouts, hirings and firings, and illnesses and deaths. A human-resources exec could have written a line like “David was getting addicted to the worst drug of all: the spotlight”—one of the many clunkers Baskin is saddled with.",
+      "pullQuote": "Of course, this isn't the first time McAnuff and his team tried to recapture that old Jersey magic. (See Summer, last year's ode to disco diva Donna Summer.) But ATP had four chances-out-of-town runs in Berkeley, Calif., Washington, D.C.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -15577,13 +15526,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/aint-too-proud-review-the-temptations-musical-has-all-the-right-moves/2019/03/22/8a5c5c5e-4cb6-11e9-8cfc-2c5d0999c21e_story.html",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-temptations-are-now-a-broadway-musical-theyre-going-to-make-you-love-them-again/2019/03/21/58132f74-4be2-11e9-93d0-64dbcf38ba41_story.html",
       "publishDate": "March 22, 2019",
       "originalRating": null,
       "pullQuote": "The performances are stellar, particularly the quintet of actors who embody the Temptations with remarkable vocal prowess.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "aint-too-proud-2019",
@@ -16371,18 +16320,18 @@
       "showId": "airline-highway-2015",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 75,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Kris Vire",
-      "url": "http://www.timeout.com/chicago/theater/airline-highway",
+      "url": "https://www.timeout.com/newyork/theater/airline-highway",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "\"These are all deeply recognizable, empathetic performances, and Mantello manages our focus with great skill, but it’s hard to fully invest in the characters in the slow-burning first act. D’Amour often has two or three conversations overlapping, and it can feel like you’re missing information.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "airline-highway-2015",
@@ -18295,7 +18244,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 83,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Terry Teachout",
@@ -18305,7 +18254,7 @@
       "pullQuote": "It's one of the best Miller revivals I've ever seen, a staging so magnetic that it overwhelmed my lingering doubts",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "all-my-sons-2019",
@@ -18737,7 +18686,7 @@
       "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 68,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Hermione Hoby",
@@ -18747,7 +18696,7 @@
       "pullQuote": "It's thrilling to watch Cranston go from his default, comic stance of forward-thrust hips and slumped shoulders, to fearsome, chest-puffed, confrontation.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "all-the-way-2014",
@@ -18758,20 +18707,20 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Terry Teachout",
-      "url": "https://www.wsj.com/articles/theater-review-all-the-way-1395440461",
+      "url": "https://www.wsj.com/articles/all-the-way-review-the-pressures-of-the-highest-office-1463695103?gaa_at=eafs&gaa_n=AWEtsqfd2fOT8dwCMrEp8sX1ZmZV8gEsFrtbOGbdSdMaLSWgRPph5nlEYz5K&gaa_ts=6987a835&gaa_sig=uMbzNCUeqMi1vx_3Q0xtfehXoUfUuHD3bjjUg7yRHFvCgPPnNxg2-HRtLeoOQV7YpTPEBr-XYWlYfRXp-ogBHQ%3D%3D",
       "publishDate": "March 21, 2014",
       "originalRating": null,
       "pullQuote": "Mr. Cranston's towering performance as Lyndon Johnson is reason enough to see 'All the Way'",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "all-the-way-2014",
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 79,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
@@ -18781,7 +18730,7 @@
       "pullQuote": "Cranston proves so effortlessly captivating that you could imagine pulling a lever for him",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "all-the-way-2014",
@@ -22814,23 +22763,6 @@
     },
     {
       "showId": "american-buffalo-2022",
-      "outletId": "nypost",
-      "outlet": "New York Post",
-      "assignedScore": 80,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jonny Oleksinski",
-      "url": "https://t.co/tZXq49BSgB",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "You can't take your eyes off him.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "american-buffalo-2022",
       "outletId": "nysr",
       "outlet": "New York Stage Review",
       "assignedScore": 80,
@@ -23619,7 +23551,7 @@
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Rose Bernardo",
+      "criticName": "Melissa Rose Bernardo",
       "url": "http://www.ew.com/article/2016/04/21/american-psycho-broadway-review",
       "publishDate": null,
       "originalRating": null,
@@ -24619,7 +24551,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 74,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Terry Teachout",
@@ -24629,7 +24561,7 @@
       "pullQuote": "What we have here, in short, is an earnestly meant, soundly made commercial stage drama",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "american-son-2018",
@@ -25146,7 +25078,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 29,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Terry Teachout",
@@ -25156,7 +25088,7 @@
       "pullQuote": "I'd rather go straight to hell than sit through 'An Act of God' again.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "an-act-of-god-2016",
@@ -25196,18 +25128,18 @@
       "showId": "an-act-of-god-2016",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Cote",
       "url": "http://www.timeout.com/newyork/theater/an-act-of-god",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "4/5",
       "pullQuote": "I thoroughly enjoyed David Javerbaum's theological satire last summer when it starred Jim Parsons, and I could watch Hayes's bratty-campy shtick all night.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "an-act-of-god-2016",
@@ -25241,7 +25173,7 @@
       "pullQuote": "The material feels thin and repetitive.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "an-american-in-paris-2015",
@@ -25826,7 +25758,7 @@
       "outletId": "the-telegraph-uk",
       "outlet": "The Telegraph",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Sarah Crompton",
@@ -25836,7 +25768,7 @@
       "pullQuote": "Bold, satisfying and witty...Wheeldon writes a love letter to the great American musical itself.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "an-american-in-paris-2015",
@@ -25870,7 +25802,7 @@
       "pullQuote": "The new musical 'An American in Paris' is a gorgeous confection, but one that favors visual splendor over emotional complexity.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "an-american-in-paris-2015",
@@ -27427,7 +27359,7 @@
       "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
-      "criticName": "Brain Scott Lipton",
+      "criticName": "Brian Scott Lipton",
       "url": "https://cititour.com/NYC_Broadway/Juliet/1111",
       "publishDate": "November 17, 2022",
       "originalRating": null,
@@ -28734,7 +28666,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 77,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Terry Teachout",
@@ -28744,7 +28676,7 @@
       "pullQuote": "Yet all these things notwithstanding, it remains a fixed star in the firmament of American drama",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "angels-in-america-2018",
@@ -28761,7 +28693,7 @@
       "pullQuote": "This Broadway revival of Tony Kushner's masterpiece, directed by Marianne Elliott, is nothing short of transcendent",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "angels-in-america-2018",
@@ -29261,7 +29193,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 62,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Ben Brantley",
@@ -29271,7 +29203,7 @@
       "pullQuote": "But the play itself never quite decides what it wants to be.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "ann-2013",
@@ -34515,7 +34447,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 19,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Peter Marks",
@@ -34525,7 +34457,7 @@
       "pullQuote": "'Be More Shrill' would be a better title for director Stephen Brackett's heinously overamplified and overacted production.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "be-more-chill-2019",
@@ -35222,7 +35154,7 @@
       "pullQuote": "This jukebox musical about the life and songs of Carole King succeeds in large part because it doesn't try to be profound or groundbreaking.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "beautiful-the-carole-king-musical-2014",
@@ -36095,23 +36027,6 @@
       "showId": "beetlejuice-2022",
       "outletId": "el-paso-times",
       "outlet": "El Paso Times",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Cortes Gonzalez",
-      "url": null,
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Collette, an award-winning actor who has been in several Broadway shows, including School of Rock, is captivating and hilarious on stage, from the start.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "beetlejuice-2022",
-      "outletId": "el-paso-times",
-      "outlet": "El Paso Times",
       "assignedScore": 81,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -36157,23 +36072,6 @@
       "pullQuote": "The acting is strong, and the musical also allows much more character development for Lydia, through spoken word and song.",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "beetlejuice-2022",
-      "outletId": "gephardt-daily",
-      "outlet": "Gephardt Daily",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Van Valkenburg",
-      "url": null,
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The acting is strong, and the musical also allows much more character development for Lydia",
-      "dtliThumb": null,
-      "bwwThumb": null,
       "contentTier": "excerpt"
     },
     {
@@ -37388,7 +37286,7 @@
       "outletId": "the-telegraph-uk",
       "outlet": "The Telegraph",
       "assignedScore": 89,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Dzifa Benson",
@@ -37398,7 +37296,7 @@
       "pullQuote": "In director Omar Elarian's adept hands, this multilayered tragi-comedy about the absurdities of war is funny, profound, must-see theatre.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
@@ -37858,23 +37756,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "bernhardthamlet-2018",
-      "outletId": "nysr",
-      "outlet": "New York Stage Review",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Rose Bernardo",
-      "url": null,
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "And there's simply no one better suited to embody Bernhardt than Janet McTeer",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "bernhardthamlet-2018",
@@ -38458,18 +38339,18 @@
       "showId": "betrayal-2013",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
       "criticName": "Allison Adato",
       "url": "http://www.ew.com/ew/article/0,,20364394_20749744,00.html",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "D",
       "pullQuote": "Tom Hiddleston, Charlie Cox, and Zawe Ashton command a smart, stripped down 'Betrayal'",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "betrayal-2013",
@@ -38898,23 +38779,6 @@
     },
     {
       "showId": "betrayal-2019",
-      "outletId": "ew",
-      "outlet": "Entertainment Weekly",
-      "assignedScore": 35,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Unknown",
-      "url": "http://www.ew.com/ew/article/0,,20364394_20749744,00.html",
-      "publishDate": null,
-      "originalRating": "D",
-      "pullQuote": "Director Mike Nichols' handsome, well-staged production is not your typical crowd-pleaser.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "betrayal-2019",
       "outletId": "evening-standard",
       "outlet": "Evening Standard",
       "assignedScore": 81,
@@ -39132,7 +38996,7 @@
       "pullQuote": "The production benefits enormously from Hiddleston's magnetic presence.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "betrayal-2019",
@@ -40039,30 +39903,13 @@
       "showId": "big-fish-2013",
       "outletId": "nytimes",
       "outlet": "The New York Times",
-      "assignedScore": 59,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2013/10/07/theater/reviews/big-fish-opens-on-broadway.html",
-      "publishDate": "October 6, 2013",
-      "originalRating": null,
-      "pullQuote": "This sentimental musical feels as safe and comfortable as a favorite pair of bedroom slippers.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "big-fish-2013",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
       "assignedScore": 44,
       "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Ben Brantly",
+      "criticName": "Ben Brantley",
       "url": "http://www.nytimes.com/2013/10/07/theater/reviews/susan-stroman-directs-big-fish-on-broadway.html?_r=1&",
-      "publishDate": null,
+      "publishDate": "October 6, 2013",
       "originalRating": null,
       "pullQuote": "For a show that celebrates tall tales, 'Big Fish' feels curiously stunted.",
       "dtliThumb": null,
@@ -41155,7 +41002,7 @@
       "pullQuote": "Jeff Daniels and Michelle Williams give brilliant performances in David Harrower's devastating drama",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "blackbird-2016",
@@ -41502,7 +41349,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Peter Marks",
@@ -41512,7 +41359,7 @@
       "pullQuote": "Though the magnetic Benjamin Walker is an exhilarating force in the title role, some ensemble members come across as a bit green on an imposing Broadway stage.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "bloody-bloody-andrew-jackson-2010",
@@ -41717,23 +41564,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "bob-fosses-dancin-2023",
-      "outletId": "ew",
-      "outlet": "Entertainment Weekly",
-      "assignedScore": 74,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Fabian Brathwaite",
-      "url": "https://ew.com/theater/bob-fosses-dancin-broadway-revival-review/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "When the show hits — does it hit. Serotonin from tip to taint.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "bob-fosses-dancin-2023",
@@ -41999,13 +41829,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
-      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2008/05/04/AR2008050402573.html",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/boeing-boeing-by-no-rules-theatre-review/2014/06/10/fb37d958-f01a-11e3-bf76-447a5df6411f_story.html",
       "publishDate": "May 5, 2008",
       "originalRating": null,
       "pullQuote": "This revival is a monument to the artistry of comic timing.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "boeingboeing-2008",
@@ -42100,7 +41930,7 @@
       "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": "Thom Geir",
+      "criticName": "Thom Geier",
       "url": "http://www.ew.com/ew/article/0,,20364394_20550263,00.html",
       "publishDate": null,
       "originalRating": null,
@@ -43509,7 +43339,7 @@
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Melissa Rose Bernardo",
@@ -43519,7 +43349,7 @@
       "pullQuote": "Arianda is giving a performance that could be called breakout, though breakout somehow seems insufficient.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "born-yesterday-2011",
@@ -44074,7 +43904,7 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Adam Feldman",
-      "url": "http://www.timeout.com/newyork/theater/breakfast-at-tiffanys",
+      "url": "https://www.timeout.com/newyork/theater/breakfast-at-tiffanys",
       "publishDate": null,
       "originalRating": "3/5",
       "pullQuote": "After a long gestation and a difficult labor, including a last-minute funding scare, Breakfast at Tiffany's arrives on Broadway meager and stillborn.",
@@ -45430,7 +45260,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 73,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
@@ -45440,7 +45270,7 @@
       "pullQuote": "Director Walter Bobbie's production retains the intelligently spare look and is tauter than it was in Washington.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "bright-star-2016",
@@ -45668,7 +45498,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Bob Verini",
@@ -45678,7 +45508,7 @@
       "pullQuote": "There's a sweeping tale of pain and redemption in 'Bright Star' clamoring to come out, and when it does, the movement to restore harmony and Arcadian balance will require less suspension of disbelief.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "bright-star-2016",
@@ -46079,7 +45909,7 @@
       "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Rose Bernardo",
+      "criticName": "Melissa Rose Bernardo",
       "url": null,
       "publishDate": null,
       "originalRating": null,
@@ -46222,7 +46052,7 @@
       "pullQuote": "This new play by Eric Simonson feels less like a work for the theater than like a love letter to the Yankees that accidentally wandered onto a stage.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "bronx-bombers-2014",
@@ -47269,7 +47099,7 @@
       "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Brendan Lemon",
@@ -47279,7 +47109,7 @@
       "pullQuote": "The attempt is intermittently enjoyable, extremely well crafted by the director/choreographer Susan Stroman, and progressively unthrilling.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "bullets-over-broadway-2014",
@@ -47449,7 +47279,7 @@
       "pullQuote": "This Broadway musical adaptation of Woody Allen's 1994 film about art and gangsters in the 1920s has been directed and choreographed by Susan Stroman with a slickness that keeps you entertained without ever making you care.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "bullets-over-broadway-2014",
@@ -47473,7 +47303,7 @@
       "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 60,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Matt Wolf",
@@ -47483,7 +47313,7 @@
       "pullQuote": "The film honours the theatre in all its vainglorious splendour, so why not bring Allen and Douglas McGrath's Oscar-nominated screenplay home, as it were?",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "bullets-over-broadway-2014",
@@ -47517,7 +47347,7 @@
       "pullQuote": "This Broadway musical adaptation of Woody Allen's 1994 film is a gangster hit that delivers laughs, terrific performances and spectacular production values.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "bullets-over-broadway-2014",
@@ -47755,7 +47585,7 @@
       "pullQuote": "The good news about 'Burn the Floor' is that it is every bit as flashy and tacky as you would expect.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "burn-the-floor-2009",
@@ -47943,23 +47773,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "none"
-    },
-    {
-      "showId": "burn-this-2019",
-      "outletId": "ew",
-      "outlet": "Entertainment Weekly",
-      "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Lea Greenblatt",
-      "url": "https://ew.com/theater-reviews/2019/04/16/burn-this-review/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "In director Michael Mayer's kinetic, consistently engaging production, though, it really is a piece for quatre",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "burn-this-2019",
@@ -49275,7 +49088,7 @@
       "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 77,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Hermione Hoby",
@@ -49285,7 +49098,7 @@
       "pullQuote": "She becomes more and more compelling, however, as the show goes on, singing and dancing with a furious, madcap quality.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "cabaret-2014",
@@ -50706,7 +50519,7 @@
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Jonathan Mandrell",
+      "criticName": "Jonathan Mandell",
       "url": "https://newyorktheater.me/2021/10/27/caroline-or-change-on-broadway-review/",
       "publishDate": null,
       "originalRating": null,
@@ -52713,27 +52526,10 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Karen Galindo",
-      "url": null,
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The lighting gave the show an extra layer of depth, adding an extra touch of magic.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "cats-1982",
-      "outletId": "the-sunflower",
-      "outlet": "The Sunflower",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Reviews Karen Galindo",
       "url": "https://thesunflower.com/45810/lifestyle/review-cats-is-the-musical-spectacular-that-we-all-know-it-to-be/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "CATS has amazing choreography, magical lighting, powerful voices, and goosebump performances",
+      "pullQuote": "The lighting gave the show an extra layer of depth, adding an extra touch of magic.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -55025,13 +54821,13 @@
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2012/04/20/theater/reviews/clybourne-park-by-bruce-norris-opens-on-broadway.html",
+      "url": "https://www.nytimes.com/2012/04/20/theater/reviews/clybourne-park-by-bruce-norris-at-walter-kerr-theater.html",
       "publishDate": "April 19, 2012",
       "originalRating": null,
       "pullQuote": "This ferociously smart and funny play has lost none of its savage bite in its move from Off Broadway.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "clybourne-park-2012",
@@ -56017,7 +55813,7 @@
       "pullQuote": "What makes 'Away' so special is its ability to find hope and humanity in one of the darkest chapters of recent history.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "come-from-away-2017",
@@ -56347,7 +56143,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
@@ -56357,7 +56153,7 @@
       "pullQuote": "The highs are so high in director Marianne Elliott's gender-reversed 'Company' that a Sondheim freak like me can live with aspects that don't quite hit those lofty heights.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "company-2021",
@@ -57009,23 +56805,6 @@
       "showId": "cost-of-living-2022",
       "outletId": "theatermania",
       "outlet": "TheaterMania",
-      "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Adam Feldman",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/cost-of-living-manhattan-theatre-club_91234.html",
-      "publishDate": "October 18, 2022",
-      "originalRating": null,
-      "pullQuote": "Greenberg's play is a thoughtful meditation on disability, caregiving, and human connection that feels both timely and timeless.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "cost-of-living-2022",
-      "outletId": "theatermania",
-      "outlet": "TheaterMania",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -57035,23 +56814,6 @@
       "publishDate": "October 12, 2022",
       "originalRating": null,
       "pullQuote": "Not only will it leave you laughing and crying at the same time, but it just might give you the strength to carry on.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "cost-of-living-2022",
-      "outletId": "theatermania",
-      "outlet": "TheaterMania",
-      "assignedScore": 79,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.theatermania.com/broadway/reviews/cost-of-living_91234",
-      "publishDate": "October 18, 2022",
-      "originalRating": null,
-      "pullQuote": "Martyna Majok's Pulitzer Prize-winning play arrives on Broadway with searing performances that illuminate the complexity of disability, caregiving, and human connection.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -57587,6 +57349,23 @@
       "showId": "cyrano-de-bergerac-2007",
       "outletId": "variety",
       "outlet": "Variety",
+      "assignedScore": 63,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Charles Isherwood",
+      "url": "https://variety.com/2007/legit/reviews/cyrano-de-bergerac-1200558847/",
+      "publishDate": "October 16, 2007",
+      "originalRating": null,
+      "pullQuote": "Kevin Kline brings his customary intelligence and theatrical flair to the title role, but the production feels overly respectful and lacks the passion that should drive this romantic drama.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "cyrano-de-bergerac-2007",
+      "outletId": "variety",
+      "outlet": "Variety",
       "assignedScore": 44,
       "scoreSource": "llmScore",
       "bucket": "Negative",
@@ -57650,23 +57429,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "cyrano-de-bergerac-2012",
-      "outletId": "theatermania",
-      "outlet": "TheaterMania",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Finkle",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/cyrano-de-bergerac_50378.html",
-      "publishDate": "October 12, 2012",
-      "originalRating": null,
-      "pullQuote": "Douglas Hodge's Cyrano is a robust, swashbuckling performance that captures both the character's poetic soul and his tragic self-doubt.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "cyrano-de-bergerac-2012",
@@ -57775,7 +57537,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 77,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Andy Propst",
@@ -57785,7 +57547,7 @@
       "pullQuote": "The current Broadway revival of Dames at Sea is a candy-colored confection that goes down easy and leaves you with a pleasant sugar rush.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "dames-at-sea-2015",
@@ -59071,7 +58833,7 @@
       "scoreSource": "originalScore-priority0",
       "bucket": "Rave",
       "thumb": "Up",
-      "criticName": "Rose Bernardo",
+      "criticName": "Melissa Rose Bernardo",
       "url": "http://www.ew.com/article/2016/12/04/dear-evan-hansen-ew-stage-review",
       "publishDate": null,
       "originalRating": "A",
@@ -60438,7 +60200,7 @@
       "pullQuote": "Diana is a musical that seems to have been written by someone who has heard of emotions but never personally experienced one.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "disaster-2016",
@@ -60847,7 +60609,7 @@
       "pullQuote": "This vital drama about race, religion and identity in post-9/11 America crackles with intelligence and uncomfortable truths.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "disgraced-2014",
@@ -63034,31 +62796,14 @@
       "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Ben Branley",
+      "criticName": "Ben Brantley",
       "url": "http://www.nytimes.com/2010/04/28/theater/reviews/28enron.html",
-      "publishDate": null,
+      "publishDate": "April 27, 2010",
       "originalRating": null,
-      "pullQuote": "Yet even with a well-drilled cast that includes bright Broadway headliners like Norbert Leo Butz and Marin Mazzie, the realization sets in early that this British-born exploration of smoke-and-mirror financial practices isn’t much more than smoke and mirrors itself.",
+      "pullQuote": "This show is a kaleidoscopic whirl of movement, sound and light that keeps you dazzled even when it doesn't make complete sense. It's theater as a contact sport, and it leaves you breathless.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "enron-2010",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 80,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2010/04/28/theater/reviews/28enron.html",
-      "publishDate": "April 27, 2010",
-      "originalRating": null,
-      "pullQuote": "This show is a kaleidoscopic whirl of movement, sound and light that keeps you dazzled even when it doesn't make complete sense.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "enron-2010",
@@ -63119,7 +62864,7 @@
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Elyse Gardner",
+      "criticName": "Elysa Gardner",
       "url": "http://www.usatoday.com/life/theater/reviews/2010-04-30-enron30_ST_N.htm",
       "publishDate": null,
       "originalRating": null,
@@ -63626,7 +63371,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 72,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Naveen Kumar",
@@ -63636,7 +63381,7 @@
       "pullQuote": "...progressive politesse in shambles, profanity in all-caps, well-played emoji.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "eureka-day-2024",
@@ -63931,18 +63676,18 @@
       "showId": "evita-2012",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 52,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Melissa Rose Bernardo",
       "url": "http://www.ew.com/ew/article/0,,20364394_20584060,00.html",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "D",
       "pullQuote": "For Argentine actress Elena Roger in the adequate new Broadway revival, the answers are: Passable. Effective. And badly.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "evita-2012",
@@ -64118,18 +63863,18 @@
       "showId": "exit-the-king-2009",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
       "criticName": "Thom Geier",
       "url": "http://www.ew.com/ew/article/0,,20267836,00.html",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "D",
       "pullQuote": "The cast is uniformly strong, but this is Rush's show.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "exit-the-king-2009",
@@ -65347,13 +65092,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/fiddler-on-the-roof-review-a-classic-musical-gets-fresh-life/2015/12/21/8c8b4c9e-a7c6-11e5-b596-113f59ee069a_story.html",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/11/14/fiddler-on-the-roof-signature-review/",
       "publishDate": "December 21, 2015",
       "originalRating": null,
       "pullQuote": "This 'Fiddler' feels both sturdily traditional and surprisingly fresh, a revival that honors the original while finding new emotional depths in familiar material.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "fiddler-on-the-roof-2015",
@@ -65574,7 +65319,7 @@
       "pullQuote": "The show succeeds in creating the same sense of theatrical magic that made Barrie's play so enduring, but it's a gentle, understated magic that may not be robust enough for a Broadway musical.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "finians-rainbow-2009",
@@ -66169,7 +65914,7 @@
       "pullQuote": "Larry David's Broadway debut as a playwright-star is a crowd-pleasing family comedy",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "fish-in-the-dark-2015",
@@ -66737,7 +66482,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 42,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Peter Marks",
@@ -66747,7 +66492,7 @@
       "pullQuote": "Long-winded and impossibly earnest, the world-premiere musical features an unremarkable score and a lumbering book.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "flying-over-sunset-2021",
@@ -67295,23 +67040,6 @@
     },
     {
       "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
-      "outletId": "hollywood-reporter",
-      "outlet": "The Hollywood Reporter",
-      "assignedScore": 85,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Lovia Gyarke",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/for-colored-girls-theater-review-ntozake-shange-camille-a-brown-1235133022/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Brown's version of the production injects Shange's already electrifying work with a distinctive and vivid energy.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 79,
@@ -67377,23 +67105,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Rose Bernardo",
-      "url": "https://www.timeout.com/newyork/theater/for-colored-girls-who-have-considered-suicide-review-broadway-revival-2022",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "\"This version of 'for colored girls' truly does feel like a choreopoem, Shange’s term for her amalgamation of words, motion and music. (The percussive original score is by Martha Redbone and Aaron Whitby).",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
@@ -67693,7 +67404,7 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2018/03/22/theater/frozen-review-broadway.html",
+      "url": "https://www.nytimes.com/2018/03/22/theater/frozen-review-disney-broadway.html",
       "publishDate": "March 22, 2018",
       "originalRating": null,
       "pullQuote": "This Broadway adaptation of the Disney animated blockbuster works hardest when it's working least, coasting on the charming performances of its leading ladies and the sublime silliness of its snowman.",
@@ -67717,23 +67428,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "frozen-2018",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 59,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Unknown",
-      "url": "https://www.nytimes.com/2018/03/22/theater/frozen-review-disney-broadway.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Sometimes rousing, often dull, alternately dopey",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "frozen-2018",
@@ -67870,23 +67564,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "none"
-    },
-    {
-      "showId": "fully-committed-2016",
-      "outletId": "ew",
-      "outlet": "Entertainment Weekly",
-      "assignedScore": 76,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Rose Bernardo",
-      "url": "http://www.ew.com/article/2016/04/25/fully-committed-review-jesse-tyler-ferguson",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Ferguson juggles all of these personalities rather deftly, making only a few fumbles.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "fully-committed-2016",
@@ -68186,7 +67863,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/fun-home-review-a-moving-musical-about-family-secrets-and-self-discovery/2015/04/20/8e2c8b3e-e6e6-11e4-aae1-d642717d8afa_story.html",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/07/05/fun-home-review-studio-theatre/",
       "publishDate": "April 20, 2015",
       "originalRating": null,
       "pullQuote": "What makes 'Fun Home' so affecting is not just its emotional candor but the sophistication with which it explores the mysteries of identity and family.",
@@ -68736,7 +68413,7 @@
       "pullQuote": "Taylor Mac has written a brilliant sequel to Shakespeare's bloodiest tragedy, turning the aftermath into a meditation on trauma, healing and the power of performance.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
@@ -68975,23 +68652,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "ghost-the-musical-2012",
-      "outletId": "ew",
-      "outlet": "Entertainment Weekly",
-      "assignedScore": 35,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Thom Greier",
-      "url": "http://www.ew.com/ew/article/0,,20364394_20589553,00.html",
-      "publishDate": null,
-      "originalRating": "D",
-      "pullQuote": "Like Spider-Man Turn Off the Dark, the musical version of Ghost haunts the eye, not the ear.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "ghost-the-musical-2012",
@@ -69274,13 +68934,13 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2015/04/09/theater/review-gigi-on-broadway-gets-a-feminist-makeover.html",
+      "url": "https://www.nytimes.com/2015/04/09/theater/vanessa-hudgens-in-a-squeaky-clean-gigi-on-broadway.html",
       "publishDate": "April 8, 2015",
       "originalRating": null,
       "pullQuote": "This new version of 'Gigi' feels like a musical in the witness protection program, disguised beyond ready recognition.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "gigi-2015",
@@ -69365,7 +69025,7 @@
       "pullQuote": "This lavish revival is a feast for the eyes, but the show itself feels oddly old-fashioned and emotionally remote.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "girl-from-the-north-country-2022",
@@ -70862,23 +70522,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "good-night-oscar-2023",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Unknown",
-      "url": "https://www.nytimes.com/2023/04/24/theater/good-night-oscar-review-sean-hayes.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The work is startling, but the performance is less an inhabitation of character than a nonstop loop of perfectly rendered facial tics, trembling hands and compulsive gestures.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "good-night-oscar-2023",
@@ -75222,7 +74865,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -75232,7 +74875,7 @@
       "pullQuote": "This is a musical that makes the Founding Fathers seem like real people rather than figures imprisoned in history books, and does so with wit, intelligence and an infectious energy that makes the show's nearly three-hour length fly by.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "hamilton-2015",
@@ -78197,6 +77840,23 @@
     },
     {
       "showId": "hedwig-and-the-angry-inch-2014",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Thom Geier",
+      "url": "http://www.ew.com/ew/article/0,,20364394_20809169,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "Just how edgy can Hedwig remain on the Great White Way? There is, after all, a bit of cognitive dissonance in a supposed outcast selling out a giant theater. While director Michael Mayer’s tricked-out production abandons the show’s seedy origins, there’s still a satirical edge that reflects the more upscale venue.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "hedwig-and-the-angry-inch-2014",
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 82,
@@ -80065,7 +79725,7 @@
       "pullQuote": "Metcalf and Lithgow make a fascinating but flawed play work through sheer force of their talent and chemistry.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "hillary-and-clinton-2019",
@@ -80092,7 +79752,7 @@
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Rose Bernardo",
+      "criticName": "Melissa Rose Bernardo",
       "url": "http://www.ew.com/article/2016/10/06/holiday-inn-ew-stage-review",
       "publishDate": null,
       "originalRating": null,
@@ -80150,7 +79810,7 @@
       "pullQuote": "The show is a pleasant enough diversion that should appeal to audiences nostalgic for simpler times, even if it never quite captures the effortless magic of the movie.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
@@ -81446,6 +81106,23 @@
     },
     {
       "showId": "how-to-succeed-in-business-without-really-trying-2011",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Thom Geier",
+      "url": "http://www.ew.com/ew/article/0,,20364394_20476838,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "In fact, it's hard to unravel where Finch ends and Radcliffe begins, so thoroughly do the two seem to be entwined in this triumphant performance. On the surface, the British actor - with his squat, compact body and somewhat pasty complexion - seems an unlikely leading man.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "how-to-succeed-in-business-without-really-trying-2011",
       "outletId": "nypost",
       "outlet": "New York Post",
       "assignedScore": 76,
@@ -81589,13 +81266,13 @@
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Melissa Rose Bernardo",
-      "url": "https://ew.com/article/2016/02/26/hughie-review/",
+      "url": "https://ew.com/article/2016/02/26/hughie-review-forest-whitaker/?srsltid=AfmBOorWhZxVhieHWKaD7p_YNqdsz97pwPwZa2Gk9zyCsobGW0bdmTMI",
       "publishDate": "February 26, 2016",
       "originalRating": 87,
       "pullQuote": "Forest Whitaker brings a quiet dignity to Eugene O'Neill's one-act play, transforming what could be a simple character study into something more profound.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "hughie-2016",
@@ -82282,7 +81959,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 44,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Ben Brantley",
@@ -82292,7 +81969,7 @@
       "pullQuote": "But even she cannot lift this show's unwieldy concept into the theatrical stratosphere.",
       "dtliThumb": "DOWN",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "ifthen-2014",
@@ -85517,7 +85194,7 @@
       "scoreSource": "originalScore-priority0",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Rose Bernardo",
+      "criticName": "Melissa Rose Bernardo",
       "url": "http://www.ew.com/ew/article/0,,20364394_20692464,00.html",
       "publishDate": null,
       "originalRating": "D",
@@ -85709,6 +85386,23 @@
       "publishDate": "April 21, 2011",
       "originalRating": 80,
       "pullQuote": "This is theater at its most primal and affecting.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "jesus-christ-superstar-2012",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Melissa Rose Bernardo",
+      "url": "http://www.ew.com/ew/article/0,,20364394_20579821,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "McAnuff has assembled a glorious group of voices, including Paul Nolan (Jesus) and Josh Young (Judas) — both extraordinarily good rock screamers — and Chilina Kennedy as hooker-turned-handmaiden Mary Magdalene. (Also impressive: the smooth stylings of Marcus Nance as conniving high priest Caiaphas.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -86109,7 +85803,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Jesse Green",
@@ -86119,7 +85813,7 @@
       "pullQuote": "I’m not convinced that...the catharsis of drama is best achieved at the cost of trauma",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "job-2024",
@@ -86956,6 +86650,23 @@
     },
     {
       "showId": "just-for-us-2023",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 83,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Christian Holub",
+      "url": "https://ew.com/theater/theater-reviews/alex-edelman-just-for-us-review-broadway/",
+      "publishDate": null,
+      "originalRating": "B",
+      "pullQuote": "The core of Just For Us is Edelman unwinding this central story of what happened at that meeting, interspersed with frequent tangents about his life and upbringing in a religiously observant Jewish family from Boston.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "just-for-us-2023",
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 79,
@@ -87364,23 +87075,6 @@
     },
     {
       "showId": "just-in-time-2025",
-      "outletId": "nysr",
-      "outlet": "New York Stage Review",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Rose Bernardo",
-      "url": null,
-      "publishDate": "2025-04-26T22:02:57-04:00",
-      "originalRating": null,
-      "pullQuote": "But it all comes back to Groff. Buoyed by Andrew Resnick and Michael Thurber’s kicky orchestrations, his renditions of Darin’s standards—the brassy, hard-edged “Mack the Knife,” with those insistent key changes, and the absolutely manic, horn-crazed “Once in a Lifetime”—are thrilling. The show is a ...",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "just-in-time-2025",
       "outletId": "nyt-theater",
       "outlet": "New York Theater",
       "assignedScore": 75,
@@ -87673,7 +87367,7 @@
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Christian Holub",
@@ -87683,7 +87377,7 @@
       "pullQuote": "'Kimberly Akimbo' leaves you floating high on good vibes and ready to make the most of life.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "kimberly-akimbo-2022",
@@ -89183,23 +88877,6 @@
     },
     {
       "showId": "kpop-2022",
-      "outletId": "theatrely",
-      "outlet": "Theatrely",
-      "assignedScore": 93,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Marie Miller",
-      "url": "https://www.theatrely.com/post/kpop-the-musical-shines-on-broadway-review",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "KPOP is a must see, shining star, of what is possible.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "kpop-2022",
       "outletId": "thewrap",
       "outlet": "TheWrap",
       "assignedScore": 61,
@@ -89547,13 +89224,13 @@
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Thom Geier",
-      "url": "https://ew.com/article/2014/04/14/lady-day-emersons-bar-grill-review/",
+      "url": "https://ew.com/article/2014/04/25/lady-day-emersons-bar-grill-ew-review/?srsltid=AfmBOoo-kVzEoevOeiHK03SlY8scljGD85NmVlEsTj807JnemfKOX-dE",
       "publishDate": "April 14, 2014",
       "originalRating": 87,
       "pullQuote": "McDonald brings a lived-in authenticity to Holiday that goes beyond mere impersonation, capturing both the jazz legend's defiant spirit and her profound vulnerability.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "lady-day-at-emersons-bar-and-grill-2014",
@@ -91325,6 +91002,23 @@
     },
     {
       "showId": "les-miserables-1987",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 90,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Thom Geier",
+      "url": "http://www.ew.com/ew/article/0,,20364394_20799569,00.html",
+      "publishDate": null,
+      "originalRating": "A-",
+      "pullQuote": "It’s been just six years since the last (and limp) revival of Les Misérables left Broadway. Now uber-producer Cameron Macintosh is remounting the blockbuster musical about income inequality in 19th-century France with a first-rate cast and a new production that nods to its recent cinematic incarnation.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "les-miserables-1987",
       "outletId": "newsday",
       "outlet": "Newsday",
       "assignedScore": 78,
@@ -91387,6 +91081,23 @@
       "publishDate": "November 10, 2006",
       "originalRating": null,
       "pullQuote": "The new Broadway revival of 'Les Misérables' has been given a handsome physical production that emphasizes the show's epic sweep while keeping its heart intact.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "les-miserables-2014",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 90,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Thom Geier",
+      "url": "http://www.ew.com/ew/article/0,,20364394_20799569,00.html",
+      "publishDate": null,
+      "originalRating": "A-",
+      "pullQuote": "\"The revelation is Ramin Karimloo, an Iranian-born Canadian who is well known in London but makes his Broadway debut here. As Jean Valjean, the petty criminal turned respected citizen still on the run from the law, Karimloo projects a masculine authority that cannily reveals hidden pockets of vulnerability.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -93284,7 +92995,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 73,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
@@ -93294,7 +93005,7 @@
       "pullQuote": "Valerie Harper gives a committed performance as Tallulah Bankhead in this slight but entertaining biographical play about the legendary actress struggling through post-sync work on her final film.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "losing-louie-2006",
@@ -93312,6 +93023,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "losing-louie-2006",
+      "outletId": "variety",
+      "outlet": "Variety",
+      "assignedScore": 60,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Charles Isherwood",
+      "url": "https://variety.com/2006/legit/reviews/losing-louie-1200515891/",
+      "publishDate": "October 25, 2006",
+      "originalRating": null,
+      "pullQuote": "Simon Neil's dramedy about a middle-aged man's midlife crisis feels overly familiar and schematic, despite some winning performances.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "love-letters-2014",
@@ -93978,6 +93706,23 @@
     },
     {
       "showId": "macbeth-2022",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Unknown",
+      "url": "http://www.ew.com/ew/article/0,,20364394_20758996,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "Sunjata overdoes every line he speaks, and Orsini is overwhelmed by the speech. The good news: After that slog of a scene comes Duff's ''out, damned spot'' moment  a spellbinding slice in an evening that is less than spellbinding otherwise. B– (Tickets: Telecharge.com or 800-432-7250)",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "macbeth-2022",
       "outletId": "nysr",
       "outlet": "New York Stage Review",
       "assignedScore": 20,
@@ -94120,7 +93865,7 @@
       "scoreSource": "originalScore-priority0",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Rose Bernardo",
+      "criticName": "Melissa Rose Bernardo",
       "url": "http://www.ew.com/ew/article/0,,20364394_20776737,00.html",
       "publishDate": null,
       "originalRating": "D",
@@ -94426,7 +94171,7 @@
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Elizabeth Vincentelli",
+      "criticName": "Elisabeth Vincentelli",
       "url": "https://www.nytimes.com/2025/08/15/theater/abba-mamma-mia-broadway.html#:~:text=Despite%20being%20slightly%20downscaled%20for,of%20the%20first%20Broadway%20run.",
       "publishDate": "August 15, 2025",
       "originalRating": null,
@@ -94518,6 +94263,23 @@
       "pullQuote": "I found the score neither unbearable nor something I'd miss if I never heard it again...I would not discourage anyone interested from attending Mamma Mia!. But I wouldn't encourage the doubtful, either.",
       "dtliThumb": "Down",
       "bwwThumb": "Meh",
+      "contentTier": "complete"
+    },
+    {
+      "showId": "man-and-boy-2011",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Keith Staskiewicz",
+      "url": "http://www.ew.com/ew/article/0,,20364394_20535691,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "This unhealthy father-son dynamic should make for excellent theater, but strangely - and despite what the play's title might suggest - these two characters' relationship feels underdeveloped. Basil awkwardly vacillates between petulant rejection of his father and pure adulation.",
+      "dtliThumb": null,
+      "bwwThumb": null,
       "contentTier": "complete"
     },
     {
@@ -99571,7 +99333,7 @@
       "pullQuote": "Berry Gordy Jr.'s autobiography gets the full Broadway treatment in 'Motown The Musical,' a jukebox show that's heavy on the juke and light on the book.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "motown-the-musical-2013",
@@ -99589,6 +99351,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
+    },
+    {
+      "showId": "motown-the-musical-2016",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Unknown",
+      "url": "http://www.ew.com/ew/article/0,,20364394_20690921,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "More than a half century ago, Berry Gordy Jr. revolutionized music with his Motown record label, creating a catalog of hits  and hit-making legends  that is truly remarkable.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -101361,6 +101140,23 @@
     },
     {
       "showId": "newsies-the-musical-2012",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Thom Geier",
+      "url": "http://www.ew.com/ew/article/0,,20364394_20582165,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "Assuming Bale's role as head newsie Jack Kelly on Broadway, Jeremy Jordan (survivor of the recent Bonnie & Clyde) proves he doesn't need anyone wandering into his sight lines to be an explosive presence on stage. Blessed with a crystalline voice, Jordan conveys a rare combination of masculine swagger and vulnerability.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "newsies-the-musical-2012",
       "outletId": "nypost",
       "outlet": "New York Post",
       "assignedScore": 77,
@@ -101565,6 +101361,23 @@
     },
     {
       "showId": "next-to-normal-2009",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Melissa Rose Bernardo",
+      "url": "http://www.ew.com/ew/article/0,,20272677,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "It's a tough sell: a rock musical about mental illness. One or two people losing their marbles is pretty much de rigeur in a play; where would Shakespeare, O'Neill, Williams, or Tracy Letts (August: Osage County) be without it? But composer Tom Kitt and lyricist-librettist Brian Yorkey chose to devote two hours and 20 minutes (and nearly 40 song...",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "next-to-normal-2009",
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 82,
@@ -101664,6 +101477,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
+    },
+    {
+      "showId": "nice-work-if-you-can-get-it-2012",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Adam Markovitz",
+      "url": "http://www.ew.com/ew/article/0,,20364394_20589877,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "The musical flits between delightful and exasperating on a second-by-second basis — boosted by terrific supporting players (especially Judy Kaye as a zealous teetotaler) and dragged down by Broderick, who waltzes alongside his costars with the good-natured boredom of a tipsy wedding guest.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "nice-work-if-you-can-get-it-2012",
@@ -102780,13 +102610,13 @@
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Kristen Baldwin",
-      "url": "https://ew.com/oh-mary-broadway-review-8675309",
+      "url": "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908?srsltid=AfmBOoqNhniARSD1tB_X7w62AILYQJ_3qgo9tVtnUEVlWLHBrFaCuvsE",
       "publishDate": "July 10, 2024",
       "originalRating": 87,
       "pullQuote": "Cole Escola's outrageous comedy transforms Mary Todd Lincoln into a foul-mouthed, wine-guzzling drama queen, and it's absolutely hilarious.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "oh-mary-2024",
@@ -103567,23 +103397,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "One could just as easily ask, why [the play is] on Broadway at all.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "ohio-state-murders-2022",
-      "outletId": "theater-pizzazz",
-      "outlet": "Theater Pizzazz",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ron Fassler (critic)",
-      "url": "https://www.theaterpizzazz.com/ohio-state-murders-comes-to-broadway-not-a-moment-too-soon/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "There's great poetry in Kennedy's writing...Motifs and metaphors are handled with a light touch and ease you along",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -104522,6 +104335,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
+    },
+    {
+      "showId": "on-your-feet-2015",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 87,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Jesse Oxfeld",
+      "url": "http://www.ew.com/article/2015/11/04/on-your-feet-broadway-review",
+      "publishDate": null,
+      "originalRating": "B+",
+      "pullQuote": "\"'On Your Feet' is a play in which good news always far outweighs the bad — both in its story and in the production.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "on-your-feet-2015",
@@ -106839,18 +106669,18 @@
       "showId": "othello-2025",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
+      "assignedScore": 83,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
       "criticName": "Dalton Ross",
       "url": "https://ew.com/othello-review-denzel-washington-jake-gyllenhaal-do-battle-on-broadway-11701734",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "B",
       "pullQuote": "Director Kenny Leon's new production seems caught between reverence for the original source material and a seemingly half-hearted attempt to renovate.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "othello-2025",
@@ -107043,32 +106873,15 @@
       "showId": "other-desert-cities-2011",
       "outletId": "nytimes",
       "outlet": "The New York Times",
-      "assignedScore": 82,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2011/11/04/theater/reviews/other-desert-cities-at-booth-theater-review.html",
-      "publishDate": "November 3, 2011",
-      "originalRating": null,
-      "pullQuote": "Yet “Cities,” directed with a masterly combination of shadow and shimmer by Joe Mantello, emerges as stronger, more sincere and more credible in its Broadway reincarnation.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "other-desert-cities-2011",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
       "assignedScore": 80,
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Ben Brantly",
+      "criticName": "Ben Brantley",
       "url": "http://www.nytimes.com/2011/11/04/theater/reviews/other-desert-cities-at-booth-theater-review.html",
-      "publishDate": null,
+      "publishDate": "November 3, 2011",
       "originalRating": null,
-      "pullQuote": "'Cities,' directed with a masterly combination of shadow and shimmer by Joe Mantello, emerges as stronger, more sincere and more credible in its Broadway reincarnation... The Wyeths' competitive hyper-articulateness seems to come more naturally to them now.",
+      "pullQuote": "Jon Robin Baitz has written a family drama that crackles with the electricity of old wounds being picked at until they bleed afresh. This is a smart, savage and ultimately moving portrait of a family whose love for one another is both their salvation and their curse.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -113034,9 +112847,9 @@
       "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": "Ben Brantly",
+      "criticName": "Ben Brantley",
       "url": "http://www.nytimes.com/2010/07/01/theater/reviews/01race.html?th&emc=th",
-      "publishDate": null,
+      "publishDate": "December 6, 2009",
       "originalRating": null,
       "pullQuote": "Mr. Izzard's performance is smart and sensitive, but it generally feels more submissive than subversive.",
       "dtliThumb": null,
@@ -116020,7 +115833,7 @@
       "pullQuote": "This exquisite revival of the 1963 musical 'She Loves Me' is a masterclass in how to stage an intimate show with maximum emotional impact.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "she-loves-me-2016",
@@ -119840,7 +119653,7 @@
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Ron Fassler (critic)",
+      "criticName": "Ron Fassler",
       "url": "https://www.theaterpizzazz.com/bring-out-your-dead-spamalot-is-back/",
       "publishDate": null,
       "originalRating": null,
@@ -120806,10 +120619,10 @@
       "showId": "stereophonic-2024",
       "outletId": "vulture",
       "outlet": "Vulture",
-      "assignedScore": 60,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
+      "assignedScore": 95,
+      "scoreSource": "human-review",
+      "bucket": "Rave",
+      "thumb": "Up",
       "criticName": "Sara Holdren",
       "url": "https://www.vulture.com/article/theater-review-stereophonic-broadway.html",
       "publishDate": "April 19, 2024",
@@ -124864,7 +124677,7 @@
       "pullQuote": "This handsome revival of Chekhov's final play boasts a sterling cast headed by Diane Lane, but the production feels somewhat emotionally remote despite its technical polish.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-cherry-orchard-2016",
@@ -129952,6 +129765,23 @@
     },
     {
       "showId": "the-notebook-2024",
+      "outletId": "chicagotribune",
+      "outlet": "Chicago Tribune",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Chris Jones",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-notebook-musical-chicago-shakespeare-review-20221007-srquwezkwndife2b2j6fvjnjfi-story.html",
+      "publishDate": "March 14, 2024",
+      "originalRating": "4/5",
+      "pullQuote": "There are two main reasons why this show works. Most important is the songwriter Ingrid Michaelson, who might be a Broadway newcomer, but whose lyrics eschew the mawkish pitfalls in favor of simple, direct communication of intense but familiar emotions through melody and song.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "the-notebook-2024",
       "outletId": "deadline",
       "outlet": "Deadline",
       "assignedScore": 38,
@@ -133046,6 +132876,23 @@
     },
     {
       "showId": "the-sign-in-sidney-brusteins-window-2023",
+      "outletId": "chicagotribune",
+      "outlet": "Chicago Tribune",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Chris Jones",
+      "url": "https://www.chicagotribune.com/entertainment/theater/ct-sign-in-sidney-brusteins-window-goodman-ent-0511-20160510-column.html",
+      "publishDate": null,
+      "originalRating": "4/5",
+      "pullQuote": "With \"Sign,\" white, male critics in New York in 1964 simply could not get their heads around a black woman from Chicago showing such extraordinary range.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "the-sign-in-sidney-brusteins-window-2023",
       "outletId": "nytg",
       "outlet": "New York Theatre Guide",
       "assignedScore": 63,
@@ -133647,7 +133494,7 @@
       "scoreSource": "originalScore-priority0",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Rose Bernardo",
+      "criticName": "Melissa Rose Bernardo",
       "url": "http://www.ew.com/ew/article/0,,20364394_20693848,00.html",
       "publishDate": null,
       "originalRating": "D",
@@ -133655,6 +133502,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "the-trip-to-bountiful-2013",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 78,
+      "scoreSource": "human-review",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Ben Brantley",
+      "url": "https://www.nytimes.com/2013/04/24/theater/reviews/the-trip-to-bountiful-starring-cicely-tyson.html",
+      "publishDate": "April 23, 2013",
+      "originalRating": null,
+      "pullQuote": "Ms. Tyson gives what may be the performance of her career, finding in Carrie Watts both the flinty strength and the vulnerability that make her absolutely human.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "the-velocity-of-autumn-2014",
@@ -133821,7 +133685,7 @@
       "url": "https://nystagereview.com/2018/10/25/the-waverly-gallery-real-talk-with-kenneth-lonergan/",
       "publishDate": "2018-10-25T21:50:36",
       "originalRating": "4/5 stars",
-      "pullQuote": "I have a faint memory of her moving performance as a Greenwich Village–dwelling octogenarian suffering from Alzheimer’s disease—but I don’t recall feeling so drained and despondent afterward.",
+      "pullQuote": "Director Lila Neugebauer (Mary Page Marlowe, The Wolves) moves things at a methodical, molasses-slow pace-which is entirely appropriate given the material. The events should feel painfully slow. While Hedges' performance might seem too restrained, it matches Lonergan's unsentimental tone perfectly.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
