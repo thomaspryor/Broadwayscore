@@ -17632,18 +17632,6 @@
     "timestamp": "2026-02-06T15:00:36.342Z"
   },
   {
-    "reviewId": "diana-the-musical-2021/variety--naveen-kumar.json",
-    "showId": "diana-the-musical-2021",
-    "outlet": "Variety",
-    "critic": "Naveen Kumar",
-    "url": "https://variety.com/2021/legit/reviews/diana-musical-review-broadway-1235114301/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): hamilton, proof, appropriate, purpose, parade...",
-    "textLength": 5560,
-    "timestamp": "2026-02-06T15:06:19.995Z"
-  },
-  {
     "reviewId": "doctor-zhivago-2015/hollywood-reporter--frank-scheck.json",
     "showId": "doctor-zhivago-2015",
     "outlet": "The Hollywood Reporter",
@@ -17930,30 +17918,6 @@
     "garbageReason": "Multiple shows mentioned (12): appropriate, home, company, the audience, once...",
     "textLength": 8579,
     "timestamp": "2026-02-06T15:19:37.565Z"
-  },
-  {
-    "reviewId": "evita-2012/nytimes--jesse-green.json",
-    "showId": "evita-2012",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2019/11/15/theater/evita-city-center-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): hamilton, sunset boulevard, the picture of dorian gray, smash, parade...",
-    "textLength": 6899,
-    "timestamp": "2026-02-06T15:20:26.615Z"
-  },
-  {
-    "reviewId": "evita-2012/variety--marilyn-stasio.json",
-    "showId": "evita-2012",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2012/legit/reviews/evita-1117947355/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): tina, rain, elling, how to succeed in business without really trying, high...",
-    "textLength": 4083,
-    "timestamp": "2026-02-06T15:20:33.996Z"
   },
   {
     "reviewId": "evita-2012/variety--steven-suskin.json",
@@ -22370,5 +22334,41 @@
     "garbageReason": "Multiple shows mentioned (14): hamilton, proof, appropriate, purpose, parade...",
     "textLength": 5455,
     "timestamp": "2026-02-07T06:47:28.132Z"
+  },
+  {
+    "reviewId": "diana-the-musical-2021/variety--naveen-kumar.json",
+    "showId": "diana-the-musical-2021",
+    "outlet": "Variety",
+    "critic": "Naveen Kumar",
+    "url": "https://variety.com/2021/legit/reviews/diana-musical-review-broadway-1235114301/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): hamilton, proof, appropriate, purpose, parade...",
+    "textLength": 5833,
+    "timestamp": "2026-02-07T06:47:45.283Z"
+  },
+  {
+    "reviewId": "evita-2012/nytimes--jesse-green.json",
+    "showId": "evita-2012",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2019/11/15/theater/evita-city-center-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): hamilton, sunset boulevard, the picture of dorian gray, smash, parade...",
+    "textLength": 6899,
+    "timestamp": "2026-02-07T06:55:48.948Z"
+  },
+  {
+    "reviewId": "evita-2012/variety--marilyn-stasio.json",
+    "showId": "evita-2012",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2012/legit/reviews/evita-1117947355/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): tina, rain, elling, how to succeed in business without really trying, high...",
+    "textLength": 4083,
+    "timestamp": "2026-02-07T06:55:54.357Z"
   }
 ]
