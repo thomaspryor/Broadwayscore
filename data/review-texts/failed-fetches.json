@@ -14680,18 +14680,6 @@
     "timestamp": "2026-02-06T01:03:16.196Z"
   },
   {
-    "reviewId": "1776-2022/vulture--james-frankie-thomas.json",
-    "showId": "1776-2022",
-    "outlet": "Vulture",
-    "critic": "James Frankie Thomas",
-    "url": "https://www.vulture.com/2022/10/theater-review-1776-on-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): hamilton, company, oklahoma!, the audience, once...",
-    "textLength": 6944,
-    "timestamp": "2026-02-06T01:20:58.548Z"
-  },
-  {
     "reviewId": "1984-2017/hollywood-reporter--david-rooney.json",
     "showId": "1984-2017",
     "outlet": "The Hollywood Reporter",
@@ -15794,18 +15782,6 @@
     "garbageReason": "Multiple shows mentioned (13): english, company, the prom, 1984, charlie and the chocolate factory...",
     "textLength": 7255,
     "timestamp": "2026-02-06T04:41:40.849Z"
-  },
-  {
-    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json",
-    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2022/12/04/a-beautiful-noise-the-neil-diamond-musical-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): 1776, new york, new york, sweat, hair, high...",
-    "textLength": 7870,
-    "timestamp": "2026-02-06T04:42:39.375Z"
   },
   {
     "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json",
@@ -17884,30 +17860,6 @@
     "timestamp": "2026-02-06T09:21:07.750Z"
   },
   {
-    "reviewId": "9-to-5-2009/hollywood-reporter--unknown.json",
-    "showId": "9-to-5-2009",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-656158?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+(The+Hollywood+Reporter+-+Top+Stories)",
-    "method": "browserbase",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): the book of mormon, appropriate, home, mean girls, falsettos...",
-    "textLength": 6258,
-    "timestamp": "2026-02-06T13:52:17.532Z"
-  },
-  {
-    "reviewId": "9-to-5-2009/nytimes--ben-brantley.json",
-    "showId": "9-to-5-2009",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (16): wicked, chicago, giant, company, network...",
-    "textLength": 9381,
-    "timestamp": "2026-02-06T13:52:23.835Z"
-  },
-  {
     "reviewId": "a-chorus-line-2006/nytimes--ben-brantley.json",
     "showId": "a-chorus-line-2006",
     "outlet": "The New York Times",
@@ -17918,18 +17870,6 @@
     "garbageReason": "Multiple shows mentioned (14): & juliet, purpose, ohio state murders, some like it hot, sweeney todd...",
     "textLength": 11499,
     "timestamp": "2026-02-06T13:55:30.614Z"
-  },
-  {
-    "reviewId": "9-to-5-2009/vulture--unknown.json",
-    "showId": "9-to-5-2009",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2013/11/reviews-little-miss-sunshine-a-bed-and-a-chair.html",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (22): giant, merrily we roll along, english, purpose, smash...",
-    "textLength": 13324,
-    "timestamp": "2026-02-06T13:55:56.217Z"
   },
   {
     "reviewId": "a-chorus-line-2006/variety--charles-isherwood.json",
@@ -22010,5 +21950,65 @@
     "garbageReason": "Multiple shows mentioned (8): hamilton, the present, the audience, once, rain...",
     "textLength": 5204,
     "timestamp": "2026-02-07T04:20:00.600Z"
+  },
+  {
+    "reviewId": "1776-2022/vulture--james-frankie-thomas.json",
+    "showId": "1776-2022",
+    "outlet": "Vulture",
+    "critic": "James Frankie Thomas",
+    "url": "https://www.vulture.com/2022/10/theater-review-1776-on-broadway.html",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): hamilton, company, oklahoma!, the audience, once...",
+    "textLength": 7187,
+    "timestamp": "2026-02-07T04:25:06.306Z"
+  },
+  {
+    "reviewId": "9-to-5-2009/hollywood-reporter--unknown.json",
+    "showId": "9-to-5-2009",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-656158?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+(The+Hollywood+Reporter+-+Top+Stories)",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): the book of mormon, appropriate, home, mean girls, falsettos...",
+    "textLength": 6277,
+    "timestamp": "2026-02-07T04:26:37.049Z"
+  },
+  {
+    "reviewId": "9-to-5-2009/nytimes--ben-brantley.json",
+    "showId": "9-to-5-2009",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): wicked, chicago, giant, company, network...",
+    "textLength": 9381,
+    "timestamp": "2026-02-07T04:26:42.172Z"
+  },
+  {
+    "reviewId": "9-to-5-2009/vulture--unknown.json",
+    "showId": "9-to-5-2009",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2013/11/reviews-little-miss-sunshine-a-bed-and-a-chair.html",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): 1776, the collaboration, new york, new york, sweat, hair...",
+    "textLength": 7870,
+    "timestamp": "2026-02-07T04:29:57.104Z"
+  },
+  {
+    "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/12/04/a-beautiful-noise-the-neil-diamond-musical-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): 1776, new york, new york, sweat, hair, high...",
+    "textLength": 7870,
+    "timestamp": "2026-02-07T04:30:01.369Z"
   }
 ]
