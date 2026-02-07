@@ -13996,30 +13996,6 @@
     "timestamp": "2026-02-05T18:44:56.621Z"
   },
   {
-    "reviewId": "1984-2017/hollywood-reporter--david-rooney.json",
-    "showId": "1984-2017",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/",
-    "method": "browserbase",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): appropriate, purpose, company, allegiance, the audience...",
-    "textLength": 4831,
-    "timestamp": "2026-02-06T01:21:28.833Z"
-  },
-  {
-    "reviewId": "1984-2017/vulture--christopher-bonanos.json",
-    "showId": "1984-2017",
-    "outlet": "Vulture",
-    "critic": "Christopher Bonanos",
-    "url": "http://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): sweat, the audience, hair, seminar, rain...",
-    "textLength": 8936,
-    "timestamp": "2026-02-06T01:26:20.758Z"
-  },
-  {
     "reviewId": "a-behanding-in-spokane-2010/variety--david-rooney.json",
     "showId": "a-behanding-in-spokane-2010",
     "outlet": "Variety",
@@ -19468,54 +19444,6 @@
     "timestamp": "2026-02-07T04:36:04.131Z"
   },
   {
-    "reviewId": "a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
-    "showId": "a-bronx-tale-2007",
-    "outlet": "The Hollywood Reporter",
-    "critic": "Frank Scheck",
-    "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-951987",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (16): aladdin, appropriate, west side story, bullets over broadway, the performers...",
-    "textLength": 6473,
-    "timestamp": "2026-02-07T04:39:03.708Z"
-  },
-  {
-    "reviewId": "a-bronx-tale-2007/nyt-theater--jonathan-mandell.json",
-    "showId": "a-bronx-tale-2007",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2016/12/09/a-bronx-tale-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): hamilton, waitress, west side story, waitress, bullets over broadway...",
-    "textLength": 4979,
-    "timestamp": "2026-02-07T04:39:11.708Z"
-  },
-  {
-    "reviewId": "a-bronx-tale-2007/nytg--jeff-myhre.json",
-    "showId": "a-bronx-tale-2007",
-    "outlet": "New York Theatre Guide",
-    "critic": "Jeff Myhre",
-    "url": "http://nytheatreguide.com/2016/12/broadway-review-a-bronx-tale-at-longacre-theatre/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): harmony, home, tina, the present, the price...",
-    "textLength": 45998,
-    "timestamp": "2026-02-07T04:39:21.230Z"
-  },
-  {
-    "reviewId": "a-bronx-tale-2007/nytimes--charles-isherwood.json",
-    "showId": "a-bronx-tale-2007",
-    "outlet": "The New York Times",
-    "critic": "Charles Isherwood",
-    "url": "http://www.nytimes.com/2016/12/01/theater/a-bronx-tale-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): aladdin, west side story, once, high, race...",
-    "textLength": 5380,
-    "timestamp": "2026-02-07T04:40:28.428Z"
-  },
-  {
     "reviewId": "a-catered-affair-2008/nytimes--ben-brantley.json",
     "showId": "a-catered-affair-2008",
     "outlet": "The New York Times",
@@ -19526,18 +19454,6 @@
     "garbageReason": "Multiple shows mentioned (15): sweeney todd, company, the audience, harvey, hair...",
     "textLength": 8042,
     "timestamp": "2026-02-07T04:40:32.636Z"
-  },
-  {
-    "reviewId": "a-chorus-line-2006/nytimes--ben-brantley.json",
-    "showId": "a-chorus-line-2006",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2006/10/06/theater/reviews/06chor.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): & juliet, purpose, ohio state murders, some like it hot, sweeney todd...",
-    "textLength": 11499,
-    "timestamp": "2026-02-07T04:40:35.804Z"
   },
   {
     "reviewId": "a-christmas-carol-2022/hollywood-reporter--david-rooney.json",
@@ -23690,5 +23606,89 @@
     "garbageReason": "Multiple shows mentioned (5): parade, peter pan goes wrong, high, well, rent",
     "textLength": 2453,
     "timestamp": "2026-02-07T10:49:50.731Z"
+  },
+  {
+    "reviewId": "1984-2017/hollywood-reporter--david-rooney.json",
+    "showId": "1984-2017",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/",
+    "method": "browserbase",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): appropriate, purpose, company, allegiance, the audience...",
+    "textLength": 4831,
+    "timestamp": "2026-02-07T10:59:17.940Z"
+  },
+  {
+    "reviewId": "1984-2017/vulture--christopher-bonanos.json",
+    "showId": "1984-2017",
+    "outlet": "Vulture",
+    "critic": "Christopher Bonanos",
+    "url": "http://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): sweat, the audience, hair, seminar, rain...",
+    "textLength": 8936,
+    "timestamp": "2026-02-07T11:04:54.871Z"
+  },
+  {
+    "reviewId": "a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
+    "showId": "a-bronx-tale-2007",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-951987",
+    "method": "browserbase",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): aladdin, appropriate, west side story, bullets over broadway, the performers...",
+    "textLength": 6740,
+    "timestamp": "2026-02-07T11:05:21.323Z"
+  },
+  {
+    "reviewId": "a-bronx-tale-2007/nyt-theater--jonathan-mandell.json",
+    "showId": "a-bronx-tale-2007",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2016/12/09/a-bronx-tale-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): hamilton, waitress, west side story, waitress, bullets over broadway...",
+    "textLength": 4979,
+    "timestamp": "2026-02-07T11:05:29.022Z"
+  },
+  {
+    "reviewId": "a-bronx-tale-2007/nytg--jeff-myhre.json",
+    "showId": "a-bronx-tale-2007",
+    "outlet": "New York Theatre Guide",
+    "critic": "Jeff Myhre",
+    "url": "http://nytheatreguide.com/2016/12/broadway-review-a-bronx-tale-at-longacre-theatre/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): harmony, home, tina, the present, the price...",
+    "textLength": 45998,
+    "timestamp": "2026-02-07T11:05:40.357Z"
+  },
+  {
+    "reviewId": "a-bronx-tale-2007/nytimes--charles-isherwood.json",
+    "showId": "a-bronx-tale-2007",
+    "outlet": "The New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://www.nytimes.com/2016/12/01/theater/a-bronx-tale-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): aladdin, west side story, once, high, race...",
+    "textLength": 5225,
+    "timestamp": "2026-02-07T11:05:44.909Z"
+  },
+  {
+    "reviewId": "a-chorus-line-2006/nytimes--ben-brantley.json",
+    "showId": "a-chorus-line-2006",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2006/10/06/theater/reviews/06chor.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 6228,
+    "timestamp": "2026-02-07T11:06:07.465Z"
   }
 ]
