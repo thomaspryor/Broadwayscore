@@ -20,8 +20,8 @@
   "contentTierReason": "Short text (21 words)",
   "textQuality": "truncated",
   "textWordCount": 527,
-  "archivePath": "data/archives/reviews/red-2010/hollywood-reporter--david-rooney_2026-02-06.html",
-  "textFetchedAt": "2026-02-06T18:50:36.717Z",
+  "archivePath": "data/archives/reviews/red-2010/hollywood-reporter--david-rooney_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T09:25:01.039Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -46,7 +46,7 @@
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "Parse Error: Header overflow"
+      "error": "CAPTCHA detected (premium_proxy)"
     },
     {
       "tier": 3,
@@ -124,5 +124,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
-  }
+  },
+  "duplicateTextOf": "hollywood-reporter--franck-scheck.json"
 }
