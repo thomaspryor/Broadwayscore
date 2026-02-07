@@ -388,7 +388,7 @@ async function discoverShows() {
         theaterAddress: getTheaterAddress(show.venue) || null,
         ticketLinks: [],
         cast: [],
-        creativeTeam: [],
+        creativeTeam: show.creativeTeam || [],
       });
     }
 

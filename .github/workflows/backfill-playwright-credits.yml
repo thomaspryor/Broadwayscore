@@ -1,0 +1,106 @@
+name: Backfill Playwright Credits
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Max shows to process (0 = all)'
+        required: false
+        default: '0'
+        type: string
+      dry_run:
+        description: 'Dry run (no changes)'
+        required: false
+        default: false
+        type: boolean
+      split_credits:
+        description: 'Also split combined credits'
+        required: false
+        default: false
+        type: boolean
+      show:
+        description: 'Optional: specific show slug'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium
+
+      - name: Configure git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Run playwright backfill
+        id: backfill
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          FLAGS=""
+
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+          fi
+
+          if [ "${{ inputs.split_credits }}" = "true" ]; then
+            FLAGS="$FLAGS --split-credits"
+          fi
+
+          if [ -n "${{ inputs.show }}" ]; then
+            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          fi
+
+          LIMIT="${{ inputs.limit }}"
+          if [ -n "$LIMIT" ] && [ "$LIMIT" != "0" ]; then
+            FLAGS="$FLAGS --limit=$LIMIT"
+          fi
+
+          echo "Running: node scripts/backfill-playwright-credits.js $FLAGS"
+          node scripts/backfill-playwright-credits.js $FLAGS
+
+      - name: Validate data
+        if: always()
+        run: node scripts/validate-data.js
+
+      - name: Commit remaining changes
+        if: always() && inputs.dry_run != 'true'
+        run: |
+          git add data/shows.json
+          if git diff --cached --quiet; then
+            echo "No uncommitted changes"
+            exit 0
+          fi
+
+          git commit -m "data: Backfill playwright credits (final)"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase -X theirs origin main
+            sleep $((RANDOM % 5 + 2))
+          done
