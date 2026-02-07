@@ -10324,18 +10324,6 @@
     "timestamp": "2026-02-04T14:34:14.289Z"
   },
   {
-    "reviewId": "cyrano-de-bergerac-2007/nytimes--charles-isherwood.json",
-    "showId": "cyrano-de-bergerac-2007",
-    "outlet": "The New York Times",
-    "critic": "Charles Isherwood",
-    "url": "https://www.nytimes.com/2007/11/02/theater/reviews/02cyra.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): harmony, take me out, company, hello, dolly!, fiddler on the roof...",
-    "textLength": 6908,
-    "timestamp": "2026-02-04T15:02:01.462Z"
-  },
-  {
     "reviewId": "cyrano-de-bergerac-2012/variety--marilyn-stasio.json",
     "showId": "cyrano-de-bergerac-2012",
     "outlet": "Variety",
@@ -16708,30 +16696,6 @@
     "timestamp": "2026-02-06T15:27:34.265Z"
   },
   {
-    "reviewId": "death-becomes-her-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "death-becomes-her-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/11/21/death-becomes-her-broadway-review/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (20): the great gatsby, wicked, hamilton, chicago, aladdin...",
-    "textLength": 15307,
-    "timestamp": "2026-02-06T15:27:37.380Z"
-  },
-  {
-    "reviewId": "death-becomes-her-2024/variety--steven-oxman.json",
-    "showId": "death-becomes-her-2024",
-    "outlet": "Variety",
-    "critic": "Steven Oxman",
-    "url": "https://variety.com/2024/legit/reviews/death-becomes-her-review-musical-chicago-1236010777/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): wicked, giant, appropriate, smash, parade...",
-    "textLength": 5115,
-    "timestamp": "2026-02-06T15:27:52.114Z"
-  },
-  {
     "reviewId": "disaster-2016/hollywood-reporter--david-rooney.json",
     "showId": "disaster-2016",
     "outlet": "The Hollywood Reporter",
@@ -16814,30 +16778,6 @@
     "garbageReason": "Multiple shows mentioned (10): harmony, the minutes, the audience, the assembled parties, once...",
     "textLength": 8835,
     "timestamp": "2026-02-06T15:41:01.266Z"
-  },
-  {
-    "reviewId": "cymbeline-2007/hollywood-reporter--frank-scheck.json",
-    "showId": "cymbeline-2007",
-    "outlet": "The Hollywood Reporter",
-    "critic": "Frank Scheck",
-    "url": "http://www.hollywoodreporter.com/review/cymbeline-theater-review-813603",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): hamilton, mamma mia!, giant, summer, eclipsed...",
-    "textLength": 5810,
-    "timestamp": "2026-02-06T15:43:26.529Z"
-  },
-  {
-    "reviewId": "cymbeline-2007/hollywood-reporter--unknown.json",
-    "showId": "cymbeline-2007",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/cymbeline-theater-review-813603",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): hamilton, giant, summer, eclipsed, the father...",
-    "textLength": 6129,
-    "timestamp": "2026-02-06T15:43:43.915Z"
   },
   {
     "reviewId": "elling-2010/vulture--scott-brown.json",
@@ -23882,5 +23822,101 @@
     "garbageReason": "Multiple shows mentioned (8): the band's visit, the performers, once, elling, wonderland...",
     "textLength": 5047,
     "timestamp": "2026-02-07T12:12:55.928Z"
+  },
+  {
+    "reviewId": "children-of-a-lesser-god-2018/vulture--boris-kachka.json",
+    "showId": "children-of-a-lesser-god-2018",
+    "outlet": "Vulture",
+    "critic": "Boris Kachka",
+    "url": "http://www.vulture.com/2018/04/theater-review-listening-to-children-of-a-lesser-god.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, summer, act one, hair, once...",
+    "textLength": 8195,
+    "timestamp": "2026-02-07T12:15:22.178Z"
+  },
+  {
+    "reviewId": "cymbeline-2007/hollywood-reporter--frank-scheck.json",
+    "showId": "cymbeline-2007",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/cymbeline-theater-review-813603",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): hamilton, mamma mia!, giant, summer, eclipsed...",
+    "textLength": 5810,
+    "timestamp": "2026-02-07T12:15:43.360Z"
+  },
+  {
+    "reviewId": "cymbeline-2007/hollywood-reporter--unknown.json",
+    "showId": "cymbeline-2007",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/cymbeline-theater-review-813603",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): hamilton, mamma mia!, giant, summer, eclipsed...",
+    "textLength": 5810,
+    "timestamp": "2026-02-07T12:16:02.347Z"
+  },
+  {
+    "reviewId": "cyrano-de-bergerac-2007/nytimes--ben-brantley.json",
+    "showId": "cyrano-de-bergerac-2007",
+    "outlet": "New York Times",
+    "critic": "Ben Brantley",
+    "url": "http://www.nytimes.com/2019/11/07/theater/cyrano-review-peter-dinklage.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): hamilton, proof, purpose, the prom, richard iii...",
+    "textLength": 7417,
+    "timestamp": "2026-02-07T12:16:05.838Z"
+  },
+  {
+    "reviewId": "cyrano-de-bergerac-2007/nytimes--charles-isherwood.json",
+    "showId": "cyrano-de-bergerac-2007",
+    "outlet": "The New York Times",
+    "critic": "Charles Isherwood",
+    "url": "https://www.nytimes.com/2007/11/02/theater/reviews/02cyra.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): harmony, take me out, company, hello, dolly!, fiddler on the roof...",
+    "textLength": 6908,
+    "timestamp": "2026-02-07T12:16:10.711Z"
+  },
+  {
+    "reviewId": "cyrano-de-bergerac-2007/vulture--helen-shaw.json",
+    "showId": "cyrano-de-bergerac-2007",
+    "outlet": "Vulture",
+    "critic": "Helen Shaw",
+    "url": "http://www.vulture.com/2019/11/theater-review-a-cyrano-without-the-nose-even-if-he-sings.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): wicked, frozen, love letters, once, rain...",
+    "textLength": 7276,
+    "timestamp": "2026-02-07T12:16:43.493Z"
+  },
+  {
+    "reviewId": "death-becomes-her-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "death-becomes-her-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/11/21/death-becomes-her-broadway-review/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (21): wicked, hamilton, chicago, aladdin, hadestown...",
+    "textLength": 15026,
+    "timestamp": "2026-02-07T12:17:14.970Z"
+  },
+  {
+    "reviewId": "death-becomes-her-2024/variety--steven-oxman.json",
+    "showId": "death-becomes-her-2024",
+    "outlet": "Variety",
+    "critic": "Steven Oxman",
+    "url": "https://variety.com/2024/legit/reviews/death-becomes-her-review-musical-chicago-1236010777/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): wicked, giant, appropriate, smash, parade...",
+    "textLength": 5127,
+    "timestamp": "2026-02-07T12:17:30.492Z"
   }
 ]
