@@ -20464,42 +20464,6 @@
     "timestamp": "2026-02-07T08:38:21.978Z"
   },
   {
-    "reviewId": "miss-saigon-2017/hollywood-reporter--david-rooney.json",
-    "showId": "miss-saigon-2017",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/miss-saigon-theater-review-987015/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): giant, home, english, the nap, cats...",
-    "textLength": 10214,
-    "timestamp": "2026-02-07T08:38:45.860Z"
-  },
-  {
-    "reviewId": "miss-saigon-2017/nytimes--ben-brantley.json",
-    "showId": "miss-saigon-2017",
-    "outlet": "New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2017/03/23/theater/miss-saigon-on-broadway-review.html?_r=0",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (17): the book of mormon, real women have curves, appropriate, sunset boulevard, purpose...",
-    "textLength": 8176,
-    "timestamp": "2026-02-07T08:38:49.184Z"
-  },
-  {
-    "reviewId": "miss-saigon-2017/nytimes--unknown.json",
-    "showId": "miss-saigon-2017",
-    "outlet": "The New York Times",
-    "critic": "Unknown",
-    "url": "https://www.nytimes.com/2017/03/23/theater/miss-saigon-on-broadway-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): the book of mormon, appropriate, purpose, betrayal, the audience...",
-    "textLength": 8031,
-    "timestamp": "2026-02-07T08:39:00.924Z"
-  },
-  {
     "reviewId": "miss-saigon-2017/variety--marilyn-stasio.json",
     "showId": "miss-saigon-2017",
     "outlet": "Variety",
@@ -24326,5 +24290,41 @@
     "garbageReason": "Multiple shows mentioned (9): home, company, once, rain, elling...",
     "textLength": 6122,
     "timestamp": "2026-02-07T14:04:23.884Z"
+  },
+  {
+    "reviewId": "miss-saigon-2017/hollywood-reporter--david-rooney.json",
+    "showId": "miss-saigon-2017",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/miss-saigon-theater-review-987015/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): giant, home, english, the nap, cats...",
+    "textLength": 10142,
+    "timestamp": "2026-02-07T14:08:47.855Z"
+  },
+  {
+    "reviewId": "miss-saigon-2017/nytimes--ben-brantley.json",
+    "showId": "miss-saigon-2017",
+    "outlet": "New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2017/03/23/theater/miss-saigon-on-broadway-review.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): the book of mormon, real women have curves, appropriate, sunset boulevard, purpose...",
+    "textLength": 8176,
+    "timestamp": "2026-02-07T14:09:25.956Z"
+  },
+  {
+    "reviewId": "miss-saigon-2017/nytimes--unknown.json",
+    "showId": "miss-saigon-2017",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2017/03/23/theater/miss-saigon-on-broadway-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (20): oh, mary!, the book of mormon, appropriate, sunset boulevard, tammy faye...",
+    "textLength": 8187,
+    "timestamp": "2026-02-07T14:09:29.469Z"
   }
 ]
