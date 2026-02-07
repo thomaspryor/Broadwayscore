@@ -24,7 +24,7 @@ on:
 jobs:
   scrape-reddit:
     runs-on: ubuntu-latest
-    timeout-minutes: 120  # 2 hour timeout - script saves incrementally
+    timeout-minutes: 240  # 4 hour timeout - 29 shows × ~8 min each
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
