@@ -10972,18 +10972,6 @@
     "timestamp": "2026-02-05T01:07:44.110Z"
   },
   {
-    "reviewId": "an-american-in-paris-2015/vulture--jesse-green.json",
-    "showId": "an-american-in-paris-2015",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "https://www.vulture.com/2015/04/theater-review-an-american-in-paris.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): proof, purpose, oklahoma!, carousel, hair...",
-    "textLength": 12150,
-    "timestamp": "2026-02-05T01:10:14.072Z"
-  },
-  {
     "reviewId": "art-2025/newyorker--helen-shaw.json",
     "showId": "art-2025",
     "outlet": "The New Yorker",
@@ -19672,18 +19660,6 @@
     "timestamp": "2026-02-07T05:55:52.980Z"
   },
   {
-    "reviewId": "and-juliet-2022/nytg--joe-dziemianowicz.json",
-    "showId": "and-juliet-2022",
-    "outlet": "New York Theatre Guide",
-    "critic": "Joe Dziemianowicz",
-    "url": "https://www.newyorktheatreguide.com/reviews/and-juliet-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): appropriate, purpose, company, evita, high...",
-    "textLength": 6175,
-    "timestamp": "2026-02-07T05:55:59.861Z"
-  },
-  {
     "reviewId": "art-2025/variety--daniel-daddario.json",
     "showId": "art-2025",
     "outlet": "Variety",
@@ -23714,5 +23690,41 @@
     "garbageReason": "Multiple shows mentioned (13): english, glengarry glen ross, junk, china doll, the audience...",
     "textLength": 6238,
     "timestamp": "2026-02-07T11:43:35.925Z"
+  },
+  {
+    "reviewId": "an-american-in-paris-2015/vulture--jesse-green.json",
+    "showId": "an-american-in-paris-2015",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2015/04/theater-review-an-american-in-paris.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): proof, purpose, oklahoma!, hair, once...",
+    "textLength": 11433,
+    "timestamp": "2026-02-07T11:47:15.563Z"
+  },
+  {
+    "reviewId": "and-juliet-2022/nytg--joe-dziemianowicz.json",
+    "showId": "and-juliet-2022",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/and-juliet-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): appropriate, purpose, company, evita, high...",
+    "textLength": 6175,
+    "timestamp": "2026-02-07T11:47:23.394Z"
+  },
+  {
+    "reviewId": "and-juliet-2022/variety--christian-lewis.json",
+    "showId": "and-juliet-2022",
+    "outlet": "Variety",
+    "critic": "Christian Lewis",
+    "url": "https://variety.com/2022/legit/reviews/amp-juliet-review-musical-broadway-1235435481/amp/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): english, kimberly akimbo, head over heels, something rotten!, high...",
+    "textLength": 7633,
+    "timestamp": "2026-02-07T11:48:02.771Z"
   }
 ]
