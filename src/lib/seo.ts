@@ -470,6 +470,43 @@ export function generateBrowseFAQSchema(
   };
 }
 
+// Organization Schema - For outlet pages
+export function generateOutletSchema(outlet: {
+  name: string;
+  slug: string;
+  reviewCount: number;
+  avgScore: number;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: outlet.name,
+    url: `${BASE_URL}/critics/outlets/${outlet.slug}`,
+    description: `${outlet.name} has published ${outlet.reviewCount} Broadway reviews with an average score of ${outlet.avgScore}/100.`,
+  };
+}
+
+// Person Schema - For critic pages
+export function generateCriticSchema(critic: {
+  name: string;
+  slug: string;
+  primaryOutlet: string;
+  reviewCount: number;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: critic.name,
+    url: `${BASE_URL}/critics/${critic.slug}`,
+    jobTitle: 'Theater Critic',
+    worksFor: {
+      '@type': 'Organization',
+      name: critic.primaryOutlet,
+    },
+    description: `${critic.name} is a Broadway theater critic at ${critic.primaryOutlet} with ${critic.reviewCount} reviews on Broadway Scorecard.`,
+  };
+}
+
 // Helper to render schema as JSON-LD script
 export function schemaToJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
   return JSON.stringify(schema);
