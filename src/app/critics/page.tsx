@@ -7,7 +7,7 @@ export function generateMetadata(): Metadata {
   const allCritics = getAllCritics();
   const totalReviews = allCritics.reduce((sum, c) => sum + c.reviewCount, 0);
 
-  const title = `${allCritics.length} Broadway Critics & Reviewers | Broadway Scorecard`;
+  const title = `${allCritics.length} Broadway Critics & Reviewers`;
   const description = `Browse ${allCritics.length} Broadway critics with ${totalReviews.toLocaleString()} reviews. See average scores, review counts, and full review histories for every theater critic.`;
 
   return {

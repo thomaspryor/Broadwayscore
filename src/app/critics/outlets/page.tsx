@@ -8,7 +8,7 @@ export function generateMetadata(): Metadata {
   const totalReviews = allOutlets.reduce((sum, o) => sum + o.reviewCount, 0);
   const tier1Count = allOutlets.filter(o => o.tier === 1).length;
 
-  const title = `${allOutlets.length} Broadway Review Outlets & Publications | Broadway Scorecard`;
+  const title = `${allOutlets.length} Broadway Review Outlets & Publications`;
   const description = `Browse ${allOutlets.length} publications reviewing Broadway shows, including ${tier1Count} Tier 1 outlets. ${totalReviews.toLocaleString()} total reviews with average scores and tier rankings.`;
 
   return {

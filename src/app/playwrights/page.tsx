@@ -7,7 +7,7 @@ const CAT = 'playwright' as const;
 const config = CREATIVE_CATEGORY_CONFIG[CAT];
 
 export const metadata: Metadata = {
-  title: `Broadway ${config.labelPlural} | Broadway Scorecard`,
+  title: `Broadway ${config.labelPlural}`,
   description: `Browse all Broadway ${config.labelPlural.toLowerCase()} and book writers ranked by number of shows and average critic score.`,
   alternates: { canonical: `${BASE_URL}/${config.routePath}` },
   openGraph: {

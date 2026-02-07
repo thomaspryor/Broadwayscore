@@ -15,7 +15,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const profile = getCreativeBySlug(CAT, params.slug);
   if (!profile) return {};
 
-  const title = `${profile.name} — Broadway ${config.label} | Broadway Scorecard`;
+  const title = `${profile.name} — Broadway ${config.label}`;
   const description = `${profile.name} has ${config.verbPast} ${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? ` with an avg critic score of ${profile.avgScore}` : ''}. See all shows.`;
 
   return {

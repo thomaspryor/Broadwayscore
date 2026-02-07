@@ -44,7 +44,7 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
           {theater.currentShowTitle ? (
             <span className="text-brand">{theater.currentShowTitle}</span>
           ) : (
-            theater.address || 'No current show'
+            <span className="text-gray-600 italic">No current show</span>
           )}
         </p>
       </div>
