@@ -17668,54 +17668,6 @@
     "timestamp": "2026-02-06T18:35:24.782Z"
   },
   {
-    "reviewId": "the-humans-2016/nytg--tommy-partl.json",
-    "showId": "the-humans-2016",
-    "outlet": "New York Theatre Guide",
-    "critic": "Tommy Partl",
-    "url": "http://nytheatreguide.com/2016/02/broadway-review-the-humans-at-the-helen-hayes-theater/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): harmony, home, tina, finding neverland, once...",
-    "textLength": 45998,
-    "timestamp": "2026-02-06T18:38:06.142Z"
-  },
-  {
-    "reviewId": "the-humans-2016/nytimes--charles-isherwood.json",
-    "showId": "the-humans-2016",
-    "outlet": "New York Times",
-    "critic": "Charles Isherwood",
-    "url": "http://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-and-a-country-under-pressure.html?_r=0",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (5): home, company, once, company, rent",
-    "textLength": 2441,
-    "timestamp": "2026-02-06T18:40:49.250Z"
-  },
-  {
-    "reviewId": "the-humans-2016/nytimes--unknown.json",
-    "showId": "the-humans-2016",
-    "outlet": "The New York Times",
-    "critic": "Unknown",
-    "url": "http://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-and-a-country-under-pressure.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (5): home, company, once, company, rent",
-    "textLength": 2441,
-    "timestamp": "2026-02-06T18:40:53.502Z"
-  },
-  {
-    "reviewId": "the-humans-2016/vulture--jesse-green.json",
-    "showId": "the-humans-2016",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "http://www.vulture.com/2016/02/theater-reviews-old-hats.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): proof, home, tina, once, rain...",
-    "textLength": 11617,
-    "timestamp": "2026-02-06T18:41:22.792Z"
-  },
-  {
     "reviewId": "the-lifespan-of-a-fact-2018/hollywood-reporter--david-rooney.json",
     "showId": "the-lifespan-of-a-fact-2018",
     "outlet": "The Hollywood Reporter",
@@ -20750,18 +20702,6 @@
     "garbageReason": "Multiple shows mentioned (10): swept away, summer, act one, picnic, once...",
     "textLength": 6984,
     "timestamp": "2026-02-07T10:09:08.471Z"
-  },
-  {
-    "reviewId": "the-lieutenant-of-inishmore-2006/variety--charles-isherwood.json",
-    "showId": "the-lieutenant-of-inishmore-2006",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2006/legit/reviews/the-lieutenant-of-inishmore-1200514088/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): home, sweeney todd, company, evita, rain...",
-    "textLength": 5891,
-    "timestamp": "2026-02-07T10:10:48.232Z"
   },
   {
     "reviewId": "the-lyons-2012/hollywood-reporter--david-rooney.json",
@@ -24998,5 +24938,65 @@
     "garbageReason": "Multiple shows mentioned (8): dear evan hansen, sweat, once, elling, race...",
     "textLength": 11284,
     "timestamp": "2026-02-07T16:24:24.227Z"
+  },
+  {
+    "reviewId": "the-humans-2016/nytg--tommy-partl.json",
+    "showId": "the-humans-2016",
+    "outlet": "New York Theatre Guide",
+    "critic": "Tommy Partl",
+    "url": "http://nytheatreguide.com/2016/02/broadway-review-the-humans-at-the-helen-hayes-theater/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): harmony, home, tina, finding neverland, once...",
+    "textLength": 45998,
+    "timestamp": "2026-02-07T16:26:45.242Z"
+  },
+  {
+    "reviewId": "the-humans-2016/nytimes--charles-isherwood.json",
+    "showId": "the-humans-2016",
+    "outlet": "New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-and-a-country-under-pressure.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): home, company, once, company, rent",
+    "textLength": 2441,
+    "timestamp": "2026-02-07T16:29:58.032Z"
+  },
+  {
+    "reviewId": "the-humans-2016/nytimes--unknown.json",
+    "showId": "the-humans-2016",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-and-a-country-under-pressure.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, company, carousel, hair, once...",
+    "textLength": 8228,
+    "timestamp": "2026-02-07T16:31:38.138Z"
+  },
+  {
+    "reviewId": "the-humans-2016/vulture--jesse-green.json",
+    "showId": "the-humans-2016",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2016/02/theater-reviews-old-hats.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): proof, home, tina, once, rain...",
+    "textLength": 11932,
+    "timestamp": "2026-02-07T16:31:42.244Z"
+  },
+  {
+    "reviewId": "the-lieutenant-of-inishmore-2006/variety--charles-isherwood.json",
+    "showId": "the-lieutenant-of-inishmore-2006",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2006/legit/reviews/the-lieutenant-of-inishmore-1200514088/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, sweeney todd, company, evita, rain...",
+    "textLength": 5891,
+    "timestamp": "2026-02-07T16:32:04.416Z"
   }
 ]
