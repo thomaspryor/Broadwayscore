@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getScoreClass } from '@/lib/critic-page-utils';
 
-type SortMode = 'reviews' | 'highest' | 'lowest' | 'alpha';
+type SortMode = 'reviews' | 'reviews-asc' | 'highest' | 'lowest' | 'alpha';
 
 interface CriticSummary {
   name: string;
@@ -88,6 +88,7 @@ export default function CriticIndexClient({ critics, totalReviews }: { critics: 
     const list = [...filtered];
     switch (sortMode) {
       case 'reviews': return list.sort((a, b) => b.reviewCount - a.reviewCount);
+      case 'reviews-asc': return list.sort((a, b) => a.reviewCount - b.reviewCount);
       case 'highest': return list.sort((a, b) => b.avgScore - a.avgScore);
       case 'lowest': return list.sort((a, b) => a.avgScore - b.avgScore);
       case 'alpha': return list.sort((a, b) => a.name.localeCompare(b.name));
@@ -162,10 +163,24 @@ export default function CriticIndexClient({ critics, totalReviews }: { critics: 
         <div className="w-10 flex-shrink-0" />
         <div className="flex-1 min-w-0" />
         <div className="w-12 sm:w-14 text-center flex-shrink-0">
-          <span role="columnheader" className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Reviews</span>
+          <button
+            onClick={() => setSortMode(sortMode === 'reviews' ? 'reviews-asc' : 'reviews')}
+            className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
+              sortMode === 'reviews' || sortMode === 'reviews-asc' ? 'text-brand' : 'text-gray-500 hover:text-gray-300'
+            }`}
+          >
+            Reviews {sortMode === 'reviews' ? '\u25BC' : sortMode === 'reviews-asc' ? '\u25B2' : ''}
+          </button>
         </div>
         <div className="w-10 text-center flex-shrink-0">
-          <span role="columnheader" className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Avg</span>
+          <button
+            onClick={() => setSortMode(sortMode === 'highest' ? 'lowest' : 'highest')}
+            className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
+              sortMode === 'highest' || sortMode === 'lowest' ? 'text-brand' : 'text-gray-500 hover:text-gray-300'
+            }`}
+          >
+            Avg {sortMode === 'highest' ? '\u25BC' : sortMode === 'lowest' ? '\u25B2' : ''}
+          </button>
         </div>
       </div>
 
