@@ -41,7 +41,7 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
     type: 'critical-gold',
     title: 'Critical Gold List',
     shortTitle: 'Critics',
-    description: 'The highest-rated shows by professional critics, weighted by outlet tier',
+    description: 'The highest-rated shows by professional critics',
     icon: '🏆',
     color: 'text-amber-400',
     bgClass: 'bg-amber-500/15',
