@@ -9,6 +9,8 @@ import { getCriticConsensus } from '@/lib/data-consensus';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
 import { getCastChanges } from '@/lib/data-cast';
+import { getShowSeasonGoldLists } from '@/lib/data-gold-list-badges';
+import { GOLD_LIST_MAP } from '@/config/gold-lists';
 import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -483,6 +485,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const lotteryRush = getLotteryRush(show.id);
   const commercial = getShowCommercial(show.slug);
   const castChangesData = getCastChanges(show.id);
+  const goldListMemberships = getShowSeasonGoldLists(show.id);
 
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
@@ -664,6 +667,27 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               })()}
             </div>
           </div>
+
+          {/* Gold List Badges */}
+          {goldListMemberships.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-3">
+              {goldListMemberships.map(m => {
+                const listConfig = GOLD_LIST_MAP[m.listType];
+                if (!listConfig) return null;
+                return (
+                  <Link
+                    key={`${m.listType}-${m.season}`}
+                    href={`/lists/${m.listType}/${m.season}`}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium ${listConfig.bgClass} ${listConfig.color} border ${listConfig.borderClass} hover:brightness-125 transition-all`}
+                  >
+                    <span>{listConfig.icon}</span>
+                    <span>{listConfig.shortTitle} Gold #{m.rank}</span>
+                    <span className="text-gray-500">({m.season})</span>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
 
           {/* Critics' Take - inline below the poster/score row */}
           {consensus ? (
