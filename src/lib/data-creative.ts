@@ -28,9 +28,14 @@ const ROLE_TO_CATEGORIES: Record<string, CreativeCategory[]> = {
   'Lyricist': ['lyricist'],
   // Combined roles — appear in multiple categories
   'Music & Lyrics': ['composer', 'lyricist'],
+  'Music & Lyrics (catalog)': ['composer', 'lyricist'],
   'Book & Lyrics': ['playwright', 'lyricist'],
+  'Lyrics & Book': ['playwright', 'lyricist'],
   'Book, Music & Lyrics': ['playwright', 'composer', 'lyricist'],
   'Music, Lyrics & Book': ['playwright', 'composer', 'lyricist'],
+  // Less common variants
+  'Co-Writer': ['playwright'],
+  'English Lyrics': ['lyricist'],
 };
 
 // Roles to exclude even if they contain "Director"

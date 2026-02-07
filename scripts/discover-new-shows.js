@@ -18,6 +18,7 @@ const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
 const { batchLookupIBDBDates } = require('./lib/ibdb-dates');
 const { getTheaterAddress } = require('./lib/venue-addresses');
+const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -251,7 +252,8 @@ async function discoverShows() {
 
         // Populate creative team if IBDB returned it
         if (ibdb.creativeTeam && ibdb.creativeTeam.length > 0) {
-          show.creativeTeam = ibdb.creativeTeam;
+          const { result } = splitCombinedCredits(ibdb.creativeTeam);
+          show.creativeTeam = result;
         }
 
         // Use IBDB show type classification if available
