@@ -414,11 +414,11 @@ export default function MethodologyPage() {
             <ul className="text-gray-300 space-y-2 text-sm">
               <li className="flex items-start gap-2">
                 <span className="text-brand">•</span>
-                <span><strong className="text-white">Reddit:</strong> Fixed 20% weight when available (captures buzz and enthusiasm)</span>
+                <span><strong className="text-white">All sources</strong> (Show Score, Mezzanine, Reddit) are weighted proportionally by review count volume</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-brand">•</span>
-                <span><strong className="text-white">Show Score & Mezzanine:</strong> Split the remaining 80% proportionally by review count</span>
+                <span>No single source can exceed <strong className="text-white">80% weight</strong>, preventing any one platform from dominating</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-brand">•</span>
