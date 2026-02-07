@@ -151,6 +151,8 @@ export interface AudienceBuzzSource {
   score: number;
   reviewCount: number;
   starRating?: number;
+  totalPosts?: number;
+  totalComments?: number;
 }
 
 export interface AudienceBuzzData {

@@ -99,9 +99,10 @@ interface SourceCardProps {
   starRating?: number;
   url?: string;
   comingSoon?: boolean;
+  volumeLabel?: string;
 }
 
-function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoon }: SourceCardProps) {
+function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoon, volumeLabel }: SourceCardProps) {
   const inner = (
     <>
       <div className="flex items-center gap-2 mb-2">
@@ -117,7 +118,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoo
           </div>
           {reviewCount !== null && (
             <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
-              {formatReviewCount(reviewCount)} reviews
+              {formatReviewCount(reviewCount)} {volumeLabel || 'reviews'}
               {url && <ExternalLinkIcon className="text-gray-500" />}
             </div>
           )}
@@ -194,7 +195,8 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
           name="Reddit"
           icon={<RedditIcon className="text-orange-400" />}
           score={reddit?.score ?? null}
-          reviewCount={reddit?.reviewCount ?? null}
+          reviewCount={reddit?.totalComments ?? reddit?.reviewCount ?? null}
+          volumeLabel="mentions"
           comingSoon={!reddit}
         />
       </div>
