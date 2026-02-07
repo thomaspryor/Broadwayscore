@@ -267,11 +267,21 @@ function auditOutletRegistry() {
   }
 
   // Find outlets missing from registry (deduped)
+  // Also check normalization module — if normalizeOutlet() resolves to a known
+  // canonical outlet, it's not truly missing (just a denormalized variant)
   const missingOutlets = new Map();
   for (const [outletId, data] of outletsInReviews) {
     const registryCanonical = registryAliasMap[outletId.toLowerCase()];
     if (!registryCanonical) {
-      if (!missingOutlets.has(outletId)) {
+      // Check if the normalization module can resolve this to a known outlet
+      let resolvedByNorm = false;
+      if (normalization) {
+        const normCanonical = normalization.normalizeOutlet(outletId);
+        if (normCanonical !== outletId && registry.outlets[normCanonical]) {
+          resolvedByNorm = true;
+        }
+      }
+      if (!resolvedByNorm && !missingOutlets.has(outletId)) {
         missingOutlets.set(outletId, {
           outletId,
           count: data.count,
@@ -538,6 +548,50 @@ function askConfirmation(question) {
   });
 }
 
+// Check if an outlet ID is a slugified variant of an existing canonical outlet.
+// This prevents adding bogus entries like "new-york-times" when "nytimes" already exists.
+function wouldShadowCanonical(outletId, registry) {
+  const normalization = loadNormalization();
+  if (!normalization || !normalization.OUTLET_ALIASES) return null;
+
+  const lower = outletId.toLowerCase();
+  const withoutThe = lower.replace(/^the-/, '');
+
+  // Check if this ID appears as an alias of any canonical outlet
+  for (const [canonical, aliases] of Object.entries(normalization.OUTLET_ALIASES)) {
+    // Skip if this IS the canonical outlet (shouldn't happen, but be safe)
+    if (lower === canonical) continue;
+    for (const alias of aliases) {
+      const aliasSlug = alias.replace(/\s+/g, '-').toLowerCase();
+      if (lower === alias || lower === aliasSlug || withoutThe === alias || withoutThe === aliasSlug) {
+        return canonical;
+      }
+    }
+  }
+
+  // Also check if this ID is a prefix match for a known canonical outlet
+  // e.g., "chicago-sun-times-catey-sullivan" starts with "chicago-sun-times"
+  for (const [canonical, aliases] of Object.entries(normalization.OUTLET_ALIASES)) {
+    for (const alias of aliases) {
+      const aliasSlug = alias.replace(/\s+/g, '-').toLowerCase();
+      if (aliasSlug.length > 5 && lower.startsWith(aliasSlug + '-') && lower.length > aliasSlug.length + 3) {
+        return canonical;
+      }
+    }
+  }
+
+  // Check against existing registry entries' display names (slugified)
+  for (const [existingId, data] of Object.entries(registry.outlets)) {
+    if (lower === existingId) continue;
+    const displaySlug = (data.displayName || '').replace(/\s+/g, '-').toLowerCase();
+    if (displaySlug && (lower === displaySlug || withoutThe === displaySlug)) {
+      return existingId;
+    }
+  }
+
+  return null;
+}
+
 // Add missing outlets to registry
 async function updateRegistry(auditResult) {
   const { suggestedAdditions, findings } = auditResult;
@@ -547,8 +601,34 @@ async function updateRegistry(auditResult) {
     return;
   }
 
-  console.log('\n=== SUGGESTED REGISTRY ADDITIONS ===\n');
+  // Filter out entries that would shadow existing canonical outlets
+  const registry = loadRegistry();
+  const safeAdditions = [];
+  const skippedShadows = [];
+
   for (const entry of suggestedAdditions) {
+    const shadowsCanonical = wouldShadowCanonical(entry.outletId, registry);
+    if (shadowsCanonical) {
+      skippedShadows.push({ outletId: entry.outletId, canonical: shadowsCanonical });
+    } else {
+      safeAdditions.push(entry);
+    }
+  }
+
+  if (skippedShadows.length > 0) {
+    console.log('\n=== SKIPPED (shadow existing canonical outlets) ===\n');
+    for (const { outletId, canonical } of skippedShadows) {
+      console.log(`  ✗ "${outletId}" → already covered by canonical "${canonical}"`);
+    }
+  }
+
+  if (safeAdditions.length === 0) {
+    console.log('\nNo new outlets to add (all were variants of existing canonical outlets).');
+    return;
+  }
+
+  console.log('\n=== SUGGESTED REGISTRY ADDITIONS ===\n');
+  for (const entry of safeAdditions) {
     console.log(`  ${entry.outletId}:`);
     console.log(`    displayName: "${entry.displayName}"`);
     console.log(`    tier: ${entry.tier}`);
@@ -557,7 +637,7 @@ async function updateRegistry(auditResult) {
   }
 
   const confirmed = await askConfirmation(
-    `Add ${suggestedAdditions.length} outlets to registry? (y/n): `
+    `Add ${safeAdditions.length} outlets to registry? (y/n): `
   );
 
   if (!confirmed) {
@@ -565,10 +645,7 @@ async function updateRegistry(auditResult) {
     return;
   }
 
-  // Load and update registry
-  const registry = loadRegistry();
-
-  for (const entry of suggestedAdditions) {
+  for (const entry of safeAdditions) {
     registry.outlets[entry.outletId] = {
       displayName: entry.displayName,
       tier: entry.tier,
@@ -584,7 +661,7 @@ async function updateRegistry(auditResult) {
 
   // Write back
   fs.writeFileSync(REGISTRY_PATH, JSON.stringify(registry, null, 2));
-  console.log(`\nAdded ${suggestedAdditions.length} outlets to ${REGISTRY_PATH}`);
+  console.log(`\nAdded ${safeAdditions.length} outlets to ${REGISTRY_PATH}`);
 }
 
 // Save audit results to file
