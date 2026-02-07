@@ -32,6 +32,7 @@
  *   PRIORITY - 'tier1' or 'all' (default: all)
  *   SHOW_FILTER - Only process specific show ID
  *   RETRY_FAILED - 'true' to retry previously failed reviews
+ *   DOMAIN_FILTER - Comma-separated domain(s) to filter by URL (e.g., 'theatermania.com,timeout.com')
  *
  * CLI Flags:
  *   --aggressive - Skip Playwright for known-blocked sites, start with ScrapingBee
@@ -135,6 +136,7 @@ const CONFIG = {
   commitEvery: parseInt(process.env.COMMIT_EVERY || '10'), // Git commit after every N reviews
   outletTier: process.env.OUTLET_TIER || '', // Filter by outlet tier: tier1, tier2, tier3
   contentTierFilter: process.env.CONTENT_TIER_FILTER || '', // Filter by content tier: excerpt, truncated, needs-rescrape
+  domainFilter: (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Filter by URL domain(s)
   archiveFirst: process.env.ARCHIVE_FIRST === 'true', // Try Archive.org first for older reviews
 
   // API Keys
@@ -3154,6 +3156,16 @@ function findReviewsToProcess() {
           if (CONFIG.contentTierFilter === 'needs-rescrape' && ct !== 'needs-rescrape') continue;
         }
 
+        // Apply domain filter (for targeted soft-paywall collection runs)
+        if (CONFIG.domainFilter.length > 0 && data.url) {
+          try {
+            const urlDomain = new URL(data.url).hostname.replace(/^www\./, '');
+            if (!CONFIG.domainFilter.some(d => urlDomain === d || urlDomain.endsWith('.' + d))) continue;
+          } catch (e) {
+            continue; // Skip reviews with unparseable URLs when domain filter is active
+          }
+        }
+
         // Parse publish date for archive-first logic
         let publishDate = null;
         if (data.publishDate) {
@@ -3872,6 +3884,9 @@ async function main() {
   console.log('╚════════════════════════════════════════════════════════════╝');
   console.log(`Config: batch=${CONFIG.batchSize}, max=${CONFIG.maxReviews}, priority=${CONFIG.priority}`);
   console.log(`Flags: aggressive=${CLI.aggressive}, forceTier=${CLI.forceTier || 'auto'}`);
+  if (CONFIG.domainFilter.length > 0) {
+    console.log(`Domain filter: ${CONFIG.domainFilter.join(', ')}`);
+  }
 
   // Load dependencies
   await loadDependencies();

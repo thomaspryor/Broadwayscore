@@ -1,0 +1,408 @@
+name: Collect Soft-Paywall Reviews
+
+on:
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'Target domain (or "all" for all soft-paywall outlets)'
+        required: true
+        type: choice
+        options:
+          - all
+          - theatermania.com
+          - timeout.com
+          - ew.com
+          - deadline.com
+          - observer.com
+          - chicagotribune.com
+      max_reviews:
+        description: 'Maximum reviews to process per domain (0 = all)'
+        required: false
+        default: '100'
+      dry_run:
+        description: 'Dry run — count eligible reviews without collecting'
+        required: false
+        type: boolean
+        default: false
+      retry_failed:
+        description: 'Retry previously failed reviews'
+        required: false
+        type: boolean
+        default: true
+      archive_first:
+        description: 'Try Archive.org first (recommended for these domains)'
+        required: false
+        type: boolean
+        default: true
+
+# Soft-paywall domains where our standard scraper chain works:
+#   theatermania.com (~546 reviews) - known-blocked for Playwright, ScrapingBee works
+#   timeout.com (~516 reviews) - CAPTCHA blocks Playwright, Archive.org works well
+#   ew.com (~445 reviews) - Archive.org first (in archiveFirstSites list)
+#   deadline.com (~326 reviews) - PMC site, CAPTCHA-blocks Playwright
+#   observer.com (~248 reviews) - known-blocked for Playwright, ScrapingBee works
+#   chicagotribune.com (~264 reviews) - known-blocked for Playwright, Archive.org works
+
+jobs:
+  collect-single:
+    if: ${{ inputs.domain != 'all' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Create directories
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Clear progress state
+        run: rm -f data/collection-state/progress.json
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Count eligible reviews
+        id: count
+        env:
+          DOMAIN_FILTER: ${{ inputs.domain }}
+          MAX_REVIEWS: '0'
+          RETRY_FAILED: ${{ inputs.retry_failed && 'true' || 'false' }}
+        run: |
+          COUNT=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const domains = (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (!r.url) return;
+                  const textLen = r.fullText ? r.fullText.length : 0;
+                  const isTruncated = r.textQuality === 'truncated' || r.textStatus === 'truncated'
+                    || r.contentTier === 'truncated' || r.contentTier === 'needs-rescrape';
+                  if (!isTruncated && (r.isFullReview === true || r.textQuality === 'full' || textLen > 1500)) return;
+                  try {
+                    const urlDomain = new URL(r.url).hostname.replace(/^www\./, '');
+                    if (domains.some(dd => urlDomain === dd || urlDomain.endsWith('.' + dd))) n++;
+                  } catch(e) {}
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "eligible=$COUNT" >> $GITHUB_OUTPUT
+          echo "Eligible reviews for ${{ inputs.domain }}: $COUNT"
+
+      - name: Collect review texts
+        if: ${{ inputs.dry_run != true && steps.count.outputs.eligible > 0 }}
+        id: collect
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: mcp_unlocker
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: 'false'
+          DOMAIN_FILTER: ${{ inputs.domain }}
+          BATCH_SIZE: '10'
+          MAX_REVIEWS: ${{ inputs.max_reviews }}
+          RETRY_FAILED: ${{ inputs.retry_failed && 'true' || 'false' }}
+          ARCHIVE_FIRST: ${{ inputs.archive_first && 'true' || 'false' }}
+          COMMIT_EVERY: '25'
+        run: node scripts/collect-review-texts.js --aggressive
+
+      - name: Validate data
+        if: always()
+        run: node scripts/validate-data.js
+        continue-on-error: true
+
+      - name: Check for large files
+        if: always()
+        uses: ./.github/actions/check-file-sizes
+
+      - name: Final commit and push
+        if: ${{ inputs.dry_run != true && always() }}
+        id: push
+        run: |
+          git add data/review-texts/ data/archives/reviews/ data/audit/ data/collection-state/ || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            git commit -m "feat: Collect soft-paywall review texts (${{ inputs.domain }})
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || {
+                echo "Push attempt $i failed, retrying..."
+                sleep $((RANDOM % 10 + 5))
+                git rebase --abort 2>/dev/null || true
+                git pull --no-rebase -X ours origin main
+              }
+            done
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Rebuild reviews.json
+        if: steps.push.outputs.has_changes == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/rebuild-all-reviews.js
+        continue-on-error: true
+
+      - name: Commit rebuilt reviews.json
+        if: steps.push.outputs.has_changes == 'true'
+        run: |
+          git add data/reviews.json data/critic-registry.json data/audit/
+          if git diff --staged --quiet; then
+            echo "No changes to reviews.json"
+          else
+            git commit -m "data: Auto-rebuild reviews.json (soft-paywall collection)"
+            git pull --rebase origin main || {
+              git rebase --abort 2>/dev/null || true
+              git pull --no-rebase -X ours origin main
+            }
+            git push || true
+          fi
+
+      - name: Upload collection report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: soft-paywall-report-${{ inputs.domain }}
+          path: |
+            data/audit/validation/collection-report-*.json
+            data/collection-state/progress.json
+          retention-days: 30
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Soft-Paywall Collection: ${{ inputs.domain }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Eligible reviews:** ${{ steps.count.outputs.eligible }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Max reviews:** ${{ inputs.max_reviews }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Dry run:** ${{ inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Retry failed:** ${{ inputs.retry_failed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Archive first:** ${{ inputs.archive_first }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.push.outputs.has_changes }}" = "true" ]; then
+            echo "- **Result:** Changes committed and pushed" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "- **Result:** Dry run only (no collection)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Result:** No new texts collected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # Parallel mode: run all 6 domains simultaneously when "all" is selected
+  prepare-all:
+    if: ${{ inputs.domain == 'all' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.matrix.outputs.domains }}
+    steps:
+      - name: Build domain matrix
+        id: matrix
+        run: |
+          echo 'domains=["theatermania.com","timeout.com","ew.com","deadline.com","observer.com","chicagotribune.com"]' >> $GITHUB_OUTPUT
+
+  collect-all:
+    if: ${{ inputs.domain == 'all' }}
+    needs: prepare-all
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        domain: ${{ fromJson(needs.prepare-all.outputs.matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Create directories
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Clear progress state
+        run: rm -f data/collection-state/progress.json
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Stagger start to avoid push conflicts
+        run: |
+          # Each domain gets a different delay (0-25s) to stagger initial pushes
+          DOMAINS=("theatermania.com" "timeout.com" "ew.com" "deadline.com" "observer.com" "chicagotribune.com")
+          for i in "${!DOMAINS[@]}"; do
+            if [ "${DOMAINS[$i]}" = "${{ matrix.domain }}" ]; then
+              DELAY=$((i * 5))
+              echo "Staggering start by ${DELAY}s for ${{ matrix.domain }}"
+              sleep $DELAY
+              break
+            fi
+          done
+
+      - name: Collect review texts for ${{ matrix.domain }}
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: mcp_unlocker
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: 'false'
+          DOMAIN_FILTER: ${{ matrix.domain }}
+          BATCH_SIZE: '10'
+          MAX_REVIEWS: ${{ inputs.max_reviews }}
+          RETRY_FAILED: ${{ inputs.retry_failed && 'true' || 'false' }}
+          ARCHIVE_FIRST: ${{ inputs.archive_first && 'true' || 'false' }}
+          COMMIT_EVERY: '25'
+        run: node scripts/collect-review-texts.js --aggressive
+
+      - name: Validate data
+        if: always()
+        run: node scripts/validate-data.js
+        continue-on-error: true
+
+      - name: Check for large files
+        if: always()
+        uses: ./.github/actions/check-file-sizes
+
+      - name: Commit and push changes for ${{ matrix.domain }}
+        if: always()
+        run: |
+          git add data/review-texts/ data/archives/reviews/ data/audit/ data/collection-state/ || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit for ${{ matrix.domain }}"
+          else
+            git commit -m "feat: Collect soft-paywall review texts (${{ matrix.domain }})
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || {
+                echo "Push attempt $i failed, retrying..."
+                sleep $((RANDOM % 10 + 5))
+                git rebase --abort 2>/dev/null || true
+                git pull --no-rebase -X ours origin main
+              }
+            done
+          fi
+
+      - name: Upload collection report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: soft-paywall-report-${{ matrix.domain }}
+          path: |
+            data/audit/validation/collection-report-*.json
+            data/collection-state/progress.json
+          retention-days: 30
+
+  # Trigger rebuild after all parallel jobs complete
+  rebuild-all:
+    if: ${{ inputs.domain == 'all' && !inputs.dry_run }}
+    needs: collect-all
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Rebuild reviews.json
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/rebuild-all-reviews.js
+
+      - name: Commit rebuilt reviews.json
+        run: |
+          git add data/reviews.json data/critic-registry.json data/audit/
+          if git diff --staged --quiet; then
+            echo "No changes to reviews.json"
+          else
+            git commit -m "data: Auto-rebuild reviews.json (soft-paywall collection — all domains)"
+            git pull --rebase origin main || {
+              git rebase --abort 2>/dev/null || true
+              git pull --no-rebase -X ours origin main
+            }
+            git push || true
+          fi
+
+      - name: Summary
+        run: |
+          echo "## Soft-Paywall Collection: All Domains" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Collected review texts from 6 soft-paywall domains:" >> $GITHUB_STEP_SUMMARY
+          echo "- theatermania.com, timeout.com, ew.com" >> $GITHUB_STEP_SUMMARY
+          echo "- deadline.com, observer.com, chicagotribune.com" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Reviews rebuilt successfully." >> $GITHUB_STEP_SUMMARY
