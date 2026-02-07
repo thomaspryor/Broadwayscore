@@ -664,6 +664,52 @@ export function generateOutletFAQSchema(outlet: {
   };
 }
 
+// FAQ Schema - For Gold List pages
+export function generateGoldListFAQSchema(config: {
+  title: string;
+  type: string;
+  description: string;
+  metricLabel: string;
+  threshold: number;
+  metricSuffix: string;
+  maxPerSeason: number;
+  maxAllTime: number;
+  minDataRequirement: string;
+}, context: {
+  season?: string;
+  entryCount: number;
+  topShow?: string;
+}) {
+  const faqs: { question: string; answer: string }[] = [];
+  const scope = context.season ? `the ${context.season} season` : 'all time';
+
+  faqs.push({
+    question: `What is the ${config.title}?`,
+    answer: `${config.description}. Shows must have ${config.minDataRequirement} to qualify.${config.threshold > 0 ? ` The minimum ${config.metricLabel.toLowerCase()} is ${config.threshold}${config.metricSuffix}.` : ''}`,
+  });
+
+  faqs.push({
+    question: `How many shows are on the ${config.title} for ${scope}?`,
+    answer: `There are ${context.entryCount} shows on the ${config.title} for ${scope}.${context.topShow ? ` The #1 show is ${context.topShow}.` : ''}`,
+  });
+
+  const maxLabel = context.season ? config.maxPerSeason : config.maxAllTime;
+  faqs.push({
+    question: `How are shows ranked on the ${config.title}?`,
+    answer: `Shows are ranked by ${config.metricLabel.toLowerCase()}, with a maximum of ${maxLabel} shows${context.season ? ' per season' : ' across all seasons since 2005'}. ${config.minDataRequirement} is required to qualify.`,
+  });
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  };
+}
+
 // Helper to render schema as JSON-LD script
 export function schemaToJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
   return JSON.stringify(schema);

@@ -17,7 +17,7 @@ import {
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards/ScoreBadge';
 import { FormatPill, StatusBadge, ProductionPill } from '@/components/show-cards/ShowPills';
-import { generateBreadcrumbSchema, generateItemListSchema } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateItemListSchema, generateGoldListFAQSchema } from '@/lib/seo';
 import { SeasonSelect } from '@/components/SeasonSelect';
 import { formatGoldListDate, RankBadge, ValueBadge, AudienceGradeBadge } from '@/components/gold-list/GoldListCards';
 
@@ -91,7 +91,7 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
     <div className="min-h-screen bg-surface">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, itemListSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, itemListSchema, generateGoldListFAQSchema(config, { entryCount: entries.length, topShow: entries[0]?.title })]) }}
       />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Breadcrumb */}
