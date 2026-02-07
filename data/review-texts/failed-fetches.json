@@ -20356,54 +20356,6 @@
     "timestamp": "2026-02-07T09:05:29.663Z"
   },
   {
-    "reviewId": "on-the-twentieth-century-2015/hollywood-reporter--david-rooney.json",
-    "showId": "on-the-twentieth-century-2015",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/kristin-chenoweth-peter-gallagher-twentieth-781525",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): chicago, mamma mia!, company, after midnight, rocky...",
-    "textLength": 7349,
-    "timestamp": "2026-02-07T09:07:43.518Z"
-  },
-  {
-    "reviewId": "on-the-twentieth-century-2015/hollywood-reporter--unknown.json",
-    "showId": "on-the-twentieth-century-2015",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/kristin-chenoweth-peter-gallagher-twentieth-781525",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): chicago, company, after midnight, rocky, rain...",
-    "textLength": 7649,
-    "timestamp": "2026-02-07T09:07:58.428Z"
-  },
-  {
-    "reviewId": "on-the-twentieth-century-2015/nytg--brian-scott-lipton.json",
-    "showId": "on-the-twentieth-century-2015",
-    "outlet": "New York Theatre Guide",
-    "critic": "Brian Scott Lipton",
-    "url": "https://newyorktheatreguide.com/reviews/on-the-twentieth-century",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): chicago, home, company, once, rain...",
-    "textLength": 6260,
-    "timestamp": "2026-02-07T09:08:02.329Z"
-  },
-  {
-    "reviewId": "on-the-twentieth-century-2015/nytg--marc-miller.json",
-    "showId": "on-the-twentieth-century-2015",
-    "outlet": "New York Theatre Guide",
-    "critic": "Marc Miller",
-    "url": "http://nytheatreguide.com/2015/03/broadway-review-on-the-20th-century-at-the-america-airlines-theatre/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): harmony, home, tina, finding neverland, once...",
-    "textLength": 45998,
-    "timestamp": "2026-02-07T09:08:14.945Z"
-  },
-  {
     "reviewId": "on-the-twentieth-century-2015/nytimes--unknown.json",
     "showId": "on-the-twentieth-century-2015",
     "outlet": "The New York Times",
@@ -24722,5 +24674,53 @@
     "garbageReason": "Multiple shows mentioned (24): wicked, the lion king, giant, home, company...",
     "textLength": 12505,
     "timestamp": "2026-02-07T15:21:55.576Z"
+  },
+  {
+    "reviewId": "on-the-twentieth-century-2015/hollywood-reporter--david-rooney.json",
+    "showId": "on-the-twentieth-century-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/kristin-chenoweth-peter-gallagher-twentieth-781525",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): chicago, company, after midnight, rocky, rain...",
+    "textLength": 6987,
+    "timestamp": "2026-02-07T15:29:18.123Z"
+  },
+  {
+    "reviewId": "on-the-twentieth-century-2015/hollywood-reporter--unknown.json",
+    "showId": "on-the-twentieth-century-2015",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/kristin-chenoweth-peter-gallagher-twentieth-781525",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): chicago, company, after midnight, rocky, rain...",
+    "textLength": 7649,
+    "timestamp": "2026-02-07T15:29:40.771Z"
+  },
+  {
+    "reviewId": "on-the-twentieth-century-2015/nytg--brian-scott-lipton.json",
+    "showId": "on-the-twentieth-century-2015",
+    "outlet": "New York Theatre Guide",
+    "critic": "Brian Scott Lipton",
+    "url": "https://newyorktheatreguide.com/reviews/on-the-twentieth-century",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): chicago, home, company, once, rain...",
+    "textLength": 6260,
+    "timestamp": "2026-02-07T15:29:46.430Z"
+  },
+  {
+    "reviewId": "on-the-twentieth-century-2015/nytg--marc-miller.json",
+    "showId": "on-the-twentieth-century-2015",
+    "outlet": "New York Theatre Guide",
+    "critic": "Marc Miller",
+    "url": "http://nytheatreguide.com/2015/03/broadway-review-on-the-20th-century-at-the-america-airlines-theatre/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): harmony, home, tina, finding neverland, once...",
+    "textLength": 45998,
+    "timestamp": "2026-02-07T15:29:56.321Z"
   }
 ]
