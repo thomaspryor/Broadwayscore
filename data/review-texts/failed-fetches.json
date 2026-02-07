@@ -10588,42 +10588,6 @@
     "timestamp": "2026-02-04T18:00:29.178Z"
   },
   {
-    "reviewId": "almost-famous-2022/hollywood-reporter--david-rooney.json",
-    "showId": "almost-famous-2022",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/lifestyle/arts/almost-famous-theater-review-cameron-crowe-recaptures-70s-rock-fandom-on-broadway-1235254652/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): mamma mia!, home, jagged little pill, bandstand, the real thing...",
-    "textLength": 10629,
-    "timestamp": "2026-02-04T18:04:35.307Z"
-  },
-  {
-    "reviewId": "almost-famous-2022/nyt-theater--jonathan-mandell.json",
-    "showId": "almost-famous-2022",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2022/11/03/almost-famous-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (17): illinoise, the heart of rock and roll, mary jane, mother play, patriots...",
-    "textLength": 10710,
-    "timestamp": "2026-02-04T18:07:10.869Z"
-  },
-  {
-    "reviewId": "almost-famous-2022/variety--frank-rizzo.json",
-    "showId": "almost-famous-2022",
-    "outlet": "Variety",
-    "critic": "Frank Rizzo",
-    "url": "https://variety.com/2022/legit/reviews/almost-famous-review-broadway-musical-1235420934/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, purpose, company, pippin, company...",
-    "textLength": 5741,
-    "timestamp": "2026-02-04T18:10:28.940Z"
-  },
-  {
     "reviewId": "american-psycho-2016/nytimes--unknown.json",
     "showId": "american-psycho-2016",
     "outlet": "New York Times",
@@ -11210,18 +11174,6 @@
     "garbageReason": "Multiple shows mentioned (15): harmony, home, purpose, company, the father...",
     "textLength": 8627,
     "timestamp": "2026-02-05T01:17:47.853Z"
-  },
-  {
-    "reviewId": "american-psycho-2016/hollywood-reporter--unknown.json",
-    "showId": "american-psycho-2016",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/benjamin-walker-american-psycho-theater-886156",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (17): wicked, appropriate, macbeth, tina, king charles iii...",
-    "textLength": 10518,
-    "timestamp": "2026-02-05T01:18:03.629Z"
   },
   {
     "reviewId": "airline-highway-2015/vulture--jesse-green.json",
@@ -14570,18 +14522,6 @@
     "garbageReason": "Multiple shows mentioned (8): purpose, king lear, the audience, hair, elling...",
     "textLength": 7041,
     "timestamp": "2026-02-05T18:44:56.621Z"
-  },
-  {
-    "reviewId": "all-my-sons-2019/vulture--sara-holdren.json",
-    "showId": "all-my-sons-2019",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "http://www.vulture.com/2019/04/theater-review-annette-bening-on-broadway-in-all-my-sons.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): betrayal, summer, betrayal, once, elling...",
-    "textLength": 10709,
-    "timestamp": "2026-02-05T18:46:12.830Z"
   },
   {
     "reviewId": "1984-2017/hollywood-reporter--david-rooney.json",
@@ -22082,5 +22022,89 @@
     "garbageReason": "Multiple shows mentioned (7): company, evita, high, august: osage county, company...",
     "textLength": 5831,
     "timestamp": "2026-02-07T05:41:54.126Z"
+  },
+  {
+    "reviewId": "all-my-sons-2019/vulture--sara-holdren.json",
+    "showId": "all-my-sons-2019",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "http://www.vulture.com/2019/04/theater-review-annette-bening-on-broadway-in-all-my-sons.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): betrayal, summer, betrayal, once, elling...",
+    "textLength": 10709,
+    "timestamp": "2026-02-07T05:43:41.082Z"
+  },
+  {
+    "reviewId": "almost-famous-2022/hollywood-reporter--david-rooney.json",
+    "showId": "almost-famous-2022",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/almost-famous-theater-review-cameron-crowe-recaptures-70s-rock-fandom-on-broadway-1235254652/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): mamma mia!, home, jagged little pill, bandstand, the real thing...",
+    "textLength": 10580,
+    "timestamp": "2026-02-07T05:45:41.252Z"
+  },
+  {
+    "reviewId": "almost-famous-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "almost-famous-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/11/03/almost-famous-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (21): stereophonic, suffs, illinoise, the heart of rock and roll, the wiz...",
+    "textLength": 10731,
+    "timestamp": "2026-02-07T05:48:10.115Z"
+  },
+  {
+    "reviewId": "almost-famous-2022/variety--frank-rizzo.json",
+    "showId": "almost-famous-2022",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2022/legit/reviews/almost-famous-review-broadway-musical-1235420934/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, purpose, company, pippin, company...",
+    "textLength": 5906,
+    "timestamp": "2026-02-07T05:48:13.837Z"
+  },
+  {
+    "reviewId": "almost-famous-2022/vulture--jackson-mchenry.json",
+    "showId": "almost-famous-2022",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/2022/11/theater-review-almost-famous-broadway-musical.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): company, jagged little pill, mean girls, anastasia, noises off...",
+    "textLength": 12000,
+    "timestamp": "2026-02-07T05:48:33.190Z"
+  },
+  {
+    "reviewId": "american-psycho-2016/hollywood-reporter--david-rooney.json",
+    "showId": "american-psycho-2016",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/benjamin-walker-american-psycho-theater-886156",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): wicked, appropriate, macbeth, tina, king charles iii...",
+    "textLength": 10518,
+    "timestamp": "2026-02-07T05:48:51.828Z"
+  },
+  {
+    "reviewId": "american-psycho-2016/hollywood-reporter--unknown.json",
+    "showId": "american-psycho-2016",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/benjamin-walker-american-psycho-theater-886156",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): wicked, appropriate, macbeth, tina, king charles iii...",
+    "textLength": 10518,
+    "timestamp": "2026-02-07T05:49:08.538Z"
   }
 ]
