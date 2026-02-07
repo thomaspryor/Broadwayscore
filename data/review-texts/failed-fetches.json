@@ -12268,18 +12268,6 @@
     "timestamp": "2026-02-05T05:23:26.511Z"
   },
   {
-    "reviewId": "the-piano-lesson-2022/hollywood-reporter--david-rooney.json",
-    "showId": "the-piano-lesson-2022",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/lifestyle/arts/august-wilsons-piano-lesson-theater-review-1235241145/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): mamma mia!, joe turner's come and gone, home, jitney, hair...",
-    "textLength": 9122,
-    "timestamp": "2026-02-05T05:24:18.935Z"
-  },
-  {
     "reviewId": "the-piano-lesson-2022/newyorker--helen-shaw.json",
     "showId": "the-piano-lesson-2022",
     "outlet": "The New Yorker (Helen Shaw)",
@@ -19192,30 +19180,6 @@
     "timestamp": "2026-02-06T19:05:33.631Z"
   },
   {
-    "reviewId": "the-music-man-2022/nytimes--unknown.json",
-    "showId": "the-music-man-2022",
-    "outlet": "The New York Times",
-    "critic": "Unknown",
-    "url": "https://www.nytimes.com/2022/02/10/theater/the-music-man-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): harmony, hello, dolly!, once, elling, high...",
-    "textLength": 7652,
-    "timestamp": "2026-02-06T19:09:19.495Z"
-  },
-  {
-    "reviewId": "the-music-man-2022/variety--marilyn-stasio.json",
-    "showId": "the-music-man-2022",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2022/legit/reviews/music-man-review-hugh-jackman-broadway-1235177555/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, smash, kiss me, kate, picnic, once...",
-    "textLength": 6651,
-    "timestamp": "2026-02-06T19:09:35.343Z"
-  },
-  {
     "reviewId": "the-mystery-of-edwin-drood-2012/hollywood-reporter--david-rooney.json",
     "showId": "the-mystery-of-edwin-drood-2012",
     "outlet": "Hollywood Reporter",
@@ -23570,5 +23534,65 @@
     "garbageReason": "Multiple shows mentioned (8): appropriate, company, first date, anything goes, high...",
     "textLength": 4469,
     "timestamp": "2026-02-07T10:20:11.983Z"
+  },
+  {
+    "reviewId": "the-music-man-2022/nytimes--unknown.json",
+    "showId": "the-music-man-2022",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2022/02/10/theater/the-music-man-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): harmony, hello, dolly!, once, elling, high...",
+    "textLength": 7652,
+    "timestamp": "2026-02-07T10:21:40.433Z"
+  },
+  {
+    "reviewId": "the-music-man-2022/variety--marilyn-stasio.json",
+    "showId": "the-music-man-2022",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2022/legit/reviews/music-man-review-hugh-jackman-broadway-1235177555/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, smash, kiss me, kate, picnic, once...",
+    "textLength": 6978,
+    "timestamp": "2026-02-07T10:21:55.303Z"
+  },
+  {
+    "reviewId": "the-peewee-herman-show-2010/newyorker--john-lahr.json",
+    "showId": "the-peewee-herman-show-2010",
+    "outlet": "The New Yorker",
+    "critic": "John Lahr",
+    "url": "http://www.newyorker.com/arts/critics/theatre/2010/11/22/101122crth_theatre_lahr",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): giant, junk, carousel, allegiance, chaplin...",
+    "textLength": 6298,
+    "timestamp": "2026-02-07T10:27:01.738Z"
+  },
+  {
+    "reviewId": "the-peewee-herman-show-2010/vulture--scott-brown.json",
+    "showId": "the-peewee-herman-show-2010",
+    "outlet": "New York Magazine",
+    "critic": "Scott Brown",
+    "url": "http://nymag.com/daily/entertainment/2010/11/theater_review_welcome_back_pe.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, parade, indecent, hair, seminar...",
+    "textLength": 3597,
+    "timestamp": "2026-02-07T10:28:57.173Z"
+  },
+  {
+    "reviewId": "the-piano-lesson-2022/hollywood-reporter--david-rooney.json",
+    "showId": "the-piano-lesson-2022",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/august-wilsons-piano-lesson-theater-review-1235241145/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mamma mia!, joe turner's come and gone, home, jitney, hair...",
+    "textLength": 9035,
+    "timestamp": "2026-02-07T10:29:53.377Z"
   }
 ]
