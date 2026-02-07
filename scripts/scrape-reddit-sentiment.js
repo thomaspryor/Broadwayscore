@@ -307,7 +307,9 @@ async function processShow(show) {
   // 2. Select posts - use Reddit's relevance ordering from our audience-focused searches
   // Don't re-sort by engagement (that drowns out good posts with high-engagement meta threads)
   // The LLM will filter out irrelevant comments - we just need to give it good posts to work with
-  const topPosts = posts.slice(0, 75);  // Broad enough for statistical stability
+  // Filter out posts with very few comments (saves API calls on comment fetching)
+  const postsWithComments = posts.filter(p => (p.num_comments || 0) >= 3);
+  const topPosts = postsWithComments.slice(0, 75);  // Broad enough for statistical stability
 
   if (verbose) {
     console.log(`  Top 5 posts (by Reddit search relevance):`);
@@ -358,7 +360,7 @@ async function processShow(show) {
 
   let classifications;
   try {
-    classifications = await classifyAllComments(show.title, filtered, 50);
+    classifications = await classifyAllComments(show.title, filtered, 150);
   } catch (e) {
     console.error(`  Classification failed: ${e.message}`);
     return null;
@@ -545,11 +547,20 @@ async function main() {
   console.log(`Processing ${shows.length} shows...\n`);
 
   // In shard mode, write to separate shard file
-  const shardResults = {};
+  let shardResults = {};
   const shardDir = path.join(__dirname, '../data/reddit-shards');
   const shardOutputPath = shardMode ? path.join(shardDir, `shard-${shard}.json`) : null;
   if (shardMode) {
     fs.mkdirSync(shardDir, { recursive: true });
+    // Load existing shard data so progress survives restarts
+    if (fs.existsSync(shardOutputPath)) {
+      try {
+        shardResults = JSON.parse(fs.readFileSync(shardOutputPath, 'utf8'));
+        console.log(`  Loaded existing shard data (${Object.keys(shardResults).length} shows)`);
+      } catch (e) {
+        console.warn(`  Could not load existing shard data: ${e.message}`);
+      }
+    }
   }
 
   let processed = 0;

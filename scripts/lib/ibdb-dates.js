@@ -254,6 +254,20 @@ async function extractDatesFromIBDBPage(url) {
     result.theatre = theatreMatch[1].trim();
   }
 
+  // Show type extraction: IBDB classifies productions as "Musical" or "Play"
+  // Look for these classifications in the page text (typically near the top)
+  const topText = text.slice(0, 2000);
+  const hasMusical = /\bMusical\b/.test(topText);
+  const hasPlay = /\bPlay\b/.test(topText);
+  if (hasMusical && !hasPlay) {
+    result.showType = 'musical';
+  } else if (hasPlay && !hasMusical) {
+    result.showType = 'play';
+  } else {
+    // Both or neither found — leave as null for caller to decide
+    result.showType = null;
+  }
+
   // Creative team extraction
   result.creativeTeam = extractCreativeTeamFromText(text);
 
@@ -273,8 +287,11 @@ function isValidCreativeTeamName(name) {
   // Normalize whitespace before checking
   const normalized = name.replace(/\s{2,}/g, ' ').trim();
 
-  // Reject names longer than 80 characters
-  if (normalized.length > 80) return false;
+  // Reject names longer than 50 characters (real creative team names are short)
+  if (normalized.length > 50) return false;
+
+  // Reject names that start with lowercase (real names are capitalized)
+  if (/^[a-z]/.test(normalized)) return false;
 
   // Reject names that start with articles or prepositions
   if (/^(The|A|An|For|With|In|On|At|By|From)\s/i.test(normalized)) return false;
@@ -286,8 +303,20 @@ function isValidCreativeTeamName(name) {
   const sentenceWords = /\b(is|are|was|were|has|have|had|will|shall|may|might|must|should|could|would)\b/i;
   if (sentenceWords.test(normalized)) return false;
 
-  // Reject award references
+  // Reject award references and known garbage phrases from IBDB biography text
   if (/\b(Tony|Grammy|Oscar|Emmy|Pulitzer|Obie)\b/.test(normalized)) return false;
+  if (/Tony Award|Pulitzer Prize winner/i.test(normalized)) return false;
+  if (/based on the novel by/i.test(normalized)) return false;
+  if (/and musical supervision/i.test(normalized)) return false;
+  if (/\bfocused on\b/i.test(normalized)) return false;
+  if (/\bof new works\b/i.test(normalized)) return false;
+  if (/\band actress on\b/i.test(normalized)) return false;
+  if (/\bfor giving\b/i.test(normalized)) return false;
+  if (/\bfor the West End\b/i.test(normalized)) return false;
+  if (/\bthis person\b/i.test(normalized)) return false;
+  if (/\bat Roundabout\b/i.test(normalized)) return false;
+  if (/\bof the company\b/i.test(normalized)) return false;
+  if (/\bFranklin Shepard\b/i.test(normalized)) return false;
 
   // Reject single words longer than 20 characters (likely garbled text)
   const words = normalized.split(/\s+/);
@@ -315,8 +344,11 @@ function extractCreativeTeamFromText(text) {
 
   // Role patterns: [regex, role label]
   // Order matters — "Music and Lyrics by" must come before "Music by" and "Lyrics by"
+  // "Written by" captures playwright credit (plays), "Original Score by" captures incidental music
   const rolePatterns = [
     [/Music and Lyrics by\s+([^;:\n]+)/gi, 'Music & Lyrics'],
+    [/Written by\s+([^;:\n]+)/gi, 'Playwright'],
+    [/Original Score by\s+([^;:\n]+)/gi, 'Original Score'],
     [/Directed by\s+([^;:\n]+)/gi, 'Director'],
     [/Choreograph(?:ed|y) by\s+([^;:\n]+)/gi, 'Choreographer'],
     [/Book by\s+([^;:\n]+)/gi, 'Book'],
@@ -334,7 +366,7 @@ function extractCreativeTeamFromText(text) {
   ];
 
   // Roles that appear in song-level credits on IBDB — only take first match
-  const firstMatchOnly = new Set(['Lyrics', 'Music', 'Music & Lyrics']);
+  const firstMatchOnly = new Set(['Lyrics', 'Music', 'Music & Lyrics', 'Playwright']);
 
   for (const [pattern, role] of rolePatterns) {
     let match;
@@ -397,6 +429,26 @@ function extractCreativeTeamFromText(text) {
   // wrong text (e.g., full cast list or song credits). Return empty array.
   if (creativeTeam.length > 15) {
     return [];
+  }
+
+  // Guard: if >3 entries share the same role, truncate to the first entry for
+  // that role. This catches cases where regex matched biography/song credits.
+  const roleCounts = {};
+  for (const entry of creativeTeam) {
+    roleCounts[entry.role] = (roleCounts[entry.role] || 0) + 1;
+  }
+  const bloatedRoles = new Set(
+    Object.entries(roleCounts)
+      .filter(([, count]) => count > 3)
+      .map(([role]) => role)
+  );
+  if (bloatedRoles.size > 0) {
+    const seenRoles = {};
+    return creativeTeam.filter(entry => {
+      if (!bloatedRoles.has(entry.role)) return true;
+      seenRoles[entry.role] = (seenRoles[entry.role] || 0) + 1;
+      return seenRoles[entry.role] <= 1;
+    });
   }
 
   return creativeTeam;
@@ -518,6 +570,7 @@ async function lookupIBDBDates(title, options = {}) {
       openingDate: dates.openingDate,
       closingDate: dates.closingDate,
       creativeTeam: dates.creativeTeam || [],
+      showType: dates.showType || null,
       ibdbUrl: dates.ibdbUrl,
       found: true
     };

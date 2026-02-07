@@ -88,6 +88,9 @@ jobs:
             console.log('✓ Validation passed');
           "
 
+      - name: Recalculate all combined scores
+        run: node scripts/recalculate-audience-buzz.js
+
       - name: Restore backup on failure
         if: failure()
         run: |

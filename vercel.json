@@ -26,6 +26,11 @@
       "permanent": true
     },
     {
+      "source": "/director/:path*",
+      "destination": "/directors/:path*",
+      "permanent": true
+    },
+    {
       "source": "/(.*)",
       "has": [
         {

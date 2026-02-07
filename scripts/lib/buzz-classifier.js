@@ -443,30 +443,43 @@ async function classifyBatch(showTitle, comments, provider = null, retryCount = 
  * @param {string} provider - Starting provider (default 'gemini')
  * @returns {Promise<Array>} All classifications
  */
-async function classifyAllComments(showTitle, comments, batchSize = 50, provider = 'gemini') {
+async function classifyAllComments(showTitle, comments, batchSize = 150, provider = 'gemini', concurrency = 4) {
   const allClassifications = [];
 
+  // Create all batch definitions
+  const batchDefs = [];
   for (let i = 0; i < comments.length; i += batchSize) {
-    const batch = comments.slice(i, i + batchSize);
-    const results = await classifyBatch(showTitle, batch, provider);
+    batchDefs.push({ start: i, batch: comments.slice(i, i + batchSize) });
+  }
+
+  // Process in groups of `concurrency` (parallel LLM calls)
+  for (let g = 0; g < batchDefs.length; g += concurrency) {
+    const group = batchDefs.slice(g, g + concurrency);
+
+    const results = await Promise.all(
+      group.map(({ batch }) => classifyBatch(showTitle, batch, provider))
+    );
 
     // Map results back to original comments
-    for (let j = 0; j < results.length && j < batch.length; j++) {
-      allClassifications.push({
-        ...results[j],
-        comment: batch[j],
-        upvotes: batch[j].score
-      });
-    }
-
-    // Rate limit between batches
-    if (i + batchSize < comments.length) {
-      await sleep(500);
+    for (let k = 0; k < results.length; k++) {
+      const batch = group[k].batch;
+      const batchResults = results[k];
+      for (let j = 0; j < batchResults.length && j < batch.length; j++) {
+        allClassifications.push({
+          ...batchResults[j],
+          comment: batch[j],
+          upvotes: batch[j].score
+        });
+      }
     }
 
     // Log progress
-    if ((i + batchSize) % 200 === 0) {
-      console.log(`    Classified ${Math.min(i + batchSize, comments.length)}/${comments.length} comments...`);
+    const classified = Math.min((g + group.length) * batchSize, comments.length);
+    console.log(`    Classified ${classified}/${comments.length} comments...`);
+
+    // Brief pause between groups
+    if (g + concurrency < batchDefs.length) {
+      await sleep(200);
     }
   }
 

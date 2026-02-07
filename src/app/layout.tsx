@@ -183,11 +183,13 @@ export default function RootLayout({
                 <ul className="space-y-2 text-sm text-gray-400">
                   <li><Link href="/browse/tony-winners-on-broadway" className="hover:text-white transition-colors">Tony Winners</Link></li>
                   <li><Link href="/browse/jukebox-musicals-on-broadway" className="hover:text-white transition-colors">Jukebox Musicals</Link></li>
+                  <li><Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link></li>
                   <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>
                   <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>
                   <li><Link href="/audience-buzz" className="hover:text-white transition-colors">Audience Scorecard</Link></li>
                   <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
                   <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
+                  <li><Link href="/critics" className="hover:text-white transition-colors">Critics</Link></li>
                   <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
                 </ul>
               </div>
@@ -224,6 +226,8 @@ export default function RootLayout({
                 <span className="text-lg font-bold text-gradient">Scorecard</span>
               </div>
               <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-sm text-gray-400">
+                <Link href="/about" className="hover:text-white transition-colors">About</Link>
+                <span className="text-gray-500 hidden sm:inline">|</span>
                 <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
                 <span className="text-gray-500 hidden sm:inline">|</span>
                 <span>Every show. Every review. One score.</span>

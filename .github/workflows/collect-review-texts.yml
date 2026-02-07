@@ -348,6 +348,14 @@ jobs:
 
           echo "Next batch dispatched successfully."
 
+      - name: Record pipeline success
+        if: success()
+        run: |
+          mkdir -p data/audit/pipeline-health
+          date -u > data/audit/pipeline-health/collect-review-texts.last-success
+          git add data/audit/pipeline-health/
+          git diff --staged --quiet || git commit -m "health: Record collect-review-texts success" && git push || true
+
   # Parallel multi-job mode (matrix strategy)
   collect-reviews-parallel:
     if: ${{ inputs.parallel == 'true' }}

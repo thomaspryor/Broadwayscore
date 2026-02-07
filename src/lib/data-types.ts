@@ -25,6 +25,7 @@ export type {
 // Re-export config types
 export type { BrowsePageConfig } from '@/config/browse-pages';
 export type { CommercialDesignation, RecoupmentTrend, DesignationConfig } from '@/config/commercial';
+export type { GoldListType, GoldListConfig } from '@/config/gold-lists';
 
 // ============================================
 // Core types
@@ -150,6 +151,8 @@ export interface AudienceBuzzSource {
   score: number;
   reviewCount: number;
   starRating?: number;
+  totalPosts?: number;
+  totalComments?: number;
 }
 
 export interface AudienceBuzzData {
@@ -350,4 +353,121 @@ export interface CastEvent {
 export interface ShowCastChanges {
   currentCast?: CastMember[];
   upcoming?: CastEvent[];
+}
+
+// ============================================
+// Gold List types
+// ============================================
+
+export interface GoldListEntry {
+  showId: string;
+  title: string;
+  slug: string;
+  rank: number;
+  /** The metric value (critic score, audience score, gross/perf, capacity %) */
+  value: number;
+  /** Formatted display string for the value (e.g., "$182,450", "87.1", "98.2%") */
+  displayValue: string;
+  season: string;
+  venue?: string;
+  type?: string;
+  thumbnail?: string | null;
+}
+
+export interface GoldListMembership {
+  listType: import('@/config/gold-lists').GoldListType;
+  season: string;
+  rank: number;
+}
+
+// ============================================
+// Outlet & Critic Profile types
+// ============================================
+
+export interface ProfileReview {
+  showTitle: string;
+  showSlug: string;
+  showThumbnail: string | null;
+  showVenue: string;
+  showOpeningDate: string;
+  showStatus: string;
+  showType: string;
+  outletId: string;
+  outlet: string;
+  outletSlug: string;
+  criticName: string | null;
+  criticSlug: string | null;
+  url: string;
+  publishDate: string | null;
+  parsedDate: number | null;
+  reviewScore: number;
+  tier: 1 | 2 | 3;
+  originalRating: string | null;
+  quote: string | null;
+}
+
+export interface OutletProfile {
+  name: string;
+  slug: string;
+  outletId: string;
+  tier: 1 | 2 | 3;
+  reviews: ProfileReview[];
+  reviewCount: number;
+  avgScore: number;
+  highScore: number;
+  lowScore: number;
+  volumeRank: number;
+  generosityRank: number;
+  criticCount: number;
+  logoDomain: string | null;
+  logoColor: string | null;
+  logoAbbrev: string | null;
+}
+
+export interface CriticProfile {
+  name: string;
+  slug: string;
+  primaryOutlet: string;
+  primaryOutletId: string;
+  outlets: string[];
+  isFreelancer: boolean;
+  reviews: ProfileReview[];
+  reviewCount: number;
+  avgScore: number;
+  highScore: number;
+  lowScore: number;
+  volumeRank: number;
+  generosityRank: number;
+}
+
+// Creative team page types
+export type CreativeCategory = 'director' | 'playwright' | 'composer' | 'lyricist';
+
+export interface CreativeShowEntry {
+  title: string;
+  slug: string;
+  venue: string;
+  openingDate: string | null;
+  closingDate: string | null;
+  status: string;
+  type: string;
+  thumbnail: string | null;
+  isRevival: boolean;
+  season: string | null;
+  score: number | null;
+  role: string;
+}
+
+export interface CreativeProfile {
+  name: string;
+  slug: string;
+  category: CreativeCategory;
+  roles: string[];
+  shows: CreativeShowEntry[];
+  showCount: number;
+  avgScore: number | null;
+  highScore: number | null;
+  lowScore: number | null;
+  openShowCount: number;
+  closedShowCount: number;
 }

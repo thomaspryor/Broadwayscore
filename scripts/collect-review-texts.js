@@ -32,6 +32,8 @@
  *   PRIORITY - 'tier1' or 'all' (default: all)
  *   SHOW_FILTER - Only process specific show ID
  *   RETRY_FAILED - 'true' to retry previously failed reviews
+ *   DOMAIN_FILTER - Comma-separated domain(s) to filter by URL (e.g., 'theatermania.com,timeout.com')
+ *   EXCLUDE_DOMAINS - Comma-separated domain(s) to exclude (inverse of DOMAIN_FILTER)
  *
  * CLI Flags:
  *   --aggressive - Skip Playwright for known-blocked sites, start with ScrapingBee
@@ -43,6 +45,31 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 // const { HttpsProxyAgent } = require('https-proxy-agent'); // Not used - Bright Data needs zone setup
+
+// Catch unhandled promise rejections from playwright-extra stealth plugin
+// (cdpSession.send / onPageCreated errors when browser dies mid-operation)
+let unhandledRejectionCount = 0;
+process.on('unhandledRejection', (reason, promise) => {
+  const msg = reason?.message || String(reason);
+  const isPlaywrightCrash = msg.includes('Target page, context or browser has been closed') ||
+    msg.includes('Target closed') ||
+    msg.includes('Browser has been closed') ||
+    msg.includes('Protocol error') ||
+    msg.includes('cdpSession.send') ||
+    msg.includes('onPageCreated');
+  if (isPlaywrightCrash) {
+    unhandledRejectionCount++;
+    console.log(`  ⚠ Caught browser crash (rejection #${unhandledRejectionCount}): ${msg.slice(0, 100)}`);
+    // Don't exit — the main loop's timeout handler will restart the browser
+  } else {
+    console.error('Unhandled rejection:', msg);
+    // For non-Playwright errors, exit after saving state
+    if (unhandledRejectionCount > 20) {
+      console.error('Too many unhandled rejections, exiting');
+      process.exit(1);
+    }
+  }
+});
 
 // Score extraction for original scores
 const { extractScore, extractDesignation } = require('./lib/score-extractors');
@@ -110,6 +137,8 @@ const CONFIG = {
   commitEvery: parseInt(process.env.COMMIT_EVERY || '10'), // Git commit after every N reviews
   outletTier: process.env.OUTLET_TIER || '', // Filter by outlet tier: tier1, tier2, tier3
   contentTierFilter: process.env.CONTENT_TIER_FILTER || '', // Filter by content tier: excerpt, truncated, needs-rescrape
+  domainFilter: (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Filter by URL domain(s)
+  excludeDomains: (process.env.EXCLUDE_DOMAINS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Exclude these domains
   archiveFirst: process.env.ARCHIVE_FIRST === 'true', // Try Archive.org first for older reviews
 
   // API Keys
@@ -3036,16 +3065,28 @@ function findReviewsToProcess() {
   const shows = fs.readdirSync(CONFIG.reviewTextsDir)
     .filter(f => fs.statSync(path.join(CONFIG.reviewTextsDir, f)).isDirectory());
 
-  // Load failed fetches to retry if requested
-  const failedFetches = new Set();
-  if (CONFIG.retryFailed) {
-    const failedPath = path.join(CONFIG.reviewTextsDir, 'failed-fetches.json');
-    if (fs.existsSync(failedPath)) {
-      try {
-        const failed = JSON.parse(fs.readFileSync(failedPath, 'utf8'));
-        failed.forEach(f => failedFetches.add(f.reviewId || `${f.showId}/${f.file}`));
-      } catch (e) {}
-    }
+  // Load failed fetches — skip permanently failed URLs (3+ failures)
+  const failedFetches = new Set();  // For retry mode: IDs to include
+  const permanentlyFailed = new Set();  // IDs to always skip (too many failures)
+  let permanentSkipCount = 0;
+  const failedPath = path.join(CONFIG.reviewTextsDir, 'failed-fetches.json');
+  if (fs.existsSync(failedPath)) {
+    try {
+      const failed = JSON.parse(fs.readFileSync(failedPath, 'utf8'));
+      for (const f of failed) {
+        const id = f.reviewId || `${f.showId}/${f.file}`;
+        const count = f.failureCount || 1;
+        if (count >= 3) {
+          permanentlyFailed.add(id);
+          permanentSkipCount++;
+        } else if (CONFIG.retryFailed) {
+          failedFetches.add(id);
+        }
+      }
+    } catch (e) {}
+  }
+  if (permanentSkipCount > 0) {
+    console.log(`  Skipping ${permanentSkipCount} permanently failed reviews (3+ failures)`);
   }
 
   for (const showId of shows) {
@@ -3058,6 +3099,8 @@ function findReviewsToProcess() {
       const filePath = path.join(showDir, file);
       const reviewId = `${showId}/${file}`;
 
+      // Skip permanently failed (3+ failures across runs)
+      if (permanentlyFailed.has(reviewId)) continue;
       // Skip already processed in this run
       if (state.processed.includes(reviewId)) continue;
       // Skip failed unless retry mode
@@ -3113,6 +3156,26 @@ function findReviewsToProcess() {
           if (CONFIG.contentTierFilter === 'excerpt' && ct !== 'excerpt') continue;
           if (CONFIG.contentTierFilter === 'truncated' && ct !== 'truncated') continue;
           if (CONFIG.contentTierFilter === 'needs-rescrape' && ct !== 'needs-rescrape') continue;
+        }
+
+        // Apply domain filter (for targeted soft-paywall collection runs)
+        if (CONFIG.domainFilter.length > 0 && data.url) {
+          try {
+            const urlDomain = new URL(data.url).hostname.replace(/^www\./, '');
+            if (!CONFIG.domainFilter.some(d => urlDomain === d || urlDomain.endsWith('.' + d))) continue;
+          } catch (e) {
+            continue; // Skip reviews with unparseable URLs when domain filter is active
+          }
+        }
+
+        // Apply domain exclusion filter (for free-outlet collection — exclude paywall domains)
+        if (CONFIG.excludeDomains.length > 0 && data.url) {
+          try {
+            const urlDomain = new URL(data.url).hostname.replace(/^www\./, '');
+            if (CONFIG.excludeDomains.some(d => urlDomain === d || urlDomain.endsWith('.' + d))) continue;
+          } catch (e) {
+            // Keep reviews with unparseable URLs when using exclusion mode
+          }
         }
 
         // Parse publish date for archive-first logic
@@ -3304,6 +3367,78 @@ async function ensureBrowserHealthy() {
 }
 
 // ============================================================================
+// PERMANENT FAILURE TRACKING
+// ============================================================================
+
+/**
+ * Record a fetch failure to failed-fetches.json with failure count tracking.
+ * Increments failureCount on each call. After 3+ failures, the review will
+ * be skipped on future runs (permanent failure).
+ */
+function recordFailedFetch(review, reason, details = {}) {
+  const failedFetchesPath = path.join(CONFIG.reviewTextsDir, 'failed-fetches.json');
+  let failedFetches = [];
+  if (fs.existsSync(failedFetchesPath)) {
+    try {
+      failedFetches = JSON.parse(fs.readFileSync(failedFetchesPath, 'utf8'));
+    } catch (e) {
+      failedFetches = [];
+    }
+  }
+
+  // Find existing entry for this review
+  const existingIdx = failedFetches.findIndex(f => f.reviewId === review.reviewId);
+  const existing = existingIdx >= 0 ? failedFetches[existingIdx] : null;
+  const prevCount = existing?.failureCount || 0;
+
+  const entry = {
+    reviewId: review.reviewId,
+    showId: review.showId,
+    outlet: review.outlet,
+    critic: review.critic,
+    url: review.url,
+    failureReason: reason,
+    failureCount: prevCount + 1,
+    lastFailedAt: new Date().toISOString(),
+    firstFailedAt: existing?.firstFailedAt || new Date().toISOString(),
+    ...details,
+  };
+
+  if (existingIdx >= 0) {
+    failedFetches[existingIdx] = entry;
+  } else {
+    failedFetches.push(entry);
+  }
+
+  try {
+    fs.writeFileSync(failedFetchesPath, JSON.stringify(failedFetches, null, 2));
+  } catch (e) {
+    // Non-fatal — don't crash the run over tracking
+  }
+
+  if (entry.failureCount >= 3) {
+    console.log(`    ⚠ Permanently failed (${entry.failureCount} attempts) — will skip on future runs`);
+  }
+}
+
+/**
+ * Remove a review from failed-fetches.json when it succeeds.
+ */
+function clearFailedFetch(reviewId) {
+  const failedFetchesPath = path.join(CONFIG.reviewTextsDir, 'failed-fetches.json');
+  if (!fs.existsSync(failedFetchesPath)) return;
+  try {
+    const failedFetches = JSON.parse(fs.readFileSync(failedFetchesPath, 'utf8'));
+    const filtered = failedFetches.filter(f => f.reviewId !== reviewId);
+    if (filtered.length < failedFetches.length) {
+      fs.writeFileSync(failedFetchesPath, JSON.stringify(filtered, null, 2));
+    }
+  } catch (e) {
+    // Non-fatal
+  }
+}
+
+// ============================================================================
 // PROCESS REVIEW
 // ============================================================================
 
@@ -3319,8 +3454,14 @@ async function processReview(review) {
       page = await context.newPage();
     }
   } catch (e) {
-    // If we can't create a new page, browser may be crashed - health check will handle it
+    // Browser likely crashed — try full restart before giving up
     console.log(`  ⚠ Could not create fresh page: ${e.message}`);
+    try {
+      await closeBrowser();
+      await setupBrowser();
+    } catch (restartErr) {
+      console.log(`  ⚠ Browser restart failed: ${restartErr.message}`);
+    }
   }
 
   // showNotMentioned URL recovery: discover correct URL before wasting bandwidth re-fetching the wrong one
@@ -3361,34 +3502,12 @@ async function processReview(review) {
       console.log(`  ✗ GARBAGE CONTENT DETECTED: ${qualityCheck.issues[0] || 'invalid content'}`);
       console.log(`    Reason: ${qualityCheck.issues.join(', ')}`);
 
-      // Record as failed fetch with reason
-      const failedEntry = {
-        reviewId: review.reviewId,
-        showId: review.showId,
-        outlet: review.outlet,
-        critic: review.critic,
-        url: review.url,
+      // Record as failed fetch with reason (increments failure count)
+      recordFailedFetch(review, 'garbage_content', {
         method: result.method,
-        failureReason: 'garbage_content',
         garbageReason: qualityCheck.issues.join('; '),
         textLength: result.text.length,
-        timestamp: new Date().toISOString()
-      };
-
-      // Save to failed fetches tracking
-      const failedFetchesPath = path.join(CONFIG.reviewTextsDir, 'failed-fetches.json');
-      let failedFetches = [];
-      if (fs.existsSync(failedFetchesPath)) {
-        try {
-          failedFetches = JSON.parse(fs.readFileSync(failedFetchesPath, 'utf8'));
-        } catch (e) {
-          failedFetches = [];
-        }
-      }
-      // Remove any existing entry for this review
-      failedFetches = failedFetches.filter(f => f.reviewId !== review.reviewId);
-      failedFetches.push(failedEntry);
-      fs.writeFileSync(failedFetchesPath, JSON.stringify(failedFetches, null, 2));
+      });
 
       stats.totalFailed++;
       return { success: false, error: 'garbage_content', reason: qualityCheck.issues.join('; ') };
@@ -3464,6 +3583,9 @@ async function processReview(review) {
       state.tierBreakdown[result.method].push(review.reviewId);
     }
 
+    // Clear any previous failure tracking on success
+    clearFailedFetch(review.reviewId);
+
     return { success: true, method: result.method, validation };
 
   } catch (error) {
@@ -3537,6 +3659,15 @@ async function processReview(review) {
     }
 
     stats.totalFailed++;
+
+    // Record permanent failure (increments count — after 3, review is skipped)
+    const is404 = error.message.includes('404');
+    const isTimeout = error.message.includes('timeout') || error.message.includes('TIMEOUT');
+    const allTiersFailed = error.message.includes('All tiers failed');
+    const failReason = is404 ? 'url_dead_404' : isTimeout ? 'all_tiers_timeout' : allTiersFailed ? 'all_tiers_failed' : 'fetch_error';
+    recordFailedFetch(review, failReason, {
+      errorMessage: error.message.slice(0, 200),
+    });
 
     // Track failures by outlet for end-of-run reporting
     const outletName = review.outlet || review.outletId || 'unknown';
@@ -3765,6 +3896,12 @@ async function main() {
   console.log('╚════════════════════════════════════════════════════════════╝');
   console.log(`Config: batch=${CONFIG.batchSize}, max=${CONFIG.maxReviews}, priority=${CONFIG.priority}`);
   console.log(`Flags: aggressive=${CLI.aggressive}, forceTier=${CLI.forceTier || 'auto'}`);
+  if (CONFIG.domainFilter.length > 0) {
+    console.log(`Domain filter: ${CONFIG.domainFilter.join(', ')}`);
+  }
+  if (CONFIG.excludeDomains.length > 0) {
+    console.log(`Excluding domains: ${CONFIG.excludeDomains.join(', ')}`);
+  }
 
   // Load dependencies
   await loadDependencies();

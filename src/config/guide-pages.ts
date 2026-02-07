@@ -106,7 +106,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
              ageRec.includes('all ages');
     },
     sort: 'score',
-    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'cheap-broadway-tickets'],
+    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'broadway-shows-for-parents'],
     relatedBrowse: ['broadway-shows-for-kids', 'first-time-broadway', 'short-broadway-shows'],
   },
 
@@ -278,6 +278,29 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     limit: 15,
     relatedGuides: ['best-broadway-shows', 'best-broadway-musicals'],
     relatedBrowse: ['broadway-shows-for-date-night'],
+  },
+
+  'broadway-shows-for-parents': {
+    slug: 'broadway-shows-for-parents',
+    title: 'Best Broadway Shows to See with Your Parents',
+    h1Template: 'Best Broadway Shows to See with Your Parents ({year})',
+    metaTitleTemplate: 'Best Broadway Shows for Parents {year} | Crowd-Pleasing Picks',
+    metaDescriptionTemplate: 'Taking your parents to Broadway? These {count} shows are perfect for older adults — revivals, classics, Tony winners, and crowd-pleasing musicals.',
+    introFallback: 'Taking your parents to see a Broadway show is one of the best gifts you can give. These {count} productions are ideal picks — from beloved revivals and Tony winners to crowd-pleasing musicals that resonate across generations.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      // Revivals, classics, Tony winners, jukebox musicals, iconic shows, or high-scoring musicals
+      return tags.includes('revival') ||
+             tags.includes('classic') ||
+             tags.includes('iconic') ||
+             tags.includes('tony-winner') ||
+             tags.includes('jukebox') ||
+             (show.type === 'musical' && (show.criticScore?.score ?? 0) >= 75);
+    },
+    sort: 'score',
+    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'best-broadway-revivals'],
+    relatedBrowse: ['tony-winners-on-broadway', 'broadway-shows-for-tourists'],
   },
 
   // === PRICE TIERS ===

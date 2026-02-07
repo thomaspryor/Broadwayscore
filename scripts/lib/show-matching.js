@@ -199,7 +199,9 @@ const KNOWN_ALIASES = {
   'becky shaw': 'becky-shaw',
 
   // CATS variations
-  'cats': 'cats-the-jellicle-ball',
+  // IMPORTANT: Do NOT add a bare 'cats' alias here. The original CATS (1982-2000)
+  // has cumulative grosses data that would be misattributed to the 2024 revival
+  // "CATS: The Jellicle Ball" if the bare alias routes there.
   'cats the jellicle ball': 'cats-the-jellicle-ball',
   'cats: the jellicle ball': 'cats-the-jellicle-ball',
 
