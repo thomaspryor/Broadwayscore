@@ -11,11 +11,51 @@
   ],
   "bwwExcerpt": "Onstage, though, the loud ticktock of the investigation too often drowns out the emotion - an effect perhaps enhanced by the flattening of the genre brought on by endless \"Law & Order\" spinoffs and reruns. In any case, whether \"A Soldier's Play\" is a great stage drama regardless of its flaws is something its bumpy but worthy Broadway debut, directed by Kenny Leon for the Roundabout Theater Company, cannot answer. Despite some powerful acting, it is too distracted to make the case.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-SOLDIERS-PLAY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200121",
-  "contentTier": "invalid",
+  "contentTier": "complete",
   "showScoreExcerpt": "\"In ‘A Soldier’s Play,’ an Endless War Against Black Men: The Broadway premiere of Charles Fuller’s 1981 drama finds premonitions of today in the story of a 1944 murder.\"\n\nRead more",
   "rejectedAt": "2026-02-05T16:24:12.664Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be just a headline and teaser text ('Read more') rather than actual review content with critical evaluation; openai: The text provided is a headline and a prompt to read more, with no evaluative content or review of the production.; gemini: This is a headline and a brief description, not a full review with an evaluation of the show.; kimi: The text provided is only a headline and subheading describing the plot and themes ('finds premonitions of today in the story of a 1944 murder') with no evaluation of production quality, performances, or recommendation to see the show. It functions as a plot summary rather than a critical review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "fullText": "https://www.nytimes.com/2020/01/21/theater/a-soldiers-play-review.htmlShare full article37Advertisement\n\nWhen Capt. Richard Davenport, a lawyer with the Provost Marshal General’s office in Washington, arrives at a Louisiana army base to investigate a murder, he is the first black officer most of the men stationed there have ever seen. Their diametrical reactions to him — the white officers shocked and hostile, the black grunts busting with pride — tell you everything you need to know about race relations in the segregated military in 1944.\n\nWell, not quite everything. As Davenport is about to discover in “A Soldier’s Play,” the Pulitzer Prize-winning 1981 drama by Charles Fuller, racism is a disease that infects whatever it touches. Even the murdered man, Sgt. Vernon C. Waters, is not immune, though black himself. He hates his own race so virulently that almost everyone, from the Ku Klux Klan to his own corporal, has a motive for killing him.\n\nThis provides “A Soldier’s Play,” which opened on Tuesday at the American Airlines Theater, the solid if programmatic structure of a police procedural: Interrogate, rinse, repeat. It also provides, or at least did for white audiences when it premiered, a pair of novel themes. Now less novel, they still remain news: Colorism has not gone away, nor has the military, long since integrated, stamped out racism among its ranks.\n\nBut the themes and the structure can sometimes seem at odds. Not, apparently, as originally produced by the Negro Ensemble Company, when Frank Rich, writing for The New York Times, called it “a mature and accomplished work.” Nor in the excellent 1984 movie, retitled “A Soldier’s Story,” which uses plenty of close-ups to keep the focus on the characters instead of the plot machinery.\n\nOnstage, though, the loud ticktock of the investigation too often drowns out the emotion — an effect perhaps enhanced by the flattening of the genre brought on by endless “Law & Order” spinoffs and reruns. In any case, whether “A Soldier’s Play” is a great stage drama regardless of its flaws is something its bumpy but worthy Broadway debut, directed by Kenny Leon for the Roundabout Theater Company, cannot answer. Despite some powerful acting, it is too distracted to make the case.\n\nDavenport (Blair Underwood) does not have that problem; the one trait Fuller endows him with is ferocious attention to mission. (Underwood, in an otherwise unexceptionable performance, adds another trait — pandering sex appeal — in a gratuitous flash of well-toned flesh.) Though he drives the plot, he is almost a bystander to it, allowing the soldiers he questions to spin out their views of Waters (David Alan Grier) in flashbacks that sometimes have more flashbacks within them.\n\nAn earlier version of this review misstated the opening date of “A Soldier’s Play.\" It was Tuesday, not Thursday.\n\nWhen we learn of a mistake, we acknowledge it with a correction. If you spot an error, please let us know at corrections@nytimes.com.Learn more\n\nJesse Green is the co-chief theater critic. Before joining The Times in 2017, he was the theater critic for New York magazine and a contributing editor. He is the author of a novel, “O Beautiful,” and a memoir, “The Velveteen Father.”",
+  "isFullReview": true,
+  "textWordCount": 523,
+  "archivePath": "data/archives/reviews/a-soldiers-play-2020/nytimes--jesse-green_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T11:32:38.153Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 523,
+  "tierReason": "Full review text"
 }
