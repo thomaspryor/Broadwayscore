@@ -1,88 +1,100 @@
 {
   "processed": [
-    "a-view-from-the-bridge-2015/hollywood-reporter--leslie-felperin.json"
+    "a-christmas-carol-2022/nytimes--jesse-green.json",
+    "a-christmas-carol-2022/variety--maya-phillips.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/nytimes--ben-brantley.json",
+    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
-    "9-to-5-2009/hollywood-reporter--unknown.json",
-    "9-to-5-2009/nytimes--ben-brantley.json",
-    "9-to-5-2009/vulture--unknown.json",
-    "a-christmas-carol-2019/newyorker--jesse-green.json",
-    "a-christmas-carol-2019/nytg--unknown.json",
-    "a-christmas-carol-2019/nytimes--ben-brantley.json",
-    "a-christmas-carol-2019/vulture--helen-shaw.json",
-    "a-christmas-carol-2019/vulture--jesse-green.json",
-    "a-christmas-story-the-musical-2012/hollywood-reporter--david-rooney.json",
-    "a-christmas-story-the-musical-2012/nyt-theater--david-nounou.json",
-    "a-christmas-story-the-musical-2012/variety--marilyn-stasio.json",
-    "a-dolls-house-part-2-2017/hollywood-reporter--david-rooney.json",
-    "a-dolls-house-part-2-2017/newyorker--hilton-als.json",
-    "a-dolls-house-part-2-2017/nytimes--ben-brantley.json",
-    "a-dolls-house-part-2-2017/nytimes--unknown.json",
-    "a-naked-girl-on-the-appian-way-2005/nytimes--ben-brantley.json",
-    "a-steady-rain-2009/hollywood-reporter--david-rooney.json",
-    "a-steady-rain-2009/nytimes--ben-brantley.json",
-    "a-steady-rain-2009/variety--david-rooney.json"
+    "1984-2017/hollywood-reporter--david-rooney.json",
+    "1984-2017/newyorker--hilton-als.json",
+    "1984-2017/nytimes--ben-brantley.json",
+    "1984-2017/vulture--christopher-bonanos.json",
+    "1984-2017/vulture--jesse-green.json",
+    "a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
+    "a-bronx-tale-2007/nyt-theater--jonathan-mandell.json",
+    "a-bronx-tale-2007/nytg--jeff-myhre.json",
+    "a-bronx-tale-2007/nytimes--charles-isherwood.json",
+    "a-chorus-line-2006/nytimes--ben-brantley.json",
+    "a-chorus-line-2006/variety--charles-isherwood.json",
+    "a-christmas-carol-2022/hollywood-reporter--david-rooney.json",
+    "a-christmas-carol-2022/newyorker--naomi-fry.json",
+    "a-christmas-carol-2022/nyt-theater--jonathan-mandell.json",
+    "a-christmas-carol-2022/nytimes--alexis-soloski.json",
+    "a-christmas-carol-2022/vulture--helen-shaw.json",
+    "a-christmas-carol-2022/vulture--jackson-mchenry.json",
+    "a-christmas-carol-2022/vulture--sara-holdren.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/nyt-theater--jonathan-mandell.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/variety--marilyn-stasio.json",
+    "a-life-in-the-theatre-2010/newyorker--john-lahr.json",
+    "a-life-in-the-theatre-2010/nytimes--ben-brantley.json",
+    "a-life-in-the-theatre-2010/variety--marilyn-stasio.json",
+    "a-tale-of-two-cities-2008/nytimes--ben-brantley.json",
+    "a-tale-of-two-cities-2008/variety--david-rooney.json",
+    "after-midnight-2013/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "browserbase": [
-      "data/review-texts/9-to-5-2009/hollywood-reporter--unknown.json",
-      "data/review-texts/a-christmas-story-the-musical-2012/hollywood-reporter--david-rooney.json"
+      "data/review-texts/1984-2017/hollywood-reporter--david-rooney.json",
+      "data/review-texts/a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/a-chorus-line-2006/variety--charles-isherwood.json"
     ],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "a-christmas-carol-2022/nytimes--jesse-green.json"
+    ],
     "brightdata": [
-      "a-view-from-the-bridge-2015/hollywood-reporter--leslie-felperin.json"
+      "a-christmas-carol-2022/variety--maya-phillips.json"
     ],
-    "archive": []
+    "archive": [
+      "a-gentlemans-guide-to-love-and-murder-2013/nytimes--ben-brantley.json",
+      "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json"
+    ]
   },
-  "startTime": "2026-02-07T10:58:13.507Z",
-  "lastProcessed": "a-view-from-the-bridge-2015/hollywood-reporter--leslie-felperin.json",
+  "startTime": "2026-02-07T10:58:57.843Z",
+  "lastProcessed": "after-midnight-2013/hollywood-reporter--david-rooney.json",
   "log": [
     {
-      "t": "2026-02-07T10:58:15.031Z",
+      "t": "2026-02-07T10:59:04.918Z",
       "event": "bb-session",
-      "session": "3b29c1a8",
-      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
+      "session": "bc1712c2",
+      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
     },
     {
-      "t": "2026-02-07T11:00:24.223Z",
+      "t": "2026-02-07T11:01:05.667Z",
       "event": "bb-session",
-      "session": "02aa5b1d",
-      "url": "https://www.newyorker.com/magazine/2019/12/23/a-christmas-carol-brings-dickens-t"
+      "session": "0afd8cec",
+      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
     },
     {
-      "t": "2026-02-07T11:00:26.073Z",
+      "t": "2026-02-07T11:01:07.927Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-07T11:02:51.589Z",
+      "t": "2026-02-07T11:03:23.882Z",
       "event": "bb-session",
-      "session": "dc656ae6",
-      "url": "https://www.vulture.com/2019/12/theater-review-a-christmas-carol-on-broadway.htm"
+      "session": "a0e0c582",
+      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
     },
     {
-      "t": "2026-02-07T11:02:54.101Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
+      "t": "2026-02-07T11:04:09.500Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770462216182\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAH9KYIxrk6EIANCKmrw==&cid=80v8oQ86xv8RAe4hlplYE_jx_QOtNb0JymxMPckq~LFKIPFPAnvjDjIv0OPpBmbc8qKtha6vkSLt7gUT3Fj~BV0V9kqfbEDTESOP~Or8FK_9KVbt_NEMDgGtJ56doVdc&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770462216182\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770462216182\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAH9KYIxrk6EIANCKmrw==&cid=80v8oQ86xv8RAe4hlplYE_jx_QOtNb0JymxMPckq~LFKIPFPAnvjDjIv0OPpBmbc8qKtha6vkSLt7gUT3Fj~BV0V9kqfbEDTESOP~Or8FK_9KVbt_NEMDgGtJ56doVdc&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770462216182\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770462216182\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAH9KYIxrk6EIANCKmrw==&cid=80v8oQ86xv8RAe4hlplYE_jx_QOtNb0JymxMPckq~LFKIPFPAnvjDjIv0OPpBmbc8qKtha6vkSLt7gUT3Fj~BV0V9kqfbEDTESOP~Or8FK_9KVbt_NEMDgGtJ56doVdc&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770462216182\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     },
     {
-      "t": "2026-02-07T11:05:19.122Z",
+      "t": "2026-02-07T11:05:07.791Z",
       "event": "bb-session",
-      "session": "ab72a5e2",
-      "url": "https://www.vulture.com/2019/11/theater-review-a-christmas-carol-on-broadway.htm"
+      "session": "d996f3b3",
+      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-951987"
     },
     {
-      "t": "2026-02-07T11:05:21.461Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-07T11:05:56.157Z",
+      "t": "2026-02-07T11:06:11.855Z",
       "event": "bb-session",
-      "session": "6bac582c",
-      "url": "http://www.hollywoodreporter.com/review/a-christmas-story-musical-theater-393180"
+      "session": "548bc756",
+      "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/"
     }
   ]
 }
