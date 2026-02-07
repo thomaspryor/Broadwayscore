@@ -20,12 +20,18 @@
   "contentTierReason": "Only aggregator excerpts available",
   "textWordCount": 151,
   "archivePath": "data/archives/reviews/mr-saturday-night-2022/newyorker--vinson-cunningham_2026-02-07.html",
-  "textFetchedAt": "2026-02-07T08:55:38.675Z",
+  "textFetchedAt": "2026-02-07T15:50:36.545Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
       "success": true
     }
   ],
@@ -88,6 +94,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "archiveOrgTimestamp": "20221130070234",
-  "archiveOrgUrl": "http://web.archive.org/web/20221130070234/https://www.newyorker.com/goings-on-about-town/theatre/mr-saturday-night-05-16-22"
+  "archiveOrgTimestamp": "20220524055617",
+  "archiveOrgUrl": "http://web.archive.org/web/20220524055617/https://www.newyorker.com/goings-on-about-town/theatre/mr-saturday-night-05-16-22"
 }
