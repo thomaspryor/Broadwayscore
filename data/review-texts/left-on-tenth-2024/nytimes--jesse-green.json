@@ -89,13 +89,19 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 299,
-  "archivePath": "data/archives/reviews/left-on-tenth-2024/nytimes--jesse-green_2026-02-06.html",
-  "textFetchedAt": "2026-02-06T16:32:33.765Z",
+  "archivePath": "data/archives/reviews/left-on-tenth-2024/nytimes--jesse-green_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T14:21:44.080Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
       "success": true
     }
   ],
@@ -104,8 +110,8 @@
   "truncationSignals": [],
   "textStatus": "incomplete",
   "sourceMethod": "archive",
-  "archiveOrgTimestamp": "20250504200417",
-  "archiveOrgUrl": "http://web.archive.org/web/20250504200417/https://www.nytimes.com/2024/10/23/theater/review-left-on-tenth-delia-ephron.html",
+  "archiveOrgTimestamp": "20241024022740",
+  "archiveOrgUrl": "http://web.archive.org/web/20241024022740/https://www.nytimes.com/2024/10/23/theater/review-left-on-tenth-delia-ephron.html",
   "textIssues": [
     "Word count too low: 299 (min: 300)"
   ],
