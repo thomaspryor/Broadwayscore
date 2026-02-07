@@ -668,27 +668,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
 
-          {/* Gold List Badges */}
-          {goldListMemberships.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-3">
-              {goldListMemberships.map(m => {
-                const listConfig = GOLD_LIST_MAP[m.listType];
-                if (!listConfig) return null;
-                return (
-                  <Link
-                    key={`${m.listType}-${m.season}`}
-                    href={`/lists/${m.listType}/${m.season}`}
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium ${listConfig.bgClass} ${listConfig.color} border ${listConfig.borderClass} hover:brightness-125 transition-all`}
-                  >
-                    <span>{listConfig.icon}</span>
-                    <span>{listConfig.shortTitle} Gold #{m.rank}</span>
-                    <span className="text-gray-500">({m.season})</span>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-
           {/* Critics' Take - inline below the poster/score row */}
           {consensus ? (
             <div className="mt-4 pt-4 border-t border-white/5">
@@ -757,6 +736,27 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </div>
           )}
         </div>
+
+        {/* Gold List Badges */}
+        {goldListMemberships.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-6">
+            {goldListMemberships.map(m => {
+              const listConfig = GOLD_LIST_MAP[m.listType];
+              if (!listConfig) return null;
+              return (
+                <Link
+                  key={`${m.listType}-${m.season}`}
+                  href={`/lists/${m.listType}/${m.season}`}
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium ${listConfig.bgClass} ${listConfig.color} border ${listConfig.borderClass} hover:brightness-125 transition-all`}
+                >
+                  <span>{listConfig.icon}</span>
+                  <span>{listConfig.shortTitle} Gold #{m.rank}</span>
+                  <span className="text-gray-500">({m.season})</span>
+                </Link>
+              );
+            })}
+          </div>
+        )}
 
         {/* Page Being Built / Historical Production banner — for shows with no reviews yet */}
         {show.status !== 'previews' && (!show.criticScore || show.criticScore.reviewCount === 0) && (() => {
