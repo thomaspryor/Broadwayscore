@@ -10420,18 +10420,6 @@
     "timestamp": "2026-02-04T15:02:43.966Z"
   },
   {
-    "reviewId": "finding-neverland-2015/variety--marilyn-stasio.json",
-    "showId": "finding-neverland-2015",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2015/legit/reviews/finding-neverland-review-broadway-1201464673/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): the lost boys, company, sylvia, the audience, harvey...",
-    "textLength": 6025,
-    "timestamp": "2026-02-04T15:14:33.331Z"
-  },
-  {
     "reviewId": "good-night-and-good-luck-2025/hollywood-reporter--david-rooney.json",
     "showId": "good-night-and-good-luck-2025",
     "outlet": "Hollywood Reporter",
@@ -15290,18 +15278,6 @@
     "garbageReason": "Multiple shows mentioned (15): home, gypsy, dead outlaw, some like it hot, company...",
     "textLength": 10171,
     "timestamp": "2026-02-06T05:13:13.785Z"
-  },
-  {
-    "reviewId": "fela-2009/variety--charles-isherwood.json",
-    "showId": "fela-2009",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2009/legit/reviews/fela-1200476265/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): home, hair, once, rain, high...",
-    "textLength": 6961,
-    "timestamp": "2026-02-06T05:17:11.748Z"
   },
   {
     "reviewId": "fool-for-love-2015/hollywood-reporter--david-rooney.json",
@@ -22454,5 +22430,77 @@
     "garbageReason": "Multiple shows mentioned (14): west side story, spring awakening, the audience, hair, once...",
     "textLength": 7885,
     "timestamp": "2026-02-07T07:23:12.703Z"
+  },
+  {
+    "reviewId": "fela-2009/variety--charles-isherwood.json",
+    "showId": "fela-2009",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2009/legit/reviews/fela-1200476265/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): home, hair, once, rain, high...",
+    "textLength": 7042,
+    "timestamp": "2026-02-07T07:23:36.581Z"
+  },
+  {
+    "reviewId": "finding-neverland-2015/hollywood-reporter--david-rooney.json",
+    "showId": "finding-neverland-2015",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/matthew-morrison-finding-neverland-theater-789037?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+%28The+Hollywood+Reporter+-+Top+Stories%29",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): wicked, mamma mia!, proof, home, company...",
+    "textLength": 11470,
+    "timestamp": "2026-02-07T07:24:02.811Z"
+  },
+  {
+    "reviewId": "finding-neverland-2015/nytimes--unknown.json",
+    "showId": "finding-neverland-2015",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2015/04/16/theater/review-finding-neverland-a-broadway-musical-with-matthew-morrison.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): english, the audience, harvey, once, rent",
+    "textLength": 2347,
+    "timestamp": "2026-02-07T07:25:30.255Z"
+  },
+  {
+    "reviewId": "finding-neverland-2015/variety--marilyn-stasio.json",
+    "showId": "finding-neverland-2015",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2015/legit/reviews/finding-neverland-review-broadway-1201464673/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): the lost boys, company, sylvia, the audience, harvey...",
+    "textLength": 6024,
+    "timestamp": "2026-02-07T07:26:38.330Z"
+  },
+  {
+    "reviewId": "finding-neverland-2015/vulture--jesse-green.json",
+    "showId": "finding-neverland-2015",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2015/04/theater-review-finding-neverland.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): wicked, west side story, sylvia, act one, harvey...",
+    "textLength": 11401,
+    "timestamp": "2026-02-07T07:26:42.554Z"
+  },
+  {
+    "reviewId": "first-date-2013/nytimes--charles-isherwood.json",
+    "showId": "first-date-2013",
+    "outlet": "New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://theater.nytimes.com/2013/08/09/theater/reviews/first-date-a-musical-opens-on-broadway.html?pagewanted=all&_r=2&",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): just in time, appropriate, smash, the minutes, the audience...",
+    "textLength": 6561,
+    "timestamp": "2026-02-07T07:30:55.899Z"
   }
 ]
