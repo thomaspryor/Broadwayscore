@@ -11656,18 +11656,6 @@
     "timestamp": "2026-02-05T03:47:40.555Z"
   },
   {
-    "reviewId": "ring-of-fire-2006/hollywood-reporter--david-rooney.json",
-    "showId": "ring-of-fire-2006",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/ring-fire-theater-review-119047/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (3): sunset boulevard, sunset boulevard, hair",
-    "textLength": 654,
-    "timestamp": "2026-02-05T03:50:24.567Z"
-  },
-  {
     "reviewId": "she-loves-me-2016/vulture--jesse-green.json",
     "showId": "she-loves-me-2016",
     "outlet": "Vulture",
@@ -15592,18 +15580,6 @@
     "timestamp": "2026-02-06T09:17:08.812Z"
   },
   {
-    "reviewId": "rodgers-hammersteins-cinderella-2013/hollywood-reporter--david-rooney.json",
-    "showId": "rodgers-hammersteins-cinderella-2013",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/rodgers-hammersteins-cinderella-theater-review-425763",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): mamma mia!, hair, lysistrata jones, once, rain...",
-    "textLength": 8927,
-    "timestamp": "2026-02-06T09:21:07.750Z"
-  },
-  {
     "reviewId": "a-dolls-house-2023/hollywood-reporter--david-rooney.json",
     "showId": "a-dolls-house-2023",
     "outlet": "Hollywood Reporter",
@@ -17678,18 +17654,6 @@
     "garbageReason": "Multiple shows mentioned (8): english, hand to god, harvey, cyrano de bergerac, once...",
     "textLength": 7813,
     "timestamp": "2026-02-06T18:01:02.182Z"
-  },
-  {
-    "reviewId": "pretty-woman-the-musical-2018/vulture--sara-holdren.json",
-    "showId": "pretty-woman-the-musical-2018",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "http://www.vulture.com/2018/08/theater-pretty-woman-and-the-trouble-with-onstage-nostalgia.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): purpose, carousel, my fair lady, summer, violet...",
-    "textLength": 11056,
-    "timestamp": "2026-02-06T18:02:49.295Z"
   },
   {
     "reviewId": "private-lives-2011/hollywood-reporter--david-rooney.json",
@@ -24566,5 +24530,77 @@
     "garbageReason": "Multiple shows mentioned (10): purpose, my fair lady, groundhog day, act one, picnic...",
     "textLength": 5739,
     "timestamp": "2026-02-07T14:45:15.779Z"
+  },
+  {
+    "reviewId": "rain-2010/hollywood-reporter--frank-scheck.json",
+    "showId": "rain-2010",
+    "outlet": "Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/rain-tribute-beatles-broadway-theater-32763",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): appropriate, the present, the performers, once, high...",
+    "textLength": 4290,
+    "timestamp": "2026-02-07T14:48:52.252Z"
+  },
+  {
+    "reviewId": "pretty-woman-the-musical-2018/vulture--sara-holdren.json",
+    "showId": "pretty-woman-the-musical-2018",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "http://www.vulture.com/2018/08/theater-pretty-woman-and-the-trouble-with-onstage-nostalgia.html",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): purpose, carousel, my fair lady, summer, violet...",
+    "textLength": 11055,
+    "timestamp": "2026-02-07T14:49:11.967Z"
+  },
+  {
+    "reviewId": "rain-2010/nytimes--elisabeth-vincentelli.json",
+    "showId": "rain-2010",
+    "outlet": "New York Times",
+    "critic": "Elisabeth Vincentelli",
+    "url": "https://www.nytimes.com/2025/11/08/theater/purple-rain-review-prince.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, purpose, betrayal, pretty woman: the musical, 1984...",
+    "textLength": 7189,
+    "timestamp": "2026-02-07T14:51:17.874Z"
+  },
+  {
+    "reviewId": "rain-2010/variety--charles-isherwood.json",
+    "showId": "rain-2010",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2010/legit/reviews/when-the-rain-stops-falling-1117942369/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chicago, our town, mothers and sons, evita, elling...",
+    "textLength": 6323,
+    "timestamp": "2026-02-07T14:51:26.794Z"
+  },
+  {
+    "reviewId": "ring-of-fire-2006/hollywood-reporter--david-rooney.json",
+    "showId": "ring-of-fire-2006",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/ring-fire-theater-review-119047/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"ring of fire\" not mentioned in text; No theater-related keywords in short text",
+    "textLength": 887,
+    "timestamp": "2026-02-07T14:52:44.187Z"
+  },
+  {
+    "reviewId": "rodgers-hammersteins-cinderella-2013/hollywood-reporter--david-rooney.json",
+    "showId": "rodgers-hammersteins-cinderella-2013",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/rodgers-hammersteins-cinderella-theater-review-425763",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): hair, lysistrata jones, once, rain, high...",
+    "textLength": 9429,
+    "timestamp": "2026-02-07T14:54:03.177Z"
   }
 ]
