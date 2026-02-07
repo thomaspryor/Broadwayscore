@@ -141,3 +141,11 @@ jobs:
             echo "## No Changes" >> $GITHUB_STEP_SUMMARY
             echo "Scrape completed but no new data found." >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: Record pipeline success
+        if: success()
+        run: |
+          mkdir -p data/audit/pipeline-health
+          date -u > data/audit/pipeline-health/weekly-grosses.last-success
+          git add data/audit/pipeline-health/
+          git diff --staged --quiet || git commit -m "health: Record weekly-grosses success" && git push || true
