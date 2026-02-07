@@ -75,6 +75,9 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'BACKSTAGE': { tier: 2, name: 'Backstage', scoreFormat: 'text_bucket' },
   'VILLAGEVOICE': { tier: 2, name: 'The Village Voice', scoreFormat: 'text_bucket' },
   'FT': { tier: 2, name: 'Financial Times', scoreFormat: 'text_bucket' },
+  'PHILINQ': { tier: 2, name: 'The Philadelphia Inquirer', scoreFormat: 'text_bucket' },
+  'CHISUNTIMES': { tier: 2, name: 'Chicago Sun-Times', scoreFormat: 'text_bucket' },
+  'NYSUN': { tier: 2, name: 'The New York Sun', scoreFormat: 'text_bucket' },
 
   // Tier 3: Smaller outlets, blogs, niche sites
   'AMNY': { tier: 3, name: 'amNewYork', scoreFormat: 'text_bucket' },

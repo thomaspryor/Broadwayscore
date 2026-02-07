@@ -12,6 +12,109 @@ import reviewsData from '../../data/reviews.json';
 import showsData from '../../data/shows.json';
 
 // ============================================
+// Normalization maps — merge typo duplicates
+// ============================================
+
+// Critic name typos → canonical name (case-sensitive keys matching reviews.json)
+const CRITIC_NAME_FIXES: Record<string, string> = {
+  'Ben Brantly': 'Ben Brantley',
+  'Ben Branley': 'Ben Brantley',
+  'Ben Brantley (Pt. 2)': 'Ben Brantley',
+  'Aramide Timubu': 'Aramide Tinubu',
+  'Thom Geir': 'Thom Geier',
+  'Thom Geler': 'Thom Geier',
+  'Thom Greier': 'Thom Geier',
+  'Franck Scheck': 'Frank Scheck',
+  'Frank Sheck': 'Frank Scheck',
+  'Jonny Oleksinski': 'Johnny Oleksinski',
+  'Hinton Als': 'Hilton Als',
+  'Sarah Holdren': 'Sara Holdren',
+  'Linda Winder': 'Linda Winer',
+  'Robert Holfer': 'Robert Hofler',
+  'Jonathan Mandrell': 'Jonathan Mandell',
+  'Elyse Gardner': 'Elysa Gardner',
+  'Brain Scott Lipton': 'Brian Scott Lipton',
+  'Brian Lipton': 'Brian Scott Lipton',
+  'Scott Lipton': 'Brian Scott Lipton',
+  'Lea Greenblatt': 'Leah Greenblatt',
+  'Lovia Gyarke': 'Lovia Gyarkye',
+  'Barbara Shuler': 'Barbara Schuler',
+  'Charles McNUlty': 'Charles McNulty',
+  'Marilyn Stasio.': 'Marilyn Stasio',
+  'Marilyn Stasio (Pt. 2)': 'Marilyn Stasio',
+  'Michal Feingold': 'Michael Feingold',
+  'Suzt Evans': 'Suzy Evans',
+  'Adam Markavitz': 'Adam Markovitz',
+  'Diana Snyder': 'Diane Snyder',
+  'A. D. Amorosi': 'A.D. Amorosi',
+  'Rob Weinert- Kendt': 'Rob Weinert-Kendt',
+  'Elizabeth Vincentelli': 'Elisabeth Vincentelli',
+  'Steve Suskin': 'Steven Suskin',
+  'Daniel D&#8217;Addario': "Daniel D'Addario",
+  'CSA.     Naveen Kumar': 'Naveen Kumar',
+  'Reviews Karen Galindo': 'Karen Galindo',
+  'Michael Glitz': 'Michael Giltz',
+  'Nancy Sasso Janis': 'Sasso Janis',
+};
+
+// Variant outletIds → canonical outletId (merges split profiles)
+const OUTLET_ID_FIXES: Record<string, string> = {
+  'newyorkmagazine': 'vulture',
+  'vulturecom': 'vulture',
+  'the-guardian-uk': 'guardian',
+  'ny-post': 'nypost',
+  'ny-newsday': 'newsday',
+  'entertainment-weekly': 'ew',
+  'broadwayworldcom': 'broadwayworld',
+  'chicago-tribute': 'chicagotribune',
+  'new-york-1': 'ny1',
+  'observer-david-cote': 'observer',
+  'associated-press': 'ap',
+  'associated-press-mark-kennedy': 'ap',
+  'amny-matt-windman': 'amny',
+  'amnycom': 'amny',
+  'am-ny-matt-windman': 'amny',
+  'theaterscenecom': 'theater-scene',
+  'bloomberg-news': 'bloomberg',
+  'newyorktheater': 'nyt-theater',
+  'new-york-theatre': 'nytg',
+  'new-york-theatre-guide-gillian-russo': 'nytg',
+  'financial-times-uk': 'financialtimes',
+  'the-stage-uk': 'thestage',
+  'the-telegraph-uk': 'telegraph',
+  'the-times-uk': 'the-times',
+  'the-independent-uk': 'the-independent',
+  'the-star-ledger': 'njcom',
+  'forward-samuel-eli-shepherd': 'forward',
+  '1minutecritic': 'one-minute-critic',
+  'oneminutecritic': 'one-minute-critic',
+  '1-minute-critic-matthew-wexler': 'one-minute-critic',
+  'the-record': 'bergen-record',
+  'the-record-bergen': 'bergen-record',
+  'northjereycom': 'northjerseycom',
+  'theatre-news-online': 'theater-news-online',
+  'new-city-stage': 'newcity-stage',
+  'perezhilton': 'perez-hilton',
+  'melindas-malarky': 'melindasmalarky',
+  'fort-worth-star-telgram': 'fort-worth-star-telegram',
+  'the-faster-times': 'faster-times',
+  'the-news-herald': 'news-herald',
+  'shelby-star-patrick-ryan': 'usatoday',
+  'hollywood-soapbox-john-soltes': 'hollywood-soapbox',
+};
+
+// Garbage outletIds that are review fragments, not real outlets — skip entirely
+const GARBAGE_OUTLET_IDS = new Set([
+  'is-intense-in-a-way-ive-never-seen-on-broadway',
+  'whose-title-is-something-of-a-misnomer',
+  'should-appeal-to-two-audiences',
+  'keep-things-speeding-along',
+  'beetlejuice-beetlejuice',
+  'ricky-martin',
+  'is-not-only-an-ewent',
+]);
+
+// ============================================
 // Date parsing — explicit, no raw new Date()
 // ============================================
 
@@ -115,7 +218,16 @@ for (const review of reviews) {
   const show = showMetaMap.get(review.showId);
   if (!show) continue;
 
-  const tierInfo = getOutletTier(review.outletId);
+  // Normalize outletId — skip garbage entries
+  const rawOutletId = review.outletId;
+  if (GARBAGE_OUTLET_IDS.has(rawOutletId)) continue;
+  const outletId = OUTLET_ID_FIXES[rawOutletId] || rawOutletId;
+
+  // Normalize critic name
+  const rawCriticName = review.criticName;
+  const criticName = rawCriticName ? (CRITIC_NAME_FIXES[rawCriticName] || rawCriticName) : null;
+
+  const tierInfo = getOutletTier(outletId);
   const parsedDate = parseReviewDate(review.publishDate);
 
   const profileReview: ProfileReview = {
@@ -126,10 +238,10 @@ for (const review of reviews) {
     showOpeningDate: show.openingDate,
     showStatus: show.status,
     showType: show.type,
-    outletId: review.outletId,
+    outletId,
     outlet: review.outlet,
     outletSlug: '', // filled in after outlet profiles built
-    criticName: review.criticName || null,
+    criticName,
     criticSlug: null, // filled in after critic profiles built
     url: review.url,
     publishDate: review.publishDate || null,
@@ -141,12 +253,11 @@ for (const review of reviews) {
   };
 
   // Group by outletId (canonical)
-  const outletKey = review.outletId;
+  const outletKey = outletId;
   if (!outletReviewsMap.has(outletKey)) outletReviewsMap.set(outletKey, []);
   outletReviewsMap.get(outletKey)!.push(profileReview);
 
   // Group by critic (exclude Unknown)
-  const criticName = review.criticName;
   if (criticName && criticName !== 'Unknown') {
     const criticKey = criticName;
     if (!criticReviewsMap.has(criticKey)) criticReviewsMap.set(criticKey, []);
