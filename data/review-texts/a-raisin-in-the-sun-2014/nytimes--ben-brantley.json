@@ -5,13 +5,13 @@
   "criticName": "Ben Brantley",
   "url": "http://www.nytimes.com/2014/04/04/theater/raisin-in-the-sun-brings-denzel-washington-back-to-broadway.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "The spark of rebellion, the kind that makes a man stand up and fight, has almost been extinguished in Walter Lee Younger.\n\nAs portrayed by Denzel Washington in Kenny Leon’s disarmingly relaxed revival of Lorraine Hansberry’s “A Raisin in the Sun” — which opened on Thursday night at the Ethel Barrymore Theater — Walter appears worn down, worn out and about ready to crawl into bed for good. Frankly, he looks a whole lot older than you probably remember him.\n\nThat’s partly because, at 59, Mr. Washington, the much laureled movie star, is about a quarter of a century older than the character he is playing, at least as written. (This production bumps Walter’s age up to 40 from 35.) But it’s also because, as this production of “Raisin” makes clearer than any I’ve seen before, Walter inhabits a world that ages men like him fast.\n\nListen to how his mama, Lena (LaTanya Richardson Jackson), describes her late husband’s existence: “I seen him, night after night, come in, and look at that rug, and then look at me, the red showing in his eyes, the veins moving in his head. I seen him grow thin and old before he was 40, working and working like somebody’s horse.”\n\nIn this engrossingly acted version of Hansberry’s epochal 1959 portrait of an African-American family, Walter is all too clearly his father’s son. Lena may tell him, shaking her head, that he is “something new, boy.” But you know that her great fear is that he is not. Small wonder she shows such smothering protectiveness to Walter’s 11-year-old son, Travis (Bryce Clyde Jenkins).\n\nA claustrophobic fatigue pervades the cramped, South Side Chicago apartment in which “A Raisin in the Sun” is set. And despite its often easygoing tone, a happy ending feels far from guaranteed. As designed by Mark Thompson, the Youngers’ living room cum kitchen is a narrow corridor that keeps its three generations of inhabitants in close, erosive proximity.",
+  "isFullReview": true,
   "bwwExcerpt": "The spark of rebellion, the kind that makes a man stand up and fight, has almost been extinguished in Walter Lee Younger. As portrayed by Denzel Washington in Kenny Leon's disarmingly relaxed revival of Lorraine Hansberry's \"A Raisin in the Sun\" -- which opened on Thursday night at the Ethel Barrymo...",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-RAISIN-IN-THE-SUN-Opens-on-Broadway-Updating-LIVE-2014",
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
@@ -19,5 +19,41 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "http://www.nytimes.com/2014/04/04/theater/raisin-in-the-sun-brings-denzel-washington-back-to-broadway.html",
-  "duplicateOf": "nytimes--unknown.json"
+  "duplicateOf": "nytimes--unknown.json",
+  "textWordCount": 327,
+  "archivePath": "data/archives/reviews/a-raisin-in-the-sun-2014/nytimes--ben-brantley_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T05:18:46.595Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 327,
+  "tierReason": "Full review text"
 }
