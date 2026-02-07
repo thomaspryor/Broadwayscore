@@ -3,10 +3,10 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2012/04/06/theater/reviews/evita-revival-with-elena-roger-and-ricky-martin.html",
+  "url": "https://www.nytimes.com/2012/04/06/theater/reviews/evita-starring-elena-roger-at-the-marquis-theater.html",
   "publishDate": "April 5, 2012",
-  "fullText": "This revival of Andrew Lloyd Webber and Tim Rice's 1979 musical biography of Eva Perón feels more like a concert than a fully realized theatrical experience, despite flashes of the political fire that made the original production so compelling.",
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2012/04/06/theater/reviews/evita-starring-elena-roger-at-the-marquis-theater.htmlShare full articleAdvertisement\n\nThis just in: Eva Perón is still dead.\n\nAnyone questioning the veracity of this assertion need only visit the Marquis Theater, where a lavish, worshipful wake is being held for Mrs. Perón (1919-52), the onetime first lady of Argentina. Michael Grandage’s revival of Andrew Lloyd Webber and Tim Rice’s “Evita,” which opened on Thursday night, is from beginning to end so stately and sober-sided that you may feel out of place if you’re not wearing your best black.\n\nAs it did when it was first staged on Broadway in 1979, this bio-operetta begins and ends with the funeral of its title character. But unlike that earlier incarnation this version by Mr. Grandage (the terrifically talented director of “Red” and “Frost/Nixon”) never seems to whip up any human life in the intervening two hours of sung-through flashbacks. Despite the hard work of its spirited leading lady, the Argentine actress Elena Roger — supported by a barely there Ricky Martin and a sterling Michael Cerveris — this musical combination of history pageant and requiem Mass feels about as warmblooded as a gilded mummy.\n\nThe glacial temperatures may shock theatergoers who saw “Evita” three decades ago. Though critics weren’t much impressed by the show then, audiences found their way to it, partly because of Harold Prince’s adrenaline-pumping Brecht-meets-Broadway staging and partly because of the white-hot performances of Patti LuPone and Mandy Patinkin.\n\nIt was generally acknowledged then that “Evita” showed little depth as either a study in politics or a character portrait. (Writing in The New York Times, Walter Kerr memorably described it as “a bold step backward into — of all things — the medieval morality play.”) But it struck a nerve in a society that was just beginning to view celebrities in the prophetic terms of the pop artist Andy Warhol.\n\nThe “Evita” of the late 1970s was good looking, groomed to a high sheen, two dimensional and sophisticatedly star struck, just like a Warhol portrait on the cover of Interview magazine. What’s more, it seemed to possess something called irony, a characteristic that had yet to grow into the default point of view for young Americans. The show cleaned up at the Tonys, made stars of Ms. LuPone and Mr. Patinkin and, despite a flat-line 1996 film version starring Madonna, is still fondly recalled as an emblem of the days when Broadway had sex appeal.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": "This revival of Andrew Lloyd Webber and Tim Rice's 1979 musical biography of Eva Perón feels more like a concert than a fully realized theatrical experience, despite flashes of the political fire that made the original production so compelling.",
   "originalScore": null,
   "assignedScore": 61,
@@ -16,7 +16,7 @@
   "bwwExcerpt": "Despite the hard work of its spirited leading lady, the Argentine actress Elena Roger — supported by a barely there Ricky Martin and a sterling Michael Cerveris — this musical combination of history pageant and requiem Mass feels about as warmblooded as a gilded mummy. ... I thought I was fully immune to the show’s signature song, “Don’t Cry for Me Argentina,” from having heard it everywhere (even discos) in my youth. But darned if that slippery thing, whose melody is a repeated leitmotif in the show, hasn’t attached itself like a leech all over again. And can anyone advise me about how to expel from my brain the jinglelike refrain, “I wanna be a part of B.A./Buenos Aires — Big Apple.” The show’s ads, borrowing from Mr. Rice’s lyrics, have it that “the truth is she never left you.” No, the notes she sings were just lying dormant, like a virus, waiting to infect our systems all over again.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-EVITA-Returns-to-Broadway-Updating-LIVE-20120405",
   "showScoreExcerpt": "This revival of Andrew Lloyd Webber and Tim Rice's 1979 musical biography of Eva Perón feels more like a concert than a fully realized theatrical experience, despite flashes of the political fire that made the original production so compelling.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (39 words)",
   "llmScore": {
     "score": 61,
@@ -78,5 +78,47 @@
     "web-search",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "previousUrl": "https://www.nytimes.com/2012/04/06/theater/reviews/evita-revival-with-elena-roger-and-ricky-martin.html",
+  "urlDiscoveredAt": "2026-02-07T13:34:07.401Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 422,
+  "archivePath": "data/archives/reviews/evita-2012/nytimes--ben-brantley_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T13:34:07.406Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 422,
+  "tierReason": "Full review text"
 }
