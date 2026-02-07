@@ -17824,42 +17824,6 @@
     "timestamp": "2026-02-06T15:11:42.243Z"
   },
   {
-    "reviewId": "dont-dress-for-dinner-2012/hollywood-reporter--david-rooney.json",
-    "showId": "dont-dress-for-dinner-2012",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/dont-dress-dinner-theater-review-316689",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): chicago, mamma mia!, giant, english, smash...",
-    "textLength": 5425,
-    "timestamp": "2026-02-06T15:11:58.285Z"
-  },
-  {
-    "reviewId": "dont-dress-for-dinner-2012/nytimes--charles-isherwood.json",
-    "showId": "dont-dress-for-dinner-2012",
-    "outlet": "The New York Times",
-    "critic": "Charles Isherwood",
-    "url": "http://theater.nytimes.com/2012/04/27/theater/reviews/dont-dress-for-dinner-at-american-airlines-theater.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): home, english, company, les liaisons dangereuses, noises off...",
-    "textLength": 6789,
-    "timestamp": "2026-02-06T15:12:02.863Z"
-  },
-  {
-    "reviewId": "dont-dress-for-dinner-2012/variety--marilyn-stasio.json",
-    "showId": "dont-dress-for-dinner-2012",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "http://www.variety.com/review/VE1117947452",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): chicago, purpose, les liaisons dangereuses, once, rain...",
-    "textLength": 4342,
-    "timestamp": "2026-02-06T15:13:10.756Z"
-  },
-  {
     "reviewId": "elf-2012/hollywood-reporter--david-rooney.json",
     "showId": "elf-2012",
     "outlet": "The Hollywood Reporter",
@@ -22274,5 +22238,89 @@
     "garbageReason": "Multiple shows mentioned (10): giant, company, king kong, the real thing, the audience...",
     "textLength": 5463,
     "timestamp": "2026-02-07T06:31:28.954Z"
+  },
+  {
+    "reviewId": "dont-dress-for-dinner-2012/hollywood-reporter--david-rooney.json",
+    "showId": "dont-dress-for-dinner-2012",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/dont-dress-dinner-theater-review-316689",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): chicago, mamma mia!, giant, english, smash...",
+    "textLength": 5425,
+    "timestamp": "2026-02-07T06:32:08.716Z"
+  },
+  {
+    "reviewId": "dont-dress-for-dinner-2012/nytimes--charles-isherwood.json",
+    "showId": "dont-dress-for-dinner-2012",
+    "outlet": "The New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://theater.nytimes.com/2012/04/27/theater/reviews/dont-dress-for-dinner-at-american-airlines-theater.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): home, english, company, les liaisons dangereuses, noises off...",
+    "textLength": 6789,
+    "timestamp": "2026-02-07T06:32:15.493Z"
+  },
+  {
+    "reviewId": "dont-dress-for-dinner-2012/variety--marilyn-stasio.json",
+    "showId": "dont-dress-for-dinner-2012",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "http://www.variety.com/review/VE1117947452",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chicago, purpose, les liaisons dangereuses, once, rain...",
+    "textLength": 3966,
+    "timestamp": "2026-02-07T06:32:37.238Z"
+  },
+  {
+    "reviewId": "everyday-rapture-2010/variety--david-rooney.json",
+    "showId": "everyday-rapture-2010",
+    "outlet": "Variety",
+    "critic": "David Rooney",
+    "url": "https://variety.com/2010/legit/reviews/everyday-rapture-1117942558/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): chicago, parade, once, high, memphis...",
+    "textLength": 4255,
+    "timestamp": "2026-02-07T06:34:22.381Z"
+  },
+  {
+    "reviewId": "fences-2010/hollywood-reporter--unknown.json",
+    "showId": "fences-2010",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/fences-review-946013",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): home, tina, venus in fur, once, driving miss daisy...",
+    "textLength": 9075,
+    "timestamp": "2026-02-07T06:34:38.662Z"
+  },
+  {
+    "reviewId": "fences-2010/variety--david-rooney.json",
+    "showId": "fences-2010",
+    "outlet": "Variety",
+    "critic": "David Rooney",
+    "url": "https://variety.com/2010/legit/reviews/fences-1117942410/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): appropriate, company, network, high, company...",
+    "textLength": 2872,
+    "timestamp": "2026-02-07T06:37:21.743Z"
+  },
+  {
+    "reviewId": "fences-2010/variety--owen-gleiberman.json",
+    "showId": "fences-2010",
+    "outlet": "Variety",
+    "critic": "Owen Gleiberman",
+    "url": "http://variety.com/2016/film/reviews/fences-review-denzel-washington-1201921332/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): death of a salesman, home, death of a salesman, king lear, the present...",
+    "textLength": 6002,
+    "timestamp": "2026-02-07T06:37:43.297Z"
   }
 ]
