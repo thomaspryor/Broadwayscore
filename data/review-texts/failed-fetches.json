@@ -12040,18 +12040,6 @@
     "timestamp": "2026-02-05T05:50:51.973Z"
   },
   {
-    "reviewId": "sunday-in-the-park-with-george-2017/hollywood-reporter--unknown.json",
-    "showId": "sunday-in-the-park-with-george-2017",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/sunday-park-george-941158",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (14): chicago, harmony, home, company, burn this...",
-    "textLength": 7252,
-    "timestamp": "2026-02-05T05:51:05.768Z"
-  },
-  {
     "reviewId": "sunday-in-the-park-with-george-2017/vulture--jesse-green.json",
     "showId": "sunday-in-the-park-with-george-2017",
     "outlet": "Vulture",
@@ -20656,54 +20644,6 @@
     "timestamp": "2026-02-07T09:35:49.584Z"
   },
   {
-    "reviewId": "suffs-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "suffs-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/04/18/suffs-broadway-review/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (21): wicked, hamilton, chicago, aladdin, hadestown...",
-    "textLength": 17317,
-    "timestamp": "2026-02-07T09:41:54.194Z"
-  },
-  {
-    "reviewId": "suffs-2024/nytimes--jesse-green.json",
-    "showId": "suffs-2024",
-    "outlet": "The New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2024/04/18/theater/suffs-review-broadway-shaina-taub.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): hamilton, home, purpose, summer, elling...",
-    "textLength": 6640,
-    "timestamp": "2026-02-07T09:41:58.153Z"
-  },
-  {
-    "reviewId": "suffs-2024/variety--frank-rizzo.json",
-    "showId": "suffs-2024",
-    "outlet": "Variety",
-    "critic": "Frank Rizzo",
-    "url": "https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): hamilton, home, purpose, the audience, evita...",
-    "textLength": 6798,
-    "timestamp": "2026-02-07T09:42:12.854Z"
-  },
-  {
-    "reviewId": "suffs-2024/vulture--sara-holdren.json",
-    "showId": "suffs-2024",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "https://www.vulture.com/article/theater-review-suffs-and-grenfell.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): hamilton, home, company, the present, rain...",
-    "textLength": 15199,
-    "timestamp": "2026-02-07T09:42:16.813Z"
-  },
-  {
     "reviewId": "sunset-boulevard-2024/nyt-theater--jonathan-mandell.json",
     "showId": "sunset-boulevard-2024",
     "outlet": "New York Theater",
@@ -24842,5 +24782,89 @@
     "garbageReason": "Multiple shows mentioned (12): giant, harmony, company, the audience, a raisin in the sun...",
     "textLength": 6277,
     "timestamp": "2026-02-07T15:48:43.630Z"
+  },
+  {
+    "reviewId": "suffs-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "suffs-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/04/18/suffs-broadway-review/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, company, the performers, once, elling...",
+    "textLength": 9107,
+    "timestamp": "2026-02-07T15:54:14.712Z"
+  },
+  {
+    "reviewId": "suffs-2024/nytimes--jesse-green.json",
+    "showId": "suffs-2024",
+    "outlet": "The New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2024/04/18/theater/suffs-review-broadway-shaina-taub.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): hamilton, home, purpose, summer, elling...",
+    "textLength": 6640,
+    "timestamp": "2026-02-07T15:54:18.487Z"
+  },
+  {
+    "reviewId": "suffs-2024/variety--frank-rizzo.json",
+    "showId": "suffs-2024",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): hamilton, home, purpose, the audience, evita...",
+    "textLength": 7145,
+    "timestamp": "2026-02-07T15:54:33.701Z"
+  },
+  {
+    "reviewId": "suffs-2024/vulture--sara-holdren.json",
+    "showId": "suffs-2024",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/theater-review-suffs-and-grenfell.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): hamilton, home, company, the present, rain...",
+    "textLength": 15199,
+    "timestamp": "2026-02-07T15:54:40.111Z"
+  },
+  {
+    "reviewId": "sunday-in-the-park-with-george-2017/hollywood-reporter--david-rooney.json",
+    "showId": "sunday-in-the-park-with-george-2017",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/sunday-in-the-park-with-george-theater-979116?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Freviews%2Ftheater+%28The+Hollywood+Reporter+-+Theater+Reviews%29",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, harmony, purpose, 1984, hair...",
+    "textLength": 9010,
+    "timestamp": "2026-02-07T15:54:52.232Z"
+  },
+  {
+    "reviewId": "sunday-in-the-park-with-george-2017/hollywood-reporter--unknown.json",
+    "showId": "sunday-in-the-park-with-george-2017",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/sunday-park-george-941158",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): chicago, harmony, home, company, burn this...",
+    "textLength": 7252,
+    "timestamp": "2026-02-07T15:55:10.534Z"
+  },
+  {
+    "reviewId": "sunday-in-the-park-with-george-2017/nytimes--unknown.json",
+    "showId": "sunday-in-the-park-with-george-2017",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2017/02/23/theater/review-sunday-in-the-park-with-george-jake-gyllenhaal.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): chicago, redwood, harmony, home, sunset boulevard...",
+    "textLength": 8690,
+    "timestamp": "2026-02-07T15:56:23.988Z"
   }
 ]
