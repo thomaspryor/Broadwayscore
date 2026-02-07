@@ -14932,18 +14932,6 @@
     "timestamp": "2026-02-06T06:21:43.160Z"
   },
   {
-    "reviewId": "heisenberg-2016/culturevulture--emily-s-mendel.json",
-    "showId": "heisenberg-2016",
-    "outlet": "culturevulture",
-    "critic": "Emily S. Mendel",
-    "url": "https://culturevulture.net/theater/heisenberg/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): proof, appropriate, english, the curious incident of the dog in the night-time, constellations...",
-    "textLength": 3981,
-    "timestamp": "2026-02-06T06:24:59.023Z"
-  },
-  {
     "reviewId": "dames-at-sea-2015/hollywood-reporter--david-rooney.json",
     "showId": "dames-at-sea-2015",
     "outlet": "Hollywood Reporter",
@@ -24062,5 +24050,77 @@
     "garbageReason": "Multiple shows mentioned (12): giant, home, purpose, head over heels, network...",
     "textLength": 9486,
     "timestamp": "2026-02-07T12:57:55.840Z"
+  },
+  {
+    "reviewId": "hangmen-2022/nytimes--jesse-green.json",
+    "showId": "hangmen-2022",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2022/04/21/theater/hangmen-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): company, american buffalo, the minutes, how i learned to drive, the audience...",
+    "textLength": 7645,
+    "timestamp": "2026-02-07T13:01:58.115Z"
+  },
+  {
+    "reviewId": "heart-of-rock-and-roll-2024/nytimes--elisabeth-vincentelli.json",
+    "showId": "heart-of-rock-and-roll-2024",
+    "outlet": "The New York Times",
+    "critic": "Elisabeth Vincentelli",
+    "url": "https://www.nytimes.com/2024/04/22/theater/heart-of-rock-and-roll-review.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): wicked, company, tina, bandstand, kinky boots...",
+    "textLength": 5379,
+    "timestamp": "2026-02-07T13:03:27.352Z"
+  },
+  {
+    "reviewId": "heisenberg-2016/culturevulture--emily-s-mendel.json",
+    "showId": "heisenberg-2016",
+    "outlet": "culturevulture",
+    "critic": "Emily S. Mendel",
+    "url": "https://culturevulture.net/theater/heisenberg/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): proof, appropriate, english, the curious incident of the dog in the night-time, constellations...",
+    "textLength": 4405,
+    "timestamp": "2026-02-07T13:04:55.988Z"
+  },
+  {
+    "reviewId": "heisenberg-2016/hollywood-reporter--frank-scheck.json",
+    "showId": "heisenberg-2016",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/heisenberg-theater-review-799824",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): waitress, the present, waitress, the curious incident of the dog in the night-time, the audience...",
+    "textLength": 4519,
+    "timestamp": "2026-02-07T13:05:13.675Z"
+  },
+  {
+    "reviewId": "heisenberg-2016/nyt-theater--jonathan-mandell.json",
+    "showId": "heisenberg-2016",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2016/11/05/heisenberg-review-mary-louise-parker-in-fake-romantic-comedy/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): hamilton, proof, waitress, summer, the humans...",
+    "textLength": 4323,
+    "timestamp": "2026-02-07T13:05:19.897Z"
+  },
+  {
+    "reviewId": "heisenberg-2016/nytg--jane-dentinger.json",
+    "showId": "heisenberg-2016",
+    "outlet": "New York Theatre Guide",
+    "critic": "Jane Dentinger",
+    "url": "http://nytheatreguide.com/2016/10/broadway-review-heisenberg-at-the-samuel-j-friedman-theatre/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): harmony, home, tina, the present, the price...",
+    "textLength": 45998,
+    "timestamp": "2026-02-07T13:05:31.448Z"
   }
 ]
