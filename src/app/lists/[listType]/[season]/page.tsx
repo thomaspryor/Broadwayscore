@@ -1,0 +1,231 @@
+/**
+ * /lists/[listType]/[season] — Gold List season page
+ * Shows ranked list of qualifying shows for a specific list type and season
+ */
+
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { GOLD_LIST_CONFIGS, GOLD_LIST_MAP, isValidGoldListType } from '@/config/gold-lists';
+import type { GoldListType } from '@/config/gold-lists';
+import { getGoldList, getSeasonsForListType, isCurrentSeason } from '@/lib/data-gold-lists';
+import { getOptimizedImageUrl } from '@/lib/images';
+
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+
+export function generateStaticParams() {
+  const params: Array<{ listType: string; season: string }> = [];
+
+  for (const config of GOLD_LIST_CONFIGS) {
+    const seasons = getSeasonsForListType(config.type);
+    for (const season of seasons) {
+      params.push({ listType: config.type, season });
+    }
+  }
+
+  return params;
+}
+
+export function generateMetadata({ params }: { params: { listType: string; season: string } }): Metadata {
+  const config = GOLD_LIST_MAP[params.listType as GoldListType];
+  if (!config) return {};
+
+  const title = `${config.title} — ${params.season} | Broadway Scorecard`;
+  const description = `${config.description}. See the top Broadway shows for the ${params.season} season.`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${BASE_URL}/lists/${params.listType}/${params.season}`,
+    },
+    openGraph: {
+      title: `${config.title} — ${params.season}`,
+      description,
+      url: `${BASE_URL}/lists/${params.listType}/${params.season}`,
+    },
+  };
+}
+
+function RankBadge({ rank, color }: { rank: number; color: string }) {
+  const isTop3 = rank <= 3;
+  return (
+    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 ${
+      isTop3 ? `${color.replace('text-', 'bg-').replace('400', '500/20')} ${color} border border-current/20` : 'bg-surface-overlay text-gray-400 border border-white/10'
+    }`}>
+      {rank}
+    </div>
+  );
+}
+
+export default function GoldListSeasonPage({ params }: { params: { listType: string; season: string } }) {
+  const { listType, season } = params;
+
+  // Validate list type
+  if (!isValidGoldListType(listType)) {
+    notFound();
+  }
+
+  // Validate season format
+  if (!/^\d{4}-\d{4}$/.test(season)) {
+    notFound();
+  }
+
+  const config = GOLD_LIST_MAP[listType as GoldListType];
+  const entries = getGoldList(listType as GoldListType, season);
+  const allSeasons = getSeasonsForListType(listType as GoldListType);
+  const isCurrent = isCurrentSeason(season);
+
+  return (
+    <div className="min-h-screen bg-surface">
+      <div className="max-w-3xl mx-auto px-4 py-6 sm:py-8">
+        {/* Breadcrumb */}
+        <nav className="text-sm text-gray-400 mb-4" aria-label="Breadcrumb">
+          <ol className="flex items-center gap-2">
+            <li>
+              <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            </li>
+            <li className="text-gray-500">/</li>
+            <li>
+              <Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link>
+            </li>
+            <li className="text-gray-500">/</li>
+            <li className="text-gray-300">{config.shortTitle}</li>
+          </ol>
+        </nav>
+
+        {/* Back Link */}
+        <Link href="/lists" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          All Gold Lists
+        </Link>
+
+        {/* Header */}
+        <div className="mb-6">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-3xl">{config.icon}</span>
+            <h1 className={`text-2xl sm:text-3xl font-bold ${config.color}`}>
+              {config.title}
+            </h1>
+          </div>
+          <p className="text-gray-400">
+            {config.description}
+            {isCurrent && <span className="ml-2 text-xs text-amber-400">(In Progress)</span>}
+          </p>
+        </div>
+
+        {/* List Type Tabs */}
+        <div className="flex overflow-x-auto gap-1 mb-4 pb-1 -mx-1 px-1">
+          {GOLD_LIST_CONFIGS.map(c => (
+            <Link
+              key={c.type}
+              href={`/lists/${c.type}/${season}`}
+              className={`flex-shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                c.type === listType
+                  ? `${c.bgClass} ${c.color} border ${c.borderClass}`
+                  : 'text-gray-400 hover:text-gray-300 hover:bg-white/5'
+              }`}
+            >
+              {c.icon} {c.shortTitle}
+            </Link>
+          ))}
+        </div>
+
+        {/* Season Pills */}
+        <div className="flex overflow-x-auto gap-1.5 mb-6 pb-1 -mx-1 px-1">
+          <Link
+            href={`/lists/${listType}/all-time`}
+            className="flex-shrink-0 px-2.5 py-1 rounded-md text-xs font-medium text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            All-Time
+          </Link>
+          {allSeasons.slice(0, 8).map(s => (
+            <Link
+              key={s}
+              href={`/lists/${listType}/${s}`}
+              className={`flex-shrink-0 px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
+                s === season
+                  ? 'bg-white/10 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              {s}
+            </Link>
+          ))}
+        </div>
+
+        {/* Show List */}
+        {entries.length > 0 ? (
+          <div className="space-y-3">
+            {entries.map(entry => (
+              <Link
+                key={entry.showId}
+                href={`/show/${entry.slug}`}
+                className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group"
+              >
+                <RankBadge rank={entry.rank} color={config.color} />
+
+                {/* Thumbnail */}
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                  {entry.thumbnail ? (
+                    <img
+                      src={getOptimizedImageUrl(entry.thumbnail, 'thumbnail')}
+                      alt={`${entry.title} Broadway ${entry.type || 'show'}`}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-xl">🎭</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <h2 className="font-bold text-white text-sm sm:text-base group-hover:text-brand transition-colors truncate">
+                    {entry.title}
+                  </h2>
+                  <p className="text-gray-400 text-xs sm:text-sm truncate">
+                    {entry.venue}
+                    {entry.type && <span className="text-gray-500"> · {entry.type}</span>}
+                  </p>
+                </div>
+
+                {/* Score/Value */}
+                <div className="text-right flex-shrink-0">
+                  <div className={`text-lg sm:text-xl font-bold ${config.color}`}>
+                    {entry.displayValue}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    {config.metricLabel}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-lg mb-2">No shows qualify for this list</p>
+            <p className="text-gray-500 text-sm">
+              {listType === 'hot-ticket-gold'
+                ? 'Capacity data may not be available for this season yet.'
+                : `No shows met the minimum threshold for the ${season} season.`}
+            </p>
+          </div>
+        )}
+
+        {/* Footer */}
+        <footer className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-8">
+          <p>
+            <strong className="text-gray-400">Methodology:</strong> {config.minDataRequirement}.
+            {config.threshold > 0 && ` Minimum ${config.metricLabel.toLowerCase()}: ${config.threshold}${config.metricSuffix}.`}
+            {' '}Maximum {config.maxPerSeason} shows per season.
+          </p>
+        </footer>
+      </div>
+    </div>
+  );
+}
