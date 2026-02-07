@@ -12448,42 +12448,6 @@
     "timestamp": "2026-02-05T05:35:16.661Z"
   },
   {
-    "reviewId": "spamalot-2023/vulture--jackson-mchenry.json",
-    "showId": "spamalot-2023",
-    "outlet": "Vulture",
-    "critic": "Jackson McHenry",
-    "url": "https://www.vulture.com/2023/11/theater-review-spamalot-broadway-revival.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (19): chicago, parade, camelot, company, west side story...",
-    "textLength": 11477,
-    "timestamp": "2026-02-05T05:40:08.428Z"
-  },
-  {
-    "reviewId": "spring-awakening-2015/hollywood-reporter--unknown.json",
-    "showId": "spring-awakening-2015",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/deaf-wests-spring-awakening-theater-827479",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): hamilton, mamma mia!, liberation, company, summer...",
-    "textLength": 8764,
-    "timestamp": "2026-02-05T05:40:26.836Z"
-  },
-  {
-    "reviewId": "spring-awakening-2015/variety--peter-debruge.json",
-    "showId": "spring-awakening-2015",
-    "outlet": "Variety",
-    "critic": "Peter Debruge",
-    "url": "http://variety.com/2015/legit/reviews/spring-awakening-review-deaf-west-broadway-1201603519/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): chicago, smash, company, the audience, hair...",
-    "textLength": 5785,
-    "timestamp": "2026-02-05T05:42:29.088Z"
-  },
-  {
     "reviewId": "stick-fly-2011/hollywood-reporter--david-rooney.json",
     "showId": "stick-fly-2011",
     "outlet": "Hollywood Reporter",
@@ -23186,5 +23150,65 @@
     "garbageReason": "Multiple shows mentioned (13): the book of mormon, smash, parade, camelot, company...",
     "textLength": 5768,
     "timestamp": "2026-02-07T09:32:59.002Z"
+  },
+  {
+    "reviewId": "spamalot-2023/vulture--jackson-mchenry.json",
+    "showId": "spamalot-2023",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/2023/11/theater-review-spamalot-broadway-revival.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (19): chicago, parade, camelot, company, west side story...",
+    "textLength": 11440,
+    "timestamp": "2026-02-07T09:33:07.646Z"
+  },
+  {
+    "reviewId": "spring-awakening-2015/hollywood-reporter--unknown.json",
+    "showId": "spring-awakening-2015",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/deaf-wests-spring-awakening-theater-827479",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): hamilton, mamma mia!, liberation, company, summer...",
+    "textLength": 8715,
+    "timestamp": "2026-02-07T09:33:42.372Z"
+  },
+  {
+    "reviewId": "spring-awakening-2015/variety--peter-debruge.json",
+    "showId": "spring-awakening-2015",
+    "outlet": "Variety",
+    "critic": "Peter Debruge",
+    "url": "http://variety.com/2015/legit/reviews/spring-awakening-review-deaf-west-broadway-1201603519/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): smash, company, the audience, hair, high...",
+    "textLength": 5792,
+    "timestamp": "2026-02-07T09:35:49.584Z"
+  },
+  {
+    "reviewId": "stranger-things-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "stranger-things-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/04/26/stranger-things-the-first-shadow-broadway-review-horror-season-4-ep-7-on-stage/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): maybe happy ending, oklahoma!, the price, hair, evita...",
+    "textLength": 8691,
+    "timestamp": "2026-02-07T09:37:46.800Z"
+  },
+  {
+    "reviewId": "stranger-things-2024/variety--frank-rizzo.json",
+    "showId": "stranger-things-2024",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-broadway-1236375485/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): harry potter and the cursed child, the wiz, home, prima facie, the inheritance...",
+    "textLength": 6541,
+    "timestamp": "2026-02-07T09:38:43.644Z"
   }
 ]
