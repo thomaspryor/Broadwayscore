@@ -1,0 +1,102 @@
+{
+  "showId": "aint-no-mo-2022",
+  "outletId": "thewrap",
+  "outlet": "The Wrap",
+  "criticName": "Robert Hofler",
+  "url": "https://www.thewrap.com/aint-no-mo-broadway-review-jordan-cooper/",
+  "playbillVerdictUrl": "https://www.thewrap.com/aint-no-mo-broadway-review-jordan-cooper/",
+  "source": "playbill-verdict",
+  "sources": [
+    "playbill-verdict",
+    "show-score-playwright",
+    "bww-roundup"
+  ],
+  "showScoreExcerpt": "\"Cooper’s writing delivers sustained absurdist comedy that comes crashing down at scene’s end, only to pick back up again for yet another wild ride through bigoted modern America.\"\n\nRead more",
+  "fullText": "A version of this review of “Ain’t No Mo’” ran in March 2019 for the Off Broadway production, with a different design team and mostly the same cast.\n\nIt’s the most ominous airplane since Rod Serling put his teleplay “How to Serve Man” on “The Twilight Zone” in 1962. The airplane in question is the centerpiece of Jordan E.",
+  "isFullReview": false,
+  "textWordCount": 59,
+  "archivePath": "data/archives/reviews/aint-no-mo-2022/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T19:21:02.442Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 65 (min: 300)",
+    "Show title not found in text"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 59,
+  "tierReason": "Short text (59 words)",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cooper's writing delivers sustained absurdist comedy that comes crashing down at scene's end, only to pick back up again for yet another wild ride through bigoted modern America.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises Cooper's writing as delivering 'sustained absurdist comedy' and describes it as a 'wild ride,' suggesting positive evaluation. However, confidence is low due to heavily truncated text and unclear overall verdict. | Gemini: The review excerpt praises the writing as \"sustained absurdist comedy.\" While truncated, this suggests a positive assessment, especially considering the context of the Off-Broadway production. | Kimi: The available text offers strong praise for the playwright's 'sustained absurdist comedy' and compares the production's ominous atmosphere favorably to Rod Serling's Twilight Zone. While the truncation prevents seeing the final verdict, the evaluative language is clearly enthusiastic about the writing and theatrical impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:47:39.096Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "bwwExcerpt": "On Broadway the word new is relative. According to the Tony Awards, a new play can be one that had its world premiere Off Broadway or elsewhere around the world a year, two or three ago. According to that definition, “Ain’t No Mo’” is not only the most audacious new play to open on Broadway in 2022....",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Jordan-E-Coopers-AINT-NO-MO-Opens-On-Broadway-20221202"
+}

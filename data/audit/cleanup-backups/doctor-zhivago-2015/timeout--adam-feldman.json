@@ -1,0 +1,113 @@
+{
+  "showId": "doctor-zhivago-2015",
+  "outletId": "timeout",
+  "outlet": "Time Out New York",
+  "criticName": "Adam Feldman",
+  "url": "https://www.timeout.com/newyork/theater/doctor-zhivago",
+  "publishDate": "April 21, 2015",
+  "fullText": "Doctor Zhivago: Theater review by David Cote\n\nBased on a sweeping historical novel crammed with characters and incident, Doctor Zhivago follows the fortunes of a heroic man with a divided heart across decades of turmoil and revolution, as he is hounded by a self-righteous upholder of justice. Sounds a little like Les Misérables, non? But we already have a pale imitation of that long-running juggernaut; it’s called Les Misérables and it’s playing at the Imperial. Zhivago, on the other hand, is Jean Valjean with a poetic streak and a medical bag.\n\nThere are crucial differences between the shows, of course: Les Miz’s epic narrative is far better organized, and the music is bombastic, but effective. Zhivago, based on Boris Pasternak’s 1957 doorstop (which also inspired the great David Lean film) is a dauntingly interior novel to distill into a musical. Its stakes are more nuanced than in Hugo’s moral fable, and there’s not much drama watching our hero (Tam Mutu) sit down to write a poem after finally sleeping with longtime obsession Lara (Kelli Barrett). This happens toward the end, long after we’ve absorbed the point that Bolsheviks are weasels and love and art transcend ideology.\n\nNo amount of Lucy Simon’s syrupy, portentous music—swamping Michael Korie and Amy Powers’s workmanlike lyrics—can make us care for the synthetic, drably colored pageant. Des McAnuff’s staging looks expensive but ugly, with cheesy video close‑ups of actors, giant Soviet propaganda posters, eruptions of fire and the occasional explosion or gunshot to wake us up. To Siberia with it.—David Cote\n\nBroadway Theatre (Broadway). Book by Michael Weller. Music by Lucy Simon. Lyrics by Michael Korie and Amy Powers. Directed by Des McAnuff. With Tam Mutu, Kelli Barrett. Running time: 2hrs 40mins. One intermission.",
+  "isFullReview": true,
+  "dtliExcerpt": "The show's creators have taken Pasternak's vast, complex novel and turned it into something that feels both rushed and sluggish—a peculiar achievement.",
+  "originalScore": 40,
+  "assignedScore": 40,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The show's creators have taken Pasternak's vast, complex novel and turned it into something that feels both rushed and sluggish—a peculiar achievement.",
+  "contentTier": "truncated",
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "No amount of Lucy Simon's syrupy, portentous music can make us care for the synthetic, drably colored pageant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Devastating pan with harsh criticism throughout. The critic finds the music 'syrupy,' the staging 'ugly,' calls it a 'synthetic, drably colored pageant,' and concludes with 'To Siberia with it' - a clear dismissal. | GPT-4o: The review is clearly negative, criticizing the music, lyrics, and staging. The original rating of 40 aligns with a negative assessment, indicating the production is not recommended. | Gemini: The review is largely negative, criticizing the music, lyrics, staging, and overall impact of the show. The critic's own rating is 40, which aligns with the negative bucket. | Kimi: The critic assigns a low rating of 40 and pans the music, lyrics, and staging as ugly and ineffective, ending with the dismissive verdict 'To Siberia with it.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T20:27:27.324Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.2.0"
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 40,
+    "geminiScore": 40,
+    "kimiScore": 40,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  },
+  "textQuality": "partial",
+  "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/doctor-zhivago",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ],
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 42,
+  "textWordCount": 288,
+  "archivePath": "data/archives/reviews/doctor-zhivago-2015/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:10:25.768Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20150515022602",
+  "archiveOrgUrl": "http://web.archive.org/web/20150515022602/http://www.timeout.com:80/newyork/theater/doctor-zhivago",
+  "textIssues": [
+    "Word count too low: 294 (min: 300)"
+  ],
+  "wordCount": 288,
+  "tierReason": "Short text (288 words)",
+  "rescoreCompletedAt": "2026-02-04T20:27:27.324Z"
+}

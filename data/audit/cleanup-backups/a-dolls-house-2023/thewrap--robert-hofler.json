@@ -1,0 +1,51 @@
+{
+  "showId": "a-dolls-house-2023",
+  "outletId": "thewrap",
+  "outlet": "The Wrap",
+  "criticName": "Robert Hofler",
+  "url": "https://www.thewrap.com/a-dolls-house-broadway-review-jessica-chastain/",
+  "playbillVerdictUrl": "https://www.thewrap.com/a-dolls-house-broadway-review-jessica-chastain/",
+  "source": "playbill-verdict",
+  "sources": [
+    "playbill-verdict"
+  ],
+  "fullText": "Theater audiences are used to writers taking the classics and completely overhauling them. Last month, Off Broadway saw the openings of Thomas Bradshaw’s “The Seagull/Woodstock, NY” and Marcus Gardley’s “Black Odyssey.” And next month on Broadway, the Bard’s moody Dane is transported to a backyard barbecue in the Deep South in James Ijames’ Pulitzer Prize-winning “Fat Ham.”",
+  "isFullReview": false,
+  "textWordCount": 57,
+  "archivePath": "data/archives/reviews/a-dolls-house-2023/thewrap--robert-hofler_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T18:09:40.793Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 63 (min: 300)",
+    "Show title not found in text"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 57,
+  "tierReason": "Short text (57 words)",
+  "rejectedAt": "2026-02-05T05:20:11.530Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This text is just context about adaptations of classics, not a review of any specific show. It mentions multiple shows but provides no evaluation of any production.; openai: The text discusses different shows and upcoming productions, not a review of a specific Broadway show.; gemini: This is just an introduction setting up a trend, not a review of a specific show.; kimi: The provided text contains only introductory context about adaptation trends and upcoming shows, with no evaluative content or critical opinion about any specific production. It mentions Fat Ham as opening 'next month' and describes other shows' premises without reviewing them.",
+  "promptVersion": "5.2.0",
+  "duplicateTextOf": "thewrap--benjamin-lindsay.json"
+}

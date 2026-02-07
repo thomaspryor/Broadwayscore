@@ -233,7 +233,7 @@ async function generateSynopsisWithLLM(show) {
   if (!ANTHROPIC_API_KEY) return null;
 
   const prompt = `Write a brief, engaging synopsis (2-3 sentences, ~100 words) for the Broadway show "${show.title}".
-It's a ${show.type || 'musical'} playing at ${show.venue || 'a Broadway theater'}.
+It's a ${show.type || 'play'} playing at ${show.venue || 'a Broadway theater'}.
 Write in present tense, focus on the story/premise, and make it sound exciting for potential theatergoers.
 Do not include any marketing language or ticket information.
 Just return the synopsis text, nothing else.`;
@@ -245,7 +245,7 @@ Just return the synopsis text, nothing else.`;
 async function generateCreativeTeamWithLLM(show) {
   if (!ANTHROPIC_API_KEY) return null;
 
-  const prompt = `List the main creative team for the Broadway show "${show.title}" (${show.type || 'musical'}).
+  const prompt = `List the main creative team for the Broadway show "${show.title}" (${show.type || 'play'}).
 Return ONLY a JSON array with objects containing "name" and "role" fields.
 Include: Director, Book writer, Composer, Lyricist, Choreographer (if applicable).
 Only include people you are confident about - better to have fewer accurate entries than guesses.

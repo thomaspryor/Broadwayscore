@@ -1,0 +1,92 @@
+{
+  "lastRun": "2026-02-07T20:00:29.593Z",
+  "consecutiveErrorDays": 0,
+  "results": [
+    {
+      "name": "Freshness: reviews.json",
+      "status": "pass",
+      "message": "20h old"
+    },
+    {
+      "name": "Freshness: shows.json",
+      "status": "pass",
+      "message": "2d old"
+    },
+    {
+      "name": "Freshness: grosses.json",
+      "status": "pass",
+      "message": "3d old"
+    },
+    {
+      "name": "Freshness: audience-buzz.json",
+      "status": "pass",
+      "message": "20h old"
+    },
+    {
+      "name": "Freshness: commercial.json",
+      "status": "pass",
+      "message": "4d old"
+    },
+    {
+      "name": "Freshness: critic-consensus.json",
+      "status": "pass",
+      "message": "4d old"
+    },
+    {
+      "name": "Freshness: lottery-rush.json",
+      "status": "pass",
+      "message": "3d old"
+    },
+    {
+      "name": "Sync: review-texts vs reviews.json",
+      "status": "pass",
+      "message": "22381 files, 8196 reviews (surplus: 14185)"
+    },
+    {
+      "name": "Sync: open show coverage",
+      "status": "pass",
+      "message": "29 open shows all have reviews and grosses"
+    },
+    {
+      "name": "Sync: baseline drift",
+      "status": "warn",
+      "message": "Reviews dropped: 8196 vs baseline 8274"
+    },
+    {
+      "name": "Pipeline: rebuild-reviews",
+      "status": "warn",
+      "message": "No timestamp file (workflow may not have run yet)"
+    },
+    {
+      "name": "Pipeline: update-show-status",
+      "status": "warn",
+      "message": "No timestamp file (workflow may not have run yet)"
+    },
+    {
+      "name": "Pipeline: collect-review-texts",
+      "status": "warn",
+      "message": "No timestamp file (workflow may not have run yet)"
+    },
+    {
+      "name": "Pipeline: weekly-grosses",
+      "status": "warn",
+      "message": "No timestamp file (workflow may not have run yet)"
+    },
+    {
+      "name": "Pipeline: weekly-integrity",
+      "status": "warn",
+      "message": "No timestamp file (workflow may not have run yet)"
+    },
+    {
+      "name": "Pipeline: test",
+      "status": "warn",
+      "message": "No timestamp file (workflow may not have run yet)"
+    },
+    {
+      "name": "Quality: scored review ratio",
+      "status": "pass",
+      "message": "40.9% scored (8196/20062)"
+    }
+  ],
+  "lastCleanStreak": 1
+}

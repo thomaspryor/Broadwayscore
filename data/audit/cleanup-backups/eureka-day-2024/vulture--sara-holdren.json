@@ -1,0 +1,82 @@
+{
+  "showId": "eureka-day-2024",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Sara Holdren",
+  "url": "https://www.vulture.com/article/theater-review-jonathan-spector-eureka-day-jessica-hecht.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 61,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": "Hecht and Gray are excellent here and throughout, as is Shapiro’s whole company. They’re not clowning — though there’s a delightful wink of a moment in which Irwin’s Don waxes misty-eyed over the “actually quite subtle” mime work of a former colleague. Rather, they’re performing that crucial aspect of theater, its function as a space of civic practice, quite literally a place where we rehearse the hardest conversations, where we experiment with how to put together a community. In his script’s epigraph, Spector quotes from Eula Bliss’s On Immunity, where Bliss herself cites a doctor who describes a certain vaccine as “important … from a public health standpoint” but “not as critical from an individual point of view.” “In order for this to make sense,” writes Bliss, “one must believe that individuals are not part of the public.” It’s this cognitive dissonance, so widespread and so clamorous and so tragically American, that theater, by its very nature, is always addressing, and in Eureka Day that essential refutation takes on explicit and eloquent form.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-EUREKA-DAY-Opens-On-Broadway-20241216",
+  "showScoreExcerpt": "“The show is a polite tiptoe along a cliff, a trek across a field of eggshells that as often as not are strewn atop landmines.”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a polite tiptoe along a cliff, a trek across a field of eggshells that as often as not are strewn atop landmines.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The metaphor suggests a show that is overly cautious and treacherous to navigate, implying significant problems. However, with only one curated excerpt available, the full verdict is unclear. | GPT-4o: The excerpt suggests a cautious and potentially unstable experience, indicating a mixed review. The lack of a clear positive or negative recommendation and the single excerpt warning lead to a low confidence score. | Gemini: The excerpt uses negative imagery (tiptoeing on eggshells, landmines) to describe the show, indicating a negative assessment. Given that this is the only excerpt, confidence is medium. | Kimi: The metaphorical excerpt describes the production as navigating dangerous, fragile territory with a 'polite tiptoe,' suggesting a tense but potentially overly cautious approach. Without the full review context, it's unclear whether this precariousness is praised as thrilling or criticized as timid, placing it in the mixed range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:51:17.506Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 49,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  },
+  "bwwScore": 8,
+  "sources": [
+    "show-score-playwright",
+    "bww-reviews",
+    "bww-roundup"
+  ]
+}

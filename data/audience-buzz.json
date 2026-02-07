@@ -12,7 +12,7 @@
       "Shrugging": "68-77",
       "Loathing": "0-67"
     },
-    "notes": "Dynamic weighting: Reddit fixed 20% (when >=15 items), Show Score & Mezzanine split remaining by sample size"
+    "notes": "Proportional weighting by reviewCount volume (max 80% single source)"
   },
   "shows": {
     "hamilton-2015": {
@@ -46,7 +46,7 @@
     "maybe-happy-ending-2024": {
       "title": "Maybe Happy Ending",
       "designation": "Loving",
-      "combinedScore": 91,
+      "combinedScore": 92,
       "sources": {
         "showScore": {
           "score": 95,
@@ -58,23 +58,25 @@
           "starRating": 4.6
         },
         "reddit": {
-          "score": 83,
-          "reviewCount": 994,
+          "score": 84,
+          "reviewCount": 734,
+          "totalPosts": 997,
+          "totalComments": 36980,
           "sentiment": {
-            "enthusiastic": 0.17,
-            "positive": 0.54,
-            "mixed": 0.1,
-            "negative": 0.09
+            "enthusiastic": 0.18,
+            "positive": 0.53,
+            "mixed": 0.09,
+            "negative": 0.08
           },
-          "positiveRate": 0.7112676056338029,
-          "lastUpdated": "2026-02-06"
+          "positiveRate": 0.7166212534059946,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
     "ragtime-2025": {
       "title": "Ragtime",
       "designation": "Loving",
-      "combinedScore": 93,
+      "combinedScore": 90,
       "sources": {
         "showScore": {
           "score": 93,
@@ -86,17 +88,18 @@
           "starRating": 4.6
         },
         "reddit": {
-          "score": 94,
-          "reviewCount": 9,
-          "lastUpdated": "2026-02-01",
+          "score": 79,
+          "reviewCount": 529,
+          "totalPosts": 756,
+          "totalComments": 23217,
           "sentiment": {
-            "enthusiastic": 0.7777777777777778,
-            "positive": 0.1111111111111111,
-            "mixed": 0,
-            "negative": 0.1111111111111111
+            "enthusiastic": 0.14,
+            "positive": 0.5,
+            "mixed": 0.1,
+            "negative": 0.16
           },
-          "recommendations": 3,
-          "positiveRate": 0.8888888888888888
+          "positiveRate": 0.6427221172022685,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
@@ -189,7 +192,7 @@
     "death-becomes-her-2024": {
       "title": "Death Becomes Her",
       "designation": "Loving",
-      "combinedScore": 88,
+      "combinedScore": 90,
       "sources": {
         "showScore": {
           "score": 94,
@@ -201,23 +204,25 @@
           "starRating": 4.4
         },
         "reddit": {
-          "score": 79,
-          "reviewCount": 472,
+          "score": 81,
+          "reviewCount": 298,
+          "totalPosts": 929,
+          "totalComments": 28460,
           "sentiment": {
-            "enthusiastic": 0.16,
-            "positive": 0.46,
-            "mixed": 0.12,
-            "negative": 0.14
+            "enthusiastic": 0.19,
+            "positive": 0.43,
+            "mixed": 0.1,
+            "negative": 0.11
           },
-          "positiveRate": 0.6186440677966102,
-          "lastUpdated": "2026-02-06"
+          "positiveRate": 0.62751677852349,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
     "the-outsiders-2024": {
       "title": "The Outsiders",
       "designation": "Loving",
-      "combinedScore": 88,
+      "combinedScore": 89,
       "sources": {
         "showScore": {
           "score": 92,
@@ -229,24 +234,25 @@
           "starRating": 4.4
         },
         "reddit": {
-          "score": 85,
-          "reviewCount": 7,
-          "lastUpdated": "2026-02-01",
+          "score": 78,
+          "reviewCount": 263,
+          "totalPosts": 854,
+          "totalComments": 25731,
           "sentiment": {
-            "enthusiastic": 0.42857142857142855,
-            "positive": 0.42857142857142855,
-            "mixed": 0,
-            "negative": 0.14285714285714285
+            "enthusiastic": 0.15,
+            "positive": 0.46,
+            "mixed": 0.04,
+            "negative": 0.17
           },
-          "recommendations": 1,
-          "positiveRate": 0.8571428571428571
+          "positiveRate": 0.6083650190114068,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
     "stranger-things-2024": {
       "title": "Stranger Things: The First Shadow",
-      "designation": "Liking",
-      "combinedScore": 87,
+      "designation": "Loving",
+      "combinedScore": 88,
       "sources": {
         "showScore": {
           "score": 91,
@@ -258,17 +264,18 @@
           "starRating": 4.3
         },
         "reddit": {
-          "score": 79,
-          "reviewCount": 7,
-          "lastUpdated": "2026-02-01",
+          "score": 78,
+          "reviewCount": 247,
+          "totalPosts": 156,
+          "totalComments": 5740,
           "sentiment": {
-            "enthusiastic": 0.5714285714285714,
-            "positive": 0,
-            "mixed": 0.14285714285714285,
-            "negative": 0.14285714285714285
+            "enthusiastic": 0.13,
+            "positive": 0.44,
+            "mixed": 0.1,
+            "negative": 0.12
           },
-          "recommendations": 1,
-          "positiveRate": 0.5714285714285714
+          "positiveRate": 0.5748987854251012,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
@@ -304,7 +311,7 @@
     "buena-vista-social-club-2025": {
       "title": "Buena Vista Social Club",
       "designation": "Loving",
-      "combinedScore": 91,
+      "combinedScore": 90,
       "sources": {
         "showScore": {
           "score": 96,
@@ -316,17 +323,18 @@
           "starRating": 4.1
         },
         "reddit": {
-          "score": 90,
-          "reviewCount": 5,
-          "lastUpdated": "2026-02-01",
+          "score": 70,
+          "reviewCount": 348,
+          "totalPosts": 456,
+          "totalComments": 27643,
           "sentiment": {
-            "enthusiastic": 0.2,
-            "positive": 0.8,
-            "mixed": 0,
-            "negative": 0
+            "enthusiastic": 0.05,
+            "positive": 0.42,
+            "mixed": 0.14,
+            "negative": 0.3
           },
-          "recommendations": 2,
-          "positiveRate": 1
+          "positiveRate": 0.47126436781609193,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
@@ -361,8 +369,8 @@
     },
     "just-in-time-2025": {
       "title": "Just in Time",
-      "designation": "Liking",
-      "combinedScore": 82,
+      "designation": "Loving",
+      "combinedScore": 88,
       "sources": {
         "showScore": {
           "score": 88,
@@ -374,16 +382,18 @@
           "starRating": 4.4
         },
         "reddit": {
-          "score": 55,
-          "reviewCount": 1,
+          "score": 81,
+          "reviewCount": 377,
+          "totalPosts": 653,
+          "totalComments": 17604,
           "sentiment": {
-            "enthusiastic": 0,
-            "positive": 0,
-            "mixed": 1,
-            "negative": 0
+            "enthusiastic": 0.14,
+            "positive": 0.55,
+            "mixed": 0.07,
+            "negative": 0.11
           },
-          "positiveRate": 0,
-          "lastUpdated": "2026-02-06"
+          "positiveRate": 0.6870026525198939,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
@@ -402,24 +412,25 @@
           "starRating": 4.2
         },
         "reddit": {
-          "score": 83,
-          "reviewCount": 9,
-          "lastUpdated": "2026-02-01",
+          "score": 81,
+          "reviewCount": 489,
+          "totalPosts": 103,
+          "totalComments": 3938,
           "sentiment": {
-            "enthusiastic": 0.3333333333333333,
-            "positive": 0.4444444444444444,
-            "mixed": 0,
-            "negative": 0.2222222222222222
+            "enthusiastic": 0.11,
+            "positive": 0.57,
+            "mixed": 0.15,
+            "negative": 0.11
           },
-          "recommendations": 6,
-          "positiveRate": 0.7777777777777778
+          "positiveRate": 0.6830265848670757,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
     "operation-mincemeat-2025": {
       "title": "Operation Mincemeat",
-      "designation": "Loving",
-      "combinedScore": 90,
+      "designation": "Liking",
+      "combinedScore": 87,
       "sources": {
         "showScore": {
           "score": 89,
@@ -431,24 +442,25 @@
           "starRating": 4.4
         },
         "reddit": {
-          "score": 96,
-          "reviewCount": 22,
-          "lastUpdated": "2026-02-01",
+          "score": 78,
+          "reviewCount": 660,
+          "totalPosts": 734,
+          "totalComments": 21793,
           "sentiment": {
-            "enthusiastic": 0.6363636363636364,
-            "positive": 0.3181818181818182,
-            "mixed": 0.045454545454545456,
-            "negative": 0
+            "enthusiastic": 0.15,
+            "positive": 0.46,
+            "mixed": 0.1,
+            "negative": 0.17
           },
-          "recommendations": 6,
-          "positiveRate": 0.9545454545454546
+          "positiveRate": 0.6151515151515151,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
     "oh-mary-2024": {
       "title": "Oh, Mary!",
       "designation": "Liking",
-      "combinedScore": 86,
+      "combinedScore": 87,
       "sources": {
         "showScore": {
           "score": 84,
@@ -460,23 +472,25 @@
           "starRating": 4.5
         },
         "reddit": {
-          "score": 75,
-          "reviewCount": 683,
+          "score": 73,
+          "reviewCount": 496,
+          "totalPosts": 900,
+          "totalComments": 27063,
           "sentiment": {
-            "enthusiastic": 0.1,
-            "positive": 0.47,
-            "mixed": 0.11,
-            "negative": 0.22
+            "enthusiastic": 0.11,
+            "positive": 0.41,
+            "mixed": 0.13,
+            "negative": 0.26
           },
-          "positiveRate": 0.5724743777452416,
-          "lastUpdated": "2026-02-06"
+          "positiveRate": 0.5201612903225806,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
     "oedipus-2025": {
       "title": "Oedipus",
       "designation": "Liking",
-      "combinedScore": 87,
+      "combinedScore": 81,
       "sources": {
         "showScore": {
           "score": 90,
@@ -488,17 +502,18 @@
           "starRating": 4.2
         },
         "reddit": {
-          "score": 90,
-          "reviewCount": 25,
-          "lastUpdated": "2026-02-01",
+          "score": 71,
+          "reviewCount": 675,
+          "totalPosts": 391,
+          "totalComments": 23817,
           "sentiment": {
-            "enthusiastic": 0.52,
-            "positive": 0.32,
-            "mixed": 0.08,
-            "negative": 0
+            "enthusiastic": 0.11,
+            "positive": 0.36,
+            "mixed": 0.12,
+            "negative": 0.3
           },
-          "recommendations": 5,
-          "positiveRate": 0.84
+          "positiveRate": 0.4666666666666667,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
@@ -591,7 +606,7 @@
     "and-juliet-2022": {
       "title": "& Juliet",
       "designation": "Liking",
-      "combinedScore": 83,
+      "combinedScore": 86,
       "sources": {
         "showScore": {
           "score": 91,
@@ -603,16 +618,18 @@
           "starRating": 4
         },
         "reddit": {
-          "score": 70,
-          "reviewCount": 63,
+          "score": 71,
+          "reviewCount": 410,
+          "totalPosts": 603,
+          "totalComments": 17837,
           "sentiment": {
-            "enthusiastic": 0.16,
-            "positive": 0.48,
+            "enthusiastic": 0.08,
+            "positive": 0.43,
             "mixed": 0.1,
-            "negative": 0.16
+            "negative": 0.3
           },
-          "positiveRate": 0.6349206349206349,
-          "lastUpdated": "2026-02-06"
+          "positiveRate": 0.5073170731707317,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
@@ -647,7 +664,7 @@
     "hells-kitchen-2024": {
       "title": "Hell's Kitchen",
       "designation": "Liking",
-      "combinedScore": 83,
+      "combinedScore": 84,
       "sources": {
         "showScore": {
           "score": 93,
@@ -659,16 +676,18 @@
           "starRating": 3.8
         },
         "reddit": {
-          "score": 71,
-          "reviewCount": 1068,
+          "score": 69,
+          "reviewCount": 638,
+          "totalPosts": 586,
+          "totalComments": 29849,
           "sentiment": {
-            "enthusiastic": 0.09,
+            "enthusiastic": 0.06,
             "positive": 0.38,
-            "mixed": 0.12,
-            "negative": 0.27
+            "mixed": 0.11,
+            "negative": 0.29
           },
-          "positiveRate": 0.46722846441947563,
-          "lastUpdated": "2026-02-06"
+          "positiveRate": 0.438871473354232,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
@@ -687,24 +706,25 @@
           "starRating": 3.9
         },
         "reddit": {
-          "score": 82,
-          "reviewCount": 5,
-          "lastUpdated": "2026-02-05",
+          "score": 68,
+          "reviewCount": 141,
+          "totalPosts": 170,
+          "totalComments": 1285,
           "sentiment": {
-            "enthusiastic": 0.4,
-            "positive": 0.4,
-            "mixed": 0,
-            "negative": 0.2
+            "enthusiastic": 0.11,
+            "positive": 0.28,
+            "mixed": 0.16,
+            "negative": 0.33
           },
-          "recommendations": 1,
-          "positiveRate": 0.8
+          "positiveRate": 0.3829787234042553,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
     "six-2021": {
       "title": "Six",
       "designation": "Liking",
-      "combinedScore": 83,
+      "combinedScore": 84,
       "sources": {
         "showScore": {
           "score": 88,
@@ -716,16 +736,18 @@
           "starRating": 4.1
         },
         "reddit": {
-          "score": 75,
-          "reviewCount": 477,
+          "score": 77,
+          "reviewCount": 149,
+          "totalPosts": 1048,
+          "totalComments": 29874,
           "sentiment": {
-            "enthusiastic": 0.13,
-            "positive": 0.4,
-            "mixed": 0.13,
-            "negative": 0.21
+            "enthusiastic": 0.09,
+            "positive": 0.5,
+            "mixed": 0.15,
+            "negative": 0.16
           },
-          "positiveRate": 0.5366876310272537,
-          "lastUpdated": "2026-02-06"
+          "positiveRate": 0.5973154362416108,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
@@ -933,7 +955,7 @@
     "bug-2026": {
       "title": "Bug",
       "designation": "Shrugging",
-      "combinedScore": 77,
+      "combinedScore": 74,
       "sources": {
         "showScore": {
           "score": 80,
@@ -945,17 +967,18 @@
           "starRating": 3.8
         },
         "reddit": {
-          "score": 79,
-          "reviewCount": 6,
-          "lastUpdated": "2026-02-04",
+          "score": 72,
+          "reviewCount": 602,
+          "totalPosts": 402,
+          "totalComments": 23283,
           "sentiment": {
-            "enthusiastic": 0.16666666666666666,
-            "positive": 0.6666666666666666,
-            "mixed": 0,
-            "negative": 0.16666666666666666
+            "enthusiastic": 0.08,
+            "positive": 0.42,
+            "mixed": 0.1,
+            "negative": 0.27
           },
-          "recommendations": 2,
-          "positiveRate": 0.8333333333333334
+          "positiveRate": 0.5,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
@@ -991,7 +1014,7 @@
     "the-great-gatsby-2024": {
       "title": "The Great Gatsby",
       "designation": "Shrugging",
-      "combinedScore": 75,
+      "combinedScore": 77,
       "sources": {
         "showScore": {
           "score": 82,
@@ -1003,24 +1026,25 @@
           "starRating": 3.8
         },
         "reddit": {
-          "score": 64,
-          "reviewCount": 5,
-          "lastUpdated": "2026-02-04",
+          "score": 67,
+          "reviewCount": 305,
+          "totalPosts": 652,
+          "totalComments": 18105,
           "sentiment": {
-            "enthusiastic": 0.2,
-            "positive": 0.2,
-            "mixed": 0.2,
-            "negative": 0.2
+            "enthusiastic": 0.08,
+            "positive": 0.3,
+            "mixed": 0.11,
+            "negative": 0.34
           },
-          "recommendations": 0,
-          "positiveRate": 0.4
+          "positiveRate": 0.380327868852459,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
     "marjorie-prime-2025": {
       "title": "Marjorie Prime",
       "designation": "Shrugging",
-      "combinedScore": 77,
+      "combinedScore": 74,
       "sources": {
         "showScore": {
           "score": 83,
@@ -1032,17 +1056,18 @@
           "starRating": 3.7
         },
         "reddit": {
-          "score": 80,
-          "reviewCount": 5,
-          "lastUpdated": "2026-02-01",
+          "score": 71,
+          "reviewCount": 640,
+          "totalPosts": 278,
+          "totalComments": 23462,
           "sentiment": {
-            "enthusiastic": 0.2,
-            "positive": 0.6,
-            "mixed": 0,
-            "negative": 0.2
+            "enthusiastic": 0.1,
+            "positive": 0.4,
+            "mixed": 0.12,
+            "negative": 0.29
           },
-          "recommendations": 3,
-          "positiveRate": 0.8
+          "positiveRate": 0.49375,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
@@ -1061,17 +1086,18 @@
           "starRating": 3.9
         },
         "reddit": {
-          "score": 67,
-          "reviewCount": 52,
-          "lastUpdated": "2026-02-01",
+          "score": 71,
+          "reviewCount": 883,
+          "totalPosts": 694,
+          "totalComments": 26633,
           "sentiment": {
-            "enthusiastic": 0.19230769230769232,
-            "positive": 0.28846153846153844,
-            "mixed": 0.21153846153846154,
-            "negative": 0.23076923076923078
+            "enthusiastic": 0.07,
+            "positive": 0.41,
+            "mixed": 0.16,
+            "negative": 0.25
           },
-          "recommendations": 8,
-          "positiveRate": 0.4807692307692308
+          "positiveRate": 0.4801812004530011,
+          "lastUpdated": "2026-02-07"
         }
       }
     },
@@ -1145,7 +1171,20 @@
           "reviewCount": 291,
           "starRating": 3.2
         },
-        "reddit": null
+        "reddit": {
+          "score": 59,
+          "reviewCount": 8,
+          "totalPosts": 8,
+          "totalComments": 421,
+          "sentiment": {
+            "enthusiastic": 0.13,
+            "positive": 0.13,
+            "mixed": 0.13,
+            "negative": 0.63
+          },
+          "positiveRate": 0.25,
+          "lastUpdated": "2026-02-07"
+        }
       }
     },
     "queen-versailles-2025": {

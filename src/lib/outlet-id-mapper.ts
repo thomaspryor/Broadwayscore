@@ -75,6 +75,9 @@ export const REGISTRY_TO_SCORING: Record<string, string> = {
   'towleroad': 'TOWLEROAD',
   'northjerseycom': 'NORTHJERSEY',
   'nbcny': 'NBC',
+  'philadelphia-inquirer': 'PHILINQ',
+  'chicago-sun-times': 'CHISUNTIMES',
+  'new-york-sun': 'NYSUN',
 };
 
 // Additional alias mappings for common variations found in review data
@@ -141,6 +144,20 @@ export const REGISTRY_ALIASES_TO_SCORING: Record<string, string> = {
   'financialtimes': 'FT',
   'financial-times-uk': 'FT',
   'financial-times': 'FT',
+
+  // Additional aliases (Feb 2026 audit)
+  'newyorktheater': 'NYTHTR',
+  'new-york-theatre': 'NYTG',
+  'new-york-theatre-guide-gillian-russo': 'NYTG',
+  'the-star-ledger': 'NJCOM',
+  'the-stage-uk': 'THESTAGE',
+  'the-telegraph-uk': 'TELEGRAPH',
+  'northjereycom': 'NORTHJERSEY',
+  'shelby-star-patrick-ryan': 'USATODAY',
+  'forward-samuel-eli-shepherd': 'FORWARD',
+  'the-record': 'BERGENRECORD',
+  'the-record-bergen': 'BERGENRECORD',
+  'fort-worth-star-telgram': 'FORTWORTHST',
 };
 
 // Reverse mapping: scoring format (uppercase) to registry format (lowercase)

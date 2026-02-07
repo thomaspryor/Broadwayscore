@@ -114,3 +114,11 @@ jobs:
               body: report,
               labels: ['data-quality', 'automated']
             });
+
+      - name: Record pipeline success
+        if: success()
+        run: |
+          mkdir -p data/audit/pipeline-health
+          date -u > data/audit/pipeline-health/weekly-integrity.last-success
+          git add data/audit/pipeline-health/
+          git diff --staged --quiet || git commit -m "health: Record weekly-integrity success" && git push || true

@@ -115,6 +115,37 @@ async function fetchWikipediaSynopsis(show) {
         continue; // Not about this show
       }
 
+      // Reject film/TV/novel/album pages that share a title with the Broadway show.
+      // Check the first 200 characters for disambiguation markers.
+      const extractHead = extract.substring(0, 200).toLowerCase();
+      if (/\(film\)|\(tv series\)|\(novel\)|\(album\)/.test(extractHead)) {
+        continue; // Wrong medium — skip this result
+      }
+
+      // Reject extracts that don't mention Broadway/theater terms at all.
+      // These are likely about a film, book, or other non-theater work.
+      const venueName = (show.venue || '').toLowerCase();
+      const theaterTerms = ['broadway', 'musical', 'play', 'theater', 'theatre'];
+      if (venueName) theaterTerms.push(venueName);
+      const hasTheaterTerm = theaterTerms.some(term => term && extractLower.includes(term));
+      if (!hasTheaterTerm) {
+        continue; // No theater context — likely a film or other medium
+      }
+
+      // Reject extracts that mention a known film director but not the show's
+      // Broadway director — strong signal this is a film synopsis.
+      const filmDirectors = ['baz luhrmann', 'guy ritchie', 'steven spielberg', 'martin scorsese',
+        'christopher nolan', 'quentin tarantino', 'ridley scott', 'james cameron', 'tim burton'];
+      const mentionsFilmDirector = filmDirectors.some(d => extractLower.includes(d));
+      if (mentionsFilmDirector) {
+        // Check if the show's Broadway director is also mentioned
+        const showDirector = (show.creativeTeam || []).find(c => c.role === 'Director');
+        const directorName = showDirector ? showDirector.name.toLowerCase() : '';
+        if (!directorName || !extractLower.includes(directorName)) {
+          continue; // Film director mentioned but not Broadway director — wrong article
+        }
+      }
+
       // Take first 1-2 sentences, targeting ~200-400 chars
       let synopsis = extract;
 

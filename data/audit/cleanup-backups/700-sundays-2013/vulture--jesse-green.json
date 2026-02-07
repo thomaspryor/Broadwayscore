@@ -1,0 +1,74 @@
+{
+  "showId": "700-sundays-2013",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Jesse Green",
+  "url": "http://www.vulture.com/2013/11/theater-review-nostalgia-for-700-sundays.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "At one point in the return engagement of 700 Sundays, Billy Crystal recalls the first comedian he ever saw: an old-school tummler, circa 1958, prowling the stage at Kutsher's \"like a panther.\" All these decades later, Crystal impersonates this creature, with his disowned aggression and tired shtick ...",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-700-SUNDAYS-Opens-on-Broadway-Updating-LIVE-2013",
+  "bwwThumb": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "source": "bww-roundup",
+  "sources": [
+    "bww-roundup"
+  ],
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Crystal impersonates this creature, with his disowned aggression and tired shtick",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single excerpt with phrase 'tired shtick' suggests criticism, but limited text makes full verdict unclear. Low confidence due to incomplete information. | Gemini: The excerpt provides context but no clear evaluation of the show's quality or recommendation. It's difficult to determine the overall sentiment based on this single excerpt, so I've classified it as mixed with low confidence. | Kimi: Single truncated excerpt with limited evaluative content; mention of 'tired shtick' suggests possible criticism but broader verdict is unavailable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-06T01:42:52.397Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
+}

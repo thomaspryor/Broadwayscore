@@ -1,0 +1,51 @@
+{
+  "showId": "an-american-in-paris-2015",
+  "outletId": "thewrap",
+  "outlet": "The Wrap",
+  "criticName": "Unknown",
+  "url": "http://www.thewrap.com/an-american-in-paris-theater-review-how-much-angst-can-a-movie-musical-handle/",
+  "playbillVerdictUrl": "http://www.thewrap.com/an-american-in-paris-theater-review-how-much-angst-can-a-movie-musical-handle/",
+  "source": "playbill-verdict",
+  "sources": [
+    "playbill-verdict",
+    "bww-reviews",
+    "bww-roundup"
+  ],
+  "fullText": "It was going to be a movie about two kept people who fall in love with each other. That was Alan Jay Lerner’s original concept for his “An American in Paris” screenplay. Naturally, the powers at MGM decided that one kept person was more than enough for their 1951 movie musical.",
+  "isFullReview": false,
+  "textWordCount": 51,
+  "archivePath": "data/archives/reviews/an-american-in-paris-2015/thewrap--unknown_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T06:35:13.202Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 57 (min: 300)"
+  ],
+  "contentTier": "invalid",
+  "wordCount": 51,
+  "tierReason": "Short text (51 words)",
+  "bwwExcerpt": "Wheeldon's approach is sophisticated, especially his decision to cast classically trained ballet dancers for his leads, Fairchild and Cope, both making their Broadway debuts. They're competent actors and singers, but when Fairchild dances he recalls the European tradition of classical ballet - unlike Gene Kelly, who recalls the all-American tradition of being a hoofer. Someone forgot to put the American in this 'Paris.'",
+  "bwwScore": 7,
+  "rejectedAt": "2026-02-05T05:35:54.693Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be historical context or plot summary about the original concept and 1951 movie, not a review of the current Broadway production.; openai: The text provided is a historical context about the original concept for 'An American in Paris' and does not contain any evaluative content about the current Broadway production.; gemini: This is a discussion of the movie's origins, not a review of the Broadway show.; kimi: The text provided consists solely of historical background about the 1951 MGM film's development, with no evaluation of a theatrical production, performances, staging, or recommendation to see a current Broadway show.",
+  "promptVersion": "5.2.0"
+}

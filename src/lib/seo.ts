@@ -470,6 +470,326 @@ export function generateBrowseFAQSchema(
   };
 }
 
+// Organization Schema - For outlet pages
+export function generateOutletSchema(outlet: {
+  name: string;
+  slug: string;
+  reviewCount: number;
+  avgScore: number;
+  tier: 1 | 2 | 3;
+  logoDomain?: string | null;
+  criticCount?: number;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: outlet.name,
+    url: `${BASE_URL}/critics/outlets/${outlet.slug}`,
+    ...(outlet.logoDomain && {
+      logo: {
+        '@type': 'ImageObject',
+        url: `https://www.google.com/s2/favicons?domain=${outlet.logoDomain}&sz=128`,
+      },
+    }),
+    description: `${outlet.name} has published ${outlet.reviewCount} Broadway reviews with an average score of ${outlet.avgScore}/100. Tier ${outlet.tier} publication.`,
+    knowsAbout: 'Broadway Theater Reviews',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: toFiveStarScale(outlet.avgScore),
+      bestRating: 5,
+      worstRating: 1,
+      reviewCount: outlet.reviewCount,
+    },
+    ...(outlet.criticCount && { numberOfEmployees: outlet.criticCount }),
+  };
+}
+
+// Person Schema - For critic pages
+export function generateCriticSchema(critic: {
+  name: string;
+  slug: string;
+  primaryOutlet: string;
+  reviewCount: number;
+  avgScore: number;
+  outlets?: string[];
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: critic.name,
+    url: `${BASE_URL}/critics/${critic.slug}`,
+    jobTitle: 'Theater Critic',
+    knowsAbout: 'Broadway Theater',
+    worksFor: critic.outlets && critic.outlets.length > 1
+      ? critic.outlets.map(o => ({ '@type': 'Organization' as const, name: o }))
+      : { '@type': 'Organization', name: critic.primaryOutlet },
+    description: `${critic.name} is a Broadway theater critic at ${critic.primaryOutlet} with ${critic.reviewCount} reviews and an average score of ${critic.avgScore}/100.`,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: toFiveStarScale(critic.avgScore),
+      bestRating: 5,
+      worstRating: 1,
+      reviewCount: critic.reviewCount,
+    },
+  };
+}
+
+// ItemList Schema - For critic/outlet index pages
+export function generateCriticItemListSchema(critics: {
+  name: string;
+  slug: string;
+  primaryOutlet: string;
+  reviewCount: number;
+  avgScore: number;
+}[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Broadway Theater Critics',
+    numberOfItems: critics.length,
+    itemListElement: critics.slice(0, 50).map((critic, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Person',
+        name: critic.name,
+        url: `${BASE_URL}/critics/${critic.slug}`,
+        jobTitle: 'Theater Critic',
+        worksFor: { '@type': 'Organization', name: critic.primaryOutlet },
+      },
+    })),
+  };
+}
+
+export function generateOutletItemListSchema(outlets: {
+  name: string;
+  slug: string;
+  reviewCount: number;
+  tier: 1 | 2 | 3;
+}[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Broadway Review Publications',
+    numberOfItems: outlets.length,
+    itemListElement: outlets.slice(0, 50).map((outlet, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Organization',
+        name: outlet.name,
+        url: `${BASE_URL}/critics/outlets/${outlet.slug}`,
+      },
+    })),
+  };
+}
+
+// FAQ Schema - For critic detail pages
+export function generateCriticFAQSchema(critic: {
+  name: string;
+  primaryOutlet: string;
+  outlets: string[];
+  reviewCount: number;
+  avgScore: number;
+  highScore: number;
+  lowScore: number;
+  isFreelancer: boolean;
+}) {
+  const faqs: { question: string; answer: string }[] = [];
+
+  faqs.push({
+    question: `How many Broadway shows has ${critic.name} reviewed?`,
+    answer: `${critic.name} has reviewed ${critic.reviewCount} Broadway shows on Broadway Scorecard, with an average score of ${critic.avgScore}/100.`,
+  });
+
+  faqs.push({
+    question: `What outlet does ${critic.name} write for?`,
+    answer: critic.outlets.length > 1
+      ? `${critic.name} writes for ${critic.outlets.join(', ')}. Their primary outlet is ${critic.primaryOutlet}.${critic.isFreelancer ? ` ${critic.name} is a freelance critic.` : ''}`
+      : `${critic.name} writes for ${critic.primaryOutlet}.`,
+  });
+
+  faqs.push({
+    question: `What is ${critic.name}'s highest and lowest Broadway score?`,
+    answer: `${critic.name}'s highest score is ${critic.highScore}/100 and lowest score is ${critic.lowScore}/100, with an average of ${critic.avgScore}/100.`,
+  });
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  };
+}
+
+// FAQ Schema - For outlet detail pages
+export function generateOutletFAQSchema(outlet: {
+  name: string;
+  tier: 1 | 2 | 3;
+  reviewCount: number;
+  avgScore: number;
+  criticCount: number;
+  highScore: number;
+  lowScore: number;
+}) {
+  const tierLabel = outlet.tier === 1 ? 'Tier 1 (highest weight)' : outlet.tier === 2 ? 'Tier 2' : 'Tier 3';
+  const faqs: { question: string; answer: string }[] = [];
+
+  faqs.push({
+    question: `How many Broadway reviews has ${outlet.name} published?`,
+    answer: `${outlet.name} has published ${outlet.reviewCount} Broadway reviews on Broadway Scorecard, with an average score of ${outlet.avgScore}/100.`,
+  });
+
+  faqs.push({
+    question: `What tier is ${outlet.name} on Broadway Scorecard?`,
+    answer: `${outlet.name} is classified as ${tierLabel}. Tier 1 outlets (like The New York Times and Variety) carry the highest weight in composite scores.`,
+  });
+
+  faqs.push({
+    question: `How many critics write for ${outlet.name}?`,
+    answer: `${outlet.criticCount} different critic${outlet.criticCount !== 1 ? 's' : ''} have published Broadway reviews through ${outlet.name}.`,
+  });
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  };
+}
+
+// FAQ Schema - For Gold List pages
+export function generateGoldListFAQSchema(config: {
+  title: string;
+  type: string;
+  description: string;
+  metricLabel: string;
+  threshold: number;
+  metricSuffix: string;
+  maxPerSeason: number;
+  maxAllTime: number;
+  minDataRequirement: string;
+}, context: {
+  season?: string;
+  entryCount: number;
+  topShow?: string;
+}) {
+  const faqs: { question: string; answer: string }[] = [];
+  const scope = context.season ? `the ${context.season} season` : 'all time';
+
+  faqs.push({
+    question: `What is the ${config.title}?`,
+    answer: `${config.description}. Shows must have ${config.minDataRequirement} to qualify.${config.threshold > 0 ? ` The minimum ${config.metricLabel.toLowerCase()} is ${config.threshold}${config.metricSuffix}.` : ''}`,
+  });
+
+  faqs.push({
+    question: `How many shows are on the ${config.title} for ${scope}?`,
+    answer: `There are ${context.entryCount} shows on the ${config.title} for ${scope}.${context.topShow ? ` The #1 show is ${context.topShow}.` : ''}`,
+  });
+
+  const maxLabel = context.season ? config.maxPerSeason : config.maxAllTime;
+  faqs.push({
+    question: `How are shows ranked on the ${config.title}?`,
+    answer: `Shows are ranked by ${config.metricLabel.toLowerCase()}, with a maximum of ${maxLabel} shows${context.season ? ' per season' : ' across all seasons since 2005'}. ${config.minDataRequirement} is required to qualify.`,
+  });
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  };
+}
+
+// Person Schema - For creative team detail pages (directors, playwrights, etc.)
+export function generateCreativePersonSchema(profile: {
+  name: string;
+  slug: string;
+  category: string;
+  showCount: number;
+  avgScore: number | null;
+  shows: Array<{ title: string; slug: string }>;
+}, routePath: string, jobTitle: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: profile.name,
+    url: `${BASE_URL}/${routePath}/${profile.slug}`,
+    jobTitle,
+    knowsAbout: 'Broadway Theater',
+    description: `${profile.name} has ${profile.showCount} Broadway shows${profile.avgScore !== null ? ` with an average critic score of ${profile.avgScore}/100` : ''}.`,
+    ...(profile.avgScore !== null && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: toFiveStarScale(profile.avgScore),
+        bestRating: 5,
+        worstRating: 1,
+        ratingCount: profile.showCount,
+      },
+    }),
+  };
+}
+
+// FAQ Schema - For creative team detail pages
+export function generateCreativeFAQSchema(profile: {
+  name: string;
+  category: string;
+  showCount: number;
+  avgScore: number | null;
+  highScore: number | null;
+  openShowCount: number;
+  shows: Array<{ title: string; score: number | null; status: string }>;
+}, categoryLabel: string, verbPast: string) {
+  const faqs: { question: string; answer: string }[] = [];
+
+  faqs.push({
+    question: `How many Broadway shows has ${profile.name} ${verbPast}?`,
+    answer: `${profile.name} has ${verbPast} ${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? `, with an average critic score of ${profile.avgScore}/100` : ''}.`,
+  });
+
+  if (profile.highScore !== null) {
+    const best = profile.shows.filter(s => s.score !== null).sort((a, b) => (b.score || 0) - (a.score || 0))[0];
+    if (best) {
+      faqs.push({
+        question: `What is ${profile.name}'s highest-rated Broadway show?`,
+        answer: `${profile.name}'s highest-rated show is ${best.title} with a critic score of ${best.score}/100.`,
+      });
+    }
+  }
+
+  if (profile.openShowCount > 0) {
+    const running = profile.shows.filter(s => s.status === 'open' || s.status === 'previews');
+    faqs.push({
+      question: `Does ${profile.name} have any shows currently on Broadway?`,
+      answer: `Yes, ${profile.name} currently has ${running.length} show${running.length !== 1 ? 's' : ''} on Broadway: ${running.map(s => s.title).join(', ')}.`,
+    });
+  } else {
+    faqs.push({
+      question: `Does ${profile.name} have any shows currently on Broadway?`,
+      answer: `No, ${profile.name} does not currently have any shows running on Broadway.`,
+    });
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  };
+}
+
 // Helper to render schema as JSON-LD script
 export function schemaToJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
   return JSON.stringify(schema);

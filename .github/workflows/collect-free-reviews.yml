@@ -1,0 +1,299 @@
+name: Collect Free-Outlet Reviews
+
+on:
+  workflow_dispatch:
+    inputs:
+      parallel_jobs:
+        description: 'Number of parallel collection jobs (1-10)'
+        required: false
+        type: choice
+        default: '5'
+        options: ['1', '2', '3', '4', '5', '6', '7', '8', '10']
+      max_per_job:
+        description: 'Max reviews per job (0 = all)'
+        required: false
+        default: '200'
+      dry_run:
+        description: 'Dry run — count eligible reviews without collecting'
+        required: false
+        type: boolean
+        default: false
+      retry_failed:
+        description: 'Retry previously failed reviews'
+        required: false
+        type: boolean
+        default: false
+      archive_first:
+        description: 'Try Archive.org first (recommended)'
+        required: false
+        type: boolean
+        default: true
+
+# Collects full text from free/open-access outlets (no paywall).
+# Excludes all known paywall domains (hard + soft) to focus on easy wins.
+# ~10,600+ reviews across outlets like AM New York, NY Daily News,
+# Talkin' Broadway, NY Post, Hollywood Reporter, The Wrap, etc.
+
+env:
+  # All known paywall domains to exclude
+  PAYWALL_DOMAINS: 'nytimes.com,vulture.com,nymag.com,wsj.com,washingtonpost.com,newyorker.com,ft.com,telegraph.co.uk,thetimes.co.uk,theatermania.com,timeout.com,ew.com,deadline.com,observer.com,chicagotribune.com'
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      matrix: ${{ steps.partition.outputs.matrix }}
+      total_eligible: ${{ steps.count.outputs.total }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Count eligible reviews and partition
+        id: count
+        env:
+          EXCLUDE_DOMAINS: ${{ env.PAYWALL_DOMAINS }}
+        run: |
+          node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const excludeDomains = (process.env.EXCLUDE_DOMAINS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+            const showCounts = {};
+            let total = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              let count = 0;
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (!r.url) return;
+                  const textLen = r.fullText ? r.fullText.length : 0;
+                  const isTruncated = r.textQuality === 'truncated' || r.textStatus === 'truncated'
+                    || r.contentTier === 'truncated' || r.contentTier === 'needs-rescrape';
+                  if (!isTruncated && (r.isFullReview === true || r.textQuality === 'full' || textLen > 1500)) return;
+                  try {
+                    const urlDomain = new URL(r.url).hostname.replace(/^www\\./, '');
+                    if (excludeDomains.some(dd => urlDomain === dd || urlDomain.endsWith('.' + dd))) return;
+                    count++;
+                  } catch(e) {}
+                } catch(e) {}
+              });
+              if (count > 0) { showCounts[d] = count; total += count; }
+            });
+            console.log(JSON.stringify({ total, showCount: Object.keys(showCounts).length }));
+            fs.writeFileSync('/tmp/show-counts.json', JSON.stringify(showCounts));
+          "
+          TOTAL=$(node -e "const c=JSON.parse(require('fs').readFileSync('/tmp/show-counts.json','utf8'));console.log(Object.values(c).reduce((a,b)=>a+b,0))")
+          echo "total=$TOTAL" >> $GITHUB_OUTPUT
+          echo "Eligible free-outlet reviews: $TOTAL"
+
+      - name: Build partition matrix
+        id: partition
+        env:
+          JOBS: ${{ inputs.parallel_jobs }}
+        run: |
+          node -e "
+            const fs = require('fs');
+            const counts = JSON.parse(fs.readFileSync('/tmp/show-counts.json', 'utf8'));
+            const shows = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+            const jobs = parseInt(process.env.JOBS);
+            const partitions = Array.from({length: jobs}, () => ({shows: [], count: 0}));
+            // Round-robin by descending count for balanced load
+            shows.forEach(([show, count]) => {
+              const lightest = partitions.reduce((min, p, i) => p.count < partitions[min].count ? i : min, 0);
+              partitions[lightest].shows.push(show);
+              partitions[lightest].count += count;
+            });
+            const matrix = partitions
+              .filter(p => p.shows.length > 0)
+              .map((p, i) => ({ partition: i + 1, shows: p.shows.join(','), review_count: p.count }));
+            console.log(JSON.stringify(matrix));
+            fs.writeFileSync('/tmp/matrix.json', JSON.stringify(matrix));
+          "
+          MATRIX=$(cat /tmp/matrix.json)
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+          echo "Partitions: $MATRIX"
+
+      - name: Summary
+        run: |
+          echo "## Free-Outlet Collection: Preparation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total eligible reviews:** ${{ steps.count.outputs.total }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Parallel jobs:** ${{ inputs.parallel_jobs }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Max per job:** ${{ inputs.max_per_job }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Dry run:** ${{ inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
+
+  collect:
+    if: ${{ inputs.dry_run != true }}
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      max-parallel: ${{ fromJson(inputs.parallel_jobs) }}
+      matrix:
+        include: ${{ fromJson(needs.prepare.outputs.matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Create directories
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Clear progress state
+        run: rm -f data/collection-state/progress.json
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Stagger start
+        run: |
+          DELAY=$(( (${{ matrix.partition }} - 1) * 8 ))
+          echo "Staggering partition ${{ matrix.partition }} by ${DELAY}s"
+          sleep $DELAY
+
+      - name: Collect review texts (partition ${{ matrix.partition }})
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: mcp_unlocker
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: 'false'
+          SHOW_FILTER: ${{ matrix.shows }}
+          EXCLUDE_DOMAINS: ${{ env.PAYWALL_DOMAINS }}
+          BATCH_SIZE: '10'
+          MAX_REVIEWS: ${{ inputs.max_per_job }}
+          RETRY_FAILED: ${{ inputs.retry_failed && 'true' || 'false' }}
+          ARCHIVE_FIRST: ${{ inputs.archive_first && 'true' || 'false' }}
+          COMMIT_EVERY: '25'
+        run: node scripts/collect-review-texts.js --aggressive
+
+      - name: Validate data
+        if: always()
+        run: node scripts/validate-data.js
+        continue-on-error: true
+
+      - name: Check for large files
+        if: always()
+        uses: ./.github/actions/check-file-sizes
+
+      - name: Commit and push (partition ${{ matrix.partition }})
+        if: always()
+        run: |
+          git add data/review-texts/ data/archives/reviews/ data/audit/ data/collection-state/ || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit for partition ${{ matrix.partition }}"
+          else
+            git commit -m "feat: Collect free-outlet review texts (partition ${{ matrix.partition }}/${{ inputs.parallel_jobs }})
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || {
+                echo "Push attempt $i failed, retrying..."
+                sleep $((RANDOM % 10 + 5))
+                git rebase --abort 2>/dev/null || true
+                git pull --no-rebase -X ours origin main
+              }
+            done
+          fi
+
+      - name: Upload collection report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: free-outlet-report-partition-${{ matrix.partition }}
+          path: |
+            data/audit/validation/collection-report-*.json
+            data/collection-state/progress.json
+          retention-days: 30
+
+  rebuild:
+    if: ${{ inputs.dry_run != true }}
+    needs: collect
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Rebuild reviews.json
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/rebuild-all-reviews.js
+
+      - name: Commit rebuilt reviews.json
+        run: |
+          git add data/reviews.json data/critic-registry.json data/audit/
+          if git diff --staged --quiet; then
+            echo "No changes to reviews.json"
+          else
+            git commit -m "data: Auto-rebuild reviews.json (free-outlet collection)"
+            git pull --rebase origin main || {
+              git rebase --abort 2>/dev/null || true
+              git pull --no-rebase -X ours origin main
+            }
+            git push || true
+          fi
+
+      - name: Summary
+        run: |
+          echo "## Free-Outlet Collection Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Collected free-outlet review texts across ${{ inputs.parallel_jobs }} parallel jobs." >> $GITHUB_STEP_SUMMARY
+          echo "Reviews rebuilt and scored." >> $GITHUB_STEP_SUMMARY

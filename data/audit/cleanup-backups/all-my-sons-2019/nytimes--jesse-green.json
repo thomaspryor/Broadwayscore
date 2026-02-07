@@ -1,0 +1,101 @@
+{
+  "showId": "all-my-sons-2019",
+  "outletId": "nytimes",
+  "outlet": "New York Times",
+  "criticName": "Jesse Green",
+  "url": "http://www.nytimes.com/2019/04/22/theater/all-my-sons-review.html",
+  "playbillVerdictUrl": "http://www.nytimes.com/2019/04/22/theater/all-my-sons-review.html",
+  "source": "playbill-verdict",
+  "sources": [
+    "playbill-verdict",
+    "web-search",
+    "bww-reviews",
+    "bww-roundup"
+  ],
+  "fullText": "https://www.nytimes.com/2019/04/22/theater/all-my-sons-review.htmlShare full article3030Advertisement\n\nPlays with a large moral vision are so last century. Our taste now is for the miniature and metaphoric — works too exquisite to live outside the living room.\n\nOr maybe our capacity for shame has shrunk.\n\nBut in Arthur Miller’s “All My Sons,” originally produced in 1947, domesticity is just a backdrop. The drama takes place outdoors, amid trees and sky in an Ohio backyard soon after World War II. Its anger and ambition are likewise elemental.\n\nToo bad, then, that the Roundabout Theater Company revival that opened on Monday at the American Airlines Theater reaches the play’s level only intermittently, like a poorly tuned radio. Jack O’Brien’s literal-minded production, starring Tracy Letts and Annette Bening, does not make a resonant case for the drama today.\n\nThat’s odd because although the play has its share of problems, irrelevance will never be one of them. You don’t have to dig deep into current headlines to find eerie parallels to Miller’s story. Based on a real wartime event, it tells of a manufacturer of airplane parts whose defective product wound up killing 21 pilots on missions over Australia. Boeing, anyone?\n\nThe crux of the drama is that the parts were known to be defective. The question is: Who authorized their delivery anyway?\n\nBoth Joe Keller, the boss, and Steve Deever, his underling, served time, after a trial, for doing so. But Keller, claiming he was sick on the day of the deliveries and that Deever made the decision alone, was exonerated on appeal. Deever is still in prison as the action begins some years later.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
+  "textWordCount": 291,
+  "archivePath": "data/archives/reviews/all-my-sons-2019/nytimes--jesse-green_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T18:46:04.871Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250426220406",
+  "archiveOrgUrl": "http://web.archive.org/web/20250426220406/https://www.nytimes.com/2019/04/22/theater/all-my-sons-review.html",
+  "textIssues": [
+    "Word count too low: 291 (min: 300)"
+  ],
+  "duplicateTextOf": "nytimes--ben-brantley.json",
+  "contentTier": "truncated",
+  "wordCount": 291,
+  "tierReason": "Short text (291 words)",
+  "bwwExcerpt": "Ms. Bening goes deepest of the four leads in exploring the muck at the bottom of her character's personality. She also has terrific technique, both vocal and otherwise. But the opacity of the production overall means we still can't read her with any clarity, and the play acquires a weird wobble at its core.",
+  "bwwScore": 6,
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Too bad, then, that the Roundabout Theater Company revival reaches the play's level only intermittently, like a poorly tuned radio.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the play's continued relevance and praises Bening's performance, but finds the production 'literal-minded' and unable to make a 'resonant case' for the drama, with 'weird wobble at its core.' Clear mixed verdict with both positive and negative elements. | GPT-4o: The review criticizes the production for not making a resonant case for the drama today, despite the relevance of the play's themes. Praise for individual performances is overshadowed by the overall negative assessment of the production's impact. | Gemini: The review acknowledges the play's relevance but finds the production lacking, describing it as \"literal-minded\" and reaching the play's level only intermittently. While praising Bening's performance, the overall assessment is mixed. | Kimi: While praising Annette Bening's technique, the critic finds the production reaches the play's level only 'intermittently' and suffers from 'opacity' and a 'weird wobble at its core,' ultimately failing to justify the revival's relevance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:52:17.554Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  },
+  "publishDate": "April 23, 2019"
+}

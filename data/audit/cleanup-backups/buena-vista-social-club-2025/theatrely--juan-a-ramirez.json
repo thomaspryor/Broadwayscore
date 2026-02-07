@@ -1,0 +1,73 @@
+{
+  "showId": "buena-vista-social-club-2025",
+  "outletId": "theatrely",
+  "outlet": "Theatrely",
+  "criticName": "Juan A. Ramirez",
+  "url": "https://www.theatrely.com/post/buena-vista-social-club-brings-the-music-to-life-review",
+  "source": "bww-reviews",
+  "sources": [
+    "bww-reviews",
+    "playbill-verdict",
+    "bww-roundup"
+  ],
+  "bwwExcerpt": "On a recent Saturday matinee, the roars of the crowd following every song were akin to a [insert any popstar] at MSG. The music won the world over in the late nineties for a reason. Its delicious blend of Cuban rhythm and Afro-Cuban percussion harkens back to the heyday and Golden era of Havana, yet feels timeless and perfect for today. It’s a sound we don’t get all that often on Broadway, and boy, do I hope it stays a while.",
+  "bwwScore": 8,
+  "contentTier": "excerpt",
+  "playbillVerdictUrl": "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundups-BUENA-VISTA-SOCIAL-CLUB-Opens-On-Broadway-20250319",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a sound we don't get all that often on Broadway, and boy, do I hope it stays a while.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the music and audience response with enthusiastic recommendation for the show to stay, but limited to single excerpt so confidence is medium. | GPT-4o: The excerpt provides a highly positive evaluation of the music, describing it as timeless and perfect for today. The enthusiastic tone and hope for the show's longevity suggest a strong recommendation. However, the single excerpt warning and lack of full context lower the confidence. | Gemini: The review excerpt is very positive, praising the music and expressing hope that it stays on Broadway. Given the single excerpt warning, the confidence is low, but the enthusiasm suggests a strong positive score. | Kimi: The excerpt offers enthusiastic praise for the show's music and electric crowd atmosphere, with the critic explicitly endorsing its continued Broadway run. As a single curated excerpt, the full context of the review is unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:37:15.682Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

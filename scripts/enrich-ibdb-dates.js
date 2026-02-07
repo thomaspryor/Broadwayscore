@@ -14,13 +14,15 @@
  *   --missing-only  Only fill in null/missing dates (default behavior)
  *   --verify        Compare IBDB dates vs shows.json, report discrepancies (no writes)
  *   --force         Overwrite all dates/creative team with IBDB values
- *   --status=STATUS Filter by show status (open, previews, closed)
+ *   --status=STATUS   Filter by show status (open, previews, closed)
+ *   --merge-credits   Merge new IBDB roles into existing creative teams (add missing roles only)
  */
 
 const fs = require('fs');
 const path = require('path');
 const { lookupIBDBDates, batchLookupIBDBDates } = require('./lib/ibdb-dates');
 const { cleanup } = require('./lib/scraper');
+const { splitCombinedCredits } = require('./lib/credit-splitting');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
@@ -29,6 +31,7 @@ const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const verify = args.includes('--verify');
 const force = args.includes('--force');
+const mergeCredits = args.includes('--merge-credits');
 const missingOnly = !force; // Default: only fill missing
 
 const showArg = args.find(a => a.startsWith('--show='));
@@ -51,6 +54,7 @@ async function main() {
   console.log('='.repeat(60));
   console.log(`Mode: ${verify ? 'VERIFY' : dryRun ? 'DRY RUN' : 'LIVE'}`);
   if (force) console.log('⚠️  FORCE mode: will overwrite existing dates');
+  if (mergeCredits) console.log('🔀 MERGE mode: will add missing roles to existing creative teams');
   if (showSlug) console.log(`Show filter: ${showSlug}`);
   if (statusFilter) console.log(`Status filter: ${statusFilter}`);
   console.log('');
@@ -72,7 +76,7 @@ async function main() {
   }
 
   // If missing-only mode, filter to shows with incomplete dates or empty creative team
-  if (missingOnly && !verify && !showSlug) {
+  if (missingOnly && !mergeCredits && !verify && !showSlug) {
     shows = shows.filter(s =>
       !s.previewsStartDate || !s.openingDate || !s.closingDate ||
       !s.creativeTeam || s.creativeTeam.length === 0
@@ -194,7 +198,40 @@ async function main() {
     // Check creativeTeam
     if (ibdb.creativeTeam && ibdb.creativeTeam.length > 0) {
       const hasCreativeTeam = show.creativeTeam && show.creativeTeam.length > 0;
-      if (!hasCreativeTeam || force) {
+
+      if (mergeCredits && hasCreativeTeam) {
+        // Merge mode: add roles from IBDB that don't already exist
+        const existingRoles = new Set((show.creativeTeam || []).map(e => e.role));
+        const newRoles = ibdb.creativeTeam.filter(e => !existingRoles.has(e.role));
+
+        if (newRoles.length > 0) {
+          // Build merged array: insert new roles after Director, before design
+          const designRoles = new Set([
+            'Scenic Design', 'Costume Design', 'Lighting Design', 'Sound Design',
+            'Projection Design', 'Video Design', 'Orchestrations',
+            'Music Supervision', 'Music Direction', 'Original Score'
+          ]);
+          const existing = show.creativeTeam;
+          let insertIdx = existing.length;
+          for (let j = 0; j < existing.length; j++) {
+            if (designRoles.has(existing[j].role)) { insertIdx = j; break; }
+          }
+          const dirIdx = existing.findLastIndex(e => e.role === 'Director');
+          if (dirIdx >= 0 && dirIdx + 1 <= insertIdx) insertIdx = dirIdx + 1;
+
+          const merged = [
+            ...existing.slice(0, insertIdx),
+            ...newRoles,
+            ...existing.slice(insertIdx)
+          ];
+          showChanges.push({
+            field: 'creativeTeam',
+            old: `${existing.length} role(s)`,
+            new: merged,
+            newLabel: `${merged.length} role(s) (+${newRoles.length} merged: ${newRoles.map(r => r.role).join(', ')})`
+          });
+        }
+      } else if (!hasCreativeTeam || force) {
         showChanges.push({
           field: 'creativeTeam',
           old: hasCreativeTeam ? `${show.creativeTeam.length} role(s)` : 'empty',
@@ -262,7 +299,8 @@ async function main() {
 
       for (const ch of c.changes) {
         if (ch.field === 'creativeTeam') {
-          showRecord.creativeTeam = ch.new; // ch.new is the array from IBDB
+          const { result } = splitCombinedCredits(ch.new);
+          showRecord.creativeTeam = result; // ch.new is the array from IBDB, split combined names
         } else {
           showRecord[ch.field] = ch.new;
         }
