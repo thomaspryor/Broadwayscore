@@ -344,8 +344,11 @@ function extractCreativeTeamFromText(text) {
 
   // Role patterns: [regex, role label]
   // Order matters — "Music and Lyrics by" must come before "Music by" and "Lyrics by"
+  // "Written by" captures playwright credit (plays), "Original Score by" captures incidental music
   const rolePatterns = [
     [/Music and Lyrics by\s+([^;:\n]+)/gi, 'Music & Lyrics'],
+    [/Written by\s+([^;:\n]+)/gi, 'Playwright'],
+    [/Original Score by\s+([^;:\n]+)/gi, 'Original Score'],
     [/Directed by\s+([^;:\n]+)/gi, 'Director'],
     [/Choreograph(?:ed|y) by\s+([^;:\n]+)/gi, 'Choreographer'],
     [/Book by\s+([^;:\n]+)/gi, 'Book'],
@@ -363,7 +366,7 @@ function extractCreativeTeamFromText(text) {
   ];
 
   // Roles that appear in song-level credits on IBDB — only take first match
-  const firstMatchOnly = new Set(['Lyrics', 'Music', 'Music & Lyrics']);
+  const firstMatchOnly = new Set(['Lyrics', 'Music', 'Music & Lyrics', 'Playwright']);
 
   for (const [pattern, role] of rolePatterns) {
     let match;
