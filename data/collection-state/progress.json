@@ -1,78 +1,82 @@
 {
   "processed": [
-    "a-gentlemans-guide-to-love-and-murder-2013/nytimes--ben-brantley.json"
+    "a-behanding-in-spokane-2010/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--joe-dziemianowicz.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nytimes--elisabeth-vincentelli.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/variety--aramide-tinubu.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--jackson-mchenry.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--unknown.json",
-    "a-dolls-house-part-2-2017/hollywood-reporter--david-rooney.json",
-    "a-dolls-house-part-2-2017/newyorker--hilton-als.json",
-    "a-dolls-house-part-2-2017/nytimes--ben-brantley.json",
-    "a-dolls-house-part-2-2017/nytimes--unknown.json",
-    "a-gentlemans-guide-to-love-and-murder-2013/nyt-theater--jonathan-mandell.json",
-    "a-gentlemans-guide-to-love-and-murder-2013/variety--marilyn-stasio.json",
-    "a-soldiers-play-2020/hollywood-reporter--david-rooney.json",
-    "a-soldiers-play-2020/nyt-theater--jonathan-mandell.json",
-    "a-soldiers-play-2020/nytimes--jesse-green.json",
-    "a-soldiers-play-2020/vulture--helen-shaw.json"
+    "1776-2022/hollywood-reporter--david-rooney.json",
+    "1776-2022/hollywood-reporter--unknown.json",
+    "1776-2022/newyorker--helen-shaw.json",
+    "1776-2022/newyorker--naomi-fry.json",
+    "1776-2022/nyt-theater--jonathan-mandell.json",
+    "1776-2022/nytg--gillian-russo.json",
+    "1776-2022/nytimes--jesse-green.json",
+    "1776-2022/nytimes--unknown.json",
+    "1776-2022/variety--charles-isherwood.json",
+    "1776-2022/variety--frank-rizzo.json",
+    "1776-2022/variety--peter-marks.json",
+    "1776-2022/vulture--frankie-thomas.json",
+    "1776-2022/vulture--helen-shaw.json",
+    "1776-2022/vulture--james-frankie-thomas.json",
+    "a-behanding-in-spokane-2010/newyorker--hinton-als.json",
+    "a-behanding-in-spokane-2010/nytimes--ben-brantley.json",
+    "a-behanding-in-spokane-2010/variety--david-rooney.json",
+    "a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
+    "a-bronx-tale-2007/nyt-theater--jonathan-mandell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "browserbase": [
-      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json",
-      "data/review-texts/a-dolls-house-part-2-2017/hollywood-reporter--david-rooney.json"
+      "data/review-texts/1776-2022/hollywood-reporter--unknown.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
-    "archive": [
-      "a-gentlemans-guide-to-love-and-murder-2013/nytimes--ben-brantley.json"
-    ]
+    "brightdata": [
+      "a-behanding-in-spokane-2010/hollywood-reporter--frank-scheck.json"
+    ],
+    "archive": []
   },
-  "startTime": "2026-02-07T18:02:36.720Z",
-  "lastProcessed": "a-soldiers-play-2020/vulture--helen-shaw.json",
+  "startTime": "2026-02-07T18:01:07.398Z",
+  "lastProcessed": "a-bronx-tale-2007/nyt-theater--jonathan-mandell.json",
   "log": [
     {
-      "t": "2026-02-07T18:03:04.505Z",
+      "t": "2026-02-07T18:01:24.774Z",
       "event": "bb-session",
-      "session": "49f66cb0",
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
+      "session": "ada91e25",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/1776-broadway-review-1235228615"
     },
     {
-      "t": "2026-02-07T18:03:28.953Z",
+      "t": "2026-02-07T18:02:01.866Z",
       "event": "bb-session",
-      "session": "dc441273",
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-the-neil-diamond-musica"
+      "session": "61abb195",
+      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
     },
     {
-      "t": "2026-02-07T18:05:40.726Z",
+      "t": "2026-02-07T18:04:11.853Z",
       "event": "bb-session",
-      "session": "a346d6f7",
-      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
+      "session": "bdeb36cc",
+      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
     },
     {
-      "t": "2026-02-07T18:05:42.980Z",
+      "t": "2026-02-07T18:04:14.035Z",
       "event": "bb-login-uncertain",
-      "domain": "vulture.com"
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-07T18:06:22.626Z",
+      "t": "2026-02-07T18:06:49.222Z",
       "event": "bb-session",
-      "session": "83a6fafc",
-      "url": "http://www.hollywoodreporter.com/review/a-dolls-house-part-2-theater-998160"
+      "session": "a28354e2",
+      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
     },
     {
-      "t": "2026-02-07T18:07:16.881Z",
+      "t": "2026-02-07T18:06:56.756Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-07T18:08:01.985Z",
       "event": "bb-session",
-      "session": "6df01b8e",
-      "url": "https://variety.com/2013/legit/reviews/a-gentlemans-guide-to-love-murder-1200814"
+      "session": "c52761e8",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
     }
   ]
 }
