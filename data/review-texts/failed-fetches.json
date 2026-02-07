@@ -18316,30 +18316,6 @@
     "timestamp": "2026-02-06T17:12:23.101Z"
   },
   {
-    "reviewId": "mr-saturday-night-2022/nyt-theater--jonathan-mandell.json",
-    "showId": "mr-saturday-night-2022",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2022/04/27/mr-saturday-night-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (16): funny girl, the skin of our teeth, macbeth, cats, the present...",
-    "textLength": 7363,
-    "timestamp": "2026-02-06T17:18:09.065Z"
-  },
-  {
-    "reviewId": "mr-saturday-night-2022/nytg--joe-dziemianowicz.json",
-    "showId": "mr-saturday-night-2022",
-    "outlet": "New York Theatre Guide",
-    "critic": "Joe Dziemianowicz",
-    "url": "https://www.newyorktheatreguide.com/reviews/mr-saturday-night-broadway-review-billy-crystal",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): network, summer, cats, 700 sundays, the bridges of madison county...",
-    "textLength": 3755,
-    "timestamp": "2026-02-06T17:18:16.500Z"
-  },
-  {
     "reviewId": "mr-saturday-night-2022/nytimes--unknown.json",
     "showId": "mr-saturday-night-2022",
     "outlet": "New York Times",
@@ -18518,66 +18494,6 @@
     "garbageReason": "Multiple shows mentioned (14): mamma mia!, purpose, company, 1984, summer...",
     "textLength": 7993,
     "timestamp": "2026-02-06T17:31:29.050Z"
-  },
-  {
-    "reviewId": "moulin-rouge-2019/nyt-theater--jonathan-mandell.json",
-    "showId": "moulin-rouge-2019",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2019/08/09/moulin-rouge-review-a-jukebox-musical-for-the-age-of-spotify/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, tina, the inheritance, king kong, the performers...",
-    "textLength": 6221,
-    "timestamp": "2026-02-06T17:31:36.697Z"
-  },
-  {
-    "reviewId": "moulin-rouge-2019/nytg--mark-shenton.json",
-    "showId": "moulin-rouge-2019",
-    "outlet": "New York Theatre Guide",
-    "critic": "Mark Shenton",
-    "url": "https://www.newyorktheatreguide.com/reviews/review-of-moulin-rouge-the-musical-on-broadway",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): giant, purpose, company, tina, jagged little pill...",
-    "textLength": 5857,
-    "timestamp": "2026-02-06T17:31:41.490Z"
-  },
-  {
-    "reviewId": "moulin-rouge-2019/nytg--tom-millward.json",
-    "showId": "moulin-rouge-2019",
-    "outlet": "New York Theatre Guide",
-    "critic": "Tom Millward",
-    "url": "https://www.newyorktheatreguide.com/news-features/a-new-york-theatre-guide-to-moulin-rouge-the-musical",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (16): here lies love, home, smash, sweeney todd, beetlejuice...",
-    "textLength": 8628,
-    "timestamp": "2026-02-06T17:31:50.625Z"
-  },
-  {
-    "reviewId": "moulin-rouge-2019/vulture--sara-holdren.json",
-    "showId": "moulin-rouge-2019",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): appropriate, macbeth, sweat, the audience, macbeth...",
-    "textLength": 10671,
-    "timestamp": "2026-02-06T17:31:55.242Z"
-  },
-  {
-    "reviewId": "moulin-rouge-2019/vulture--sarah-holdren.json",
-    "showId": "moulin-rouge-2019",
-    "outlet": "Vulture",
-    "critic": "Sarah Holdren",
-    "url": "https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): appropriate, macbeth, sweat, the audience, macbeth...",
-    "textLength": 10671,
-    "timestamp": "2026-02-06T17:31:57.642Z"
   },
   {
     "reviewId": "nice-work-if-you-can-get-it-2012/hollywood-reporter--david-rooney.json",
@@ -22946,5 +22862,89 @@
     "garbageReason": "Multiple shows mentioned (5): company, once, rain, company, rent",
     "textLength": 1917,
     "timestamp": "2026-02-07T08:52:21.446Z"
+  },
+  {
+    "reviewId": "moulin-rouge-2019/nyt-theater--jonathan-mandell.json",
+    "showId": "moulin-rouge-2019",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2019/08/09/moulin-rouge-review-a-jukebox-musical-for-the-age-of-spotify/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, tina, the inheritance, king kong, the performers...",
+    "textLength": 6221,
+    "timestamp": "2026-02-07T08:55:10.395Z"
+  },
+  {
+    "reviewId": "moulin-rouge-2019/nytg--mark-shenton.json",
+    "showId": "moulin-rouge-2019",
+    "outlet": "New York Theatre Guide",
+    "critic": "Mark Shenton",
+    "url": "https://www.newyorktheatreguide.com/reviews/review-of-moulin-rouge-the-musical-on-broadway",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): giant, purpose, company, tina, jagged little pill...",
+    "textLength": 5857,
+    "timestamp": "2026-02-07T08:55:16.637Z"
+  },
+  {
+    "reviewId": "moulin-rouge-2019/nytg--tom-millward.json",
+    "showId": "moulin-rouge-2019",
+    "outlet": "New York Theatre Guide",
+    "critic": "Tom Millward",
+    "url": "https://www.newyorktheatreguide.com/news-features/a-new-york-theatre-guide-to-moulin-rouge-the-musical",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): here lies love, home, smash, sweeney todd, beetlejuice...",
+    "textLength": 8628,
+    "timestamp": "2026-02-07T08:55:25.279Z"
+  },
+  {
+    "reviewId": "moulin-rouge-2019/vulture--sara-holdren.json",
+    "showId": "moulin-rouge-2019",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): appropriate, macbeth, sweat, the audience, macbeth...",
+    "textLength": 10671,
+    "timestamp": "2026-02-07T08:55:32.747Z"
+  },
+  {
+    "reviewId": "moulin-rouge-2019/vulture--sarah-holdren.json",
+    "showId": "moulin-rouge-2019",
+    "outlet": "Vulture",
+    "critic": "Sarah Holdren",
+    "url": "https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): appropriate, macbeth, sweat, the audience, macbeth...",
+    "textLength": 10671,
+    "timestamp": "2026-02-07T08:55:35.327Z"
+  },
+  {
+    "reviewId": "mr-saturday-night-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "mr-saturday-night-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/04/27/mr-saturday-night-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): funny girl, the skin of our teeth, macbeth, cats, the present...",
+    "textLength": 7363,
+    "timestamp": "2026-02-07T08:55:46.946Z"
+  },
+  {
+    "reviewId": "mr-saturday-night-2022/nytg--joe-dziemianowicz.json",
+    "showId": "mr-saturday-night-2022",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/mr-saturday-night-broadway-review-billy-crystal",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): network, summer, cats, 700 sundays, the bridges of madison county...",
+    "textLength": 3755,
+    "timestamp": "2026-02-07T08:55:53.119Z"
   }
 ]
