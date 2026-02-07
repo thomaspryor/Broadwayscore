@@ -15952,42 +15952,6 @@
     "timestamp": "2026-02-06T07:06:14.224Z"
   },
   {
-    "reviewId": "its-only-a-play-2014/hollywood-reporter--david-rooney.json",
-    "showId": "its-only-a-play-2014",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/a-play-theater-review-739504",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): mamma mia!, network, love letters, the country house, the curious incident of the dog in the night-time...",
-    "textLength": 9370,
-    "timestamp": "2026-02-06T07:08:13.388Z"
-  },
-  {
-    "reviewId": "its-only-a-play-2014/hollywood-reporter--unknown.json",
-    "showId": "its-only-a-play-2014",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/a-play-theater-review-739504",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): network, love letters, the country house, the curious incident of the dog in the night-time, harvey...",
-    "textLength": 8795,
-    "timestamp": "2026-02-06T07:08:30.800Z"
-  },
-  {
-    "reviewId": "its-only-a-play-2014/variety--marilyn-stasio.json",
-    "showId": "its-only-a-play-2014",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2014/legit/reviews/broadway-review-its-only-a-play-1201334637/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): wicked, the lion king, once, high, race...",
-    "textLength": 7944,
-    "timestamp": "2026-02-06T07:10:46.701Z"
-  },
-  {
     "reviewId": "jitney-2017/hollywood-reporter--david-rooney.json",
     "showId": "jitney-2017",
     "outlet": "Hollywood Reporter",
@@ -22574,5 +22538,89 @@
     "garbageReason": "Multiple shows mentioned (9): junk, summer, the audience, rain, high...",
     "textLength": 9246,
     "timestamp": "2026-02-07T07:40:56.154Z"
+  },
+  {
+    "reviewId": "hughie-2016/nytg--jeff-myhre.json",
+    "showId": "hughie-2016",
+    "outlet": "New York Theatre Guide",
+    "critic": "Jeff Myhre",
+    "url": "http://nytheatreguide.com/2016/03/broadway-review-hughie-at-the-booth-theatre/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): harmony, home, tina, the present, the price...",
+    "textLength": 45998,
+    "timestamp": "2026-02-07T07:41:14.247Z"
+  },
+  {
+    "reviewId": "in-the-heights-2008/nytimes--charles-isherwood.json",
+    "showId": "in-the-heights-2008",
+    "outlet": "The New York Times",
+    "critic": "Charles Isherwood",
+    "url": "https://www.nytimes.com/2008/03/10/theater/reviews/10heig.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): home, gypsy, company, summer, once...",
+    "textLength": 8826,
+    "timestamp": "2026-02-07T07:45:03.592Z"
+  },
+  {
+    "reviewId": "in-the-heights-2008/variety--david-rooney.json",
+    "showId": "in-the-heights-2008",
+    "outlet": "Variety",
+    "critic": "David Rooney",
+    "url": "https://variety.com/2008/legit/reviews/in-the-heights-1200470539/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): home, spring awakening, hair, elling, high...",
+    "textLength": 6482,
+    "timestamp": "2026-02-07T07:45:23.110Z"
+  },
+  {
+    "reviewId": "its-only-a-play-2014/hollywood-reporter--david-rooney.json",
+    "showId": "its-only-a-play-2014",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/a-play-theater-review-739504",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): mamma mia!, network, love letters, the country house, the curious incident of the dog in the night-time...",
+    "textLength": 9370,
+    "timestamp": "2026-02-07T07:45:40.790Z"
+  },
+  {
+    "reviewId": "its-only-a-play-2014/hollywood-reporter--unknown.json",
+    "showId": "its-only-a-play-2014",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/a-play-theater-review-739504",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): network, love letters, the country house, the curious incident of the dog in the night-time, harvey...",
+    "textLength": 8795,
+    "timestamp": "2026-02-07T07:45:52.408Z"
+  },
+  {
+    "reviewId": "its-only-a-play-2014/variety--marilyn-stasio.json",
+    "showId": "its-only-a-play-2014",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2014/legit/reviews/broadway-review-its-only-a-play-1201334637/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): wicked, the lion king, once, high, race...",
+    "textLength": 7994,
+    "timestamp": "2026-02-07T07:47:22.206Z"
+  },
+  {
+    "reviewId": "jersey-boys-2005/hollywood-reporter--unknown.json",
+    "showId": "jersey-boys-2005",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://hollywoodreporter.com/thr-esq/judge-overturns-jurys-verdict-jersey-boys-is-a-copyright-infringement-1013558",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): purpose, summer, once, november, well...",
+    "textLength": 6771,
+    "timestamp": "2026-02-07T07:47:36.824Z"
   }
 ]
