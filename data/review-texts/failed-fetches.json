@@ -19192,30 +19192,6 @@
     "timestamp": "2026-02-06T19:05:33.631Z"
   },
   {
-    "reviewId": "the-music-man-2022/nyt-theater--jonathan-mandell.json",
-    "showId": "the-music-man-2022",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2022/02/18/the-music-man-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): home, bright star, first date, hair, rain...",
-    "textLength": 8242,
-    "timestamp": "2026-02-06T19:07:28.460Z"
-  },
-  {
-    "reviewId": "the-music-man-2022/nytg--naveen-kumar.json",
-    "showId": "the-music-man-2022",
-    "outlet": "New York Theatre Guide",
-    "critic": "Naveen Kumar",
-    "url": "https://www.newyorktheatreguide.com/reviews/the-music-man-broadway-review-hugh-jackman-sutton-foster",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): appropriate, company, first date, anything goes, high...",
-    "textLength": 4469,
-    "timestamp": "2026-02-06T19:07:35.768Z"
-  },
-  {
     "reviewId": "the-music-man-2022/nytimes--unknown.json",
     "showId": "the-music-man-2022",
     "outlet": "The New York Times",
@@ -23510,5 +23486,89 @@
     "garbageReason": "Multiple shows mentioned (9): harvey, annie, follies, bonnie and clyde, elling...",
     "textLength": 4272,
     "timestamp": "2026-02-07T10:12:44.361Z"
+  },
+  {
+    "reviewId": "the-minutes-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "the-minutes-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/04/17/the-minutes-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): chicago, hair, once, rain, high...",
+    "textLength": 6682,
+    "timestamp": "2026-02-07T10:12:53.360Z"
+  },
+  {
+    "reviewId": "the-minutes-2022/nytg--joe-dziemianowicz.json",
+    "showId": "the-minutes-2022",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/the-minutes-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): chicago, company, elling, high, august: osage county...",
+    "textLength": 3632,
+    "timestamp": "2026-02-07T10:13:02.818Z"
+  },
+  {
+    "reviewId": "the-minutes-2022/nytimes--unknown.json",
+    "showId": "the-minutes-2022",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2022/04/17/theater/the-minutes-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, hair, once, evita, high...",
+    "textLength": 7721,
+    "timestamp": "2026-02-07T10:16:27.550Z"
+  },
+  {
+    "reviewId": "the-minutes-2022/vulture--helen-shaw.json",
+    "showId": "the-minutes-2022",
+    "outlet": "Vulture",
+    "critic": "Helen Shaw",
+    "url": "https://www.vulture.com/article/the-minutes-tracy-letts-broadway-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): wicked, english, rain, race, august: osage county...",
+    "textLength": 7442,
+    "timestamp": "2026-02-07T10:16:34.205Z"
+  },
+  {
+    "reviewId": "the-music-man-2022/hollywood-reporter--frank-scheck.json",
+    "showId": "the-music-man-2022",
+    "outlet": "Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/hugh-jackman-and-sutton-foster-in-the-music-man-theater-review-1235091456/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): almost famous, oklahoma!, summer, hello, dolly!, race...",
+    "textLength": 6921,
+    "timestamp": "2026-02-07T10:19:54.521Z"
+  },
+  {
+    "reviewId": "the-music-man-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "the-music-man-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/02/18/the-music-man-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, bright star, first date, hair, rain...",
+    "textLength": 8242,
+    "timestamp": "2026-02-07T10:20:02.996Z"
+  },
+  {
+    "reviewId": "the-music-man-2022/nytg--naveen-kumar.json",
+    "showId": "the-music-man-2022",
+    "outlet": "New York Theatre Guide",
+    "critic": "Naveen Kumar",
+    "url": "https://www.newyorktheatreguide.com/reviews/the-music-man-broadway-review-hugh-jackman-sutton-foster",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): appropriate, company, first date, anything goes, high...",
+    "textLength": 4469,
+    "timestamp": "2026-02-07T10:20:11.983Z"
   }
 ]
