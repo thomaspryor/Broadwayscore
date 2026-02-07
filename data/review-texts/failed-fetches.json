@@ -12040,54 +12040,6 @@
     "timestamp": "2026-02-05T05:23:26.511Z"
   },
   {
-    "reviewId": "peter-pan-goes-wrong-2023/nyt-theater--jonathan-mandell.json",
-    "showId": "peter-pan-goes-wrong-2023",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2023/04/21/peter-pan-goes-wrong-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): home, prima facie, company, the audience, finding neverland...",
-    "textLength": 5951,
-    "timestamp": "2026-02-05T05:29:01.453Z"
-  },
-  {
-    "reviewId": "peter-pan-goes-wrong-2023/nytg--allison-considine.json",
-    "showId": "peter-pan-goes-wrong-2023",
-    "outlet": "New York Theatre Guide",
-    "critic": "Allison Considine",
-    "url": "https://www.newyorktheatreguide.com/reviews/peter-pan-goes-wrong-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): the lost boys, home, sweeney todd, company, the audience...",
-    "textLength": 5265,
-    "timestamp": "2026-02-05T05:29:09.942Z"
-  },
-  {
-    "reviewId": "peter-pan-goes-wrong-2023/variety--ad-amorosi.json",
-    "showId": "peter-pan-goes-wrong-2023",
-    "outlet": "Variety",
-    "critic": "A.D. Amorosi",
-    "url": "https://variety.com/2023/legit/reviews/peter-pan-goes-wrong-review-broadway-1235588070/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): gypsy, company, carousel, the audience, annie...",
-    "textLength": 5807,
-    "timestamp": "2026-02-05T05:30:56.031Z"
-  },
-  {
-    "reviewId": "peter-pan-goes-wrong-2023/variety--bob-verini.json",
-    "showId": "peter-pan-goes-wrong-2023",
-    "outlet": "Variety",
-    "critic": "Bob Verini",
-    "url": "https://variety.com/2023/legit/reviews/peter-pan-goes-wrong-review-broadway-1235575312/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): chicago, gypsy, company, carousel, the audience...",
-    "textLength": 5823,
-    "timestamp": "2026-02-05T05:31:16.133Z"
-  },
-  {
     "reviewId": "plaza-suite-2022/hollywood-reporter--david-rooney.json",
     "showId": "plaza-suite-2022",
     "outlet": "Hollywood Reporter",
@@ -12098,18 +12050,6 @@
     "garbageReason": "Multiple shows mentioned (12): mamma mia!, purpose, sweat, rocky, once...",
     "textLength": 8408,
     "timestamp": "2026-02-05T05:35:09.554Z"
-  },
-  {
-    "reviewId": "peter-pan-goes-wrong-2023/vulture--unknown.json",
-    "showId": "peter-pan-goes-wrong-2023",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "https://www.vulture.com/2023/04/theater-review-peter-pan-goes-wrong-broadway.html",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): company, noises off, the audience, all the way, once...",
-    "textLength": 6724,
-    "timestamp": "2026-02-05T05:35:09.893Z"
   },
   {
     "reviewId": "plaza-suite-2022/nyt-theater--jonathan-mandell.json",
@@ -24518,5 +24458,89 @@
     "garbageReason": "Multiple shows mentioned (10): home, company, the audience, the performers, once...",
     "textLength": 6686,
     "timestamp": "2026-02-07T14:36:46.749Z"
+  },
+  {
+    "reviewId": "peter-pan-goes-wrong-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "peter-pan-goes-wrong-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/04/21/peter-pan-goes-wrong-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, prima facie, company, the audience, finding neverland...",
+    "textLength": 5951,
+    "timestamp": "2026-02-07T14:38:06.090Z"
+  },
+  {
+    "reviewId": "peter-pan-goes-wrong-2023/nytg--allison-considine.json",
+    "showId": "peter-pan-goes-wrong-2023",
+    "outlet": "New York Theatre Guide",
+    "critic": "Allison Considine",
+    "url": "https://www.newyorktheatreguide.com/reviews/peter-pan-goes-wrong-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): the lost boys, home, sweeney todd, company, the audience...",
+    "textLength": 5265,
+    "timestamp": "2026-02-07T14:38:14.569Z"
+  },
+  {
+    "reviewId": "peter-pan-goes-wrong-2023/nytimes--unknown.json",
+    "showId": "peter-pan-goes-wrong-2023",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): home, company, the children, summer, noises off...",
+    "textLength": 6912,
+    "timestamp": "2026-02-07T14:40:25.519Z"
+  },
+  {
+    "reviewId": "peter-pan-goes-wrong-2023/variety--ad-amorosi.json",
+    "showId": "peter-pan-goes-wrong-2023",
+    "outlet": "Variety",
+    "critic": "A.D. Amorosi",
+    "url": "https://variety.com/2023/legit/reviews/peter-pan-goes-wrong-review-broadway-1235588070/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): gypsy, company, carousel, the audience, annie...",
+    "textLength": 5416,
+    "timestamp": "2026-02-07T14:40:46.954Z"
+  },
+  {
+    "reviewId": "peter-pan-goes-wrong-2023/variety--bob-verini.json",
+    "showId": "peter-pan-goes-wrong-2023",
+    "outlet": "Variety",
+    "critic": "Bob Verini",
+    "url": "https://variety.com/2023/legit/reviews/peter-pan-goes-wrong-review-broadway-1235575312/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): gypsy, company, carousel, the audience, annie...",
+    "textLength": 6078,
+    "timestamp": "2026-02-07T14:41:08.630Z"
+  },
+  {
+    "reviewId": "peter-pan-goes-wrong-2023/vulture--unknown.json",
+    "showId": "peter-pan-goes-wrong-2023",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "https://www.vulture.com/2023/04/theater-review-peter-pan-goes-wrong-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): company, noises off, the audience, all the way, once...",
+    "textLength": 8885,
+    "timestamp": "2026-02-07T14:41:11.920Z"
+  },
+  {
+    "reviewId": "picnic-2013/hollywood-reporter--david-rooney.json",
+    "showId": "picnic-2013",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/picnic-theater-review-411779",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, company, summer, rain, race...",
+    "textLength": 6343,
+    "timestamp": "2026-02-07T14:41:16.175Z"
   }
 ]
