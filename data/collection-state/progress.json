@@ -4,7 +4,9 @@
     "a-view-from-the-bridge-2015/nytg--kathleen-campion.json",
     "all-my-sons-2019/nyt-theater--raven-snook.json",
     "all-my-sons-2019/nytimes--ben-brantley.json",
-    "all-my-sons-2019/nytimes--jesse-green.json"
+    "all-my-sons-2019/nytimes--jesse-green.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+    "american-son-2018/variety--marilyn-stasio.json"
   ],
   "failed": [
     "1776-2022/hollywood-reporter--david-rooney.json",
@@ -81,17 +83,28 @@
     "almost-famous-2022/vulture--helen-shaw.json",
     "almost-famous-2022/vulture--jackson-mchenry.json",
     "american-psycho-2016/hollywood-reporter--david-rooney.json",
-    "american-psycho-2016/hollywood-reporter--unknown.json"
+    "american-psycho-2016/hollywood-reporter--unknown.json",
+    "american-psycho-2016/newyorker--hilton-als.json",
+    "american-psycho-2016/nytimes--ben-brantley.json",
+    "american-psycho-2016/nytimes--unknown.json",
+    "american-psycho-2016/variety--marilyn-stasio.json",
+    "american-psycho-2016/vulture--jesse-green.json",
+    "american-son-2018/hollywood-reporter--david-rooney.json",
+    "american-son-2018/vulture--sara-holdren.json",
+    "and-juliet-2022/nytg--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "a-view-from-the-bridge-2015/nytg--kathleen-campion.json"
+      "a-view-from-the-bridge-2015/nytg--kathleen-campion.json",
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
     ],
     "browserbase": [
       "data/review-texts/1776-2022/hollywood-reporter--unknown.json"
     ],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "american-son-2018/variety--marilyn-stasio.json"
+    ],
     "brightdata": [
       "a-view-from-the-bridge-2015/hollywood-reporter--leslie-felperin.json"
     ],
@@ -102,7 +115,7 @@
     ]
   },
   "startTime": "2026-02-07T05:00:41.368Z",
-  "lastProcessed": "american-psycho-2016/hollywood-reporter--unknown.json",
+  "lastProcessed": "and-juliet-2022/nytg--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-02-07T05:00:46.168Z",
