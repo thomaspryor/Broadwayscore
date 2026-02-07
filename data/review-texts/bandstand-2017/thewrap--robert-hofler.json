@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“It has not been a spectacular season for dance on Broadway...There’s almost no competition for Blankenbuehler’s arresting choreography in the new musical ‘Bandstand’…All he needs now is a musical worthy of his talents. ‘Bandstand’ is not that musical…The book initially intrigues, because it’s so damned dark for a Broadway musical…Alcoholism, divorce, drugs, unemployment, and chronic war wounds are not a plot…The second act is one long uneventful slog to the big city.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All he needs now is a musical worthy of his talents. 'Bandstand' is not that musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic praises Blankenbuehler's choreography but clearly states the musical itself is not worthy of those talents, calling the second act 'one long uneventful slog.' Single excerpt warning noted - scoring conservatively within Negative range. | GPT-4o: The review criticizes the musical for not being worthy of the choreographer's talents and describes the second act as an 'uneventful slog'. While there is some praise for the choreography, the overall tone is negative, focusing on the musical's shortcomings. | Gemini: The review praises the choreography but ultimately finds the musical lacking, especially the book and second act. The overall sentiment is negative, despite acknowledging some positive aspects. | Kimi: The excerpt explicitly states the show fails to match its choreography, calls the second act 'one long uneventful slog,' and dismisses the dark material as 'not a plot.' While praising the choreography, the critic clearly pans the musical itself. Single excerpt warning applies.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:45:54.729Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

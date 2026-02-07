@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“More than two dozen amazingly catchy songs of yesteryear are heard throughout ‘Beautiful’ as McGrath’s smart script nimbly relates how King, still in her teens, and Goffin, scarcely older, teamed up to turn out hits...What makes ‘Beautiful so, well, beautiful is watching King evolve from a dowdy, insecure teenager into a confident, mature artist...The show looks fresh in performance, thanks to a versatile, highly energetic ensemble.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes 'Beautiful so, well, beautiful is watching King evolve from a dowdy, insecure teenager into a confident, mature artist.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language throughout: 'amazingly catchy songs,' 'smart script,' calls the show 'beautiful,' praises the 'fresh' performance and 'highly energetic ensemble.' However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the show for its catchy songs and smart script, highlighting the engaging evolution of the main character and energetic ensemble. Despite the limitations of a single excerpt, the language suggests a strong positive impression. | Gemini: The excerpt praises the script, the evolution of the main character, and the energetic ensemble, suggesting a positive experience. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The single excerpt offers strong praise for the production's music, script, and performances using words like 'amazingly catchy,' 'smart,' and 'beautiful,' indicating an enthusiastic recommendation despite the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:10:12.100Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

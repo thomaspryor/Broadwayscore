@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Simply, 'Beetlejuice' is fun, fun, FUN!",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong enthusiasm with repeated 'fun' emphasis and praise for production values. Despite acknowledging flaws ('messy', 'sensory overflow'), the critic frames these as positive attributes that match the character. Single excerpt warning applies, but the tone is clearly celebratory. | GPT-4o: The excerpt provides a highly positive evaluation of the show's entertainment value, emphasizing its fun and engaging nature. The praise for the sets, lights, and special effects suggests a strong production quality. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is overwhelmingly positive, describing the show as fun and praising the sets, lights, and special effects. Given the single excerpt warning, I'm scoring it at the higher end of the positive range. | Kimi: The critic enthusiastically praises the production design as 'to die for' and emphasizes the show's entertainment value with repetitive emphasis ('fun, fun, FUN'), indicating a strong recommendation despite noting it can be 'messy' in ways that fit the source material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:35:08.756Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

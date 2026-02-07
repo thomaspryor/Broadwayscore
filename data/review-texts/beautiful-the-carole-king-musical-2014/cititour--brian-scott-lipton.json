@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Beautiful' takes the early life story – and music – of the legendary singer-songwriter Carole King to create one of the most entertaining Broadway shows in years. All of the necessary elements have come together here, from a surprisingly smart and witty book by Douglas McGrath, smooth direction by Marc Bruni, and the work of a consistently top-notch cast. As a result, audiences leave with a song on their lips, a smile on their face, and even a tingle in their heart.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Beautiful' takes the early life story – and music – of the legendary singer-songwriter Carole King to create one of the most entertaining Broadway shows in years.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'one of the most entertaining Broadway shows in years' with consistent positive elements noted. However, confidence is low due to single excerpt limitation - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt provides strong praise, calling the show 'one of the most entertaining Broadway shows in years' with a 'smart and witty book' and 'top-notch cast'. The positive language suggests a high recommendation, but confidence is low due to the single excerpt warning. | Gemini: The review uses very positive language such as \"one of the most entertaining Broadway shows in years\", \"surprisingly smart and witty book\", and \"consistently top-notch cast\", indicating a strong positive recommendation. | Kimi: The excerpt offers unqualified enthusiastic praise, calling the show 'one of the most entertaining Broadway shows in years' with comprehensive commendation of the book, direction, and cast, indicating a strong recommendation, though confidence is moderated by the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:08:49.711Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

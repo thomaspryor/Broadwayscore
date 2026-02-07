@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Whatever else it may or may not be, 'Beetlejuice' is spectacularly weird...there are magic tricks and giant worms and a starkly linear idea of the afterlife that contrasts well with the chaotic world of the living. If only so much of the rest of 'Beetlejuice' were not a busy mess...It looks great, and there are strong performances and some outré laughs, but none of it quite fits together; the tone varies wildly, and skids around on Eddie Perfect’s slipshod score.\"\n\nRead more"
+  "showScoreExcerpt": "\"Whatever else it may or may not be, 'Beetlejuice' is spectacularly weird...there are magic tricks and giant worms and a starkly linear idea of the afterlife that contrasts well with the chaotic world of the living. If only so much of the rest of 'Beetlejuice' were not a busy mess...It looks great, and there are strong performances and some outré laughs, but none of it quite fits together; the tone varies wildly, and skids around on Eddie Perfect’s slipshod score.\"\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It looks great, and there are strong performances and some outré laughs, but none of it quite fits together.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises specific elements (performances, visuals, laughs) but finds the overall show a 'busy mess' that 'doesn't quite fit together.' This is classic mixed territory - acknowledging positives while noting significant structural problems. | GPT-4o: The review highlights both positive aspects (visuals, performances) and significant issues (disjointed tone, slipshod score). The lack of coherence and mixed tone suggest a mixed verdict. | Gemini: The review acknowledges positive aspects like visuals, performances, and humor, but criticizes the overall coherence and the score, resulting in a mixed assessment. Due to the limited excerpt, confidence is low. | Kimi: The critic praises the visual design, performances, and humor but finds the show structurally messy with a slipshod score and wildly varying tone, resulting in a balanced but unenthusiastic assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:35:42.150Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

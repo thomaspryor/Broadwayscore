@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "My sympathy stops at the door: at Broadway prices, they should have checked the content advisory.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt focuses on content warnings and audience walkouts rather than show quality. The critic's dismissive tone toward audience complaints suggests neither strong praise nor condemnation of the show itself. | GPT-4o: The excerpt does not provide a clear recommendation or discouragement. The mention of audience members leaving suggests some dissatisfaction, but the critic also implies that the content warning was clear. The tone is neutral, leading to a mixed classification. | Gemini: The excerpt provides a content advisory and a humorous anecdote, but lacks a clear recommendation or overall assessment of the show's quality. The tone is observational rather than evaluative, suggesting a mixed or neutral stance. | Kimi: While describing audience walkouts due to profanity, the critic defends the show's PG-13 content as appropriate for the ticket price, placing blame on unprepared attendees rather than the production. This suggests mild approval of the show's edgy tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:22:37.608Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

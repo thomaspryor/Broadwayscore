@@ -69,9 +69,9 @@
   ],
   "wordCount": 42,
   "tierReason": "Short text (42 words)",
-  "rejectedAt": "2026-02-07T04:53:53.730Z",
+  "rejectedAt": "2026-02-07T10:57:22.637Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This is a website error page with navigation elements and search suggestions, not a review.; openai: This is a navigation prompt or error message, not a review.; gemini: This is an error message, not a review of the show.; kimi: This is a 404 error page/search prompt, not a review. It contains no evaluative content about a Broadway production.",
+  "rejectionReasoning": "claude: This is a website error/search page with navigation elements, not a review of any show.; openai: This is a navigation or error message, not a review.; gemini: This is a search results page, not a review.; kimi: This is a 404 error page indicating content was not found, not a review of the show.",
   "promptVersion": "5.2.0"
 }

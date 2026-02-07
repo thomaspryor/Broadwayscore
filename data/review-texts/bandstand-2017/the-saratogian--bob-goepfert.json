@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"An impressive work as it takes what might sound like a cliché and turns it into a meaningful work that is fun without being frothy, and serious without being somber...The entire cast is terrific as each band member is able to etch a character who rises above stereotype...Director-choreographer Andy Blankenbuehler keeps the dances vibrant and exciting. More importantly, he tells an emotionally complex story with clarity. 'Bandstand' is a delight that is compassionate, entertaining and truthful.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bandstand' is a delight that is compassionate, entertaining and truthful.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise throughout with words like 'impressive,' 'terrific,' and 'delight.' The critic appreciates both artistic merit and entertainment value, calling it meaningful without being heavy-handed. Single excerpt warning acknowledged but tone is clearly positive. | GPT-4o: The excerpt praises the show as 'impressive', 'fun', 'serious', and 'a delight', with strong commendations for the cast and direction. The positive language and lack of reservations suggest a strong recommendation. | Gemini: The review uses strong positive language such as \"impressive work,\" \"meaningful work,\" \"fun without being frothy,\" \"terrific cast,\" and \"vibrant and exciting.\" The overall tone is enthusiastic, indicating a strong positive recommendation. | Kimi: The excerpt contains unambiguous praise throughout: 'impressive work,' 'terrific' cast, 'vibrant and exciting' dances, and a direct verdict calling it 'a delight.' However, confidence is low due to single-excerpt warning and lack of full context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:42:21.754Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 83,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

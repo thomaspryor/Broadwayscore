@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 56,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"For a play that, on many levels, is about its characters’ failure to connect – with each other, with the suffering of others, with their own humanity – it is fitting but nevertheless frustrating to find our own connection to it hamstrung.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 56,
+    "confidence": "medium",
+    "range": {
+      "low": 51,
+      "high": 61
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For a play that, on many levels, is about its characters' failure to connect – with each other, with the suffering of others, with their own humanity – it is fitting but nevertheless frustrating to find our own connection to it hamstrung.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic finds the production 'fitting but nevertheless frustrating' and describes audience connection as 'hamstrung' - critical language suggesting disappointment. However, with only one excerpt and truncated text, the full verdict is unclear. | GPT-4o: The excerpt suggests a negative experience with the play, indicating frustration and a lack of connection. However, due to the single excerpt warning, the confidence is low as it may not represent the full review sentiment. | Gemini: The excerpt indicates a frustrating experience due to a failure to connect with the characters and their suffering, suggesting a mixed or neutral recommendation. The confidence is low because it's a single excerpt. | Kimi: The excerpt describes the production as frustrating and suggests the audience's connection to the material is 'hamstrung,' indicating the show fails to engage emotionally despite its thematic intentions. Single excerpt limits confidence. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:40:47.942Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 54,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

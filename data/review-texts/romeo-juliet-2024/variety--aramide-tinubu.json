@@ -67,5 +67,11 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 606,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-07T11:20:12.731Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review discusses a production of 'Romeo and Juliet' with specific casting choices and set design, which does not match the current Broadway run.; kimi: This review describes a production directed by Peter Hall (who died in 2017) starring DB Woodside, Lynn Collins, and Miriam Margolyes, which corresponds to the 1999 Ahmanson Theatre production in Los Angeles, not a current Broadway run.",
+  "promptVersion": "5.2.0"
 }

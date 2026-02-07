@@ -50,5 +50,59 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 441,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels heartfelt but heavy-handed, as it punches home its message with a relentlessness that may soon leave you numb",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show's ambitions and praises Shakur's lyrics, but finds the execution problematic with predictable characters and heavy-handed messaging. Mixed signals without clear recommendation. | Gemini: The review acknowledges the show's ambition and the power of Tupac's lyrics, but criticizes the heavy-handedness and predictable nature of the production. This indicates a mixed reaction, not strongly recommending or discouraging. | Kimi: While the review praises the 'sweet beats' and 'electric charge' of Tupac's lyrics and finds the concept admirable, it heavily criticizes the book as predictable, characters as thinly drawn types, and the rap-to-theater adaptation as an uneasy fit. The text is truncated, making the final verdict unclear, but the balance of praise for the music versus criticism of the storytelling lands in mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:05:55.190Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

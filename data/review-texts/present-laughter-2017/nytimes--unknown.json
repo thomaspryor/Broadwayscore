@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“An uneven but enjoyable production…Let us give thanks for what Mr. Kline, embodying the capricious god of his own theatrical universe, has wrought. It is hard not to wish that the heavy farcical high jinks that surround him were on his high level…The staging by Mr. von Stuelpnagel brings out the more boisterous aspects of Coward’s comedy, occasionally to hilarious, but just as often labored, ends. And the pace needs to be picked up throughout.”\n\nRead more",
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
@@ -44,5 +44,10 @@
   ],
   "duplicateTextOf": "nytimes--ben-brantley.json",
   "wordCount": 232,
-  "tierReason": "Short text (232 words)"
+  "tierReason": "Short text (232 words)",
+  "rejectedAt": "2026-02-07T11:19:31.217Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The text cuts off mid-review with an error message about retrieving article content and enabling JavaScript, making it impossible to determine the critic's final verdict.; openai: The text is a mix of navigation instructions and a partial review, indicating a technical issue with accessing the full content.",
+  "promptVersion": "5.2.0"
 }

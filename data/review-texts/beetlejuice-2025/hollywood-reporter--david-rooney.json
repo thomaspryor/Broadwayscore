@@ -13,5 +13,60 @@
   ],
   "showScoreExcerpt": "\"The show is a loving homage to a wonderfully weird original, reconceived for the stage with eye-popping design, full-throttle performances and a mischievous sense of fun...It's impossible to deny the virtuosic showmanship of lead actor Alex Brightman...The writers struggle to control the reins of their galloping narrative...The musical delivers a unique fan experience for lovers of the movie, and plenty of touches that Burton cultists will appreciate.\"\n\nRead more",
   "bwwExcerpt": "\"The zippy pacing, buoyant energy and steady stream of laugh-out-loud moments hint at the joy Burton appears to have found in revisiting this world, and for anyone who loved the first movie, it’s contagious. That applies also to the actors, all of whom warm to the dizzying lunacy.\"",
-  "bwwRoundupUrl": null
+  "bwwRoundupUrl": null,
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical delivers a unique fan experience for lovers of the movie, and plenty of touches that Burton cultists will appreciate.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive assessment praising design, performances, and entertainment value, though noting narrative control issues. Clearly recommends for target audience despite reservations. | GPT-4o: The review praises the show's design, performances, and fun, indicating a positive reception. However, it notes the writers' struggle with the narrative, suggesting some reservations. The curated excerpts and lack of a full text reduce confidence. | Gemini: The review is generally positive, highlighting the show's design, performances, and fun. However, it also mentions that the writers struggle to control the narrative, suggesting some reservations. Given the excerpted nature and focus on fan experience, a score in the positive range is appropriate. | Kimi: While noting narrative weaknesses, the critic praises the visual design, lead performance, and fun factor, recommending the show as a unique experience for lovers of the movie.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:27:35.645Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

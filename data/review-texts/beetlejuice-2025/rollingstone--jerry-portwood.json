@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A joyful musical that celebrates death and the afterlife may seem like an odd mixture for audience entertainment, but black humor has long been an antidote to the venom of reality",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with positive language ('joyful', 'wild and witty lyrics') but discusses potential audience concerns and notes the best material comes later. Limited text makes full verdict unclear. | GPT-4o: The excerpt describes the musical as 'joyful' and highlights 'wild and witty lyrics', indicating a positive reception. However, the single excerpt warning suggests caution, so a score at the lower end of the Positive range is appropriate. | Gemini: The review excerpt describes the musical as \"joyful\" and praises the lyrics as \"wild and witty.\" Given the single excerpt and positive tone, I've scored it as positive, but with low confidence due to the limited text. | Kimi: The excerpt offers clear enthusiasm for the show's black humor, witty lyrics, and standout second-act songs. Despite limited text, the unambiguous praise ('joyful', 'wild and witty', 'best songs') places this in the upper Positive range, though confidence remains low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:30:41.483Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

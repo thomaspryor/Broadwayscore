@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Against considerable odds, the musical manages to surmount most of the hurdles it faces, even if, like that nasty-funny ghost at its center, for many it may ultimately overstay its welcome...The musical is considerably funnier than the movie...The director, the prolific Alex Timbers, might have profitably taken an editor’s pen to the cumbersome gyrations of the plot...Kritzer and Brightman aside, the performers are not given much high-fiber comic material.\"\n\nRead more"
+  "showScoreExcerpt": "\"Against considerable odds, the musical manages to surmount most of the hurdles it faces, even if, like that nasty-funny ghost at its center, for many it may ultimately overstay its welcome...The musical is considerably funnier than the movie...The director, the prolific Alex Timbers, might have profitably taken an editor’s pen to the cumbersome gyrations of the plot...Kritzer and Brightman aside, the performers are not given much high-fiber comic material.\"\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Against considerable odds, the musical manages to surmount most of the hurdles it faces, even if, like that nasty-funny ghost at its center, for many it may ultimately overstay its welcome.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review acknowledges the show overcomes challenges and is funnier than the film, but criticizes the cumbersome plot and weak material for most performers. The 'overstay its welcome' comment suggests qualified approval at best. | GPT-4o: The review acknowledges the musical's ability to overcome challenges and be funnier than the movie, but also highlights issues like plot complexity and limited comic material for performers. The single excerpt suggests mixed sentiments. | Gemini: The review acknowledges the musical surmounting hurdles and being funnier than the movie, but also mentions the plot's cumbersome gyrations and the performers not being given much comic material. This suggests a mixed experience. | Kimi: The excerpt indicates the show succeeds against odds and improves on the source material, but criticizes the cumbersome plot and suggests it may overstay its welcome, indicating a qualified, lukewarm recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:17:29.796Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

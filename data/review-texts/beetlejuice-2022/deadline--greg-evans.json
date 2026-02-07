@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"There’s plenty worth a haunt here, from David Korins’ off-kilter spook house set to Alex Brightman’s raspy-voiced title performance and, most of all, the deliriously gorgeous singing of young Sophia Anne Caruso, and it all comes within reasonable reach of exorcising the bad vibes that attached themselves to the production during its pre-Broadway run in Washington D.C...The book retains the best bits from the movie without adding much of lasting value.\" \n\nRead more"
+  "showScoreExcerpt": "\"There’s plenty worth a haunt here, from David Korins’ off-kilter spook house set to Alex Brightman’s raspy-voiced title performance and, most of all, the deliriously gorgeous singing of young Sophia Anne Caruso, and it all comes within reasonable reach of exorcising the bad vibes that attached themselves to the production during its pre-Broadway run in Washington D.C...The book retains the best bits from the movie without adding much of lasting value.\" \n\nRead more",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's plenty worth a haunt here, from David Korins' off-kilter spook house set to Alex Brightman's raspy-voiced title performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises multiple production elements (set, lead performance, singing) and suggests the show overcomes previous problems, but notes the book doesn't add much value. Single excerpt warning requires caution - this appears mildly positive with reservations. | GPT-4o: The excerpt highlights several positive elements, such as the set, performances, and singing, but notes that the book doesn't add much value. The single excerpt and lack of full context suggest a positive but not overwhelmingly enthusiastic review. | Gemini: The review highlights positive aspects such as the set design, Brightman's performance, and Caruso's singing, while also noting the book doesn't add much of lasting value. Given the limited excerpt, a score in the lower end of the positive range seems appropriate. | Kimi: The excerpt strongly praises performances and design ('plenty worth a haunt,' 'deliriously gorgeous singing') while criticizing the book, indicating a positive but qualified recommendation. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:20:10.379Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“The songs are good, not great. Some serve to delve into character (Donny's ‘Donny Novitski,’ Julia's ‘Who I Was’) and some move the plot along (Julia and Donny's ‘First Steps, First,’ the Band members' ‘I Know a Guy’ and ‘A Band in New York City’) and, of course, there are love songs (Julia and Donny's ‘This is Life’ and ‘Welcome Home’). The songwriters have a feel for the period but their numbers are pale compared to the colorful popular tunes of that era.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The songs are good, not great.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows qualified praise ('songs are good') but notes significant shortcoming ('pale compared to colorful popular tunes of that era'). Only one excerpt available from music-focused section, insufficient for confident verdict assessment. | GPT-4o: The excerpt provides a mixed assessment of the songs, noting they are 'good, not great' and 'pale compared to the colorful popular tunes of that era.' The lack of strong praise or criticism suggests a mixed verdict. | Gemini: The review excerpt suggests the songs are \"good, not great\" and \"pale compared to the colorful popular tunes of that era.\" This indicates a mixed assessment with reservations, falling into the Mixed bucket. | Kimi: The excerpt offers qualified praise for the score, noting the songs serve their dramatic purpose but ultimately pale in comparison to authentic period music. With only one excerpt available and the text truncated, the overall verdict remains unclear, but the tone suggests reservations rather than enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:43:49.805Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

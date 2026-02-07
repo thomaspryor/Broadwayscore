@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show succeeds in making audiences care deeply about these characters while never minimizing the devastating impact of mental illness on families.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -69,5 +69,60 @@
   "tierReason": "Missing proper ending or other signals",
   "previousUrl": "https://www.hollywoodreporter.com/news/next-normal-theater-review-91244/",
   "urlDiscoveredAt": "2026-02-07T08:38:46.887Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show succeeds in making audiences care deeply about these characters while never minimizing the devastating impact of mental illness on families.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for the show's emotional effectiveness and respectful handling of mental illness, indicating positive recommendation, but limited text prevents full assessment of overall verdict. | GPT-4o: The excerpt provides a positive evaluation, highlighting the show's ability to engage audiences emotionally and handle sensitive topics effectively. Given the single excerpt warning, the score is set towards the upper end of the Positive range. | Gemini: The excerpt indicates that the show is successful in making the audience care deeply about the characters. Given the single excerpt warning, I am scoring this at the higher end of the positive bucket. | Kimi: The excerpt uses unambiguously positive evaluative language ('succeeds', 'care deeply') indicating an effective, emotionally resonant production. As a single curated excerpt, confidence is reduced despite the clearly favorable tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:14:37.297Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

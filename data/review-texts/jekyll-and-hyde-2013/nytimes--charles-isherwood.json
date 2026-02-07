@@ -57,9 +57,9 @@
   "sourceMethod": "brightdata",
   "wordCount": 404,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-07T05:05:52.750Z",
+  "rejectedAt": "2026-02-07T11:07:35.841Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about JavaScript and retrieving article content, making it impossible to determine the critic's final verdict; openai: The review is about a 2013 revival of 'Jekyll & Hyde,' not the current Broadway run.; gemini: The review text is incomplete and contains an error message indicating that the article content could not be retrieved.",
+  "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about retrieving content, making it impossible to determine the critic's verdict or recommendation.; openai: This text is an incomplete article with a technical error message, not a review.; gemini: The review text is incomplete and contains an error message. It's impossible to determine the critic's opinion of the show.",
   "promptVersion": "5.2.0"
 }

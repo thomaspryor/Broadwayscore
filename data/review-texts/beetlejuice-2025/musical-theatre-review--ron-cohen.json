@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you feel even the slightest hint of a migraine coming on, you might want to skip venturing into this funhouse/madhouse.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review warns audiences away if they're sensitive to noise/chaos, describes the show as incoherent, but praises the lead performance as 'monumental' and acknowledges the 'riotous score' and 'playful energy.' This suggests a polarizing show that works for some but not others. Single excerpt warning applied - avoiding mid-range default. | GPT-4o: The review highlights both the chaotic and noisy nature of the show, which may deter some audiences, and praises the energy and performance of Brightman. The mixed signals and lack of a clear recommendation suggest a mixed verdict. | Gemini: The review describes the show as a \"funhouse/madhouse\" and \"incredibly noisy,\" suggesting a potentially overwhelming experience. While praising Brightman's performance, the review also notes that \"coherence is thrown to the winds,\" indicating a lack of narrative clarity. This suggests a mixed experience, potentially enjoyable for some but not for others. | Kimi: While the critic praises Alex Brightman's 'monumental performance,' they explicitly warn audiences to 'skip' the show if sensitive to sensory overload, criticize its lack of coherence, and describe it as 'noisy' and 'obnoxious,' indicating a recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:29:59.748Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 63
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

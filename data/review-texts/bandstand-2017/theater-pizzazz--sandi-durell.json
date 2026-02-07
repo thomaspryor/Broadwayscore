@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“A strong message along with a remarkably talented cast…If you love the era of swing music, dance and saddle shoes, you’re a good match for ‘Bandstand’...The deeper and darker side of this story never lets up, but it is eased by the crackerjack perpetual whirling, twirling and tapping group of ace dancers to high-energy new swing sounds…Cott has emerged as a new leading man with his strong and powerful, yet edgy, charisma and fantastic vocals, aided by his lively dancing abilities.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A strong message along with a remarkably talented cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the talented cast, lead performance, and production values with terms like 'crackerjack' and 'ace dancers.' However, confidence is low due to single excerpt warning and potential cherry-picking. | GPT-4o: The excerpt praises the cast and music, suggesting a positive experience for fans of the genre. However, the single excerpt warning and lack of full context lower confidence. | Gemini: The review excerpt suggests a positive experience, especially for fans of the era, with praise for the cast and music. However, the mention of a \"deeper and darker side\" suggests some reservations, placing it in the positive range but not a rave. | Kimi: The excerpt is clearly positive with praise for cast, dancing, and lead performance, though the 'Read more' truncation and single-excerpt warning limit confidence. The 'good match' language suggests targeted rather than universal enthusiasm, placing this in the upper Positive range but not a full Rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:43:13.874Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

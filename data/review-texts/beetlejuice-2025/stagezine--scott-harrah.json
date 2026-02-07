@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is a theme park unto itself and a fun, offbeat roller-coaster ride from start to finish.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise throughout with words like 'superior adaptation,' 'outrageously effervescent performances,' and 'holds everything together beautifully.' However, single excerpt warning requires caution about representativeness. | GPT-4o: The excerpt provides strong praise for the adaptation, performances, and production elements, suggesting a highly positive experience. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt contains very positive language such as \"fun, offbeat roller-coaster ride\", \"superior adaptation\", and \"outrageously effervescent performances\". Due to the single excerpt, confidence is low, but the language points to a strong positive review. | Kimi: The excerpt offers enthusiastic praise for the adaptation, performances, and direction, describing the show as a 'superior adaptation' with 'outrageously effervescent performances,' warranting an upper-range Positive score despite the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:32:12.372Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

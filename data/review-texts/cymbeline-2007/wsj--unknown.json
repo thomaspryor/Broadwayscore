@@ -35,9 +35,9 @@
   "contentTier": "needs-rescrape",
   "wordCount": 199,
   "tierReason": "Short text (199 words)",
-  "rejectedAt": "2026-02-07T04:59:04.168Z",
+  "rejectedAt": "2026-02-07T11:03:39.882Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This text is truncated web content ending with subscription prompts and billing information, not a complete review; openai: The text is about The Public Theater's Free Shakespeare in the Park production of 'Cymbeline,' not a Broadway production.; gemini: This is a partial article about Shakespeare's Cymbeline, but it's mostly background and setup, not a critical review of the Public Theater's production. It lacks evaluative statements about the acting, direction, or overall quality of the performance.; kimi: This text reviews The Public Theater's Free Shakespeare in the Park production of 'Cymbeline' from 2015, which is an off-Broadway/outdoor venue, not a current Broadway production. Additionally, the text appears corrupted with subscription renewal content.",
+  "rejectionReasoning": "claude: This appears to be a paywall or subscription page with only the opening paragraph of the review visible, followed by subscription billing information rather than the actual review content.; openai: The text is about The Public Theater's Free Shakespeare in the Park production of 'Cymbeline,' not a current Broadway production.; gemini: This text is a partial article about a Shakespeare in the Park production of 'Cymbeline,' but it abruptly ends with a subscription prompt, making it incomplete and lacking a proper review or conclusion.; kimi: This text reviews a 2015 Public Theater Shakespeare in the Park production of 'Cymbeline' (Off-Broadway/outdoor), not a current Broadway production.",
   "promptVersion": "5.2.0"
 }

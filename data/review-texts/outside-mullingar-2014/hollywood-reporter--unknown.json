@@ -43,5 +43,60 @@
   "duplicateTextOf": "hollywood-reporter--david-rooney.json",
   "contentTier": "complete",
   "wordCount": 941,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Outside Mullingar is a charmer of a play about a hesitant romance stalled by petty grievances and misunderstandings.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistently positive language throughout - 'charmer,' 'pulls it off with confidence,' 'superb,' 'nails all the contradictions.' Praises both the writing and lead performances. Single excerpt warning noted, but tone is clearly enthusiastic. | GPT-4o: The excerpt praises the play as a 'charmer' and highlights the playwright's success in balancing sentimentality. Performances are also praised, indicating a positive reception despite some minor reservations about an accent. | Gemini: The review uses positive language like \"charmer of a play\" and \"pulls it off with confidence\". The performances are also praised, indicating a positive experience. | Kimi: The excerpt offers strong praise for the playwright's skill ('charmer,' 'pulls it off with confidence') and lead performances ('superb,' 'nails all the contradictions'), indicating a clear recommendation despite minor reservations about accents.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:17:06.765Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

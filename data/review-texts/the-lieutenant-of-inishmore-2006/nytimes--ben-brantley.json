@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This blazingly funny and equally shocking work by Martin McDonagh has been given a production that captures both its savage humor and its underlying melancholy about the futility of violence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -52,5 +52,60 @@
   "archiveOrgTimestamp": "20170206225147",
   "archiveOrgUrl": "http://web.archive.org/web/20170206225147/http://www.nytimes.com:80/2006/05/04/theater/reviews/04inis.html?",
   "wordCount": 368,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This blazingly funny and equally shocking work by Martin McDonagh has been given a production that captures both its savage humor and its underlying melancholy about the futility of violence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for both the work and production with vivid positive language ('blazingly funny', 'captures both'). Single excerpt warning requires caution, but the tone is clearly positive without reservations. | GPT-4o: The excerpt uses strong positive language ('blazingly funny', 'captures both its savage humor and its underlying melancholy'), suggesting a highly favorable view of the production. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is highly positive, describing the production as \"blazingly funny\" and \"equally shocking\" while also praising its ability to capture the play's humor and melancholy. Given the single excerpt warning, I'm scoring at the higher end of the positive range. | Kimi: The excerpt is unambiguously positive with strong praise ('blazingly funny', 'captures both its savage humor and its underlying melancholy'), indicating a clear recommendation. However, with only one excerpt available, confidence must be low per instructions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:32:44.793Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

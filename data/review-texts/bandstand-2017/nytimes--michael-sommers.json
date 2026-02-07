@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The musical’s angry climax is quite effective. What precedes it is scarcely so thrilling. The script and score are competently crafted but greater musical variety and certainly a richer infusion of humor are needed...Andy Blankenbuehler, who directs and choreographs, gives the production plenty of kinetic energy, but there tends to be a sameness to his post-jitterbug dances...The 21-member company never fails to animate this obviously sincerely meant yet curiously flat musical.\"\n\nRead more",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "textWordCount": 314,
   "archivePath": "data/archives/reviews/bandstand-2017/nytimes--michael-sommers_2026-02-07.html",
@@ -67,5 +67,10 @@
   "tierReason": "Full review text",
   "previousUrl": "https://www.nytimes.com/2015/11/01/nyregion/review-performances-of-comedy-of-tenors-and-bandstand.html",
   "urlDiscoveredAt": "2026-02-07T05:50:20.410Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "rejectedAt": "2026-02-07T11:00:36.841Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "openai: The review is interrupted by a technical error message, indicating that the full content is not available.; gemini: The review is incomplete and ends with an error message.",
+  "promptVersion": "5.2.0"
 }

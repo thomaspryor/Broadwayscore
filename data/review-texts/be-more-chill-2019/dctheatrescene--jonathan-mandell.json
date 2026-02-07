@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"‘Be More Chill’ has some seriously devoted fans...I wish I could share more fully in their ardor for this show...The story, a mix of satire, high school bestiary, and sci-fi, serves best as setting for the loud, lively and often tuneful score...It no longer feels like the little show that could. It's a noisy, high-powered commercial enterprise, selling itself largely to kids...I do regret the moments in the musical when the high school students feel one-note.\"\n\nRead more"
+  "showScoreExcerpt": "\"‘Be More Chill’ has some seriously devoted fans...I wish I could share more fully in their ardor for this show...The story, a mix of satire, high school bestiary, and sci-fi, serves best as setting for the loud, lively and often tuneful score...It no longer feels like the little show that could. It's a noisy, high-powered commercial enterprise, selling itself largely to kids...I do regret the moments in the musical when the high school students feel one-note.\"\n\nRead more",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I wish I could share more fully in their ardor for this show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges devoted fans and praises the 'tuneful score' but expresses inability to share the enthusiasm, criticizes commercialization, and finds characters 'one-note'. Mixed signals with slight negative lean. | GPT-4o: The review acknowledges the show's lively and tuneful score but expresses regret over one-note characters and describes it as a high-powered commercial enterprise. The critic wishes to share in the fans' enthusiasm but cannot fully do so, indicating a mixed sentiment. | Gemini: The review expresses mixed feelings, acknowledging the show's devoted fans and lively score, but also noting its commercial nature and one-dimensional characters. The phrase \"I wish I could share more fully in their ardor\" suggests a lack of strong positive sentiment. | Kimi: The critic acknowledges the 'loud, lively and often tuneful score' but criticizes the commercialized production and one-note characters, expressing distance from the show's fan enthusiasm without fully dismissing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:53:51.874Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

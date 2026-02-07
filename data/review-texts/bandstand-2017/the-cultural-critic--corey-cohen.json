@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Corey Cott (as Donny) is Broadway's newest superstar. Laura Osnes (Julia) is perfect in her leading role. We see brilliant performances from the quadrupally talented Joe Carroll on drums, Brandon James Ellis on bass, & James Nathan Hopkins on sax...The score is fun and catchy, led by two emotional show-stoppers ‘Love Will Come and Find Me Again’ and especially ‘Welcome Home.’ The latter has a haunting chorus while revealing the struggles our heroes face.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Corey Cott is Broadway's newest superstar.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performers ('newest superstar', 'perfect', 'brilliant') and positive assessment of score ('fun and catchy', 'emotional show-stoppers'). However, this is only a single curated excerpt, so confidence is low. | GPT-4o: The excerpt provides strong praise for the performances and the score, suggesting a highly positive view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt contains strong praise for the leads and the score, indicating a positive recommendation. Given the limited text, confidence is low, but the superlatives suggest a score towards the higher end of the positive range. | Kimi: The single available excerpt offers effusive praise for lead performances and the score, describing the leads as 'superstar' and 'perfect' and the music as containing 'emotional show-stoppers,' though confidence is reduced due to the curated, potentially cherry-picked nature of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:42:18.117Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

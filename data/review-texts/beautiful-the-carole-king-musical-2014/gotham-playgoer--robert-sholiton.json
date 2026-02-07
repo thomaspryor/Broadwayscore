@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Pretty much what I expected — a slick jukebox musical/biography of King’s early career...It is in very good shape. Although I had never heard of any of the present leads all were competent if not loaded with charisma...With 27 songs to squeeze in, there is no room in book for much more than connecting the dots...Bruni’s smooth direction keeps things moving...The singers were overamplified almost to the point of aural pain...If you like the music, you will probably have a good time.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you like the music, you will probably have a good time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review presents a balanced assessment with both positives (competent performances, smooth direction) and negatives (lack of charisma, shallow book, painful amplification). The final verdict is conditional - recommending only to music fans - which indicates mixed feelings rather than a clear positive recommendation. | GPT-4o: The review notes competent performances and smooth direction but criticizes the overamplification and lack of depth in the book. The verdict suggests enjoyment is conditional on liking the music, indicating a mixed reception. | Gemini: The review states that if you like the music, you will probably have a good time, which is a positive recommendation. However, the reviewer also mentions issues with overamplification and lack of charisma, indicating reservations. | Kimi: The critic acknowledges the production is in 'very good shape' with smooth direction but offers lukewarm praise for the leads ('competent if not loaded with charisma') and complaints about overamplification. The conditional recommendation places this in the lower Positive range. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:09:03.648Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

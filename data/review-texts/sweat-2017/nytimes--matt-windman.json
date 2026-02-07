@@ -33,9 +33,9 @@
   "contentTier": "needs-rescrape",
   "wordCount": 331,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-07T05:27:15.023Z",
+  "rejectedAt": "2026-02-07T11:28:30.395Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text is truncated and ends with a technical error message about retrieving content and enabling JavaScript; openai: The text includes a technical error message and lacks a clear evaluative conclusion about the show.",
+  "rejectionReasoning": "claude: The review text cuts off mid-article with technical error messages about JavaScript and retrieving content, making it impossible to determine the critic's verdict; openai: The text includes a technical error message indicating trouble retrieving the article content, making it unscoreable.",
   "promptVersion": "5.2.0"
 }

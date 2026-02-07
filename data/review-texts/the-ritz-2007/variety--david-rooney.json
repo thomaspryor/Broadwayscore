@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Despite a game cast headed by Rosie Perez and a handsome production, this revival of Terrence McNally's 1975 farce feels labored and unfunny.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -62,5 +62,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 923,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But there's something strained and underwhelming about the proceedings.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising the set design, costumes, and Brooks Ashmanskas's performance, the critic finds the revival fundamentally disappointing, calling it 'strained and underwhelming' with direction that lacks insight into the material and a production that 'only serves to expose the play's weaknesses.' | GPT-4o: The review highlights significant flaws in the production, including a lack of insight, strained performances, and failure to capture the era's energy. While there are some enjoyable elements, the overall tone is negative, focusing on missed opportunities and weaknesses. | Gemini: The review acknowledges some enjoyable aspects like the witty dialogue and certain performances, but criticizes the direction, lack of insight, and dated material, resulting in a mixed assessment. | Kimi: While praising Scott Pask's set design and Brooks Ashmanskas's scene-stealing performance, the critic finds Joe Mantello's direction lacks the necessary precision for farce and misses the opportunity to contextualize the era, concluding that the lavish production only serves to expose the play's dated, mummified weaknesses.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:37:31.235Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

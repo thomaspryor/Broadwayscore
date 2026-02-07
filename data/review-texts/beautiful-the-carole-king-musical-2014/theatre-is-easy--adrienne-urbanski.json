@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Beautiful' places more focus on the music than the story and plot, making it not so much a tribute to Carole King’s life as it is a tribute to her large body of work...King’s relationship with Gerry is glossed over and we learn little about what their life is like. This leads to the end of their relationship feeling less dramatic and climactic than it could have been...Anyone who was not a fan of King’s songs before the show will most likely be one by curtain call.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Anyone who was not a fan of King's songs before the show will most likely be one by curtain call.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The excerpt criticizes the focus on music over story and character development, but ends with a positive note about the music's impact on audiences. Single excerpt warning applies - this appears mixed leaning slightly negative due to structural criticisms. | GPT-4o: The review suggests that the show focuses more on music than plot, with some narrative weaknesses. However, it implies that the music itself is a highlight, potentially converting new fans. The excerpt indicates a mixed reception with positive elements. | Gemini: The review acknowledges flaws in the plot and character development, but ultimately suggests the show is worthwhile, especially for those unfamiliar with Carole King's music. Given the single excerpt, I'm scoring at the lower end of the positive range. | Kimi: While the critic notes significant weaknesses in the plot and character development, describing the story as 'glossed over,' the final verdict suggests the musical successfully showcases King's catalog and will convert audiences, indicating a qualified but genuine recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:14:13.524Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 63,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

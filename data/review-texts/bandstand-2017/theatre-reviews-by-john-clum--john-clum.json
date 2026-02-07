@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The cast is enormously talented—some sing, dance, act, and play instruments expertly. The music is catchy and tuneful, if forgettable...The band, onstage and in the pit is excellent...The dancing is fabulous...The fact that the script is so predictable is the show's principal problem. I kept trying to think of ways to make the book more interesting...For all its virtues, 'Bandstand' is saddled with a book that resembles a 1940s B musical...The war flashbacks are pretty cheesy.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For all its virtues, 'Bandstand' is saddled with a book that resembles a 1940s B musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic praises performances, music, and dancing extensively but finds the script 'predictable' and 'cheesy.' The phrase 'for all its virtues' followed by major criticism suggests mixed feelings without clear recommendation. | GPT-4o: The review praises the performances and music but criticizes the script as predictable and cheesy. The single excerpt suggests a mixed review with notable strengths and significant weaknesses. | Gemini: The review praises the cast, music, and dancing, but strongly criticizes the predictable and cheesy script. This indicates a mixed overall impression. | Kimi: The excerpt offers strong praise for the cast, band, and dancing ('enormously talented', 'excellent', 'fabulous') but identifies the script as a 'principal problem' that is 'predictable' and 'cheesy', suggesting the production values cannot overcome the weak material. As a single curated excerpt, the full verdict is unclear, but the mixed signals place it in the middle range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:45:49.350Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

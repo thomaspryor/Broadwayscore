@@ -42,9 +42,9 @@
   "duplicateTextOf": "nytimes--jesse-green.json",
   "wordCount": 300,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-07T05:42:05.489Z",
+  "rejectedAt": "2026-02-07T11:31:54.392Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text is truncated with a technical error message about JavaScript and retrieving content, making it impossible to determine the critic's verdict; openai: The review text is interrupted by a technical issue message, indicating incomplete content.; gemini: The review is cut off mid-sentence, preventing a clear understanding of the critic's final verdict.",
+  "rejectionReasoning": "claude: Review text is truncated with technical error message at the end indicating retrieval problems; openai: The review is incomplete and cuts off before providing any evaluative content or verdict on the show.; gemini: The review is cut off mid-paragraph, preventing a clear understanding of the critic's final verdict and recommendation.",
   "promptVersion": "5.2.0"
 }

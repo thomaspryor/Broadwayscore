@@ -54,9 +54,9 @@
   "contentTier": "needs-rescrape",
   "wordCount": 246,
   "tierReason": "Truncation detected: paywall_or_login_prompt, no_ending_punctuation",
-  "rejectedAt": "2026-02-07T05:04:38.155Z",
+  "rejectedAt": "2026-02-07T11:06:24.746Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This appears to be a website navigation/subscription page with article headlines and copyright notices, not the actual review text of 'Holler If Ya Hear Me'; openai: The text is mostly non-review content, including navigation links and unrelated articles.; gemini: This appears to be a truncated article with surrounding website content and subscription prompts, making it impossible to score.",
+  "rejectionReasoning": "claude: This appears to be a paywall/subscription page with navigation elements and article links, not the actual review content; openai: The text is primarily navigation menus, unrelated articles, and promotional content, not a review.; gemini: This is a truncated article with surrounding ads and links, not a complete review.",
   "promptVersion": "5.2.0"
 }

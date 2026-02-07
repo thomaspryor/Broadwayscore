@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.newsday.com/entertainment/review-carole-king-musical-beautiful-insipid-1.6783937"
+  "playbillVerdictUrl": "http://www.newsday.com/entertainment/review-carole-king-musical-beautiful-insipid-1.6783937",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jessie Mueller strikes a delicate balance between spunk and humility, making it impossible not to root for her as she morphs into an inspired Carole King.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise for Mueller's performance with positive language ('delicate balance', 'impossible not to root for', 'inspired'). However, confidence is low due to very limited text - this appears to be a single sentence excerpt that may not represent the full review's verdict. | GPT-4o: The excerpt praises Jessie Mueller's performance, suggesting a positive view of the show. However, due to the limited text and lack of a full verdict, the confidence is low. | Gemini: The review excerpt praises Jessie Mueller's performance, suggesting a positive aspect of the show. However, due to the limited text, the overall recommendation strength is uncertain, hence the 'low' confidence. | Kimi: The excerpt offers strong praise for Jessie Mueller's performance, describing it as 'inspired' and emotionally engaging with the phrase 'impossible not to root for her,' indicating a clear recommendation based on the lead actor's work, though the limited excerpt prevents assessment of the full production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:09:19.497Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

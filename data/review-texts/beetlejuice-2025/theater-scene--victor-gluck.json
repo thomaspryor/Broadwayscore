@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This theme park-type show is visually a spectacle with a set that does all sort of tricks and changes, but as the adage goes, you can't go home singing the scenery.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic dismisses the show as a 'theme park-type' spectacle with 'eminently forgettable' music and finds the lead performance 'tiresome.' Despite acknowledging visual spectacle, the overall assessment is clearly negative. | GPT-4o: The review criticizes the show for being visually impressive but lacking memorable music and having an over-the-top lead performance. The tone suggests a negative view, though the excerpt may not capture the full review sentiment. | Gemini: The review excerpt describes the show as a \"theme park-type show\" with a forgettable score and a tiresome lead performance, indicating a negative overall assessment. | Kimi: The excerpt offers unambiguous criticism: the score is 'eminently forgettable,' the lead performance 'tiresome,' and the visual spectacle dismissed as insufficient compensation ('you can't go home singing the scenery'). Despite the single-excerpt limitation, the consistently negative evaluative language places this firmly in the Negative bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:33:42.790Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

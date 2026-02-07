@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This madcap musical adaptation of Tim Burton's 1988 film is a ghoulish delight that manages to capture the manic energy of its source material while carving out its own theatrical identity.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This madcap musical adaptation of Tim Burton's 1988 film is a ghoulish delight that manages to capture the manic energy of its source material while carving out its own theatrical identity.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This madcap musical adaptation of Tim Burton's 1988 film is a ghoulish delight that manages to capture the manic energy of its source material while carving out its own theatrical identity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('ghoulish delight') with praise for both faithfulness and originality. Single excerpt warning noted, but tone is clearly enthusiastic rather than qualified praise. | GPT-4o: The excerpt describes the show as a 'ghoulish delight' with positive attributes like capturing 'manic energy' and establishing a 'theatrical identity'. The original rating of 87 suggests strong praise, aligning with the upper end of the Positive bucket. | Gemini: The review excerpt uses strong positive language like \"ghoulish delight\" and praises the show's ability to capture the source material's energy while creating its own identity. Given the single excerpt, I am placing it at the higher end of the positive bucket. | Kimi: The critic's own rating of 87 falls within the Rave range (85-100), and the excerpt provides enthusiastic praise calling the show a 'ghoulish delight' that successfully captures its source material while establishing its own identity. Confidence is set to low due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:15:32.279Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 84,
+    "geminiScore": 82,
+    "kimiScore": 87,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

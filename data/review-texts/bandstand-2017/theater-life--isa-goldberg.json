@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“‘Bandstand’ raises the stakes on a storied cliché…Oberacker and Taylor bring an innocence and vitality to a story every boy and girl imagines, and which the show’s creators run with to the heights…What a pleasure it is to hear Oberacker’s compositions…Laura Osnes does a remarkable acting job…‘Bandstand’ is a laudable work steeped in classical American music and dance styles, with a nostalgic sense of storytelling that still requires attention.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bandstand' is a laudable work steeped in classical American music and dance styles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise throughout - 'raises the stakes,' 'pleasure to hear,' 'remarkable acting,' 'laudable work.' However, confidence is low due to single excerpt warning and potential cherry-picking. | GPT-4o: The excerpt praises the show's vitality, music, and performances, suggesting a strong positive impression. However, the single excerpt warning and lack of full context reduce confidence. | Gemini: The review excerpt contains strong positive language like \"pleasure,\" \"remarkable,\" and \"laudable,\" suggesting a positive recommendation. Given that it's a single excerpt, I'm scoring it on the higher end of the positive range but with low confidence. | Kimi: The excerpt offers enthusiastic praise for the compositions ('What a pleasure'), performances ('remarkable acting job'), and overall production ('laudable work'), indicating a strong recommendation despite the limitation of having only a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:43:01.607Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

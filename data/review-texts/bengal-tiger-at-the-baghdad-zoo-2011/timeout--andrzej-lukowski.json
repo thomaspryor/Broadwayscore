@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"I think it’s only gains from the delay in staging it over here. At this remove, it’s not only a fine drama about the hellish, morally tangled absurdity of conflict – it’s also a diagnosis...that seems all the more relevant.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's not only a fine drama about the hellish, morally tangled absurdity of conflict – it's also a diagnosis...that seems all the more relevant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic calls it a 'fine drama' and emphasizes increased relevance, suggesting clear recommendation despite limited excerpt. | GPT-4o: The excerpt praises the drama as 'fine' and relevant, suggesting a positive view. However, the single excerpt warning and lack of full context necessitate a cautious approach, placing it at the lower end of the Positive range. | Gemini: The excerpt praises the drama as a 'fine' and 'relevant' diagnosis, suggesting a positive recommendation. Given the single excerpt, confidence is low, but the positive tone warrants a score in the upper end of the positive bucket. | Kimi: The excerpt offers clear praise, calling the show a 'fine drama' that has benefited from its delayed staging and finds it morally complex and relevant. However, confidence is low given this is a single curated excerpt that may not capture the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:38:51.479Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

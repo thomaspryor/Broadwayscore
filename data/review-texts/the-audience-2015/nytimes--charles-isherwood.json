@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Mirren's performance remains a marvel of controlled complexity, a portrayal that finds both the public and private faces of a woman who has spent more than 60 years on the world's most visible throne.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -50,5 +50,59 @@
   "wordCount": 422,
   "tierReason": "Full review text",
   "archiveOrgTimestamp": "20250715074424",
-  "archiveOrgUrl": "http://web.archive.org/web/20250715074424/https://www.nytimes.com/2015/03/09/theater/review-the-audience-with-helen-mirren-opens-on-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250715074424/https://www.nytimes.com/2015/03/09/theater/review-the-audience-with-helen-mirren-opens-on-broadway.html",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those transformations, accomplished with sleights of hand worthy of a master magician, are probably the most entertaining and satisfying aspects of 'The Audience.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Mirren's performance and the production values, calling the transformations 'entertaining and satisfying' and describing the staging as having 'intimate stateliness.' However, the text appears truncated mid-review, limiting confidence in the final verdict. | Gemini: The review focuses on Helen Mirren's performance and the transformations she undergoes, calling them the most entertaining and satisfying aspects. While not a rave, it's a positive assessment with some reservations. | Kimi: The review praises Helen Mirren's performance as 'smashing' and 'time-defying,' calling her quick-change artistry 'the most entertaining and satisfying aspects.' However, the text is truncated mid-review, cutting off before any final verdict. The tone is appreciative but measured—describing the show as 'intimate stateliness' and a 'lively tutorial' rather than a must-see theatrical event. The marketing angle and 'privileged access' framing suggest entertainment value rather than artistic triumph.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:28:43.119Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

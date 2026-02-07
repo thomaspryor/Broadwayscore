@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-07T12:28:09.663Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be promotional text or a trailer description, not a theater review - it ends with 'Watch the trailer for Beetlejuice Beetlejuice below' which indicates movie promotional content, not Broadway criticism.; gemini: The text is about the movie Beetlejuice Beetlejuice, not the Broadway show Beetlejuice.; kimi: This text is a review of the film 'Beetlejuice Beetlejuice' (the 2024 movie sequel), not the Broadway musical 'Beetlejuice'. The mention of Tim Burton's status and the embedded trailer reference confirm this is about the film, not the current Broadway production.",
+  "promptVersion": "5.2.0"
 }

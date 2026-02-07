@@ -38,9 +38,9 @@
   "contentTier": "needs-rescrape",
   "wordCount": 329,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-07T05:46:41.688Z",
+  "rejectedAt": "2026-02-07T11:34:37.898Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The text cuts off mid-review with an error message about retrieving article content and JavaScript settings, making it impossible to determine the critic's final verdict.; openai: The text includes navigation instructions and an error message about retrieving content, indicating it is not a complete review.",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about retrieving article content and enabling JavaScript, making it impossible to assess the critic's complete verdict.; openai: The text is incomplete and contains navigation instructions and error messages, making it not a scoreable review.",
   "promptVersion": "5.2.0"
 }

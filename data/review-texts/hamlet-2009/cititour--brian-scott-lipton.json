@@ -35,9 +35,9 @@
   "contentTier": "needs-rescrape",
   "wordCount": 141,
   "tierReason": "Truncation detected: paywall_or_login_prompt",
-  "rejectedAt": "2026-02-07T05:03:00.829Z",
+  "rejectedAt": "2026-02-07T11:04:50.618Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This appears to be a website navigation page or content preview rather than a complete review - it contains promotional text about Cititour.com and other unrelated content mixed with what seems to be a review fragment.; openai: The review is about a production of Hamlet at the Park Avenue Armory, not a current Broadway run.; kimi: This review covers Robert Icke's 'Hamlet' at the Park Avenue Armory in July 2022. The Park Avenue Armory is not a Broadway theater, and this is a previous Off-Broadway/special venue production, not a current Broadway run.",
+  "rejectionReasoning": "claude: This text is a navigation menu/website listing mixed with a truncated review fragment. Most content is promotional copy about Cititour.com's services rather than actual review content.; openai: The review is about a production of Hamlet at the Park Avenue Armory, not a Broadway show.; kimi: This review covers a production at the Park Avenue Armory, which is an off-Broadway venue, not a Broadway theater. The instructions specify to reject reviews of off-Broadway, touring, or previous productions rather than current Broadway runs.",
   "promptVersion": "5.2.0"
 }

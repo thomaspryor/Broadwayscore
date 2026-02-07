@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"The retooling done since its out-of-town tryout in D.C. gives the latest film-to-musical adaptation fresh snap, surprises and (gasp!) even heart. Sure, the narrative becomes a bit of a cluster-muck in the second act — but mostly it’s just screamingly good fun...The plotting eventually goes completely off the rails, but keeping things entertaining enough are the off-the-wall humor, endless visuals and aural delights, tuneful music and wicked lyrics of Perfect.\"\n\nRead more"
+  "showScoreExcerpt": "\"The retooling done since its out-of-town tryout in D.C. gives the latest film-to-musical adaptation fresh snap, surprises and (gasp!) even heart. Sure, the narrative becomes a bit of a cluster-muck in the second act — but mostly it’s just screamingly good fun...The plotting eventually goes completely off the rails, but keeping things entertaining enough are the off-the-wall humor, endless visuals and aural delights, tuneful music and wicked lyrics of Perfect.\"\n\nRead more",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The retooling gives the latest film-to-musical adaptation fresh snap, surprises and (gasp!) even heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging significant second act problems ('cluster-muck', 'completely off the rails'), the critic finds it 'screamingly good fun' with praise for humor, visuals, and music, indicating overall recommendation with reservations. | GPT-4o: The excerpt highlights improvements and describes the show as 'screamingly good fun' despite narrative issues. The positive tone and emphasis on entertainment suggest a strong recommendation, but the single excerpt limits confidence. | Gemini: The review is mostly positive, describing the show as having \"fresh snap, surprises and (gasp!) even heart\" and \"screamingly good fun\", but acknowledges a narrative issue in the second act. | Kimi: The critic enthusiastically praises the show's humor, visuals, music, and lyrics as 'screamingly good fun' with 'fresh snap' and 'heart,' though acknowledging significant plotting problems in the second act.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:23:00.120Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

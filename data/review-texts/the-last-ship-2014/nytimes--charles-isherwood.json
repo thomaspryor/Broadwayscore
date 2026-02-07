@@ -50,5 +50,59 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 460,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rich in atmosphere and buoyed by a seductive score that ranks among the best composed by a rock or pop figure for Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the score, atmosphere, and performances but identifies significant structural flaws in the book. The critic acknowledges accomplishments while noting 'nagging flaws' and an 'unfocused and diffuse' story. | Gemini: The review praises the atmosphere, score, and performances, but criticizes the unfocused book. This indicates a mixed assessment, not strongly recommending or discouraging. | Kimi: The critic clearly recommends the show despite acknowledging 'nagging flaws' in the book. Strong praise for the score ('among the best composed by a rock or pop figure for Broadway'), atmosphere, and performances, with the opening framing it as 'hard not to root for.' The flaws prevent a higher score but don't override the positive verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:32:13.127Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 65,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

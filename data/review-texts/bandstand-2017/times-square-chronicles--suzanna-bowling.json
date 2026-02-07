@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“A show that never allows us to digest the horrors of what vets go through…The cast is winning...Bender, Packard, Hopkins and Carroll are all terrific musicians and actors. Part of the problem with 'Bandstand' is that their stories are not fleshed out and we really do want to know them…Blankenbuehler’s direction is too dark and he chopped his choreography to shreds…I left the theatre wondering how a show that I was rooting for went so wrong.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 46,
+    "confidence": "high",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I left the theatre wondering how a show that I was rooting for went so wrong.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic praises the cast as 'winning' and 'terrific' but finds fundamental problems with the book, direction, and choreography, ending with clear disappointment about the overall experience. | GPT-4o: The review highlights significant issues with the show, such as underdeveloped stories and problematic direction, despite praising the cast. The overall sentiment is negative, but the excerpt may not fully represent the review's tone, so confidence is low. | Gemini: The review expresses disappointment and questions how the show went wrong, despite acknowledging the cast's talent. The overall tone suggests a negative experience. | Kimi: While the critic praises the cast as 'winning' and 'terrific,' the overall verdict is clearly negative, citing 'chopped' choreography, underdeveloped stories, and direction that is 'too dark,' concluding that the production 'went so wrong.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:46:40.594Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

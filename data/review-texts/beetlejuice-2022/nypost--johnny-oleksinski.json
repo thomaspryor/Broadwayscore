@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"If we say his name three times, will he go away? I’m not talking about the title character of 'Beetlejuice,' but Eddie Perfect. Fresh off his heinous music for 'King Kong,' the Australian composer’s dismal soft-rock score fuels one of the worst Broadway musicals in years...Indeed, if the actors took their scripts, threw them into the air, picked up the pages and performed them in their new order, Act 2 would be about the same.\"\n\nRead more"
+  "showScoreExcerpt": "\"If we say his name three times, will he go away? I’m not talking about the title character of 'Beetlejuice,' but Eddie Perfect. Fresh off his heinous music for 'King Kong,' the Australian composer’s dismal soft-rock score fuels one of the worst Broadway musicals in years...Indeed, if the actors took their scripts, threw them into the air, picked up the pages and performed them in their new order, Act 2 would be about the same.\"\n\nRead more",
+  "assignedScore": 17,
+  "llmScore": {
+    "score": 17,
+    "confidence": "high",
+    "range": {
+      "low": 12,
+      "high": 22
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fresh off his heinous music for 'King Kong,' the Australian composer's dismal soft-rock score fuels one of the worst Broadway musicals in years",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating pan using extreme negative language: 'heinous,' 'dismal,' 'worst Broadway musicals in years,' suggesting the script is so bad random page order wouldn't matter. Clear rejection with no redeeming qualities mentioned. | GPT-4o: The excerpt is highly negative, calling the score 'dismal' and the musical 'one of the worst Broadway musicals in years.' Despite the limited excerpt, the language suggests a strong pan. However, due to the single excerpt warning, confidence is low. | Gemini: The review is overwhelmingly negative, calling the music \"heinous\" and the show one of the worst in years. The suggestion to randomly reorder the script further emphasizes the critic's disdain. | Kimi: The excerpt delivers a devastating verdict, describing the score as 'dismal' and 'heinous' and declaring the show among the worst in years. While the single-excerpt limitation warrants low confidence, the severity of the language places this firmly in the pan range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:21:50.228Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 15,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

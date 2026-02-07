@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Suchet brings a magisterial authority to his portrait of Sir Robert Morton, the celebrated barrister who takes on the Winslows' case, transforming what could have been a stock figure of theatrical nobility into a man of recognizable flesh and blood.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -50,5 +50,59 @@
   "archiveOrgTimestamp": "20250423042017",
   "archiveOrgUrl": "http://web.archive.org/web/20250423042017/https://www.nytimes.com/2013/10/18/theater/reviews/the-winslow-boy-is-revived-at-american-airlines-theater.html",
   "wordCount": 523,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I can firmly state that the audience's ultimately is [rewarded].",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley acknowledges initial patience required and languid pacing, but concludes the audience's patience is ultimately rewarded. He praises the 'splendid revival,' 'impeccably judged performance' by Rees, and calls it both 'stirring drama' and 'moving tale.' Clear positive recommendation with reservations about pacing. | Gemini: The review starts with reservations about the play's pacing, but ultimately concludes that the audience's patience is rewarded, indicating a positive, but not rave, experience. | Kimi: While Brantley notes the first act requires patience and is sometimes languid, he firmly states the audience's patience is ultimately rewarded, praising the 'splendid' revival, 'stirring' drama, and 'impeccably judged' lead performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:38:32.061Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

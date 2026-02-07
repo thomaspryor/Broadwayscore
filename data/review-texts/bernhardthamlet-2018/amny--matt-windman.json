@@ -13,5 +13,60 @@
   ],
   "showScoreExcerpt": "“McTeer’s Bernhardt is an imposing diva, but she is also jovial, eccentric, unsure and vulnerable...Directed in an overly aggressive manner...While the play contains many witty lines and delves into important topics, it is too discursive for its own good, leading to minimal and muddled plot development...By the second act, the play becomes tiresome and feels long-winded...An inspired, timely and interesting idea for a play — if only it had been better executed.”\n\nRead more",
   "bwwExcerpt": "One wonders wonder whether Hillary Clinton's unsuccessful run for the presidency played a role in the development of \"Bernhardt/Hamlet.\" There is an obvious connection between the hostility faced by both Bernhardt and Clinton as they ventured into traditionally male territory. \"Bernhardt/Hamlet\" is ...",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An inspired, timely and interesting idea for a play — if only it had been better executed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review praises McTeer's performance and acknowledges the play's interesting concept, but criticizes the direction as 'overly aggressive,' finds the plot 'muddled,' and calls the second act 'tiresome and long-winded.' The final line captures the mixed verdict perfectly. | GPT-4o: The review acknowledges the potential and interesting ideas of the play but criticizes its execution, describing it as tiresome and muddled. The overall tone suggests disappointment despite some positive elements. | Gemini: The review praises McTeer's performance and the play's concept, but criticizes the execution, pacing, and plot development, leading to a mixed assessment. | Kimi: While the critic praises Janet McTeer's performance as 'imposing' and 'vulnerable' and calls the premise 'inspired,' they criticize the direction as 'overly aggressive' and the plot as 'discursive,' 'muddled,' and 'tiresome.' The closing sentiment of disappointment with the execution indicates a mixed verdict rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:41:37.245Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

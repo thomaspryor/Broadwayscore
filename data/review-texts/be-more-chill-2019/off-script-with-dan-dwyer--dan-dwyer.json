@@ -16,9 +16,14 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The theatre smelled like lip gloss and bubble gum, and that's not entirely metaphoric.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "rejectedAt": "2026-02-07T12:02:28.875Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a single descriptive sentence about the theater atmosphere followed by 'Read more' - not enough evaluative content to constitute a scoreable review excerpt.; openai: The provided text is a single metaphorical statement without any evaluative content about the show itself.",
+  "promptVersion": "5.2.0"
 }

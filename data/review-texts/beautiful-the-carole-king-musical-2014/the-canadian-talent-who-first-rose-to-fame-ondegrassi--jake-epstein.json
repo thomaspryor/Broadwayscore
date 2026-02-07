@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-07T12:13:35.491Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a truncated fragment with no evaluative content - just cast information and an incomplete sentence about the script being 'spotty' and 'sanitized' but cuts off mid-word without any clear verdict or recommendation.; openai: The text provided is an incomplete excerpt that lacks a clear evaluative opinion or verdict on the show. It appears to be more of a plot summary or cast listing.",
+  "promptVersion": "5.2.0"
 }

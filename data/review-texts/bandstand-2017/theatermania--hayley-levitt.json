@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Exciting choreography is never in short supply from Andy Blankenbuehler...The tone here is fun and lively like any tourist-attracting musical should be. But Blankenbuehler adds both metaphorical and literal shadows to its shiny facade...The only thing that disappoints about 'The Bandstand' is its tendency to slip into the trite musical it distinctly is not...But at its highest moments, 'The Bandstand' is not just a story told with music — it's a story born from music.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At its highest moments, 'The Bandstand' is not just a story told with music — it's a story born from music.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises choreography and tone as 'fun and lively,' acknowledges one disappointment about triteness, but concludes with strong artistic praise. Single excerpt warning applied - using upper Positive range. | GPT-4o: The review excerpt praises the choreography and describes the tone as fun and lively, indicating a positive view. However, it mentions a tendency to slip into triteness, suggesting some reservations. Given the single excerpt warning, the score is set at the lower end of the Positive range. | Gemini: The review praises the choreography and tone, but notes a tendency to slip into triteness. Given the single excerpt and the mixed signals, a score in the lower end of the positive range seems appropriate. | Kimi: The excerpt shows genuine praise for the choreography and the show's best moments, with a clear 'but' structure that acknowledges flaws without undermining the recommendation. The critic appreciates the artistry while noting the show sometimes falls into cliché. With only one excerpt available, confidence is low, but the overall tone is favorable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:44:04.213Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 14,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 14,
+    "confidence": "medium",
+    "range": {
+      "low": 9,
+      "high": 19
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An unsatisfying evening of theater and reeks of amateur writing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating pan with phrases like 'nothing redeeming whatsoever,' 'reeks of amateur writing,' and comparing it to 'a bad acid trip.' No positive elements offered. | GPT-4o: The review excerpt is overwhelmingly negative, describing the show as 'unsatisfying', 'awkward', and 'painful'. The lack of redeeming qualities and comparison to a 'bad acid trip' indicates a strong pan. | Gemini: The review is overwhelmingly negative, describing the show as an \"unsatisfying evening of theater\" with \"nothing redeeming whatsoever about the characters\" and comparing it to a \"bad acid trip.\" | Kimi: The excerpt contains uniformly negative language describing the show as amateurish, with forgettable performances and 'nothing redeeming whatsoever' about the characters. Despite the single-excerpt limitation suggesting potential cherry-picking, the severity of the criticism—including comparisons to a 'bad acid trip'—warrants a Pan classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:04:24.540Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 12,
+    "openaiScore": 15,
+    "geminiScore": 12,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 91,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The most devilishly delightful and debaucherously entertaining event on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Despite being a single excerpt, the language is unambiguously superlative with multiple phrases indicating extreme enthusiasm: 'Fantastic', 'crowd-pleasing wonder', 'superior to the film', and especially 'most...entertaining event on Broadway' which suggests this is the critic's top recommendation. | GPT-4o: The excerpt is filled with enthusiastic praise, calling the show a 'crowd-pleasing wonder' and 'superior to the film itself.' Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The review uses extremely positive language such as \"fantastic stage adaptation\", \"crowd-pleasing wonder\", and \"most devilishly delightful and debaucherously entertaining event on Broadway\", indicating a rave review. | Kimi: Single excerpt contains ecstatic superlatives ('fantastic,' 'wonder,' 'superior to the film') and declares it the most entertaining event on Broadway, indicating a rave recommendation. Score reflects the enthusiastic tone while acknowledging the limitation of a single potentially cherry-picked excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:31:48.142Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

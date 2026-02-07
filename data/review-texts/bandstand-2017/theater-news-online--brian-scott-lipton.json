@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Buoyed by a pair of charismatic, well-sung performances by the equally gorgeous Corey Cott and Laura Osnes, a tuneful score by Broadway newcomers Rob Taylor and Richard Obercraker, and some dynamite 1940s-inspired choreography by Tony winner Andy Blankenbuehler (who also directs), the show manages to prompt far more cheers than jeers – despite some unfortunate missteps in the book and execution.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show manages to prompt far more cheers than jeers – despite some unfortunate missteps",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows positive elements (charismatic performances, tuneful score, great choreography) but acknowledges 'unfortunate missteps.' The 'far more cheers than jeers' phrasing suggests qualified recommendation. Low confidence due to single excerpt limitation. | GPT-4o: The excerpt highlights strong performances, a tuneful score, and dynamic choreography, indicating a positive reception. However, it acknowledges some issues with the book and execution. Given the single excerpt and the positive tone, a score in the upper range of Positive is appropriate. | Gemini: The review highlights strong performances, a tuneful score, and impressive choreography, but acknowledges \"unfortunate missteps,\" suggesting a positive but not rave review. | Kimi: Single excerpt with clear positive verdict ('far more cheers than jeers') and enthusiastic praise for performances, score, and choreography, though qualified by 'unfortunate missteps.' The 'despite' construction indicates a solid but not unreserved recommendation, placing this in mid-Positive range given single-excerpt uncertainty.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:43:06.364Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

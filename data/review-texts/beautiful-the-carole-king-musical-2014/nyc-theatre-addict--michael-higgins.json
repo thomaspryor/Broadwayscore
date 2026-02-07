@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Abby’s opening moment at the piano did lack the spark and charisma of Jessie–but once the actual story began, Abby pulled way ahead with her acting chops. She acted her way through each and every moment. I knew I was going to love the music, but this time I really connected with the character and her struggle. This show is so much more than just a jukebox collection of great songs. There is a wonderful story full of wit and pathos.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show is so much more than just a jukebox collection of great songs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the lead's acting and the story's depth. Despite only having one excerpt, the critic expresses genuine connection and appreciation for both performances and material. | GPT-4o: The excerpt praises the show for its storytelling and emotional depth, indicating a strong recommendation. Despite the initial reservation about the opening moment, the overall tone is very positive. | Gemini: The reviewer praises the acting and the story, calling it \"wonderful\" and saying they \"really connected\" with the character. Given the single excerpt warning, I'm scoring on the higher end of positive. | Kimi: Despite noting the opening lacked spark compared to a previous performer, the critic praises Abby Mueller's superior acting chops and emotional connection to the character, calling the story 'wonderful' with 'wit and pathos.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:09:54.279Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

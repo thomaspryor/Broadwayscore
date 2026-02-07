@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a feast for the eyes and ears, with spectacular sets, costumes and makeup that bring Tim Burton's gothic fantasy to vibrant life on stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a feast for the eyes and ears, with spectacular sets, costumes and makeup that bring Tim Burton's gothic fantasy to vibrant life on stage.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a feast for the eyes and ears, with spectacular sets, costumes and makeup that bring Tim Burton's gothic fantasy to vibrant life on stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for production values ('feast for the eyes and ears,' 'spectacular,' 'vibrant life') suggests positive recommendation, but confidence is low due to limited text that may not represent full verdict. | GPT-4o: The excerpt praises the visual and auditory elements of the show, describing it as a 'feast' with 'spectacular' production values. Given the single excerpt warning, the positive tone suggests a strong recommendation for its aesthetic appeal. | Gemini: The excerpt describes the show as a \"feast for the eyes and ears\" with \"spectacular sets, costumes and makeup.\" Given the limited text, I'm scoring it as positive, but with low confidence. | Kimi: Strong praise for visual and technical elements using words like 'feast', 'spectacular', and 'vibrant life'. While limited to production values in this single excerpt, the tone is clearly enthusiastic and recommending.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:16:40.999Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

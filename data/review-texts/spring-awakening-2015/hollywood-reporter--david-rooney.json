@@ -49,5 +49,11 @@
   "tierReason": "Full review text",
   "previousUrl": "https://www.hollywoodreporter.com/news/general-news/spring-awakening-theater-review-825584/",
   "urlDiscoveredAt": "2026-02-07T09:33:24.984Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-07T11:26:50.279Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Wallis Annenberg Center for the Performing Arts in Beverly Hills, not the current Broadway run.; kimi: The review explicitly states it covers the production at the Wallis Annenberg Center for the Performing Arts in Beverly Hills ('back in a return engagement at the Wallis Annenberg Center'), not the Broadway transfer. This is the pre-Broadway/Los Angeles production, not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

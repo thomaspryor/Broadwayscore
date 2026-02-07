@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"There are so many elements to be savored...Foremost is the wonderfully inventive choreography...Certainly the concern of American veterans coming back from battle is a timely issue, yet the production never fully engages emotionally...There was a sense of superficiality that things were being hurried along and glossed over. Unhappily, most of the time, there was an overwhelming lack of drama. There were so many elements that I admired, but the show was not a completely satisfying experience.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There were so many elements that I admired, but the show was not a completely satisfying experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises choreography and acknowledges timely themes, but concludes the show lacks emotional engagement, feels superficial, and is ultimately unsatisfying despite admirable elements. | GPT-4o: The review acknowledges positive aspects like choreography and timely themes but criticizes the lack of emotional engagement and drama, leading to a mixed verdict. | Gemini: The review highlights both positive aspects like the choreography and timely theme, but also criticizes the lack of emotional engagement and superficiality, leading to a mixed overall impression. | Kimi: The critic praises the 'wonderfully inventive' choreography and notes elements to be savored, but finds the production emotionally superficial, hurried, and lacking drama, ultimately deeming it not a completely satisfying experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:49:11.594Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

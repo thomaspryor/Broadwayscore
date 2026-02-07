@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Performers is a backstage farce that feels more like a backstage catastrophe, with Neil Patrick Harris working overtime to inject life into David West Read's labored comedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -54,5 +54,60 @@
   "archiveOrgTimestamp": "20210725201223",
   "archiveOrgUrl": "http://web.archive.org/web/20210725201223/https://www.hollywoodreporter.com/news/general-news/theater-review-performers-390442/",
   "wordCount": 811,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cabnet can't entirely dodge the lags in such featherweight material, but the appealing cast should satisfy undemanding audiences looking for light entertainment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic praises Graynor's performance and cast work but calls the play 'so-so' and 'featherweight material' with 'lags.' The qualified recommendation for 'undemanding audiences' suggests mixed quality rather than a clear positive. | GPT-4o: The review highlights a standout performance by Ari Graynor but criticizes the play's material as 'skimpy' and 'so-so'. It suggests the play may appeal to undemanding audiences, indicating a mixed reception with some positive elements. | Gemini: The review praises the cast and Graynor's performance but finds the play itself to be \"so-so\" and \"skimpy.\" It suggests it will satisfy \"undemanding audiences,\" indicating a mixed recommendation. | Kimi: The critic praises Ari Graynor's performance as 'incandescent' and acknowledges the cast works hard on 'fluff,' but repeatedly criticizes the play itself as 'so-so,' 'skimpy,' with 'lags in such featherweight material' and a failure to do 'anything creative' with its setup. The final verdict explicitly limits recommendation to 'undemanding audiences,' indicating qualified, lukewarm endorsement. Low confidence due to excerpt-only format.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:34:44.841Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Director Marc Bruni and the design team keep things moving at a brisk pace. The show is tightly directed and seamlessly flows from the songwriters to the pop artists that shared their work with the world. The hard-working ensemble takes on these musical icons, and while they look and sound incredibly polished, there is a decidedly “Broadway” sound to their vocal delivery.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is tightly directed and seamlessly flows from the songwriters to the pop artists that shared their work with the world.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for direction and pacing, calling the show 'tightly directed' and noting the ensemble 'look and sound incredibly polished.' However, the qualifier about 'decidedly Broadway sound' suggests some reservation, and with only one curated excerpt available, confidence is low. | GPT-4o: The excerpt praises the direction and flow of the show, indicating a positive view. However, the mention of a 'decidedly “Broadway” sound' suggests some reservation. With only one excerpt available, confidence is low. | Gemini: The review praises the direction and flow of the show, but notes a \"Broadway\" sound to the vocal delivery, indicating a reservation. Given the single excerpt, I'm scoring it as positive but with lower confidence. | Kimi: Single excerpt offers qualified praise for Bruni's tight direction and polished design, but ends with criticism of the ensemble's 'Broadway' vocal delivery. Per instructions, single excerpts with mild positivity should score in the lower Positive range (70-74).",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T12:08:20.872Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

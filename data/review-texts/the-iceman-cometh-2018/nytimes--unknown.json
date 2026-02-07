@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,59 @@
   "archiveOrgTimestamp": "20250818102947",
   "archiveOrgUrl": "http://web.archive.org/web/20250818102947/https://www.nytimes.com/2018/04/26/theater/review-iceman-cometh-denzel-washington.html",
   "wordCount": 447,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Wolfe has filled the stage with such delectably seasoned hams, who lap up limelight the way their characters throw back booze.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic expresses sustained enjoyment ('beaming like a tickled 2-year-old') and praises the cast extensively, particularly highlighting the ensemble and Washington's 'center-of-gravity performance.' Despite the text being truncated, the tone is clearly positive throughout. | Gemini: The review is generally positive, highlighting the strong performances and engaging staging, but acknowledges the play's length and potentially repetitive nature. The reviewer ultimately recommends seeing it, particularly for Denzel Washington's performance. | Kimi: The critic expresses genuine delight throughout, calling the ensemble 'delectably seasoned hams' who 'gladden the heart,' and praises Washington's 'center-of-gravity performance.' While the review questions whether smiling is the 'appropriate' response to O'Neill's tragedy, this is intellectual framing, not criticism—the sustained enthusiasm and recommendation are clear. Confidence is medium due to truncated ending.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:32:00.434Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

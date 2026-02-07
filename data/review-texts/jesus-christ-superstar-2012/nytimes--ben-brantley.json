@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This production works hardest when it stops trying so hard, when it lets the music do the heavy lifting and allows its performers to find their characters within the songs instead of around them.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -54,5 +54,59 @@
   "archiveOrgTimestamp": "20140128215959",
   "archiveOrgUrl": "http://web.archive.org/web/20140128215959/http://www.nytimes.com:80/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html?",
   "wordCount": 807,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I have to confess to finding the show alternately hilarious and preposterous — if often infectiously melodic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Brantley finds the production absurd and preposterous while acknowledging some strong performances and infectious melodies. He questions whether audiences should applaud a 'glitzy depiction of the most influential execution in world history' and describes much of the staging as pretentious, placing this in mixed territory with no clear recommendation. | Gemini: The review expresses mixed feelings, finding the show both hilarious and preposterous. While acknowledging the melodic quality and brisk staging, the overall impression is not strongly positive or negative. | Kimi: While the critic praises individual performances (particularly Josh Young as Judas) and acknowledges the music as 'infectiously melodic,' the overall verdict is that the production is absurd, glitzy, and preposterous. The review mocks the show's portentous staging and suggests it treats a serious subject with inappropriate flash, ultimately warning audiences who would find this 'remotely absurd' to stay away.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:07:56.593Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

@@ -31,14 +31,14 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240413235304",
   "archiveOrgUrl": "http://web.archive.org/web/20240413235304/https://www.nytimes.com/2016/05/26/theater/review-paramour-brings-cirque-du-soleil-to-broadway.html?_r=0",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 317,
   "tierReason": "Full review text",
   "bwwExcerpt": "Welcome to 'Paramour,' or as I like to call it, 'A.D.H.D.! The Musical.' The production, which opened on Wednesday at the Lyric Theater, represents the latest attempt by the French Canadian entertainment behemoth Cirque du Soleil to make a big splash in New York. This time the company, having failed to wow the local masses sufficiently with its traditional nouveau-circus spectacles, has decided to splice the time-tested yowza diversions - acrobats and gymnasts and jugglers, oh my! - into a traditional musical, with a plot, characters, show tunes and even a little tap-dancing.",
   "bwwScore": 5,
-  "rejectedAt": "2026-02-07T04:58:50.837Z",
+  "rejectedAt": "2026-02-07T11:03:26.773Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The text cuts off mid-review with a JavaScript error message about retrieving article content, making it impossible to score the complete review; openai: The review is interrupted with a technical error message about JavaScript, indicating incomplete content.",
+  "rejectionReasoning": "claude: The review text is truncated and ends with a technical error message about retrieving article content and enabling JavaScript, indicating this is incomplete/corrupted content rather than a full review.; openai: The text is interrupted with a message about enabling JavaScript and verifying access, indicating it's not a complete review.",
   "promptVersion": "5.2.0"
 }

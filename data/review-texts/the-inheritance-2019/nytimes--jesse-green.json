@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Matthew López's two-part, seven-hour play is a gorgeous monument to gay life, love and loss that brings the profound drama of the AIDS crisis into conversation with the present.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "previousUrl": "https://www.nytimes.com/2019/11/17/theater/the-inheritance-review.html",
   "urlDiscoveredAt": "2026-02-07T10:26:35.602Z",
@@ -41,5 +41,10 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250722051511/https://www.nytimes.com/2019/11/17/theater/the-inheritance-review-broadway-matthew-lopez.html",
   "duplicateTextOf": "nytimes--ben-brantley.json",
   "wordCount": 364,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-07T11:32:09.085Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about retrieving article content and enabling JavaScript, making it impossible to determine the critic's verdict.; openai: The text includes a message indicating trouble retrieving the article content, suggesting it's incomplete and not a full review.; gemini: The review is cut off mid-sentence, so I cannot determine the critic's final verdict.",
+  "promptVersion": "5.2.0"
 }

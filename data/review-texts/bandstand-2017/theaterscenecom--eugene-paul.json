@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The whole of 'Bandstand' is such a striver, every craftsman-artist, every performer artist at peak, especially choreographer-director Andy Blankenbuehler...A swirl of emotion and entertainment that never falters...Wonderful dancers who sing. Wonderful singers who dance. Wonderful actors who sing and dance, are funny, and heartbreaking. And play instruments. Head-shakingly amazing...In a season of many gifts 'Bandstand' stands very high.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In a season of many gifts 'Bandstand' stands very high.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with superlatives ('peak', 'never falters', 'head-shakingly amazing') and clear high recommendation. Single excerpt warning requires caution, but language is consistently enthusiastic throughout. | GPT-4o: The excerpt offers unqualified praise for the production, highlighting the high level of artistry and performance. The language used is enthusiastic and suggests a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt contains very strong praise for all aspects of the show, including the choreography, direction, performers, and overall entertainment value. Given the single excerpt warning, I am scoring it at the higher end of the positive range. | Kimi: The excerpt contains effusive praise with superlatives like 'head-shakingly amazing' and 'stands very high,' but as a single curated quote it may be cherry-picked and not fully representative of the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:45:06.287Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

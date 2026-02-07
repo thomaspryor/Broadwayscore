@@ -41,5 +41,11 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 1097,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-07T11:32:55.225Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "openai: The review is about the film adaptation of 'The Little Mermaid', not a Broadway show.; kimi: This is a review of the 2023 Disney live-action film 'The Little Mermaid,' not a Broadway theater production. The text explicitly discusses a movie release ('Release date: Friday, May 26', 'Rated PG, 2 hours and 15 minutes', 'photorealist interpretation', 'live-action remake') with no connection to Broadway theater.",
+  "promptVersion": "5.2.0"
 }

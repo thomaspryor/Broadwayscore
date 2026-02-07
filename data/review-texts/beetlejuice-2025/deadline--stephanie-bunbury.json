@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-07T12:26:48.271Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a truncated excerpt from a film review of 'Beetlejuice Beetlejuice' (2024 movie), not a Broadway theater review; gemini: This review is for the movie Beetlejuice Beetlejuice, not the Broadway show.; kimi: This text is a review of the 2024 film 'Beetlejuice Beetlejuice,' not the Broadway musical. References to 'animation joins' and 'CGI' indicate this is about the movie sequel, not a theatrical production.",
+  "promptVersion": "5.2.0"
 }

@@ -48,5 +48,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 1123,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the heady ether of prime farce never materializes in this labor-intensive but laugh-deficient evening.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the revival 'labor-intensive but laugh-deficient' with 'unhilarity almost uninterrupted.' Despite acknowledging skilled actors working hard, the fundamental verdict is that the material and execution fail to deliver comedy. | GPT-4o: The review consistently criticizes the production for its lack of humor and effective farce, despite the efforts of the cast. The critic finds the material lacking and the performances miscast, leading to a negative overall impression. | Gemini: The review is largely negative, describing the production as \"laugh-deficient\" and criticizing the material and casting. While acknowledging the actors' efforts, the overall verdict is that the show fails to achieve its comedic potential. | Kimi: The critic describes the production as 'laugh-deficient' and 'labor-intensive,' citing 'unhilarity,' miscasting, and flaccid pacing, concluding that the two-minute curtain call is funnier than the preceding two and a half hours of hard labor.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:09:39.618Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

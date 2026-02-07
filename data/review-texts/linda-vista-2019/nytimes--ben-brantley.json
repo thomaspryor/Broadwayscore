@@ -38,10 +38,10 @@
   "contentTier": "needs-rescrape",
   "wordCount": 303,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-07T05:10:11.609Z",
+  "rejectedAt": "2026-02-07T11:10:19.556Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: The review text is truncated and ends with an error message about retrieving content and JavaScript settings, making it impossible to determine the critic's verdict.; openai: The review text is cut off, and the conclusion or verdict is missing, making it impossible to accurately score.; gemini: The review text is incomplete and contains an error message indicating that the article content could not be retrieved.",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about retrieving article content and enabling JavaScript, making it impossible to determine the critic's verdict.; openai: The review text is truncated and ends with a technical message about enabling JavaScript, indicating incomplete content.",
   "promptVersion": "5.2.0",
   "publishDate": "October 11, 2019"
 }

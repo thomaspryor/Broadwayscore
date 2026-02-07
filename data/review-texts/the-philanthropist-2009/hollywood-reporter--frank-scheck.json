@@ -47,5 +47,60 @@
   "textStatus": "truncated",
   "sourceMethod": "brightdata",
   "wordCount": 534,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Little of interest happens in the talky proceedings, which might have been more palatable in an expert production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds fault with nearly every aspect: Broderick's performance is called weak and one-note, the play lacks thematic focus, the staging fails to compel, and performances are highly uneven. While not a complete pan, it's clearly a negative recommendation. | GPT-4o: The review criticizes the production's lack of thematic focus, uneven performances, and Broderick's uninspired portrayal. The negative tone and lack of recommendation place it in the Negative bucket. | Gemini: The review is largely negative, citing a weak play, uninspired staging, and uneven performances, particularly Broderick's. While not a complete pan, it clearly does not recommend seeing the show. | Kimi: The critic delivers a clear negative assessment, criticizing the play as talky and uninteresting, the staging as failing to compel, and the performances as uneven, with only minor technical competence noted.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T11:35:25.614Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }
