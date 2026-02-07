@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Caroline's daughter Emmie (Samantha Williams), however, fiercely serves as this story's change agent. She's instrumental in helping her mother revaluate her antiquated beliefs and works to fight the systems that had her mother believing them in the first place. Williams delicately conquers a role that previously secured Anika Noni Rose her first Tony Award, making this role her own with a youthful energy and gentle grace. All of these story elements spun together wrestle",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027",
-  "showScoreExcerpt": "\"All of these story elements spun together wrestle with issues that are still urgent today. As one memorable lyric in the show states, there is “no underground in Louisiana.” But on the surface in New York City, there is an important musical revival on Broadway that is deeply meaningful, crucial to experience and definitely a necessary change.\"\n\nRead more"
+  "showScoreExcerpt": "\"All of these story elements spun together wrestle with issues that are still urgent today. As one memorable lyric in the show states, there is “no underground in Louisiana.” But on the surface in New York City, there is an important musical revival on Broadway that is deeply meaningful, crucial to experience and definitely a necessary change.\"\n\nRead more",
+  "assignedScore": 85,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there is an important musical revival on Broadway that is deeply meaningful, crucial to experience and definitely a necessary change.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language ('important', 'deeply meaningful', 'crucial to experience', 'necessary') indicates enthusiastic recommendation. However, confidence is medium due to excerpted text that may not capture full context. | GPT-4o: The excerpt uses strong positive language indicating a must-see recommendation ('deeply meaningful', 'crucial to experience', 'necessary change'). However, due to the limited text, confidence is low. | Gemini: The review excerpt uses strong positive language like \"deeply meaningful\", \"crucial to experience\", and \"necessary change\", indicating a strong recommendation. | Kimi: The excerpt contains unqualified superlative praise describing the show as 'crucial to experience' and 'deeply meaningful,' indicating a must-see recommendation. However, confidence is low given only curated excerpts are available. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T15:00:26.837Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 87,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

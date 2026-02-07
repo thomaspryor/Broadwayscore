@@ -12,5 +12,60 @@
   "bwwExcerpt": "Anyone who is unfamiliar with 'Cabaret,' or even just this version of it, should definitely check it out. But as for everyone else, it's really just more of the same. Even a new production that proved to be less innovative would have been more exciting than this rehash. As the Emcee, Alan Cumming retains the sleazy presence that made his performance so entrancing originally. On the other hand, Michelle Williams makes a shaky Broadway debut, coming off as too fragile to portray the sexually aggressive singer Sally Bowles.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Anyone who is unfamiliar with 'Cabaret,' or even just this version of it, should definitely check it out.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Qualified recommendation only for those unfamiliar with the show, criticizes it as a 'rehash' with mixed reviews of the leads. Neither enthusiastic endorsement nor clear dismissal. | GPT-4o: The review suggests that the production is worth seeing for newcomers but lacks innovation for others, indicating a mixed reception. Praise for Alan Cumming is countered by criticism of Michelle Williams, leading to a balanced verdict. | Gemini: The review recommends the show for newcomers but finds it unexciting for those familiar with the production. Michelle Williams' performance is criticized, while Alan Cumming's is praised, resulting in a mixed assessment. | Kimi: The critic offers a conditional recommendation for those unfamiliar with the show but dismisses it as 'more of the same' and a 'rehash' for others, with praise for Alan Cumming offset by criticism of Michelle Williams' 'shaky' debut.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:36:21.620Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

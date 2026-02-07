@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's Stroman's vision that will keep this cute, brashy ode to Broadway on Broadway for long to come.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic praises Stroman's vision as what will sustain the show's run and describes staging as 'truly deliciously vulgar' in an appreciative tone. However, confidence is low due to truncated single excerpt. | GPT-4o: The excerpt praises Stroman's vision and suggests the show will have a lasting presence on Broadway. The mention of a 'deliciously vulgar scene' adds to the positive tone. Despite the single excerpt warning, the language indicates strong enthusiasm. | Gemini: The review excerpt praises Stroman's vision and suggests the show will have a long run on Broadway, indicating a positive recommendation. Given the single excerpt, confidence is low but the tone is clearly positive. | Kimi: The excerpt praises Stroman's direction and predicts a long Broadway run, indicating a clear recommendation, though descriptors like 'cute' and 'brashy' suggest populist entertainment rather than artistic transcendence. Confidence is low due to the single, truncated excerpt format.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:25:16.732Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

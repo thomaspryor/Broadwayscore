@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"To be sure, Sharon D Clarke (London’s Olivier Award for Best Actress in a Musical, 2019) gives a jolting, heartbreaking performance in the title role, but has a coldness that never melts, even in her scenes with her family (until the very end). She roars through her long, heartbreaking solo towards the end bringing the house down.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sharon D Clarke gives a jolting, heartbreaking performance in the title role",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt warning applies - this curated quote praises Clarke's performance as 'jolting, heartbreaking' and notes audience response ('bringing the house down'), but acknowledges character coldness. With only one excerpt available, this appears mildly positive, placing it in the lower Positive range. | GPT-4o: The excerpt praises Clarke's performance but notes a persistent coldness, suggesting mixed feelings. The lack of full context and single excerpt warning lead to a low confidence score. | Gemini: The review praises Sharon D Clarke's performance as \"jolting\" and \"heartbreaking,\" but notes a \"coldness\" that persists throughout the show. Given the single excerpt and the mixed tone, I'm scoring this as a mildly positive review. | Kimi: Single excerpt shows strong praise for the lead performance ('jolting, heartbreaking,' 'bringing the house down') but includes significant reservations about emotional accessibility ('coldness that never melts'). Given the single-excerpt limitation and mixed signals, scored conservatively at the lower end of Positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:58:43.779Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

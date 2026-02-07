@@ -19,5 +19,60 @@
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The text appears to be truncated mid-sentence and contains only contextual setup about societal changes, with no actual evaluation of the production or performances to score.; openai: The text is an incomplete excerpt that does not provide any evaluative content or verdict about the current production.; gemini: The excerpt is cut off mid-sentence and does not provide a clear verdict or evaluation of the show.",
   "promptVersion": "5.2.0",
-  "showScoreExcerpt": "\"The same text by librettist and lyricist Tony Kushner, which had seemed so stiffly fragmented in that earlier production, finds a fluid cohesion here that makes not only Caroline’s solitude, but the isolation of almost everyone around her profoundly affecting...Anyone who has missed the overwhelming emotional power of a great Broadway musical in the past 19 months should look no further.\" \n\nRead more"
+  "showScoreExcerpt": "\"The same text by librettist and lyricist Tony Kushner, which had seemed so stiffly fragmented in that earlier production, finds a fluid cohesion here that makes not only Caroline’s solitude, but the isolation of almost everyone around her profoundly affecting...Anyone who has missed the overwhelming emotional power of a great Broadway musical in the past 19 months should look no further.\" \n\nRead more",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Anyone who has missed the overwhelming emotional power of a great Broadway musical in the past 19 months should look no further.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite being excerpted, this shows clear rave language with 'overwhelming emotional power' and positioning the show as the definitive Broadway musical experience. The transformation from 'stiffly fragmented' to 'fluid cohesion' indicates major praise for this production. | GPT-4o: The excerpt praises the production's emotional power and cohesion, suggesting a strong recommendation. However, due to the limited text, confidence is low. | Gemini: The review praises the production's fluid cohesion and profoundly affecting isolation, suggesting a strong positive experience. The final sentence is a clear recommendation. | Kimi: The excerpt offers unqualified praise with superlatives ('overwhelming emotional power', 'profoundly affecting') and an explicit directive that this is the essential show to see, indicating the highest level of recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:54:51.620Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

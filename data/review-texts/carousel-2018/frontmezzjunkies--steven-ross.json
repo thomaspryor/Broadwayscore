@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"A first-rate revival...As dark and as romantically moody as the classic piece demands...Has some troubling issues to deal with locked down inside the text...Beautifully introduces all the characters and situation expertly....O'Brien had to find a way to deal with the lead male character and his unsympathetic actions...It's his uncontrollable curse, this inability to cope and manage his emotions, and in some ways, it is also the curse of this complicated and dark musical.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A first-rate revival...As dark and as romantically moody as the classic piece demands",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opens with strong praise ('first-rate revival') and acknowledges the production achieves what the material demands. While noting textual issues with the source material, the focus is on how well this production handles those challenges. | GPT-4o: The excerpt praises the revival as 'first-rate' and captures the mood effectively, but notes 'troubling issues' within the text. The positive elements are emphasized, but the single excerpt limits confidence. | Gemini: The review excerpt contains positive language like \"first-rate revival\" and \"beautifully introduces\", but also mentions \"troubling issues\" and a male character's \"unsympathetic actions\", suggesting a recommendation with reservations. Given that it's a single excerpt, confidence is low. | Kimi: The excerpt offers strong praise for the production ('first-rate', 'beautifully', 'expertly') despite acknowledging problematic elements in the source material, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T15:10:25.613Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

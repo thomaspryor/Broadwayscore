@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“Sorkin eventually hands us a somewhat shocking revelation about five minutes before the show is over, which if it had been spoken aloud (or hinted at more broadly earlier) would absolutely have deepened the show and given it the spark it needed to ignite. Indeed, the choice to hide such crucial information up Sorkin’s sleeve is not just misguided magic, but the most bizarre thing about this new, often-pleasing adaptation.”\n\nRead more"
+  "showScoreExcerpt": "“Sorkin eventually hands us a somewhat shocking revelation about five minutes before the show is over, which if it had been spoken aloud (or hinted at more broadly earlier) would absolutely have deepened the show and given it the spark it needed to ignite. Indeed, the choice to hide such crucial information up Sorkin’s sleeve is not just misguided magic, but the most bizarre thing about this new, often-pleasing adaptation.”\n\nRead more",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Indeed, the choice to hide such crucial information up Sorkin's sleeve is not just misguided magic, but the most bizarre thing about this new, often-pleasing adaptation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls it 'often-pleasing' but identifies a major structural flaw that undermines the show's potential. Single excerpt limits full assessment. | GPT-4o: The excerpt highlights a significant flaw in the show's structure, but also describes the adaptation as 'often-pleasing'. The overall tone suggests a mixed review with both positive and negative elements. | Gemini: The review excerpt indicates that the adaptation is \"often-pleasing\" but also criticizes a key element as \"misguided magic\" and \"bizarre.\" This suggests a mixed reaction, as the critic finds some aspects enjoyable but identifies significant flaws. | Kimi: While the critic identifies a significant structural flaw regarding a late revelation, the characterization of the work as 'often-pleasing' indicates a mild recommendation despite reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:50:25.710Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

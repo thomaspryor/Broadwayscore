@@ -14,5 +14,59 @@
   "bwwScore": 8,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
-  "showScoreExcerpt": "\"Great musical dramas like “Cabaret” — entertaining, tuneful and illuminating — are all too rare.\"\n\nRead more"
+  "showScoreExcerpt": "\"Great musical dramas like “Cabaret” — entertaining, tuneful and illuminating — are all too rare.\"\n\nRead more",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Great musical dramas like “Cabaret” — entertaining, tuneful and illuminating — are all too rare.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt praises 'Cabaret' as a rare, great musical drama that is 'entertaining, tuneful and illuminating,' suggesting a strong recommendation. However, the text is truncated, so confidence is low. | Gemini: The quote praises \"Cabaret\" as entertaining, tuneful, and illuminating, suggesting a positive recommendation. However, the excerpt is short, so confidence is low. | Kimi: The available excerpt offers strong praise, calling the show a 'great musical drama' that is 'entertaining, tuneful and illuminating.' However, confidence is low because this is a curated excerpt that cuts off with 'Read more,' leaving the full context and potential reservations unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:43:07.803Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

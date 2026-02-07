@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Staging Camelot now means you have to tackle the show as it exists — a somewhat awkward epic with brilliant moments — and address its hazy nostalgic one-brief-shining-moment mythos. Enter Aaron Sorkin. Lincoln Center Theater’s production, directed by Bartlett Sher, is better on the latter front than the former. Its reconstructed book by Sorkin haphazardly drags the musical closer to reality, but it’s in its biggest, grandest gestures where the revival succeeds.",
-  "bwwScore": 6
+  "bwwScore": 6,
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Its reconstructed book by Sorkin haphazardly drags the musical closer to reality, but it's in its biggest, grandest gestures where the revival succeeds.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Mixed assessment acknowledging both successes (brilliant moments, grand gestures work) and significant flaws (awkward epic, haphazard book reconstruction). Single excerpt limits confidence in overall verdict. | GPT-4o: The review acknowledges both strengths and weaknesses, noting awkwardness and haphazard elements, but also highlights successful grand gestures. The single excerpt provides a mixed impression, leading to a low confidence score. | Gemini: The review is mixed, but ultimately leans positive. The phrase \"where the revival succeeds\" indicates a positive overall assessment, despite some reservations about the book. | Kimi: The excerpt presents a balanced but qualified assessment: it praises the 'grandest gestures' and 'brilliant moments' while criticizing Sorkin's book as 'haphazard' and the show as 'awkward.' With only one excerpt available, the mixed signals suggest the critic finds the revival partially successful but flawed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:52:38.442Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 74,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

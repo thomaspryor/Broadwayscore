@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's a ton of talent onstage in Bullets Over Broadway, evident in the leggy chorines who ignite into explosive dance routines",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for performances, choreography, and production design with enthusiastic language ('ton of talent', 'explosive', 'sparkling', 'razzle-dazzle'). However, confidence is low due to limited text that may not represent the full verdict. | GPT-4o: The excerpt highlights the talent, explosive dance routines, gifted cast, and sparkling design, suggesting a strong positive impression. However, with only one curated excerpt available, the confidence is low. | Gemini: The review excerpt praises the talent, dance routines, cast, design, and direction, indicating a positive, though potentially qualified, recommendation. Confidence is low due to the limited excerpt. | Kimi: The excerpt delivers enthusiastic praise for the production's talent, choreography, and design elements using words like 'explosive,' 'sparkling,' and 'razzle-dazzle,' indicating a clear recommendation. As a single curated excerpt, it falls in the upper range of the Positive bucket per scoring guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:26:21.752Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

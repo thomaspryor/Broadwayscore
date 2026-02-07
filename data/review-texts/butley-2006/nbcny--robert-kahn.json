@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While not without some curious choices, \"Bullets\" is certainly t...",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows measured praise (\"marvelous turn,\" \"zany, old-fashioned spectacle\") but ends with \"While not without some curious choices\" suggesting reservations. The truncated ending prevents seeing the full verdict, requiring low confidence and lower-end positive scoring. | GPT-4o: The excerpt describes the show as a 'zany, old-fashioned spectacle' and highlights a 'marvelous turn' by Marin Mazzie, indicating a positive view. However, the mention of 'not without some curious choices' suggests some reservations. Given the single excerpt and the warning about potential cherry-picking, the score is set at the lower end of the Positive range. | Gemini: The review calls the show \"a zany, old-fashioned spectacle\" and praises Marin Mazzie's performance, but the truncated text and the phrase \"not without some curious choices\" suggest a positive but not rave review. | Kimi: The excerpt offers clear praise ('zany, old-fashioned spectacle', 'marvelous turn') with only minor caveats ('curious choices'), indicating a solid recommendation despite the truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:27:03.877Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

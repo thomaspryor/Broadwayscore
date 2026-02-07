@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "show-score-playwright",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's a sweeping tale of pain and redemption in 'Bright Star' clamoring to come out, and when it does, the movement to restore harmony and Arcadian balance will require less suspension of disbelief.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic sees potential in the material ('sweeping tale clamoring to come out') and acknowledges the show's aims, but identifies significant structural issues ('would benefit from higher stakes and greater guts'). The conditional language and emphasis on what the show could become rather than what it is suggests mixed feelings. Single excerpt warning requires caution - this could be from a more definitively positive or negative full review. | GPT-4o: The review suggests potential in the show but notes it needs higher stakes and greater guts. The positive elements are acknowledged, but the overall tone suggests it is not fully realized yet, leading to a mixed verdict. | Gemini: The review suggests the show has potential but needs higher stakes and greater guts, indicating a mixed assessment. The phrase \"clamoring to come out\" suggests unrealized potential. | Kimi: The excerpt acknowledges the show's lyrical qualities and aspirational aims but criticizes it as 'too rarefied for Gotham's embrace,' better suited for regional theater, and lacking sufficient stakes and guts. The critic sees potential that remains unfulfilled in this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:58:28.895Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

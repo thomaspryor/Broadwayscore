@@ -12,5 +12,60 @@
   "bwwExcerpt": "Simonson's stabs at spiritual significance sink Bronx Bombers just as they did his previous outings. Had he elected to stick with a character-based 'backstage' story, as he does in the first scene, he might have had a winner this time...It's not just that the story, having jettisoned whatever was interesting about it, is so undeserving of the emotional extremes that surrealism at its best can illustrate. It's also that Simonson, emerging from the dream, has nothing left to pitch. A lame wrap-up scene set in 2008, during the final game at the old Yankee Stadium, squeezes the nostalgia sponge well past the point where anything can be wrung from it.",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not just that the story, having jettisoned whatever was interesting about it, is so undeserving of the emotional extremes that surrealism at its best can illustrate.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the show fundamentally flawed, describing it as having 'jettisoned whatever was interesting' and ending with 'nothing left to pitch.' The 'lame wrap-up' and overwrought nostalgia suggest clear disappointment, though the acknowledgment of potential ('might have had a winner') keeps this from pan territory. | GPT-4o: The review criticizes the show for lacking substance and failing to deliver a compelling story, indicating a negative assessment. The language suggests disappointment and a lack of recommendation. | Gemini: The review excerpt is largely negative, criticizing the story and writing. The critic states that the story has jettisoned what was interesting about it. | Kimi: While the excerpt notes the first scene had potential, the critic decisively condemns the play's structure as 'lame' and undeserving, stating it 'sinks' under the weight of its misguided ambitions. Given this is a single curated excerpt, the strong negative language suggests a clear non-recommendation, though the acknowledgment of a promising opening prevents a deeper pan score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:01:35.418Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

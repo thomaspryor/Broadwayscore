@@ -14,5 +14,60 @@
   "bwwScore": 8,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
-  "showScoreExcerpt": "\"Cumming is better than ever. And that freshness is so infectious it spills over into a landmark production that closed in 2004 but feels, with one uneasy exception, as confident -- and about as dangerous -- as if it has been running ever since.\"\n\nRead more"
+  "showScoreExcerpt": "\"Cumming is better than ever. And that freshness is so infectious it spills over into a landmark production that closed in 2004 but feels, with one uneasy exception, as confident -- and about as dangerous -- as if it has been running ever since.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cumming is better than ever, and that freshness is so infectious it spills over into a landmark production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for lead performer ('better than ever') and production ('landmark', 'confident', 'dangerous' as positives). However, confidence is low due to excerpt-only text with unclear full verdict. | GPT-4o: The review excerpt praises Cumming's performance and describes the production as 'landmark' and 'confident,' suggesting a strong positive impression despite the mention of an 'uneasy exception.' The lack of full context necessitates a lower confidence level. | Gemini: The review excerpt praises Cumming's performance and describes the production as \"infectious\" and \"confident.\" The phrase \"better than ever\" suggests a strong positive recommendation. However, the text is truncated, so confidence is low. | Kimi: The excerpt offers superlative praise for the lead performance ('better than ever') and describes the production as a 'landmark' that feels 'confident' and 'dangerous,' indicating strong enthusiasm despite one minor caveat.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:41:36.389Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

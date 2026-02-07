@@ -12,5 +12,60 @@
   "bwwExcerpt": "It's Stroman's vision that will keep this cute, brashy ode to Broadway on Broadway for long to come. She has staged a truly deliciously vulgar scene sung to 'The Hot Dog Song' that, let's put it bluntly, will not be making the Tony telecast. She has teamed up with Santo Loquasto's ambitious and lovely set designs to put a snazzy looking real car onstage and yet also make a train out of dancers dressed as red caps in white gloves. When she has mobsters in three-piece suits tap dance to ''Tain't Nobody's Biz-ness If I Do,' their masculine movements are a joy. When the play-within-the-musical is staged, the proscenium has real dancers posing like carved statues. It's all been so well thought out and executed, right down to its bouncy chairs and rotating houses. Stroman has the right to sing, as the title of one song goes 'Gee Baby, Ain't I Good to You.' When the critical reviews of the fictional play come out at the end of the show, the consensus must be the same about this fun, beautiful musical: 'A work of art of the highest caliber.'",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BULLETS-OVER-BROADWAY-Opens-Updating-LIVE-20140410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BULLETS-OVER-BROADWAY-Opens-Updating-LIVE-20140410",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She has staged a truly deliciously vulgar scene sung to 'The Hot Dog Song' that, let's put it bluntly, will not be making the Tony telecast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout for Stroman's direction and staging, concluding with 'A work of art of the highest caliber.' Single excerpt warning requires caution, but consistent superlatives suggest genuine enthusiasm. | GPT-4o: The excerpt is highly positive, praising the staging, set design, and execution. The phrase 'a work of art of the highest caliber' indicates a strong recommendation, suggesting a rave review. | Gemini: The review is overwhelmingly positive, praising the staging, set design, choreography, and overall execution. The critic concludes by stating that the show is a 'work of art of the highest caliber,' indicating a strong recommendation. | Kimi: The excerpt offers enthusiastic praise for the director's vision and staging, calling the show a 'work of art of the highest caliber' and predicting a long run, though as a single curated excerpt, the full context is unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:02:40.781Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

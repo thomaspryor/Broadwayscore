@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "The first surprise of “Bring It On The Musical\"...is that people as awesome as Tony winners Lin-Manuel Miranda and Tom Kitt were drawn to remake a largely forgettable film that spawned four direct-to-video sequels. Is Broadway really the obvious next step in this commercial franchise?...Questions of audience aside, was it a mistake for these young theatrical talents, who I feel hold the future of Broadway in their hands, to collaborate on such a trifle? It would be un-cheerleader-like of me to s",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRING-IT-ON-Opens-on-Broadway-Updating-Live-20120801",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Questions of audience aside, was it a mistake for these young theatrical talents to collaborate on such a trifle?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt questions why talented creators worked on material the critic considers beneath them ('trifle', 'largely forgettable film'). The text cuts off mid-sentence at what appears to be a transition ('It would be un-cheerleader-like of me to s'), so the final verdict is unknown. The skeptical tone about the source material and creative choices suggests mixed-to-negative territory, but without the conclusion, confidence is low. | Gemini: The review excerpt questions the choice of project for talented individuals, suggesting it might be a \"trifle.\" The truncated text makes it difficult to determine the final verdict, but the tone leans towards mixed feelings. | Kimi: The excerpt questions why talented creators would adapt a 'forgettable' film, calling the project a 'trifle,' but the text is truncated mid-sentence before delivering a clear final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:59:40.637Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

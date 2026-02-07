@@ -15,5 +15,60 @@
   "bwwExcerpt": "But despite there being so very much here to love - truly - for the show to work at its peak prowess, you have to see what she first thinks she sees in Billy, the man who persuades her to give up so much. Here, that is difficult. Some of the issue comes from a lack of connection between these two gifted lead performers, but it mostly flows from Henry's yet-unmet need to embrace his character's belief that he could do better. That is why he sings the great 'Soliloquy,' which Henry renders in bravura fashion, but that lacks even a flash of optimism.",
   "bwwScore": 8,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412",
-  "showScoreExcerpt": "\"A production brimming and heaving with the emotional complexity of its own endeavor in the here and now...Peck's work is groundbreaking...within the emotional trajectory of dance storytelling...Despite there being so very much here to love — truly — for the show to work at its peak prowess, you have to see what she first thinks she sees in Billy...Here, that is difficult. Some of the issue comes from a lack of connection between these two gifted lead performers.\"\n\nRead more"
+  "showScoreExcerpt": "\"A production brimming and heaving with the emotional complexity of its own endeavor in the here and now...Peck's work is groundbreaking...within the emotional trajectory of dance storytelling...Despite there being so very much here to love — truly — for the show to work at its peak prowess, you have to see what she first thinks she sees in Billy...Here, that is difficult. Some of the issue comes from a lack of connection between these two gifted lead performers.\"\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite there being so very much here to love — truly — for the show to work at its peak prowess, you have to see what she first thinks she sees in Billy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review praises the production as 'brimming with emotional complexity' and calls Peck's work 'groundbreaking,' but identifies a fundamental problem with the central relationship lacking connection. The 'despite' construction and truncated text suggest mixed feelings. | GPT-4o: The review praises the production's emotional complexity and groundbreaking work but notes a significant issue with the connection between lead performers, suggesting a mixed verdict. | Gemini: The review praises Peck's work as groundbreaking and notes much to love, but expresses difficulty in connecting with the lead performers, suggesting a mixed experience overall. The truncated text makes the final verdict somewhat unclear. | Kimi: The review offers strong praise for the production's emotional complexity and Peck's groundbreaking choreography, noting there is 'so very much here to love,' but significantly tempers this with concerns about the lead performers' lack of connection preventing the show from working at peak prowess.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T15:05:30.544Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 77,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

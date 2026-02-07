@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“There’s a tempest being whipped up nightly...where a ferociously good Driver is starring opposite Russell...Driver delivers a dazzling whirlwind of a performance...Which is all to the good, because the production never coheres into an emotionally compelling whole...Russell is not entirely adept at transmitting the delicate subtext in Wilson’s dialogue...With Driver so forcefully dominating the evening, it gives a masterly depiction of half a relationship.”\n\nRead more"
+  "showScoreExcerpt": "“There’s a tempest being whipped up nightly...where a ferociously good Driver is starring opposite Russell...Driver delivers a dazzling whirlwind of a performance...Which is all to the good, because the production never coheres into an emotionally compelling whole...Russell is not entirely adept at transmitting the delicate subtext in Wilson’s dialogue...With Driver so forcefully dominating the evening, it gives a masterly depiction of half a relationship.”\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Driver delivers a dazzling whirlwind of a performance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Extremely high praise for Driver's performance ('ferociously good', 'dazzling whirlwind', 'masterly') but clear structural criticisms ('never coheres into an emotionally compelling whole', Russell's inadequacy). Single excerpt warning applies - this may be cherry-picked praise from a more critical overall review. | GPT-4o: The review praises Driver's performance but criticizes the overall production for lacking emotional coherence. The excerpt suggests a mixed verdict with strong individual performances but significant production flaws. | Gemini: The review praises Driver's performance but notes the production lacks emotional coherence and Russell's performance is lacking. This suggests a mixed experience, leaning slightly positive due to the strong praise for Driver. | Kimi: The excerpt offers rave-level praise for Driver ('ferociously good,' 'dazzling whirlwind') but explicitly states the production 'never coheres into an emotionally compelling whole' and criticizes Russell's performance, resulting in a balanced mixed verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:07:56.382Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

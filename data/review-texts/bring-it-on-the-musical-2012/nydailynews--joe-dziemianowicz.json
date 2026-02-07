@@ -12,5 +12,60 @@
   "bwwExcerpt": "“Bring It On” doesn’t break new ground, but it kept me smiling. Sometimes pretty silly — and very acrobatic — is enough.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRING-IT-ON-Opens-on-Broadway-Updating-Live-20120801",
   "contentTier": "excerpt",
-  "publishDate": "August 2, 2012"
+  "publishDate": "August 2, 2012",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "\"Bring It On\" doesn't break new ground, but it kept me smiling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified positive sentiment - acknowledges flaws ('doesn't break new ground', 'pretty silly') but expresses enjoyment ('kept me smiling', 'is enough'). Lower end of Positive bucket due to reservations and single excerpt limitation. | GPT-4o: The review excerpt indicates a positive experience despite acknowledging the show doesn't innovate ('doesn’t break new ground'). The tone suggests enjoyment ('kept me smiling'), but the lack of groundbreaking content suggests a mild recommendation. | Gemini: The review states it \"kept me smiling\" and \"is enough\", indicating a positive but not overwhelmingly enthusiastic recommendation. Given it's a single excerpt, I'm scoring it cautiously. | Kimi: Single excerpt shows mild appreciation ('kept me smiling') with acknowledgment that the show is lightweight ('doesn't break new ground,' 'silly'), indicating a qualified recommendation at the lower end of Positive per the excerpt guidance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T13:59:00.822Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

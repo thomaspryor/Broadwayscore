@@ -15,5 +15,60 @@
   "bwwExcerpt": "Jack O'Brien directs a stunning cast of vocal masters, led by Mueller's beautiful portrayal of Julie Jordan, a vulnerable mill worker who falls quickly - too quickly, really - for Billy Bigelow, intensely played by Henry as a bitter man unable to face his failures. His 'Soliloquy,' the introspective song in which he anticipates the birth of his child, stabs you in the heart. Throw in Lindsay Mendez, whose Carrie Pipperidge provides much needed comic relief, and opera's Renée Fleming as Nettie Fowler, taking your breath away consoling Julie after Billy's suicide with the haunting 'You'll Never Walk Alone.'",
   "bwwScore": 7,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412",
-  "showScoreExcerpt": "\"In the age of #MeToo and Time’s Up, it is hard to accept. And casting a black man as the abusive husband presents a whole new layer of complexities...It is possible, of course, to let all this go and simply bask in what is right with this production. Jack O’Brien directs a stunning cast of vocal masters...It is the strength displayed by the women of 'Carousel' that ultimately makes it worthwhile.\"\n\nRead more"
+  "showScoreExcerpt": "\"In the age of #MeToo and Time’s Up, it is hard to accept. And casting a black man as the abusive husband presents a whole new layer of complexities...It is possible, of course, to let all this go and simply bask in what is right with this production. Jack O’Brien directs a stunning cast of vocal masters...It is the strength displayed by the women of 'Carousel' that ultimately makes it worthwhile.\"\n\nRead more",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is the strength displayed by the women of 'Carousel' that ultimately makes it worthwhile.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Review acknowledges serious concerns about problematic content but concludes the production is 'worthwhile' due to strong performances. Mixed verdict with low confidence due to excerpt-only text. | GPT-4o: The review acknowledges complex issues with the production but ultimately finds it worthwhile due to the strong performances, particularly by the women. The curated excerpts suggest a positive recommendation, though with some reservations. | Gemini: The review acknowledges complexities and potential issues but concludes that the strength of the women makes it worthwhile, suggesting a positive but not unqualified recommendation. The truncated text and lack of a clear rating reduce confidence. | Kimi: While the critic raises concerns about the show's problematic elements in the #MeToo era and casting complexities, the final verdict clearly recommends the production based on Jack O'Brien's direction and the 'stunning cast of vocal masters,' concluding the women's performances make it 'worthwhile.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T15:14:56.393Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

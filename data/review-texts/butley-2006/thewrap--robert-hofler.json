@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "His book never really abandons his screenplay sufficiently to reinvent itself for the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt criticizes the book's failure to adapt properly for theater while acknowledging 'great dance numbers and many old tunes.' This suggests mixed qualities. However, with only one excerpt available and text appearing truncated mid-sentence, confidence is low. | GPT-4o: The excerpt suggests a lack of adaptation from screenplay to theater, indicating a mixed reception. The mention of 'great dance numbers and many old tunes' suggests some positive elements, but the overall tone is not clearly positive or negative. | Gemini: The review excerpt indicates that the book is not well-adapted for the stage, suggesting a negative assessment despite mentioning dance numbers and old tunes. | Kimi: The excerpt criticizes the book for failing to adapt the screenplay effectively for the stage, suggesting a clumsy insertion of musical numbers into the narrative. While it acknowledges 'great dance numbers,' the structural criticism of the writing outweighs this isolated praise, suggesting an uneven production. Confidence is low due to the single excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:29:55.097Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 68,
+    "geminiScore": 45,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

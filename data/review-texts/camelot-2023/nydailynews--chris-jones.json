@@ -16,5 +16,60 @@
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAMELOT-Opens-On-Broadway-Starring-Phillipa-Soo-Jordan-Donica-Andrew-Burnap-More-20230413",
   "showScoreExcerpt": "“At the end of the night, though, and notwithstanding whatever changes you might want to make to the 1960 world view, what really matters is that the audience believes in, and pulls for, the love of Arthur and Genny because it is a stand-in for American democratic values.”\n\nRead more",
-  "playbillVerdictUrl": "https://www.nydailynews.com/entertainment/broadway/ny-camelot-broadway-review-chris-jones-20230414-dabflhnag5ggbp5m2hg2rek3le-story.html"
+  "playbillVerdictUrl": "https://www.nydailynews.com/entertainment/broadway/ny-camelot-broadway-review-chris-jones-20230414-dabflhnag5ggbp5m2hg2rek3le-story.html",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production keeps running scared of love.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic questions the fundamental purpose of the revival, calls it 'chilliest,' criticizes key creative choices, and suggests it betrays audience expectations. Despite acknowledging good songs and orchestra, the overall assessment is clearly negative. | GPT-4o: The review criticizes the production's tone and execution, describing it as 'chilly' and questioning the revival's purpose. Despite acknowledging the quality of the songs and orchestra, the overall impression is negative. | Gemini: The review expresses disappointment with the revival, highlighting its nihilistic ambiance and distrust of power. While acknowledging the presence of gorgeous songs, it criticizes the production for running scared of love and not delivering what the audience expects. | Kimi: While acknowledging the gorgeous songs and technical competence of the orchestra, the critic finds the production cold, nihilistic, and 'shorn of belief,' fundamentally questioning the rationale behind this revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:51:00.255Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

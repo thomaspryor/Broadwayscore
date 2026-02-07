@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's power lies not in its political commentary but in its understanding of how performance can be both a refuge from reality and a way of confronting it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's power lies not in its political commentary but in its understanding of how performance can be both a refuge from reality and a way of confronting it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the show's 'power' and deep 'understanding' of performance, suggesting artistic merit. However, with only one curated quote available, confidence is low as the full critical verdict is unknown. | GPT-4o: The excerpt suggests a positive view of the show, highlighting its power and depth in understanding performance. However, the lack of full context and the single excerpt warning necessitate a cautious approach, resulting in a mildly positive score. | Gemini: The excerpt suggests a positive view of the show's understanding of performance, but without more context, it's difficult to gauge the overall recommendation strength. Given the single excerpt, I'm placing it in the lower end of the positive bucket with low confidence. | Kimi: The excerpt praises the show's 'power' and sophisticated thematic understanding, placing it in the Positive bucket, though confidence is low given only one curated excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:42:04.038Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

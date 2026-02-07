@@ -11,10 +11,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BUTLEY-2006",
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-07T14:29:30.137Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be background/context about the show's origins rather than evaluative criticism of the production; openai: The provided text is a contextual setup about the adaptation of a Woody Allen film to a stage musical, without any evaluative content or opinion on the production itself.",
+  "promptVersion": "5.2.0"
 }

@@ -24,5 +24,60 @@
     "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Williams comes closer to evoking the musical style of the Depression than any Sally I've seen.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises Williams' authentic performance style and Cumming's return, but notes her character seems unhappy which 'puts sort of a damper on the festivities.' The truncated excerpt limits full assessment of the verdict. | GPT-4o: The review highlights both positive and negative aspects: Michelle Williams' performance is described as brave and evocative, yet her portrayal seems to dampen the festivities. The overall tone suggests a mixed response with notable moments. | Gemini: The review praises Alan Cumming's return but expresses reservations about Michelle Williams's performance as Sally, suggesting a mixed experience overall. | Kimi: The critic offers high praise for Michelle Williams' vocal interpretation ('closer to evoking the musical style... than any Sally I've seen') but expresses significant reservations about her stage presence putting a 'damper on the festivities.' As an excerpt, the final recommendation remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:44:22.081Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 64
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -14,5 +14,60 @@
   "bwwScore": 7,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
-  "publishDate": "April 24, 2014"
+  "publishDate": "April 24, 2014",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this staging is fabulously good in its fancier way",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite criticizing Cumming's performance and preferring smaller-scale productions, the critic concludes with 'fabulously good' and praises multiple performers highly, indicating a clear positive recommendation. | GPT-4o: The review praises the performances of Michelle Williams, Linda Emond, and Danny Burstein, and describes the staging as 'fabulously good'. Despite some reservations about Alan Cumming's performance and a preference for smaller scale productions, the overall tone is positive. | Gemini: The review praises the performances of Williams, Emond, and Burstein, and ultimately calls the staging \"fabulously good,\" despite preferring a smaller-scale production. This indicates a positive but not rave review. | Kimi: While criticizing Alan Cumming's 'overcooked' performance, the reviewer praises multiple cast members highly and calls the staging 'fabulously good,' indicating a clear recommendation despite specific reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:49:18.648Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

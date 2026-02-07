@@ -14,5 +14,60 @@
   "bwwScore": 8,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
-  "playbillVerdictUrl": "https://www.thewrap.com/cabaret-broadway-review-eddie-redmayne-twists-the-emcee-into-a-rancid-pretzel/"
+  "playbillVerdictUrl": "https://www.thewrap.com/cabaret-broadway-review-eddie-redmayne-twists-the-emcee-into-a-rancid-pretzel/",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Linda Emond and Danny Burstein take the middle-aged Schneider and Schultz and turn them into mature star-crossed lovers whose hearts beat more passionately than any teenagers' ever could",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for lead performances (Emond/Burstein described as passionate stars, Williams begins well). Some critical analysis of Cumming's interpretation suggests thoughtful engagement rather than dismissal. No negative verdict language present. | GPT-4o: The excerpt highlights strong performances by Emond and Burstein, but also notes a softer, self-referential performance by Cumming that may not align with expectations. The mixed tone suggests some elements work well, while others may not meet the mark. | Gemini: The review highlights strong performances, particularly from Emond and Burstein, and notes a change in focus. However, it also mentions reservations about Williams' portrayal and Cumming's softened character, leading to a positive but not rave recommendation. Confidence is low due to the limited excerpt. | Kimi: The excerpt offers enthusiastic praise for Linda Emond and Danny Burstein's performances as the mature lovers, while providing more qualified or observational comments about the leads. Given this is a single curated excerpt with mixed signals about different elements, it represents a mildly positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:46:57.090Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

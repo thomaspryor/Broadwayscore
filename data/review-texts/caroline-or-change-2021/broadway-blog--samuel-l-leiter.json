@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Too much of the insistently rhythmic music lacks variety, the best moments coming in the klezmer sequence and in Clarke’s tear-down-the-house, eleven o’clock number, “Lot’s Wife”… Still, this isn’t a show with takeaway songs. Caroline, or Change’s two hours and 15 minutes are overlong, but by the time it ends, you’ll understand why it’s here and why now couldn’t be a better time to have it around.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "by the time it ends, you'll understand why it's here and why now couldn't be a better time to have it around.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges significant flaws (music lacks variety, overlong, no takeaway songs) but concludes with clear endorsement of the show's relevance and timing. Single excerpt limits confidence in overall verdict. | GPT-4o: The review acknowledges issues with the music's variety and the show's length, but ultimately suggests a positive relevance and timing for the production. Given the single excerpt and lack of full context, the score is on the lower end of the Positive range. | Gemini: The review acknowledges the show's length as a drawback, but ultimately suggests that the show is worthwhile and timely. Given the single excerpt and the mixed tone, a score in the lower-middle of the positive range seems appropriate. | Kimi: While the excerpt contains significant criticisms regarding the music's lack of variety and the show's length, it ultimately delivers a positive verdict emphasizing the production's timely relevance and necessity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:53:18.690Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

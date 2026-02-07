@@ -14,5 +14,60 @@
   "bwwScore": 10,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
-  "showScoreExcerpt": "\"Even if you saw it last time, you are strongly advised — no, urged — to return. The reasons to do so include both a familiar face in the cast and a few new ones. Alan Cumming revisits the character with renewed senses of mischief and urgency that will leave you riveted, from the moment he introduces a deliciously bawdy Willkommen to his final, chilling adieu.\"\n\nRead more"
+  "showScoreExcerpt": "\"Even if you saw it last time, you are strongly advised — no, urged — to return. The reasons to do so include both a familiar face in the cast and a few new ones. Alan Cumming revisits the character with renewed senses of mischief and urgency that will leave you riveted, from the moment he introduces a deliciously bawdy Willkommen to his final, chilling adieu.\"\n\nRead more",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a star turn that, even in this rich season, is truly unmissable -- as is this Cabaret in general.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Enthusiastic recommendation with superlative language ('truly unmissable', 'strongly urged', 'riveted') and unqualified praise for all major elements including performances and direction. | GPT-4o: The critic uses strong, enthusiastic language to recommend the show, highlighting standout performances and describing it as 'truly unmissable.' The tone and choice of words indicate a rave review. | Gemini: The review uses strong positive language such as \"strongly advised -- no, urged -- to return\", \"unmissable\", and highlights the performances of the cast, especially Michelle Williams. This indicates a rave review. | Kimi: The critic urges audiences to return to this revival using superlatives like 'unmissable' and 'riveting,' praising multiple performances as revelatory while delivering an unqualified recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:48:03.869Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

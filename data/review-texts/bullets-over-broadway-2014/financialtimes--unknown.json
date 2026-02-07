@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "'They go wild, simply wild, over me,' sings Helen Sinclair, an ageing diva, in a deluded attempt to persuade David Shayne, a fledgling playwright, of her enduring appeal. Sinclair, portrayed by the wonderfully self-assured Marin Mazzie, is one of the reasons to see Bullets Over Broadway, the new musical birthed by Woody Allen from his 1994 movie of the same title. The Broadway show makes a Sinclair-sized effort to persuade us of the value of early-20th-century songs shoehorned into a 1929 setting. The attempt is intermittently enjoyable, extremely well crafted by the director/choreographer Susan Stroman, and progressively unthrilling.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BULLETS-OVER-BROADWAY-Opens-Updating-LIVE-20140410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BULLETS-OVER-BROADWAY-Opens-Updating-LIVE-20140410",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The attempt is intermittently enjoyable, extremely well crafted by the director/choreographer Susan Stroman, and progressively unthrilling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows mixed signals: praises individual performance and craftsmanship but concludes 'progressively unthrilling.' The critic finds reasons to see it but expresses diminishing engagement. Low confidence due to single excerpt limitation. | GPT-4o: The review praises Marin Mazzie's performance and the craftsmanship of the direction/choreography but ultimately finds the show only intermittently enjoyable and progressively unthrilling. The single excerpt suggests mixed sentiments without a strong recommendation. | Gemini: The review praises Marin Mazzie's performance and Susan Stroman's direction, but ultimately finds the show 'progressively unthrilling,' indicating a mixed overall experience. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The critic explicitly recommends the show citing Marin Mazzie's performance and Susan Stroman's 'extremely well crafted' direction, but tempers this with criticism that the production is only 'intermittently enjoyable' and becomes 'progressively unthrilling'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:03:46.600Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

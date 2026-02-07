@@ -12,5 +12,60 @@
   "bwwExcerpt": "Scholars tell us that the ancient Greek masks of Comedy and Tragedy were often hung on the same hook. The face underneath those masks might have been Alan Cumming's. His dazzling Emcee is at first comic, leading us on a louche pansexual romp through the decadence of Berlin during the Weimar years. Then his performance grows darker and darker, as the show does, as despair and terror creep in as the Nazis gain power. Cumming is so irresistible that nobody else onstage stands much of a chance...Michelle Williams, lovely as she is, is the weak link in this big strong cast. She seems neither desperate nor outrageous nor self-mocking, as Sally Bowles needs to be, and even in her huge rendition of the show's title song, she seems to be trying too hard, too rehearsed, too controlled, too humorless.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "His dazzling Emcee is at first comic, leading us on a louche pansexual romp through the decadence of Berlin during the Weimar years.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Cumming's 'dazzling' performance and 'big strong cast' but significant criticism of lead Michelle Williams as 'weak link' who 'seems to be trying too hard.' Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises Alan Cumming's performance as 'dazzling' and 'irresistible,' suggesting a positive view of the production despite criticism of Michelle Williams. The single excerpt and lack of full context lead to a low confidence rating. | Gemini: The review praises Alan Cumming's performance as the Emcee, but criticizes Michelle Williams' performance as Sally Bowles. Given the single excerpt, I'm scoring it as positive but with reservations and low confidence. | Kimi: The excerpt offers high praise for Alan Cumming's performance as the Emcee but delivers significant criticism of Michelle Williams as the weak link, creating a genuinely split verdict without a clear overall recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:45:33.977Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

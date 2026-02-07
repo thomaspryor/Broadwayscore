@@ -18,5 +18,60 @@
     "bww-roundup",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://www.thewrap.com/bullets-broadway-theater-review-zach-braff-guys-dolls-reinvention-susan-stroman"
+  "playbillVerdictUrl": "http://www.thewrap.com/bullets-broadway-theater-review-zach-braff-guys-dolls-reinvention-susan-stroman",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Allen has pulled something of a Sylvester Stallone in his Broadway book-writer debut: His book never really abandons his screenplay sufficiently to reinvent itself for the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt criticizes the book adaptation while acknowledging 'great dance numbers and many old tunes,' suggesting mixed qualities. However, with only one truncated excerpt available, the full verdict is unclear. | GPT-4o: The review suggests that the adaptation struggles to transition from screenplay to stage, indicating mixed feelings. The mention of 'great dance numbers' implies some positive elements, but overall, the critique of the book's failure to reinvent itself suggests a mixed verdict. | Gemini: The review excerpt indicates that the book is not well-adapted for the stage, suggesting a negative assessment despite mentioning dance numbers and old tunes. | Kimi: The excerpt criticizes the book adaptation as failing to theatricalize the source material, while acknowledging 'great dance numbers' and tunes. This suggests a divided response. With only one curated excerpt available, the overall verdict remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:04:28.317Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

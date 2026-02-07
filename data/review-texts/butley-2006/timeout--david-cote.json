@@ -11,10 +11,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BUTLEY-2006",
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "rejectedAt": "2026-02-07T14:30:18.913Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a truncated excerpt that cuts off mid-sentence and provides no evaluative content about the show - just plot setup and character description.; openai: The text provided is a quote from the play, not an evaluation or critique of the production.; gemini: The review is about \"Bullets Over Broadway\", not the target show.; kimi: The provided excerpt consists solely of plot summary and context about the show's premise and characters, with no evaluative language regarding the production quality, performances, or overall merit of the Broadway run.",
+  "promptVersion": "5.2.0"
 }

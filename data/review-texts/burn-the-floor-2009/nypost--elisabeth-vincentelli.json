@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"\"Burn the Floor\" consists of a breathless, plotless succession of ballroom routines. That's it, and it's either a lot or not very much, depending on your love for this type of dancing.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-Review-Roundup-Burn-the-Floor-and-More-20090803",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's either a lot or not very much, depending on your love for this type of dancing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic describes the show neutrally as 'breathless, plotless succession of routines' and explicitly states it depends on audience taste rather than making a clear recommendation. Single excerpt limits confidence. | GPT-4o: The excerpt suggests that enjoyment of the show depends heavily on personal preference for ballroom dancing, indicating a neutral stance. The lack of plot and the description as 'breathless' could be seen as either positive or negative, leading to a mixed classification. | Gemini: The review states that the show is a succession of routines and that it depends on the viewer's love for this type of dancing, indicating a mixed or neutral stance. | Kimi: The excerpt describes the show as 'plotless' and explicitly qualifies its appeal based on the viewer's pre-existing interest in ballroom dancing, indicating a mixed verdict with niche rather than universal recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:07:12.190Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -15,5 +15,60 @@
   "bwwExcerpt": "Let's state the obvious. Carousel is a masterpiece, a sublime piece of 20th Century musical theater that includes among its abundant treasures a song, 'If I Loved You', that ranks among the most beautiful ever written for the stage (I'd say the most beautiful but I'm not on a barstool). Jack O'Brien's revival, at the Imperial Theatre and Broadway's first in more than 20 years, superbly sung by Joshua Henry, Jessie Mueller and Renée Fleming, is ravishing, as lovely as anything you'll see and hear this season.",
   "bwwScore": 7,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-CAROUSEL-on-Broadway-Starring-Jessie-Mueller-and-Joshua-Henry-20180412",
-  "showScoreExcerpt": "\"As lovely as anything you’ll see and hear this season. If only Billy Bigelow could keep his fists off women...'Carousel' is, without question, among the most radiantly beautiful musicals ever created, its songs a series of flawless gems...It’d be hard to imagine a better sung 'Carousel' than this one...Director O’Brien draws out the shifting moods – 'Carousel' isn’t all melancholy by any means – and is matched by Justin Peck’s balletic choreography, by turns fluid and rigorous.\"\n\nRead more"
+  "showScoreExcerpt": "\"As lovely as anything you’ll see and hear this season. If only Billy Bigelow could keep his fists off women...'Carousel' is, without question, among the most radiantly beautiful musicals ever created, its songs a series of flawless gems...It’d be hard to imagine a better sung 'Carousel' than this one...Director O’Brien draws out the shifting moods – 'Carousel' isn’t all melancholy by any means – and is matched by Justin Peck’s balletic choreography, by turns fluid and rigorous.\"\n\nRead more",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jack O'Brien's revival is ravishing, as lovely as anything you'll see and hear this season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlatives throughout: calls the source material a 'masterpiece' and 'sublime,' praises the revival as 'ravishing' and 'as lovely as anything you'll see and hear this season.' This is enthusiastic, must-see language. | GPT-4o: The review praises the revival as 'ravishing' and highlights the strong performances, suggesting a highly positive verdict. The lack of a full review text slightly reduces confidence. | Gemini: The review uses strong positive language such as \"masterpiece\", \"sublime\", and \"ravishing\", indicating a rave review. | Kimi: The excerpt offers unqualified praise, calling the show a 'masterpiece' and the revival 'ravishing' and 'as lovely as anything you'll see and hear this season,' with superlatives for the performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T15:07:40.111Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -13,5 +13,60 @@
   "bwwExcerpt": "The first sign a major knuckleball is coming in the baseball play 'Bronx Bombers' is when the smoke machines crank up. Until then, Eric Simonson's script is an unremarkable behind-the-scenes look at a moment in 1977 when the New York Yankees were in crisis...Simonson...also directs 'Bronx Bombers,' and he does so with such reverence to the baseball franchise that it veers into fairy tale. Major League Baseball and the New York Yankees put money in the show, and it shows. The play played off-Broadway last year and has been tweaked since then, but not enough to make it more than Yankee advertising.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play has been tweaked since then, but not enough to make it more than Yankee advertising.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the script 'unremarkable' and dismisses the show as 'Yankee advertising' that reads like a 'fairy tale' rather than substantive theater. Despite being tweaked from its off-Broadway run, it hasn't improved enough to recommend. | GPT-4o: The review suggests the play is more promotional than theatrical, with a script described as 'unremarkable' and direction that turns into a 'fairy tale.' The lack of substantial improvement from its off-Broadway run further contributes to a negative impression. | Gemini: The review uses phrases like \"unremarkable\" and states the play is essentially \"Yankee advertising,\" indicating a negative assessment despite the production quality. | Kimi: The critic dismisses the production as 'unremarkable' and mere 'Yankee advertising,' suggesting it functions as promotional material rather than substantive theater, with no redeeming qualities mentioned in the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:00:37.084Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -16,5 +16,61 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In an ideal universe, the new musical 'Bullets Over Broadway' would shut down for a few months so that a talented songwriter could pen an ori...",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | GPT-4o: The excerpt suggests that the critic sees potential in the musical but feels it needs significant improvement, particularly in its songwriting. The suggestion to shut down and rework indicates a mixed reception. | Gemini: The excerpt suggests the reviewer believes the musical needs significant changes, implying a negative assessment. The truncated text and single excerpt lower the confidence. | Kimi: The critic suggests the show should close temporarily to replace the current score with new songs by different composers, indicating severe deficiencies in the fundamental material. However, confidence is low due to single excerpt availability and truncation. | Buckets: openai=Mixed, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:24:32.835Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 18,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 47,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "3-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

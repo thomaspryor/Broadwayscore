@@ -20,5 +20,60 @@
     "show-score-playwright",
     "bww-reviews"
   ],
-  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/carousel-review-rodgers-hammerstein-classic-broadway-article-1.3930342"
+  "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/carousel-review-rodgers-hammerstein-classic-broadway-article-1.3930342",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Jack O'Brien hasn't discovered anything fresh and exciting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Despite praising the score and vocal performances, the critic finds the revival 'wobbly' with poor chemistry between leads and calls it 'run-of-the-mill' - clear negative verdict despite some bright spots. | GPT-4o: The review highlights the music as the only strong point, while criticizing the direction, characterizations, chemistry, and staging. The overall tone suggests disappointment with the production. | Gemini: The review praises the score and singing but criticizes the direction, characterizations, chemistry, and overall concept, resulting in a mixed assessment. | Kimi: The excerpt shows clear praise for the classic score and the lead singers' vocal abilities, but significant criticism of the direction ('nothing fresh'), characterizations ('one-note'), chemistry, and staging ('run-of-the-mill'). The 'wobbly' framing and 'Read more' truncation suggest this may be a qualified recommendation at best. With low confidence due to excerpt-only format, this falls in Mixed territory - acknowledging strengths while not endorsing the production itself. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T15:15:15.197Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

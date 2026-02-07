@@ -16,5 +16,60 @@
   "source": "bww-roundup",
   "sources": [
     "bww-roundup"
-  ]
+  ],
+  "assignedScore": 33,
+  "llmScore": {
+    "score": 33,
+    "confidence": "medium",
+    "range": {
+      "low": 28,
+      "high": 38
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The sledgehammering act of period-tune-driven desperation that opened Thursday night",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Pan/Negative) - using median score | Claude: Harsh criticism calling it a 'cardinal sin' and 'sledgehammering act of desperation,' but single excerpt warning requires caution about full verdict. | GPT-4o: The excerpt suggests a strongly negative view, describing the musical as 'sledgehammering' and 'desperation.' However, with only one excerpt, the full context is missing, so confidence is low. | Gemini: The review excerpt uses negative language like \"sledgehammering act of period-tune-driven desperation\" and \"a whole lot to answer for,\" indicating a negative assessment. Given the truncated text, I'm scoring it as negative with low confidence. | Kimi: The excerpt describes the show as a 'sledgehammering act of period-tune-driven desperation' that commits the 'cardinal sin' of forcing comedy, with the creators having 'a whole lot to answer for,' indicating a clear negative verdict. | Buckets: claude=Pan, openai=Pan, gemini=Negative, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:32:14.874Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Pan/Negative) - using median score"
+  }
 }

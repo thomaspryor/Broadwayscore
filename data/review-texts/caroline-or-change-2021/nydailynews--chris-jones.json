@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Clarke is the worthy star, Caroline the exhausted heroine and Longhurst puts the maid's experience firmly at the center of the stage and the story. By contrast, her Jewish employers are kept so remote and so far upstage most of the time, they're almost outside on 53rd St. In their place at the emotional heart of the piece land the Thibodeaux children, led by Samantha Williams, and Caroline's friend, Dotty (Tamika Lawrence). In the end, the production is clea",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Clarke is the worthy star, Caroline the exhausted heroine and Longhurst puts the maid's experience firmly at the center of the stage and the story.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows praise for lead performance and direction ('worthy star', 'firmly at the center'). Text is clearly truncated mid-sentence. Given excerpt-only warning and positive language, scoring in lower Positive range due to incomplete assessment. | GPT-4o: The excerpt highlights some positive aspects, such as Clarke's performance and the focus on the maid's experience, but also notes the remoteness of other characters. The truncated text leaves the final verdict unclear, leading to a mixed classification with low confidence. | Gemini: The excerpt praises Clarke and Longhurst, but the sentence is cut off, making it difficult to fully assess the overall recommendation. However, the positive elements suggest a score in the positive range. | Kimi: Single excerpt clearly praises the star (Clarke) and director's focus (Longhurst), placing this in the clearly positive range per instructions, though confidence is reduced due to truncation and limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:57:08.630Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

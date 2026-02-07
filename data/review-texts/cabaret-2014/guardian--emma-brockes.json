@@ -12,5 +12,60 @@
   "bwwExcerpt": "The 1998 production was staged in the same venue, Studio 54, and starred Jennifer Jason Leigh as Sally Bowles, which she played with spiky, unpredictable abandon. Michelle Williams is a very different kind of actor, in this instance gauche, touching, unsure of herself in a way that seems as true to the idea of Sally Bowles as more robust approaches...As was the case the first time round, the show is Alan Cumming's and his MC has to be one of the great stage performances of all time. It's so rare to get a second shot at seeing something this good, you should do anything you can to get a ticket. Where Joel Grey, in the movie version, was impish and sinister, Cumming is brutish, jack-booted, playing the part with a yobbish licentiousness that highlights just how close the satirist and the satirised come to looking to each other in the end. It's a hard thing to be saucy and menacing at the same time, but Cumming pulls it off.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-Opens-on-Broadway-Updating-LIVE-20140424",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's so rare to get a second shot at seeing something this good, you should do anything you can to get a ticket.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong recommendation with enthusiastic language about Cumming's performance being 'one of the great stage performances of all time' and explicit advice to 'do anything you can to get a ticket.' Single excerpt warning noted - this appears to be from a positive section of the review. | GPT-4o: The review excerpt praises the performances, especially Alan Cumming's, and strongly recommends seeing the show, indicating a rave review. | Gemini: The review strongly recommends seeing the show, especially praising Alan Cumming's performance. The phrase 'you should do anything you can to get a ticket' indicates a very positive recommendation. | Kimi: The excerpt contains strong praise for Alan Cumming's performance and Michelle Williams' interpretation, along with an explicit recommendation to see the show, though the single-excerpt format necessitates caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:37:56.084Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"There's an electrifying finale to \"Proud Mary\" that will surely inspire you to cash in the coupon for a free ballroom dance lesson that a local dance studio is distributing outside the theater.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-Review-Roundup-Burn-the-Floor-and-More-20090803",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's an electrifying finale to \"Proud Mary\" that will surely inspire you to cash in the coupon for a free ballroom dance lesson that a local dance studio is distributing outside the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt describes an 'electrifying finale' that will 'surely inspire' action - strong positive language. However, with only one excerpt available, this could be cherry-picked from a mixed review, so confidence is low but the language suggests upper Positive range. | GPT-4o: The excerpt describes the finale as 'electrifying' and implies a strong positive impact on the audience. Given the single excerpt warning, the score is placed at the upper end of the Positive bucket. | Gemini: The review mentions an \"electrifying finale,\" which suggests a positive experience. However, the reference to the dance studio coupon implies a slightly less enthusiastic recommendation, so I've scored it as positive with reservations and low confidence due to the single excerpt. | Kimi: The critic uses the strong positive descriptor 'electrifying' for the finale and suggests the performance inspires action, indicating a clear recommendation despite limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:05:21.802Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

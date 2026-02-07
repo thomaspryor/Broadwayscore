@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Two-plus hours of dancing flies by with storytelling and pacing worthy of any Broadway musical. \"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-Review-Roundup-Burn-the-Floor-and-More-20090803",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Two-plus hours of dancing flies by with storytelling and pacing worthy of any Broadway musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for storytelling and pacing being 'worthy of any Broadway musical' suggests strong recommendation, though single excerpt limits full context assessment. | GPT-4o: The excerpt praises the show's storytelling and pacing, suggesting a strong positive impression. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt is very positive, praising the storytelling and pacing. Given it's a single excerpt, I'm placing it at the higher end of the positive range, but with low confidence due to the limited information. | Kimi: The excerpt offers enthusiastic praise for the show's pacing and storytelling quality, suggesting an engaging, well-crafted production. However, as a single curated quote, it may not represent the full complexity of the critic's overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:05:46.344Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

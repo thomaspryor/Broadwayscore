@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a muddled production that never fully finds its footing under Jack O'Brien's uncertain direction",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges 'lovely moments' and praises the Rodgers and Hammerstein score as 'eternally magnificent,' but describes the production as 'muddled' that 'never fully finds its footing' and 'lacks a cohesive vision.' This is classic mixed territory - appreciating elements while finding significant flaws in execution. | GPT-4o: The review excerpt describes the production as 'muddled' and 'never fully finds its footing,' indicating a mixed verdict. However, it acknowledges 'lovely moments' and a 'perfect segment,' suggesting some positive elements. The lack of full review text and single excerpt warning leads to low confidence. | Gemini: The review highlights a 'perfect segment' and praises the score, but criticizes the direction and overall vision, resulting in a mixed assessment. The truncated nature of the text lowers confidence. | Kimi: While the critic acknowledges 'lovely moments' and praises Rodgers and Hammerstein's 'eternally magnificent score,' the excerpt emphasizes that the production itself is 'muddled' with 'uncertain direction' that 'never fully finds its footing,' suggesting the staging fails to successfully unify its elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T15:20:46.511Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

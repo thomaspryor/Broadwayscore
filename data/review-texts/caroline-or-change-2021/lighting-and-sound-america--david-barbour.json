@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Caroline, or Change has often been acclaimed -- for its powerful central characterization and for a score that melds the blues, klezmer, soul, and '60s pop sounds to powerful effect -- but it is a singular, indeed eccentric, piece that is not for all tastes. See it for Clarke; who knows when she will come our way again?\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "See it for Clarke; who knows when she will come our way again?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic clearly recommends seeing the show ('See it for Clarke') but frames it as a qualified recommendation for a 'singular, indeed eccentric, piece that is not for all tastes.' Single excerpt warning applies - this appears to be a conditional positive recommendation. | GPT-4o: The review excerpt praises the central characterization and score but notes the show is 'not for all tastes.' The recommendation to 'see it for Clarke' suggests a positive verdict with some reservations about the show's broader appeal. | Gemini: The review acknowledges the show's acclaim but also its eccentric nature, suggesting it's not for everyone. The recommendation is primarily driven by the lead performance, indicating a qualified positive. | Kimi: The critic explicitly commands readers to attend ('See it') while praising the powerful score and central characterization, though noting the show's singular, eccentric nature makes it not for all tastes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:55:43.218Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

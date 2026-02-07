@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The tender-hearted, super- sappy New York Yankees tribute 'Bronx Bombers,' which just transferred to Broadway's Circle in the Square after a short Off-Broadway run, really ought to be playing in Cooperstown as a sort of side show for tourists visiting the Baseball Hall of Fame. It could be done with animatronics instead of actors, a la 'The Hall of Presidents' at Disney World...Watching actors portray legendary Yankees with distinctive personalities will no doubt be a guilty pleasure for many fans. But all things considered, they deserve something better than this unchallenging and uninteresting history pageant.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRONX-BOMBERS-Opens-on-Broadway-Updating-LIVE-20140206",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They deserve something better than this unchallenging and uninteresting history pageant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic dismisses the show as suitable only for a tourist attraction with animatronics, calling it 'unchallenging and uninteresting' and explicitly stating fans 'deserve something better.' Despite acknowledging it might be a 'guilty pleasure,' the overall verdict is clearly negative. | GPT-4o: The review criticizes the show as 'unchallenging and uninteresting,' suggesting it is not worth seeing despite some appeal for fans. The single excerpt limits confidence in the overall sentiment. | Gemini: The review expresses disappointment, calling the show \"unchallenging and uninteresting\" and suggesting it belongs in a museum rather than on Broadway. While acknowledging some potential pleasure for fans, the overall tone is negative. | Kimi: The critic dismisses the show as a sappy, uninteresting tourist attraction better suited for animatronics than actors, explicitly stating audiences deserve better despite acknowledging it may appeal to Yankees fans as a guilty pleasure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:00:06.129Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Driver gives a sublimely physical performance...As a piece of writing ‘Burn This’ is far better at character than it is at plot, but Driver makes it come alive, to the point that Michael Mayer’s bright production dims when he’s not on stage...Anna’s an underwritten role in comparison and Russell gives a restrained and overly subtle performance. Alongside them, Uranowitz manages to humanize the humorous Larry.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Driver makes it come alive, to the point that Michael Mayer's bright production dims when he's not on stage",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises Driver's performance highly and notes the production comes alive with him, but criticizes the writing's plot weaknesses and Russell's performance. Single excerpt warning applied - this appears mildly positive overall but with significant reservations. | GPT-4o: The excerpt highlights a strong performance by Driver, suggesting a positive impact on the production. However, it also notes weaknesses in the writing and other performances, indicating reservations. | Gemini: The review praises Driver's performance highly, but notes that the play is better at character than plot and that Anna's role is underwritten. Because it is an excerpt, I am scoring it as positive with reservations. | Kimi: The excerpt offers qualified praise, highlighting Driver's sublime performance as the primary reason to see the show while criticizing the writing and supporting performances, indicating a lukewarm but genuine recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T14:18:36.689Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

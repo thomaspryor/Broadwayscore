@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Directed by the veteran Jack O’Brien with an assured focus on the texture of the performances...Henry gives a performance of mesmerizing intensity — it’s the musical theater performance of the season to date...The rest of O’Brien’s cast is equally superb...I came away from this 'Carousel' with a richer sense of the contrast between the central characters’ isolation — at times even from each other — and the warmth of the community that surrounds them.\"\n\nRead more"
+  "showScoreExcerpt": "\"Directed by the veteran Jack O’Brien with an assured focus on the texture of the performances...Henry gives a performance of mesmerizing intensity — it’s the musical theater performance of the season to date...The rest of O’Brien’s cast is equally superb...I came away from this 'Carousel' with a richer sense of the contrast between the central characters’ isolation — at times even from each other — and the warmth of the community that surrounds them.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Henry gives a performance of mesmerizing intensity — it's the musical theater performance of the season to date",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for direction, performances called 'superb' and 'mesmerizing,' with the lead performance described as 'the musical theater performance of the season.' However, confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt provides strong praise for the direction and performances, particularly highlighting Henry's performance as the best of the season. The language suggests a highly positive view, consistent with a Rave classification. However, the single excerpt warning and lack of a full review text lower the confidence. | Gemini: The review excerpt praises the direction, performances, and overall impact of the production, indicating a positive recommendation. Given that it's a single excerpt, I'm scoring towards the higher end of the positive range. | Kimi: The excerpt offers high praise for the lead performance ('mesmerizing intensity', 'performance of the season') and direction ('assured focus'), with the supporting cast deemed 'equally superb'. As a single curated excerpt, confidence is low, but the superlative language clearly indicates an enthusiastic recommendation in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-07T15:02:23.385Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
