@@ -201,8 +201,7 @@ interface RawReviewEntry {
   assignedScore: number;
   tier?: number;
   originalRating?: string;
-  quote?: string;
-  summary?: string;
+  pullQuote?: string;
 }
 
 // Accumulation maps
@@ -249,7 +248,7 @@ for (const review of reviews) {
     reviewScore: review.assignedScore,
     tier: tierInfo.tier,
     originalRating: review.originalRating || null,
-    quote: review.quote || review.summary || null,
+    quote: review.pullQuote || null,
   };
 
   // Group by outletId (canonical)

@@ -10,9 +10,9 @@ type SortMode = 'recent' | 'highest' | 'lowest';
 
 function ReviewCard({ review, loading = 'lazy' }: { review: ProfileReview; loading?: 'eager' | 'lazy' }) {
   return (
-    <article className="card p-4 flex items-center gap-4">
+    <article className="card p-4 flex gap-4">
       {/* Thumbnail */}
-      <Link href={`/show/${review.showSlug}`} className="w-14 h-14 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+      <Link href={`/show/${review.showSlug}`} className="w-14 h-14 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0 self-start">
         {review.showThumbnail ? (
           <img
             src={getOptimizedImageUrl(review.showThumbnail, 'thumbnail')}
@@ -31,29 +31,40 @@ function ReviewCard({ review, loading = 'lazy' }: { review: ProfileReview; loadi
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        {review.url ? (
-          <a href={review.url} target="_blank" rel="noopener noreferrer" className="font-bold text-white hover:text-brand transition-colors truncate block">
-            {review.showTitle}
-            <svg className="inline-block w-3 h-3 ml-1 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
-        ) : (
-          <Link href={`/show/${review.showSlug}`} className="font-bold text-white hover:text-brand transition-colors truncate block">
-            {review.showTitle}
-          </Link>
-        )}
-        <p className="text-gray-400 text-sm truncate">
-          {review.outletSlug ? (
-            <Link href={`/critics/outlets/${review.outletSlug}`} className="hover:text-brand transition-colors">{review.outlet}</Link>
-          ) : review.outlet}
-          {review.parsedDate ? ` · ${formatDate(review.parsedDate)}` : ''}
-        </p>
-      </div>
+        <div className="flex items-center gap-3">
+          <div className="flex-1 min-w-0">
+            {review.url ? (
+              <a href={review.url} target="_blank" rel="noopener noreferrer" className="font-bold text-white hover:text-brand transition-colors truncate block">
+                {review.showTitle}
+                <svg className="inline-block w-3 h-3 ml-1 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            ) : (
+              <Link href={`/show/${review.showSlug}`} className="font-bold text-white hover:text-brand transition-colors truncate block">
+                {review.showTitle}
+              </Link>
+            )}
+            <p className="text-gray-400 text-sm truncate">
+              {review.outletSlug ? (
+                <Link href={`/critics/outlets/${review.outletSlug}`} className="hover:text-brand transition-colors">{review.outlet}</Link>
+              ) : review.outlet}
+              {review.parsedDate ? ` · ${formatDate(review.parsedDate)}` : ''}
+            </p>
+          </div>
 
-      {/* Score */}
-      <div className={`w-10 h-10 text-sm rounded-lg ${getScoreClass(review.reviewScore)} flex items-center justify-center font-bold flex-shrink-0`}>
-        {Math.round(review.reviewScore)}
+          {/* Score */}
+          <div className={`w-10 h-10 text-sm rounded-lg ${getScoreClass(review.reviewScore)} flex items-center justify-center font-bold flex-shrink-0`}>
+            {Math.round(review.reviewScore)}
+          </div>
+        </div>
+
+        {/* Excerpt */}
+        {review.quote && (
+          <p className="text-gray-500 text-sm mt-2 line-clamp-2 italic leading-relaxed">
+            &ldquo;{review.quote}&rdquo;
+          </p>
+        )}
       </div>
     </article>
   );
