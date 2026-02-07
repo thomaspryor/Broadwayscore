@@ -14764,42 +14764,6 @@
     "timestamp": "2026-02-06T01:51:26.723Z"
   },
   {
-    "reviewId": "a-gentlemans-guide-to-love-and-murder-2013/nyt-theater--jonathan-mandell.json",
-    "showId": "a-gentlemans-guide-to-love-and-murder-2013",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "http://newyorktheater.me/2013/11/17/a-gentlemans-guide-to-love-and-murder-review-too-clever-on-broadway/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): wicked, aladdin, home, english, frozen...",
-    "textLength": 7999,
-    "timestamp": "2026-02-06T02:23:10.440Z"
-  },
-  {
-    "reviewId": "a-life-in-the-theatre-2010/newyorker--john-lahr.json",
-    "showId": "a-life-in-the-theatre-2010",
-    "outlet": "The New Yorker",
-    "critic": "John Lahr",
-    "url": "http://www.newyorker.com/arts/critics/theatre/2010/10/25/101025crth_theatre_lahr",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): proof, home, company, once, rain...",
-    "textLength": 6981,
-    "timestamp": "2026-02-06T02:23:43.043Z"
-  },
-  {
-    "reviewId": "a-life-in-the-theatre-2010/nytimes--ben-brantley.json",
-    "showId": "a-life-in-the-theatre-2010",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2010/10/13/theater/reviews/13life.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): chicago, appropriate, american buffalo, macbeth, noises off...",
-    "textLength": 6675,
-    "timestamp": "2026-02-06T02:23:45.911Z"
-  },
-  {
     "reviewId": "a-little-night-music-2009/nytimes--charles-isherwood.json",
     "showId": "a-little-night-music-2009",
     "outlet": "New York Times",
@@ -14930,18 +14894,6 @@
     "garbageReason": "Multiple shows mentioned (9): othello, company, junk, the price, once...",
     "textLength": 8936,
     "timestamp": "2026-02-06T02:39:33.162Z"
-  },
-  {
-    "reviewId": "a-steady-rain-2009/hollywood-reporter--david-rooney.json",
-    "showId": "a-steady-rain-2009",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/movies/movie-reviews/steady-rain-theater-review-93608/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): chicago, the wiz, the audience, evita, elling...",
-    "textLength": 3310,
-    "timestamp": "2026-02-06T02:41:48.823Z"
   },
   {
     "reviewId": "a-steady-rain-2009/variety--david-rooney.json",
@@ -21892,18 +21844,6 @@
     "timestamp": "2026-02-07T04:40:35.804Z"
   },
   {
-    "reviewId": "a-chorus-line-2006/variety--charles-isherwood.json",
-    "showId": "a-chorus-line-2006",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): home, gypsy, sweat, the audience, once...",
-    "textLength": 8622,
-    "timestamp": "2026-02-07T04:40:50.886Z"
-  },
-  {
     "reviewId": "a-christmas-carol-2022/hollywood-reporter--david-rooney.json",
     "showId": "a-christmas-carol-2022",
     "outlet": "Hollywood Reporter",
@@ -22034,5 +21974,65 @@
     "garbageReason": "Multiple shows mentioned (10): smash, company, hair, once, evita...",
     "textLength": 6384,
     "timestamp": "2026-02-07T05:05:07.964Z"
+  },
+  {
+    "reviewId": "a-chorus-line-2006/variety--charles-isherwood.json",
+    "showId": "a-chorus-line-2006",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/",
+    "method": "browserbase",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, gypsy, sweat, the audience, once...",
+    "textLength": 7754,
+    "timestamp": "2026-02-07T05:08:35.104Z"
+  },
+  {
+    "reviewId": "a-gentlemans-guide-to-love-and-murder-2013/nyt-theater--jonathan-mandell.json",
+    "showId": "a-gentlemans-guide-to-love-and-murder-2013",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "http://newyorktheater.me/2013/11/17/a-gentlemans-guide-to-love-and-murder-review-too-clever-on-broadway/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): wicked, aladdin, home, english, frozen...",
+    "textLength": 7999,
+    "timestamp": "2026-02-07T05:08:42.666Z"
+  },
+  {
+    "reviewId": "a-life-in-the-theatre-2010/newyorker--john-lahr.json",
+    "showId": "a-life-in-the-theatre-2010",
+    "outlet": "The New Yorker",
+    "critic": "John Lahr",
+    "url": "http://www.newyorker.com/arts/critics/theatre/2010/10/25/101025crth_theatre_lahr",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): proof, home, company, once, rain...",
+    "textLength": 6981,
+    "timestamp": "2026-02-07T05:09:48.836Z"
+  },
+  {
+    "reviewId": "a-life-in-the-theatre-2010/nytimes--ben-brantley.json",
+    "showId": "a-life-in-the-theatre-2010",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2010/10/13/theater/reviews/13life.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): chicago, appropriate, american buffalo, macbeth, noises off...",
+    "textLength": 6675,
+    "timestamp": "2026-02-07T05:09:52.733Z"
+  },
+  {
+    "reviewId": "a-steady-rain-2009/hollywood-reporter--david-rooney.json",
+    "showId": "a-steady-rain-2009",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/movies/movie-reviews/steady-rain-theater-review-93608/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): chicago, the audience, evita, elling, high...",
+    "textLength": 3051,
+    "timestamp": "2026-02-07T05:10:54.923Z"
   }
 ]

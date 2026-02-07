@@ -1,52 +1,86 @@
 {
   "processed": [
-    "700-sundays-2013/nytimes--ben-brantley.json",
-    "700-sundays-2013/nytimes--charles-isherwood.json"
+    "a-gentlemans-guide-to-love-and-murder-2013/nytimes--ben-brantley.json",
+    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
-    "110-in-the-shade-2007/nytimes--ben-brantley.json",
-    "700-sundays-2013/hollywood-reporter--david-rooney.json",
-    "700-sundays-2013/hollywood-reporter--unknown.json",
-    "700-sundays-2013/variety--marilyn-stasio.json",
-    "700-sundays-2013/vulture--jesse-green.json",
-    "700-sundays-2013/vulture--unknown.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json"
+    "1984-2017/hollywood-reporter--david-rooney.json",
+    "1984-2017/newyorker--hilton-als.json",
+    "1984-2017/nytimes--ben-brantley.json",
+    "1984-2017/vulture--christopher-bonanos.json",
+    "1984-2017/vulture--jesse-green.json",
+    "a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
+    "a-bronx-tale-2007/nyt-theater--jonathan-mandell.json",
+    "a-bronx-tale-2007/nytg--jeff-myhre.json",
+    "a-bronx-tale-2007/nytimes--charles-isherwood.json",
+    "a-chorus-line-2006/nytimes--ben-brantley.json",
+    "a-chorus-line-2006/variety--charles-isherwood.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/nyt-theater--jonathan-mandell.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/variety--marilyn-stasio.json",
+    "a-life-in-the-theatre-2010/newyorker--john-lahr.json",
+    "a-life-in-the-theatre-2010/nytimes--ben-brantley.json",
+    "a-life-in-the-theatre-2010/variety--marilyn-stasio.json",
+    "a-steady-rain-2009/hollywood-reporter--david-rooney.json",
+    "a-steady-rain-2009/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "browserbase": [
-      "data/review-texts/700-sundays-2013/hollywood-reporter--david-rooney.json",
-      "data/review-texts/700-sundays-2013/hollywood-reporter--unknown.json"
+      "data/review-texts/1984-2017/hollywood-reporter--david-rooney.json",
+      "data/review-texts/a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/a-chorus-line-2006/variety--charles-isherwood.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "700-sundays-2013/nytimes--ben-brantley.json",
-      "700-sundays-2013/nytimes--charles-isherwood.json"
+      "a-gentlemans-guide-to-love-and-murder-2013/nytimes--ben-brantley.json",
+      "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json"
     ]
   },
-  "startTime": "2026-02-07T05:03:11.479Z",
-  "lastProcessed": "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json",
+  "startTime": "2026-02-07T05:01:23.030Z",
+  "lastProcessed": "a-steady-rain-2009/nytimes--ben-brantley.json",
   "log": [
     {
-      "t": "2026-02-07T05:03:17.227Z",
+      "t": "2026-02-07T05:01:31.013Z",
       "event": "bb-session",
-      "session": "16b70fe3",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+      "session": "89718aef",
+      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
     },
     {
-      "t": "2026-02-07T05:03:32.436Z",
+      "t": "2026-02-07T05:03:41.372Z",
       "event": "bb-session",
-      "session": "acbed073",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+      "session": "45fdb019",
+      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
     },
     {
-      "t": "2026-02-07T05:03:53.853Z",
+      "t": "2026-02-07T05:03:43.812Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-07T05:06:05.834Z",
       "event": "bb-session",
-      "session": "589ec1de",
-      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+      "session": "fc5e8780",
+      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
+    },
+    {
+      "t": "2026-02-07T05:06:53.387Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440779777\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA6D5TJhNmWf4ANCKmrw==&cid=sq8AHtAGCcVDaSpzHpFF7yr0QKB2ICpVTR2IDHCJTjsEOWe3VB0ufqlGZ10MCxxAn6oz5AVgNpY8z8LujUdGd7li5Dg1zVeEgiCrs7CEJfJT43_lsv~PKgyC6gSTawtw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440779777\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440779777\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA6D5TJhNmWf4ANCKmrw==&cid=sq8AHtAGCcVDaSpzHpFF7yr0QKB2ICpVTR2IDHCJTjsEOWe3VB0ufqlGZ10MCxxAn6oz5AVgNpY8z8LujUdGd7li5Dg1zVeEgiCrs7CEJfJT43_lsv~PKgyC6gSTawtw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440779777\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440779777\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA6D5TJhNmWf4ANCKmrw==&cid=sq8AHtAGCcVDaSpzHpFF7yr0QKB2ICpVTR2IDHCJTjsEOWe3VB0ufqlGZ10MCxxAn6oz5AVgNpY8z8LujUdGd7li5Dg1zVeEgiCrs7CEJfJT43_lsv~PKgyC6gSTawtw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440779777\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
+    },
+    {
+      "t": "2026-02-07T05:07:31.668Z",
+      "event": "bb-session",
+      "session": "8abbe19e",
+      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-951987"
+    },
+    {
+      "t": "2026-02-07T05:08:21.258Z",
+      "event": "bb-session",
+      "session": "2a3c7624",
+      "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/"
     }
   ]
 }

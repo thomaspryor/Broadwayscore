@@ -1,34 +1,57 @@
 {
-  "updatedAt": "2026-02-07T05:05:07.974Z",
+  "updatedAt": "2026-02-07T05:12:14.657Z",
   "processed": 2,
-  "failed": 8,
-  "successRate": "20.0%",
+  "failed": 18,
+  "successRate": "10.0%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "scrapingbee": 0,
     "brightdata": 0,
     "archive": 2
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-07T05:03:17.227Z",
+      "t": "2026-02-07T05:01:31.013Z",
       "event": "bb-session",
-      "session": "16b70fe3",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+      "session": "89718aef",
+      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
     },
     {
-      "t": "2026-02-07T05:03:32.436Z",
+      "t": "2026-02-07T05:03:41.372Z",
       "event": "bb-session",
-      "session": "acbed073",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+      "session": "45fdb019",
+      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
     },
     {
-      "t": "2026-02-07T05:03:53.853Z",
+      "t": "2026-02-07T05:03:43.812Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-07T05:06:05.834Z",
       "event": "bb-session",
-      "session": "589ec1de",
-      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+      "session": "fc5e8780",
+      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
+    },
+    {
+      "t": "2026-02-07T05:06:53.387Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440779777\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA6D5TJhNmWf4ANCKmrw==&cid=sq8AHtAGCcVDaSpzHpFF7yr0QKB2ICpVTR2IDHCJTjsEOWe3VB0ufqlGZ10MCxxAn6oz5AVgNpY8z8LujUdGd7li5Dg1zVeEgiCrs7CEJfJT43_lsv~PKgyC6gSTawtw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440779777\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440779777\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA6D5TJhNmWf4ANCKmrw==&cid=sq8AHtAGCcVDaSpzHpFF7yr0QKB2ICpVTR2IDHCJTjsEOWe3VB0ufqlGZ10MCxxAn6oz5AVgNpY8z8LujUdGd7li5Dg1zVeEgiCrs7CEJfJT43_lsv~PKgyC6gSTawtw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440779777\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770440779777\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA6D5TJhNmWf4ANCKmrw==&cid=sq8AHtAGCcVDaSpzHpFF7yr0QKB2ICpVTR2IDHCJTjsEOWe3VB0ufqlGZ10MCxxAn6oz5AVgNpY8z8LujUdGd7li5Dg1zVeEgiCrs7CEJfJT43_lsv~PKgyC6gSTawtw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770440779777\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
+    },
+    {
+      "t": "2026-02-07T05:07:31.668Z",
+      "event": "bb-session",
+      "session": "8abbe19e",
+      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-951987"
+    },
+    {
+      "t": "2026-02-07T05:08:21.258Z",
+      "event": "bb-session",
+      "session": "2a3c7624",
+      "url": "https://variety.com/2006/legit/reviews/a-chorus-line-1200512345/"
     }
   ]
 }
