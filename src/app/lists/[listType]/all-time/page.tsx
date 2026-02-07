@@ -1,6 +1,6 @@
 /**
  * /lists/[listType]/all-time — Gold List all-time page
- * Shows top 25 qualifying shows across all seasons
+ * Shows top qualifying shows across all seasons
  *
  * Matches homepage card layout: pills + dates + larger thumbnails + real ScoreBadge
  */
@@ -8,7 +8,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { GOLD_LIST_CONFIGS, GOLD_LIST_MAP, GOLD_LIST_TYPES, isValidGoldListType } from '@/config/gold-lists';
+import { GOLD_LIST_CONFIGS, GOLD_LIST_MAP, isValidGoldListType } from '@/config/gold-lists';
 import type { GoldListType } from '@/config/gold-lists';
 import {
   getComputedGoldList,
@@ -17,19 +17,14 @@ import {
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards/ScoreBadge';
 import { FormatPill, StatusBadge, ProductionPill } from '@/components/show-cards/ShowPills';
-import { getAudienceGrade } from '@/lib/data-audience';
+import { generateBreadcrumbSchema, generateItemListSchema } from '@/lib/seo';
 import { SeasonSelect } from '@/components/SeasonSelect';
+import { formatGoldListDate, RankBadge, ValueBadge, AudienceGradeBadge } from '@/components/gold-list/GoldListCards';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
-function formatDate(dateStr: string): string {
-  const date = new Date(dateStr);
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
-}
-
 export function generateStaticParams() {
-  return GOLD_LIST_TYPES.map(listType => ({ listType }));
+  return GOLD_LIST_CONFIGS.map(c => ({ listType: c.type }));
 }
 
 export function generateMetadata({ params }: { params: { listType: string } }): Metadata {
@@ -49,52 +44,9 @@ export function generateMetadata({ params }: { params: { listType: string } }): 
       title: `${config.title} — All-Time`,
       description,
       url: `${BASE_URL}/lists/${params.listType}/all-time`,
+      images: [{ url: `${BASE_URL}/og-image.png`, width: 1200, height: 630 }],
     },
   };
-}
-
-function RankBadge({ rank }: { rank: number }) {
-  const isTop3 = rank <= 3;
-  return (
-    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 ${
-      isTop3 ? 'bg-accent-gold text-gray-900' : 'bg-surface-overlay text-gray-400 border border-white/10'
-    }`}>
-      {rank}
-    </div>
-  );
-}
-
-function ValueBadge({ displayValue, label }: { displayValue: string; label: string }) {
-  return (
-    <div className="flex-shrink-0 text-right">
-      <div className="px-2 py-1.5 sm:px-3 sm:py-2 bg-surface-overlay border border-white/10 rounded-lg sm:rounded-xl text-center min-w-[56px]">
-        <div className="text-white font-bold text-xs sm:text-sm leading-tight">{displayValue}</div>
-      </div>
-      <div className="text-[10px] text-gray-500 mt-0.5 text-center">{label}</div>
-    </div>
-  );
-}
-
-function AudienceGradeBadge({ score }: { score: number }) {
-  const grade = getAudienceGrade(score);
-  return (
-    <div className="flex-shrink-0 flex flex-col items-center gap-0.5">
-      <div
-        className={`score-badge w-11 h-11 text-lg rounded-lg font-bold${grade.grade === 'A+' ? ' audience-top-grade' : ''}`}
-        style={grade.grade === 'A+' ? {} : {
-          backgroundColor: grade.color,
-          color: grade.textColor,
-          boxShadow: `0 2px 8px ${grade.color}4d`,
-        }}
-        title={grade.tooltip}
-      >
-        {grade.grade}
-      </div>
-      <span className="text-[9px] font-semibold uppercase tracking-wide" style={{ color: grade.color }}>
-        {grade.label}
-      </span>
-    </div>
-  );
 }
 
 export default function GoldListAllTimePage({ params }: { params: { listType: string } }) {
@@ -110,8 +62,32 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
   const isAudienceList = listType === 'audience-gold';
   const isCriticList = listType === 'critical-gold';
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: 'Gold Lists', url: `${BASE_URL}/lists` },
+    { name: config.shortTitle, url: `${BASE_URL}/lists/${listType}/all-time` },
+    { name: 'All-Time', url: `${BASE_URL}/lists/${listType}/all-time` },
+  ]);
+
+  const itemListSchema = generateItemListSchema(
+    entries.map(entry => ({
+      name: entry.title,
+      url: `${BASE_URL}/show/${entry.slug}`,
+      image: entry.thumbnail ? `${BASE_URL}${entry.thumbnail}` : undefined,
+      venue: entry.venue,
+      startDate: entry.openingDate || undefined,
+      endDate: entry.closingDate,
+      status: entry.status || undefined,
+    })),
+    `${config.title} — All-Time`
+  );
+
   return (
     <div className="min-h-screen bg-surface">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, itemListSchema]) }}
+      />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-400 mb-4" aria-label="Breadcrumb">
@@ -130,7 +106,7 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
 
         {/* Back Link */}
         <Link href="/lists" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           All Gold Lists
@@ -145,7 +121,7 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
             {config.description}
           </p>
           <p className="text-gray-500 text-sm mt-3">
-            Top {config.maxAllTime} across all seasons | All-Time
+            {entries.length} {entries.length === 1 ? 'show' : 'shows'} across all seasons | All-Time
           </p>
         </div>
 
@@ -193,6 +169,8 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
                       src={getOptimizedImageUrl(entry.thumbnail, 'thumbnail')}
                       alt={`${entry.title} Broadway ${entry.type || 'show'}`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      width={96}
+                      height={96}
                       loading={index < 4 ? 'eager' : 'lazy'}
                     />
                   ) : (
@@ -217,11 +195,11 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
                       <>
                         {entry.status === 'closed' && entry.closingDate ? (
                           <>
-                            <span className="text-gray-500">Closed {formatDate(entry.closingDate)}</span>
-                            <span className="text-gray-500"> · Opened {formatDate(entry.openingDate)}</span>
+                            <span className="text-gray-500">Closed {formatGoldListDate(entry.closingDate)}</span>
+                            <span className="text-gray-500"> · Opened {formatGoldListDate(entry.openingDate)}</span>
                           </>
                         ) : (
-                          <>Opened {formatDate(entry.openingDate)}</>
+                          <>Opened {formatGoldListDate(entry.openingDate)}</>
                         )}
                         <span className="text-gray-500"> · {entry.season}</span>
                       </>

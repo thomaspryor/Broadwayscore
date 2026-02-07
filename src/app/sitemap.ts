@@ -7,8 +7,11 @@ import {
   getAllTheaterSlugs,
   getAllBrowseSlugs,
 } from '@/lib/data-core';
+import { getAllCriticSlugs, getAllOutletSlugs } from '@/lib/data-reviews';
 import { getAllGuideSlugs, parseGuideSlug } from '@/config/guide-pages';
 import { getAllComparisonSlugs } from '@/config/comparisons';
+import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
+import { getSeasonsForList } from '@/lib/data-gold-list-badges';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -186,6 +189,55 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    // Critic & Outlet pages - high value for authority and AI citations
+    {
+      url: `${BASE_URL}/critics`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/critics/outlets`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    ...getAllCriticSlugs().map((slug) => ({
+      url: `${BASE_URL}/critics/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+    ...getAllOutletSlugs().map((slug) => ({
+      url: `${BASE_URL}/critics/outlets/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+    // Gold List pages - curated ranking lists
+    {
+      url: `${BASE_URL}/lists`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    },
+    ...GOLD_LIST_CONFIGS.flatMap(config => {
+      const seasons = getSeasonsForList(config.type);
+      return [
+        {
+          url: `${BASE_URL}/lists/${config.type}/all-time`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        },
+        ...seasons.map(season => ({
+          url: `${BASE_URL}/lists/${config.type}/${season}`,
+          lastModified: new Date(),
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+        })),
+      ];
+    }),
     // Compare pages - programmatic SEO goldmine
     {
       url: `${BASE_URL}/compare`,

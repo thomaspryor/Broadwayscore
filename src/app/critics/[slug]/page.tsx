@@ -1,10 +1,8 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getCriticBySlug, getAllCriticSlugs } from '@/lib/data-reviews';
-import { generateBreadcrumbSchema, generateCriticSchema } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateCriticSchema, generateCriticFAQSchema, BASE_URL } from '@/lib/seo';
 import CriticDetailClient from './CriticDetailClient';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export function generateStaticParams() {
   return getAllCriticSlugs().map((slug) => ({ slug }));
@@ -15,7 +13,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!critic) return { title: 'Critic Not Found' };
 
   const canonicalUrl = `${BASE_URL}/critics/${params.slug}`;
-  const description = `${critic.name} (${critic.primaryOutlet}) has reviewed ${critic.reviewCount} Broadway shows with an average score of ${critic.avgScore}/100.`;
+  const description = `${critic.name} (${critic.primaryOutlet}) has reviewed ${critic.reviewCount} Broadway shows with an average score of ${critic.avgScore}/100. See their full review history and rankings.`;
 
   return {
     title: `${critic.name} - Broadway Critic at ${critic.primaryOutlet} | Broadway Scorecard`,
@@ -26,6 +24,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       description,
       url: canonicalUrl,
       type: 'profile',
+      images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary',
@@ -50,13 +49,26 @@ export default function CriticDetailPage({ params }: { params: { slug: string } 
     slug: critic.slug,
     primaryOutlet: critic.primaryOutlet,
     reviewCount: critic.reviewCount,
+    avgScore: critic.avgScore,
+    outlets: critic.outlets,
+  });
+
+  const faqSchema = generateCriticFAQSchema({
+    name: critic.name,
+    primaryOutlet: critic.primaryOutlet,
+    outlets: critic.outlets,
+    reviewCount: critic.reviewCount,
+    avgScore: critic.avgScore,
+    highScore: critic.highScore,
+    lowScore: critic.lowScore,
+    isFreelancer: critic.isFreelancer,
   });
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, criticSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, criticSchema, faqSchema]) }}
       />
       <CriticDetailClient critic={critic} />
     </>

@@ -394,7 +394,9 @@ export interface ProfileReview {
   showType: string;
   outletId: string;
   outlet: string;
+  outletSlug: string;
   criticName: string | null;
+  criticSlug: string | null;
   url: string;
   publishDate: string | null;
   parsedDate: number | null;
