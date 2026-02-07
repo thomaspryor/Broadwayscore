@@ -263,7 +263,7 @@ export default function GoldListSeasonPage({ params }: { params: { listType: str
 
                 {/* Score/Value */}
                 {isCriticList ? (
-                  <ScoreBadge score={entry.value} size="sm" status={entry.status || undefined} />
+                  <ScoreBadge score={entry.value} size="lg" status={entry.status || undefined} />
                 ) : isAudienceList ? (
                   <AudienceGradeBadge score={entry.value} />
                 ) : (
