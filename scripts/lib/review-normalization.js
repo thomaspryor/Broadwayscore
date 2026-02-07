@@ -108,7 +108,7 @@ const OUTLET_ALIASES = {
     'time out ny', 'timeout ny', 'timeout-ny', 'time-out-new-york'
   ],
   'guardian': [
-    'guardian', 'the guardian', 'theguardian', 'the-gaurdian'
+    'guardian', 'the guardian', 'theguardian', 'the-gaurdian', 'the-guardian-uk'
   ],
   'washpost': [
     'washpost', 'washington post', 'the washington post', 'wapo',
@@ -169,7 +169,8 @@ const OUTLET_ALIASES = {
   ],
   'nytg': [
     'nytg', 'new york theatre guide', 'ny theatre guide', 'nytheatreguide',
-    'new-york-theatre-guide', 'new york theater guide'
+    'new-york-theatre-guide', 'new york theater guide', 'new-york-theatre',
+    'new-york-theatre-guide-gillian-russo'
   ],
   'nyt-theater': [
     'nyt-theater', 'new york theater', 'newyorktheater', 'ny theater',
@@ -213,16 +214,16 @@ const OUTLET_ALIASES = {
     'sfchronicle', 'san francisco chronicle', 'sf chronicle'
   ],
   'thestage': [
-    'thestage', 'the stage', 'stage', 'the-stage'
+    'thestage', 'the stage', 'stage', 'the-stage', 'the-stage-uk'
   ],
   'whatsonstage': [
     'whatsonstage', "what's on stage", 'whats on stage', 'whatson', 'whats-on-stage'
   ],
   'telegraph': [
-    'telegraph', 'the telegraph', 'daily telegraph', 'the-telegraphy'
+    'telegraph', 'the telegraph', 'daily telegraph', 'the-telegraphy', 'the-telegraph-uk'
   ],
   'financialtimes': [
-    'financialtimes', 'financial times', 'ft', 'the financial times'
+    'financialtimes', 'financial times', 'ft', 'the financial times', 'financial-times-uk'
   ],
   'billboard': [
     'billboard', 'bill board'
@@ -278,7 +279,7 @@ const OUTLET_ALIASES = {
     'npr', 'national public radio', 'n.p.r.'
   ],
   'njcom': [
-    'njcom', 'nj.com', 'nj-com', 'nj dot com'
+    'njcom', 'nj.com', 'nj-com', 'nj dot com', 'the-star-ledger', 'star-ledger'
   ],
   'dctheatrescene': [
     'dctheatrescene', 'dc theatre scene', 'dc-theatre-scene', 'dc theater scene'
@@ -324,18 +325,18 @@ const CRITIC_ALIASES = {
   // Do NOT include first-name-only aliases (e.g., 'jesse', 'ben') as they
   // will incorrectly match other critics with the same first name.
   'jesse-green': ['jesse green', 'j. green'],
-  'ben-brantley': ['ben brantley', 'b. brantley'],
+  'ben-brantley': ['ben brantley', 'b. brantley', 'ben brantly', 'ben branley'],
   'charles-isherwood': ['charles isherwood', 'c. isherwood'],
-  'johnny-oleksinski': ['johnny oleksinski', 'johnny oleksinki', 'john oleksinski'], // Note: 'oleksinki' typo
+  'johnny-oleksinski': ['johnny oleksinski', 'johnny oleksinki', 'john oleksinski', 'jonny oleksinski'],
   // Added from Levenshtein audit (Task 1.2) - these were valid matches that need explicit aliases
   'ad-amorosi': ['a.d. amorosi', 'ad amorosi', 'a d amorosi', 'a. d. amorosi'],
   'elisabeth-vincentelli': ['elisabeth vincentelli', 'elizabeth vincentelli'], // 's' vs 'z' spelling
   'charles-mcnulty': ['charles mcnulty', 'charlesmcnulty', 'charles-mcnulty'],
-  'sara-holdren': ['sara holdren', 's. holdren'],
+  'sara-holdren': ['sara holdren', 's. holdren', 'sarah holdren'],
   'helen-shaw': ['helen shaw', 'h. shaw'],
   'adam-feldman': ['adam feldman', 'a. feldman'],
   'david-rooney': ['david rooney', 'd. rooney'],
-  'frank-scheck': ['frank scheck', 'f. scheck'],
+  'frank-scheck': ['frank scheck', 'f. scheck', 'franck scheck', 'frank sheck'],
   'greg-evans': ['greg evans', 'g. evans'],
   'dalton-ross': ['dalton ross', 'd. ross'],
   'aramide-tinubu': ['aramide tinubu', 'aramide timubu'], // Note: 'timubu' typo
@@ -347,8 +348,8 @@ const CRITIC_ALIASES = {
   'jd-knapp': ['jd knapp', 'j.d. knapp', 'j d knapp'],
   'vinson-cunningham': ['vinson cunningham', 'v. cunningham'],
   'naveen-kumar': ['naveen kumar', 'n. kumar'],
-  'jonathan-mandell': ['jonathan mandell', 'j. mandell', 'jon mandell'],
-  'brian-scott-lipton': ['brian scott lipton', 'brian lipton', 'b. lipton', 'scott lipton'],
+  'jonathan-mandell': ['jonathan mandell', 'j. mandell', 'jon mandell', 'jonathan mandrell'],
+  'brian-scott-lipton': ['brian scott lipton', 'brian lipton', 'b. lipton', 'scott lipton', 'brain scott lipton'],
   'melissa-rose-bernardo': ['melissa rose bernardo', 'melissa bernardo', 'm. bernardo'],
   'david-finkle': ['david finkle', 'd. finkle'],
   'david-cote': ['david cote', 'd. cote'],
@@ -356,14 +357,26 @@ const CRITIC_ALIASES = {
   'kristen-baldwin': ['kristen baldwin', 'k. baldwin'],
   'adrian-horton': ['adrian horton', 'a. horton'],
   'lane-williamson': ['lane williamson', 'l. williamson'],
-  'linda-winer': ['linda winer', 'l. winer'],
+  'linda-winer': ['linda winer', 'l. winer', 'linda winder'],
   'michael-kuchwara': ['michael kuchwara', 'm. kuchwara'],
   'rex-reed': ['rex reed', 'r. reed'],
-  'elysa-gardner': ['elysa gardner', 'e. gardner'],
+  'elysa-gardner': ['elysa gardner', 'e. gardner', 'elyse gardner'],
   'peter-marks': ['peter marks', 'p. marks'],
   'matt-windman': ['matt windman', 'm. windman', 'matthew windman'],
-  'robert-hofler': ['robert hofler', 'r. hofler', 'bob hofler'],
+  'robert-hofler': ['robert hofler', 'r. hofler', 'bob hofler', 'robert holfer'],
   'steven-suskin': ['steven suskin', 's. suskin', 'steve suskin'],
+  // Typo variants discovered by Feb 2026 audit
+  'hilton-als': ['hilton als', 'hinton als'],
+  'michael-feingold': ['michael feingold', 'michal feingold'],
+  'leah-greenblatt': ['leah greenblatt', 'lea greenblatt'],
+  'barbara-schuler': ['barbara schuler', 'barbara shuler'],
+  'lovia-gyarkye': ['lovia gyarkye', 'lovia gyarke'],
+  'thom-geier': ['thom geier', 'thom geir', 'thom geler', 'thom greier'],
+  'adam-markovitz': ['adam markovitz', 'adam markavitz'],
+  'diane-snyder': ['diane snyder', 'diana snyder'],
+  'suzy-evans': ['suzy evans', 'suzt evans'],
+  'marilyn-stasio': ['marilyn stasio', 'marilyn stasio.'],
+  'rob-weinert-kendt': ['rob weinert-kendt', 'rob weinert- kendt'],
 };
 
 /**
