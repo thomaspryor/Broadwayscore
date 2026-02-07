@@ -86,11 +86,13 @@ const INITIAL_SHOWS = 50;
 export default function CreativeDetailClient({
   profile,
   categoryLabel,
+  categoryLabelPlural,
   routePath,
   rank,
 }: {
   profile: CreativeProfile;
   categoryLabel: string;
+  categoryLabelPlural: string;
   routePath: string;
   rank: number;
 }) {
@@ -119,7 +121,7 @@ export default function CreativeDetailClient({
         <ol className="flex items-center gap-1.5 flex-wrap">
           <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
           <li className="before:content-['/'] before:mx-1.5">
-            <Link href={`/${routePath}`} className="hover:text-brand transition-colors">{categoryLabel}</Link>
+            <Link href={`/${routePath}`} className="hover:text-brand transition-colors">{categoryLabelPlural}</Link>
           </li>
           <li className="before:content-['/'] before:mx-1.5 text-gray-300 truncate" aria-current="page">{profile.name}</li>
         </ol>
@@ -127,36 +129,41 @@ export default function CreativeDetailClient({
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3">{profile.name}</h1>
-        <p className="text-gray-400 text-sm mb-4">
-          {ordinalSuffix(rank)} most prolific Broadway {categoryLabel.toLowerCase()} ·{' '}
-          {profile.roles.length > 1 ? profile.roles.join(', ') : categoryLabel}
-        </p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">{profile.name}</h1>
+        {profile.roles.length > 1 && (
+          <p className="text-gray-400 text-sm mb-4">{profile.roles.join(', ')}</p>
+        )}
+        {profile.roles.length <= 1 && <div className="mb-4" />}
 
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="card p-3 text-center">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          <div className="card p-4 text-center">
+            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Shows</p>
             <p className="text-2xl font-bold text-white">{profile.showCount}</p>
-            <p className="text-xs text-gray-500">Shows</p>
           </div>
-          <div className="card p-3 text-center">
+          <div className="card p-4 text-center">
+            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Average</p>
             <p className={`text-2xl font-bold ${profile.avgScore !== null ? 'text-white' : 'text-gray-500'}`}>
               {profile.avgScore !== null ? Math.round(profile.avgScore) : '—'}
             </p>
-            <p className="text-xs text-gray-500">Avg Score</p>
           </div>
-          <div className="card p-3 text-center">
+          <div className="card p-4 text-center">
+            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Highest</p>
             <p className={`text-2xl font-bold ${profile.highScore !== null ? 'text-white' : 'text-gray-500'}`}>
               {profile.highScore !== null ? Math.round(profile.highScore) : '—'}
             </p>
-            <p className="text-xs text-gray-500">Highest</p>
           </div>
-          <div className="card p-3 text-center">
+          <div className="card p-4 text-center">
+            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Lowest</p>
             <p className={`text-2xl font-bold ${profile.lowScore !== null ? 'text-white' : 'text-gray-500'}`}>
               {profile.lowScore !== null ? Math.round(profile.lowScore) : '—'}
             </p>
-            <p className="text-xs text-gray-500">Lowest</p>
           </div>
+        </div>
+
+        {/* Rank */}
+        <div className="flex flex-wrap gap-3 text-sm text-gray-400">
+          <span>{ordinalSuffix(rank)} most prolific {categoryLabel.toLowerCase()}</span>
         </div>
       </div>
 
@@ -183,18 +190,19 @@ export default function CreativeDetailClient({
               Past Productions
               <span className="text-sm font-normal text-gray-400 ml-2">({closedShows.length})</span>
             </h2>
-            <div className="flex gap-1">
+            <div className="flex items-center gap-0.5 sm:gap-2" role="group" aria-label="Sort productions">
+              <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
               {(['recent', 'highest', 'lowest'] as const).map(mode => (
                 <button
                   key={mode}
                   onClick={() => setSortMode(mode)}
-                  className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                  className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
                     sortMode === mode
-                      ? 'bg-brand/20 text-brand border border-brand/30'
-                      : 'text-gray-400 hover:text-gray-300'
+                      ? 'text-brand bg-brand/10 sm:bg-transparent'
+                      : 'text-gray-300 hover:text-white'
                   }`}
                 >
-                  {mode === 'recent' ? 'DATE' : mode === 'highest' ? 'BEST' : 'WORST'}
+                  {mode === 'recent' ? 'RECENT' : mode === 'highest' ? 'HIGHEST' : 'LOWEST'}
                 </button>
               ))}
             </div>
