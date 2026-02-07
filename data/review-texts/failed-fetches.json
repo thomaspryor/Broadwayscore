@@ -11452,18 +11452,6 @@
     "timestamp": "2026-02-05T02:21:56.562Z"
   },
   {
-    "reviewId": "charlie-and-the-chocolate-factory-2017/vulture--jesse-green.json",
-    "showId": "charlie-and-the-chocolate-factory-2017",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "http://www.vulture.com/2017/04/theater-review-a-wonka-thats-anything-but-sweet.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): giant, smash, hair, evita, elling...",
-    "textLength": 6008,
-    "timestamp": "2026-02-05T02:26:08.760Z"
-  },
-  {
     "reviewId": "groundhog-day-2017/hollywood-reporter--david-rooney.json",
     "showId": "groundhog-day-2017",
     "outlet": "The Hollywood Reporter",
@@ -14992,30 +14980,6 @@
     "timestamp": "2026-02-06T04:18:32.391Z"
   },
   {
-    "reviewId": "china-doll-2015/hollywood-reporter--unknown.json",
-    "showId": "china-doll-2015",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/al-pacino-china-doll-theater-845542",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): mamma mia!, glengarry glen ross, company, king charles iii, misery...",
-    "textLength": 7720,
-    "timestamp": "2026-02-06T04:20:55.881Z"
-  },
-  {
-    "reviewId": "china-doll-2015/nytimes--unknown.json",
-    "showId": "china-doll-2015",
-    "outlet": "The New York Times",
-    "critic": "Unknown",
-    "url": "http://www.nytimes.com/2015/12/04/theater/review-in-david-mamets-china-doll-al-pacino-as-an-urban-warrior-in-winter.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): glengarry glen ross, company, american buffalo, cats, glengarry glen ross...",
-    "textLength": 8127,
-    "timestamp": "2026-02-06T04:22:18.097Z"
-  },
-  {
     "reviewId": "come-back-little-sheba-2008/nytimes--ben-brantley.json",
     "showId": "come-back-little-sheba-2008",
     "outlet": "The New York Times",
@@ -15758,18 +15722,6 @@
     "garbageReason": "Multiple shows mentioned (21): chicago, liberation, macbeth, betrayal, cats...",
     "textLength": 7731,
     "timestamp": "2026-02-06T06:01:10.871Z"
-  },
-  {
-    "reviewId": "charlie-and-the-chocolate-factory-2017/nytimes--ben-brantley.json",
-    "showId": "charlie-and-the-chocolate-factory-2017",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2017/04/23/theater/charlie-and-the-chocolate-factory-review-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): giant, appropriate, something rotten!, violet, hair...",
-    "textLength": 6058,
-    "timestamp": "2026-02-06T06:09:28.121Z"
   },
   {
     "reviewId": "good-night-and-good-luck-2025/newyorker--helen-shaw.json",
@@ -22238,5 +22190,89 @@
     "garbageReason": "Multiple shows mentioned (14): giant, proof, cats, dear evan hansen, come from away...",
     "textLength": 6317,
     "timestamp": "2026-02-07T06:23:27.956Z"
+  },
+  {
+    "reviewId": "charlie-and-the-chocolate-factory-2017/nytimes--ben-brantley.json",
+    "showId": "charlie-and-the-chocolate-factory-2017",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2017/04/23/theater/charlie-and-the-chocolate-factory-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): giant, appropriate, something rotten!, violet, hair...",
+    "textLength": 6058,
+    "timestamp": "2026-02-07T06:23:32.703Z"
+  },
+  {
+    "reviewId": "china-doll-2015/hollywood-reporter--david-rooney.json",
+    "showId": "china-doll-2015",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/al-pacino-china-doll-theater-845542",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): mamma mia!, glengarry glen ross, company, king charles iii, misery...",
+    "textLength": 7720,
+    "timestamp": "2026-02-07T06:26:51.694Z"
+  },
+  {
+    "reviewId": "charlie-and-the-chocolate-factory-2017/vulture--jesse-green.json",
+    "showId": "charlie-and-the-chocolate-factory-2017",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2017/04/theater-review-a-wonka-thats-anything-but-sweet.html",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): giant, smash, hair, evita, elling...",
+    "textLength": 6256,
+    "timestamp": "2026-02-07T06:27:08.740Z"
+  },
+  {
+    "reviewId": "china-doll-2015/hollywood-reporter--unknown.json",
+    "showId": "china-doll-2015",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/al-pacino-china-doll-theater-845542",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): mamma mia!, glengarry glen ross, company, king charles iii, misery...",
+    "textLength": 7720,
+    "timestamp": "2026-02-07T06:27:58.457Z"
+  },
+  {
+    "reviewId": "china-doll-2015/nytimes--unknown.json",
+    "showId": "china-doll-2015",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2015/12/04/theater/review-in-david-mamets-china-doll-al-pacino-as-an-urban-warrior-in-winter.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): glengarry glen ross, company, american buffalo, cats, glengarry glen ross...",
+    "textLength": 8127,
+    "timestamp": "2026-02-07T06:29:20.531Z"
+  },
+  {
+    "reviewId": "cirque-du-soleil-paramour-2016/hollywood-reporter--frank-scheck.json",
+    "showId": "cirque-du-soleil-paramour-2016",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/cirque-du-soleils-paramour-theater-897299",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): giant, company, king kong, the real thing, the audience...",
+    "textLength": 5463,
+    "timestamp": "2026-02-07T06:31:12.776Z"
+  },
+  {
+    "reviewId": "cirque-du-soleil-paramour-2016/hollywood-reporter--unknown.json",
+    "showId": "cirque-du-soleil-paramour-2016",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/cirque-du-soleils-paramour-theater-897299",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): giant, company, king kong, the real thing, the audience...",
+    "textLength": 5463,
+    "timestamp": "2026-02-07T06:31:28.954Z"
   }
 ]
