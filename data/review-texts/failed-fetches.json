@@ -12220,30 +12220,6 @@
     "timestamp": "2026-02-05T05:19:56.994Z"
   },
   {
-    "reviewId": "the-little-foxes-2017/hollywood-reporter--david-rooney.json",
-    "showId": "the-little-foxes-2017",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "http://www.hollywoodreporter.com/review/little-foxes-theater-review-995267",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): chicago, company, betrayal, betrayal, once...",
-    "textLength": 8972,
-    "timestamp": "2026-02-05T05:20:24.621Z"
-  },
-  {
-    "reviewId": "the-little-foxes-2017/nytimes--alexis-soloski.json",
-    "showId": "the-little-foxes-2017",
-    "outlet": "New York Times",
-    "critic": "Alexis Soloski",
-    "url": "http://www.nytimes.com/2017/04/19/theater/little-foxes-review-cynthia-nixon-laura-linney.html?_r=0",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (6): giant, home, race, time stands still, rabbit hole...",
-    "textLength": 2234,
-    "timestamp": "2026-02-05T05:20:27.917Z"
-  },
-  {
     "reviewId": "the-little-mermaid-2008/variety--peter-debruge.json",
     "showId": "the-little-mermaid-2008",
     "outlet": "Variety",
@@ -23618,5 +23594,65 @@
     "garbageReason": "Multiple shows mentioned (9): home, company, romeo and juliet, once, high...",
     "textLength": 10046,
     "timestamp": "2026-02-07T10:33:18.292Z"
+  },
+  {
+    "reviewId": "the-little-dog-laughed-2006/nytimes--ben-brantley.json",
+    "showId": "the-little-dog-laughed-2006",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2006/11/14/theater/reviews/14dog.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): appropriate, gypsy, smash, fully committed, evita...",
+    "textLength": 7260,
+    "timestamp": "2026-02-07T10:35:50.427Z"
+  },
+  {
+    "reviewId": "the-little-foxes-2017/hollywood-reporter--david-rooney.json",
+    "showId": "the-little-foxes-2017",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "http://www.hollywoodreporter.com/review/little-foxes-theater-review-995267",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, company, betrayal, betrayal, once...",
+    "textLength": 8972,
+    "timestamp": "2026-02-07T10:36:15.147Z"
+  },
+  {
+    "reviewId": "the-little-foxes-2017/nyt-theater--jonathan-mandell.json",
+    "showId": "the-little-foxes-2017",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2017/04/21/the-little-foxes-review-laura-linney-and-cynthia-nixon-alternate-roles-in-lillian-hellmans-tale-of-greed/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): hamilton, home, frozen, once, race...",
+    "textLength": 8735,
+    "timestamp": "2026-02-07T10:36:22.421Z"
+  },
+  {
+    "reviewId": "the-little-foxes-2017/nytimes--alexis-soloski.json",
+    "showId": "the-little-foxes-2017",
+    "outlet": "New York Times",
+    "critic": "Alexis Soloski",
+    "url": "http://www.nytimes.com/2017/04/19/theater/little-foxes-review-cynthia-nixon-laura-linney.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (6): giant, home, race, time stands still, rabbit hole...",
+    "textLength": 2234,
+    "timestamp": "2026-02-07T10:36:26.385Z"
+  },
+  {
+    "reviewId": "the-little-foxes-2017/nytimes--unknown.json",
+    "showId": "the-little-foxes-2017",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2017/04/19/theater/little-foxes-review-cynthia-nixon-laura-linney.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): wicked, giant, appropriate, home, macbeth...",
+    "textLength": 6359,
+    "timestamp": "2026-02-07T10:37:41.603Z"
   }
 ]
