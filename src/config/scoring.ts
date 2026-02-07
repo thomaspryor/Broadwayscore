@@ -2,8 +2,8 @@
 // Based on user's Google Sheet methodology
 // Change this file to update scoring rules site-wide
 
-export const METHODOLOGY_VERSION = "2.1.0";
-export const METHODOLOGY_DATE = "2026-02-02";
+export const METHODOLOGY_VERSION = "2.1.1";
+export const METHODOLOGY_DATE = "2026-02-06";
 
 // ===========================================
 // COMPONENT WEIGHTS (must sum to 1.0)
@@ -74,6 +74,7 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'HUFFPOST': { tier: 2, name: 'HuffPost', scoreFormat: 'text_bucket' },
   'BACKSTAGE': { tier: 2, name: 'Backstage', scoreFormat: 'text_bucket' },
   'VILLAGEVOICE': { tier: 2, name: 'The Village Voice', scoreFormat: 'text_bucket' },
+  'FT': { tier: 2, name: 'Financial Times', scoreFormat: 'text_bucket' },
 
   // Tier 3: Smaller outlets, blogs, niche sites
   'AMNY': { tier: 3, name: 'amNewYork', scoreFormat: 'text_bucket' },

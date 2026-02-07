@@ -117,6 +117,30 @@ export const REGISTRY_ALIASES_TO_SCORING: Record<string, string> = {
   'north-jersey': 'NORTHJERSEY',
   'nbc-new-york': 'NBC',
   'newyorker': 'NEWYORKER',
+
+  // Duplicate outlet ID aliases (found by tier audit)
+  'bloomberg-news': 'BLOOMBERG',
+  'newyorkmagazine': 'VULT',
+  'vulturecom': 'VULT',
+  'the-guardian-uk': 'GUARDIAN',
+  'broadwayworldcom': 'BWW',
+  'theaterscenecom': 'THEATERSCENE',
+  'new-york-1': 'NY1',
+  'observer-david-cote': 'OBSERVER',
+  'chicago-tribute': 'CHTRIB',       // typo variant
+  'ny-newsday': 'NEWSDAY',
+  'associated-press-mark-kennedy': 'AP',
+  'amny-matt-windman': 'AMNY',
+  'amnycom': 'AMNY',
+  'am-ny-matt-windman': 'AMNY',
+  '1minutecritic': 'OMC',
+  'oneminutecritic': 'OMC',
+  '1-minute-critic-matthew-wexler': 'OMC',
+
+  // Financial Times (new Tier 2 outlet)
+  'financialtimes': 'FT',
+  'financial-times-uk': 'FT',
+  'financial-times': 'FT',
 };
 
 // Reverse mapping: scoring format (uppercase) to registry format (lowercase)
