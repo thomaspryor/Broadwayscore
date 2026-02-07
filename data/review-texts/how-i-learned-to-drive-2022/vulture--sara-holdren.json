@@ -3,9 +3,9 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Sara Holdren",
-  "url": "https://www.vulture.com/2022/04/theater-review-how-i-learned-to-drive-on-broadway.html",
+  "url": "https://www.vulture.com/article/theater-review-how-i-learned-to-drive-broadway.html",
   "publishDate": "April 20, 2022",
-  "fullText": "The production is sensitive and thoughtful, but it feels almost too careful, as if afraid to fully inhabit the complex emotional territory that makes Vogel's play so powerful.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The production is sensitive and thoughtful, but it feels almost too careful, as if afraid to fully inhabit the complex emotional territory that makes Vogel's play so powerful.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production is sensitive and thoughtful, but it feels almost too careful, as if afraid to fully inhabit the complex emotional territory that makes Vogel's play so powerful.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
     "score": 61,
@@ -72,5 +72,45 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "previousUrl": "https://www.vulture.com/2022/04/theater-review-how-i-learned-to-drive-on-broadway.html",
+  "urlDiscoveredAt": "2026-02-07T13:23:37.471Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/how-i-learned-to-drive-2022/vulture--sara-holdren_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T13:23:37.479Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }
