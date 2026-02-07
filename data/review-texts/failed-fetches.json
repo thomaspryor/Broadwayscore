@@ -16972,18 +16972,6 @@
     "timestamp": "2026-02-06T16:27:17.059Z"
   },
   {
-    "reviewId": "left-on-tenth-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "left-on-tenth-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/10/23/left-on-tenth-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, the audience, lucky guy, rain, elling...",
-    "textLength": 7574,
-    "timestamp": "2026-02-06T16:32:29.091Z"
-  },
-  {
     "reviewId": "lempicka-2024/nytimes--ben-brantley.json",
     "showId": "lempicka-2024",
     "outlet": "New York Times",
@@ -24326,5 +24314,65 @@
     "garbageReason": "Multiple shows mentioned (20): oh, mary!, the book of mormon, appropriate, sunset boulevard, tammy faye...",
     "textLength": 8187,
     "timestamp": "2026-02-07T14:09:29.469Z"
+  },
+  {
+    "reviewId": "kpop-2022/nytimes--unknown.json",
+    "showId": "kpop-2022",
+    "outlet": "The New York Times",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2022/11/27/theater/kpop-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chess, real women have curves, english, company, the audience...",
+    "textLength": 7991,
+    "timestamp": "2026-02-07T14:15:48.913Z"
+  },
+  {
+    "reviewId": "kpop-2022/variety--ad-amorosi.json",
+    "showId": "kpop-2022",
+    "outlet": "Variety",
+    "critic": "A.D. Amorosi",
+    "url": "https://variety.com/2022/legit/reviews/kpop-review-south-broadway-musical-1235442833/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, english, network, cabaret, once...",
+    "textLength": 5165,
+    "timestamp": "2026-02-07T14:16:16.742Z"
+  },
+  {
+    "reviewId": "kpop-2022/vulture--helen-shaw.json",
+    "showId": "kpop-2022",
+    "outlet": "Vulture",
+    "critic": "Helen Shaw",
+    "url": "https://www.vulture.com/2022/11/theater-review-kpop-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): wicked, company, sweat, the audience, the performers...",
+    "textLength": 7809,
+    "timestamp": "2026-02-07T14:16:51.908Z"
+  },
+  {
+    "reviewId": "kpop-2022/vulture--jackson-mchenry.json",
+    "showId": "kpop-2022",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/2022/11/theater-review-kpop-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): wicked, company, sweat, the audience, the performers...",
+    "textLength": 7809,
+    "timestamp": "2026-02-07T14:16:55.138Z"
+  },
+  {
+    "reviewId": "left-on-tenth-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "left-on-tenth-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/10/23/left-on-tenth-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, the audience, lucky guy, rain, elling...",
+    "textLength": 7574,
+    "timestamp": "2026-02-07T14:20:28.194Z"
   }
 ]
