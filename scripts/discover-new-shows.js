@@ -253,6 +253,11 @@ async function discoverShows() {
         if (ibdb.creativeTeam && ibdb.creativeTeam.length > 0) {
           show.creativeTeam = ibdb.creativeTeam;
         }
+
+        // Use IBDB show type classification if available
+        if (ibdb.showType) {
+          show.ibdbShowType = ibdb.showType;
+        }
       }
     } catch (e) {
       console.log(`⚠️  IBDB enrichment failed (continuing without): ${e.message}`);
@@ -290,6 +295,10 @@ async function discoverShows() {
       // Known classic - likely a revival, preserve original type (play vs musical)
       detectedType = knownCheck.type || 'play';
       isRevival = true;
+      confidence = 'high';
+    } else if (show.ibdbShowType) {
+      // IBDB classification is authoritative (from the production page itself)
+      detectedType = show.ibdbShowType;
       confidence = 'high';
     } else if (isPlay) {
       detectedType = 'play';

@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
+const { matchTitleToShow } = require('./lib/show-matching');
 
 // Tony Awards ceremonies by year (ceremony number, Wikipedia page suffix)
 // Broadway season 2004-05 had 59th Tonys in 2005, which is our data start
@@ -245,9 +246,9 @@ function matchShow(showName, year) {
   }
 
   // Try partial matches
-  for (const [title, shows] of showsByTitle) {
+  for (const [title, showsList] of showsByTitle) {
     if (title.includes(normalized) || normalized.includes(title)) {
-      const yearMatches = shows.filter(show => {
+      const yearMatches = showsList.filter(show => {
         const openYear = new Date(show.openingDate).getFullYear();
         return openYear === year || openYear === year - 1;
       });
@@ -255,6 +256,12 @@ function matchShow(showName, year) {
         return yearMatches[0];
       }
     }
+  }
+
+  // Fallback: use the shared show-matching library (260+ aliases)
+  const sharedMatch = matchTitleToShow(showName, shows, { year });
+  if (sharedMatch && sharedMatch.show) {
+    return sharedMatch.show;
   }
 
   return null;
@@ -514,7 +521,7 @@ async function main() {
           data.wins.push(nom.category);
         }
       } else {
-        console.log(`   ⚠️  No match for: "${nom.show}" (${nom.category})`);
+        console.warn(`   ⚠️  No match for: "${nom.show}" (${nom.category}, ${nom.year})`);
       }
     }
   }
