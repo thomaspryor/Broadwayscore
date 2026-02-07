@@ -5,13 +5,13 @@
   "criticName": "Charles Isherwood",
   "url": "http://www.nytimes.com/2016/02/25/theater/review-a-bronx-tale-the-musical-doo-wops-down-mean-streets.html?partner=rss&emc=rss&_r=0",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "MILLBURN, N.J. — The tug of war for the soul of a young man on the mean streets of the Bronx may not sound like a subject that sings. But Chazz Palminteri’s “A Bronx Tale,” originally a solo show, later a movie, and after that a solo show once again on Broadway, has proved to be comfortably malleable material. Now it has been given a hefty infusion of music and dance and — presto! — the familiar-as-red-sauce story, with most of its rough edges intact, can be found finger-snapping and doo-wopping its way across the stage of the Paper Mill Playhouse here, with plans, no doubt, for a quick trip through the Lincoln Tunnel to the big time.\n\nThe creative team is packed with veteran talent, resulting in an exceptionally slick and skillfully assembled musical. Alan Menken, composer of songs for too many Disney musicals to count, has provided the music, and Glenn Slater, who supplied the lyrics for this season’s hit “School of Rock,” does the same here.\n\nThe book is by (who else?) Mr. Palminteri, and the directing duo is perhaps most striking — none other than Robert De Niro, who co-starred in the movie and made his film directing debut with it, teaming up with Jerry Zaks, whose many Broadway credits include the revival of Mr. Menken’s “Little Shop of Horrors.”\n\nThat show grooved on a score more soulful and appealing than most if not all of Mr. Menken’s subsequent work. Perhaps unsurprisingly, then, I found the score for “A Bronx Tale” to be a welcome return. The action takes place in the 1960s, allowing the composer to channel the pop styles of the era, from doo-wop harmonies to proto-rock to late-period Frank Sinatra-style balladeering. (As “Little Shop” has a girl-group female chorus, the mostly male “A Bronx Tale” has a chorus of doo-wop singers.)\n\nIt’s a winning musical mix with proven appeal on Broadway, in hits like the jukebox musicals “Smokey Joe’s Cafe” and “Jersey Boys.” And while the ballads are sometimes stocked with clichés, the atmosphere of the bustling Italian-American neighborhood where the protagonist, Calogero, grows up is captured by Mr. Slater with lively humor. (Joshua Colley plays the boy, Jason Gotay the adolescent and young adult.)\n\nIn the opening number, “Belmont Avenue,” for example, we hear of “next year’s Frankie Vallis/Croonin’ in the alleys/Gettin’ those falsettos to soar,” while “the Carmelite sisters/Scream at their transistors/Ev’ry time the Bombers score.”\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "bwwExcerpt": "Sometimes plain old pasta with red sauce is just what the doctor ordered. \"A Bronx Tale,\" which opened at the Longacre Theater on Broadway on Thursday, might be called the musical-theater equivalent of that classic comfort food. It doesn't break ground or dazzle with an unusual recipe - like, say, m...",
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "source": "bww-roundup",
   "sources": [
@@ -73,5 +73,51 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 74,
+  "textWordCount": 429,
+  "archivePath": "data/archives/reviews/a-bronx-tale-the-musical-2016/nytimes--charles-isherwood_2026-02-07.html",
+  "textFetchedAt": "2026-02-07T05:14:52.668Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
+  "duplicateTextOf": "nytimes--unknown.json",
+  "wordCount": 429,
+  "tierReason": "Full review text"
 }
