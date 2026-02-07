@@ -16,7 +16,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const description = `${critic.name} (${critic.primaryOutlet}) has reviewed ${critic.reviewCount} Broadway shows with an average score of ${critic.avgScore}/100. See their full review history and rankings.`;
 
   return {
-    title: `${critic.name} - Broadway Critic at ${critic.primaryOutlet} | Broadway Scorecard`,
+    title: `${critic.name} - Broadway Critic at ${critic.primaryOutlet}`,
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {

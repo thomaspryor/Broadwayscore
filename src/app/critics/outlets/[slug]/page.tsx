@@ -17,7 +17,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const description = `${outlet.name} (${tierLabel}) has published ${outlet.reviewCount} Broadway reviews with an average score of ${outlet.avgScore}/100. ${outlet.criticCount} critics, full review history.`;
 
   return {
-    title: `${outlet.name} - Broadway Reviews (${tierLabel}) | Broadway Scorecard`,
+    title: `${outlet.name} - Broadway Reviews (${tierLabel})`,
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {
