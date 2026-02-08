@@ -1,132 +1,15 @@
 {
-  "updatedAt": "2026-02-08T18:05:50.957Z",
-  "processed": 28,
-  "failed": 322,
-  "successRate": "8.0%",
+  "updatedAt": "2026-02-08T19:24:47.019Z",
+  "processed": 0,
+  "failed": 100,
+  "successRate": "0%",
   "tierBreakdown": {
-    "playwright": 4,
-    "browserbase": 8,
-    "scrapingbee": 5,
-    "brightdata": 5,
-    "archive": 13
+    "playwright": 0,
+    "browserbase": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 0
   },
-  "browserbaseSessions": 20,
-  "recentActivity": [
-    {
-      "t": "2026-02-08T15:17:49.185Z",
-      "event": "bb-session",
-      "session": "6bfb98ae",
-      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235421172/"
-    },
-    {
-      "t": "2026-02-08T15:20:29.543Z",
-      "event": "bb-session",
-      "session": "c74bdd8f",
-      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
-    },
-    {
-      "t": "2026-02-08T15:20:31.751Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-08T15:24:30.954Z",
-      "event": "bb-session",
-      "session": "bfc792af",
-      "url": "http://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html"
-    },
-    {
-      "t": "2026-02-08T15:24:33.902Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-08T15:25:16.397Z",
-      "event": "bb-session",
-      "session": "6d44b18f",
-      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
-    },
-    {
-      "t": "2026-02-08T15:26:01.977Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770564328607\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAQCsBY8qaA4AALPe1oA==&cid=0525vMGeCkvdT8eULlE5s9Zq9t8ZrvZe7LWAm9NfDFqB5_w6as7Y9NGnNPjFD_Pl1RTN5ldJ0C7txkcvXmrfIP5ga_FaEHOXQ6XhOMAXGNZKcMigwZ4nCghZMDXF9mgw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770564328607\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770564328607\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAQCsBY8qaA4AALPe1oA==&cid=0525vMGeCkvdT8eULlE5s9Zq9t8ZrvZe7LWAm9NfDFqB5_w6as7Y9NGnNPjFD_Pl1RTN5ldJ0C7txkcvXmrfIP5ga_FaEHOXQ6XhOMAXGNZKcMigwZ4nCghZMDXF9mgw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770564328607\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770564328607\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAQCsBY8qaA4AALPe1oA==&cid=0525vMGeCkvdT8eULlE5s9Zq9t8ZrvZe7LWAm9NfDFqB5_w6as7Y9NGnNPjFD_Pl1RTN5ldJ0C7txkcvXmrfIP5ga_FaEHOXQ6XhOMAXGNZKcMigwZ4nCghZMDXF9mgw&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770564328607\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
-    },
-    {
-      "t": "2026-02-08T15:26:49.261Z",
-      "event": "bb-session",
-      "session": "2a76b974",
-      "url": "http://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
-    },
-    {
-      "t": "2026-02-08T15:27:32.842Z",
-      "event": "bb-session",
-      "session": "92acc4cc",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
-    },
-    {
-      "t": "2026-02-08T15:28:02.105Z",
-      "event": "bb-session",
-      "session": "a0501ec0",
-      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
-    },
-    {
-      "t": "2026-02-08T15:28:39.390Z",
-      "event": "bb-session",
-      "session": "1cba6ce7",
-      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
-    },
-    {
-      "t": "2026-02-08T15:29:37.449Z",
-      "event": "bb-session",
-      "session": "11caa835",
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
-    },
-    {
-      "t": "2026-02-08T15:31:16.844Z",
-      "event": "bb-session",
-      "session": "8aef10e9",
-      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
-    },
-    {
-      "t": "2026-02-08T15:31:19.348Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-08T15:33:37.199Z",
-      "event": "bb-session",
-      "session": "ff1b3973",
-      "url": "http://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als?"
-    },
-    {
-      "t": "2026-02-08T15:33:39.527Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-08T15:35:15.378Z",
-      "event": "bb-session",
-      "session": "7eea58d8",
-      "url": "https://www.nytimes.com/2010/04/05/theater/reviews/05behanding.html"
-    },
-    {
-      "t": "2026-02-08T15:36:01.044Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770564927644\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAk7aheKOBy0gANBsspA==&cid=gPIpEryoV3nnCTmfsTrMF6KCi81a6meBWrxF5SnPWDmU0dI0QwAzMwb2k~UDHtJBMTPGMqp1g0wFKIvM_KsCqQBIRU9gyLbUawziUo1z5YMXP82PwyI4UVhluaPC60az&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770564927644\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770564927644\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAk7aheKOBy0gANBsspA==&cid=gPIpEryoV3nnCTmfsTrMF6KCi81a6meBWrxF5SnPWDmU0dI0QwAzMwb2k~UDHtJBMTPGMqp1g0wFKIvM_KsCqQBIRU9gyLbUawziUo1z5YMXP82PwyI4UVhluaPC60az&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770564927644\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770564927644\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAk7aheKOBy0gANBsspA==&cid=gPIpEryoV3nnCTmfsTrMF6KCi81a6meBWrxF5SnPWDmU0dI0QwAzMwb2k~UDHtJBMTPGMqp1g0wFKIvM_KsCqQBIRU9gyLbUawziUo1z5YMXP82PwyI4UVhluaPC60az&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770564927644\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-08T15:37:17.274Z",
-      "event": "bb-session",
-      "session": "3af9133e",
-      "url": "http://www.variety.com/review/VE1117942352.html?categoryId=33&cs=1"
-    },
-    {
-      "t": "2026-02-08T15:38:09.819Z",
-      "event": "bb-session",
-      "session": "63dc872b",
-      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
