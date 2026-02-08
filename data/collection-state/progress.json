@@ -23,7 +23,10 @@
     "finding-neverland-2015/wsj--terry-teachout.json",
     "hedwig-and-the-angry-inch-2014/ew--thom-geier.json",
     "hedwig-and-the-angry-inch-2014/ew--unknown.json",
-    "hedwig-and-the-angry-inch-2014/timeout--adam-feldman.json"
+    "hedwig-and-the-angry-inch-2014/timeout--adam-feldman.json",
+    "holler-if-ya-hear-me-2014/ew--unknown.json",
+    "holler-if-ya-hear-me-2014/thewrap--robert-hofler.json",
+    "holler-if-ya-hear-me-2014/wsj--unknown.json"
   ],
   "failed": [
     "a-little-night-music-2009/nytimes--ben-brantley.json",
@@ -111,24 +114,35 @@
     "finding-neverland-2015/nypost--elisabeth-vincentelli.json",
     "gore-vidals-the-best-man-2012/guardian--alexis-soloski.json",
     "gore-vidals-the-best-man-2012/wsj--terry-teachout.json",
-    "hedwig-and-the-angry-inch-2014/nypost--elisabeth-vincentelli.json"
+    "hedwig-and-the-angry-inch-2014/nypost--elisabeth-vincentelli.json",
+    "how-i-learned-to-drive-2022/timeout--adam-feldman.json",
+    "how-i-learned-to-drive-2022/wsj--charles-isherwood.json",
+    "leopoldstadt-2022/deadline--pete-hammond.json",
+    "leopoldstadt-2022/guardian--adrian-horton.json",
+    "leopoldstadt-2022/nypost--johnny-oleksinski.json",
+    "leopoldstadt-2022/theatermania--jesse-green.json",
+    "leopoldstadt-2022/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "holler-if-ya-hear-me-2014/ew--unknown.json"
+    ],
     "browserbase": [],
     "scrapingbee": [
       "a-little-night-music-2009/theatermania--david-rooney.json",
       "art-2025/thewrap--robert-hofler.json",
       "cost-of-living-2022/thewrap--robert-hofler.json",
-      "fela-2012/guardian--michael-billington.json"
+      "fela-2012/guardian--michael-billington.json",
+      "holler-if-ya-hear-me-2014/thewrap--robert-hofler.json"
     ],
     "brightdata": [
       "a-little-night-music-2009/wsj--terry-teachout.json",
       "cost-of-living-2022/theatermania--adam-feldman.json",
       "cost-of-living-2022/theatermania--jesse-green.json",
       "end-of-the-rainbow-2012/theatermania--david-rooney.json",
-      "finding-neverland-2015/wsj--terry-teachout.json"
+      "finding-neverland-2015/wsj--terry-teachout.json",
+      "holler-if-ya-hear-me-2014/wsj--unknown.json"
     ],
     "archive": [
       "a-little-night-music-2009/hollywood-reporter--frank-scheck.json",
@@ -149,6 +163,6 @@
     ]
   },
   "startTime": "2026-02-08T02:39:23.520Z",
-  "lastProcessed": "hedwig-and-the-angry-inch-2014/timeout--adam-feldman.json",
+  "lastProcessed": "leopoldstadt-2022/timeout--adam-feldman.json",
   "log": []
 }
