@@ -138,7 +138,7 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                 Show
                 <SortIcon direction={sortDirection} active={sortColumn === 'show'} />
               </th>
-              <th className={`text-center ${headerClass}`} onClick={() => handleSort('score')}>
+              <th className={`text-center hidden sm:table-cell ${headerClass}`} onClick={() => handleSort('score')}>
                 Score
                 <SortIcon direction={sortDirection} active={sortColumn === 'score'} />
               </th>
@@ -154,7 +154,7 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                 Reddit
                 <SortIcon direction={sortDirection} active={sortColumn === 'reddit'} />
               </th>
-              <th className={`text-center hidden sm:table-cell ${headerClass}`} onClick={() => handleSort('grade')}>
+              <th className={`text-center ${headerClass}`} onClick={() => handleSort('grade')}>
                 Grade
                 <SortIcon direction={sortDirection} active={sortColumn === 'grade'} />
               </th>
@@ -179,7 +179,7 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                       {item.show.title}
                     </Link>
                   </td>
-                  <td className="py-3 px-4 text-center">
+                  <td className="py-3 px-4 text-center hidden sm:table-cell">
                     <span className="text-xl font-bold" style={gradeInfo ? { color: gradeInfo.color } : undefined}>
                       {buzz?.combinedScore || '—'}
                     </span>
@@ -214,7 +214,7 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                       <span className="text-gray-500">—</span>
                     )}
                   </td>
-                  <td className="py-3 px-4 text-center hidden sm:table-cell">
+                  <td className="py-3 px-4 text-center">
                     {gradeInfo ? (
                       <span
                         className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm font-bold"
