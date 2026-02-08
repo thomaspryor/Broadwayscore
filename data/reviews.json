@@ -4,14 +4,14 @@
     "lastUpdated": "2026-02-08",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 9046,
-      "skippedNoScore": 10516,
+      "totalReviews": 9244,
+      "skippedNoScore": 10380,
       "skippedDuplicate": 43,
       "skippedDuplicateUrl": 258,
-      "skippedCrossOutletDuplicateUrl": 38,
-      "skippedDuplicateText": 303,
+      "skippedCrossOutletDuplicateUrl": 40,
+      "skippedDuplicateText": 311,
       "skippedFingerprintDedup": 1,
-      "skippedWrongProduction": 670,
+      "skippedWrongProduction": 676,
       "recoveredFromGarbage": 130,
       "scoreSources": {
         "explicit-stars": 4,
@@ -19,15 +19,15 @@
         "explicit-slash": 8,
         "explicit-letterGrade": 1,
         "human-review": 56,
-        "originalScore-priority0": 1061,
-        "llmScore": 4197,
+        "originalScore-priority0": 1065,
+        "llmScore": 4398,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3575,
+        "llmScore-lowconf": 3567,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 139
+        "thumb": 140
       }
     }
   },
@@ -40110,7 +40110,7 @@
       "outletId": "deadline",
       "outlet": "Deadline",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jeremy Gerard",
@@ -40120,7 +40120,7 @@
       "pullQuote": "This is the electrifying production that this season's rev...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "blackbird-2016",
@@ -45108,18 +45108,18 @@
       "showId": "bronx-bombers-2014",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 43,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Melissa Rose Bernardo",
+      "criticName": "Unknown",
       "url": "http://www.ew.com/ew/article/0,,20784296,00.html",
       "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Over his three Broadway plays, Simonson's efforts become more diluted and the stories more far-fetched.",
+      "originalRating": "D",
+      "pullQuote": "It's just a bomb - and not the kind that made Babe Ruth famous.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "bronx-bombers-2014",
@@ -52892,23 +52892,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "cats-2016",
-      "outletId": "telegraph",
-      "outlet": "The Telegraph",
-      "assignedScore": 78,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Dominic Cavendish",
-      "url": "http://www.telegraph.co.uk/theatre/what-to-see/cats-leona-lewis-brings-glitz-but-no-grit-to-her-broadway-debut/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Directed by Trevor Nunn, and choreographed by the great Gillian Lynne, this Cats remains an evening of fluff and nonsense, really, with leg-warmers and cutesy costumes that should be risible to a cynic's eyes. Yet such is the innate confidence and innocent zest of this bizarre, feline spectacle that all cynicism just moults away.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "cats-2016",
