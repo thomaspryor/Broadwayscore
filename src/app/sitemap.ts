@@ -7,7 +7,7 @@ import {
   getAllBrowseSlugs,
 } from '@/lib/data-core';
 import { getAllCriticSlugs, getAllOutletSlugs } from '@/lib/data-reviews';
-import { getCreativeSlugs, ALL_CREATIVE_CATEGORIES, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
+import { getCreativeSlugs, getUnifiedCreativeSlugs, ALL_CREATIVE_CATEGORIES, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
 import { getAllGuideSlugs, parseGuideSlug } from '@/config/guide-pages';
 import { getAllComparisonSlugs } from '@/config/comparisons';
 import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
@@ -203,25 +203,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
-    // Creative team pages - directors, playwrights, composers, lyricists
-    ...ALL_CREATIVE_CATEGORIES.flatMap(cat => {
-      const config = CREATIVE_CATEGORY_CONFIG[cat];
-      const slugs = getCreativeSlugs(cat);
-      return [
-        {
-          url: `${BASE_URL}/${config.routePath}`,
-          lastModified: new Date(),
-          changeFrequency: 'weekly' as const,
-          priority: 0.85,
-        },
-        ...slugs.map(slug => ({
-          url: `${BASE_URL}/${config.routePath}/${slug}`,
-          lastModified: new Date(),
-          changeFrequency: 'monthly' as const,
-          priority: 0.7,
-        })),
-      ];
-    }),
+    // Creative team index pages (directors, playwrights, composers, lyricists)
+    ...ALL_CREATIVE_CATEGORIES.map(cat => ({
+      url: `${BASE_URL}/${CREATIVE_CATEGORY_CONFIG[cat].routePath}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    })),
+    // Unified creative person pages (/creative/[slug])
+    ...getUnifiedCreativeSlugs().map(slug => ({
+      url: `${BASE_URL}/creative/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
     // Gold List pages - curated ranking lists
     {
       url: `${BASE_URL}/lists`,
