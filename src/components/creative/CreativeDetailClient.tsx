@@ -142,7 +142,7 @@ export default function CreativeDetailClient({
             <p className="text-2xl font-bold text-white">{profile.showCount}</p>
           </div>
           <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Average</p>
+            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Avg Score</p>
             <p className={`text-2xl font-bold ${profile.avgScore !== null ? 'text-white' : 'text-gray-500'}`}>
               {profile.avgScore !== null ? Math.round(profile.avgScore) : '—'}
             </p>
