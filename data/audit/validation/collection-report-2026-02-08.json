@@ -1,161 +1,200 @@
 {
-  "runDate": "2026-02-08T20:23:53.885Z",
+  "runDate": "2026-02-08T22:03:46.162Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "king-kong-2018,mean-girls-2018,the-waverly-gallery-2018,tootsie-2019,jagged-little-pill-2019,an-american-in-paris-2015,bright-star-2016,grand-horizons-2020,on-the-town-2014,plaza-suite-2022,the-last-ship-2014,funny-girl-2022,junk-2017,ohio-state-murders-2022,romeo-juliet-2024,the-real-thing-2014,betrayal-2013,eclipsed-2016,in-transit-2016,one-man-two-guvnors-2012,the-country-house-2014,time-and-the-conways-2017,1984-2017,a-soldiers-play-2020,dana-h-2021,hands-on-a-hardbody-2013,m-butterfly-2017,old-times-2015,sister-act-2011,the-boys-in-the-band-2018,topdog-underdog-2022,all-the-way-2014,blackbird-2016,girl-from-the-north-country-2022,living-on-love-2015,noises-off-2016,spongebob-squarepants-2017,the-gin-game-2015,the-lehman-trilogy-2021,the-sound-inside-2019,you-cant-take-it-with-you-2014,aint-too-proud-2019,bonnie-and-clyde-2011,cabaret-2024,death-of-a-salesman-2012,finding-neverland-2015,glengarry-glen-ross-2012,hillary-and-clinton-2019,john-lithgow-stories-by-heart-2018,nice-work-if-you-can-get-it-2012,seminar-2011,the-bridges-of-madison-county-2014,the-sign-in-sidney-brusteins-window-2023,uncle-vanya-2024,a-bronx-tale-the-musical-2016,a-night-with-janis-joplin-2013,all-my-sons-2008,chaplin-2012,fiddler-on-the-roof-2015,grey-gardens-2006,latin-history-for-morons-2017,misery-2015,patriots-2024,that-championship-season-2011,the-lion-king-1997,the-realistic-joneses-2014,waiting-for-godot-2013,baby-its-you-2011,brief-encounter-2010,cirque-du-soleil-paramour-2016,fully-committed-2016,harmony-2023,joe-turners-come-and-gone-2009,master-class-2011,on-a-clear-day-you-can-see-forever-2011,rock-of-ages-2009,speedtheplow-2008,the-kite-runner-2022,the-roommate-2024,true-west-2019,a-wonderful-world-the-louis-armstrong-musical-2024,appropriate-2023,constellations-2015,everyday-rapture-2010,harvey-2012,jekyll-and-hyde-2013,lysistrata-jones-2011,mr-saturday-night-2022,pirates-the-penzance-musical-2025,romeo-and-juliet-2013,superior-donuts-2009,the-cottage-2023,the-iceman-cometh-2018,the-picture-of-dorian-gray-2025,the-snow-geese-2013,venus-in-fur-2011,33-variations-2009,a-man-for-all-seasons-2008,after-miss-julie-2009,born-yesterday-2011,colin-quinn-long-story-short-2010,floyd-collins-2025,heart-of-rock-and-roll-2024,job-2024,love-letters-2014,mauritius-2007,other-desert-cities-2011,real-women-have-curves-2025,slave-play-2021,sunday-in-the-park-with-george-2008,the-homecoming-2007,the-normal-heart-2011,the-phantom-of-the-opera-1988,the-story-of-my-life-2009,wishful-drinking-2009,chess-2025,coram-boy-2007,deuce-2007,hair-2011,home-2024,jajas-african-hair-braiding-2023,les-miserables-1987,mrs-warrens-profession-2010,present-laughter-2010,rain-2010,six-2021,the-gershwins-porgy-and-bess-2012,the-seafarer-2007,waiting-for-godot-2025,xanadu-2007",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 100,
+    "processed": 8,
+    "failed": 92,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "8.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 0
+    "archive": 7
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 44,
+    "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 96,
-    "tier2Success": 63,
-    "tier3Attempts": 35,
-    "tier3Success": 20,
-    "tier4Attempts": 31,
-    "tier4Success": 11,
-    "totalFailed": 100,
-    "scrapingBeeCreditsUsed": 783,
+    "tier2Attempts": 52,
+    "tier2Success": 13,
+    "tier3Attempts": 42,
+    "tier3Success": 11,
+    "tier4Attempts": 138,
+    "tier4Success": 42,
+    "totalFailed": 92,
+    "scrapingBeeCreditsUsed": 238,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 14,
-    "urlDiscoverySuccess": 10,
+    "urlDiscoveryAttempts": 41,
+    "urlDiscoverySuccess": 21,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "all-my-sons-2008/nytimes--jesse-green.json",
+    "betrayal-2013/nytimes--ben-brantley.json",
+    "brief-encounter-2010/hollywood-reporter--frank-scheck.json",
+    "coram-boy-2007/nytimes--ben-brantley.json",
+    "everyday-rapture-2010/hollywood-reporter--frank-scheck.json",
+    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+    "seminar-2011/nytimes--ben-brantley.json",
+    "sister-act-2011/nytimes--ben-brantley.json"
+  ],
   "failed": [
-    "1776-2022/deadline--greg-evans.json",
-    "1776-2022/deadline--pete-hammond.json",
-    "a-bronx-tale-2007/deadline--jeremy-gerard.json",
-    "a-christmas-carol-2019/deadline--greg-evans.json",
-    "a-delicate-balance-2014/deadline--jeremy-gerard.json",
-    "a-dolls-house-2023/deadline--greg-evans.json",
-    "a-dolls-house-2023/deadline--pete-hammond.json",
-    "a-soldiers-play-2020/deadline--greg-evans.json",
-    "a-strange-loop-2022/deadline--greg-evans.json",
-    "a-view-from-the-bridge-2015/deadline--jeremy-gerard.json",
-    "a-wonderful-world-the-louis-armstrong-musical-2024/deadline--greg-evans.json",
-    "a-wonderful-world-the-louis-armstrong-musical-2024/deadline--unknown.json",
-    "aint-no-mo-2022/deadline--greg-evans.json",
-    "aint-too-proud-2019/deadline--greg-evans.json",
-    "airline-highway-2015/deadline--jeremy-gerard.json",
-    "all-my-sons-2019/deadline--greg-evans.json",
-    "allegiance-2015/deadline--jeremy-gerard.json",
-    "almost-famous-2022/deadline--pete-hammond.json",
-    "amazing-grace-2015/deadline--jeremy-gerard.json",
-    "american-buffalo-2022/deadline--greg-evans.json",
-    "american-buffalo-2022/deadline--pete-hammond.json",
-    "american-psycho-2016/deadline--jeremy-gerard.json",
-    "an-act-of-god-2016/deadline--unknown.json",
-    "an-american-in-paris-2015/deadline--jeremy-gerard.json",
-    "an-american-in-paris-2015/deadline--pete-hammond.json",
-    "anastasia-2017/deadline--jeremy-gerard.json",
-    "art-2025/deadline--greg-evans.json",
-    "bad-cinderella-2023/deadline--greg-evans.json",
-    "bandstand-2017/deadline--jeremy-gerard.json",
-    "be-more-chill-2019/deadline--greg-evans.json",
-    "beetlejuice-2022/deadline--greg-evans.json",
-    "betrayal-2019/deadline--greg-evans.json",
-    "betrayal-2019/deadline--pete-hammond.json",
-    "birthday-candles-2022/deadline--greg-evans.json",
-    "burn-this-2019/deadline--greg-evans.json",
-    "burn-this-2019/deadline--leah-greenblatt.json",
-    "cabaret-2024/deadline--greg-evans.json",
-    "camelot-2023/deadline--greg-evans.json",
-    "camelot-2023/deadline--pete-hammond.json",
-    "caroline-or-change-2021/deadline--greg-evans.json",
-    "carousel-2018/deadline--greg-evans.json",
-    "charlie-and-the-chocolate-factory-2017/deadline--jeremy-gerard.json",
-    "children-of-a-lesser-god-2018/deadline--greg-evans.json",
-    "choir-boy-2019/deadline--chris-evans.json",
-    "choir-boy-2019/deadline--greg-evans.json",
-    "cirque-du-soleil-paramour-2016/deadline--jeremy-gerard.json",
-    "clydes-2021/deadline--greg-evans.json",
-    "clydes-2021/deadline--pete-hammond.json",
-    "come-from-away-2017/deadline--jeremy-gerard.json",
-    "come-from-away-2017/deadline--pete-hammond.json",
-    "company-2021/deadline--greg-evans.json",
-    "company-2021/deadline--pete-hammond.json",
-    "dead-outlaw-2025/deadline--greg-evans.json",
-    "dear-evan-hansen-2016/deadline--jeremy-gerard.json",
-    "death-of-a-salesman-2022/deadline--greg-evans.json",
-    "death-of-a-salesman-2022/deadline--pete-hammond.json",
-    "diana-the-musical-2021/deadline--greg-evans.json",
-    "disaster-2016/deadline--jeremy-gerard.json",
-    "disgraced-2014/deadline--jeremy-gerard.json",
-    "doctor-zhivago-2015/deadline--jeremy-gerard.json",
-    "eclipsed-2016/deadline--jeremy-gerard.json",
-    "eureka-day-2024/deadline--greg-evans.json",
-    "eureka-day-2024/deadline--unknown.json",
-    "falsettos-2016/deadline--jeremy-gerard.json",
-    "fat-ham-2023/deadline--greg-evans.json",
-    "fiddler-on-the-roof-2015/deadline--jeremy-gerard.json",
-    "finding-neverland-2015/deadline--jeremy-gerard.json",
-    "finding-neverland-2015/deadline--unknown.json",
-    "floyd-collins-2025/deadline--greg-evans.json",
-    "flying-over-sunset-2021/deadline--greg-evans.json",
-    "flying-over-sunset-2021/deadline--rex-reed.json",
-    "fool-for-love-2015/deadline--jeremy-gerard.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/deadline--greg-evans.json",
-    "frozen-2018/deadline--greg-evans.json",
-    "fully-committed-2016/deadline--jeremy-gerard.json",
-    "fun-home-2015/deadline--unknown.json",
-    "funny-girl-2022/deadline--greg-evans.json",
-    "girl-from-the-north-country-2022/deadline--greg-evans.json",
-    "glengarry-glen-ross-2025/deadline--greg-evans.json",
-    "good-night-and-good-luck-2025/deadline--greg-evans.json",
-    "good-night-oscar-2023/deadline--greg-evans.json",
-    "grand-horizons-2020/deadline--greg-evans.json",
-    "grey-house-2023/deadline--greg-evans.json",
-    "groundhog-day-2017/deadline--jeremy-gerard.json",
-    "gypsy-2024/deadline--greg-evans.json",
-    "gypsy-2024/deadline--pete-hammond.json",
-    "hadestown-2019/deadline--pete-hammond.json",
-    "hairspray-2002/deadline--unknown.json",
-    "hangmen-2022/deadline--greg-evans.json",
-    "head-over-heels-2018/deadline--greg-evans.json",
-    "heart-of-rock-and-roll-2024/deadline--pete-hammond.json",
-    "hello-dolly-2017/deadline--jeremy-gerard.json",
-    "hells-kitchen-2024/deadline--pete-hammond.json",
-    "here-lies-love-2023/deadline--pete-hammond.json",
-    "holiday-inn-the-new-irving-berlin-musical-2016/deadline--jeremy-gerard.json",
-    "home-2024/deadline--greg-evans.json",
-    "honeymoon-in-vegas-2015/deadline--jeremy-gerard.json",
-    "illinoise-2024/deadline--greg-evans.json",
-    "in-transit-2016/deadline--jeremy-gerard.json",
-    "indecent-2017/deadline--jeremy-gerard.json"
+    "a-bronx-tale-the-musical-2016/nyt-theater--david-nounou.json",
+    "aint-too-proud-2019/nytimes--jesse-green.json",
+    "all-the-way-2014/nyt-theater--david-nounou.json",
+    "baby-its-you-2011/nytimes--ben-brantley.json",
+    "betrayal-2013/nyt-theater--scott-proudfit.json",
+    "bonnie-and-clyde-2011/nytimes--ben-brantley.json",
+    "bonnie-and-clyde-2011/variety--marilyn-stasio.json",
+    "bright-star-2016/hollywood-reporter--david-rooney.json",
+    "bright-star-2016/nytimes--ben-brantley.json",
+    "bright-star-2016/vulture--jesse-green.json",
+    "chaplin-2012/vulture--jesse-green.json",
+    "cirque-du-soleil-paramour-2016/vulture--jesse-green.json",
+    "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+    "dana-h-2021/hollywood-reporter--angie-han.json",
+    "dana-h-2021/nytimes--jesse-green.json",
+    "dana-h-2021/vulture--helen-shaw.json",
+    "deuce-2007/nytimes--ben-brantley.json",
+    "eclipsed-2016/hollywood-reporter--david-rooney.json",
+    "eclipsed-2016/vulture--jesse-green.json",
+    "everyday-rapture-2010/variety--david-rooney.json",
+    "fiddler-on-the-roof-2015/vulture--jesse-green.json",
+    "finding-neverland-2015/nytimes--ben-brantley.json",
+    "fully-committed-2016/hollywood-reporter--david-rooney.json",
+    "funny-girl-2022/hollywood-reporter--angie-han.json",
+    "funny-girl-2022/variety--aramide-tinubu.json",
+    "girl-from-the-north-country-2022/nytimes--jesse-green.json",
+    "girl-from-the-north-country-2022/variety--aramide-tinubu.json",
+    "grand-horizons-2020/nytimes--jesse-green.json",
+    "grand-horizons-2020/vulture--jesse-green.json",
+    "grey-gardens-2006/variety--charles-isherwood.json",
+    "hair-2011/nytimes--ben-brantley.json",
+    "hands-on-a-hardbody-2013/variety--marilyn-stasio.json",
+    "harvey-2012/nytimes--charles-isherwood.json",
+    "harvey-2012/vulture--jesse-green.json",
+    "hillary-and-clinton-2019/hollywood-reporter--david-rooney.json",
+    "hillary-and-clinton-2019/nytimes--ben-brantley.json",
+    "in-transit-2016/hollywood-reporter--david-rooney.json",
+    "in-transit-2016/vulture--jesse-green.json",
+    "jagged-little-pill-2019/nytimes--jesse-green.json",
+    "jagged-little-pill-2019/vulture--jesse-green.json",
+    "joe-turners-come-and-gone-2009/nytimes--ben-brantley.json",
+    "junk-2017/nytimes--ben-brantley.json",
+    "junk-2017/variety--marilyn-stasio.json",
+    "king-kong-2018/hollywood-reporter--david-rooney.json",
+    "king-kong-2018/nytimes--ben-brantley.json",
+    "king-kong-2018/variety--marilyn-stasio.json",
+    "king-kong-2018/vulture--jesse-green.json",
+    "latin-history-for-morons-2017/nytimes--jesse-green.json",
+    "latin-history-for-morons-2017/vulture--jesse-green.json",
+    "living-on-love-2015/nytimes--charles-isherwood.json",
+    "living-on-love-2015/variety--marilyn-stasio.json",
+    "love-letters-2014/vulture--unknown.json",
+    "lysistrata-jones-2011/nytimes--ben-brantley.json",
+    "m-butterfly-2017/nytimes--ben-brantley.json",
+    "m-butterfly-2017/variety--marilyn-stasio.json",
+    "master-class-2011/hollywood-reporter--david-rooney.json",
+    "mauritius-2007/nytimes--charles-isherwood.json",
+    "mean-girls-2018/hollywood-reporter--david-rooney.json",
+    "mean-girls-2018/nyt-theater--jonathan-mandell.json",
+    "mean-girls-2018/nytimes--jesse-green.json",
+    "misery-2015/variety--marilyn-stasio.json",
+    "mr-saturday-night-2022/variety--maya-phillips.json",
+    "mrs-warrens-profession-2010/nytimes--ben-brantley.json",
+    "nice-work-if-you-can-get-it-2012/nytimes--ben-brantley.json",
+    "noises-off-2016/hollywood-reporter--david-rooney.json",
+    "noises-off-2016/nytimes--ben-brantley.json",
+    "noises-off-2016/variety--marilyn-stasio.json",
+    "ohio-state-murders-2022/nytimes--jesse-green.json",
+    "old-times-2015/hollywood-reporter--david-rooney.json",
+    "old-times-2015/nytimes--ben-brantley.json",
+    "old-times-2015/variety--marilyn-stasio.json",
+    "old-times-2015/vulture--jesse-green.json",
+    "on-the-town-2014/vulture--jesse-green.json",
+    "one-man-two-guvnors-2012/variety--marilyn-stasio.json",
+    "one-man-two-guvnors-2012/vulture--jesse-green.json",
+    "plaza-suite-2022/hollywood-reporter--angie-han.json",
+    "plaza-suite-2022/nytimes--jesse-green.json",
+    "plaza-suite-2022/variety--frank-rizzo.json",
+    "plaza-suite-2022/vulture--sara-holdren.json",
+    "rain-2010/nytimes--charles-isherwood.json",
+    "real-women-have-curves-2025/nytimes--collins-hughes.json",
+    "rock-of-ages-2009/nytimes--ben-brantley.json",
+    "romeo-and-juliet-2013/vulture--jesse-green.json",
+    "romeo-juliet-2024/variety--charles-isherwood.json",
+    "romeo-juliet-2024/vulture--jackson-mchenry.json",
+    "sister-act-2011/hollywood-reporter--david-rooney.json",
+    "sister-act-2011/variety--marilyn-stasio.json",
+    "sister-act-2011/vulture--jesse-green.json",
+    "speedtheplow-2008/nytimes--ben-brantley.json",
+    "speedtheplow-2008/variety--david-rooney.json",
+    "spongebob-squarepants-2017/hollywood-reporter--david-rooney.json",
+    "spongebob-squarepants-2017/vulture--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "brief-encounter-2010/hollywood-reporter--frank-scheck.json"
+    ],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "all-my-sons-2008/nytimes--jesse-green.json",
+      "betrayal-2013/nytimes--ben-brantley.json",
+      "coram-boy-2007/nytimes--ben-brantley.json",
+      "everyday-rapture-2010/hollywood-reporter--frank-scheck.json",
+      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+      "seminar-2011/nytimes--ben-brantley.json",
+      "sister-act-2011/nytimes--ben-brantley.json"
+    ]
   },
   "failuresByOutlet": {
-    "Deadline": {
+    "New York Theater": {
+      "count": 1,
+      "domain": "newyorktheater.me",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The New York Times": {
+      "count": 9,
+      "domain": "nytimes.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Vulture": {
+      "count": 8,
+      "domain": "vulture.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "The Hollywood Reporter": {
       "count": 3,
-      "domain": "deadline.com",
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Variety": {
+      "count": 3,
+      "domain": "variety.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
@@ -163,54 +202,109 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "1776-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/10/1776-broadway-review-roundabout-theatre-company-american-airlines-theatre-1235149772/",
-      "newUrl": "https://deadline.com/2022/10/1776-broadway-review-1235136437/"
+      "reviewId": "aint-too-proud-2019/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2019/03/22/theater/aint-too-proud-review.html",
+      "newUrl": "https://www.nytimes.com/2019/03/21/theater/aint-too-proud-review-the-temptations.html"
     },
     {
-      "reviewId": "a-dolls-house-2023/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2023/03/a-dolls-house-review-jessica-chastain-broadway-1235294837/",
-      "newUrl": "https://deadline.com/2023/03/dolls-house-broadway-review-jessica-chastain-1235282774/"
+      "reviewId": "all-the-way-2014/nyt-theater--david-nounou.json",
+      "oldUrl": "https://newyorktheater.me/2014/03/06/all-the-way-broadway-review/",
+      "newUrl": "https://newyorktheater.me/2014/03/06/all-the-way-review-bryan-cranston-as-lbj-breaking-bad-meets-broadway/"
     },
     {
-      "reviewId": "american-buffalo-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/04/american-buffalo-review-sam-rockwell-laurence-fishburne-darren-criss-broadway-1235006943/",
-      "newUrl": "https://deadline.com/2022/04/american-buffalo-cyrano-broadway-review-darren-criss-james-mcavoy-1235002080/"
+      "reviewId": "betrayal-2013/nyt-theater--scott-proudfit.json",
+      "oldUrl": "https://newyorktheater.me/2013/11/01/betrayal-ethel-barrymore-theatre/",
+      "newUrl": "https://newyorktheater.me/2013/10/27/betrayal-broadway-reviews/"
     },
     {
-      "reviewId": "betrayal-2019/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2019/09/betrayal-review-broadway-revival-tom-hiddleston-zawe-ashton-charlie-cox-1202734276/",
-      "newUrl": "https://deadline.com/2019/09/betrayal-broadway-review-tom-hiddleston-charlie-cox-zawe-ashton-harold-pinter-affair-to-remember-1202711669/"
+      "reviewId": "coram-boy-2007/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2007/05/16/theater/reviews/16cora.html",
+      "newUrl": "https://www.nytimes.com/2007/05/03/theater/reviews/03cora.html"
     },
     {
-      "reviewId": "camelot-2023/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2023/04/camelot-broadway-review-phillipa-soo-andrew-burnap-jordan-donica-1235324025/",
-      "newUrl": "https://deadline.com/2023/04/camelot-broadway-review-aaron-sorkin-phillipa-soo-lincoln-center-theater-1235323423/"
+      "reviewId": "funny-girl-2022/variety--aramide-tinubu.json",
+      "oldUrl": "https://variety.com/2022/legit/reviews/funny-girl-review-beanie-feldstein-broadway-1235242106/",
+      "newUrl": "https://variety.com/2022/legit/reviews/funny-girl-review-broadway-beanie-feldstein-1235239624/"
     },
     {
-      "reviewId": "clydes-2021/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2021/12/clydes-broadway-review-lynn-nottage-uzo-aduba-1234880094/",
-      "newUrl": "https://deadline.com/2021/11/clydes-broadway-review-uzo-aduba-ron-cephas-jones-lynn-nottage-1234879299/"
+      "reviewId": "girl-from-the-north-country-2022/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2022/03/03/theater/girl-from-the-north-country-review.html",
+      "newUrl": "https://www.nytimes.com/2020/03/05/theater/girl-from-the-north-country-review.html"
     },
     {
-      "reviewId": "come-from-away-2017/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2017/03/come-from-away-broadway-review-1202045094/",
-      "newUrl": "https://deadline.com/2017/03/broadway-review-come-from-away-1202041704/"
+      "reviewId": "grand-horizons-2020/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2020/01/theater-review-grand-horizons.html",
+      "newUrl": "https://www.vulture.com/2020/01/theater-review-the-sparkle-and-glow-of-grand-horizons.html"
     },
     {
-      "reviewId": "death-of-a-salesman-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/10/death-of-a-salesman-review-wendell-pierce-sharon-d-clarke-broadway-1235148631/",
-      "newUrl": "https://deadline.com/2022/10/death-of-a-salesman-broadway-review-wendell-pierce-sharon-d-clarke-1235138627/"
+      "reviewId": "hair-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/09/24/theater/reviews/hair-at-al-hirschfeld-theater-review.html",
+      "newUrl": "https://www.nytimes.com/2011/07/14/theater/reviews/hair-in-diane-pauluss-staging-on-broadway-review.html"
     },
     {
-      "reviewId": "gypsy-2024/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2024/12/gypsy-review-audra-mcdonald-broadway-revival-1236188234/",
-      "newUrl": "https://deadline.com/2024/12/gypsy-broadway-review-audra-mcdonald-1236206662/"
+      "reviewId": "in-transit-2016/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/in-transit-theater-review-1058031/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/transit-review-955048/"
     },
     {
-      "reviewId": "here-lies-love-2023/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2023/07/here-lies-love-review-david-byrne-fatboy-slim-musical-broadway-1235449826/",
-      "newUrl": "https://deadline.com/2023/07/here-lies-love-broadway-review-deadline-david-byrne-fatboy-slim-1235438965/"
+      "reviewId": "jagged-little-pill-2019/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2019/12/jagged-little-pill-broadway-review.html",
+      "newUrl": "https://www.vulture.com/2019/12/review-jagged-little-pill-is-missing-the-essence-of-alanis.html"
+    },
+    {
+      "reviewId": "junk-2017/variety--marilyn-stasio.json",
+      "oldUrl": "https://variety.com/2017/legit/reviews/junk-review-broadway-lincoln-center-theater-1202610473/",
+      "newUrl": "https://variety.com/2017/legit/reviews/junk-review-play-ayad-akhtar-1202604575/"
+    },
+    {
+      "reviewId": "king-kong-2018/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2018/11/09/theater/king-kong-review.html",
+      "newUrl": "https://www.nytimes.com/2018/11/08/theater/king-kong-review.html"
+    },
+    {
+      "reviewId": "king-kong-2018/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2018/11/theater-review-king-kong-on-broadway.html",
+      "newUrl": "https://www.vulture.com/2018/11/theater-review-king-kong-whos-there.html"
+    },
+    {
+      "reviewId": "mean-girls-2018/nyt-theater--jonathan-mandell.json",
+      "oldUrl": "https://newyorktheater.me/2018/04/09/mean-girls-broadway-review/",
+      "newUrl": "https://newyorktheater.me/2018/04/13/mean-girls-review-tina-feys-ill-timed-broadway-musical-about-high-school/"
+    },
+    {
+      "reviewId": "mean-girls-2018/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2018/04/09/theater/mean-girls-review.html",
+      "newUrl": "https://www.nytimes.com/2018/04/08/theater/mean-girls-review-broadway-musical.html"
+    },
+    {
+      "reviewId": "plaza-suite-2022/hollywood-reporter--angie-han.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/plaza-suite-theater-review-1235117087/",
+      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/plaza-suite-review-matthew-broderick-sarah-jessica-parker-neil-simon-broadway-1235119408/"
+    },
+    {
+      "reviewId": "plaza-suite-2022/vulture--sara-holdren.json",
+      "oldUrl": "https://www.vulture.com/2022/03/theater-review-plaza-suite-on-broadway.html",
+      "newUrl": "https://www.vulture.com/2022/03/theater-review-plaza-suite-with-parker-and-broderick.html"
+    },
+    {
+      "reviewId": "rain-2010/nytimes--charles-isherwood.json",
+      "oldUrl": "https://www.nytimes.com/2010/10/15/theater/reviews/15rain.html",
+      "newUrl": "https://www.nytimes.com/2010/10/27/theater/reviews/27rain.html"
+    },
+    {
+      "reviewId": "seminar-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/11/21/theater/reviews/seminar-with-alan-rickman-review.html",
+      "newUrl": "https://www.nytimes.com/2011/11/21/theater/reviews/seminar-by-theresa-rebeck-with-alan-rickman-review.html"
+    },
+    {
+      "reviewId": "sister-act-2011/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/sister-act-broadway-review-179058/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/sister-act-theater-review-180739/"
+    },
+    {
+      "reviewId": "sister-act-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/04/21/theater/reviews/sister-act-at-broadway-theater-review.html",
+      "newUrl": "https://www.nytimes.com/2011/04/21/theater/reviews/sister-act-comes-to-broadway-review.html"
     }
   ]
 }
