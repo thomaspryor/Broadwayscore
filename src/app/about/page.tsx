@@ -30,8 +30,8 @@ export default function AboutPage() {
             </p>
             <p>
               The idea is simple: aggregate every professional critic review for every Broadway show into a single,
-              transparent score. No hidden algorithms, no pay-to-play listings &mdash; just the reviews, weighted
-              by outlet reputation, with every source linked so you can read them yourself.
+              transparent score. No pay-to-play listings, no editorial bias &mdash; just the reviews, scored
+              by AI trained on hundreds of critic-rated reviews, with every source linked so you can read them yourself.
             </p>
             <p>
               Beyond critic scores, we track box office performance, audience reception, lottery and rush
