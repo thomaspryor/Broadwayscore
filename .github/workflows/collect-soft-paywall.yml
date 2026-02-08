@@ -207,6 +207,7 @@ jobs:
         id: chain
         env:
           DOMAIN_FILTER: ${{ inputs.domain }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           REMAINING=$(node -e "
             const fs = require('fs'), path = require('path');
@@ -494,6 +495,7 @@ jobs:
         id: chain
         env:
           DOMAIN_LIST: ${{ env.SOFT_PAYWALL_DOMAINS }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           REMAINING=$(node -e "
             const fs = require('fs'), path = require('path');

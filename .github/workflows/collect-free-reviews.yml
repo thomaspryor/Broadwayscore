@@ -304,6 +304,7 @@ jobs:
         id: chain
         env:
           EXCLUDE_DOMAINS: ${{ env.PAYWALL_DOMAINS }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           REMAINING=$(node -e "
             const fs = require('fs'), path = require('path');
