@@ -48,7 +48,7 @@ Broadway review aggregator. **Tech:** Next.js 14, TypeScript, Tailwind CSS, stat
 
 **Philosophy:** Set-and-forget automation. The site maintains itself indefinitely via GitHub Actions — new shows discovered daily, reviews gathered automatically, grosses updated weekly, Tony Awards scraped annually. No manual intervention required.
 
-**Current state:** 724+ shows (IBDB 2005-present + pre-2005 classics), 8,900+ source files, 3,400+ scored reviews. ~29 open, ~16 previews, 690+ closed. Critics-only scoring (V1).
+**Current state:** 724+ shows (IBDB 2005-present + pre-2005 classics), 22,000+ source files, 8,300+ scored reviews. ~29 open, ~16 previews, 690+ closed. Critics-only scoring (V1).
 
 ## Scoring Methodology
 
@@ -203,7 +203,7 @@ WoW/YoY for capacity and ATP self-computed from `grosses-history.json`.
 - `scripts/fetch-show-images-auto.js` — Image fetcher: TodayTix → page scrape → Playbill fallback. **Has `PINNED_IMAGES` set — NEVER overwrite these thumbnails** (manually curated promotional art). To update a pinned image: remove from the set first, then re-fetch.
 - `scripts/lib/verify-image.js` — Gemini 2.0 Flash vision gate for image verification (used by fetch pipeline with `--verify`)
 
-**Libraries:** `scripts/lib/` — `deduplication.js` (9-check show dedup), `review-normalization.js` (outlet/critic normalization), `text-cleaning.js` (HTML entities, junk stripping), `content-quality.js` (content tier classification + garbage detection), `ibdb-dates.js` (IBDB date/creative team lookup), `show-matching.js` (title→show matching), `scraper.js` (Bright Data → ScrapingBee → Playwright fallback), `deep-research-guardian.js`, `source-validator.js`, `parse-grosses.js`, `audience-weighting.js` (shared proportional weighting for audience buzz), `buzz-classifier.js` (LLM sentiment classification — 4 concurrent batches, provider chain: Kimi → Gemini → OpenAI → Claude), `reddit-api.js` (Reddit API with 3-tier fallback: direct → Bright Data → ScrapingBee, adaptive rate limiting 7s/12s/20s)
+**Libraries:** `scripts/lib/` — `deduplication.js` (9-check show dedup), `review-normalization.js` (outlet/critic normalization), `text-cleaning.js` (HTML entities, junk stripping), `content-quality.js` (content tier classification + garbage detection), `excerpt-validation.js` (cross-show excerpt detection + tour review detection — see "Excerpt & Consensus Quality Gates" below), `ibdb-dates.js` (IBDB date/creative team lookup), `show-matching.js` (title→show matching), `scraper.js` (Bright Data → ScrapingBee → Playwright fallback), `deep-research-guardian.js`, `source-validator.js`, `parse-grosses.js`, `audience-weighting.js` (shared proportional weighting for audience buzz), `buzz-classifier.js` (LLM sentiment classification — 4 concurrent batches, provider chain: Kimi → Gemini → OpenAI → Claude), `reddit-api.js` (Reddit API with 3-tier fallback: direct → Bright Data → ScrapingBee, adaptive rate limiting 7s/12s/20s)
 
 **Audit/Scrapers:** `scripts/audit-content-quality.js` (run after bulk changes), `scripts/audit-aggregator-coverage.js` (`--output-gaps`, `--status=`, `--show=`), `scripts/audit-critic-outlets.js`, `scripts/scrape-playbill-verdict.js`, `scripts/scrape-nyc-theatre-roundups.js`, `scripts/scrape-nysr-reviews.js`, `scripts/adjudicate-review-queue.js` (daily auto-adjudication), `scripts/build-sqlite.js` / `scripts/query.js` / `scripts/schema.sql`
 
@@ -222,6 +222,33 @@ WoW/YoY for capacity and ATP self-computed from `grosses-history.json`.
 Applied by: `collect-review-texts.js`, `gather-reviews.js`, `rebuild-all-reviews.js`.
 
 **Junk handling:** Leading nav stripping (`stripLeadingNavigation()`), show-not-mentioned detection (nulls fullText, preserves in `wrongFullText`), outlet-specific trailing junk removal, garbage detection with guards (>500 char legal footers ok, >300 char error patterns scoped, contextual adblock detection).
+
+### Excerpt & Consensus Quality Gates (5-layer prevention)
+
+Automated guards in `rebuild-all-reviews.js` and `generate-critic-consensus.js` that prevent recurring data quality issues (BWW metadata leaks, wrong-show excerpts, tour reviews, LLM refusals in consensus). These run automatically on every rebuild — no manual intervention needed.
+
+**Layer 1 — `cleanExcerpt()` in rebuild-all-reviews.js:** Strips BWW "Average Rating:" metadata, JSON-LD `{"@context"...}` fragments, `CRITIC'S PICK` prefix, embedded critic attributions (`Name, Outlet:`), control chars (U+0080–009F), and mojibake (`â` → em-dash). Order matters: colon strip runs AFTER attribution strip.
+
+**Layer 2 — Post-rebuild audit:** After writing reviews.json, scans all pullQuotes for residual artifacts (leading colons, metadata, control chars, short excerpts, mojibake). Also checks **count regression**: warns if pullQuote count drops >5% from previous run (indicates false-positive epidemic).
+
+**Layer 3 — Cross-show excerpt validation (`scripts/lib/excerpt-validation.js`):**
+- Detects when an excerpt about Show A accidentally ends up on Show B (nycTheatreExcerpt cross-contamination, wrong LLM keyPhrases)
+- Uses word-boundary regex matching (`\b{title}\b`) on show titles ≥8 chars
+- **`COMMON_WORD_TITLES` exclusion set** prevents false positives on titles that are common English words: "The Audience", "Master Class", "The Performers", "The Price", "The Present", "Appropriate", "Company", "Doubt", etc. — these appear naturally in review text. **Always add new common-word titles here** before enabling enforcement.
+- **Currently DRY-RUN mode** (`DRY_RUN_CROSS_SHOW` env var defaults to `true`). Logs flags but does NOT suppress excerpts. To enable enforcement: set `DRY_RUN_CROSS_SHOW=false` in the rebuild workflow env. Current dry-run shows 113 flags — all legitimate critic comparisons (not contamination), confirming the exclusion list works.
+- When enforcement is enabled, suppressed excerpts fall through to the next source in `selectBestExcerpt()` priority chain.
+
+**Layer 4 — Tour review detection:** Flags excerpts containing touring production language ("national tour", "touring production") or non-Broadway venue names (Pantages, Orpheum, Fox Theatre, etc.). **Log-only** — never suppresses. Skips shows with status `tour-stop`.
+
+**Layer 5 — Consensus guards in `generate-critic-consensus.js`:**
+- **Input:** Skip shows with <2 scored reviews; skip previews shows with 0 scored reviews
+- **Output:** Reject LLM refusal text ("I apologize", "I cannot provide", etc.); truncate >280 chars at sentence boundary
+- **Orphan cleanup:** Detects consensus entries for shows not in shows.json. Requires `--cleanup-orphans` flag to actually delete (dry-run by default).
+
+**Maintenance rules:**
+- If a new show has a common English word as its title, add it to `COMMON_WORD_TITLES` in `scripts/lib/excerpt-validation.js` before it causes false positives
+- The dry-run cross-show flags print during every rebuild — review them periodically. If real contamination appears (not critic comparisons), that's the signal to enable enforcement
+- Consensus orphans accumulate when shows are removed from shows.json — run `node scripts/generate-critic-consensus.js --cleanup-orphans` periodically
 
 ## Deduplication & Normalization
 

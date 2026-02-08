@@ -111,7 +111,7 @@ const faqSchema = {
       name: 'What is Audience Buzz?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Audience Buzz aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit into letter grades from A+ (93-100) through F (below 48). The scale includes A/A- for strong reception, B+/B/B- for solid to mixed reception, and C+/C/C-/D for below-average to poor reception. Sources are weighted dynamically based on sample size, with Reddit at 20% and Show Score/Mezzanine splitting the remaining 80% proportionally.',
+        text: 'Audience Buzz aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit into letter grades from A+ (93-100) through F (below 48). The scale includes A/A- for strong reception, B+/B/B- for solid to mixed reception, and C+/C/C-/D for below-average to poor reception. Sources are weighted proportionally by review count volume, with no single source exceeding 80% weight, ensuring larger sample sizes have more influence while preventing any one platform from dominating.',
       },
     },
     {
@@ -225,7 +225,7 @@ export default function MethodologyPage() {
                 <span className="text-gray-400 text-sm">Weight: 1.0×</span>
               </div>
               <p className="text-gray-300 text-sm">
-                The New York Times, Washington Post, Variety, Hollywood Reporter, Vulture, The Guardian, Time Out, Broadway News, LA Times, Wall Street Journal, AP
+                The New York Times, Washington Post, Variety, Hollywood Reporter, Vulture, The New Yorker, The Guardian, Time Out, Broadway News, LA Times, Wall Street Journal, AP
               </p>
             </div>
 
@@ -317,7 +317,7 @@ export default function MethodologyPage() {
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Sentiment Buckets</h3>
           <p className="text-gray-300 text-sm mb-3">
-            When a review has no explicit rating, we categorize based on sentiment:
+            When a review has no explicit rating &mdash; which is most Broadway reviews &mdash; we use multiple leading AI models to analyze the full review text and classify its sentiment. The models are calibrated against hundreds of critic-scored reviews for accuracy and consistency, and each review is scored into one of these buckets:
           </p>
           <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
             <div className="grid grid-cols-2 gap-2 text-sm">
@@ -580,7 +580,7 @@ export default function MethodologyPage() {
 
         {/* Version */}
         <div className="text-center text-gray-500 text-sm pt-4">
-          <p>Methodology Version 2.1.0 — Last updated February 2026</p>
+          <p>Methodology Version 2.1.1 — Last updated February 2026</p>
         </div>
       </div>
       </div>
