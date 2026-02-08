@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-08",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 9244,
-      "skippedNoScore": 10380,
-      "skippedDuplicate": 43,
+      "totalReviews": 9243,
+      "skippedNoScore": 10379,
+      "skippedDuplicate": 42,
       "skippedDuplicateUrl": 258,
       "skippedCrossOutletDuplicateUrl": 40,
-      "skippedDuplicateText": 311,
+      "skippedDuplicateText": 313,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 676,
       "recoveredFromGarbage": 130,
@@ -22,7 +22,7 @@
         "originalScore-priority0": 1065,
         "llmScore": 4398,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3567,
+        "llmScore-lowconf": 3566,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -47900,7 +47900,7 @@
       "outletId": "chicagotribune",
       "outlet": "Chicago Tribune",
       "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Chris Jones",
@@ -47910,7 +47910,7 @@
       "pullQuote": "Mendes' 'Cabaret' was, and is, a brilliantly inventive and revealing conception.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "cabaret-2014",
@@ -61091,23 +61091,6 @@
       "showId": "come-from-away-2017",
       "outletId": "nytimes",
       "outlet": "The New York Times",
-      "assignedScore": 87,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2017/03/12/theater/come-from-away-review.html?rref=collection%2Fsectioncollection%2Ftheater&action=click&contentCollection=theater&region=stream&module=stream_unit&version=latest&contentPlacement=2&pgtype=sectionfront",
-      "publishDate": "March 12, 2017",
-      "originalRating": null,
-      "pullQuote": "This musical achieves something close to a miracle: It conjures the possibility of genuine human kindness without insulting your intelligence.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "come-from-away-2017",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
       "assignedScore": 82,
       "scoreSource": "llmScore",
       "bucket": "Positive",
@@ -73226,7 +73209,7 @@
       "pullQuote": "Long-winded and impossibly earnest, the world-premiere musical features an unremarkable score and a lumbering book.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "flying-over-sunset-2021",
