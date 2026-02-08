@@ -11,7 +11,14 @@
     "a-beautiful-noise-the-neil-diamond-musical-2022/new-york-sun--elysa-gardner.json",
     "a-life-in-the-theatre-2010/ew--tanner-stransky.json",
     "a-life-in-the-theatre-2010/newsday--linda-winer.json",
-    "a-soldiers-play-2020/thewrap--thom-geier.json"
+    "a-soldiers-play-2020/thewrap--thom-geier.json",
+    "airline-highway-2015/thewrap--robert-hofler.json",
+    "airline-highway-2015/timeout--adam-feldman.json",
+    "airline-highway-2015/timeout--kris-vire.json",
+    "all-the-way-2014/ew--thom-geier.json",
+    "all-the-way-2014/timeout--adam-feldman.json",
+    "all-the-way-2014/timeout--david-cote.json",
+    "american-buffalo-2008/wsj--charles-isherwood.json"
   ],
   "failed": [
     "1776-2022/variety--peter-marks.json",
@@ -161,18 +168,24 @@
     "a-free-man-of-color-2010/wsj--terry-teachout.json",
     "a-life-in-the-theatre-2010/theatermania--david-finkle.json",
     "a-life-in-the-theatre-2010/wsj--terry-teachout.json",
-    "a-soldiers-play-2020/theatermania--jesse-green.json"
+    "a-soldiers-play-2020/theatermania--jesse-green.json",
+    "a-view-from-the-bridge-2015/nypost--elisabeth-vincentelli.json",
+    "a-view-from-the-bridge-2015/observer--rex-reed.json",
+    "airline-highway-2015/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "all-the-way-2014/ew--thom-geier.json"
+    ],
     "browserbase": [],
     "scrapingbee": [
       "american-buffalo-2022/vulture--helen-shaw.json",
       "collected-stories-2010/hollywood-reporter--frank-scheck.json",
       "the-miracle-worker-2010/hollywood-reporter--frank-scheck.json",
       "1776-2022/thewrap--robert-hofler.json",
-      "a-soldiers-play-2020/thewrap--thom-geier.json"
+      "a-soldiers-play-2020/thewrap--thom-geier.json",
+      "airline-highway-2015/thewrap--robert-hofler.json"
     ],
     "brightdata": [
       "young-frankenstein-2007/nytimes--ben-brantley.json"
@@ -185,10 +198,15 @@
       "1776-2022/nydailynews--chris-jones.json",
       "a-beautiful-noise-the-neil-diamond-musical-2022/new-york-sun--elysa-gardner.json",
       "a-life-in-the-theatre-2010/ew--tanner-stransky.json",
-      "a-life-in-the-theatre-2010/newsday--linda-winer.json"
+      "a-life-in-the-theatre-2010/newsday--linda-winer.json",
+      "airline-highway-2015/timeout--adam-feldman.json",
+      "airline-highway-2015/timeout--kris-vire.json",
+      "all-the-way-2014/timeout--adam-feldman.json",
+      "all-the-way-2014/timeout--david-cote.json",
+      "american-buffalo-2008/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-08T14:53:43.995Z",
-  "lastProcessed": "a-soldiers-play-2020/thewrap--thom-geier.json",
+  "lastProcessed": "american-buffalo-2008/wsj--charles-isherwood.json",
   "log": []
 }
