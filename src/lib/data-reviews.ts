@@ -482,3 +482,11 @@ export function getCriticBySlug(slug: string): CriticProfile | undefined {
 export function getAllCriticSlugs(): string[] {
   return Array.from(criticSlugMap.keys());
 }
+
+export function getOutletSlugById(outletId: string): string | null {
+  return outletIdToSlug.get(outletId) || null;
+}
+
+export function getCriticSlugByName(name: string): string | null {
+  return criticNameToSlug.get(name) || null;
+}
