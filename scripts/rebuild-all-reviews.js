@@ -27,7 +27,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { getOutletDisplayName } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
-const { classifyContentTier } = require('./lib/content-quality');
+const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 
 // Human review queue — flagged items written to data/audit/needs-human-review.json
@@ -1179,6 +1179,8 @@ showDirs.forEach(showId => {
   const seenUrlsByOutlet = new Map();
   // Track seen URLs globally (cross-outlet) to catch same URL filed under different outlets
   const seenUrlsGlobal = new Map();
+  // Track content fingerprints per outlet to catch same text under different critic names
+  const seenFingerprintsByOutlet = new Map();
 
   files.forEach(file => {
     try {
@@ -1210,6 +1212,13 @@ showDirs.forEach(showId => {
       // Skip files flagged as duplicates by cleanup-review-sources.js
       if (data.duplicateOf) {
         stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
+        return;
+      }
+
+      // Skip files flagged as duplicate text of another review (same content, different critic)
+      // Set by collect-review-texts.js content fingerprinting
+      if (data.duplicateTextOf) {
+        stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
         return;
       }
 
@@ -1373,6 +1382,22 @@ showDirs.forEach(showId => {
           return;
         }
         seenUrlsGlobal.set(normalizedUrl, file);
+      }
+
+      // Content fingerprint dedup: same review text at same outlet under different critic names
+      // Belt-and-suspenders: catches duplicates even if duplicateTextOf flag was never set
+      if (data.fullText && data.fullText.length >= 100) {
+        const fingerprint = computeContentFingerprint(data.fullText);
+        if (fingerprint) {
+          const outletKey2 = normalizeOutletId(data.outletId || data.outlet);
+          const fpKey = `${outletKey2}|${fingerprint}`;
+          if (seenFingerprintsByOutlet.has(fpKey)) {
+            console.log(`  [FINGERPRINT DEDUP] ${showId}/${file}: same text as ${seenFingerprintsByOutlet.get(fpKey)} at ${outletKey2}`);
+            stats.skippedFingerprintDedup = (stats.skippedFingerprintDedup || 0) + 1;
+            return;
+          }
+          seenFingerprintsByOutlet.set(fpKey, file);
+        }
       }
 
       // CHECK: Flag reviews that SHOULD have LLM scores but don't
@@ -1628,6 +1653,8 @@ const output = {
       skippedDuplicate: stats.skippedDuplicate,
       skippedDuplicateUrl: stats.skippedDuplicateUrl || 0,
       skippedCrossOutletDuplicateUrl: stats.skippedCrossOutletDuplicateUrl || 0,
+      skippedDuplicateText: stats.skippedDuplicateText || 0,
+      skippedFingerprintDedup: stats.skippedFingerprintDedup || 0,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
       recoveredFromGarbage: stats.recoveredFromGarbage || 0,
       scoreSources: stats.scoreSources
@@ -1652,6 +1679,8 @@ console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
 console.log(`  Skipped (date mismatch >30d): ${stats.skippedDateMismatch || 0}`);
 console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch || 0}`);
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
+console.log(`  Skipped (duplicate text flag): ${stats.skippedDuplicateText || 0}`);
+console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
 console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);
 if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
   stats.crossShowDupeDetails.forEach(d => console.log(`    - ${d}`));

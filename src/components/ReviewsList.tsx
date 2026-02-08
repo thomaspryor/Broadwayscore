@@ -1,13 +1,16 @@
 'use client';
 
 import { useState, memo } from 'react';
+import Link from 'next/link';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 
 interface Review {
   showId: string;
   outletId: string;
   outlet: string;
+  outletSlug?: string;
   criticName?: string;
+  criticSlug?: string | null;
   url: string;
   publishDate: string;
   tier: 1 | 2 | 3;
@@ -159,7 +162,11 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-0.5 sm:gap-2 mb-1">
             <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
               <OutletLogo outlet={review.outlet} />
-              <span className="font-bold text-white text-sm sm:text-base truncate">{review.outlet}</span>
+              {review.outletSlug ? (
+                <Link href={`/critics/outlets/${review.outletSlug}`} className="font-bold text-white text-sm sm:text-base truncate hover:text-brand transition-colors">{review.outlet}</Link>
+              ) : (
+                <span className="font-bold text-white text-sm sm:text-base truncate">{review.outlet}</span>
+              )}
               {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
               {review.designation && review.designation !== 'Critics_Pick' && (
                 <span className="text-xs text-score-high font-medium whitespace-nowrap hidden sm:inline">
@@ -192,7 +199,9 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
           {/* Author at BOTTOM + Full Review link */}
           <div className="flex items-center justify-between">
             {review.criticName && (
-              <span className="text-sm text-gray-500">By {review.criticName}</span>
+              <span className="text-sm text-gray-500">By {review.criticSlug ? (
+                <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
+              ) : review.criticName}</span>
             )}
             {!review.criticName && <span />}
             <a
