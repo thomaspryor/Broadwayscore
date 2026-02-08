@@ -8,11 +8,11 @@ const config = CREATIVE_CATEGORY_CONFIG[CAT];
 
 export const metadata: Metadata = {
   title: `Broadway ${config.labelPlural}`,
-  description: `Browse all Broadway ${config.labelPlural.toLowerCase()} and book writers ranked by number of shows and average critic score.`,
+  description: `Browse all Broadway ${config.labelPlural.toLowerCase()} and book writers ranked by number of shows and average critic score. Explore every ${config.label.toLowerCase()}'s Broadway career.`,
   alternates: { canonical: `${BASE_URL}/${config.routePath}` },
   openGraph: {
     title: `Broadway ${config.labelPlural}`,
-    description: `Browse all Broadway ${config.labelPlural.toLowerCase()} and book writers ranked by number of shows and average critic score.`,
+    description: `Browse all Broadway ${config.labelPlural.toLowerCase()} and book writers ranked by number of shows and average critic score. Explore every ${config.label.toLowerCase()}'s Broadway career.`,
     url: `${BASE_URL}/${config.routePath}`,
     images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
   },
