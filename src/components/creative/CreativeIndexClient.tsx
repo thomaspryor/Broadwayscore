@@ -128,7 +128,7 @@ export default function CreativeIndexClient({
         </svg>
         <input
           type="text"
-          placeholder={`Search ${categoryLabel.toLowerCase()}...`}
+          placeholder={`Search ${categoryLabel.toLowerCase().replace(/s$/, '')}s...`}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full bg-surface-overlay border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-brand/50"
