@@ -9,6 +9,7 @@ type SortMode = 'shows' | 'highest' | 'lowest' | 'alpha';
 interface CreativeProfileSummary {
   name: string;
   slug: string;
+  unifiedSlug?: string;
   showCount: number;
   avgScore: number | null;
   openShowCount: number;
@@ -23,9 +24,10 @@ const SORT_OPTIONS: { value: SortMode; label: string }[] = [
 ];
 
 function ProfileCard({ profile, routePath }: { profile: CreativeProfileSummary; routePath: string }) {
+  const href = profile.unifiedSlug ? `/creative/${profile.unifiedSlug}` : `/${routePath}/${profile.slug}`;
   return (
     <Link
-      href={`/${routePath}/${profile.slug}`}
+      href={href}
       className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-raised/80 transition-colors group"
     >
       {/* Avatar */}
