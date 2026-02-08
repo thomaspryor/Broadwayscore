@@ -471,3 +471,32 @@ export interface CreativeProfile {
   openShowCount: number;
   closedShowCount: number;
 }
+
+export interface UnifiedCreativeShowEntry {
+  title: string;
+  slug: string;
+  venue: string;
+  openingDate: string | null;
+  closingDate: string | null;
+  status: string;
+  type: string;
+  thumbnail: string | null;
+  isRevival: boolean;
+  season: string | null;
+  score: number | null;
+  roles: string[];
+}
+
+export interface UnifiedCreativeProfile {
+  name: string;
+  slug: string;
+  categories: CreativeCategory[];
+  allRoles: string[];
+  shows: UnifiedCreativeShowEntry[];
+  showCount: number;
+  avgScore: number | null;
+  highScore: number | null;
+  lowScore: number | null;
+  openShowCount: number;
+  closedShowCount: number;
+}
