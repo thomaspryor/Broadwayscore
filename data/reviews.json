@@ -5,14 +5,14 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 8445,
-      "skippedNoScore": 11223,
+      "skippedNoScore": 11234,
       "skippedDuplicate": 6,
       "skippedDuplicateUrl": 210,
       "skippedCrossOutletDuplicateUrl": 13,
       "skippedDuplicateText": 258,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 635,
-      "recoveredFromGarbage": 146,
+      "recoveredFromGarbage": 145,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 2,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 1,
         "human-review": 56,
         "originalScore-priority0": 1004,
-        "llmScore": 3687,
+        "llmScore": 3688,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3551,
+        "llmScore-lowconf": 3550,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
@@ -60497,7 +60497,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Marilyn Stasio",
@@ -112995,7 +112995,7 @@
       "outletId": "thewrap",
       "outlet": "TheWrap",
       "assignedScore": 52,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Robert Hofler",
@@ -113005,7 +113005,7 @@
       "pullQuote": "Beyond Harris’ very physical performance and all the staged deaths, the high point of 'Peter Pan Goes Wrong' is extremely low tech and of even lower humor.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "truncated"
     },
     {
       "showId": "peter-pan-goes-wrong-2023",
@@ -126649,7 +126649,7 @@
       "pullQuote": "Matthew Broderick and Annaleigh Ashford make an appealing team",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "sylvia-2015",
@@ -129614,7 +129614,7 @@
       "outletId": "ap",
       "outlet": "Associated Press",
       "assignedScore": 86,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Mark Kennedy",
@@ -129624,7 +129624,7 @@
       "pullQuote": "The production is a marvel of stagecraft, transforming a simple story about an autistic teenager into a visually stunning theatrical experience that pulses with energy and emotion.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
@@ -129743,7 +129743,7 @@
       "pullQuote": "The Broadway transfer of this London hit offers a theatrical experience that is both intellectually stimulating and deeply moving.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
