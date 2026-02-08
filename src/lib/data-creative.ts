@@ -2,7 +2,7 @@
 // Builds profiles for directors, playwrights, composers, lyricists at module load time
 // Import directly — NOT through data.ts barrel (bundle protection)
 
-import type { CreativeCategory, CreativeProfile, CreativeShowEntry } from './data-types';
+import type { CreativeCategory, CreativeProfile, CreativeShowEntry, UnifiedCreativeProfile, UnifiedCreativeShowEntry } from './data-types';
 import { getAllShows } from './data-core';
 import { slugify } from './data-core';
 
@@ -193,11 +193,137 @@ function buildAllProfiles() {
   }
 }
 
+// ============================================
+// Unified profiles — one page per person across ALL categories
+// ============================================
+
+const unifiedProfiles: UnifiedCreativeProfile[] = [];
+const unifiedSlugMap = new Map<string, UnifiedCreativeProfile>();
+const nameToUnifiedSlug = new Map<string, string>();
+
+function buildUnifiedProfiles() {
+  const allShows = getAllShows();
+
+  // person name → { categories, roles, showMap: slug → { entry, roles } }
+  const personMap = new Map<string, {
+    categories: Set<CreativeCategory>;
+    allRoles: Set<string>;
+    showMap: Map<string, { entry: Omit<UnifiedCreativeShowEntry, 'roles'>; roles: Set<string> }>;
+  }>();
+
+  for (const show of allShows) {
+    if (!show.creativeTeam) continue;
+
+    const baseEntry = {
+      title: show.title,
+      slug: show.slug,
+      venue: show.venue,
+      openingDate: show.openingDate || null,
+      closingDate: show.closingDate || null,
+      status: show.status,
+      type: show.type,
+      thumbnail: show.images?.thumbnail || null,
+      isRevival: !!(show.tags && show.tags.includes('revival')),
+      season: show.season || null,
+      score: show.criticScore?.score ?? null,
+    };
+
+    for (const member of show.creativeTeam) {
+      const categories = getCategoriesForRole(member.role);
+      if (categories.length === 0) continue;
+
+      let person = personMap.get(member.name);
+      if (!person) {
+        person = { categories: new Set(), allRoles: new Set(), showMap: new Map() };
+        personMap.set(member.name, person);
+      }
+
+      for (const cat of categories) {
+        person.categories.add(cat);
+      }
+      person.allRoles.add(member.role);
+
+      let showEntry = person.showMap.get(show.slug);
+      if (!showEntry) {
+        showEntry = { entry: baseEntry, roles: new Set() };
+        person.showMap.set(show.slug, showEntry);
+      }
+      showEntry.roles.add(member.role);
+    }
+  }
+
+  // Build profiles from accumulated data
+  // Use Array.from() — downlevelIteration is disabled
+  for (const [name, data] of Array.from(personMap.entries())) {
+    const shows: UnifiedCreativeShowEntry[] = [];
+    for (const [, showData] of Array.from(data.showMap.entries())) {
+      shows.push({
+        ...showData.entry,
+        roles: Array.from(showData.roles),
+      });
+    }
+
+    // Sort by opening date (newest first), nulls last
+    shows.sort((a, b) => {
+      if (!a.openingDate && !b.openingDate) return 0;
+      if (!a.openingDate) return 1;
+      if (!b.openingDate) return -1;
+      return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
+    });
+
+    const scoredShows = shows.filter(s => s.score !== null);
+    const avgScore = scoredShows.length > 0
+      ? Math.round(scoredShows.reduce((sum, s) => sum + (s.score || 0), 0) / scoredShows.length)
+      : null;
+    const highScore = scoredShows.length > 0
+      ? Math.max(...scoredShows.map(s => s.score!))
+      : null;
+    const lowScore = scoredShows.length > 0
+      ? Math.min(...scoredShows.map(s => s.score!))
+      : null;
+
+    // Slug with collision guard
+    let slug = slugify(name);
+    if (unifiedSlugMap.has(slug)) {
+      // Different person, same slug — append disambiguator
+      const existing = unifiedSlugMap.get(slug)!;
+      if (existing.name !== name) {
+        console.warn(`[data-creative] Slug collision: "${name}" and "${existing.name}" both slugify to "${slug}". Appending disambiguator.`);
+        let counter = 2;
+        while (unifiedSlugMap.has(`${slug}-${counter}`)) counter++;
+        slug = `${slug}-${counter}`;
+      }
+    }
+
+    const profile: UnifiedCreativeProfile = {
+      name,
+      slug,
+      categories: Array.from(data.categories),
+      allRoles: Array.from(data.allRoles),
+      shows,
+      showCount: shows.length,
+      avgScore,
+      highScore,
+      lowScore,
+      openShowCount: shows.filter(s => s.status === 'open' || s.status === 'previews').length,
+      closedShowCount: shows.filter(s => s.status === 'closed').length,
+    };
+
+    unifiedProfiles.push(profile);
+    unifiedSlugMap.set(slug, profile);
+    nameToUnifiedSlug.set(name, slug);
+  }
+
+  // Sort by show count descending
+  unifiedProfiles.sort((a, b) => b.showCount - a.showCount);
+}
+
 // Build on first access (lazy init)
 let built = false;
 function ensureBuilt() {
   if (!built) {
     buildAllProfiles();
+    buildUnifiedProfiles();
     built = true;
   }
 }
@@ -224,23 +350,34 @@ export function getCreativeSlugs(category: CreativeCategory): string[] {
 
 /**
  * Get the link path for a creative team member based on their role.
- * Returns the first matching category's URL, or null if no creative page exists.
+ * Returns the unified /creative/ page URL, or null if no creative page exists.
  */
-export function getCreativeLink(name: string, role: string): string | null {
+export function getCreativeLink(name: string, _role: string): string | null {
   ensureBuilt();
-  const categories = getCategoriesForRole(role);
-  if (categories.length === 0) return null;
+  const slug = nameToUnifiedSlug.get(name);
+  return slug ? `/creative/${slug}` : null;
+}
 
-  // Try each category — return the first one where this person has a profile
-  for (const cat of categories) {
-    const slugMap = categorySlugs.get(cat);
-    if (!slugMap) continue;
-    // Find profile by name match
-    for (const [, profile] of Array.from(slugMap.entries())) {
-      if (profile.name === name) {
-        return `/${CREATIVE_CATEGORY_CONFIG[cat].routePath}/${profile.slug}`;
-      }
-    }
-  }
-  return null;
+// ============================================
+// Unified profiles — public API
+// ============================================
+
+export function getUnifiedCreativeProfile(slug: string): UnifiedCreativeProfile | undefined {
+  ensureBuilt();
+  return unifiedSlugMap.get(slug);
+}
+
+export function getAllUnifiedCreativeProfiles(): UnifiedCreativeProfile[] {
+  ensureBuilt();
+  return unifiedProfiles;
+}
+
+export function getUnifiedCreativeSlugs(): string[] {
+  ensureBuilt();
+  return Array.from(unifiedSlugMap.keys());
+}
+
+export function getUnifiedSlugForName(name: string): string | undefined {
+  ensureBuilt();
+  return nameToUnifiedSlug.get(name);
 }

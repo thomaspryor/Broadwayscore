@@ -27,7 +27,27 @@
     },
     {
       "source": "/director/:path*",
-      "destination": "/directors/:path*",
+      "destination": "/creative/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/directors/:slug",
+      "destination": "/creative/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/playwrights/:slug",
+      "destination": "/creative/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/composers/:slug",
+      "destination": "/creative/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/lyricists/:slug",
+      "destination": "/creative/:slug",
       "permanent": true
     },
     {
