@@ -2,12 +2,12 @@
 /**
  * send-follow-notifications.js
  *
- * Reads show-changes-digest.json + followers.json, sends transactional
- * emails via Loops.so for each show with meaningful changes and followers.
+ * Reads show-changes-digest.json + followers.json, sends notification
+ * emails via Resend for each show with meaningful changes and followers.
  *
  * Usage: node scripts/send-follow-notifications.js [--dry-run]
  *
- * Env: LOOPS_API_KEY, LOOPS_TRANSACTIONAL_ID, DISCORD_WEBHOOK_ALERTS
+ * Env: RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS
  */
 
 const fs = require('fs');
@@ -22,10 +22,12 @@ const CHECKPOINT_PATH = path.join(__dirname, '..', 'data', 'audit', 'follow-send
 
 const DRY_RUN = process.argv.includes('--dry-run');
 
-// Budget: Loops free tier = 2,000 emails/month, reserve 400 for newsletter captures
-const MONTHLY_LIMIT = 2000;
-const BUDGET_RESERVE = 400;
-const MAX_SENDS_PER_RUN = MONTHLY_LIMIT - BUDGET_RESERVE;
+// Budget: Resend free tier = 3,000 emails/month (100/day)
+const MONTHLY_LIMIT = 3000;
+const BUDGET_RESERVE = 500;
+const MAX_SENDS_PER_RUN = Math.min(MONTHLY_LIMIT - BUDGET_RESERVE, 100); // 100/day limit on free tier
+
+const FROM_EMAIL = 'updates@broadwayscorecard.com';
 
 // High-priority change types — a single one of these warrants an email
 const HIGH_PRIORITY_TYPES = ['status-change', 'cast-change', 'lottery-added', 'recoupment'];
@@ -33,7 +35,7 @@ const HIGH_PRIORITY_TYPES = ['status-change', 'cast-change', 'lottery-added', 'r
 function loadJSON(filePath) {
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  } catch (err) {
+  } catch {
     return null;
   }
 }
@@ -75,34 +77,73 @@ function sleep(ms) {
 }
 
 function shouldNotify(changes) {
-  // Anti-spam: only send if 2+ changes OR 1 high-priority change
   if (!changes || changes.length === 0) return false;
   const hasHighPriority = changes.some(c => HIGH_PRIORITY_TYPES.includes(c.type));
   return hasHighPriority || changes.length >= 2;
 }
 
-function formatChanges(changes) {
-  return changes.map(c => `- ${c.message}`).join('\n');
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function formatChangesHtml(changes) {
-  return '<ul>' + changes.map(c => `<li>${c.message}</li>`).join('') + '</ul>';
+function buildEmailHtml(showTitle, changes, showUrl) {
+  const changesHtml = changes.map(c => {
+    const icon = c.type === 'status-change' ? '&#127917;' :
+                 c.type === 'new-reviews' ? '&#128221;' :
+                 c.type === 'score-change' ? '&#128200;' :
+                 c.type === 'cast-change' ? '&#127917;' :
+                 c.type === 'lottery-added' ? '&#127922;' :
+                 c.type === 'recoupment' ? '&#128176;' :
+                 c.type === 'date-change' ? '&#128197;' : '&#8226;';
+    return `<tr><td style="padding:6px 12px;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.5;">${icon}&nbsp; ${escapeHtml(c.message)}</td></tr>`;
+  }).join('');
+
+  return `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#0a0a0f;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0a0a0f;padding:32px 16px;">
+<tr><td align="center">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+  <tr><td style="padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.1);">
+    <span style="font-size:14px;font-weight:600;color:#a78bfa;letter-spacing:0.5px;text-transform:uppercase;">Broadway Scorecard</span>
+  </td></tr>
+  <tr><td style="padding:28px 0 8px;">
+    <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;">Updates for ${escapeHtml(showTitle)}</h1>
+  </td></tr>
+  <tr><td style="padding:16px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
+      <tr><td style="padding:16px 12px 4px;">
+        <p style="margin:0 0 8px 12px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px;">What's new</p>
+      </td></tr>
+      ${changesHtml}
+      <tr><td style="padding-bottom:12px;"></td></tr>
+    </table>
+  </td></tr>
+  <tr><td style="padding:8px 0 32px;" align="center">
+    <a href="${escapeHtml(showUrl)}" style="display:inline-block;padding:12px 32px;background-color:#a78bfa;color:#0a0a0f;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px;">View Full Details</a>
+  </td></tr>
+  <tr><td style="padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);">
+    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.3);line-height:1.6;">
+      You're receiving this because you followed ${escapeHtml(showTitle)} on <a href="https://broadwayscorecard.com" style="color:rgba(255,255,255,0.4);">Broadway Scorecard</a>.
+    </p>
+  </td></tr>
+</table>
+</td></tr></table>
+</body></html>`;
 }
 
 async function main() {
-  const LOOPS_API_KEY = process.env.LOOPS_API_KEY;
-  const LOOPS_TRANSACTIONAL_ID = process.env.LOOPS_TRANSACTIONAL_ID;
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
-  if (!LOOPS_API_KEY || !LOOPS_TRANSACTIONAL_ID) {
-    console.log('Missing LOOPS_API_KEY or LOOPS_TRANSACTIONAL_ID — skipping sends');
+  if (!RESEND_API_KEY) {
+    console.log('Missing RESEND_API_KEY — skipping sends');
     if (!DRY_RUN) process.exit(0);
   }
 
-  console.log('Send Follow Notifications');
-  console.log('=========================\n');
+  console.log('Send Follow Notifications (Resend)');
+  console.log('===================================\n');
   if (DRY_RUN) console.log('** DRY RUN — no emails will be sent **\n');
 
-  // Load data
   const digest = loadJSON(DIGEST_PATH);
   if (!digest || !digest.changes) {
     console.log('No digest found or no changes detected — nothing to send');
@@ -131,7 +172,7 @@ async function main() {
     console.log(`Resuming from checkpoint: ${alreadySent.size} already sent`);
   }
 
-  // Filter to shows with both changes and followers
+  // Build send queue
   const changesEntries = Object.entries(digest.changes);
   const sendQueue = [];
 
@@ -196,17 +237,13 @@ async function main() {
     }
 
     try {
-      await postJSON('https://app.loops.so/api/v1/transactional', {
-        transactionalId: LOOPS_TRANSACTIONAL_ID,
-        email,
-        dataVariables: {
-          showTitle,
-          changes: formatChanges(changes),
-          changesHtml: formatChangesHtml(changes),
-          showUrl,
-        },
+      await postJSON('https://api.resend.com/emails', {
+        from: `Broadway Scorecard <${FROM_EMAIL}>`,
+        to: [email],
+        subject: `Updates for ${showTitle} on Broadway Scorecard`,
+        html: buildEmailHtml(showTitle, changes, showUrl),
       }, {
-        'Authorization': `Bearer ${LOOPS_API_KEY}`,
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
       });
 
       sentCount++;
@@ -220,8 +257,8 @@ async function main() {
         console.log(`  [Checkpoint] Saved at ${sentCount} sends`);
       }
 
-      // Rate limit: 100ms between sends
-      await sleep(100);
+      // Rate limit: 200ms between sends
+      await sleep(200);
     } catch (err) {
       errorCount++;
       console.error(`  ERROR sending to ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} for ${showTitle}: ${err.message}`);
@@ -244,7 +281,7 @@ async function main() {
 
   console.log(`\nDone: ${sentCount} sent, ${errorCount} errors`);
 
-  // Clean up checkpoint on full success (no errors, all sent)
+  // Clean up checkpoint on full success
   if (!DRY_RUN && errorCount === 0 && sentCount === sendQueue.length) {
     try { fs.unlinkSync(CHECKPOINT_PATH); } catch { /* ok */ }
     console.log('Checkpoint cleaned up (full success)');
