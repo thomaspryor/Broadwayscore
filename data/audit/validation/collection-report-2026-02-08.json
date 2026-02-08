@@ -1,193 +1,173 @@
 {
-  "runDate": "2026-02-08T20:01:00.872Z",
+  "runDate": "2026-02-08T20:09:15.915Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "american-psycho-2016,lucky-guy-2013,the-price-2017,something-rotten-2015,harry-potter-2021,network-2018,company-2021,hedwig-and-the-angry-inch-2014,once-on-this-island-2017,some-like-it-hot-2022,a-view-from-the-bridge-2015,bright-star-2016,groundhog-day-2017,kpop-2022,oklahoma-2019,summer-2018,yellow-face-2024,eclipsed-2016,in-transit-2016,one-man-two-guvnors-2012,the-country-house-2014,time-and-the-conways-2017,1984-2017,a-christmas-story-the-musical-2012,dana-h-2021,hands-on-a-hardbody-2013,m-butterfly-2017,old-times-2015,sister-act-2011,the-boys-in-the-band-2018,topdog-underdog-2022,all-my-sons-2019,bandstand-2017,farinelli-and-the-king-2017,kimberly-akimbo-2022,meteor-shower-2017,sea-wall-a-life-2019,the-children-2017,the-king-and-i-2015,the-prom-2018,wicked-2003,aint-too-proud-2019,bob-fosses-dancin-2023,bronx-bombers-2014,chinglish-2011,fences-2010,frankie-and-johnny-in-the-clair-de-lune-2019,good-people-2011,illinoise-2024,memphis-2009,picnic-2013,the-audience-2015,the-crucible-2016,thoughts-of-a-colored-man-2021,violet-2014,a-raisin-in-the-sun-2014,all-my-sons-2008,charlie-and-the-chocolate-factory-2017,fiddler-on-the-roof-2015,heisenberg-2016,life-of-pi-2023,mother-play-2024,private-lives-2011,the-assembled-parties-2013,the-little-foxes-2017,the-terms-of-my-surrender-2017,west-side-story-2020,arcadia-2011,bloody-bloody-andrew-jackson-2010,cirque-du-soleil-paramour-2016,eureka-day-2024,grey-house-2023,ill-eat-you-last-a-chat-with-sue-mengers-2013,lady-day-at-emersons-bar-and-grill-2014,my-name-is-lucy-barton-2020,prima-facie-2023,scandalous-2012,stereophonic-2024,the-mystery-of-edwin-drood-2012,the-winslow-boy-2013,13-2008,a-chorus-line-2006,annie-2012,constellations-2015,fela-2009,hells-kitchen-2024,job-2024,man-and-boy-2011,operation-mincemeat-2025,priscilla-queen-of-the-desert-2011,smash-2025,sweeney-todd-2005,the-drowsy-chaperone-2006,the-lieutenant-of-inishmore-2006,the-royal-family-2009,the-year-of-magical-thinking-2007,west-side-story-2009,a-streetcar-named-desire-2012,beautiful-the-carole-king-musical-2014,bug-2026,fela-2012,guys-and-dolls-2009,it-shoulda-been-you-2015,love-letters-2014,mike-birbiglia-the-old-man-and-the-pool-2022,our-mothers-brief-affair-2016,reasons-to-be-pretty-2009,soul-doctor-2013,tarzan-2006,the-lightning-thief-2019,the-norman-conquests-2009,the-pitmen-painters-2010,the-thanksgiving-play-2023,110-in-the-shade-2007,an-enemy-of-the-people-2012,cat-on-a-hot-tin-roof-2008,company-2006,dead-accounts-2012,glengarry-glen-ross-2025,hedda-gabler-2009,inherit-the-wind-2007,lackawanna-blues-2021,marvins-room-2017,oleanna-2009,pygmalion-2007,ring-of-fire-2006,the-coast-of-utopia-2006,the-miracle-worker-2010,the-vertical-hour-2006,walking-with-ghosts-2022",
+    "showFilter": "",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 95,
+    "processed": 3,
+    "failed": 97,
     "skipped": 0,
-    "successRate": "5.0%"
+    "successRate": "3.0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 1
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 47,
-    "tier1Success": 4,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 60,
-    "tier2Success": 17,
-    "tier3Attempts": 44,
-    "tier3Success": 9,
-    "tier4Attempts": 136,
-    "tier4Success": 40,
-    "totalFailed": 94,
-    "scrapingBeeCreditsUsed": 287,
+    "tier2Attempts": 31,
+    "tier2Success": 4,
+    "tier3Attempts": 27,
+    "tier3Success": 1,
+    "tier4Attempts": 102,
+    "tier4Success": 67,
+    "totalFailed": 97,
+    "scrapingBeeCreditsUsed": 64,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 46,
-    "urlDiscoverySuccess": 22,
+    "urlDiscoveryAttempts": 19,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "all-my-sons-2019/nyt-theater--raven-snook.json",
-    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "sea-wall-a-life-2019/nyt-theater--jonathan-mandell.json"
+    "farinelli-and-the-king-2017/chicagotribune--chris-jones.json",
+    "hedwig-and-the-angry-inch-2014/chicagotribune--chris-jones.json",
+    "hedwig-and-the-angry-inch-2014/chicagotribune--unknown.json"
   ],
   "failed": [
-    "aint-too-proud-2019/nytimes--jesse-green.json",
-    "aint-too-proud-2019/vulture--jesse-green.json",
-    "all-my-sons-2008/nytimes--ben-brantley.json",
-    "all-my-sons-2008/nytimes--jesse-green.json",
-    "all-my-sons-2008/variety--david-rooney.json",
-    "all-my-sons-2019/nytimes--ben-brantley.json",
-    "all-my-sons-2019/nytimes--jesse-green.json",
-    "annie-2012/hollywood-reporter--david-rooney.json",
-    "bandstand-2017/hollywood-reporter--david-rooney.json",
-    "bandstand-2017/nytimes--jesse-green.json",
-    "bandstand-2017/variety--marilyn-stasio.json",
-    "bandstand-2017/vulture--jesse-green.json",
-    "bob-fosses-dancin-2023/variety--peter-marks.json",
-    "bob-fosses-dancin-2023/vulture--sara-holdren.json",
-    "bright-star-2016/hollywood-reporter--david-rooney.json",
-    "bright-star-2016/nytimes--ben-brantley.json",
-    "bright-star-2016/vulture--jesse-green.json",
-    "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
-    "charlie-and-the-chocolate-factory-2017/nyt-theater--david-nounou.json",
-    "chinglish-2011/nytimes--charles-isherwood.json",
-    "cirque-du-soleil-paramour-2016/vulture--jesse-green.json",
-    "company-2006/nytimes--ben-brantley.json",
-    "company-2021/nyt-theater--jonathan-mandell.json",
-    "company-2021/nytimes--jesse-green.json",
-    "company-2021/variety--peter-marks.json",
-    "dana-h-2021/hollywood-reporter--angie-han.json",
-    "dana-h-2021/nytimes--jesse-green.json",
-    "dana-h-2021/vulture--helen-shaw.json",
-    "dead-accounts-2012/hollywood-reporter--david-rooney.json",
-    "eclipsed-2016/hollywood-reporter--david-rooney.json",
-    "eclipsed-2016/vulture--jesse-green.json",
-    "farinelli-and-the-king-2017/vulture--jesse-green.json",
-    "fences-2010/variety--david-rooney.json",
-    "fiddler-on-the-roof-2015/vulture--jesse-green.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/nytimes--ben-brantley.json",
-    "good-people-2011/variety--marilyn-stasio.json",
-    "groundhog-day-2017/hollywood-reporter--david-rooney.json",
-    "groundhog-day-2017/nytimes--ben-brantley.json",
-    "groundhog-day-2017/variety--marilyn-stasio.json",
-    "guys-and-dolls-2009/nytimes--ben-brantley.json",
-    "hands-on-a-hardbody-2013/variety--marilyn-stasio.json",
-    "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json",
-    "in-transit-2016/hollywood-reporter--david-rooney.json",
-    "in-transit-2016/vulture--jesse-green.json",
-    "inherit-the-wind-2007/nytimes--ben-brantley.json",
-    "kimberly-akimbo-2022/variety--frank-rizzo.json",
-    "kpop-2022/hollywood-reporter--angie-han.json",
-    "kpop-2022/nytimes--jesse-green.json",
-    "kpop-2022/variety--aramide-tinubu.json",
-    "kpop-2022/vulture--helen-shaw.json",
-    "lady-day-at-emersons-bar-and-grill-2014/hollywood-reporter--david-rooney.json",
-    "lady-day-at-emersons-bar-and-grill-2014/nytimes--ben-brantley.json",
-    "life-of-pi-2023/variety--aramide-tinubu.json",
-    "love-letters-2014/vulture--unknown.json",
-    "lucky-guy-2013/hollywood-reporter--david-rooney.json",
-    "lucky-guy-2013/variety--marilyn-stasio.json",
-    "lucky-guy-2013/vulture--jesse-green.json",
-    "m-butterfly-2017/nytimes--ben-brantley.json",
-    "m-butterfly-2017/variety--marilyn-stasio.json",
-    "man-and-boy-2011/nytimes--ben-brantley.json",
-    "memphis-2009/nytimes--ben-brantley.json",
-    "memphis-2009/variety--charles-isherwood.json",
-    "meteor-shower-2017/nytimes--ben-brantley.json",
-    "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json",
-    "mike-birbiglia-the-old-man-and-the-pool-2022/variety--charles-isherwood.json",
-    "network-2018/hollywood-reporter--david-rooney.json",
-    "network-2018/variety--marilyn-stasio.json",
-    "network-2018/vulture--jesse-green.json",
-    "oklahoma-2019/hollywood-reporter--david-rooney.json",
-    "oklahoma-2019/nytimes--jesse-green.json",
-    "oklahoma-2019/vulture--jesse-green.json",
-    "old-times-2015/hollywood-reporter--david-rooney.json",
-    "old-times-2015/nytimes--ben-brantley.json",
-    "old-times-2015/variety--marilyn-stasio.json",
-    "old-times-2015/vulture--jesse-green.json",
-    "oleanna-2009/nytimes--ben-brantley.json",
-    "once-on-this-island-2017/nytimes--ben-brantley.json",
-    "once-on-this-island-2017/variety--marilyn-stasio.json",
-    "once-on-this-island-2017/vulture--jesse-green.json",
-    "one-man-two-guvnors-2012/variety--marilyn-stasio.json",
-    "one-man-two-guvnors-2012/vulture--jesse-green.json",
-    "picnic-2013/nytimes--ben-brantley.json",
-    "picnic-2013/vulture--jesse-green.json",
-    "prima-facie-2023/nytimes--jesse-green.json",
-    "priscilla-queen-of-the-desert-2011/vulture--jesse-green.json",
-    "ring-of-fire-2006/nytimes--ben-brantley.json",
-    "scandalous-2012/nytimes--ben-brantley.json",
-    "sister-act-2011/hollywood-reporter--david-rooney.json",
-    "sister-act-2011/nytimes--ben-brantley.json",
-    "sister-act-2011/variety--marilyn-stasio.json",
-    "sister-act-2011/vulture--jesse-green.json",
-    "some-like-it-hot-2022/hollywood-reporter--angie-han.json",
-    "some-like-it-hot-2022/nytimes--jesse-green.json",
-    "something-rotten-2015/hollywood-reporter--david-rooney.json",
-    "something-rotten-2015/nytimes--ben-brantley.json"
+    "and-juliet-2022/nydailynews--chris-jones.json",
+    "a-behanding-in-spokane-2010/chicagotribune--chris-jones.json",
+    "a-bronx-tale-the-musical-2016/chicagotribune--chris-jones.json",
+    "a-dolls-house-part-2-2017/chicagotribune--chris-jones.json",
+    "a-life-in-the-theatre-2010/chicagotribune--chris-jones.json",
+    "a-raisin-in-the-sun-2014/chicagotribune--chris-jones.json",
+    "a-streetcar-named-desire-2012/chicagotribune--chris-jones.json",
+    "a-view-from-the-bridge-2015/chicagotribune--chris-jones.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/chicagotribune--chris-jones.json",
+    "act-one-2014/chicagotribune--chris-jones.json",
+    "after-midnight-2013/chicagotribune--chris-jones.json",
+    "after-miss-julie-2009/chicagotribune--chris-jones.json",
+    "aint-no-mo-2022/chicagotribune--chris-jones.json",
+    "all-the-way-2014/chicagotribune--chris-jones.json",
+    "allegiance-2015/chicagotribune--chris-jones.json",
+    "almost-famous-2022/chicagotribune--chris-jones.json",
+    "american-buffalo-2008/chicagotribune--chris-jones.json",
+    "american-buffalo-2022/chicagotribune--chris-jones.json",
+    "american-idiot-2010/chicagotribune--chris-jones.json",
+    "american-psycho-2016/chicagotribune--chris-jones.json",
+    "american-son-2018/chicagotribune--chris-jones.json",
+    "an-american-in-paris-2015/chicagotribune--chris-jones.json",
+    "angels-in-america-2018/chicagotribune--chris-jones.json",
+    "august-osage-county-2007/chicagotribune--unknown.json",
+    "baby-its-you-2011/chicagotribune--chris-jones.json",
+    "bandstand-2017/chicagotribune--chris-jones.json",
+    "be-more-chill-2019/chicagotribune--chris-jones.json",
+    "beautiful-the-carole-king-musical-2014/chicagotribune--chris-jones.json",
+    "bengal-tiger-at-the-baghdad-zoo-2011/chicagotribune--chris-jones.json",
+    "bernhardthamlet-2018/chicagotribune--chris-jones.json",
+    "betrayal-2013/chicagotribune--chris-jones.json",
+    "betrayal-2019/chicagotribune--unknown.json",
+    "big-fish-2013/chicagotribune--chris-jones.json",
+    "big-fish-2013/chicagotribune--unknown.json",
+    "billy-elliot-the-musical-2008/chicagotribune--chris-jones.json",
+    "birthday-candles-2022/chicagotribune--chris-jones.json",
+    "bloody-bloody-andrew-jackson-2010/chicagotribune--chris-jones.json",
+    "bob-fosses-dancin-2023/chicagotribune--chris-jones.json",
+    "book-of-mormon-2011/chicagotribune--.json",
+    "book-of-mormon-2011/chicagotribune--chris-jones.json",
+    "breakfast-at-tiffanys-2013/chicagotribune--chris-jones.json",
+    "bright-star-2016/chicagotribune--chris-jones.json",
+    "bright-star-2016/chicagotribune--unknown.json",
+    "bullets-over-broadway-2014/chicagotribune--chris-jones.json",
+    "butley-2006/chicagotribune--chris-jones.json",
+    "cabaret-2014/chicagotribune--chris-jones.json",
+    "carousel-2018/chicagotribune--chris-jones.json",
+    "cat-on-a-hot-tin-roof-2013/chicagotribune--chris-jones.json",
+    "catch-me-if-you-can-2011/chicagotribune--chris-jones.json",
+    "cats-1982/chicagotribune--chris-jones.json",
+    "chaplin-2012/chicagotribune--chris-jones.json",
+    "charlie-and-the-chocolate-factory-2017/chicagotribune--chris-jones.json",
+    "chess-2025/chicagotribune--chris-jones.json",
+    "chicago-1996/chicagotribune--chris-jones.json",
+    "china-doll-2015/chicagotribune--chris-jones.json",
+    "chinglish-2011/chicagotribune--chris-jones.json",
+    "come-fly-away-2010/chicagotribune--chris-jones.json",
+    "come-from-away-2017/chicagotribune--chris-jones.json",
+    "cult-of-love-2024/chicagotribune--chris-jones.json",
+    "dead-accounts-2012/chicagotribune--chris-jones.json",
+    "dead-outlaw-2025/chicagotribune--chris-jones.json",
+    "dear-evan-hansen-2016/chicagotribune--chris-jones.json",
+    "death-becomes-her-2024/chicagotribune--chris-jones.json",
+    "disaster-2016/chicagotribune--chris-jones.json",
+    "enron-2010/chicagotribune--chris-jones.json",
+    "equus-2008/chicagotribune--chris-jones.json",
+    "finding-neverland-2015/chicagotribune--chris-jones.json",
+    "floyd-collins-2025/chicagotribune--chris-jones.json",
+    "follies-2011/chicagotribune--chris-jones.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/chicagotribune--chris-jones.json",
+    "frozen-2018/chicagotribune--chris-jones.json",
+    "fun-home-2015/chicagotribune--chris-jones.json",
+    "fun-home-2015/chicagotribune--unknown.json",
+    "ghetto-klown-2011/chicagotribune--chris-jones.json",
+    "ghost-the-musical-2012/chicagotribune--chris-jones.json",
+    "gigi-2015/chicagotribune--chris-jones.json",
+    "girl-from-the-north-country-2022/chicagotribune--chris-jones.json",
+    "glengarry-glen-ross-2012/chicagotribune--chris-jones.json",
+    "good-night-and-good-luck-2025/chicagotribune--chris-jones.json",
+    "good-night-oscar-2023/chicagotribune--chris-jones.json",
+    "grey-house-2023/chicagotribune--chris-jones.json",
+    "groundhog-day-2017/chicagotribune--sam-marlowe.json",
+    "guys-and-dolls-2009/chicagotribune--chris-jones.json",
+    "hand-to-god-2015/chicagotribune--chris-jones.json",
+    "hands-on-a-hardbody-2013/chicagotribune--chris-jones.json",
+    "head-over-heels-2018/chicagotribune--chris-jones.json",
+    "heart-of-rock-and-roll-2024/chicagotribune--chris-jones.json",
+    "hello-dolly-2017/chicagotribune--chris-jones.json",
+    "here-lies-love-2023/chicagotribune--chris-jones.json",
+    "hillary-and-clinton-2019/chicagotribune--chris-jones.json",
+    "home-2024/chicagotribune--chris-jones.json",
+    "how-to-succeed-in-business-without-really-trying-2011/chicagotribune--chris-jones.json",
+    "i-need-that-2023/chicagotribune--chris-jones.json",
+    "ifthen-2014/chicagotribune--chris-jones.json",
+    "ill-eat-you-last-a-chat-with-sue-mengers-2013/chicagotribune--chris-jones.json",
+    "indecent-2017/chicagotribune--chris-jones.json",
+    "it-shoulda-been-you-2015/chicagotribune--chris-jones.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "all-my-sons-2019/nyt-theater--raven-snook.json",
-      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
-      "sea-wall-a-life-2019/nyt-theater--jonathan-mandell.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "grey-house-2023/newyorker--dan-stahl.json"
-    ],
-    "brightdata": [
-      "all-my-sons-2019/nytimes--jesse-green.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archive": [
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
+      "farinelli-and-the-king-2017/chicagotribune--chris-jones.json",
+      "hedwig-and-the-angry-inch-2014/chicagotribune--chris-jones.json",
+      "hedwig-and-the-angry-inch-2014/chicagotribune--unknown.json"
     ]
   },
   "failuresByOutlet": {
-    "The New York Times": {
-      "count": 10,
-      "domain": "nytimes.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Vulture": {
-      "count": 7,
-      "domain": "vulture.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "The Hollywood Reporter": {
-      "count": 5,
-      "domain": "hollywoodreporter.com",
+    "Chicago Tribune": {
+      "count": 22,
+      "domain": "chicagotribune.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "Variety": {
-      "count": 6,
-      "domain": "variety.com",
+    "The Chicago Tribune": {
+      "count": 1,
+      "domain": "chicagotribune.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
@@ -195,114 +175,14 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2008/03/07/theater/reviews/07cat.html",
-      "newUrl": "https://www.nytimes.com/2008/03/07/theater/reviews/07roof.html"
+      "reviewId": "american-buffalo-2022/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/ct-ent-american-buffalo-broadway-review-20220415-6xqzlqxoqfgkxbwxvyqzqzqzqz-story.html",
+      "newUrl": "https://www.chicagotribune.com/2022/04/14/review-american-buffalo-opens-on-broadway-with-laurence-fishburne-a-blast-of-a-mamet-play-that-stops-short-of-the-biggest-score/"
     },
     {
-      "reviewId": "charlie-and-the-chocolate-factory-2017/nyt-theater--david-nounou.json",
-      "oldUrl": "https://newyorktheater.me/2017/04/24/charlie-and-the-chocolate-factory-review/",
-      "newUrl": "https://newyorktheater.me/2017/04/26/charlie-and-the-chocolate-factory-broadway-review-death-by-chocolate/"
-    },
-    {
-      "reviewId": "chinglish-2011/nytimes--charles-isherwood.json",
-      "oldUrl": "https://www.nytimes.com/2011/10/28/theater/reviews/chinglish-by-david-henry-hwang-review.html",
-      "newUrl": "https://www.nytimes.com/2011/10/28/theater/reviews/chinglish-by-david-henry-hwang-at-longacre-theater-review.html"
-    },
-    {
-      "reviewId": "company-2021/nyt-theater--jonathan-mandell.json",
-      "oldUrl": "https://newyorktheater.me/2021/12/11/company-revival-review/",
-      "newUrl": "https://newyorktheater.me/2021/12/09/company-on-broadway-review-sondheim-helps-us-survive-being-alive/"
-    },
-    {
-      "reviewId": "company-2021/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2021/12/09/theater/company-review-patti-lupone.html",
-      "newUrl": "https://www.nytimes.com/2021/12/09/theater/company-review-sondheim.html"
-    },
-    {
-      "reviewId": "eclipsed-2016/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2016/03/theater-review-eclipsed.html",
-      "newUrl": "https://www.vulture.com/2016/03/theater-reviews-eclipsed.html"
-    },
-    {
-      "reviewId": "farinelli-and-the-king-2017/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2017/12/theater-review-farinelli-and-the-king.html",
-      "newUrl": "https://www.vulture.com/2017/12/two-critics-review-one-show-farinelli-and-the-king.html"
-    },
-    {
-      "reviewId": "in-transit-2016/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/in-transit-theater-review-1058031/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/transit-review-955048/"
-    },
-    {
-      "reviewId": "lady-day-at-emersons-bar-and-grill-2014/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/lady-day-at-emersons-bar-695193/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/theater-review-audra-mcdonald-lady-695753/"
-    },
-    {
-      "reviewId": "lucky-guy-2013/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/lucky-guy-theater-review-tom-437039/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/lucky-guy-theater-review-432116/"
-    },
-    {
-      "reviewId": "lucky-guy-2013/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2013/04/theater-review-lucky-guy.html",
-      "newUrl": "https://www.vulture.com/2013/04/theater-review-lucky-guys-love-for-newsrooms.html"
-    },
-    {
-      "reviewId": "m-butterfly-2017/variety--marilyn-stasio.json",
-      "oldUrl": "https://variety.com/2017/legit/reviews/m-butterfly-review-clive-owen-1202593916/",
-      "newUrl": "https://variety.com/2017/legit/reviews/m-butterfly-review-julie-taymor-clive-owen-1202600155/"
-    },
-    {
-      "reviewId": "man-and-boy-2011/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2011/11/15/theater/reviews/man-and-boy-with-frank-langella-review.html",
-      "newUrl": "https://www.nytimes.com/2011/10/10/theater/reviews/man-and-boy-with-frank-langella-review.html"
-    },
-    {
-      "reviewId": "network-2018/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/review/network-theater-review-1162090/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/network-theater-1167200/"
-    },
-    {
-      "reviewId": "oklahoma-2019/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2019/04/08/theater/oklahoma-review-broadway.html",
-      "newUrl": "https://www.nytimes.com/2019/04/07/theater/oklahoma-review.html"
-    },
-    {
-      "reviewId": "oklahoma-2019/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2019/04/theater-review-oklahoma-on-broadway.html",
-      "newUrl": "https://www.vulture.com/2019/04/the-brightness-amid-the-menace-re-reviewing-oklahoma.html"
-    },
-    {
-      "reviewId": "one-man-two-guvnors-2012/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2012/04/theater-review-one-man-two-guvnors.html",
-      "newUrl": "https://www.vulture.com/2012/04/stage-dive-theater-review-one-man-two-guvnors.html"
-    },
-    {
-      "reviewId": "picnic-2013/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2013/01/14/theater/reviews/picnic-by-william-inge-on-broadway.html",
-      "newUrl": "https://www.nytimes.com/2013/01/14/theater/reviews/picnic-at-american-airlines-theater.html"
-    },
-    {
-      "reviewId": "scandalous-2012/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2012/11/16/theater/reviews/scandalous-a-musical-about-aimee-semple-mcpherson.html",
-      "newUrl": "https://www.nytimes.com/2012/11/16/theater/reviews/scandalous-the-life-and-trials-of-aimee-semple-mcpherson.html"
-    },
-    {
-      "reviewId": "sister-act-2011/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/sister-act-broadway-review-179058/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/sister-act-theater-review-180739/"
-    },
-    {
-      "reviewId": "sister-act-2011/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2011/04/21/theater/reviews/sister-act-at-broadway-theater-review.html",
-      "newUrl": "https://www.nytimes.com/2011/04/21/theater/reviews/sister-act-comes-to-broadway-review.html"
-    },
-    {
-      "reviewId": "sister-act-2011/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2011/04/theater_review_sister_act.html",
-      "newUrl": "https://www.vulture.com/2011/04/theater_review_sister_acts_cha.html"
+      "reviewId": "catch-me-if-you-can-2011/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2011/04/01/catch-me-if-you-can-on-broadway-adaptation-couldve-stuck-more-closely-to-the-script/",
+      "newUrl": "https://www.chicagotribune.com/2025/09/05/review-catch-me-if-you-can-marriott/"
     }
   ]
 }
