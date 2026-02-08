@@ -31,7 +31,7 @@ on:
       max_rounds:
         description: 'Max self-chaining rounds (0 = no chaining)'
         required: false
-        default: '3'
+        default: '50'
       current_round:
         description: 'Current round (auto-set by chaining)'
         required: false
