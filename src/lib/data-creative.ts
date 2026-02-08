@@ -221,3 +221,26 @@ export function getCreativeSlugs(category: CreativeCategory): string[] {
   const slugMap = categorySlugs.get(category);
   return slugMap ? Array.from(slugMap.keys()) : [];
 }
+
+/**
+ * Get the link path for a creative team member based on their role.
+ * Returns the first matching category's URL, or null if no creative page exists.
+ */
+export function getCreativeLink(name: string, role: string): string | null {
+  ensureBuilt();
+  const categories = getCategoriesForRole(role);
+  if (categories.length === 0) return null;
+
+  // Try each category — return the first one where this person has a profile
+  for (const cat of categories) {
+    const slugMap = categorySlugs.get(cat);
+    if (!slugMap) continue;
+    // Find profile by name match
+    for (const [, profile] of Array.from(slugMap.entries())) {
+      if (profile.name === name) {
+        return `/${CREATIVE_CATEGORY_CONFIG[cat].routePath}/${profile.slug}`;
+      }
+    }
+  }
+  return null;
+}
