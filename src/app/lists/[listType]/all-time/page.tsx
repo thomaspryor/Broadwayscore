@@ -31,7 +31,7 @@ export function generateMetadata({ params }: { params: { listType: string } }): 
   const config = GOLD_LIST_MAP[params.listType as GoldListType];
   if (!config) return {};
 
-  const title = `${config.title} — All-Time | Broadway Scorecard`;
+  const title = `${config.title} — All-Time`;
   const description = `${config.description}. The top ${config.maxAllTime} Broadway shows of all time.`;
 
   return {

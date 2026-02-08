@@ -3,12 +3,12 @@ import { getCreativeProfiles, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creati
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import CreativeIndexClient from '@/components/creative/CreativeIndexClient';
 
-const CAT = 'lyricist' as const;
+const CAT = 'director' as const;
 const config = CREATIVE_CATEGORY_CONFIG[CAT];
 
 export const metadata: Metadata = {
   title: `Broadway ${config.labelPlural}`,
-  description: `Browse all Broadway ${config.labelPlural.toLowerCase()} ranked by number of shows and average critic score. Explore every ${config.label.toLowerCase()}'s Broadway career.`,
+  description: `Browse all Broadway ${config.labelPlural.toLowerCase()} ranked by number of shows and average critic score.`,
   alternates: { canonical: `${BASE_URL}/${config.routePath}` },
   openGraph: {
     title: `Broadway ${config.labelPlural}`,
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: { card: 'summary' },
 };
 
-export default function LyricistsIndexPage() {
+export default function DirectorsIndexPage() {
   const profiles = getCreativeProfiles(CAT);
   const totalShows = new Set(profiles.flatMap(p => p.shows.map(s => s.slug))).size;
 
