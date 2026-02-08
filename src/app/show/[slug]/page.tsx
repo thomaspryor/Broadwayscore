@@ -753,7 +753,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium ${listConfig.bgClass} ${listConfig.color} border ${listConfig.borderClass} hover:brightness-125 transition-all`}
                 >
                   <span>{listConfig.icon}</span>
-                  <span>{listConfig.shortTitle} Gold #{m.rank}</span>
+                  <span>{listConfig.shortTitle} Gold List #{m.rank}</span>
                   <span className="text-gray-500">({m.season})</span>
                 </Link>
               );
