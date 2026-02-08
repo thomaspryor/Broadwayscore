@@ -5,7 +5,7 @@ import SubmitReviewForm from '@/components/SubmitReviewForm';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export const metadata: Metadata = {
-  title: 'Submit a Missing Broadway Review | Broadway Scorecard',
+  title: 'Submit a Missing Broadway Review',
   description: 'Help us expand our database by submitting missing Broadway reviews from professional critics.',
   alternates: {
     canonical: `${BASE_URL}/submit-review`,

@@ -5,7 +5,7 @@ import FeedbackForm from '@/components/FeedbackForm';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export const metadata: Metadata = {
-  title: 'Feedback & Bug Reports | Broadway Scorecard',
+  title: 'Feedback & Bug Reports',
   description: 'Share your feedback, report bugs, or suggest new features for Broadway Scorecard.',
   alternates: {
     canonical: `${BASE_URL}/feedback`,
