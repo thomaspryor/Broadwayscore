@@ -131,9 +131,36 @@ async function main() {
     : { _meta: {}, shows: {} };
 
   const force = process.argv.includes('--force');
+  const cleanupOrphans = process.argv.includes('--cleanup-orphans');
   let processedCount = 0;
   let skippedCount = 0;
   let errorCount = 0;
+
+  // Build show ID set for existence checks
+  const showIdSet = new Set(showsData.shows.map(s => s.id));
+  const showStatusMap = {};
+  for (const s of showsData.shows) {
+    showStatusMap[s.id] = s.status;
+  }
+
+  // Layer 5c: Orphan cleanup — remove consensus for shows not in shows.json
+  {
+    const orphanIds = Object.keys(consensusData.shows).filter(id => !showIdSet.has(id));
+    if (orphanIds.length > 0) {
+      if (cleanupOrphans) {
+        console.log(`🧹 Removing ${orphanIds.length} orphaned consensus entries:`);
+        for (const id of orphanIds) {
+          console.log(`  - ${id}`);
+          delete consensusData.shows[id];
+        }
+      } else {
+        console.log(`⚠️  Found ${orphanIds.length} orphaned consensus entries (show not in shows.json):`);
+        orphanIds.slice(0, 5).forEach(id => console.log(`  - ${id}`));
+        if (orphanIds.length > 5) console.log(`  ... and ${orphanIds.length - 5} more`);
+        console.log('  Run with --cleanup-orphans to remove them.\n');
+      }
+    }
+  }
 
   for (const show of showsData.shows) {
     const showId = show.id;
@@ -143,6 +170,21 @@ async function main() {
 
     // Load reviews
     const reviews = loadReviewTexts(showId);
+
+    // Layer 5a: Input validation — minimum review threshold
+    const scoredReviews = reviews.filter(r => r.score != null);
+    if (scoredReviews.length < 2) {
+      console.log(`  ⏭️  Skipped - only ${scoredReviews.length} scored reviews (need 2+)`);
+      skippedCount++;
+      continue;
+    }
+
+    // Layer 5a: Input validation — previews guard
+    if (showStatusMap[showId] === 'previews' && scoredReviews.length === 0) {
+      console.log(`  ⏭️  Skipped - previews show with 0 scored reviews`);
+      skippedCount++;
+      continue;
+    }
 
     if (reviews.length === 0) {
       console.log(`  ⏭️  Skipped - no review texts available`);
@@ -167,14 +209,45 @@ async function main() {
       console.log(`  🤖 Generating consensus from ${reviews.length} reviews...`);
       const consensus = await generateConsensus(showTitle, reviews);
 
-      // Store result
-      consensusData.shows[showId] = {
-        text: consensus,
-        lastUpdated: new Date().toISOString().split('T')[0],
-        reviewCount: reviews.length,
-      };
+      // Layer 5b: Output validation — LLM refusal detection
+      const REFUSAL_PATTERNS = [
+        /I apologize/i,
+        /I cannot provide/i,
+        /I'm unable/i,
+        /I can't generate/i,
+        /based on these reviews/i,
+        /I don't have enough/i,
+        /As an AI/i,
+      ];
+      const isRefusal = REFUSAL_PATTERNS.some(p => p.test(consensus));
+      if (isRefusal) {
+        console.warn(`  ⚠️  LLM refusal detected — skipping: "${consensus.slice(0, 80)}..."`);
+        errorCount++;
+        continue;
+      }
 
-      console.log(`  ✅ Generated: "${consensus.slice(0, 80)}..."`);
+      // Layer 5b: Output validation — length check (> 280 chars = too long)
+      if (consensus.length > 280) {
+        console.warn(`  ⚠️  Generated ${consensus.length} chars (max 280) — truncating at sentence boundary`);
+        const truncated = consensus.substring(0, 280);
+        const lastSentence = truncated.lastIndexOf('.');
+        const finalText = lastSentence > 100 ? truncated.substring(0, lastSentence + 1) : truncated;
+
+        consensusData.shows[showId] = {
+          text: finalText,
+          lastUpdated: new Date().toISOString().split('T')[0],
+          reviewCount: reviews.length,
+        };
+      } else {
+        // Store result
+        consensusData.shows[showId] = {
+          text: consensus,
+          lastUpdated: new Date().toISOString().split('T')[0],
+          reviewCount: reviews.length,
+        };
+      }
+
+      console.log(`  ✅ Generated: "${(consensusData.shows[showId].text).slice(0, 80)}..."`);
       processedCount++;
 
       // Rate limiting - wait 1 second between API calls

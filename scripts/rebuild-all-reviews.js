@@ -29,6 +29,7 @@ const { getOutletDisplayName } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
+const { excerptMentionsWrongShow, isTourReviewExcerpt } = require('./lib/excerpt-validation');
 
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
@@ -348,6 +349,35 @@ function cleanExcerpt(text, aggressive = false) {
   // Reject URLs masquerading as excerpts
   if (/^https?:\/\//i.test(cleaned.trim())) return null;
 
+  // --- Layer 1: Systematic excerpt quality gates ---
+
+  // Strip "Average Rating: XX%" and everything after (BWW metadata leak)
+  cleaned = cleaned.replace(/Average Rating:.*$/s, '');
+
+  // Strip JSON-LD fragments (BWW page data)
+  cleaned = cleaned.replace(/\{\s*"@context".*$/s, '');
+
+  // Strip CRITIC'S PICK prefix (NYT designation leaked into excerpt)
+  cleaned = cleaned.replace(/^\*?CRITIC[''\u2019]?S PICK\*?\s*/i, '');
+
+  // Strip embedded critic attribution at start: "Laura Collins-Hughes, New York Times: "
+  // Only within first 80 chars and must match "Name Name, Outlet Words: " pattern
+  cleaned = cleaned.replace(/^[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-zA-Z'-]+,\s+[A-Z][\w\s&.'-]{2,40}:\s*/, '');
+
+  // Strip leading colon/comma artifacts (from aggregator excerpt extraction)
+  // Must run AFTER attribution strip since `: "text"` may remain
+  cleaned = cleaned.replace(/^[,\s]*:\s*/, '');
+
+  // Strip control characters (U+0080–U+009F range — invisible C1 control codes)
+  cleaned = cleaned.replace(/[\u0080-\u009F]/g, '');
+
+  // Fix remaining mojibake: standalone â before whitespace → em-dash
+  cleaned = cleaned.replace(/â\s/g, '\u2014 ');
+  // Standalone â at end of text
+  cleaned = cleaned.replace(/â$/, '\u2014');
+
+  // --- End Layer 1 ---
+
   // Strip navigation/boilerplate prefixes
   cleaned = cleaned.replace(/^Skip to (content|main content)\s*/i, '');
   cleaned = cleaned.replace(/^(This article was published more than[^.]*\.\s*)?Democracy Dies in Darkness\s*/i, '');
@@ -436,6 +466,9 @@ function extractExcerptFromFullText(fullText, showTitle) {
   if (!fullText || fullText.length < 200) return null;
 
   let text = fixMissingPeriods(fixMojibake(decodeHtmlEntities(fullText)));
+
+  // Strip control characters (U+0080–U+009F range)
+  text = text.replace(/[\u0080-\u009F]/g, '');
 
   // Strip leading star ratings (★★★★☆, ⭐⭐⭐, etc.)
   text = text.replace(/^[\s★☆⭐✩✪❤]+/, '');
@@ -672,7 +705,51 @@ function extractExcerptFromFullText(fullText, showTitle) {
  * Priority: LLM keyPhrases > showScoreExcerpt > bwwExcerpt > nycTheatreExcerpt >
  *           dtliExcerpt > fullText extract > existing pullQuote
  */
-function selectBestExcerpt(data) {
+// Cross-show validation: dry-run by default (log but don't suppress)
+const CROSS_SHOW_DRY_RUN = process.env.DRY_RUN_CROSS_SHOW !== 'false';
+
+function selectBestExcerpt(data, showTitle) {
+  const showId = data.showId;
+
+  /**
+   * Validate an excerpt candidate against cross-show and tour guards.
+   * Returns the excerpt if valid, null if suppressed.
+   */
+  function validateExcerpt(excerpt, source) {
+    if (!excerpt) return null;
+
+    // Layer 3: Cross-show validation
+    const crossCheck = excerptMentionsWrongShow(excerpt, showId, showTitle);
+    if (crossCheck.isWrongShow) {
+      const msg = `[cross-show] ${showId}: "${source}" mentions "${crossCheck.mentionedTitle}" (${crossCheck.mentionedShowId})`;
+      if (CROSS_SHOW_DRY_RUN) {
+        // Log only — don't suppress
+        if (!stats.crossShowExcerptFlags) stats.crossShowExcerptFlags = [];
+        stats.crossShowExcerptFlags.push({ showId, source, mentionedTitle: crossCheck.mentionedTitle, mentionedShowId: crossCheck.mentionedShowId });
+        console.log(`  ⚠️  DRY-RUN ${msg}`);
+        // Return excerpt anyway in dry-run mode
+      } else {
+        if (!stats.crossShowExcerptSuppressed) stats.crossShowExcerptSuppressed = [];
+        stats.crossShowExcerptSuppressed.push({ showId, source, mentionedTitle: crossCheck.mentionedTitle });
+        console.log(`  🚫 SUPPRESSED ${msg}`);
+        return null;
+      }
+    }
+
+    // Layer 4: Tour review detection (only for non-tour-stop shows)
+    if (data._showStatus !== 'tour-stop') {
+      const tourCheck = isTourReviewExcerpt(excerpt);
+      if (tourCheck.isTourReview) {
+        if (!stats.tourExcerptFlags) stats.tourExcerptFlags = [];
+        stats.tourExcerptFlags.push({ showId, source, signal: tourCheck.signal });
+        console.log(`  ⚠️  [tour-excerpt] ${showId}: "${source}" has tour signal: ${tourCheck.signal}`);
+        // Tour detection is always log-only for now (excerpt still used)
+      }
+    }
+
+    return excerpt;
+  }
+
   // 1. Try LLM-extracted key phrases first (already curated quotes!)
   if (data.llmScore?.keyPhrases?.length > 0) {
     // Find a positive or descriptive quote
@@ -680,7 +757,8 @@ function selectBestExcerpt(data) {
       if (phrase.quote && phrase.quote.length > 30 && phrase.sentiment !== 'negative') {
         const cleaned = cleanExcerpt(phrase.quote);
         if (cleaned && !isJunkExcerpt(cleaned)) {
-          return cleaned;
+          const validated = validateExcerpt(cleaned, 'keyPhrase');
+          if (validated) return validated;
         }
       }
     }
@@ -689,7 +767,8 @@ function selectBestExcerpt(data) {
       if (phrase.quote && phrase.quote.length > 30) {
         const cleaned = cleanExcerpt(phrase.quote);
         if (cleaned && !isJunkExcerpt(cleaned)) {
-          return cleaned;
+          const validated = validateExcerpt(cleaned, 'keyPhrase');
+          if (validated) return validated;
         }
       }
     }
@@ -699,7 +778,8 @@ function selectBestExcerpt(data) {
   if (data.llmScore?.keyQuote && data.llmScore.keyQuote.length > 30) {
     const cleaned = cleanExcerpt(data.llmScore.keyQuote);
     if (cleaned && !isJunkExcerpt(cleaned)) {
-      return cleaned;
+      const validated = validateExcerpt(cleaned, 'keyQuote');
+      if (validated) return validated;
     }
   }
 
@@ -707,7 +787,8 @@ function selectBestExcerpt(data) {
   if (data.showScoreExcerpt) {
     const cleaned = cleanExcerpt(data.showScoreExcerpt);
     if (cleaned && cleaned.length > 40) {
-      return cleaned;
+      const validated = validateExcerpt(cleaned, 'showScoreExcerpt');
+      if (validated) return validated;
     }
   }
 
@@ -715,7 +796,8 @@ function selectBestExcerpt(data) {
   if (data.bwwExcerpt) {
     const cleaned = cleanExcerpt(data.bwwExcerpt);
     if (cleaned && cleaned.length > 40) {
-      return cleaned;
+      const validated = validateExcerpt(cleaned, 'bwwExcerpt');
+      if (validated) return validated;
     }
   }
 
@@ -723,7 +805,8 @@ function selectBestExcerpt(data) {
   if (data.nycTheatreExcerpt) {
     const cleaned = cleanExcerpt(data.nycTheatreExcerpt);
     if (cleaned && cleaned.length > 40) {
-      return cleaned;
+      const validated = validateExcerpt(cleaned, 'nycTheatreExcerpt');
+      if (validated) return validated;
     }
   }
 
@@ -731,7 +814,8 @@ function selectBestExcerpt(data) {
   if (data.dtliExcerpt) {
     const cleaned = cleanExcerpt(data.dtliExcerpt, true);
     if (cleaned && cleaned.length > 40) {
-      return cleaned;
+      const validated = validateExcerpt(cleaned, 'dtliExcerpt');
+      if (validated) return validated;
     }
   }
 
@@ -740,7 +824,8 @@ function selectBestExcerpt(data) {
   if (data.fullText && data.fullText.length > 300 && data.textStatus !== 'truncated') {
     const extracted = extractExcerptFromFullText(data.fullText, data.showId);
     if (extracted && extracted.length > 50) {
-      return extracted;
+      const validated = validateExcerpt(extracted, 'fullText');
+      if (validated) return validated;
     }
   }
 
@@ -748,7 +833,8 @@ function selectBestExcerpt(data) {
   if (data.pullQuote) {
     const cleaned = cleanExcerpt(data.pullQuote);
     if (cleaned && cleaned.length > 40) {
-      return cleaned;
+      const validated = validateExcerpt(cleaned, 'pullQuote');
+      if (validated) return validated;
     }
   }
 
@@ -1085,10 +1171,12 @@ console.log('NOTE: Reviews without valid scores are EXCLUDED (no default of 50)\
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
 const showDateMap = {};
 const showStatusMap = {};
+const showTitleMap = {};
 for (const s of showsData.shows) {
   const earliest = s.previewsStartDate || s.openingDate;
   if (earliest) showDateMap[s.id] = new Date(earliest);
   showStatusMap[s.id] = s.status;
+  showTitleMap[s.id] = s.title;
 }
 
 // Build director cross-check lookup for multi-production shows
@@ -1447,7 +1535,8 @@ showDirs.forEach(showId => {
         publishDate: data.publishDate || null,
         originalRating: data.originalScore || null,
         pullQuote: (() => {
-          const raw = selectBestExcerpt(data);
+          data._showStatus = showStatusMap[showId];
+          const raw = selectBestExcerpt(data, showTitleMap[showId]);
           if (raw && isJunkExcerpt(raw)) return null;
           return normalizeQuoteWrapping(raw);
         })(),
@@ -1665,6 +1754,96 @@ const output = {
 
 // Write output
 fs.writeFileSync(reviewsJsonPath, JSON.stringify(output, null, 2));
+
+// ========================================
+// 4: POST-REBUILD EXCERPT AUDIT (Layer 2)
+// ========================================
+{
+  const excerptAuditIssues = [];
+  let pullQuoteCount = 0;
+
+  for (const review of allReviews) {
+    const pq = review.pullQuote;
+    if (pq) pullQuoteCount++;
+    if (!pq) continue;
+
+    // Leading colon or comma
+    if (/^[,:\s]*[,:]/.test(pq)) {
+      excerptAuditIssues.push({ type: 'leading-artifact', showId: review.showId, outlet: review.outlet, preview: pq.substring(0, 60) });
+    }
+    // Metadata fragments
+    if (/Average Rating/i.test(pq) || /"@context"/i.test(pq)) {
+      excerptAuditIssues.push({ type: 'metadata-leak', showId: review.showId, outlet: review.outlet, preview: pq.substring(0, 60) });
+    }
+    // Control characters (U+0080–U+009F)
+    if (/[\u0080-\u009F]/.test(pq)) {
+      excerptAuditIssues.push({ type: 'control-chars', showId: review.showId, outlet: review.outlet, preview: pq.substring(0, 60) });
+    }
+    // Very short (likely truncated)
+    if (pq.length < 20) {
+      excerptAuditIssues.push({ type: 'too-short', showId: review.showId, outlet: review.outlet, preview: pq });
+    }
+    // Mojibake remnants
+    if (/â[€\u0080]/.test(pq) || /Ã[©¨¶¼®´]/.test(pq)) {
+      excerptAuditIssues.push({ type: 'mojibake', showId: review.showId, outlet: review.outlet, preview: pq.substring(0, 60) });
+    }
+  }
+
+  // Count regression check: compare with previous reviews.json
+  let previousPullQuoteCount = null;
+  if (fs.existsSync(reviewsJsonPath + '.bak')) {
+    try {
+      const prev = JSON.parse(fs.readFileSync(reviewsJsonPath + '.bak', 'utf8'));
+      previousPullQuoteCount = (prev.reviews || []).filter(r => r.pullQuote).length;
+    } catch (e) { /* ignore */ }
+  }
+
+  if (excerptAuditIssues.length > 0) {
+    console.log(`\n⚠️  EXCERPT AUDIT: ${excerptAuditIssues.length} pullQuote issues detected`);
+    const byType = {};
+    excerptAuditIssues.forEach(i => { byType[i.type] = (byType[i.type] || 0) + 1; });
+    for (const [type, count] of Object.entries(byType)) {
+      console.log(`  ${type}: ${count}`);
+    }
+    // Show first 5
+    excerptAuditIssues.slice(0, 5).forEach(i => {
+      console.log(`    ${i.showId}/${i.outlet}: ${i.preview}`);
+    });
+  } else {
+    console.log(`\n✅ EXCERPT AUDIT: 0 pullQuote issues (${pullQuoteCount} total pullQuotes)`);
+  }
+
+  // Count regression warning
+  if (previousPullQuoteCount !== null) {
+    const dropPct = ((previousPullQuoteCount - pullQuoteCount) / previousPullQuoteCount * 100);
+    if (dropPct > 5) {
+      console.log(`\n🚨 EXCERPT COUNT REGRESSION: ${previousPullQuoteCount} → ${pullQuoteCount} (${dropPct.toFixed(1)}% drop)`);
+      console.log('   This may indicate a false-positive epidemic in excerpt validation.');
+    } else if (dropPct > 1) {
+      console.log(`\n⚠️  Excerpt count change: ${previousPullQuoteCount} → ${pullQuoteCount} (${dropPct.toFixed(1)}% drop)`);
+    }
+  }
+
+  // Cross-show and tour validation summary
+  if (stats.crossShowExcerptFlags && stats.crossShowExcerptFlags.length > 0) {
+    console.log(`\n📋 CROSS-SHOW FLAGS (dry-run): ${stats.crossShowExcerptFlags.length} excerpts mention other shows`);
+    stats.crossShowExcerptFlags.slice(0, 10).forEach(f => {
+      console.log(`  ${f.showId}: ${f.source} → "${f.mentionedTitle}"`);
+    });
+    if (stats.crossShowExcerptFlags.length > 10) {
+      console.log(`  ... and ${stats.crossShowExcerptFlags.length - 10} more`);
+    }
+  }
+  if (stats.crossShowExcerptSuppressed && stats.crossShowExcerptSuppressed.length > 0) {
+    console.log(`\n🚫 CROSS-SHOW SUPPRESSED: ${stats.crossShowExcerptSuppressed.length} excerpts blocked`);
+  }
+  if (stats.tourExcerptFlags && stats.tourExcerptFlags.length > 0) {
+    console.log(`\n🎭 TOUR EXCERPT FLAGS: ${stats.tourExcerptFlags.length} excerpts have tour signals`);
+    stats.tourExcerptFlags.slice(0, 5).forEach(f => {
+      console.log(`  ${f.showId}: ${f.source} — ${f.signal}`);
+    });
+  }
+}
 
 // Print summary
 console.log('\n=== SUMMARY ===\n');
