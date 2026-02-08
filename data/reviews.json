@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-08",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 9401,
+      "totalReviews": 9400,
       "skippedNoScore": 10212,
       "skippedDuplicate": 42,
       "skippedDuplicateUrl": 258,
       "skippedCrossOutletDuplicateUrl": 40,
-      "skippedDuplicateText": 314,
+      "skippedDuplicateText": 315,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 682,
       "recoveredFromGarbage": 130,
@@ -22,7 +22,7 @@
         "originalScore-priority0": 1065,
         "llmScore": 4502,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3621,
+        "llmScore-lowconf": 3620,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -51674,7 +51674,7 @@
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 41,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "David Rooney",
@@ -51684,7 +51684,7 @@
       "pullQuote": "The star and her similarly marooned fellow cast members are all at the mercy of Rob Ashford, a director out of his depth.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "cat-on-a-hot-tin-roof-2013",
@@ -62813,13 +62813,13 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2007/05/16/theater/reviews/16cora.html",
+      "url": "https://www.nytimes.com/2007/05/03/theater/reviews/03cora.html",
       "publishDate": "May 16, 2007",
       "originalRating": null,
       "pullQuote": "The show itself never quite finds its feet, wavering uncertainly between the somber and the sprightly.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "cost-of-living-2022",
@@ -78377,7 +78377,7 @@
       "pullQuote": "This sparkling revival brings welcome warmth and intimacy to the Circle in the Square.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "godspell-2011",
@@ -86535,13 +86535,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2006/10/19/theater/reviews/19heart.html",
+      "url": "https://www.nytimes.com/2006/10/12/theater/reviews/12hous.html",
       "publishDate": "October 19, 2006",
       "originalRating": null,
       "pullQuote": "This revival of Shaw's 1919 play about England on the eve of World War I has been mounted with exceptional care and intelligence by the Roundabout Theater Company.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "heartbreak-house-2006",
@@ -99023,23 +99023,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "la-bete-2010",
-      "outletId": "hollywood-reporter",
-      "outlet": "The Hollywood Reporter",
-      "assignedScore": 63,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Frank Scheck",
-      "url": "http://www.hollywoodreporter.com/hr/film-reviews/la-bete-theater-review-1004121282.story",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The brilliant Mark Rylance and David Hyde Pierce bring whatever comic life there is to this spoof of 17th century theatrical conventions.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "la-bete-2010",
