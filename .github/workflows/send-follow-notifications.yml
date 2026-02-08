@@ -1,0 +1,45 @@
+name: Send Follow Show Notifications
+on:
+  schedule:
+    - cron: '0 14 * * 1'  # Monday 2 PM UTC (morning US)
+  workflow_dispatch: {}
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Sync followers from Formspree
+        env:
+          FORMSPREE_TOKEN: ${{ secrets.FORMSPREE_TOKEN }}
+          FORMSPREE_FOLLOW_FORM_ID: ${{ secrets.FORMSPREE_FOLLOW_FORM_ID }}
+        run: node scripts/sync-followers.js
+
+      - name: Detect show changes
+        run: node scripts/detect-show-changes.js
+
+      - name: Send notifications
+        id: send
+        env:
+          LOOPS_API_KEY: ${{ secrets.LOOPS_API_KEY }}
+          LOOPS_TRANSACTIONAL_ID: ${{ secrets.LOOPS_TRANSACTIONAL_ID }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: node scripts/send-follow-notifications.js
+
+      - name: Commit updates
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/followers.json data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json
+          for i in 1 2 3 4 5; do
+            git diff --staged --quiet && break
+            git commit -m "data: Update follow notifications" && git push && break
+            git pull --rebase -X theirs origin main
+          done
