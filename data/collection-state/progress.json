@@ -391,7 +391,17 @@
     "1776-2022/nytg--gillian-russo.json",
     "1776-2022/nytimes--jesse-green.json",
     "1776-2022/nytimes--unknown.json",
-    "1776-2022/variety--charles-isherwood.json"
+    "1776-2022/variety--charles-isherwood.json",
+    "1776-2022/variety--frank-rizzo.json",
+    "1776-2022/variety--peter-marks.json",
+    "1776-2022/vulture--frankie-thomas.json",
+    "1776-2022/vulture--helen-shaw.json",
+    "1776-2022/vulture--james-frankie-thomas.json",
+    "1984-2017/hollywood-reporter--david-rooney.json",
+    "1984-2017/newyorker--hilton-als.json",
+    "1984-2017/nytimes--ben-brantley.json",
+    "1984-2017/vulture--christopher-bonanos.json",
+    "1984-2017/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -407,7 +417,8 @@
       "the-picture-of-dorian-gray-2025/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "browserbase": [
-      "data/review-texts/1776-2022/hollywood-reporter--unknown.json"
+      "data/review-texts/1776-2022/hollywood-reporter--unknown.json",
+      "data/review-texts/1776-2022/variety--frank-rizzo.json"
     ],
     "scrapingbee": [
       "mauritius-2007/variety--david-rooney.json",
@@ -469,7 +480,8 @@
       "the-lifespan-of-a-fact-2018/guardian--alexis-soloski.json",
       "the-lifespan-of-a-fact-2018/thewrap--robert-hoffler.json",
       "the-picture-of-dorian-gray-2025/thewrap--robert-hofler.json",
-      "the-real-thing-2014/guardian--alexis-soloski.json"
+      "the-real-thing-2014/guardian--alexis-soloski.json",
+      "1984-2017/nytimes--ben-brantley.json"
     ],
     "brightdata": [
       "brief-encounter-2010/hollywood-reporter--frank-scheck.json",
@@ -538,7 +550,7 @@
     ]
   },
   "startTime": "2026-02-08T05:39:22.116Z",
-  "lastProcessed": "1776-2022/variety--charles-isherwood.json",
+  "lastProcessed": "1984-2017/vulture--jesse-green.json",
   "log": [
     {
       "t": "2026-02-08T11:36:10.572Z",
@@ -574,6 +586,41 @@
       "event": "bb-session",
       "session": "3a1e9fbe",
       "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
+    },
+    {
+      "t": "2026-02-08T11:44:19.457Z",
+      "event": "bb-session",
+      "session": "9ed10185",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+    },
+    {
+      "t": "2026-02-08T11:44:37.835Z",
+      "event": "bb-session",
+      "session": "463d676e",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235421172/"
+    },
+    {
+      "t": "2026-02-08T11:48:20.991Z",
+      "event": "bb-session",
+      "session": "613648a4",
+      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
+    },
+    {
+      "t": "2026-02-08T11:48:23.285Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-08T11:51:11.100Z",
+      "event": "bb-session",
+      "session": "eb0046e4",
+      "url": "https://www.nytimes.com/2017/06/22/theater/1984-review-broadway.html"
+    },
+    {
+      "t": "2026-02-08T11:51:56.231Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770551482856\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAC92rcWIjCM0ANCKmrw==&cid=rE_2wbhEc6C9K0c_TuUyp4majPHDPAnD5YLy0HdE1i6bejq7rOoQhaVNiwCUZCEESebEyRT4V18h~YRHpcyjRItOOeIKT9NIa1QtdzyFLWd8pO6vajpyOWlPNH0VUqTH&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770551482856\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770551482856\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAC92rcWIjCM0ANCKmrw==&cid=rE_2wbhEc6C9K0c_TuUyp4majPHDPAnD5YLy0HdE1i6bejq7rOoQhaVNiwCUZCEESebEyRT4V18h~YRHpcyjRItOOeIKT9NIa1QtdzyFLWd8pO6vajpyOWlPNH0VUqTH&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770551482856\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    20 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770551482856\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAC92rcWIjCM0ANCKmrw==&cid=rE_2wbhEc6C9K0c_TuUyp4majPHDPAnD5YLy0HdE1i6bejq7rOoQhaVNiwCUZCEESebEyRT4V18h~YRHpcyjRItOOeIKT9NIa1QtdzyFLWd8pO6vajpyOWlPNH0VUqTH&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770551482856\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
