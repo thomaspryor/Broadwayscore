@@ -1,133 +1,15 @@
 {
-  "updatedAt": "2026-02-08T14:14:10.900Z",
-  "processed": 150,
-  "failed": 480,
-  "successRate": "23.8%",
+  "updatedAt": "2026-02-08T17:51:59.868Z",
+  "processed": 29,
+  "failed": 171,
+  "successRate": "14.5%",
   "tierBreakdown": {
-    "playwright": 13,
-    "browserbase": 8,
-    "scrapingbee": 63,
-    "brightdata": 8,
-    "archive": 66
+    "playwright": 4,
+    "browserbase": 0,
+    "scrapingbee": 13,
+    "brightdata": 5,
+    "archive": 8
   },
-  "browserbaseSessions": 20,
-  "recentActivity": [
-    {
-      "t": "2026-02-08T11:48:20.991Z",
-      "event": "bb-session",
-      "session": "613648a4",
-      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
-    },
-    {
-      "t": "2026-02-08T11:48:23.285Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-08T11:51:11.100Z",
-      "event": "bb-session",
-      "session": "eb0046e4",
-      "url": "https://www.nytimes.com/2017/06/22/theater/1984-review-broadway.html"
-    },
-    {
-      "t": "2026-02-08T11:51:56.231Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770551482856\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAC92rcWIjCM0ANCKmrw==&cid=rE_2wbhEc6C9K0c_TuUyp4majPHDPAnD5YLy0HdE1i6bejq7rOoQhaVNiwCUZCEESebEyRT4V18h~YRHpcyjRItOOeIKT9NIa1QtdzyFLWd8pO6vajpyOWlPNH0VUqTH&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770551482856\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770551482856\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAC92rcWIjCM0ANCKmrw==&cid=rE_2wbhEc6C9K0c_TuUyp4majPHDPAnD5YLy0HdE1i6bejq7rOoQhaVNiwCUZCEESebEyRT4V18h~YRHpcyjRItOOeIKT9NIa1QtdzyFLWd8pO6vajpyOWlPNH0VUqTH&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770551482856\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    20 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770551482856\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAC92rcWIjCM0ANCKmrw==&cid=rE_2wbhEc6C9K0c_TuUyp4majPHDPAnD5YLy0HdE1i6bejq7rOoQhaVNiwCUZCEESebEyRT4V18h~YRHpcyjRItOOeIKT9NIa1QtdzyFLWd8pO6vajpyOWlPNH0VUqTH&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770551482856\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-08T11:53:41.940Z",
-      "event": "bb-session",
-      "session": "5d95cd37",
-      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
-    },
-    {
-      "t": "2026-02-08T11:54:27.858Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770551634539\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA8scx4NVsTGkALPe1oA==&cid=RC_wxRgYJncZgujRSke1EeWK6iBBRvDa~fz9CNIt3TK3seDyP5KVNoIqGUuntiU5jaWvUm8OqYBSKQxYdG9rXXfIB8FHNmVbi56sDUdAUpMAlWspy6T7I89bBw5HQffc&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770551634539\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770551634539\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA8scx4NVsTGkALPe1oA==&cid=RC_wxRgYJncZgujRSke1EeWK6iBBRvDa~fz9CNIt3TK3seDyP5KVNoIqGUuntiU5jaWvUm8OqYBSKQxYdG9rXXfIB8FHNmVbi56sDUdAUpMAlWspy6T7I89bBw5HQffc&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770551634539\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770551634539\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA8scx4NVsTGkALPe1oA==&cid=RC_wxRgYJncZgujRSke1EeWK6iBBRvDa~fz9CNIt3TK3seDyP5KVNoIqGUuntiU5jaWvUm8OqYBSKQxYdG9rXXfIB8FHNmVbi56sDUdAUpMAlWspy6T7I89bBw5HQffc&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770551634539\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-08T11:55:45.861Z",
-      "event": "bb-session",
-      "session": "d5daca08",
-      "url": "http://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
-    },
-    {
-      "t": "2026-02-08T11:56:26.279Z",
-      "event": "bb-session",
-      "session": "a7d8af96",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
-    },
-    {
-      "t": "2026-02-08T11:56:57.539Z",
-      "event": "bb-session",
-      "session": "935ef51e",
-      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
-    },
-    {
-      "t": "2026-02-08T11:57:44.190Z",
-      "event": "bb-session",
-      "session": "b5a04ab6",
-      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
-    },
-    {
-      "t": "2026-02-08T11:58:36.129Z",
-      "event": "bb-session",
-      "session": "118102d2",
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
-    },
-    {
-      "t": "2026-02-08T12:00:36.259Z",
-      "event": "bb-session",
-      "session": "5904b2b2",
-      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
-    },
-    {
-      "t": "2026-02-08T12:00:38.482Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-08T12:01:20.458Z",
-      "event": "bb-session",
-      "session": "4b348111",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/behanding-spokane-theater"
-    },
-    {
-      "t": "2026-02-08T12:03:08.599Z",
-      "event": "bb-session",
-      "session": "793ab3dd",
-      "url": "http://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als?"
-    },
-    {
-      "t": "2026-02-08T12:03:11.061Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-08T12:04:26.195Z",
-      "event": "bb-session",
-      "session": "ee8c89d5",
-      "url": "https://www.nytimes.com/2010/04/05/theater/reviews/05behanding.html"
-    },
-    {
-      "t": "2026-02-08T12:05:11.524Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770552278172\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAbUbWLrK5G0EALPhWIg==&cid=MtKGOoJey1FLSSX2Sg_VNMJ3KLElNKTS9OWCKr55zDabEGvPGav0r1P9AXeHYurlewvDvqgi0k~JecFh3syrtlaGcrIGadkXx~h1a8hz51IJgUg~WrQd294ZvZSkF8qZ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770552278172\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770552278172\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAbUbWLrK5G0EALPhWIg==&cid=MtKGOoJey1FLSSX2Sg_VNMJ3KLElNKTS9OWCKr55zDabEGvPGav0r1P9AXeHYurlewvDvqgi0k~JecFh3syrtlaGcrIGadkXx~h1a8hz51IJgUg~WrQd294ZvZSkF8qZ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770552278172\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770552278172\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAbUbWLrK5G0EALPhWIg==&cid=MtKGOoJey1FLSSX2Sg_VNMJ3KLElNKTS9OWCKr55zDabEGvPGav0r1P9AXeHYurlewvDvqgi0k~JecFh3syrtlaGcrIGadkXx~h1a8hz51IJgUg~WrQd294ZvZSkF8qZ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770552278172\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-08T12:06:00.693Z",
-      "event": "bb-session",
-      "session": "c1740c47",
-      "url": "http://www.variety.com/review/VE1117942352.html?categoryId=33&cs=1"
-    },
-    {
-      "t": "2026-02-08T12:06:40.172Z",
-      "event": "bb-session",
-      "session": "9363e59c",
-      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
