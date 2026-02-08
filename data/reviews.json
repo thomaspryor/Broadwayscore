@@ -4,14 +4,14 @@
     "lastUpdated": "2026-02-08",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 9046,
-      "skippedNoScore": 10516,
+      "totalReviews": 9133,
+      "skippedNoScore": 10499,
       "skippedDuplicate": 43,
       "skippedDuplicateUrl": 258,
-      "skippedCrossOutletDuplicateUrl": 38,
-      "skippedDuplicateText": 303,
+      "skippedCrossOutletDuplicateUrl": 40,
+      "skippedDuplicateText": 310,
       "skippedFingerprintDedup": 1,
-      "skippedWrongProduction": 670,
+      "skippedWrongProduction": 672,
       "recoveredFromGarbage": 130,
       "scoreSources": {
         "explicit-stars": 4,
@@ -19,15 +19,15 @@
         "explicit-slash": 8,
         "explicit-letterGrade": 1,
         "human-review": 56,
-        "originalScore-priority0": 1061,
-        "llmScore": 4197,
+        "originalScore-priority0": 1064,
+        "llmScore": 4287,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3575,
+        "llmScore-lowconf": 3568,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 139
+        "thumb": 140
       }
     }
   },
@@ -40127,7 +40127,7 @@
       "outletId": "deadline",
       "outlet": "Deadline",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jeremy Gerard",
@@ -40137,7 +40137,7 @@
       "pullQuote": "This is the electrifying production that this season's rev...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "blackbird-2016",
@@ -45125,18 +45125,18 @@
       "showId": "bronx-bombers-2014",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 43,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Melissa Rose Bernardo",
+      "criticName": "Unknown",
       "url": "http://www.ew.com/ew/article/0,,20784296,00.html",
       "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Over his three Broadway plays, Simonson's efforts become more diluted and the stories more far-fetched.",
+      "originalRating": "D",
+      "pullQuote": "It's just a bomb - and not the kind that made Babe Ruth famous.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "bronx-bombers-2014",
@@ -48291,7 +48291,7 @@
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 79,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Cote",
@@ -48301,7 +48301,7 @@
       "pullQuote": "Cumming's bouncy downtown energy keeps Cabaret from seeming like a period piece, and his new costars pull their weight.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "cabaret-2014",
@@ -63374,7 +63374,7 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2007/03/23/theater/reviews/23curtains.html",
+      "url": "https://www.nytimes.com/2007/03/23/theater/reviews/23curt.html",
       "publishDate": "March 23, 2007",
       "originalRating": null,
       "pullQuote": "This show about a show is so determined to be likable that it becomes exhausting in its puppyish eagerness to please.",
@@ -112033,7 +112033,7 @@
       "pullQuote": "The show succeeds in making audiences care deeply about these characters while never minimizing the devastating impact of mental illness on families.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "next-to-normal-2009",
@@ -114959,7 +114959,7 @@
       "pullQuote": "And now, a show about sex that you can take the whole family to: the kids, the grandparents, even your sister the nun. That idea may sound kind of creepy, or (worse) dreary. But I assure you that the jubilant revival of “On the Town,” which opened Thursday night at the Lyric Theater, is anything but.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "on-the-town-2014",
@@ -120764,7 +120764,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 86,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Marilyn Stasio",
@@ -134162,7 +134162,7 @@
       "pullQuote": "Despite some forced moments and occasional awkwardness in the staging, this domestic drama has enough emotional truth to make it compelling theater.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "straight-white-men-2018",
@@ -142941,18 +142941,18 @@
       "showId": "the-iceman-cometh-2018",
       "outletId": "nytimes",
       "outlet": "The New York Times",
-      "assignedScore": 79,
+      "assignedScore": 80,
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Ben Brantley",
+      "criticName": "Unknown",
       "url": "https://www.nytimes.com/2018/04/26/theater/review-iceman-cometh-denzel-washington.html",
-      "publishDate": "April 26, 2018",
+      "publishDate": null,
       "originalRating": null,
-      "pullQuote": "This is a performance of hypnotic authority.",
+      "pullQuote": "Mr. Wolfe has filled the stage with such delectably seasoned hams, who lap up limelight the way their characters throw back booze.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-iceman-cometh-2018",
