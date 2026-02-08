@@ -11,7 +11,7 @@ import { getGoldListSeasons } from '@/lib/data-gold-list-badges';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export const metadata: Metadata = {
-  title: 'Broadway Gold Lists | Broadway Scorecard',
+  title: 'Broadway Gold Lists',
   description: 'Curated rankings of the best Broadway shows by critics, audiences, box office, and demand. Updated each season.',
   alternates: {
     canonical: `${BASE_URL}/lists`,

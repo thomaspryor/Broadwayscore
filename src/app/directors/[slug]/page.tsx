@@ -4,7 +4,7 @@ import { getCreativeBySlug, getCreativeSlugs, getCreativeProfiles, CREATIVE_CATE
 import { generateBreadcrumbSchema, generateCreativePersonSchema, generateCreativeFAQSchema, BASE_URL } from '@/lib/seo';
 import CreativeDetailClient from '@/components/creative/CreativeDetailClient';
 
-const CAT = 'lyricist' as const;
+const CAT = 'director' as const;
 const config = CREATIVE_CATEGORY_CONFIG[CAT];
 
 export function generateStaticParams() {
@@ -32,7 +32,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function LyricistDetailPage({ params }: { params: { slug: string } }) {
+export default function DirectorDetailPage({ params }: { params: { slug: string } }) {
   const profile = getCreativeBySlug(CAT, params.slug);
   if (!profile) notFound();
 

@@ -31,7 +31,7 @@ import BizPageTracker from '@/components/biz/BizPageTracker';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export const metadata: Metadata = {
-  title: 'Broadway Investment Tracker | Broadway Scorecard',
+  title: 'Broadway Investment Tracker',
   description:
     'Recoupment data and investment metrics for Broadway shows. Track which shows have recouped, capital at risk, and financial trends.',
   alternates: {
