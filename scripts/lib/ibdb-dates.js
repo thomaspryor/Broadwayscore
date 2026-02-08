@@ -344,10 +344,14 @@ function extractCreativeTeamFromText(text) {
 
   // Role patterns: [regex, role label]
   // Order matters — "Music and Lyrics by" must come before "Music by" and "Lyrics by"
-  // "Written by" captures playwright credit (plays), "Original Score by" captures incidental music
+  // Playwright patterns: "Written by", "Adapted by", genre-prefixed "play by", standalone "By"
+  // Standalone "By" uses case-SENSITIVE match (no 'i' flag) to avoid matching "Directed by" etc.
   const rolePatterns = [
     [/Music and Lyrics by\s+([^;:\n]+)/gi, 'Music & Lyrics'],
     [/Written by\s+([^;:\n]+)/gi, 'Playwright'],
+    [/Adapted by\s+([^;:\n]+)/gi, 'Playwright'],
+    [/(?:play|drama|comedy|farce|thriller|mystery|revue) by\s+([^;:\n]+)/gi, 'Playwright'],
+    [/(?:^|;\s*)By\s+([A-Z][^;:\n]+)/gm, 'Playwright'],
     [/Original Score by\s+([^;:\n]+)/gi, 'Original Score'],
     [/Directed by\s+([^;:\n]+)/gi, 'Director'],
     [/Choreograph(?:ed|y) by\s+([^;:\n]+)/gi, 'Choreographer'],
