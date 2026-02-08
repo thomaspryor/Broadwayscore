@@ -27,8 +27,7 @@ jobs:
       - name: Send notifications
         id: send
         env:
-          LOOPS_API_KEY: ${{ secrets.LOOPS_API_KEY }}
-          LOOPS_TRANSACTIONAL_ID: ${{ secrets.LOOPS_TRANSACTIONAL_ID }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: node scripts/send-follow-notifications.js
 
