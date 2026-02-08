@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getCreativeProfiles, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
+import { getCreativeProfiles, getUnifiedSlugForName, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import CreativeIndexClient from '@/components/creative/CreativeIndexClient';
 
@@ -31,12 +31,12 @@ export default function LyricistsIndexPage() {
   const itemListSchema = generateItemListSchema(
     profiles.slice(0, 50).map(p => ({
       name: p.name,
-      url: `${BASE_URL}/${config.routePath}/${p.slug}`,
+      url: `${BASE_URL}/creative/${getUnifiedSlugForName(p.name) || p.slug}`,
     })),
     `Broadway ${config.labelPlural}`
   );
 
-  const summaries = profiles.map(({ shows, ...rest }) => rest);
+  const summaries = profiles.map(({ shows, ...rest }) => ({ ...rest, unifiedSlug: getUnifiedSlugForName(rest.name) }));
 
   return (
     <div className="min-h-screen bg-surface">
