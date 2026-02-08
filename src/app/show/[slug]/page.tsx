@@ -26,6 +26,7 @@ import LotteryRushCard from '@/components/LotteryRushCard';
 import BizBuzzCard from '@/components/BizBuzzCard';
 import CastUpdatesCard from '@/components/CastUpdatesCard';
 import Breadcrumb from '@/components/Breadcrumb';
+import ShowFollowBanner from '@/components/ShowFollowBanner';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -1018,6 +1019,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </Link>
         </div>
       </div>
+
+      {/* Follow Show Banner */}
+      {show.status !== 'closed' && (
+        <ShowFollowBanner showId={show.id} showTitle={show.title} />
+      )}
     </>
   );
 }
