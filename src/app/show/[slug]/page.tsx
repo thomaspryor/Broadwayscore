@@ -907,13 +907,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 {show.creativeTeam.map((member, i) => {
                   const creativeLink = getCreativeLink(member.name, member.role);
                   return (
-                  <li key={i} className="flex flex-col sm:flex-row sm:justify-between text-sm gap-0.5 sm:gap-2">
+                  <li key={i} className="flex flex-col sm:flex-row sm:items-baseline text-sm gap-0.5 sm:gap-0">
                     {creativeLink ? (
                       <Link href={creativeLink} className="text-white font-medium hover:text-brand transition-colors">{member.name}</Link>
                     ) : (
                       <span className="text-white font-medium">{member.name}</span>
                     )}
-                    <span className="text-gray-500 text-xs sm:text-sm">{member.role}</span>
+                    <span className="text-gray-500 text-xs sm:text-sm sm:before:content-['·'] sm:before:mx-2 sm:before:text-gray-600">{member.role}</span>
                   </li>
                   );
                 })}
