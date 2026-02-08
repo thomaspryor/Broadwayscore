@@ -1,15 +1,51 @@
 {
-  "updatedAt": "2026-02-08T08:37:37.185Z",
+  "updatedAt": "2026-02-08T11:44:15.483Z",
   "processed": 130,
-  "failed": 250,
-  "successRate": "34.2%",
+  "failed": 260,
+  "successRate": "33.3%",
   "tierBreakdown": {
     "playwright": 9,
-    "browserbase": 0,
+    "browserbase": 1,
     "scrapingbee": 60,
     "brightdata": 6,
     "archive": 55
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-02-08T11:36:10.572Z",
+      "event": "bb-session",
+      "session": "2cc32bb3",
+      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
+    },
+    {
+      "t": "2026-02-08T11:38:19.797Z",
+      "event": "bb-session",
+      "session": "5ec8e344",
+      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
+    },
+    {
+      "t": "2026-02-08T11:38:22.017Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-08T11:40:44.443Z",
+      "event": "bb-session",
+      "session": "fc9df7d6",
+      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
+    },
+    {
+      "t": "2026-02-08T11:41:29.944Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770550856612\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMADltQiOaSzD8ANA1qtA==&cid=oyXEKY7BXpJqyCi0vz_eY3I3ee9SzfYtclfEYaSdyhMV4A4Zt2xSVOItMXSD2aNLqI8CoyaXcEjJwKFWIheFqmX6khm_QYI1EBt2QeE3T10cNZ1ePlcZD~cca_rOClpk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770550856612\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770550856612\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMADltQiOaSzD8ANA1qtA==&cid=oyXEKY7BXpJqyCi0vz_eY3I3ee9SzfYtclfEYaSdyhMV4A4Zt2xSVOItMXSD2aNLqI8CoyaXcEjJwKFWIheFqmX6khm_QYI1EBt2QeE3T10cNZ1ePlcZD~cca_rOClpk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770550856612\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    20 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770550856612\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMADltQiOaSzD8ANA1qtA==&cid=oyXEKY7BXpJqyCi0vz_eY3I3ee9SzfYtclfEYaSdyhMV4A4Zt2xSVOItMXSD2aNLqI8CoyaXcEjJwKFWIheFqmX6khm_QYI1EBt2QeE3T10cNZ1ePlcZD~cca_rOClpk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770550856612\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-08T11:43:25.329Z",
+      "event": "bb-session",
+      "session": "3a1e9fbe",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
+    }
+  ]
 }
