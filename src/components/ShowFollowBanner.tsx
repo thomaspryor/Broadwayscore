@@ -6,6 +6,9 @@ import { emailCaptureConfig } from '@/config/email-capture';
 
 const DISMISSED_PREFIX = 'bsc_show_follow_dismissed_';
 const SUBSCRIBED_KEY = 'bsc_email_subscribed';
+const FOLLOW_PREFIX = 'bsc_show_follow_subscribed_';
+
+const FORMSPREE_FOLLOW_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID || '';
 
 interface ShowFollowBannerProps {
   showId: string;
@@ -13,11 +16,11 @@ interface ShowFollowBannerProps {
 }
 
 export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBannerProps) {
-  // Early bail if banner is disabled in config
   const bannerEnabled = emailCaptureConfig.showFollowBanner.enabled;
 
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(true);
+  const [alreadyFollowing, setAlreadyFollowing] = useState(false);
   const [email, setEmail] = useState('');
 
   const loopsOptions = useMemo(() => ({
@@ -29,10 +32,15 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
 
   const { status, errorMessage, submit, isSubscribed } = useLoopsCapture(loopsOptions);
 
-  // Check dismiss state and subscription
+  // Check dismiss state, subscription, and per-show follow state
   useEffect(() => {
     if (!bannerEnabled) return;
     try {
+      const isFollowingShow = localStorage.getItem(`${FOLLOW_PREFIX}${showId}`) === 'true';
+      if (isFollowingShow) {
+        setAlreadyFollowing(true);
+        return;
+      }
       const wasDismissed = localStorage.getItem(`${DISMISSED_PREFIX}${showId}`);
       const alreadySubscribed = localStorage.getItem(SUBSCRIBED_KEY) === 'true';
       if (!wasDismissed && !alreadySubscribed) {
@@ -41,9 +49,9 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
     } catch { /* noop */ }
   }, [showId, bannerEnabled]);
 
-  // Scroll-triggered visibility at 60%
+  // Scroll-triggered visibility
   useEffect(() => {
-    if (dismissed || isSubscribed) return;
+    if (dismissed || isSubscribed || alreadyFollowing) return;
 
     const handleScroll = () => {
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -57,7 +65,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [dismissed, isSubscribed]);
+  }, [dismissed, isSubscribed, alreadyFollowing]);
 
   const handleDismiss = useCallback(() => {
     setVisible(false);
@@ -71,13 +79,33 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
     e.preventDefault();
     const ok = await submit(email);
     if (ok) {
+      // Also submit to Formspree for server-side follower tracking
+      if (FORMSPREE_FOLLOW_FORM_ID) {
+        try {
+          await fetch(`https://formspree.io/f/${FORMSPREE_FOLLOW_FORM_ID}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email.toLowerCase().trim(), showId, showTitle }),
+          });
+        } catch { /* Formspree failure is non-critical */ }
+      }
+
+      // Save per-show follow state
+      try {
+        localStorage.setItem(`${FOLLOW_PREFIX}${showId}`, 'true');
+      } catch { /* noop */ }
+
       setEmail('');
+      setAlreadyFollowing(true);
       setTimeout(() => {
         setVisible(false);
         setDismissed(true);
       }, 3000);
     }
-  }, [email, submit]);
+  }, [email, submit, showId, showTitle]);
+
+  // Show "Following" pill if already following this show
+  if (alreadyFollowing) return null;
 
   if (dismissed || isSubscribed || !visible) return null;
 

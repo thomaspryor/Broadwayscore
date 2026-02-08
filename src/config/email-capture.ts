@@ -46,7 +46,7 @@ const presets: Record<string, EmailCaptureConfig> = {
       cooldownDays: 90,
     },
     showFollowBanner: {
-      enabled: false,
+      enabled: true,
       scrollThreshold: 0.85,
     },
   },
