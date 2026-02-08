@@ -173,27 +173,6 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
   return schema;
 }
 
-// Person Schema - For director pages
-export function generatePersonSchema(person: {
-  name: string;
-  slug: string;
-  role: string;
-  shows: { title: string; slug: string; score?: number }[];
-}) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: person.name,
-    url: `${BASE_URL}/director/${person.slug}`,
-    jobTitle: person.role,
-    knowsAbout: 'Theater Direction',
-    workExample: person.shows.map(show => ({
-      '@type': 'TheaterEvent',
-      name: show.title,
-      url: `${BASE_URL}/show/${show.slug}`,
-    })),
-  };
-}
 
 // PerformingArtsTheater Schema - For theater pages
 export function generateTheaterSchema(theater: {
@@ -718,7 +697,7 @@ export function generateCreativePersonSchema(profile: {
   showCount: number;
   avgScore: number | null;
   shows: Array<{ title: string; slug: string }>;
-}, routePath: string, jobTitle: string) {
+}, routePath: string, jobTitle: string, verbPast?: string) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
@@ -726,7 +705,7 @@ export function generateCreativePersonSchema(profile: {
     url: `${BASE_URL}/${routePath}/${profile.slug}`,
     jobTitle,
     knowsAbout: 'Broadway Theater',
-    description: `${profile.name} has ${profile.showCount} Broadway shows${profile.avgScore !== null ? ` with an average critic score of ${profile.avgScore}/100` : ''}.`,
+    description: `${profile.name} has ${verbPast ? verbPast + ' ' : ''}${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? ` with an average critic score of ${profile.avgScore}/100` : ''}.`,
     ...(profile.avgScore !== null && {
       aggregateRating: {
         '@type': 'AggregateRating',

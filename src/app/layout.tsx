@@ -190,6 +190,10 @@ export default function RootLayout({
                   <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
                   <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
                   <li><Link href="/critics" className="hover:text-white transition-colors">Critics</Link></li>
+                  <li><Link href="/directors" className="hover:text-white transition-colors">Directors</Link></li>
+                  <li><Link href="/playwrights" className="hover:text-white transition-colors">Playwrights</Link></li>
+                  <li><Link href="/composers" className="hover:text-white transition-colors">Composers</Link></li>
+                  <li><Link href="/lyricists" className="hover:text-white transition-colors">Lyricists</Link></li>
                   <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
                 </ul>
               </div>

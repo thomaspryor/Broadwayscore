@@ -42,7 +42,7 @@ export default function DirectorDetailPage({ params }: { params: { slug: string 
     { name: profile.name, url: `${BASE_URL}/${config.routePath}/${profile.slug}` },
   ]);
 
-  const personSchema = generateCreativePersonSchema(profile, config.routePath, config.label);
+  const personSchema = generateCreativePersonSchema(profile, config.routePath, config.label, config.verbPast);
   const faqSchema = generateCreativeFAQSchema(profile, config.label, config.verbPast);
 
   const profiles = getCreativeProfiles(CAT);
