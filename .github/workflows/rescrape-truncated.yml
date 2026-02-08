@@ -23,6 +23,14 @@ on:
         required: false
         type: boolean
         default: true
+      max_rounds:
+        description: 'Max self-chaining rounds (0 = no chaining)'
+        required: false
+        default: '3'
+      current_round:
+        description: 'Current round (auto-set by chaining)'
+        required: false
+        default: '1'
 
 # Re-scrapes reviews where we got partial text (paywall cutoff, read-more, mid-sentence).
 # Uses Archive.org first (often has full pre-paywall snapshots).
@@ -229,6 +237,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write
+      actions: write
 
     steps:
       - name: Checkout repository
@@ -270,9 +279,53 @@ jobs:
             git push || true
           fi
 
+      - name: Count remaining and chain
+        id: chain
+        run: |
+          REMAINING=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (!r.url) return;
+                  const isTruncated = r.textQuality === 'truncated' || r.textStatus === 'truncated'
+                    || r.contentTier === 'truncated' || r.contentTier === 'needs-rescrape';
+                  if (isTruncated) n++;
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          CURRENT=${{ inputs.current_round }}
+          MAX=${{ inputs.max_rounds }}
+          echo "Remaining: $REMAINING truncated reviews, round $CURRENT of $MAX"
+          if [ "$REMAINING" -gt 50 ] && [ "$CURRENT" -lt "$MAX" ]; then
+            NEXT=$((CURRENT + 1))
+            echo "Chaining round $NEXT..."
+            gh workflow run "Re-scrape Truncated Reviews" \
+              -f parallel_jobs=${{ inputs.parallel_jobs }} \
+              -f max_per_job=${{ inputs.max_per_job }} \
+              -f retry_failed=true \
+              -f max_rounds=$MAX \
+              -f current_round=$NEXT
+            echo "chained=true" >> $GITHUB_OUTPUT
+          else
+            echo "No chaining needed (remaining=$REMAINING, round=$CURRENT/$MAX)"
+            echo "chained=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Summary
         run: |
-          echo "## Truncated Re-scrape Complete" >> $GITHUB_STEP_SUMMARY
+          echo "## Truncated Re-scrape Round ${{ inputs.current_round }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Re-scraped truncated review texts across ${{ inputs.parallel_jobs }} parallel jobs." >> $GITHUB_STEP_SUMMARY
-          echo "Reviews rebuilt and scored." >> $GITHUB_STEP_SUMMARY
+          echo "- **Remaining:** ${{ steps.chain.outputs.remaining }} truncated reviews" >> $GITHUB_STEP_SUMMARY
+          echo "- **Chained next round:** ${{ steps.chain.outputs.chained }}" >> $GITHUB_STEP_SUMMARY

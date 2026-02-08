@@ -28,6 +28,14 @@ on:
         required: false
         type: boolean
         default: true
+      max_rounds:
+        description: 'Max self-chaining rounds (0 = no chaining)'
+        required: false
+        default: '3'
+      current_round:
+        description: 'Current round (auto-set by chaining)'
+        required: false
+        default: '1'
 
 # Collects full text from free/open-access outlets (no paywall).
 # Excludes all known paywall domains (hard + soft) to focus on easy wins.
@@ -250,6 +258,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write
+      actions: write
 
     steps:
       - name: Checkout repository
@@ -291,9 +300,62 @@ jobs:
             git push || true
           fi
 
+      - name: Count remaining and chain
+        id: chain
+        env:
+          EXCLUDE_DOMAINS: ${{ env.PAYWALL_DOMAINS }}
+        run: |
+          REMAINING=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const excludeDomains = (process.env.EXCLUDE_DOMAINS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (!r.url) return;
+                  const textLen = r.fullText ? r.fullText.length : 0;
+                  const isTruncated = r.textQuality === 'truncated' || r.textStatus === 'truncated'
+                    || r.contentTier === 'truncated' || r.contentTier === 'needs-rescrape';
+                  if (!isTruncated && (r.isFullReview === true || r.textQuality === 'full' || textLen > 1500)) return;
+                  try {
+                    const urlDomain = new URL(r.url).hostname.replace(/^www\\./, '');
+                    if (!excludeDomains.some(dd => urlDomain === dd || urlDomain.endsWith('.' + dd))) n++;
+                  } catch(e) {}
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          CURRENT=${{ inputs.current_round }}
+          MAX=${{ inputs.max_rounds }}
+          echo "Remaining: $REMAINING reviews, round $CURRENT of $MAX"
+          if [ "$REMAINING" -gt 50 ] && [ "$CURRENT" -lt "$MAX" ]; then
+            NEXT=$((CURRENT + 1))
+            echo "Chaining round $NEXT..."
+            gh workflow run "Collect Free-Outlet Reviews" \
+              -f parallel_jobs=${{ inputs.parallel_jobs }} \
+              -f max_per_job=${{ inputs.max_per_job }} \
+              -f retry_failed=true \
+              -f archive_first=${{ inputs.archive_first }} \
+              -f max_rounds=$MAX \
+              -f current_round=$NEXT
+            echo "chained=true" >> $GITHUB_OUTPUT
+          else
+            echo "No chaining needed (remaining=$REMAINING, round=$CURRENT/$MAX)"
+            echo "chained=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Summary
         run: |
-          echo "## Free-Outlet Collection Complete" >> $GITHUB_STEP_SUMMARY
+          echo "## Free-Outlet Collection Round ${{ inputs.current_round }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Collected free-outlet review texts across ${{ inputs.parallel_jobs }} parallel jobs." >> $GITHUB_STEP_SUMMARY
-          echo "Reviews rebuilt and scored." >> $GITHUB_STEP_SUMMARY
+          echo "- **Remaining:** ${{ steps.chain.outputs.remaining }} reviews" >> $GITHUB_STEP_SUMMARY
+          echo "- **Chained next round:** ${{ steps.chain.outputs.chained }}" >> $GITHUB_STEP_SUMMARY
