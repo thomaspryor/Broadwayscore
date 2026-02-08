@@ -41,7 +41,7 @@ export function generateMetadata({ params }: { params: { listType: string; seaso
   const config = GOLD_LIST_MAP[params.listType as GoldListType];
   if (!config) return {};
 
-  const title = `${config.title} — ${params.season} | Broadway Scorecard`;
+  const title = `${config.title} — ${params.season}`;
   const description = `${config.description}. See the top Broadway shows for the ${params.season} season.`;
 
   return {

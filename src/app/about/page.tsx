@@ -4,7 +4,7 @@ import Link from 'next/link';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export const metadata: Metadata = {
-  title: 'About | Broadway Scorecard',
+  title: 'About',
   description: 'Broadway Scorecard is a labor of love built by a Broadway fan. Learn about the project and how you can help.',
   alternates: {
     canonical: `${BASE_URL}/about`,
