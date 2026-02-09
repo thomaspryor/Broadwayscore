@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-09T16:21:38.761Z",
+  "runDate": "2026-02-09T16:24:25.056Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,166 +11,161 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 10,
-    "failed": 90,
+    "processed": 2,
+    "failed": 98,
     "skipped": 0,
-    "successRate": "10.0%"
+    "successRate": "2.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
-    "brightdata": 2,
-    "archive": 7
+    "scrapingbee": 4,
+    "brightdata": 0,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 64,
+    "tier1Attempts": 56,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 64,
-    "tier2Success": 27,
-    "tier3Attempts": 37,
-    "tier3Success": 4,
-    "tier4Attempts": 111,
-    "tier4Success": 34,
-    "totalFailed": 89,
-    "scrapingBeeCreditsUsed": 360,
+    "tier2Attempts": 27,
+    "tier2Success": 6,
+    "tier3Attempts": 22,
+    "tier3Success": 22,
+    "tier4Attempts": 128,
+    "tier4Success": 37,
+    "totalFailed": 93,
+    "scrapingBeeCreditsUsed": 315,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 30,
-    "urlDiscoverySuccess": 15,
+    "urlDiscoveryAttempts": 46,
+    "urlDiscoverySuccess": 18,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "700-sundays-2013/nytimes--ben-brantley.json",
-    "700-sundays-2013/nytimes--charles-isherwood.json",
-    "a-christmas-carol-2022/nytimes--jesse-green.json",
-    "all-my-sons-2019/nytimes--ben-brantley.json",
-    "all-my-sons-2019/nytimes--jesse-green.json",
-    "bright-star-2016/nytimes--ben-brantley.json",
-    "bright-star-2016/nytimes--unknown.json",
-    "bye-bye-birdie-2009/nytimes--ben-brantley.json",
-    "cabaret-2014/nytimes--jesse-green.json",
-    "elf-2024/nytimes--unknown.json"
+    "cost-of-living-2022/vulture--helen-shaw.json",
+    "cost-of-living-2022/vulture--juan-a-ramirez.json"
   ],
   "failed": [
-    "buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
-    "death-of-a-salesman-2026/nytimes--ben-brantley.json",
-    "hells-kitchen-2024/nytimes--elizabeth-vincentelli.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "110-in-the-shade-2007/nytimes--ben-brantley.json",
-    "13-2008/nytimes--ben-brantley.json",
-    "1776-2022/nytimes--jesse-green.json",
-    "1776-2022/nytimes--unknown.json",
-    "a-strange-loop-2022/nytimes--jesse-green.json",
-    "aint-no-mo-2022/nytimes--elisabeth-vincentelli.json",
-    "aint-too-proud-2019/nytimes--jesse-green.json",
-    "all-my-sons-2008/nytimes--jesse-green.json",
-    "american-buffalo-2022/nytimes--jesse-green.json",
-    "anything-goes-2011/nytimes--ben-brantley.json",
-    "august-osage-county-2007/nytimes--ben-brantley.json",
-    "avenue-q-2003/nytimes--ben-brantley.json",
-    "baby-its-you-2011/nytimes--ben-brantley.json",
-    "baby-its-you-2011/nytimes--charles-isherwood.json",
-    "bad-cinderella-2023/nytimes--jesse-green.json",
-    "bad-cinderella-2023/nytimes--unknown.json",
-    "bandstand-2017/nytimes--ben-brantley.json",
-    "bandstand-2017/nytimes--jesse-green.json",
-    "be-more-chill-2019/nytimes--ben-brantley.json",
-    "be-more-chill-2019/nytimes--jesse-green.json",
-    "beautiful-the-carole-king-musical-2014/nytimes--unknown.json",
-    "beetlejuice-2019/nytimes--ben-brantley.json",
-    "beetlejuice-2019/nytimes--unknown.json",
-    "bernhardthamlet-2018/nytimes--ben-brantley.json",
-    "bernhardthamlet-2018/nytimes--jesse-green.json",
-    "betrayal-2013/nytimes--matt-wolf.json",
-    "between-riverside-and-crazy-2022/nytimes--jesse-green.json",
-    "big-fish-2013/nytimes--ben-brantley.json",
-    "billy-elliot-the-musical-2008/nytimes--ben-brantley.json",
-    "birthday-candles-2022/nytimes--jesse-green.json",
-    "blithe-spirit-2009/nytimes--ben-brantley.json",
-    "blithe-spirit-2009/nytimes--charles-isherwood.json",
-    "bloody-bloody-andrew-jackson-2010/nytimes--ben-brantley.json",
-    "bob-fosses-dancin-2023/nytimes--jesse-green.json",
-    "boeingboeing-2008/nytimes--ben-brantley.json",
-    "bonnie-and-clyde-2011/nytimes--ben-brantley.json",
-    "breakfast-at-tiffanys-2013/nytimes--ben-brantley.json",
-    "bridge-and-tunnel-2006/nytimes--ben-brantley.json",
-    "brief-encounter-2010/nytimes--ben-brantley.json",
-    "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
-    "butley-2006/nytimes--ben-brantley.json",
-    "cabaret-2014/nytimes--ben-brantley.json",
-    "camelot-2023/nytimes--jesse-green.json",
-    "camelot-2023/nytimes--unknown.json",
-    "carousel-2018/nytimes--ben-brantley.json",
-    "carousel-2018/nytimes--jesse-green.json",
-    "casa-valentina-2014/nytimes--ben-brantley.json",
-    "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
-    "cats-1982/nytimes--frank-rich.json",
-    "cats-2016/nytimes--ben-brantley.json",
-    "cats-2016/nytimes--charles-isherwood.json",
-    "cats-2016/nytimes--unknown.json",
-    "children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
-    "children-of-a-lesser-god-2018/nytimes--jesse-green.json",
-    "children-of-a-lesser-god-2018/nytimes--unknown.json",
-    "china-doll-2015/nytimes--ben-brantley.json",
-    "china-doll-2015/nytimes--unknown.json",
-    "chinglish-2011/nytimes--ben-brantley.json",
-    "chinglish-2011/nytimes--charles-isherwood.json",
-    "clydes-2021/nytimes--jesse-green.json",
-    "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
-    "collected-stories-2010/nytimes--charles-isherwood.json",
-    "come-back-little-sheba-2008/nytimes--ben-brantley.json",
-    "come-fly-away-2010/nytimes--ben-brantley.json",
-    "company-2006/nytimes--ben-brantley.json",
-    "company-2021/nytimes--jesse-green.json",
-    "crybaby-2008/nytimes--ben-brantley.json",
-    "dead-accounts-2012/nytimes--ben-brantley.json",
-    "dead-outlaw-2025/nytimes--jesse-green.json",
-    "death-of-a-salesman-2022/nytimes--jesse-green.json",
-    "desire-under-the-elms-2009/nytimes--ben-brantley.json",
-    "deuce-2007/nytimes--ben-brantley.json",
-    "diana-the-musical-2021/nytimes--jesse-green.json",
-    "dividing-the-estate-2008/nytimes--ben-brantley.json",
-    "doctor-zhivago-2015/nytimes--charles-isherwood.json",
-    "dont-dress-for-dinner-2012/nytimes--charles-isherwood.json",
-    "driving-miss-daisy-2010/nytimes--ben-brantley.json",
-    "elling-2010/nytimes--charles-isherwood.json",
-    "english-2025/nytimes--jesse-green.json",
-    "equus-2008/nytimes--charles-isherwood.json",
-    "escape-to-margaritaville-2018/nytimes--jesse-green.json",
-    "escape-to-margaritaville-2018/nytimes--unknown.json",
-    "eureka-day-2024/nytimes--unknown.json",
-    "everyday-rapture-2010/nytimes--ben-brantley.json",
-    "falsettos-2016/nytimes--ben-brantley.json"
+    "hells-kitchen-2024/vulture--sara-holdren.json",
+    "mj-2022/vulture--jackson-mchenry.json",
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "moulin-rouge-2019/vulture--sarah-holdren.json",
+    "the-outsiders-2024/vulture--sara-holdren.json",
+    "wicked-2003/vulture--bilge-eberi.json",
+    "1776-2022/vulture--frankie-thomas.json",
+    "1776-2022/vulture--helen-shaw.json",
+    "1984-2017/vulture--jesse-green.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--jackson-mchenry.json",
+    "a-christmas-carol-2022/vulture--jackson-mchenry.json",
+    "a-soldiers-play-2020/vulture--helen-shaw.json",
+    "all-my-sons-2019/vulture--jesse-green.json",
+    "allegiance-2015/vulture--jesse-green.json",
+    "almost-famous-2022/vulture--helen-shaw.json",
+    "anastasia-2017/vulture--jesse-green.json",
+    "appropriate-2023/vulture--jackson-mchenry.json",
+    "beetlejuice-2019/vulture--jesse-green.json",
+    "betrayal-2019/vulture--jesse-green.json",
+    "between-riverside-and-crazy-2022/vulture--jackson-mchenry.json",
+    "bullets-over-broadway-2014/vulture--jesse-green.json",
+    "burn-this-2019/vulture--sara-holdren.json",
+    "cabaret-2024/vulture--helen-shaw.json",
+    "camelot-2023/vulture--unknown.json",
+    "caroline-or-change-2021/vulture--helen-shaw.json",
+    "carousel-2018/vulture--jesse-green.json",
+    "carousel-2018/vulture--sara-holdren.json",
+    "casa-valentina-2014/vulture--jesse-green.json",
+    "catch-me-if-you-can-2011/vulture--jesse-green.json",
+    "cats-2016/vulture--jesse-green.json",
+    "chaplin-2012/vulture--jesse-green.json",
+    "charlie-and-the-chocolate-factory-2017/vulture--jesse-green.json",
+    "chicken-and-biscuits-2021/vulture--helen-shaw.json",
+    "children-of-a-lesser-god-2018/vulture--boris-kachka.json",
+    "china-doll-2015/vulture--jesse-green.json",
+    "choir-boy-2019/vulture--jesse-green.json",
+    "choir-boy-2019/vulture--sara-holdren.json",
+    "cirque-du-soleil-paramour-2016/vulture--jesse-green.json",
+    "clydes-2021/vulture--helen-shaw.json",
+    "clydes-2021/vulture--jesse-green.json",
+    "company-2006/vulture--unknown.json",
+    "company-2021/vulture--helen-shaw.json",
+    "cult-of-love-2024/vulture--helen-shaw.json",
+    "doctor-zhivago-2015/vulture--unknown.json",
+    "eclipsed-2016/vulture--jesse-green.json",
+    "elf-2024/vulture--jackson-mchenry.json",
+    "english-2025/vulture--sara-holdren.json",
+    "escape-to-margaritaville-2018/vulture--jesse-green.json",
+    "escape-to-margaritaville-2018/vulture--sara-holdren.json",
+    "eureka-day-2024/vulture--jesse-green.json",
+    "eureka-day-2024/vulture--sara-holdren.json",
+    "farinelli-and-the-king-2017/vulture--jesse-green.json",
+    "farinelli-and-the-king-2017/vulture--justin-davidson.json",
+    "fat-ham-2023/vulture--helen-shaw.json",
+    "fat-ham-2023/vulture--jackson-mchenry.json",
+    "finding-neverland-2015/vulture--jesse-green.json",
+    "first-date-2013/vulture--scott-brown.json",
+    "floyd-collins-2025/vulture--sara-holdren.json",
+    "flying-over-sunset-2021/vulture--helen-shaw.json",
+    "flying-over-sunset-2021/vulture--sara-holdren.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--helen-shaw.json",
+    "frozen-2018/vulture--jesse-green.json",
+    "fun-home-2015/vulture--jesse-green.json",
+    "funny-girl-2022/vulture--jackson-mchenry.json",
+    "gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json",
+    "gary-a-sequel-to-titus-andronicus-2019/vulture--sara-holdren.json",
+    "gettin-the-band-back-together-2018/vulture--sara-holdren.json",
+    "gigi-2015/vulture--jesse-green.json",
+    "girl-from-the-north-country-2022/vulture--helen-shaw.json",
+    "glengarry-glen-ross-2025/vulture--sara-holdren.json",
+    "good-night-oscar-2023/vulture--unknown.json",
+    "grand-horizons-2020/vulture--helen-shaw.json",
+    "grand-horizons-2020/vulture--jesse-green.json",
+    "grey-house-2023/vulture--helen-shaw.json",
+    "gutenberg-2023/vulture--sara-holdren.json",
+    "gypsy-2008/vulture--jesse-green.json",
+    "gypsy-2008/vulture--sara-holdren.json",
+    "gypsy-2024/vulture--jackson-mchenry.json",
+    "gypsy-2024/vulture--sara-holdren.json",
+    "hamlet-2009/vulture--sara-holdren.json",
+    "hand-to-god-2015/vulture--jesse-green.json",
+    "hands-on-a-hardbody-2013/vulture--york-magazine.json",
+    "harmony-2023/vulture--helen-shaw.json",
+    "harmony-2023/vulture--jackson-mchenry.json",
+    "harvey-2012/vulture--jesse-green.json",
+    "head-over-heels-2018/vulture--sara-holdren.json",
+    "hedwig-and-the-angry-inch-2014/vulture--unknown.json",
+    "hello-dolly-2017/vulture--jesse-green.json",
+    "here-lies-love-2023/vulture--helen-shaw.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/vulture--jesse-green.json",
+    "holler-if-ya-hear-me-2014/vulture--jesse-green.json",
+    "home-2024/vulture--jackson-mchenry.json",
+    "home-2024/vulture--unknown.json",
+    "honeymoon-in-vegas-2015/vulture--jesse-green.json",
+    "how-i-learned-to-drive-2022/vulture--helen-shaw.json",
+    "how-i-learned-to-drive-2022/vulture--sara-holdren.json",
+    "how-to-succeed-in-business-without-really-trying-2011/vulture--jesse-green.json",
+    "hughie-2016/vulture--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [
-      "700-sundays-2013/nytimes--ben-brantley.json",
-      "bye-bye-birdie-2009/nytimes--ben-brantley.json"
+      "cats-2016/vulture--jesse-green.json",
+      "gary-a-sequel-to-titus-andronicus-2019/vulture--sara-holdren.json",
+      "gypsy-2008/vulture--sara-holdren.json",
+      "head-over-heels-2018/vulture--sara-holdren.json"
     ],
-    "brightdata": [
-      "a-strange-loop-2022/nytimes--jesse-green.json",
-      "all-my-sons-2019/nytimes--jesse-green.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "700-sundays-2013/nytimes--charles-isherwood.json",
-      "a-christmas-carol-2022/nytimes--jesse-green.json",
-      "all-my-sons-2019/nytimes--ben-brantley.json",
-      "bright-star-2016/nytimes--ben-brantley.json",
-      "bright-star-2016/nytimes--unknown.json",
-      "cabaret-2014/nytimes--jesse-green.json",
-      "elf-2024/nytimes--unknown.json"
+      "cost-of-living-2022/vulture--helen-shaw.json",
+      "cost-of-living-2022/vulture--juan-a-ramirez.json",
+      "funny-girl-2022/vulture--jackson-mchenry.json"
     ]
   },
   "failuresByOutlet": {
-    "The New York Times": {
-      "count": 18,
-      "domain": "nytimes.com",
+    "Vulture": {
+      "count": 11,
+      "domain": "vulture.com",
       "hasCredentials": false,
       "isPaywalled": true,
       "isKnownBlocked": false
@@ -178,79 +173,94 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "1776-2022/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2022/09/17/theater/1776-review.html",
-      "newUrl": "https://www.nytimes.com/2022/10/06/theater/1776-review-broadway.html"
+      "reviewId": "mj-2022/vulture--jackson-mchenry.json",
+      "oldUrl": "https://www.vulture.com/2022/02/mj-the-musical-broadway-review.html",
+      "newUrl": "https://www.vulture.com/2022/02/theater-review-mj-michael-jackson-bio-musical-broadway-nyc.html"
     },
     {
-      "reviewId": "a-strange-loop-2022/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2022/04/27/theater/a-strange-loop-review.html",
-      "newUrl": "https://www.nytimes.com/2022/04/26/theater/a-strange-loop-review-broadway.html"
+      "reviewId": "all-my-sons-2019/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2019/04/theater-review-all-my-sons-on-broadway.html",
+      "newUrl": "https://www.vulture.com/2019/04/theater-review-annette-bening-on-broadway-in-all-my-sons.html"
     },
     {
-      "reviewId": "anything-goes-2011/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2011/04/08/theater/reviews/anything-goes-on-broadway-review.html",
-      "newUrl": "https://www.nytimes.com/2011/04/08/theater/reviews/anything-goes-with-sutton-foster-joel-grey-review.html"
+      "reviewId": "appropriate-2023/vulture--jackson-mchenry.json",
+      "oldUrl": "https://www.vulture.com/2023/12/theater-review-appropriate-broadway-revival.html",
+      "newUrl": "https://www.vulture.com/2024/06/theater-review-branden-jacobs-jenkinss-appropriate.html"
     },
     {
-      "reviewId": "baby-its-you-2011/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-with-music-by-burt-bacharach-review.html",
-      "newUrl": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-story-of-the-shirelles-review.html"
+      "reviewId": "bullets-over-broadway-2014/vulture--jesse-green.json",
+      "oldUrl": "http://www.vulture.com/2014/04/theater-review-bullets-over-broadway.html",
+      "newUrl": "https://www.vulture.com/2014/04/theater-review-bullets-over-broadway.html"
     },
     {
-      "reviewId": "bandstand-2017/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2017/04/27/theater/bandstand-review.html",
-      "newUrl": "https://www.nytimes.com/2017/04/26/theater/bandstand-review-broadway.html"
+      "reviewId": "caroline-or-change-2021/vulture--helen-shaw.json",
+      "oldUrl": "https://www.vulture.com/2021/11/theater-review-caroline-or-change-broadway.html",
+      "newUrl": "https://www.vulture.com/2021/10/theater-review-caroline-change-roundabout-studio-54-kushner-tesori.html"
     },
     {
-      "reviewId": "bandstand-2017/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2017/04/27/theater/bandstand-review-broadway-world-war-ii.html",
-      "newUrl": "https://www.nytimes.com/2017/04/26/theater/bandstand-review-broadway.html"
+      "reviewId": "casa-valentina-2014/vulture--jesse-green.json",
+      "oldUrl": "http://www.vulture.com/2014/04/theater-review-casa-valentina.html",
+      "newUrl": "https://www.vulture.com/2014/04/theater-review-casa-valentina.html"
     },
     {
-      "reviewId": "billy-elliot-the-musical-2008/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2008/11/14/theater/reviews/14billy.html",
-      "newUrl": "https://www.nytimes.com/2015/08/02/nyregion/review-billy-elliot-the-musical-in-patchogue-has-music-by-elton-john.html"
+      "reviewId": "chaplin-2012/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2012/09/theater-review-chaplin.html",
+      "newUrl": "https://www.vulture.com/2012/09/theater-review-chaplin-the-musical.html"
     },
     {
-      "reviewId": "carousel-2018/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2018/04/13/theater/carousel-review-broadway.html",
-      "newUrl": "https://www.nytimes.com/2018/04/12/theater/carousel-review-broadway.html"
+      "reviewId": "choir-boy-2019/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2019/01/theater-review-choir-boy-on-broadway.html",
+      "newUrl": "https://www.vulture.com/2019/01/theater-reviews-choir-boy-and-blue-ridge.html"
     },
     {
-      "reviewId": "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2008/03/07/theater/reviews/07cat.html",
-      "newUrl": "https://www.nytimes.com/2008/03/07/theater/reviews/07roof.html"
+      "reviewId": "clydes-2021/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2021/12/theater-review-clydes-broadway.html",
+      "newUrl": "https://www.vulture.com/2021/11/theater-review-clydes-on-broadway-in-the-southern-breeze.html"
     },
     {
-      "reviewId": "children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2018/04/11/theater/children-of-a-lesser-god-review.html",
-      "newUrl": "https://www.nytimes.com/2018/04/11/theater/review-children-of-a-lesser-god-broadway.html"
+      "reviewId": "cult-of-love-2024/vulture--helen-shaw.json",
+      "oldUrl": "https://www.vulture.com/article/cult-of-love-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-review-cult-of-love.html"
     },
     {
-      "reviewId": "chinglish-2011/nytimes--charles-isherwood.json",
-      "oldUrl": "https://www.nytimes.com/2011/10/28/theater/reviews/chinglish-by-david-henry-hwang-review.html",
-      "newUrl": "https://www.nytimes.com/2011/10/28/theater/reviews/chinglish-by-david-henry-hwang-at-longacre-theater-review.html"
+      "reviewId": "eclipsed-2016/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2016/03/theater-review-eclipsed.html",
+      "newUrl": "https://www.vulture.com/2016/03/theater-reviews-eclipsed.html"
     },
     {
-      "reviewId": "company-2021/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2021/12/09/theater/company-review-patti-lupone.html",
-      "newUrl": "https://www.nytimes.com/2021/12/09/theater/company-review-sondheim.html"
+      "reviewId": "farinelli-and-the-king-2017/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2017/12/theater-review-farinelli-and-the-king.html",
+      "newUrl": "https://www.vulture.com/2017/12/two-critics-review-one-show-farinelli-and-the-king.html"
     },
     {
-      "reviewId": "dead-accounts-2012/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2012/11/30/theater/reviews/dead-accounts-with-katie-holmes-opens-on-broadway.html",
-      "newUrl": "https://www.nytimes.com/2012/11/30/theater/reviews/dead-accounts-with-katie-holmes-at-music-box-theater.html"
+      "reviewId": "first-date-2013/vulture--scott-brown.json",
+      "oldUrl": "http://www.vulture.com/2013/08/theater-review-first-date.htmlway-review-first-date/2619147/%20",
+      "newUrl": "https://www.vulture.com/2013/08/theater-review-first-date.html"
     },
     {
-      "reviewId": "deuce-2007/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2007/05/16/theater/reviews/16deuc.html",
-      "newUrl": "https://www.nytimes.com/2007/05/07/theater/reviews/07deuc.html"
+      "reviewId": "flying-over-sunset-2021/vulture--sara-holdren.json",
+      "oldUrl": "https://www.vulture.com/2021/12/flying-over-sunset-broadway-review.html",
+      "newUrl": "https://www.vulture.com/2021/12/theater-review-flying-over-sunset-vivian-beaumont-nyc.html"
     },
     {
-      "reviewId": "escape-to-margaritaville-2018/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2018/03/15/theater/escape-to-margaritaville-review.html",
-      "newUrl": "https://www.nytimes.com/2018/03/15/theater/escape-to-margaritaville-review-jimmy-buffett-broadway.html"
+      "reviewId": "frozen-2018/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2018/03/theater-review-frozen-on-broadway.html",
+      "newUrl": "https://www.vulture.com/2018/03/theater-review-frozen-is-in-place-on-broadway-to-stay.html"
+    },
+    {
+      "reviewId": "fun-home-2015/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2015/04/theater-review-fun-home.html",
+      "newUrl": "https://www.vulture.com/2015/04/theater-review-fun-home-in-its-new-round-house.html"
+    },
+    {
+      "reviewId": "grand-horizons-2020/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2020/01/theater-review-grand-horizons.html",
+      "newUrl": "https://www.vulture.com/2020/01/theater-review-the-sparkle-and-glow-of-grand-horizons.html"
+    },
+    {
+      "reviewId": "hedwig-and-the-angry-inch-2014/vulture--unknown.json",
+      "oldUrl": "http://www.vulture.com/2014/04/theater-review-hedwig-and-the-angry-inch.html",
+      "newUrl": "https://www.vulture.com/2014/04/theater-review-hedwig-and-the-angry-inch.html"
     }
   ]
 }
