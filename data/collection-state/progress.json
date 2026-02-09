@@ -4,7 +4,8 @@
     "mj-2022/hollywood-reporter--lovia-gayarkye.json",
     "mj-2022/hollywood-reporter--lovia-gyarkye.json",
     "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json"
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/buy-tickets--unknown.json"
   ],
   "failed": [
     "chess-2025/nyt-theater--jonathan-mandell.json",
@@ -31,7 +32,16 @@
     "bug-2026/4-columns-david-cote--david-cote.json",
     "bug-2026/nysr--new-york-notebook-sandy-macdonald.json",
     "bug-2026/oneminutecritic--matthew-wexler.json",
-    "bug-2026/talkinbroadway--howard-miller.json"
+    "bug-2026/talkinbroadway--howard-miller.json",
+    "bug-2026/the-interested-bystander--cary-wong.json",
+    "bug-2026/theater-scene--darryl-reilly.json",
+    "bug-2026/theater-scene--victor-gluck.json",
+    "chess-2025/the-interested-bystander--cary-wong.json",
+    "chess-2025/theater-scene--deirdre-donovan.json",
+    "chess-2025/theater-scene--samuel-l-leiter.json",
+    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -39,10 +49,13 @@
       "harry-potter-2021/broadwaynews--elizabeth-bradley.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "harry-potter-2021/buy-tickets--unknown.json"
+    ],
     "brightdata": [
       "mj-2022/hollywood-reporter--love-gyarkye.json",
-      "mj-2022/hollywood-reporter--lovia-gayarkye.json"
+      "mj-2022/hollywood-reporter--lovia-gayarkye.json",
+      "harry-potter-2021/broadwayworld--michael-dale.json"
     ],
     "archive": [
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
@@ -50,6 +63,6 @@
     ]
   },
   "startTime": "2026-02-09T16:32:27.547Z",
-  "lastProcessed": "bug-2026/talkinbroadway--howard-miller.json",
+  "lastProcessed": "harry-potter-2021/buy-tickets--unknown.json",
   "log": []
 }
