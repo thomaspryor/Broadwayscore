@@ -63,7 +63,26 @@ const showsPath = path.join(__dirname, '../data/shows.json');
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+const showMapById = {};
+for (const s of showsData.shows) showMapById[s.id] = s;
 let audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+
+// Multi-production guard: Reddit searches by title, so results conflate all productions.
+// Only assign data to the most recent production of each title.
+const mostRecentByTitle = {};
+for (const s of showsData.shows) {
+  const titleBase = s.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+  const existing = mostRecentByTitle[titleBase];
+  if (!existing || (s.openingDate || '') > (existing.openingDate || '')) {
+    mostRecentByTitle[titleBase] = s;
+  }
+}
+
+function isMostRecentProduction(show) {
+  const titleBase = show.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+  const newest = mostRecentByTitle[titleBase];
+  return !newest || newest.id === show.id;
+}
 
 /**
  * Calculate buzz score from classifications
@@ -418,7 +437,9 @@ function updateAudienceBuzz(showId, redditData) {
 
   // Recalculate combined score
   const sources = audienceBuzz.shows[showId].sources;
-  const { score, weights } = calculateCombinedScore(sources);
+  const sd = showMapById[showId];
+  const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status } : undefined;
+  const { score, weights } = calculateCombinedScore(sources, showInfo);
 
   if (score !== null) {
     audienceBuzz.shows[showId].combinedScore = score;
@@ -524,6 +545,15 @@ async function main() {
     if (b.status === 'open' && a.status !== 'open') return 1;
     return new Date(b.openingDate || 0) - new Date(a.openingDate || 0);
   });
+
+  // Multi-production guard: Reddit searches by title, so only process the most
+  // recent production of each title (avoids duplicate/conflated data)
+  if (includeAll) {
+    const beforeCount = shows.length;
+    shows = shows.filter(s => isMostRecentProduction(s));
+    const skipped = beforeCount - shows.length;
+    if (skipped > 0) console.log(`Filtered ${skipped} older productions (kept most recent per title)`);
+  }
 
   // Apply skip (for continuation after timeout)
   if (skipCount > 0) {
