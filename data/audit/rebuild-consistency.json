@@ -2,6 +2,14 @@
   "generatedAt": "2026-02-09T10:17:04.757Z",
   "issues": [
     {
+      "type": "designation-score-mismatch",
+      "severity": "medium",
+      "showId": "bright-star-2016",
+      "outlet": "nytimes",
+      "critic": "Ben Brantley",
+      "detail": "Critics_Pick but score=41 (source: llmScore)"
+    },
+    {
       "type": "score-clustering",
       "severity": "low",
       "showId": "a-dolls-house-part-2-2017",
@@ -17,7 +25,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "aint-no-mo-2022",
-      "detail": "13/35 reviews (37%) scored exactly 82"
+      "detail": "13/36 reviews (36%) scored exactly 82"
     },
     {
       "type": "score-clustering",
@@ -65,7 +73,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "home-2024",
-      "detail": "8/16 reviews (50%) scored exactly 82"
+      "detail": "8/17 reviews (47%) scored exactly 82"
     },
     {
       "type": "score-clustering",
@@ -108,6 +116,12 @@
       "severity": "low",
       "showId": "the-25th-annual-putnam-county-spelling-bee-2005",
       "detail": "9/9 reviews (100%) scored exactly 80"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "the-hills-of-california-2024",
+      "detail": "9/19 reviews (47%) scored exactly 80"
     },
     {
       "type": "score-clustering",
