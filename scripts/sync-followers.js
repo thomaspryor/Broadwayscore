@@ -127,18 +127,37 @@ async function main() {
 
   // Process submissions
   let added = 0;
+  let removed = 0;
   let skippedDuplicate = 0;
   let skippedInvalid = 0;
 
   for (const sub of allSubmissions) {
     const email = (sub.email || sub._replyto || '').toLowerCase().trim();
     const showId = sub.showId;
+    const action = (sub.action || 'follow').toLowerCase();
 
     if (!showId || !isValidEmail(email)) {
       skippedInvalid++;
       continue;
     }
 
+    // Handle unfollow
+    if (action === 'unfollow') {
+      if (data.followers[showId]) {
+        const idx = data.followers[showId].indexOf(email);
+        if (idx !== -1) {
+          data.followers[showId].splice(idx, 1);
+          removed++;
+          console.log(`  - ${showId}: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} (unfollowed)`);
+          if (data.followers[showId].length === 0) {
+            delete data.followers[showId];
+          }
+        }
+      }
+      continue;
+    }
+
+    // Handle follow
     if (!data.followers[showId]) {
       data.followers[showId] = [];
     }
@@ -153,14 +172,14 @@ async function main() {
     console.log(`  + ${showId}: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
   }
 
-  console.log(`\nResults: ${added} added, ${skippedDuplicate} duplicates skipped, ${skippedInvalid} invalid skipped`);
+  console.log(`\nResults: ${added} added, ${removed} removed, ${skippedDuplicate} duplicates skipped, ${skippedInvalid} invalid skipped`);
 
-  if (!DRY_RUN && added > 0) {
+  if (!DRY_RUN && (added > 0 || removed > 0)) {
     saveFollowers(data);
   } else if (DRY_RUN) {
     console.log('(Dry run — no changes saved)');
   } else {
-    console.log('No new followers to add');
+    console.log('No changes to save');
   }
 }
 

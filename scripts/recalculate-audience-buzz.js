@@ -12,12 +12,18 @@ const { calculateCombinedScore } = require('./lib/audience-weighting');
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
 
+const showsFile = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
+const showMap = {};
+for (const s of showsFile.shows) showMap[s.id] = s;
+
 console.log('Recalculating all Audience Buzz scores with dynamic weighting...\n');
 
 let updated = 0;
 for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
   const oldScore = show.combinedScore;
-  const { score, weights } = calculateCombinedScore(show.sources);
+  const showData = showMap[showId];
+  const showInfo = showData ? { closingDate: showData.closingDate, status: showData.status } : undefined;
+  const { score, weights } = calculateCombinedScore(show.sources, showInfo);
 
   if (score !== null) {
     show.combinedScore = score;
