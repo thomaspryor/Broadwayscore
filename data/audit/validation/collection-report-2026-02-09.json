@@ -1,267 +1,144 @@
 {
-  "runDate": "2026-02-09T11:24:11.945Z",
+  "runDate": "2026-02-09T11:27:49.358Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "wicked-2003,aladdin-2014,chicago-1996,oedipus-2025,indecent-2017,heisenberg-2016,amazing-grace-2015,bright-star-2016,tootsie-2019,the-bands-visit-2017,the-humans-2016,six-degrees-of-separation-2017,cats-1982,in-transit-2016,fiddler-on-the-roof-2015,noises-off-2016,les-liaisons-dangereuses-2016,dear-evan-hansen-2016,eclipsed-2016,meteor-shower-2017,king-lear-2019,falsettos-2016,the-front-page-2016,dames-at-sea-2015,frankie-and-johnny-in-the-clair-de-lune-2019,burn-this-2019,almost-famous-2022,fully-committed-2016,latin-history-for-morons-2017,american-psycho-2016,machinal-2014,aint-no-mo-2022,paradise-square-2022,a-strange-loop-2022,kpop-2022,slave-play-2021,grease-2007,the-king-and-i-2015,matilda-the-musical-2013,the-piano-lesson-2022,mrs-doubtfire-2021,the-curious-incident-of-the-dog-in-the-nighttime-2014,an-act-of-god-2016,enron-2010,la-cage-aux-folles-2010,race-2009,the-height-of-the-storm-2019,girl-from-the-north-country-2022,master-class-2011,rodgers-hammersteins-cinderella-2013,the-thanksgiving-play-2023,come-fly-away-2010,godspell-2011,once-upon-a-one-more-time-2023,the-lehman-trilogy-2021,the-wiz-2024,aint-too-proud-2019,disaster-2016,home-2024,next-fall-2010,rain-2010,the-play-that-goes-wrong-2017,1984-2017,after-midnight-2013,big-fish-2013,flying-over-sunset-2021,patriots-2024,spongebob-squarepants-2017,the-notebook-2024,venus-in-fur-2011,bring-it-on-the-musical-2012,guys-and-dolls-2009,lend-me-a-tenor-2010,of-mice-and-men-2014,the-glass-menagerie-2017,to-kill-a-mockingbird-2018,a-wonderful-world-the-louis-armstrong-musical-2024,bloody-bloody-andrew-jackson-2010,ghetto-klown-2011,jajas-african-hair-braiding-2023,othello-2025,stick-fly-2011,the-last-ship-2014,the-skin-of-our-teeth-2022,wit-2012,bullets-over-broadway-2014,grand-horizons-2020,linda-vista-2019,picnic-2013,the-anarchist-2012,the-road-to-mecca-2012,700-sundays-2013,a-bronx-tale-the-musical-2016,cats-2016,disgraced-2014,golden-boy-2012,looped-2010,redwood-2025,the-testament-of-mary-2013,chaplin-2012,illinoise-2024,potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022,the-cherry-orchard-2016,water-for-elephants-2024,bronx-bombers-2014,harvey-2012,the-25th-annual-putnam-county-spelling-bee-2005,13-2008,an-enemy-of-the-people-2012,lempicka-2024,the-importance-of-being-earnest-2011,cat-on-a-hot-tin-roof-2008,macbeth-2008,the-country-girl-2008,heart-of-rock-and-roll-2024,the-royal-family-2009,primo-2005,whos-afraid-of-virginia-woolf-2020,doubt-2024,ragtime-2009,well-2006,desire-under-the-elms-2009,oleanna-2009,the-history-boys-2006,title-of-show-2008,boeingboeing-2008,company-2006,inherit-the-wind-2007,les-miserables-2006,spring-awakening-2006,the-pajama-game-2006,wishful-drinking-2009",
+    "showFilter": "",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 10,
-    "failed": 90,
+    "processed": 1,
+    "failed": 65,
     "skipped": 0,
-    "successRate": "10.0%"
+    "successRate": "1.5%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 3,
-    "archive": 5
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 62,
-    "tier1Success": 35,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 49,
-    "tier2Success": 15,
-    "tier3Attempts": 35,
-    "tier3Success": 12,
-    "tier4Attempts": 59,
-    "tier4Success": 23,
-    "totalFailed": 90,
-    "scrapingBeeCreditsUsed": 275,
+    "tier2Attempts": 44,
+    "tier2Success": 10,
+    "tier3Attempts": 34,
+    "tier3Success": 1,
+    "tier4Attempts": 73,
+    "tier4Success": 26,
+    "totalFailed": 65,
+    "scrapingBeeCreditsUsed": 133,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 21,
-    "urlDiscoverySuccess": 9,
+    "urlDiscoveryAttempts": 28,
+    "urlDiscoverySuccess": 7,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "chicago-1996/oocities--richard-zoglin.json",
-    "chicago-1996/time--.json",
-    "chicago-1996/time--richard-zoglin.json",
-    "wicked-2003/ajc--wendell-brock.json",
-    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
-    "an-act-of-god-2016/hollywood-reporter--david-rooney.json",
-    "big-fish-2013/variety--marilyn-stasio.json",
-    "burn-this-2019/hollywood-reporter--david-rooney.json",
-    "come-fly-away-2010/hollywood-reporter--franck-scheck.json",
-    "disgraced-2014/hollywood-reporter--david-rooney.json"
+    "the-bridges-of-madison-county-2014/chicagotribune--chris-jones.json"
   ],
   "failed": [
-    "chicago-1996/hollywood-reporter--david-rooney.json",
-    "wicked-2003/hollywood-reporter--david-rooney.json",
-    "wicked-2003/variety--charles-isherwood.json",
-    "wicked-2003/variety--peter-debruge.json",
-    "aladdin-2014/guardian--alexis-soloski.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "aladdin-2014/uinterview--danny-graugnard.json",
-    "chicago-1996/newsday--linda-winer.json",
-    "chicago-1996/nypost--elisabeth-vincentelli.json",
-    "oedipus-2025/la-voce-di-new-york--jk-clarke.json",
-    "wicked-2003/bbc-caryn-james--caryn-james.json",
-    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
-    "wicked-2003/cleveland-jewish-news--sheri-gross.json",
-    "wicked-2003/guardian--peter-bradshaw.json",
-    "wicked-2003/indiewire--kate-erbland.json",
-    "wicked-2003/newsweek--billie-melissa.json",
-    "wicked-2003/nexus-point-news-demet-koc--demet-koc.json",
-    "aladdin-2014/amny--joe-dziemianowicz.json",
-    "aladdin-2014/broadway-voice--kristen-balzano.json",
-    "aladdin-2014/catholic-transcript--bernard-carragher.json",
-    "aladdin-2014/perez-hilton--perez-hilton.json",
-    "aladdin-2014/thestage--mark-shenton.json",
-    "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
-    "chicago-1996/amny--matt-windman.json",
-    "chicago-1996/ap--mark-kennedy.json",
-    "oedipus-2025/latimes--charles-mcnulty.json",
-    "oedipus-2025/nysr--new-york-notebook-sandy-macdonald.json",
-    "oedipus-2025/oneminutecritic--matthew-wexler.json",
-    "oedipus-2025/the-interested-bystander--cary-wong.json",
-    "oedipus-2025/theater-scene--victor-gluck.json",
-    "wicked-2003/about-entertainment--chris-caggiano.json",
-    "wicked-2003/austincom--dani-dudek.json",
-    "wicked-2003/av-club-jesse-hassenger--jesse-hassenger.json",
-    "wicked-2003/awards-watch-sophia-ciminello--sophia-ciminello.json",
-    "wicked-2003/cbr-caralynn-matassa--caralynn-matassa.json",
-    "wicked-2003/collider-therese-lacson--therese-lacson.json",
-    "wicked-2003/consequence-liz-shannon-miller--liz-shannon-miller.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/den-of-geek-david-crow--david-crow.json",
-    "wicked-2003/empire-john-nugent--john-nugent.json",
-    "wicked-2003/fresh-fiction-courtney-howard--courtney-howard.json",
-    "wicked-2003/frontmezzjunkies--unknown.json",
-    "wicked-2003/huron-daily-jake-coyle--jake-coyle.json",
-    "wicked-2003/inverse-lyvie-scott--lyvie-scott.json",
-    "wicked-2003/joysauce-siddhant-adlakha--siddhant-adlakha.json",
-    "wicked-2003/latimes--amy-nicholson.json",
-    "wicked-2003/mamas-geeky-tessa-smith--tessa-smith.json",
-    "wicked-2003/mashable-kristy-puchko--kristy-puchko.json",
-    "wicked-2003/njcom--michael-sommers.json",
-    "wicked-2003/ny1--roma-torre.json",
-    "wicked-2003/radio-times-james-mottram--james-mottram.json",
-    "wicked-2003/riverfront-times--tina-farmer.json",
-    "wicked-2003/rollingstone--david-fear.json",
-    "wicked-2003/scmp-james-mottram--james-mottram.json",
-    "wicked-2003/screen-daily-tim-grierson--tim-grierson.json",
-    "wicked-2003/sfchronicle--carla-meyer.json",
-    "wicked-2003/sfchronicle--lily-janiak.json",
-    "wicked-2003/showbiz-411-roger-friedman--roger-friedman.json",
-    "wicked-2003/solzy-at-the-movies-danielle-solzman--danielle-solzman.json",
-    "wicked-2003/the-chronicle--howard-gollop.json",
-    "wicked-2003/the-times--kevin-maher.json",
-    "wicked-2003/trib-live--alexis-papalia.json",
-    "wicked-2003/village-voice--michael-feingold.json",
-    "wicked-2003/we-are-green-bay--warren-gerds.json",
-    "wicked-2003/weliveentertainment-aaron-neuwirth--aaron-neuwirth.json",
-    "a-bronx-tale-the-musical-2016/hollywood-reporter--frank-scheck.json",
-    "a-bronx-tale-the-musical-2016/nyt-theater--david-nounou.json",
-    "after-midnight-2013/nyt-theater--david-nounou.json",
-    "aint-no-mo-2022/variety--frank-rizzo.json",
-    "aint-no-mo-2022/variety--peter-marks.json",
-    "aint-too-proud-2019/variety--marilyn-stasio.json",
-    "almost-famous-2022/hollywood-reporter--angie-han.json",
-    "amazing-grace-2015/nytg--steven-babyak.json",
-    "an-act-of-god-2016/nytg--unknown.json",
-    "big-fish-2013/hollywood-reporter--david-rooney.json",
-    "bloody-bloody-andrew-jackson-2010/hollywood-reporter--frank-scheck.json",
-    "bloody-bloody-andrew-jackson-2010/variety--steven-suskin.json",
-    "boeingboeing-2008/variety--charles-isherwood.json",
-    "cat-on-a-hot-tin-roof-2008/hollywood-reporter--david-rooney.json",
-    "cats-1982/hollywood-reporter--jordan-riefe.json",
-    "cats-2016/hollywood-reporter--frank-scheck.json",
-    "chaplin-2012/hollywood-reporter--david-rooney.json",
-    "come-fly-away-2010/variety--david-rooney.json",
-    "come-fly-away-2010/variety--steven-suskin.json",
-    "dames-at-sea-2015/hollywood-reporter--david-rooney.json",
-    "dear-evan-hansen-2016/hollywood-reporter--david-rooney.json",
-    "doubt-2024/variety--peter-marks.json",
-    "eclipsed-2016/hollywood-reporter--david-rooney.json",
-    "enron-2010/variety--marilyn-stasio.json",
-    "fiddler-on-the-roof-2015/nyt-theater--jonathan-mandell.json"
+    "and-juliet-2022/nydailynews--chris-jones.json",
+    "book-of-mormon-2011/chicagotribune--.json",
+    "book-of-mormon-2011/chicagotribune--chris-jones.json",
+    "death-becomes-her-2024/chicagotribune--chris-jones.json",
+    "stranger-things-2024/chicagotribune--chris-jones.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "gutenberg-2023/nydailynews--chris-jones.json",
+    "a-behanding-in-spokane-2010/chicagotribune--chris-jones.json",
+    "a-bronx-tale-the-musical-2016/chicagotribune--chris-jones.json",
+    "a-dolls-house-part-2-2017/chicagotribune--chris-jones.json",
+    "a-life-in-the-theatre-2010/chicagotribune--chris-jones.json",
+    "american-buffalo-2022/chicagotribune--chris-jones.json",
+    "big-fish-2013/chicagotribune--unknown.json",
+    "bloody-bloody-andrew-jackson-2010/chicagotribune--chris-jones.json",
+    "catch-me-if-you-can-2011/chicagotribune--chris-jones.json",
+    "hedwig-and-the-angry-inch-2014/chicagotribune--chris-jones.json",
+    "hedwig-and-the-angry-inch-2014/chicagotribune--unknown.json",
+    "hello-dolly-2017/chicagotribune--chris-jones.json",
+    "la-bete-2010/chicagotribune--.json",
+    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
+    "once-upon-a-one-more-time-2023/chicagotribune--chris-jones.json",
+    "othello-2025/chicagotribune--chris-jones.json",
+    "pippin-2013/chicagotribune--chris-jones.json",
+    "pirates-the-penzance-musical-2025/chicagotribune--chris-jones.json",
+    "pretty-woman-the-musical-2018/chicagotribune--chris-jones.json",
+    "prince-of-broadway-2017/chicagotribune--chris-jones.json",
+    "promises-promises-2010/chicagotribune--chris-jones.json",
+    "reasons-to-be-pretty-2009/chicagotribune--unknown.json",
+    "red-2010/chicagotribune--chris-jones.json",
+    "rodgers-hammersteins-cinderella-2013/chicagotribune--chris-jones.json",
+    "romeo-juliet-2024/chicagotribune--chris-jones.json",
+    "some-like-it-hot-2022/chicagotribune--chris-jones.json",
+    "the-crucible-2016/chicagotribune--chris-jones.json",
+    "the-crucible-2016/chicagotribune--unknown.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
+    "the-ferryman-2018/chicagotribune--chris-jones.json",
+    "the-gershwins-porgy-and-bess-2012/chicagotribune--chris-jones.json",
+    "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
+    "the-hills-of-california-2024/chicagotribune--chris-jones.json",
+    "the-house-of-blue-leaves-2011/chicagotribune--chris-jones.json",
+    "the-humans-2016/chicagotribune--chris-jones.json",
+    "the-miracle-worker-2010/chicagotribune--chris-jones.json",
+    "the-mystery-of-edwin-drood-2012/chicagotribune--chris-jones.json",
+    "the-nap-2018/chicagotribune--chris-jones.json",
+    "the-piano-lesson-2022/chicagotribune--chris-jones.json",
+    "the-price-2017/chicagotribune--chris-jones.json",
+    "the-rose-tattoo-2019/chicagotribune--chris-jones.json",
+    "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
+    "the-waverly-gallery-2018/chicagotribune--chris-jones.json",
+    "therese-raquin-2015/chicagotribune--unknown.json",
+    "this-is-our-youth-2014/chicagotribune--chris-jones.json",
+    "three-tall-women-2018/chicagotribune--chris-jones.json",
+    "to-kill-a-mockingbird-2018/chicagotribune--chris-jones.json",
+    "torch-song-2018/chicagotribune--chris-jones.json",
+    "torch-song-2018/chicagotribune--matt-windman.json",
+    "tuck-everlasting-2016/chicagotribune--chris-jones.json",
+    "violet-2014/chicagotribune--chris-jones.json",
+    "waiting-for-godot-2009/chicagotribune--chris-jones.json",
+    "war-horse-2011/chicagotribune--chris-jones.json",
+    "war-paint-2017/chicagotribune--chris-jones.json",
+    "water-for-elephants-2024/chicagotribune--chris-jones.json",
+    "west-side-story-2020/chicagotribune--chris-jones.json",
+    "wit-2012/chicagotribune--chris-jones.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/chicagotribune--chris-jones.json",
+    "yellow-face-2024/chicagotribune--chris-jones.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "chicago-1996/oocities--richard-zoglin.json"
-    ],
-    "brightdata": [
-      "wicked-2003/ajc--wendell-brock.json",
-      "big-fish-2013/variety--marilyn-stasio.json",
-      "disgraced-2014/hollywood-reporter--david-rooney.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archive": [
-      "chicago-1996/time--.json",
-      "chicago-1996/time--richard-zoglin.json",
-      "an-act-of-god-2016/hollywood-reporter--david-rooney.json",
-      "burn-this-2019/hollywood-reporter--david-rooney.json",
-      "come-fly-away-2010/hollywood-reporter--franck-scheck.json"
+      "the-bridges-of-madison-county-2014/chicagotribune--chris-jones.json"
     ]
   },
   "failuresByOutlet": {
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Newsday": {
-      "count": 1,
-      "domain": "newsday.com",
+    "Chicago Tribune": {
+      "count": 24,
+      "domain": "chicagotribune.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "amNewYork": {
+    "The  Chicago Tribune": {
       "count": 1,
-      "domain": "amny.com",
+      "domain": "chicagotribune.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "Broadway Voice": {
+    "The Chicago Tribune": {
       "count": 1,
-      "domain": "bwayvoice.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Stage": {
-      "count": 1,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "This Broadway": {
-      "count": 1,
-      "domain": "thisbroadsway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Associated Press": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Huron Daily (Jake Coyle)": {
-      "count": 1,
-      "domain": "michigansthumb.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NJ.com": {
-      "count": 1,
-      "domain": "wickedthemusical.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NY1": {
-      "count": 1,
-      "domain": "ny1.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "New York Theater": {
-      "count": 1,
-      "domain": "newyorktheater.me",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Variety": {
-      "count": 2,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Hollywood Reporter": {
-      "count": 2,
-      "domain": "hollywoodreporter.com",
+      "domain": "chicagotribune.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
@@ -269,49 +146,39 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "wicked-2003/trib-live--alexis-papalia.json",
-      "oldUrl": "https://triblive.com/aande/theater-arts/review-latest-wicked-production-at-benedum-center-is-as-enchanting-as-ever/",
-      "newUrl": "https://community.triblive.com/c/downtown-pittsburgh-news/news/3959160"
+      "reviewId": "book-of-mormon-2011/chicagotribune--.json",
+      "oldUrl": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-park/",
+      "newUrl": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in-a-hilarious-book-of-mormon/"
     },
     {
-      "reviewId": "after-midnight-2013/nyt-theater--david-nounou.json",
-      "oldUrl": "https://newyorktheater.me/2013/11/14/after-midnight-review/",
-      "newUrl": "https://newyorktheater.me/2013/11/03/after-midnight-review-ellington-alive-on-broadway/"
+      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
+      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
     },
     {
-      "reviewId": "aint-no-mo-2022/variety--frank-rizzo.json",
-      "oldUrl": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-jordan-e-cooper-1235438064/",
-      "newUrl": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/"
+      "reviewId": "american-buffalo-2022/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/ct-ent-american-buffalo-broadway-review-20220415-6xqzlqxoqfgkxbwxvyqzqzqzqz-story.html",
+      "newUrl": "https://www.chicagotribune.com/2022/04/14/review-american-buffalo-opens-on-broadway-with-laurence-fishburne-a-blast-of-a-mamet-play-that-stops-short-of-the-biggest-score/"
     },
     {
-      "reviewId": "aint-no-mo-2022/variety--peter-marks.json",
-      "oldUrl": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-jordan-e-cooper-1235445436/",
-      "newUrl": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/"
+      "reviewId": "big-fish-2013/chicagotribune--unknown.json",
+      "oldUrl": "http://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ent-1007-big-fish-broadway-review-20131007,0,1670962.column?track=rss",
+      "newUrl": "https://www.chicagotribune.com/2013/10/06/broadway-review-big-fish/"
     },
     {
-      "reviewId": "almost-famous-2022/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/almost-famous-broadway-review-1235246420/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/almost-famous-theater-review-cameron-crowe-recaptures-70s-rock-fandom-on-broadway-1235254652/"
+      "reviewId": "catch-me-if-you-can-2011/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2011/04/01/catch-me-if-you-can-on-broadway-adaptation-couldve-stuck-more-closely-to-the-script/",
+      "newUrl": "https://www.chicagotribune.com/2025/09/05/review-catch-me-if-you-can-marriott/"
     },
     {
-      "reviewId": "amazing-grace-2015/nytg--steven-babyak.json",
-      "oldUrl": "http://www.newyorktheatreguide.com/reviews/amazinggrace15.htm",
-      "newUrl": "https://www.newyorktheatreguide.com/reviews/amazing-grace"
+      "reviewId": "pippin-2013/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2013/04/26/pippin-broadway-review/",
+      "newUrl": "https://www.chicagotribune.com/2013/04/25/broadway-review-pippin-pulls-off-a-theatrical-high-wire-act-2/"
     },
     {
-      "reviewId": "an-act-of-god-2016/nytg--unknown.json",
-      "oldUrl": "http://www.newyorktheatreguide.com/reviews/actofgod15.htm",
-      "newUrl": "https://www.newyorktheatreguide.com/reviews/an-act-of-god-0"
-    },
-    {
-      "reviewId": "come-fly-away-2010/variety--david-rooney.json",
-      "oldUrl": "https://variety.com/2010/legit/reviews/come-fly-away-1117942188/",
-      "newUrl": "https://variety.com/2010/legit/reviews/come-fly-away-1117942480/"
-    },
-    {
-      "reviewId": "doubt-2024/variety--peter-marks.json",
-      "oldUrl": "https://variety.com/2024/legit/reviews/doubt-a-parable-broadway-review-tyne-daly-bobby-cannavale-1235906396/",
-      "newUrl": "https://variety.com/2024/legit/reviews/doubt-review-broadway-liev-schreiber-amy-ryan-1235929589/"
+      "reviewId": "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2014/10/06/the-curious-incident-of-the-dog-in-the-night-time-broadway-review/",
+      "newUrl": "https://www.chicagotribune.com/2014/10/06/review-the-curious-incident-of-the-dog-in-the-night-time/"
     }
   ]
 }
