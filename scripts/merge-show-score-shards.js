@@ -26,7 +26,8 @@ const urlsPath = path.join(__dirname, '../data/show-score-urls.json');
 const shardDir = path.join(__dirname, '../data/show-score-shards');
 
 // Build multi-production lookup: for each title base, find the most recent production.
-// ShowScore has ONE page per title — only the most recent production gets the data.
+// ShowScore sometimes has separate pages per production — older productions allowed if
+// they have their own distinct URL (different from the newest production's URL).
 const mostRecentByTitle = {};
 for (const s of showsData.shows) {
   const titleBase = s.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
@@ -42,6 +43,22 @@ function isMostRecentProduction(showId) {
   const titleBase = show.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
   const newest = mostRecentByTitle[titleBase];
   return !newest || newest.id === showId;
+}
+
+/**
+ * Check if an older production has its own distinct ShowScore page.
+ * Uses urlData which is progressively updated during the URL merge phase.
+ */
+function hasOwnShowScorePage(showId, urlStore) {
+  if (isMostRecentProduction(showId)) return true;
+  const show = showMapById[showId];
+  if (!show) return false;
+  const titleBase = show.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+  const newest = mostRecentByTitle[titleBase];
+  if (!newest) return true;
+  const myUrl = urlStore[showId];
+  const newestUrl = urlStore[newest.id];
+  return myUrl && newestUrl && myUrl !== newestUrl;
 }
 
 function main() {
@@ -88,14 +105,27 @@ function main() {
   if (!urlData.shows) urlData.shows = {};
 
   let newUrls = 0;
+  let skippedUrlDupes = 0;
   for (const [showId, url] of Object.entries(allUrls)) {
-    // Only cache URLs for the most recent production
-    if (!isMostRecentProduction(showId)) continue;
+    if (!isMostRecentProduction(showId)) {
+      // Older production: only cache if URL differs from newest production's
+      const show = showMapById[showId];
+      if (!show) continue;
+      const titleBase = show.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+      const newest = mostRecentByTitle[titleBase];
+      const newestUrl = newest ? (urlData.shows[newest.id] || allUrls[newest.id]) : null;
+      if (!newestUrl || url === newestUrl) {
+        if (url === newestUrl) console.log(`  SKIP URL ${showId}: same as newest production`);
+        skippedUrlDupes++;
+        continue;
+      }
+    }
     if (!urlData.shows[showId]) {
       newUrls++;
     }
     urlData.shows[showId] = url;
   }
+  if (skippedUrlDupes > 0) console.log(`  (${skippedUrlDupes} older production URLs skipped — same as newest)`)
 
   console.log(`\nURL cache: ${newUrls} new URLs added (total: ${Object.keys(urlData.shows).length})`);
 
@@ -108,9 +138,9 @@ function main() {
   let skippedOlder = 0;
 
   for (const [showId, showScoreData] of Object.entries(allScores)) {
-    // Multi-production guard: only the most recent production gets ShowScore data
-    if (!isMostRecentProduction(showId)) {
-      console.log(`  SKIP ${showId}: not the most recent production of this title`);
+    // Multi-production guard: older productions only allowed if they have own distinct URL
+    if (!isMostRecentProduction(showId) && !hasOwnShowScorePage(showId, urlData.shows || {})) {
+      console.log(`  SKIP ${showId}: older production without own ShowScore page`);
       skippedOlder++;
       continue;
     }
