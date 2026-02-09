@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-09",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 10019,
-      "skippedNoScore": 9524,
+      "totalReviews": 10017,
+      "skippedNoScore": 9523,
       "skippedDuplicate": 44,
       "skippedDuplicateUrl": 285,
       "skippedCrossOutletDuplicateUrl": 46,
-      "skippedDuplicateText": 325,
+      "skippedDuplicateText": 327,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 760,
       "recoveredFromGarbage": 129,
@@ -20,14 +20,14 @@
         "explicit-letterGrade": 1,
         "human-review": 56,
         "originalScore-priority0": 1067,
-        "llmScore": 4514,
+        "llmScore": 4517,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 4154,
+        "llmScore-lowconf": 4150,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 209
+        "thumb": 208
       }
     }
   },
@@ -2638,7 +2638,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 44,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Charles Isherwood",
@@ -2648,7 +2648,7 @@
       "pullQuote": "This smoothly produced show's presentation of his semi-symphonic rock and sentimental balladry failed to convert me.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -22357,23 +22357,6 @@
     },
     {
       "showId": "american-buffalo-2008",
-      "outletId": "theatermania",
-      "outlet": "TheaterMania",
-      "assignedScore": 71,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Kenji Fujishima",
-      "url": "https://www.theatermania.com/broadway/reviews/review-american-buffalo_93652.html",
-      "publishDate": "April 14, 2022",
-      "originalRating": null,
-      "pullQuote": "For better or worse, this new production mostly offers the not-inconsiderable spectacle of a job well done.",
-      "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "american-buffalo-2008",
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 60,
@@ -23129,13 +23112,13 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "David Cote",
-      "url": "https://www.timeout.com/newyork/theater/american-idiot",
+      "url": "https://www.timeout.com/chicago/theater/american-idiot",
       "publishDate": "April 20, 2010",
       "originalRating": 60,
       "pullQuote": "The show works best when it focuses on the emotional journey of its characters rather than trying to be a literal adaptation of Green Day's concept album.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "american-idiot-2010",
@@ -116798,7 +116781,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 73,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Howard Miller",
@@ -116808,7 +116791,7 @@
       "pullQuote": "'Maybe Happy Ending', the quirky/charming futuristic musical",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "maybe-happy-ending-2024",
@@ -119588,7 +119571,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 75,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Matthew Murray",
@@ -119598,7 +119581,7 @@
       "pullQuote": "MJ succeeds most when it focuses on Jackson's artistry and the creative process, allowing audiences to witness the meticulous craft behind his legendary performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "mj-2022",
@@ -135639,23 +135622,6 @@
     },
     {
       "showId": "race-2009",
-      "outletId": "ew",
-      "outlet": "Entertainment Weekly",
-      "assignedScore": 35,
-      "scoreSource": "thumb",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": null,
-      "url": "http://www.ew.com/ew/article/0,,20325145,00.html",
-      "publishDate": "December 6, 2009",
-      "originalRating": null,
-      "pullQuote": "Playwright David Mamet works all his familiar stuff trying to get a rise out of his audience in Race, a four-person dramatic tap dance about the lies blacks and whites tell each other about each other — a Broadway production populated, to a liar, with actors primarily known for their movie and TV stardom.",
-      "dtliThumb": "Down",
-      "bwwThumb": null,
-      "contentTier": "none"
-    },
-    {
-      "showId": "race-2009",
       "outletId": "nypost",
       "outlet": "New York Post",
       "assignedScore": 41,
@@ -150580,13 +150546,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Green",
-      "url": "https://www.vulture.com/2018/12/the-cher-show-broadway-review.html",
+      "url": "https://www.vulture.com/2018/12/theater-review-how-over-the-top-should-the-cher-show-be.html",
       "publishDate": "December 4, 2018",
       "originalRating": null,
       "pullQuote": "The Cher Show is a jukebox musical that works harder than most to justify its existence, and mostly succeeds in doing so by focusing on what made Cher an icon: her ability to constantly reinvent herself.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-cherry-orchard-2016",
