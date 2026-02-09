@@ -73,11 +73,11 @@ function isValidEmail(email) {
 }
 
 async function main() {
-  const token = process.env.FORMSPREE_TOKEN;
+  const token = process.env.FORMSPREE_FOLLOW_API_KEY || process.env.FORMSPREE_TOKEN;
   const formId = process.env.FORMSPREE_FOLLOW_FORM_ID;
 
   if (!token || !formId) {
-    console.log('Missing FORMSPREE_TOKEN or FORMSPREE_FOLLOW_FORM_ID — skipping sync');
+    console.log('Missing FORMSPREE_FOLLOW_API_KEY/FORMSPREE_TOKEN or FORMSPREE_FOLLOW_FORM_ID — skipping sync');
     process.exit(0);
   }
 
