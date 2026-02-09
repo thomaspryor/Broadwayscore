@@ -1,0 +1,95 @@
+name: Audit Creative Team Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Optional: specific show slug to audit'
+        required: false
+        type: string
+      status:
+        description: 'Filter by show status'
+        required: false
+        type: choice
+        options:
+          - ''
+          - open
+          - previews
+          - closed
+      limit:
+        description: 'Max shows to process (0 = all)'
+        required: false
+        default: '0'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium
+
+      - name: Run creative team audit
+        id: audit
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          FLAGS="--checkpoint"
+
+          if [ -n "${{ inputs.show }}" ]; then
+            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          fi
+
+          if [ -n "${{ inputs.status }}" ]; then
+            FLAGS="$FLAGS --status=${{ inputs.status }}"
+          fi
+
+          if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
+            FLAGS="$FLAGS --limit=${{ inputs.limit }}"
+          fi
+
+          echo "Running: node scripts/audit-creative-team.js $FLAGS"
+          node scripts/audit-creative-team.js $FLAGS
+
+      - name: Commit audit results
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/audit/creative-team-audit.json || true
+
+          if git diff --cached --quiet; then
+            echo "No audit changes to commit"
+            exit 0
+          fi
+
+          git commit -m "data: Creative team audit results"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
