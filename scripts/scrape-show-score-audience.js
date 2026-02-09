@@ -288,10 +288,18 @@ async function discoverShowScoreUrl(show) {
   if (verbose) console.log(`  Trying ${candidates.length} URL patterns...`);
 
   for (const url of candidates) {
-    // For older productions, skip the URL the newest production already uses
-    if (newestUrl && url === newestUrl) {
-      if (verbose) console.log(`  Skip: ${url} (same as newest production)`);
-      continue;
+    // For older productions, skip URLs already claimed by any other show
+    if (newestUrl) {
+      if (url === newestUrl) {
+        if (verbose) console.log(`  Skip: ${url} (same as newest production)`);
+        continue;
+      }
+      // Also skip if another show already has this URL cached (prevents 3+ production dupes)
+      const existingOwner = Object.entries(urlData.shows || {}).find(([id, u]) => u === url && id !== show.id);
+      if (existingOwner) {
+        if (verbose) console.log(`  Skip: ${url} (already cached for ${existingOwner[0]})`);
+        continue;
+      }
     }
     try {
       if (verbose) console.log(`  Trying: ${url}`);
