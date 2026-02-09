@@ -68,8 +68,8 @@ function buildCurrentState(shows, reviews, lotteryRush, commercial, audienceBuzz
       if (!sid) continue;
       if (!reviewsByShow[sid]) reviewsByShow[sid] = { count: 0, scores: [] };
       reviewsByShow[sid].count++;
-      if (review.adjustedScore != null) {
-        reviewsByShow[sid].scores.push(review.adjustedScore);
+      if (review.assignedScore != null) {
+        reviewsByShow[sid].scores.push(review.assignedScore);
       }
     }
   }
@@ -159,10 +159,10 @@ function detectChanges(currentState, previousState, extras) {
     if (current.status !== prev.status) {
       if (prev.status === 'previews' && current.status === 'open') {
         // Opening night — enriched payload for rich email template
-        const showReviews = allReviews.filter(r => r.showId === showId && r.adjustedScore != null);
-        const positive = showReviews.filter(r => r.adjustedScore >= 65).length;
-        const mixed = showReviews.filter(r => r.adjustedScore >= 55 && r.adjustedScore < 65).length;
-        const negative = showReviews.filter(r => r.adjustedScore < 55).length;
+        const showReviews = allReviews.filter(r => r.showId === showId && r.assignedScore != null);
+        const positive = showReviews.filter(r => r.assignedScore >= 65).length;
+        const mixed = showReviews.filter(r => r.assignedScore >= 55 && r.assignedScore < 65).length;
+        const negative = showReviews.filter(r => r.assignedScore < 55).length;
 
         // Get consensus (null-safe — may not exist yet for just-opened shows)
         const consensusData = consensus?.shows?.[showId];
