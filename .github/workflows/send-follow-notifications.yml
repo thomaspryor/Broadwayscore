@@ -17,6 +17,7 @@ jobs:
 
       - name: Sync followers from Formspree
         env:
+          FORMSPREE_FOLLOW_API_KEY: ${{ secrets.FORMSPREE_FOLLOW_API_KEY }}
           FORMSPREE_TOKEN: ${{ secrets.FORMSPREE_TOKEN }}
           FORMSPREE_FOLLOW_FORM_ID: ${{ secrets.FORMSPREE_FOLLOW_FORM_ID }}
         run: node scripts/sync-followers.js
