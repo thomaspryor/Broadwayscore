@@ -2,7 +2,12 @@
   "processed": [
     "aladdin-2014/ew--thom-geier.json",
     "wicked-2003/ew--alice-king.json",
-    "33-variations-2009/ew--lisa-schwarzbaum.json"
+    "33-variations-2009/ew--lisa-schwarzbaum.json",
+    "700-sundays-2013/ew--jessica-shaw.json",
+    "a-delicate-balance-2014/ew--marc-snetiker.json",
+    "a-delicate-balance-2014/ew--unknown.json",
+    "a-life-in-the-theatre-2010/ew--tanner-stransky.json",
+    "a-night-with-janis-joplin-2013/ew--melissa-maerz.json"
   ],
   "failed": [
     "harry-potter-2021/ew--kristen-baldwin.json",
@@ -11,21 +16,32 @@
     "mj-2022/ew--kristen-baldwin.json",
     "the-lion-king-1997/ew--jess-cagle.json",
     "wicked-2003/ew--lisa-schwarzbaum.json",
-    "1776-2022/ew--leah-greenblatt.json"
+    "1776-2022/ew--leah-greenblatt.json",
+    "9-to-5-2009/ew--unknown.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/ew--dave-quinn.json",
+    "a-behanding-in-spokane-2010/ew--thom-geier.json",
+    "a-christmas-story-the-musical-2012/ew--thom-geier.json",
+    "a-dolls-house-2023/ew--leah-greenblatt.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "a-delicate-balance-2014/ew--marc-snetiker.json",
+      "a-delicate-balance-2014/ew--unknown.json",
+      "a-night-with-janis-joplin-2013/ew--melissa-maerz.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
       "aladdin-2014/ew--thom-geier.json",
       "wicked-2003/ew--alice-king.json",
-      "33-variations-2009/ew--lisa-schwarzbaum.json"
+      "33-variations-2009/ew--lisa-schwarzbaum.json",
+      "700-sundays-2013/ew--jessica-shaw.json",
+      "a-life-in-the-theatre-2010/ew--tanner-stransky.json"
     ]
   },
   "startTime": "2026-02-09T06:19:31.376Z",
-  "lastProcessed": "33-variations-2009/ew--lisa-schwarzbaum.json",
+  "lastProcessed": "a-night-with-janis-joplin-2013/ew--melissa-maerz.json",
   "log": []
 }
