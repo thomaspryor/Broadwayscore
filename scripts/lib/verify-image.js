@@ -36,7 +36,14 @@ Your task: Look for EVIDENCE that this image is WRONG. Only reject when you see 
 
 REJECT (match=false) only when you see POSITIVE EVIDENCE of these problems:
 - The image shows a DIFFERENT SHOW's title (e.g., image says "Hell's Kitchen" but the show is "Illinoise"). This is the most important check.
-- The image shows the show's name but with EXTRA WORDS forming a MEANINGFULLY DIFFERENT title (e.g., "Cats: The Jellicle Ball" is NOT "Cats" — it's a completely different show). However, generic Broadway marketing phrases are NOT different titles and must be ACCEPTED: "The Musical", "A New Musical", "The Broadway Musical", "A Musical Comedy", "A Musical Fable", "A New Play", "A Memory Play", playwright credits like "Noel Coward's [Show]" or "A New Play by [Author]", and star names in marketing like "[Star] in [Show]". Only reject when the added words create a genuinely different show.
+- The image shows the show's name but with EXTRA WORDS forming a MEANINGFULLY DIFFERENT title (e.g., "Cats: The Jellicle Ball" is NOT "Cats" — it's a completely different show). However, these additions are NOT different titles and must be ACCEPTED:
+  * Generic Broadway phrases: "The Musical", "A New Musical", "The Broadway Musical", "A Musical Comedy", "A Musical Fable", "A New Play", "A Memory Play"
+  * Biographical/descriptive subtitles about the show's subject: "The Tina Turner Musical", "The Donna Summer Musical", "The Carole King Musical", "The Cher Show" — these describe WHO the show is about, not a different show
+  * Playwright/author credits: "Noel Coward's [Show]", "Edward Albee's [Show]", "August Wilson's [Show]", "Dr. Seuss' [Show]", "A New Play by [Author]"
+  * Star names in marketing: "[Star] in [Show]"
+  * Official subtitles that are part of the full title: "In the Next Room or the vibrator play" — the subtitle IS part of the official show name
+  * Marketing taglines or slogans (e.g., "Journey to the past", "Every Buddy's Favorite Holiday Musical", "A Great Big Broadway Show") — these are promotional text, not title changes
+  Only reject when the added words create a genuinely DIFFERENT show (a separate production with different creative team, story, or concept).
 - The image shows a non-Broadway venue name (text like "BAM", "State Theatre New Jersey", "West End", etc.) — BUT see ACCEPT rules for known Broadway producers below
 - The image shows a theater company name or logo that is NOT a Broadway producer (e.g., "CenterREP", "Berkeley Rep", "Goodman Theatre", "Arena Stage", "Seattle Rep", "Gallery Players", or any regional, community, or touring company branding) — BUT see ACCEPT rules for known Broadway producers below
 - The image is PRIMARILY focused on "National Tour", "US Tour", "UK Tour", or a non-NYC city as the production location. (Small-print tour mentions on an otherwise correct Broadway poster are OK — only reject when tour branding is the main focus.)
@@ -54,6 +61,8 @@ ACCEPT (match=true) in these cases:
 - Closing notice OVERLAID on the show's actual poster art (e.g., "FINAL WEEKS" banner on top of the real poster) — this is fine, the base image is still correct
 - Known Broadway-producing nonprofits on the poster: Manhattan Theatre Club (MTC), Lincoln Center Theater (LCT), Roundabout Theatre Company, Second Stage Theater, The New Group. These ARE Broadway producers — their logos do NOT mean it's a non-Broadway production.
 - Originating company credits: "National Theatre", "Royal Shakespeare Company", "Donmar Warehouse", "Steppenwolf" on an otherwise correct Broadway poster — ACCEPT. Many Broadway shows transfer from these venues and the poster credits the original producer.
+- Broadway theater venue names on the poster: Music Box Theatre, Lyceum Theatre, Eugene O'Neill Theatre, Broadhurst Theatre, Booth Theatre, Shubert Theatre, etc. — these ARE Broadway venues, not non-Broadway indicators
+- Promotional art that is clearly for the correct show even if the title text is small, stylized, or partially obscured — judge by the overall artwork/branding, not just readable text
 - You cannot determine whether the image is from this specific production year vs another year — ACCEPT (benefit of the doubt)
 
 REJECT production photos (match=false, imageType="production_still"):
@@ -230,8 +239,8 @@ async function verifyImage(imageInput, showTitle, options = {}) {
 
   // Build user prompt with year qualifier
   const userPrompt = year
-    ? `The Broadway production is: "${showTitle}" (${year})\nThe EXACT title is "${showTitle}" — if the image shows a different or extended title (e.g., with a subtitle like "Show: The Subtitle"), that is a DIFFERENT show.\nIs this image correct promotional art for this specific ${year} Broadway production?`
-    : `The Broadway show is: "${showTitle}"\nThe EXACT title is "${showTitle}" — if the image shows a different or extended title, that is a DIFFERENT show.\nIs this image a correct promotional image for this show?`;
+    ? `The Broadway production is: "${showTitle}" (${year})\nThe title is "${showTitle}". If the image shows a COMPLETELY DIFFERENT show name (e.g., "The Thanksgiving Play" instead of "Cult of Love"), REJECT it. But if the image shows "${showTitle}" with added marketing text, subtitles like "The Musical" or a biographical descriptor, playwright credits, or taglines — that is still the SAME show. Apply all REJECT/ACCEPT rules from the system prompt.\nIs this image correct promotional art for this specific ${year} Broadway production?`
+    : `The Broadway show is: "${showTitle}"\nThe title is "${showTitle}". If the image shows a COMPLETELY DIFFERENT show name, REJECT it. But if the image shows "${showTitle}" with added marketing text, subtitles, playwright credits, or taglines — that is still the SAME show. Apply all REJECT/ACCEPT rules.\nIs this image a correct promotional image for this show?`;
 
   // Resolve image data
   let imageData;
