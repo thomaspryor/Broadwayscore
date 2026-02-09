@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-09",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 9956,
-      "skippedNoScore": 9566,
-      "skippedDuplicate": 41,
-      "skippedDuplicateUrl": 259,
-      "skippedCrossOutletDuplicateUrl": 40,
-      "skippedDuplicateText": 324,
+      "totalReviews": 10018,
+      "skippedNoScore": 9524,
+      "skippedDuplicate": 44,
+      "skippedDuplicateUrl": 285,
+      "skippedCrossOutletDuplicateUrl": 46,
+      "skippedDuplicateText": 325,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 760,
       "recoveredFromGarbage": 129,
@@ -19,15 +19,15 @@
         "explicit-slash": 8,
         "explicit-letterGrade": 1,
         "human-review": 56,
-        "originalScore-priority0": 1069,
-        "llmScore": 4520,
+        "originalScore-priority0": 1067,
+        "llmScore": 4516,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 4162,
+        "llmScore-lowconf": 4151,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 130
+        "thumb": 209
       }
     }
   },
@@ -19946,17 +19946,17 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 60,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Jesse Green",
-      "url": "https://www.vulture.com/2015/11/theater-review-allegiance.html",
+      "url": "https://www.vulture.com/2015/11/theater-reviews-allegiance.html",
       "publishDate": "November 9, 2015",
       "originalRating": null,
       "pullQuote": "Allegiance is a musical with its heart in the right place but its craft all over the map.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "allegiance-2015",
@@ -22352,23 +22352,6 @@
       "originalRating": null,
       "pullQuote": "Cedric the Entertainer brings surprising depth and nuance to his role as Walter 'Teach' Cole, while Haley Joel Osment makes a solid Broadway debut as the young Bobby.",
       "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "american-buffalo-2008",
-      "outletId": "theatermania",
-      "outlet": "TheaterMania",
-      "assignedScore": 71,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Kenji Fujishima",
-      "url": "https://www.theatermania.com/broadway/reviews/review-american-buffalo_93652.html",
-      "publishDate": "April 14, 2022",
-      "originalRating": null,
-      "pullQuote": "For better or worse, this new production mostly offers the not-inconsiderable spectacle of a job well done.",
-      "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "excerpt"
     },
@@ -55324,6 +55307,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "chicago-1996",
+      "outletId": "time",
+      "outlet": "Time",
+      "assignedScore": 75,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Richard Zoglin",
+      "url": "http://www.time.com/time/magazine/article/0,9171,985604,00.html",
+      "publishDate": "April 22, 2014",
+      "originalRating": null,
+      "pullQuote": "Find a Rodgers and Hammerstein gem that's been away for a while or dust off a fondly remembered piece of froth like A Funny Thing Happened on the Way to the Forum, and nostalgic theatergoers will probably beat a path to your stage door.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "chicago-1996",
@@ -92949,7 +92949,7 @@
       "pullQuote": "Miranda and director Thomas Kail have fine-tuned it without losing a shiver of its audacity and thrill.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "hamilton-2015",
@@ -116781,7 +116781,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 73,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Howard Miller",
@@ -116791,7 +116791,7 @@
       "pullQuote": "'Maybe Happy Ending', the quirky/charming futuristic musical",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "maybe-happy-ending-2024",
@@ -119571,7 +119571,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 75,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Matthew Murray",
@@ -119581,7 +119581,7 @@
       "pullQuote": "MJ succeeds most when it focuses on Jackson's artistry and the creative process, allowing audiences to witness the meticulous craft behind his legendary performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "mj-2022",
