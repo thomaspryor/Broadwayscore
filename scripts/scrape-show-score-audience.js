@@ -45,6 +45,29 @@ const showScorePath = path.join(__dirname, '../data/show-score.json');
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const showMapById = {};
 for (const s of showsData.shows) showMapById[s.id] = s;
+
+// Build multi-production lookup: for each title base, find the most recent production
+// ShowScore has ONE page per title (with -broadway suffix = current production).
+// Only the most recent production should get ShowScore data to avoid duplicates.
+const mostRecentByTitle = {};
+for (const s of showsData.shows) {
+  const titleBase = s.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+  const existing = mostRecentByTitle[titleBase];
+  if (!existing || (s.openingDate || '') > (existing.openingDate || '')) {
+    mostRecentByTitle[titleBase] = s;
+  }
+}
+
+/**
+ * Check if this show is the most recent production of its title.
+ * ShowScore cumulates reviews across productions on one page,
+ * so only the most recent production should hold the data.
+ */
+function isMostRecentProduction(show) {
+  const titleBase = show.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+  const newest = mostRecentByTitle[titleBase];
+  return !newest || newest.id === show.id;
+}
 const urlData = JSON.parse(fs.readFileSync(urlsPath, 'utf8'));
 const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
 const showScoreData = JSON.parse(fs.readFileSync(showScorePath, 'utf8'));
@@ -149,18 +172,67 @@ function generateCandidateUrls(show) {
 }
 
 /**
- * Validate that HTML is a valid Show Score Broadway show page with audience data
+ * Normalize a title for fuzzy comparison (strip parenthetical suffixes, punctuation, etc.)
  */
-function isValidShowScorePage(html, url) {
+function normalizeTitle(title) {
+  return (title || '')
+    .toLowerCase()
+    .replace(/\s*\(broadway\)\s*/i, '')      // Strip "(Broadway)"
+    .replace(/\s*\(.*?\)\s*$/, '')           // Strip trailing parenthetical
+    .replace(/[''":,.!?]/g, '')              // Strip punctuation
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Check if a JSON-LD page title matches the show we're looking for.
+ * Prevents listings-page contamination (where Hamilton appears as first result).
+ */
+function titlesMatch(jsonLdName, showTitle) {
+  const a = normalizeTitle(jsonLdName);
+  const b = normalizeTitle(showTitle);
+  if (!a || !b) return false;
+  // Exact match after normalization
+  if (a === b) return true;
+  // One contains the other (handles subtitles like "Sweeney Todd: The Demon Barber...")
+  if (a.includes(b) || b.includes(a)) return true;
+  // Check first significant word match (handles "The" prefix variations)
+  const aWords = a.replace(/^the /, '').split(' ');
+  const bWords = b.replace(/^the /, '').split(' ');
+  if (aWords[0] === bWords[0] && aWords[0].length > 3) return true;
+  return false;
+}
+
+/**
+ * Extract JSON-LD name from HTML
+ */
+function extractJsonLdName(html) {
+  const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
+  if (!jsonLdMatch) return null;
+  for (const match of jsonLdMatch) {
+    try {
+      const content = match.replace(/<script[^>]*>/, '').replace(/<\/script>/, '');
+      const data = JSON.parse(content);
+      if (data.aggregateRating && data.name) return data.name;
+    } catch (e) { /* skip */ }
+  }
+  return null;
+}
+
+/**
+ * Validate that HTML is a valid Show Score Broadway show page with audience data.
+ * @param {string} html - Page HTML
+ * @param {string} url - Page URL
+ * @param {string} [showTitle] - Expected show title (for title validation)
+ */
+function isValidShowScorePage(html, url, showTitle) {
   if (!html) return false;
   // Not a 404
   if (html.includes('Page not found') || html.includes('404 -')) return false;
   // Not the homepage
   if (html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>')) return false;
-  // Not off-broadway
+  // Not off-broadway (check canonical URL in JSON-LD, not just the request URL)
   if (url.includes('/off-broadway-shows/') || url.includes('/off-off-broadway-shows/')) return false;
-  if (html.includes('/off-broadway-shows/') && !html.includes('/broadway-shows/')) return false;
-  // Must have JSON-LD with numeric aggregateRating
   const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
   if (jsonLdMatch) {
     for (const match of jsonLdMatch) {
@@ -168,6 +240,16 @@ function isValidShowScorePage(html, url) {
         const content = match.replace(/<script[^>]*>/, '').replace(/<\/script>/, '');
         const data = JSON.parse(content);
         if (data.aggregateRating && typeof data.aggregateRating.ratingValue === 'number') {
+          // Check canonical URL isn't off-broadway
+          if (data.url && (/\/off-broadway-shows\//.test(data.url) || /\/off-off-broadway-shows\//.test(data.url))) {
+            if (verbose) console.log(`    Rejected: canonical URL is off-broadway (${data.url})`);
+            return false;
+          }
+          // Title validation: reject if page is for a different show (listings page redirect)
+          if (showTitle && data.name && !titlesMatch(data.name, showTitle)) {
+            if (verbose) console.log(`    Rejected: title mismatch — page="${data.name}", expected="${showTitle}"`);
+            return false;
+          }
           return true;
         }
       } catch (e) { /* skip */ }
@@ -180,6 +262,12 @@ function isValidShowScorePage(html, url) {
  * Discover Show Score URL for a show by trying candidate patterns
  */
 async function discoverShowScoreUrl(show) {
+  // Multi-production guard: only discover URLs for the most recent production
+  if (!isMostRecentProduction(show)) {
+    console.log(`  SKIP discovery: ${show.id} is not the most recent production of "${show.title}"`);
+    return null;
+  }
+
   const candidates = generateCandidateUrls(show);
   if (verbose) console.log(`  Trying ${candidates.length} URL patterns...`);
 
@@ -187,7 +275,7 @@ async function discoverShowScoreUrl(show) {
     try {
       if (verbose) console.log(`  Trying: ${url}`);
       const html = await fetchViaScrapingBee(url, 0); // No retries during discovery
-      if (isValidShowScorePage(html, url)) {
+      if (isValidShowScorePage(html, url, show.title)) {
         console.log(`  ✓ Discovered: ${url}`);
         return url;
       }
@@ -270,6 +358,12 @@ function getCachedUrl(showId) {
  * Process a single show (cache-only — URL must already be in show-score-urls.json)
  */
 async function processShow(show) {
+  // Multi-production guard: skip older productions
+  if (!isMostRecentProduction(show)) {
+    if (verbose) console.log(`\n  SKIP: ${show.id} — not most recent production of "${show.title}"`);
+    return null;
+  }
+
   const url = getCachedUrl(show.id);
   if (!url) {
     if (verbose) console.log(`\n  SKIP: ${show.title} — no cached URL`);
@@ -290,6 +384,16 @@ async function processShow(show) {
 
     if (!html.includes('show-score.com') && !html.includes('Show Score')) {
       console.log(`  SKIP: Page doesn't appear to be Show Score`);
+      return null;
+    }
+
+    // Title validation: reject if page is for a different show
+    const jsonLdName = extractJsonLdName(html);
+    if (jsonLdName && !titlesMatch(jsonLdName, show.title)) {
+      console.log(`  SKIP: Title mismatch — page="${jsonLdName}", expected="${show.title}"`);
+      console.log(`  Removing bad cached URL for ${show.id}`);
+      if (urlData.shows) delete urlData.shows[show.id];
+      if (!dryRun) saveUrlCache();
       return null;
     }
 
