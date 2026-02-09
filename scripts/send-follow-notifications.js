@@ -128,7 +128,7 @@ function buildEmailHtml(showTitle, changes, showUrl, showId, email) {
 <tr><td align="center">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
   <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
-    <span style="font-size:14px;font-weight:600;color:#d4a574;letter-spacing:0.5px;text-transform:uppercase;font-family:${FONT};">Broadway Scorecard</span>
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
   </td></tr>
   <tr><td style="padding:28px 0 8px;">
     <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">Updates for ${escapeHtml(showTitle)}</h1>
@@ -151,7 +151,7 @@ function buildEmailHtml(showTitle, changes, showUrl, showId, email) {
 </body></html>`;
 }
 
-function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, showId, email) {
+function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, showId, email, imageUrl) {
   const sc = getScoreColor(openingChange.score);
   const scoreDisplay = openingChange.score != null ? Math.round(openingChange.score) : '?';
   const reviewCount = openingChange.reviewCount || 0;
@@ -237,11 +237,14 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
 <tr><td align="center">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
   <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
-    <span style="font-size:14px;font-weight:600;color:#d4a574;letter-spacing:0.5px;text-transform:uppercase;font-family:${FONT};">Broadway Scorecard</span>
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
   </td></tr>
   <tr><td style="padding:28px 0 8px;">
     <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${escapeHtml(showTitle)} Is Now Open</h1>
-  </td></tr>
+  </td></tr>${imageUrl ? `
+  <tr><td style="padding:16px 0 0;">
+    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(showTitle)}" width="560" style="display:block;width:100%;max-width:560px;height:auto;border-radius:12px;" />
+  </td></tr>` : ''}
   <tr><td style="padding:16px 0;">
     <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
       <tr><td style="padding:24px;">
@@ -393,8 +396,12 @@ async function main() {
     const openingNight = changes.find(c => c.type === 'opening-night');
     const otherChanges = changes.filter(c => c.type !== 'opening-night');
 
+    // Show image: prefer thumbnail → poster → hero
+    const imagePath = show?.images?.thumbnail || show?.images?.poster || show?.images?.hero;
+    const imageUrl = imagePath ? `https://broadwayscorecard.com${imagePath}` : null;
+
     const html = openingNight
-      ? buildOpeningNightHtml(showTitle, openingNight, otherChanges, showUrl, showId, email)
+      ? buildOpeningNightHtml(showTitle, openingNight, otherChanges, showUrl, showId, email, imageUrl)
       : buildEmailHtml(showTitle, changes, showUrl, showId, email);
 
     const subject = openingNight
