@@ -1,297 +1,302 @@
 {
-  "runDate": "2026-02-09T17:38:33.843Z",
+  "runDate": "2026-02-09T17:43:38.716Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "wicked-2003,aladdin-2014,chicago-1996,oedipus-2025,king-charles-iii-2015,sweat-2017,war-paint-2017,angels-in-america-2018,on-your-feet-2015,the-encounter-2016,a-dolls-house-part-2-2017,carousel-2018,network-2018,the-terms-of-my-surrender-2017,head-over-heels-2018,she-loves-me-2016,oklahoma-2019,children-of-a-lesser-god-2018,misery-2015,significant-other-2017,a-beautiful-noise-the-neil-diamond-musical-2022,airline-highway-2015,long-days-journey-into-night-2016,the-gin-game-2015,funny-girl-2022,1776-2022,torch-song-2018,topdog-underdog-2022,on-the-twentieth-century-2015,sunset-boulevard-2024,mcneal-2024,bad-cinderella-2023,skylight-2015,cult-of-love-2024,leopoldstadt-2022,the-audience-2015,ohio-state-murders-2022,women-on-the-verge-of-a-nervous-breakdown-2010,peter-pan-goes-wrong-2023,the-roommate-2024,red-2010,the-rose-tattoo-2019,art-2025,evita-2012,next-to-normal-2009,sunday-in-the-park-with-george-2008,the-sign-in-sidney-brusteins-window-2023,good-night-oscar-2023,my-name-is-lucy-barton-2020,the-addams-family-2010,walking-with-ghosts-2022,death-of-a-salesman-2022,hangmen-2022,pictures-from-home-2023,the-mountaintop-2011,twelfth-night-2013,betrayal-2019,everyday-rapture-2010,ifthen-2014,oh-hello-on-broadway-2016,relatively-speaking-2011,the-real-thing-2014,a-christmas-carol-2022,american-buffalo-2022,caroline-or-change-2021,how-i-learned-to-drive-2022,prima-facie-2023,summer-1976-2023,therese-raquin-2015,9-to-5-2009,an-enemy-of-the-people-2024,farinelli-and-the-king-2017,jersey-boys-2005,man-and-boy-2011,spring-awakening-2015,the-river-2014,a-delicate-balance-2014,ann-2013,cirque-du-soleil-paramour-2016,holler-if-ya-hear-me-2014,left-on-tenth-2024,rock-of-ages-2009,the-big-knife-2013,the-peewee-herman-show-2010,vanya-and-sonia-and-masha-and-spike-2013,birthday-candles-2022,elf-2024,i-need-that-2023,million-dollar-quartet-2010,skeleton-crew-2022,the-elephant-man-2014,time-stands-still-2010,a-raisin-in-the-sun-2014,cyrano-de-bergerac-2007,exit-the-king-2009,hands-on-a-hardbody-2013,motown-the-musical-2013,the-boys-in-the-band-2018,waitress-2016,death-of-a-salesman-2012,mike-birbiglia-the-old-man-and-the-pool-2022,scandalous-2012,the-performers-2012,a-free-man-of-color-2010,arcadia-2011,chicken-and-biscuits-2021,one-man-two-guvnors-2012,the-mystery-of-edwin-drood-2012,dont-dress-for-dinner-2012,rent-1996,the-lyons-2012,elf-2012,passing-strange-2008,the-philanthropist-2009,memphis-2009,all-in-comedy-about-love-2024,impressionism-2009,the-39-steps-2008,burn-the-floor-2009,is-he-dead-2007,the-lieutenant-of-inishmore-2006,chita-rivera-the-dancers-life-2005,heartbreak-house-2006,souvenir-2005,the-wedding-singer-2006,110-in-the-shade-2007,bridge-and-tunnel-2006,finians-rainbow-2009,irving-berlins-white-christmas-2009,pal-joey-2008,the-drowsy-chaperone-2006,the-vertical-hour-2006",
+    "showFilter": "",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 93,
+    "processed": 33,
+    "failed": 67,
     "skipped": 0,
-    "successRate": "7.0%"
+    "successRate": "33.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 12,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 4
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 21
   },
   "statistics": {
-    "tier1Attempts": 61,
-    "tier1Success": 42,
+    "tier1Attempts": 70,
+    "tier1Success": 33,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 50,
-    "tier2Success": 15,
-    "tier3Attempts": 36,
-    "tier3Success": 20,
-    "tier4Attempts": 49,
-    "tier4Success": 12,
-    "totalFailed": 93,
-    "scrapingBeeCreditsUsed": 364,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier4Attempts": 153,
+    "tier4Success": 52,
+    "totalFailed": 67,
+    "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 14,
-    "urlDiscoverySuccess": 7,
+    "urlDiscoveryAttempts": 30,
+    "urlDiscoverySuccess": 20,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "aladdin-2014/guardian--alexis-soloski.json",
-    "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
-    "chicago-1996/time--.json",
-    "chicago-1996/time--richard-zoglin.json",
-    "a-free-man-of-color-2010/hollywood-reporter--david-rooney.json",
-    "airline-highway-2015/nytg--stanford-friedman.json",
-    "everyday-rapture-2010/hollywood-reporter--frank-scheck.json"
+    "aladdin-2014/ew--thom-geier.json",
+    "wicked-2003/ew--alice-king.json",
+    "33-variations-2009/ew--lisa-schwarzbaum.json",
+    "700-sundays-2013/ew--jessica-shaw.json",
+    "a-delicate-balance-2014/ew--marc-snetiker.json",
+    "a-delicate-balance-2014/ew--unknown.json",
+    "a-life-in-the-theatre-2010/ew--tanner-stransky.json",
+    "a-night-with-janis-joplin-2013/ew--melissa-maerz.json",
+    "a-raisin-in-the-sun-2014/ew--lisa-schwarzbaum.json",
+    "all-the-way-2014/ew--thom-geier.json",
+    "betrayal-2013/ew--allison-adato.json",
+    "betrayal-2019/ew--unknown.json",
+    "cat-on-a-hot-tin-roof-2008/ew--thom-geier.json",
+    "collected-stories-2010/ew--melissa-rose-bernardo.json",
+    "constellations-2015/ew--melissa-maerz.json",
+    "death-of-a-salesman-2012/ew--thom-geler.json",
+    "doctor-zhivago-2015/ew--jessica-shaw.json",
+    "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
+    "exit-the-king-2009/ew--thom-geier.json",
+    "fences-2010/ew--melissa-rose-bernardo.json",
+    "golden-boy-2012/ew--adam-markovitz.json",
+    "guys-and-dolls-2009/ew--thom-geier.json",
+    "hedwig-and-the-angry-inch-2014/ew--thom-geier.json",
+    "hedwig-and-the-angry-inch-2014/ew--unknown.json",
+    "hillary-and-clinton-2019/ew--jessica-shaw.json",
+    "holler-if-ya-hear-me-2014/ew--unknown.json",
+    "ifthen-2014/ew--unknown.json",
+    "macbeth-2022/ew--unknown.json",
+    "mary-poppins-2006/ew--steve-daly.json",
+    "newsies-the-musical-2012/ew--thom-geier.json",
+    "of-mice-and-men-2014/ew--thom-geier.json",
+    "race-2009/ew--.json",
+    "race-2009/ew--lisa-schwarzbaum.json"
   ],
   "failed": [
-    "chicago-1996/hollywood-reporter--david-rooney.json",
-    "wicked-2003/hollywood-reporter--david-rooney.json",
-    "wicked-2003/variety--charles-isherwood.json",
-    "wicked-2003/variety--peter-debruge.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "aladdin-2014/uinterview--danny-graugnard.json",
-    "chicago-1996/newsday--linda-winer.json",
-    "chicago-1996/nypost--elisabeth-vincentelli.json",
-    "oedipus-2025/la-voce-di-new-york--jk-clarke.json",
-    "wicked-2003/bbc-caryn-james--caryn-james.json",
-    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
-    "wicked-2003/cleveland-jewish-news--sheri-gross.json",
-    "wicked-2003/guardian--peter-bradshaw.json",
-    "wicked-2003/indiewire--kate-erbland.json",
-    "wicked-2003/newsweek--billie-melissa.json",
-    "wicked-2003/nexus-point-news-demet-koc--demet-koc.json",
-    "aladdin-2014/amny--joe-dziemianowicz.json",
-    "aladdin-2014/broadway-voice--kristen-balzano.json",
-    "aladdin-2014/catholic-transcript--bernard-carragher.json",
-    "aladdin-2014/perez-hilton--perez-hilton.json",
-    "aladdin-2014/thestage--mark-shenton.json",
-    "chicago-1996/amny--matt-windman.json",
-    "chicago-1996/ap--mark-kennedy.json",
-    "chicago-1996/oocities--richard-zoglin.json",
-    "oedipus-2025/latimes--charles-mcnulty.json",
-    "oedipus-2025/nysr--new-york-notebook-sandy-macdonald.json",
-    "oedipus-2025/oneminutecritic--matthew-wexler.json",
-    "oedipus-2025/the-interested-bystander--cary-wong.json",
-    "oedipus-2025/theater-scene--victor-gluck.json",
-    "wicked-2003/about-entertainment--chris-caggiano.json",
-    "wicked-2003/ajc--wendell-brock.json",
-    "wicked-2003/austincom--dani-dudek.json",
-    "wicked-2003/av-club-jesse-hassenger--jesse-hassenger.json",
-    "wicked-2003/awards-watch-sophia-ciminello--sophia-ciminello.json",
-    "wicked-2003/cbr-caralynn-matassa--caralynn-matassa.json",
-    "wicked-2003/collider-therese-lacson--therese-lacson.json",
-    "wicked-2003/consequence-liz-shannon-miller--liz-shannon-miller.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/den-of-geek-david-crow--david-crow.json",
-    "wicked-2003/empire-john-nugent--john-nugent.json",
-    "wicked-2003/fresh-fiction-courtney-howard--courtney-howard.json",
-    "wicked-2003/frontmezzjunkies--unknown.json",
-    "wicked-2003/huron-daily-jake-coyle--jake-coyle.json",
-    "wicked-2003/inverse-lyvie-scott--lyvie-scott.json",
-    "wicked-2003/joysauce-siddhant-adlakha--siddhant-adlakha.json",
-    "wicked-2003/latimes--amy-nicholson.json",
-    "wicked-2003/mamas-geeky-tessa-smith--tessa-smith.json",
-    "wicked-2003/mashable-kristy-puchko--kristy-puchko.json",
-    "wicked-2003/njcom--michael-sommers.json",
-    "wicked-2003/ny1--roma-torre.json",
-    "wicked-2003/radio-times-james-mottram--james-mottram.json",
-    "wicked-2003/riverfront-times--tina-farmer.json",
-    "wicked-2003/rollingstone--david-fear.json",
-    "wicked-2003/scmp-james-mottram--james-mottram.json",
-    "wicked-2003/screen-daily-tim-grierson--tim-grierson.json",
-    "wicked-2003/sfchronicle--carla-meyer.json",
-    "wicked-2003/sfchronicle--lily-janiak.json",
-    "wicked-2003/showbiz-411-roger-friedman--roger-friedman.json",
-    "wicked-2003/solzy-at-the-movies-danielle-solzman--danielle-solzman.json",
-    "wicked-2003/the-chronicle--howard-gollop.json",
-    "wicked-2003/the-times--kevin-maher.json",
-    "wicked-2003/trib-live--alexis-papalia.json",
-    "wicked-2003/village-voice--michael-feingold.json",
-    "wicked-2003/we-are-green-bay--warren-gerds.json",
-    "wicked-2003/weliveentertainment-aaron-neuwirth--aaron-neuwirth.json",
-    "1776-2022/variety--charles-isherwood.json",
-    "1776-2022/variety--peter-marks.json",
-    "an-enemy-of-the-people-2024/hollywood-reporter--angie-han.json",
-    "art-2025/variety--daniel-dand8217addario.json",
-    "bad-cinderella-2023/variety--naveen-kumar.json",
-    "bridge-and-tunnel-2006/variety--charles-isherwood.json",
-    "caroline-or-change-2021/hollywood-reporter--angie-han.json",
-    "caroline-or-change-2021/hollywood-reporter--david-rooney.json",
-    "caroline-or-change-2021/nyt-theater--jonathan-mandell.json",
-    "caroline-or-change-2021/variety--aramide-tinubu.json",
-    "caroline-or-change-2021/variety--ayanna-prescod.json",
-    "carousel-2018/hollywood-reporter--david-rooney.json",
-    "chicken-and-biscuits-2021/nyt-theater--jonathan-mandell.json",
-    "children-of-a-lesser-god-2018/hollywood-reporter--david-rooney.json",
-    "cirque-du-soleil-paramour-2016/hollywood-reporter--frank-scheck.json",
-    "cult-of-love-2024/hollywood-reporter--david-rooney.json",
-    "cult-of-love-2024/nyt-theater--jonathan-mandell.json",
-    "cult-of-love-2024/nytg--joe-dziemianowicz.json",
-    "cult-of-love-2024/variety--aramide-tinubu.json",
-    "cult-of-love-2024/variety--daniel-daddario.json",
-    "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json",
-    "death-of-a-salesman-2022/variety--jesse-green.json",
-    "dont-dress-for-dinner-2012/hollywood-reporter--david-rooney.json",
-    "dont-dress-for-dinner-2012/variety--marilyn-stasio.json",
-    "elf-2012/variety--marilyn-stasio.json",
-    "good-night-oscar-2023/variety--charles-isherwood.json",
-    "irving-berlins-white-christmas-2009/variety--david-rooney.json",
-    "king-charles-iii-2015/hollywood-reporter--david-rooney.json"
+    "harry-potter-2021/ew--kristen-baldwin.json",
+    "hells-kitchen-2024/ew--joey-nolfi.json",
+    "mj-2022/ew--joey-nolfi.json",
+    "mj-2022/ew--kristen-baldwin.json",
+    "the-lion-king-1997/ew--jess-cagle.json",
+    "wicked-2003/ew--lisa-schwarzbaum.json",
+    "1776-2022/ew--leah-greenblatt.json",
+    "american-buffalo-2022/ew--kristen-baldwin.json",
+    "anastasia-2017/ew--david-canfield.json",
+    "beetlejuice-2019/ew--kristen-baldwin.json",
+    "bullets-over-broadway-2014/ew--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "hands-on-a-hardbody-2013/ew--clark-collis.json",
+    "here-lies-love-2023/ew--joey-nolfi.json",
+    "in-the-heights-2008/ew--melissa-rose-bernardo.json",
+    "indecent-2017/ew--melissa-rose-bernardo.json",
+    "into-the-woods-2022/ew--joey-nolfi.json",
+    "jesus-christ-superstar-2012/ew--melissa-rose-bernardo.json",
+    "king-lear-2019/ew--allison-adato.json",
+    "king-lear-2019/ew--unknown.json",
+    "matilda-the-musical-2013/ew--unknown.json",
+    "mcneal-2024/ew--joey-nolfi.json",
+    "mean-girls-2018/ew--kristen-baldwin.json",
+    "million-dollar-quartet-2010/ew--clark-collis.json",
+    "misery-2015/ew--unknown.json",
+    "mr-saturday-night-2022/ew--andrea-towers.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/ew--leah-greenblatt.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/ew--unknown.json",
+    "nice-work-if-you-can-get-it-2012/ew--adam-markovitz.json",
+    "oh-hello-on-broadway-2016/ew--jesse-oxfeld.json",
+    "our-town-2024/ew--kristen-baldwin.json",
+    "parade-2023/ew--kristen-baldwin.json",
+    "patriots-2024/ew--kristen-baldwin.json",
+    "rock-of-ages-2009/ew--thom-geier.json",
+    "rocky-2014/ew--thom-geier.json",
+    "rodgers-hammersteins-cinderella-2013/ew--jessica-shaw.json",
+    "romeo-and-juliet-2013/ew--thom-geier.json",
+    "romeo-juliet-2024/ew--emlyn-travis.json",
+    "school-of-rock-the-musical-2015/ew--jesse-oxfeld.json",
+    "seminar-2011/ew--lisa-schwarzbaum.json",
+    "she-loves-me-2016/ew--jessica-derschowitz.json",
+    "shucked-2023/ew--christian-holub.json",
+    "significant-other-2017/ew--elysa-gardner.json",
+    "sister-act-2011/ew--thom-geier.json",
+    "six-degrees-of-separation-2017/ew--melissa-rose-bernardo.json",
+    "something-rotten-2015/ew--clark-collis.json",
+    "something-rotten-2015/ew--melissa-rose-bernardo.json",
+    "sondheim-on-sondheim-2010/entertainment-weekly--melissa-rose-bernardo.json",
+    "sondheim-on-sondheim-2010/ew--melissa-rose-bernardo.json",
+    "spongebob-squarepants-2017/ew--isabella-biedenharn.json",
+    "spring-awakening-2015/ew--bill-keith.json",
+    "stick-fly-2011/ew--thom-geier.json",
+    "summer-1976-2023/ew--dalton-ross.json",
+    "summer-2018/ew--breanne-j-heldman.json",
+    "sunday-in-the-park-with-george-2017/ew--allison-adato.json",
+    "sunset-boulevard-2017/ew--kathryn-vandervalk.json",
+    "sunset-boulevard-2024/ew--kathryn-vanarendonk.json",
+    "sunset-boulevard-2024/ew--kathryn-vandervalk.json",
+    "sweat-2017/ew--caitlin-brody.json",
+    "sweeney-todd-2023/ew--emlyn-travis.json",
+    "sweeney-todd-2023/ew--joey-nolfi.json",
+    "swept-away-2024/ew--emlyn-travis.json",
+    "tammy-faye-2024/ew--emlyn-travis.json",
+    "that-championship-season-2011/ew--jeff-labrecque.json",
+    "the-anarchist-2012/ew--lisa-schwarzbaum.json",
+    "the-assembled-parties-2013/ew--tanner-stransky.json",
+    "the-bands-visit-2017/ew--dana-schwartz.json"
   ],
   "tierDetails": {
     "playwright": [
-      "airline-highway-2015/nytg--stanford-friedman.json"
+      "aladdin-2014/ew--thom-geier.json",
+      "700-sundays-2013/ew--jessica-shaw.json",
+      "a-delicate-balance-2014/ew--marc-snetiker.json",
+      "a-delicate-balance-2014/ew--unknown.json",
+      "a-night-with-janis-joplin-2013/ew--melissa-maerz.json",
+      "all-the-way-2014/ew--thom-geier.json",
+      "cat-on-a-hot-tin-roof-2008/ew--thom-geier.json",
+      "constellations-2015/ew--melissa-maerz.json",
+      "hillary-and-clinton-2019/ew--jessica-shaw.json",
+      "holler-if-ya-hear-me-2014/ew--unknown.json",
+      "ifthen-2014/ew--unknown.json",
+      "of-mice-and-men-2014/ew--thom-geier.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "aladdin-2014/guardian--alexis-soloski.json"
-    ],
-    "brightdata": [
-      "a-free-man-of-color-2010/hollywood-reporter--david-rooney.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archive": [
-      "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
-      "chicago-1996/time--.json",
-      "chicago-1996/time--richard-zoglin.json",
-      "everyday-rapture-2010/hollywood-reporter--frank-scheck.json"
+      "wicked-2003/ew--alice-king.json",
+      "33-variations-2009/ew--lisa-schwarzbaum.json",
+      "a-life-in-the-theatre-2010/ew--tanner-stransky.json",
+      "a-raisin-in-the-sun-2014/ew--lisa-schwarzbaum.json",
+      "betrayal-2013/ew--allison-adato.json",
+      "betrayal-2019/ew--unknown.json",
+      "collected-stories-2010/ew--melissa-rose-bernardo.json",
+      "death-of-a-salesman-2012/ew--thom-geler.json",
+      "doctor-zhivago-2015/ew--jessica-shaw.json",
+      "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
+      "exit-the-king-2009/ew--thom-geier.json",
+      "fences-2010/ew--melissa-rose-bernardo.json",
+      "golden-boy-2012/ew--adam-markovitz.json",
+      "guys-and-dolls-2009/ew--thom-geier.json",
+      "hedwig-and-the-angry-inch-2014/ew--thom-geier.json",
+      "hedwig-and-the-angry-inch-2014/ew--unknown.json",
+      "macbeth-2022/ew--unknown.json",
+      "mary-poppins-2006/ew--steve-daly.json",
+      "newsies-the-musical-2012/ew--thom-geier.json",
+      "race-2009/ew--.json",
+      "race-2009/ew--lisa-schwarzbaum.json"
     ]
   },
   "failuresByOutlet": {
-    "Newsday": {
-      "count": 1,
-      "domain": "newsday.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "amNewYork": {
-      "count": 1,
-      "domain": "amny.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Broadway Voice": {
-      "count": 1,
-      "domain": "bwayvoice.com",
+    "Entertainment Weekly": {
+      "count": 9,
+      "domain": "ew.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "Perez Hilton": {
-      "count": 1,
-      "domain": "perezhilton.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Associated Press": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "oocities": {
-      "count": 1,
-      "domain": "oocities.org",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Huron Daily (Jake Coyle)": {
-      "count": 1,
-      "domain": "michigansthumb.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NJ.com": {
-      "count": 1,
-      "domain": "wickedthemusical.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NY1": {
-      "count": 1,
-      "domain": "ny1.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Riverfront Times": {
-      "count": 1,
-      "domain": "riverfronttimes.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Hollywood Reporter": {
-      "count": 1,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Variety": {
-      "count": 1,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "aladdin-2014/thestage--mark-shenton.json",
-      "oldUrl": "http://www.thestage.co.uk/opinion/shenton/2014/04/live-broadway-disneys-20-year-run-encore-happy-fella/",
-      "newUrl": "https://www.thestage.co.uk/reviews/aladdin"
+      "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
+      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOoqRAnzd_W-_fTfvQZ6M4wx9HxfS_ZGyZLlotFQz-r3G69uPIhSG"
     },
     {
-      "reviewId": "wicked-2003/trib-live--alexis-papalia.json",
-      "oldUrl": "https://triblive.com/aande/theater-arts/review-latest-wicked-production-at-benedum-center-is-as-enchanting-as-ever/",
-      "newUrl": "https://community.triblive.com/c/downtown-pittsburgh-news/news/3959160"
+      "reviewId": "hells-kitchen-2024/ew--joey-nolfi.json",
+      "oldUrl": "https://ew.com/hells-kitchen-broadway-review-8631254",
+      "newUrl": "https://ew.com/hells-kitchen-review-broadway-alicia-keys-8635661?srsltid=AfmBOorRF4KHpO3mtXxMkFf8mxKD6ZTtulM7xgF3yW28ejtk4jrcUhxD"
     },
     {
-      "reviewId": "1776-2022/variety--charles-isherwood.json",
-      "oldUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/",
-      "newUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+      "reviewId": "700-sundays-2013/ew--jessica-shaw.json",
+      "oldUrl": "http://www.ew.com/ew/article/0,,20364394_20755365,00.html",
+      "newUrl": "https://ew.com/article/2013/11/13/700-sundays-ew-review/?srsltid=AfmBOoqfZRqNCkxyHK5DS9urq2q312ubAEu0mxawVeEAMdkUkclHkdOd"
     },
     {
-      "reviewId": "1776-2022/variety--peter-marks.json",
-      "oldUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235421172/",
-      "newUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+      "reviewId": "american-buffalo-2022/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/american-buffalo-broadway-review-sam-rockwell-laurence-fishburne/",
+      "newUrl": "https://ew.com/theater/theater-reviews/american-buffalo-review-sam-rockwell-laurence-fishburne-david-mamet/?srsltid=AfmBOopepC80x2utK1WRdJTOtYYd0byyc_CXh8dwk5hzg4uG-otidq1z"
     },
     {
-      "reviewId": "an-enemy-of-the-people-2024/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/an-enemy-of-the-people-broadway-review-jeremy-strong-1235834944/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/an-enemy-of-the-people-theater-review-jeremy-strong-michael-imperioli-broadway-ibsen-revival-1235854269/"
+      "reviewId": "anastasia-2017/ew--david-canfield.json",
+      "oldUrl": "https://ew.com/theater/2017/04/25/anastasia-broadway-review/",
+      "newUrl": "https://ew.com/theater/2017/04/24/anastasia-broadway-review/?srsltid=AfmBOoqrewj3YVxJWA3ouiIv2UWrraSwdC6ekElUG9eNUUkqozRti6Mc"
     },
     {
-      "reviewId": "children-of-a-lesser-god-2018/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/children-a-lesser-god-theater-review-1103309/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/children-of-a-lesser-god-theater-1101877/"
+      "reviewId": "beetlejuice-2019/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/2019/04/26/beetlejuice-broadway-review/",
+      "newUrl": "https://ew.com/theater-reviews/2019/04/25/beetlejuice-musical-review/?srsltid=AfmBOoowpfSZlPNYVO8WGyNt-PU3xYAA1RHP4s-lO-rE6qzwQZJ7pxkH"
     },
     {
-      "reviewId": "good-night-oscar-2023/variety--charles-isherwood.json",
-      "oldUrl": "https://variety.com/2023/legit/reviews/good-night-oscar-review-sean-hayes-1235624049/",
-      "newUrl": "https://variety.com/2023/legit/reviews/good-night-oscar-review-sean-hayes-broadway-1235592711/"
+      "reviewId": "bullets-over-broadway-2014/ew--unknown.json",
+      "oldUrl": "http://www.ew.com/ew/article/0,,20364394_20805531,00.html",
+      "newUrl": "https://ew.com/article/1994/10/21/movie-review-bullets-over-broadway-2/?srsltid=AfmBOopM0qymwR-eEK3gyB_OkYNj--XU5gZM5S0eqZchGoyK-zKZ1_Er"
+    },
+    {
+      "reviewId": "here-lies-love-2023/ew--joey-nolfi.json",
+      "oldUrl": "https://ew.com/theater/here-lies-love-broadway-review/",
+      "newUrl": "https://ew.com/theater/theater-reviews/here-lies-love-review-broadway-david-byrne/?srsltid=AfmBOoquWUavnQqwwJriuTobHIU06BIZNnec0J-nuni8Mpu8jlWy1yFo"
+    },
+    {
+      "reviewId": "ifthen-2014/ew--unknown.json",
+      "oldUrl": "https://ew.com/article/2014/04/04/ifthen-ew-stage-review/?srsltid=AfmBOoqI_JN6TquIK0y5CRpLlbU1ML0OvaaAn5THXuUVAoF6vd8ZBrH7",
+      "newUrl": "https://ew.com/article/2014/04/04/ifthen-ew-stage-review/?srsltid=AfmBOopVR23unP4kkg2qgs7YRAUKjo8g_CWXKHnYfAWRIeBKFMaEOQ8W"
+    },
+    {
+      "reviewId": "in-the-heights-2008/ew--melissa-rose-bernardo.json",
+      "oldUrl": "http://www.ew.com/ew/article/0,,20183584,00.html",
+      "newUrl": "https://ew.com/movies/movie-reviews/in-the-heights-movie-review/?srsltid=AfmBOoris9TXS99FD1lHMkQBcxHZHKY7rMMH2r8b8xaKbuHr1lTpWigP"
+    },
+    {
+      "reviewId": "indecent-2017/ew--melissa-rose-bernardo.json",
+      "oldUrl": "https://ew.com/theater/2017/04/19/indecent-broadway-review/",
+      "newUrl": "https://ew.com/theater/2017/04/18/indecent-broadway-review/?srsltid=AfmBOopkRAQUynF1hOnNpC1SdnRWa5fTxP6Fpf2IWJZP-hqOhR-iKJuv"
+    },
+    {
+      "reviewId": "into-the-woods-2022/ew--joey-nolfi.json",
+      "oldUrl": "https://ew.com/theater/into-the-woods-broadway-review-2022/",
+      "newUrl": "https://ew.com/theater/into-the-woods-review-stephen-sondheims-fairytale-remains-as-magic-as-ever/?srsltid=AfmBOoozm2LjosX8SZMHDk6RgTcWHGQ2TP_pc_Tds_XVrL4nB9I84ju9"
+    },
+    {
+      "reviewId": "king-lear-2019/ew--allison-adato.json",
+      "oldUrl": "http://www.ew.com/ew/article/0,,20364394_20840673,00.html",
+      "newUrl": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/?srsltid=AfmBOorbekRZTYB-Enn7QZ05gOVrtqcSXVnKobIofz63w45CTxN-uhZs"
+    },
+    {
+      "reviewId": "king-lear-2019/ew--unknown.json",
+      "oldUrl": "http://www.ew.com/ew/article/0,,20364394_20840673,00.html",
+      "newUrl": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/?srsltid=AfmBOoro7CKoYi5gkoF9eeFMTxZhFcaNIV5QWbSqx0PNwQM1v9vhUYrr"
+    },
+    {
+      "reviewId": "mcneal-2024/ew--joey-nolfi.json",
+      "oldUrl": "https://ew.com/mcneal-broadway-review-robert-downey-jr-7974025",
+      "newUrl": "https://ew.com/mcneal-review-robert-downey-jr-makes-broadway-debut-8720305?srsltid=AfmBOoorma0DvhRIyqBcOdSytbA7NQn7VMOihOUn7zlECFb4juTAJzHP"
+    },
+    {
+      "reviewId": "our-town-2024/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/our-town-broadway-review-kenny-leon-jim-parsons-zoey-deutch-katie-holmes-8414630",
+      "newUrl": "https://ew.com/our-town-review-jim-parsons-broadway-8726106?srsltid=AfmBOooQYearC1BdPBPjdadQHPOdKAQ1GAWteUfTrAcjb34xEnSGx0mq"
+    },
+    {
+      "reviewId": "parade-2023/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/reviews/parade-broadway-review-2023/",
+      "newUrl": "https://ew.com/theater/theater-reviews/parade-review-ben-platt-micaela-diamond-leo-frank/?srsltid=AfmBOor_btx1Uo8fSMdyeauIbrUNCj09ROIffp8H3uKNH6eX-74B22BS"
+    },
+    {
+      "reviewId": "patriots-2024/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/patriots-broadway-review-michael-stuhlbarg-7540085",
+      "newUrl": "https://ew.com/patriots-review-broadway-8637303?srsltid=AfmBOoq2mkAvnZulwuqBnhTvJqU92gy8vLc6v40C_JFZsfTWlvCHB8AK"
+    },
+    {
+      "reviewId": "something-rotten-2015/ew--melissa-rose-bernardo.json",
+      "oldUrl": "https://ew.com/article/2015/04/23/something-rotten-broadway-review/",
+      "newUrl": "https://ew.com/article/2015/04/22/something-rotten-musical-broadway-ew-review/?srsltid=AfmBOootorRgyWcGFm9XJYxNfQbTvpadeevtLzSWY9vUWdDfRMSsT2t-"
+    },
+    {
+      "reviewId": "sweeney-todd-2023/ew--joey-nolfi.json",
+      "oldUrl": "https://ew.com/theater/reviews/sweeney-todd-broadway-review-josh-groban/",
+      "newUrl": "https://ew.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-review-josh-groban-annaleigh-ashford/?srsltid=AfmBOoqeAu7h2tTRWoVpnWu5_dz_J4ZwX4cW5--9pfDLxsZ6PldyFNoT"
     }
   ]
 }
