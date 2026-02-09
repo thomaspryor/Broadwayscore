@@ -1,6 +1,8 @@
 {
   "processed": [
-    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+    "the-great-gatsby-2024/theater-pizzazz--ron-fassler.json"
   ],
   "failed": [
     "wicked-2003/hollywood-reporter--david-rooney.json",
@@ -21,19 +23,30 @@
     "aladdin-2014/amny--joe-dziemianowicz.json",
     "aladdin-2014/broadway-voice--kristen-balzano.json",
     "aladdin-2014/catholic-transcript--bernard-carragher.json",
-    "aladdin-2014/perez-hilton--perez-hilton.json"
+    "aladdin-2014/perez-hilton--perez-hilton.json",
+    "aladdin-2014/thestage--mark-shenton.json",
+    "oedipus-2025/latimes--charles-mcnulty.json",
+    "oedipus-2025/nysr--new-york-notebook-sandy-macdonald.json",
+    "oedipus-2025/oneminutecritic--matthew-wexler.json",
+    "oedipus-2025/the-interested-bystander--cary-wong.json",
+    "oedipus-2025/theater-scene--victor-gluck.json",
+    "the-great-gatsby-2024/talkinbroadway--kimberly-ramirez.json",
+    "the-great-gatsby-2024/theater-life--samuel-l-leiter.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-great-gatsby-2024/theater-pizzazz--ron-fassler.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+      "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
     ]
   },
   "startTime": "2026-02-09T07:16:09.697Z",
-  "lastProcessed": "aladdin-2014/perez-hilton--perez-hilton.json",
+  "lastProcessed": "the-great-gatsby-2024/theater-pizzazz--ron-fassler.json",
   "log": []
 }
