@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-09T14:22:44.835Z",
+  "runDate": "2026-02-09T14:28:07.800Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,246 +11,52 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 100,
+    "processed": 1,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 107,
-    "tier2Success": 31,
-    "tier3Attempts": 80,
-    "tier3Success": 57,
-    "tier4Attempts": 49,
-    "tier4Success": 6,
-    "totalFailed": 100,
-    "scrapingBeeCreditsUsed": 830,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 1,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 21,
-    "urlDiscoverySuccess": 18,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "the-encounter-2016/financial-times-uk--ian-shuttleworth.json"
+  ],
   "failed": [
-    "hadestown-2019/deadline--pete-hammond.json",
-    "hells-kitchen-2024/deadline--pete-hammond.json",
-    "mj-2022/deadline--pete-hammond.json",
-    "the-outsiders-2024/deadline--greg-evans.json",
-    "1776-2022/deadline--greg-evans.json",
-    "1776-2022/deadline--pete-hammond.json",
-    "a-bronx-tale-2007/deadline--jeremy-gerard.json",
-    "a-christmas-carol-2019/deadline--greg-evans.json",
-    "a-delicate-balance-2014/deadline--jeremy-gerard.json",
-    "a-dolls-house-2023/deadline--greg-evans.json",
-    "a-dolls-house-2023/deadline--pete-hammond.json",
-    "a-soldiers-play-2020/deadline--greg-evans.json",
-    "a-strange-loop-2022/deadline--greg-evans.json",
-    "a-view-from-the-bridge-2015/deadline--jeremy-gerard.json",
-    "a-wonderful-world-the-louis-armstrong-musical-2024/deadline--greg-evans.json",
-    "a-wonderful-world-the-louis-armstrong-musical-2024/deadline--unknown.json",
-    "aint-no-mo-2022/deadline--greg-evans.json",
-    "aint-too-proud-2019/deadline--greg-evans.json",
-    "airline-highway-2015/deadline--jeremy-gerard.json",
-    "all-my-sons-2019/deadline--greg-evans.json",
-    "allegiance-2015/deadline--jeremy-gerard.json",
-    "almost-famous-2022/deadline--pete-hammond.json",
-    "amazing-grace-2015/deadline--jeremy-gerard.json",
-    "american-buffalo-2022/deadline--greg-evans.json",
-    "american-buffalo-2022/deadline--pete-hammond.json",
-    "american-psycho-2016/deadline--jeremy-gerard.json",
-    "an-act-of-god-2016/deadline--unknown.json",
-    "an-american-in-paris-2015/deadline--jeremy-gerard.json",
-    "anastasia-2017/deadline--jeremy-gerard.json",
-    "art-2025/deadline--greg-evans.json",
-    "bad-cinderella-2023/deadline--greg-evans.json",
-    "bandstand-2017/deadline--jeremy-gerard.json",
-    "be-more-chill-2019/deadline--greg-evans.json",
-    "beetlejuice-2022/deadline--greg-evans.json",
-    "betrayal-2019/deadline--greg-evans.json",
-    "betrayal-2019/deadline--pete-hammond.json",
-    "birthday-candles-2022/deadline--greg-evans.json",
-    "burn-this-2019/deadline--greg-evans.json",
-    "burn-this-2019/deadline--leah-greenblatt.json",
-    "cabaret-2014/deadline--greg-evans.json",
-    "cabaret-2024/deadline--greg-evans.json",
-    "camelot-2023/deadline--greg-evans.json",
-    "camelot-2023/deadline--pete-hammond.json",
-    "caroline-or-change-2021/deadline--greg-evans.json",
-    "carousel-2018/deadline--greg-evans.json",
-    "charlie-and-the-chocolate-factory-2017/deadline--jeremy-gerard.json",
-    "children-of-a-lesser-god-2018/deadline--greg-evans.json",
-    "choir-boy-2019/deadline--chris-evans.json",
-    "choir-boy-2019/deadline--greg-evans.json",
-    "cirque-du-soleil-paramour-2016/deadline--jeremy-gerard.json",
-    "clydes-2021/deadline--greg-evans.json",
-    "clydes-2021/deadline--pete-hammond.json",
-    "come-from-away-2017/deadline--jeremy-gerard.json",
-    "come-from-away-2017/deadline--pete-hammond.json",
-    "company-2021/deadline--greg-evans.json",
-    "company-2021/deadline--pete-hammond.json",
-    "dead-outlaw-2025/deadline--greg-evans.json",
-    "dear-evan-hansen-2016/deadline--jeremy-gerard.json",
-    "death-of-a-salesman-2022/deadline--greg-evans.json",
-    "death-of-a-salesman-2022/deadline--pete-hammond.json",
-    "gypsy-2024/deadline--pete-hammond.json",
-    "here-lies-love-2023/deadline--pete-hammond.json",
-    "ink-2019/deadline--pete-hammond.json",
-    "jagged-little-pill-2019/deadline--pete-hammond.json",
-    "kiss-me-kate-2019/deadline--pete-hammond.json",
-    "leopoldstadt-2022/deadline--pete-hammond.json",
-    "lobby-hero-2018/deadline--pete-hammond.json",
-    "long-days-journey-into-night-2016/deadline--pete-hammond.json",
-    "m-butterfly-2017/deadline--jeremy-gerard.json",
-    "macbeth-2022/deadline--greg-evans.json",
-    "macbeth-2022/deadline--pete-hammond.json",
-    "marvins-room-2017/deadline--jeremy-gerard.json",
-    "mean-girls-2018/deadline--greg-evans.json",
-    "mean-girls-2018/deadline--pete-hammond.json",
-    "merrily-we-roll-along-2023/deadline--pete-hammond.json",
-    "meteor-shower-2017/deadline--jeremy-gerard.json",
-    "misery-2015/deadline--jeremy-gerard.json",
-    "miss-saigon-2017/deadline--jeremy-gerard.json",
-    "mr-saturday-night-2022/deadline--greg-evans.json",
-    "mrs-doubtfire-2021/deadline--greg-evans.json",
-    "my-name-is-lucy-barton-2020/deadline--greg-evans.json",
-    "natasha-pierre-and-the-great-comet-of-1812-2016/deadline--jeremy-gerard.json",
-    "network-2018/deadline--greg-evans.json",
-    "network-2018/deadline--pete-hammond.json",
-    "new-york-new-york-2023/deadline--greg-evans.json",
-    "noises-off-2016/deadline--jeremy-gerard.json",
-    "ohio-state-murders-2022/deadline--greg-evans.json",
-    "oklahoma-2019/deadline--greg-evans.json",
-    "old-times-2015/deadline--jeremy-gerard.json",
-    "on-the-town-2014/deadline--unknown.json",
-    "on-the-twentieth-century-2015/deadline--jeremy-gerard.json",
-    "on-your-feet-2015/deadline--jeremy-gerard.json",
-    "once-on-this-island-2017/deadline--jeremy-gerard.json",
-    "once-upon-a-mattress-2024/deadline--greg-evans.json",
-    "oslo-2017/deadline--jeremy-gerard.json",
-    "othello-2025/deadline--greg-evans.json",
-    "parade-2023/deadline--greg-evans.json",
-    "parade-2023/deadline--pete-hammond.json",
-    "paradise-square-2022/deadline--greg-evans.json",
-    "pass-over-2021/deadline--greg-evans.json"
+    "wit-2012/financialtimes--brendan-lemon.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-encounter-2016/financial-times-uk--ian-shuttleworth.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "Deadline": {
-      "count": 2,
-      "domain": "deadline.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "hadestown-2019/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2019/04/hadestown-review-broadway-anais-mitchell-rachel-chavkin-1202598847/",
-      "newUrl": "https://deadline.com/2019/04/hadestown-broadway-review-anais-mitchell-rachel-chavkin-reeve-carney-1202597073/"
-    },
-    {
-      "reviewId": "mj-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/02/mj-the-musical-review-broadway-michael-jackson-1234937478/",
-      "newUrl": "https://deadline.com/2022/02/mj-broadway-review-michael-jackson-musical-1234922944/"
-    },
-    {
-      "reviewId": "1776-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/10/1776-broadway-review-roundabout-theatre-company-american-airlines-theatre-1235149772/",
-      "newUrl": "https://deadline.com/2022/10/1776-broadway-review-1235136437/"
-    },
-    {
-      "reviewId": "american-buffalo-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/04/american-buffalo-review-sam-rockwell-laurence-fishburne-darren-criss-broadway-1235006943/",
-      "newUrl": "https://deadline.com/2022/04/american-buffalo-cyrano-broadway-review-darren-criss-james-mcavoy-1235002080/"
-    },
-    {
-      "reviewId": "betrayal-2019/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2019/09/betrayal-review-broadway-revival-tom-hiddleston-zawe-ashton-charlie-cox-1202734276/",
-      "newUrl": "https://deadline.com/2019/09/betrayal-broadway-review-tom-hiddleston-charlie-cox-zawe-ashton-harold-pinter-affair-to-remember-1202711669/"
-    },
-    {
-      "reviewId": "clydes-2021/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2021/12/clydes-broadway-review-lynn-nottage-uzo-aduba-1234880094/",
-      "newUrl": "https://deadline.com/2021/11/clydes-broadway-review-uzo-aduba-ron-cephas-jones-lynn-nottage-1234879299/"
-    },
-    {
-      "reviewId": "come-from-away-2017/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2017/03/come-from-away-broadway-review-1202045094/",
-      "newUrl": "https://deadline.com/2017/03/broadway-review-come-from-away-1202041704/"
-    },
-    {
-      "reviewId": "company-2021/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2021/12/company-review-katrina-lenk-patti-lupone-broadway-revival-1234889043/",
-      "newUrl": "https://deadline.com/2021/12/company-broadway-review-stephen-sondheim-katrina-lenk-patti-lupone-1234886532/"
-    },
-    {
-      "reviewId": "death-of-a-salesman-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/10/death-of-a-salesman-review-wendell-pierce-sharon-d-clarke-broadway-1235148631/",
-      "newUrl": "https://deadline.com/2022/10/death-of-a-salesman-broadway-review-wendell-pierce-sharon-d-clarke-1235138627/"
-    },
-    {
-      "reviewId": "here-lies-love-2023/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2023/07/here-lies-love-review-david-byrne-fatboy-slim-musical-broadway-1235449826/",
-      "newUrl": "https://deadline.com/2023/07/here-lies-love-broadway-review-deadline-david-byrne-fatboy-slim-1235438965/"
-    },
-    {
-      "reviewId": "ink-2019/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2019/04/ink-broadway-review-bertie-carvel-jonny-lee-miller-1202598125/",
-      "newUrl": "https://deadline.com/2019/04/ink-broadway-review-rupert-murdoch-jonny-lee-miller-bertie-carvel-1202601061/"
-    },
-    {
-      "reviewId": "jagged-little-pill-2019/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2019/12/jagged-little-pill-broadway-review-alanis-morissette-musical-1202807944/",
-      "newUrl": "https://deadline.com/2019/12/jagged-little-pill-broadway-review-alanis-morissette-diablo-cody-musical-1202798616/"
-    },
-    {
-      "reviewId": "kiss-me-kate-2019/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2019/03/kiss-me-kate-broadway-review-kelli-ohara-will-chase-roundabout-1202575825/",
-      "newUrl": "https://deadline.com/2019/03/kiss-me-kate-broadway-review-will-chase-kelli-ohara-cole-porter-roundabout-theatre-company-1202574481/"
-    },
-    {
-      "reviewId": "leopoldstadt-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/10/leopoldstadt-review-tom-stoppard-broadway-1235148076/",
-      "newUrl": "https://deadline.com/2022/10/leopoldstadt-broadway-review-tom-stoppard-1235132736/"
-    },
-    {
-      "reviewId": "lobby-hero-2018/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2018/03/lobby-hero-review-broadway-chris-evans-michael-cera-brian-cranston-1202348959/",
-      "newUrl": "https://deadline.com/2018/03/lobby-hero-chris-evans-michael-cera-broadway-review-kenneth-lonergan-1202355301/"
-    },
-    {
-      "reviewId": "macbeth-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/04/macbeth-review-daniel-craig-ruth-negga-broadway-1235005582/",
-      "newUrl": "https://deadline.com/2022/04/macbeth-broadway-review-daniel-craig-ruth-negga-1235011369/"
-    },
-    {
-      "reviewId": "mean-girls-2018/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2018/04/mean-girls-broadway-review-tina-fey-musical-august-wilson-theatre-1202366025/",
-      "newUrl": "https://deadline.com/2018/04/mean-girls-broadway-review-tina-fey-musical-honor-roll-1202359804/"
-    },
-    {
-      "reviewId": "network-2018/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2018/12/network-review-bryan-cranston-broadway-1202509978/",
-      "newUrl": "https://deadline.com/2018/12/network-broadway-review-bryan-cranston-ivo-van-hove-mad-prophet-1202514424/"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
