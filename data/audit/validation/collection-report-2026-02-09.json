@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-09T12:20:11.946Z",
+  "runDate": "2026-02-09T12:35:53.538Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,197 +11,184 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
-    "failed": 89,
+    "processed": 4,
+    "failed": 54,
     "skipped": 0,
-    "successRate": "11.0%"
+    "successRate": "6.9%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 5,
-    "brightdata": 0,
-    "archive": 4
+    "scrapingbee": 1,
+    "brightdata": 1,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 75,
-    "tier1Success": 9,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 12,
+    "tier2Attempts": 35,
     "tier2Success": 7,
-    "tier3Attempts": 5,
-    "tier3Success": 0,
-    "tier4Attempts": 151,
-    "tier4Success": 15,
-    "totalFailed": 89,
-    "scrapingBeeCreditsUsed": 116,
+    "tier3Attempts": 28,
+    "tier3Success": 3,
+    "tier4Attempts": 69,
+    "tier4Success": 33,
+    "totalFailed": 54,
+    "scrapingBeeCreditsUsed": 92,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 63,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 24,
+    "urlDiscoverySuccess": 11,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "book-of-mormon-2011/washpost--unknown.json",
-    "maybe-happy-ending-2024/washpost--naveen-kumar.json",
-    "maybe-happy-ending-2024/washpost--peter-marks.json",
-    "oedipus-2025/washpost--melissa-rose-bernardo.json",
-    "american-psycho-2016/washpost--peter-marks.json",
-    "between-riverside-and-crazy-2022/washpost--peter-marks.json",
-    "burn-this-2019/washpost--peter-marks.json",
-    "company-2021/washpost--peter-marks.json",
-    "eureka-day-2024/washpost--naveen-kumar.json",
-    "flying-over-sunset-2021/washpost--peter-marks.json",
-    "glengarry-glen-ross-2025/washpost--naveen-kumar.json"
+    "hedwig-and-the-angry-inch-2014/chicagotribune--chris-jones.json",
+    "hedwig-and-the-angry-inch-2014/chicagotribune--unknown.json",
+    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
+    "the-bridges-of-madison-county-2014/chicagotribune--chris-jones.json"
   ],
   "failed": [
-    "book-of-mormon-2011/washpost--.json",
-    "hadestown-2019/washpost--peter-marks.json",
-    "hells-kitchen-2024/washpost--peter-marks.json",
-    "operation-mincemeat-2025/washpost--naveen-kumar.json",
-    "the-lion-king-1997/washpost--lloyd-rose.json",
-    "wicked-2003/washpost--peter-marks.json",
-    "700-sundays-2013/washpost--peter-marks.json",
-    "a-chorus-line-2006/washpost--peter-marks.json",
-    "a-christmas-carol-2022/washpost--peter-marks.json",
-    "a-dolls-house-2023/washpost--peter-marks.json",
-    "a-little-night-music-2009/washpost--peter-marks.json",
-    "a-raisin-in-the-sun-2014/washpost--peter-marks.json",
-    "a-soldiers-play-2020/washpost--peter-marks.json",
-    "a-streetcar-named-desire-2012/ap--mark-kennedy.json",
-    "a-view-from-the-bridge-2015/washpost--peter-marks.json",
-    "all-my-sons-2008/washpost--peter-marks.json",
-    "all-my-sons-2019/washpost--peter-marks.json",
-    "allegiance-2015/washpost--peter-marks.json",
-    "almost-famous-2022/washpost--peter-marks.json",
-    "amazing-grace-2015/washpost--john-mackin.json",
-    "amazing-grace-2015/washpost--joshua-john-mackin.json",
-    "amelie-a-new-musical-2017/washpost--peter-marks.json",
-    "american-buffalo-2022/washpost--peter-marks.json",
-    "american-son-2018/washpost--peter-marks.json",
-    "an-enemy-of-the-people-2024/washpost--peter-marks.json",
-    "anastasia-2017/washpost--peter-marks.json",
-    "annie-2012/ap--jennifer-farrar.json",
-    "anything-goes-2011/washpost--peter-marks.json",
-    "appropriate-2023/washpost--peter-marks.json",
-    "bad-cinderella-2023/washpost--peter-marks.json",
-    "beautiful-the-carole-king-musical-2014/ap--mark-kennedy.json",
-    "beetlejuice-2019/washpost--peter-marks.json",
-    "bengal-tiger-at-the-baghdad-zoo-2011/washpost--peter-marks.json",
-    "betrayal-2013/washpost--peter-marks.json",
-    "betrayal-2019/washpost--peter-marks.json",
-    "brief-encounter-2010/washpost--peter-marks.json",
-    "bring-it-on-the-musical-2012/washpost--peter-marks.json",
-    "bronx-bombers-2014/ap--mark-kennedy.json",
-    "bronx-bombers-2014/washpost--unknown.json",
-    "cabaret-2014/washpost--peter-marks.json",
-    "camelot-2023/washpost--peter-marks.json",
-    "carousel-2018/washpost--peter-marks.json",
-    "cat-on-a-hot-tin-roof-2013/washpost--peter-marks.json",
-    "catch-me-if-you-can-2011/washpost--peter-marks.json",
-    "cats-1982/washpost--peter-marks.json",
-    "cats-2016/washpost--peter-marks.json",
-    "charlie-and-the-chocolate-factory-2017/washpost--peter-marks.json",
-    "china-doll-2015/washpost--peter-marks.json",
-    "chinglish-2011/washpost--peter-marks.json",
-    "clybourne-park-2012/washpost--peter-marks.json",
-    "clydes-2021/washpost--peter-marks.json",
-    "cost-of-living-2022/washpost--peter-marks.json",
-    "crybaby-2008/washpost--peter-marks.json",
-    "cult-of-love-2024/washpost--naveen-kumar.json",
-    "cult-of-love-2024/washpost--peter-marks.json",
-    "dana-h-2021/washpost--peter-marks.json",
-    "dead-accounts-2012/ap--mark-kennedy.json",
-    "dear-evan-hansen-2016/washpost--peter-marks.json",
-    "death-of-a-salesman-2022/washpost--peter-marks.json",
-    "desire-under-the-elms-2009/washpost--peter-marks.json",
-    "diana-the-musical-2021/washpost--peter-marks.json",
-    "disaster-2016/washpost--peter-marks.json",
-    "end-of-the-rainbow-2012/washpost--peter-marks.json",
-    "english-2025/washpost--naveen-kumar.json",
-    "enron-2010/washpost--peter-marks.json",
-    "evita-2012/washpost--peter-marks.json",
-    "falsettos-2016/washpost--peter-marks.json",
-    "farinelli-and-the-king-2017/washpost--peter-marks.json",
-    "finding-neverland-2015/washpost--peter-marks.json",
-    "first-date-2013/washpost--unknown.json",
-    "fish-in-the-dark-2015/washpost--peter-marks.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/washpost--peter-marks.json",
-    "frozen-2018/washpost--peter-marks.json",
-    "funny-girl-2022/washpost--peter-marks.json",
-    "gary-a-sequel-to-titus-andronicus-2019/washpost--peter-marks.json",
-    "ghost-the-musical-2012/ap--mark-kennedy.json",
-    "gigi-2015/washpost--peter-marks.json",
-    "god-of-carnage-2009/washpost--peter-marks.json",
-    "golden-boy-2012/ap--mark-kennedy.json",
-    "good-night-and-good-luck-2025/washpost--naveen-kumar.json",
-    "good-people-2011/washpost--peter-marks.json",
-    "grand-horizons-2020/washpost--peter-marks.json",
-    "grey-gardens-2006/washpost--peter-marks.json",
-    "groundhog-day-2017/washpost--peter-marks.json",
-    "hand-to-god-2015/washpost--peter-marks.json",
-    "here-lies-love-2023/washpost--peter-marks.json",
-    "how-i-learned-to-drive-2022/washpost--peter-marks.json",
-    "how-to-succeed-in-business-without-really-trying-2011/washpost--peter-marks.json",
-    "ifthen-2014/washpost--peter-marks.json"
+    "and-juliet-2022/nydailynews--chris-jones.json",
+    "book-of-mormon-2011/chicagotribune--.json",
+    "book-of-mormon-2011/chicagotribune--chris-jones.json",
+    "death-becomes-her-2024/chicagotribune--chris-jones.json",
+    "stranger-things-2024/chicagotribune--chris-jones.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "gutenberg-2023/nydailynews--chris-jones.json",
+    "a-behanding-in-spokane-2010/chicagotribune--chris-jones.json",
+    "a-bronx-tale-the-musical-2016/chicagotribune--chris-jones.json",
+    "a-dolls-house-part-2-2017/chicagotribune--chris-jones.json",
+    "a-life-in-the-theatre-2010/chicagotribune--chris-jones.json",
+    "american-buffalo-2022/chicagotribune--chris-jones.json",
+    "big-fish-2013/chicagotribune--unknown.json",
+    "bloody-bloody-andrew-jackson-2010/chicagotribune--chris-jones.json",
+    "catch-me-if-you-can-2011/chicagotribune--chris-jones.json",
+    "hello-dolly-2017/chicagotribune--chris-jones.json",
+    "la-bete-2010/chicagotribune--.json",
+    "once-upon-a-one-more-time-2023/chicagotribune--chris-jones.json",
+    "othello-2025/chicagotribune--chris-jones.json",
+    "pippin-2013/chicagotribune--chris-jones.json",
+    "pirates-the-penzance-musical-2025/chicagotribune--chris-jones.json",
+    "pretty-woman-the-musical-2018/chicagotribune--chris-jones.json",
+    "prince-of-broadway-2017/chicagotribune--chris-jones.json",
+    "promises-promises-2010/chicagotribune--chris-jones.json",
+    "reasons-to-be-pretty-2009/chicagotribune--unknown.json",
+    "red-2010/chicagotribune--chris-jones.json",
+    "rodgers-hammersteins-cinderella-2013/chicagotribune--chris-jones.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
+    "the-house-of-blue-leaves-2011/chicagotribune--chris-jones.json",
+    "the-humans-2016/chicagotribune--chris-jones.json",
+    "the-miracle-worker-2010/chicagotribune--chris-jones.json",
+    "the-mystery-of-edwin-drood-2012/chicagotribune--chris-jones.json",
+    "the-nap-2018/chicagotribune--chris-jones.json",
+    "the-piano-lesson-2022/chicagotribune--chris-jones.json",
+    "the-price-2017/chicagotribune--chris-jones.json",
+    "the-rose-tattoo-2019/chicagotribune--chris-jones.json",
+    "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
+    "the-waverly-gallery-2018/chicagotribune--chris-jones.json",
+    "therese-raquin-2015/chicagotribune--unknown.json",
+    "this-is-our-youth-2014/chicagotribune--chris-jones.json",
+    "three-tall-women-2018/chicagotribune--chris-jones.json",
+    "to-kill-a-mockingbird-2018/chicagotribune--chris-jones.json",
+    "torch-song-2018/chicagotribune--chris-jones.json",
+    "torch-song-2018/chicagotribune--matt-windman.json",
+    "tuck-everlasting-2016/chicagotribune--chris-jones.json",
+    "violet-2014/chicagotribune--chris-jones.json",
+    "waiting-for-godot-2009/chicagotribune--chris-jones.json",
+    "war-horse-2011/chicagotribune--chris-jones.json",
+    "war-paint-2017/chicagotribune--chris-jones.json",
+    "water-for-elephants-2024/chicagotribune--chris-jones.json",
+    "west-side-story-2020/chicagotribune--chris-jones.json",
+    "wit-2012/chicagotribune--chris-jones.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/chicagotribune--chris-jones.json",
+    "yellow-face-2024/chicagotribune--chris-jones.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "between-riverside-and-crazy-2022/washpost--peter-marks.json",
-      "eureka-day-2024/washpost--naveen-kumar.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [
-      "book-of-mormon-2011/washpost--unknown.json",
-      "oedipus-2025/washpost--melissa-rose-bernardo.json",
-      "american-psycho-2016/washpost--peter-marks.json",
-      "burn-this-2019/washpost--peter-marks.json",
-      "glengarry-glen-ross-2025/washpost--naveen-kumar.json"
+      "hedwig-and-the-angry-inch-2014/chicagotribune--chris-jones.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "hedwig-and-the-angry-inch-2014/chicagotribune--unknown.json"
+    ],
     "archive": [
-      "maybe-happy-ending-2024/washpost--naveen-kumar.json",
-      "maybe-happy-ending-2024/washpost--peter-marks.json",
-      "company-2021/washpost--peter-marks.json",
-      "flying-over-sunset-2021/washpost--peter-marks.json"
+      "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
+      "the-bridges-of-madison-county-2014/chicagotribune--chris-jones.json"
     ]
   },
   "failuresByOutlet": {
-    "The Washington Post": {
-      "count": 49,
-      "domain": "washingtonpost.com",
+    "Chicago Tribune": {
+      "count": 13,
+      "domain": "chicagotribune.com",
       "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
+      "isPaywalled": false,
+      "isKnownBlocked": true
     },
-    "The Associated Press": {
+    "The Chicago Tribune": {
       "count": 1,
-      "domain": "washingtonpost.com",
+      "domain": "chicagotribune.com",
       "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Associated Press": {
-      "count": 6,
-      "domain": "washingtonpost.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Washington Post": {
-      "count": 3,
-      "domain": "washingtonpost.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
+      "isPaywalled": false,
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "frozen-2018/washpost--peter-marks.json",
-      "oldUrl": "https://www.washingtonpost.com/entertainment/theater_dance/my-daughter-enjoyed-broadways-frozen-what-more-do-you-need-to-know/2018/03/22/40aa9cea-2d17-11e8-911f-ca7f68bff0fc_story.html?utm_term=.682559536fa5",
-      "newUrl": "https://www.washingtonpost.com/entertainment/theater/2024/10/30/frozen-olney-theatre-review/"
+      "reviewId": "book-of-mormon-2011/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-park/",
+      "newUrl": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in-a-hilarious-book-of-mormon/"
+    },
+    {
+      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
+      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
+    },
+    {
+      "reviewId": "american-buffalo-2022/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/ct-ent-american-buffalo-broadway-review-20220415-6xqzlqxoqfgkxbwxvyqzqzqzqz-story.html",
+      "newUrl": "https://www.chicagotribune.com/2022/04/14/review-american-buffalo-opens-on-broadway-with-laurence-fishburne-a-blast-of-a-mamet-play-that-stops-short-of-the-biggest-score/"
+    },
+    {
+      "reviewId": "big-fish-2013/chicagotribune--unknown.json",
+      "oldUrl": "http://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ent-1007-big-fish-broadway-review-20131007,0,1670962.column?track=rss",
+      "newUrl": "https://www.chicagotribune.com/2013/10/06/broadway-review-big-fish/"
+    },
+    {
+      "reviewId": "catch-me-if-you-can-2011/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2011/04/01/catch-me-if-you-can-on-broadway-adaptation-couldve-stuck-more-closely-to-the-script/",
+      "newUrl": "https://www.chicagotribune.com/2025/09/05/review-catch-me-if-you-can-marriott/"
+    },
+    {
+      "reviewId": "hedwig-and-the-angry-inch-2014/chicagotribune--chris-jones.json",
+      "oldUrl": "http://www.chicagotribune.com/entertainment/theater/sc-hedwig-broadway-review,0,746752.column",
+      "newUrl": "https://www.chicagotribune.com/2014/04/22/broadway-review-hedwig-and-the-angry-inch-starring-neil-patrick-harris/"
+    },
+    {
+      "reviewId": "hedwig-and-the-angry-inch-2014/chicagotribune--unknown.json",
+      "oldUrl": "http://www.chicagotribune.com/entertainment/theater/sc-hedwig-broadway-review,0,746752.column",
+      "newUrl": "https://www.chicagotribune.com/2014/04/22/broadway-review-hedwig-and-the-angry-inch-starring-neil-patrick-harris/"
+    },
+    {
+      "reviewId": "pippin-2013/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2013/04/26/pippin-broadway-review/",
+      "newUrl": "https://www.chicagotribune.com/2013/04/25/broadway-review-pippin-pulls-off-a-theatrical-high-wire-act-2/"
+    },
+    {
+      "reviewId": "promises-promises-2010/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2010/04/01/promises-broadway-review-sean-hayes-promises-promises-no-love-connection/",
+      "newUrl": "https://www.chicagotribune.com/2023/12/08/review-promises-promises-by-blank-theatre-is-a-fun-retro-night-out-with-burt-bacharach/"
+    },
+    {
+      "reviewId": "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2014/10/06/the-curious-incident-of-the-dog-in-the-night-time-broadway-review/",
+      "newUrl": "https://www.chicagotribune.com/2014/10/06/review-the-curious-incident-of-the-dog-in-the-night-time/"
+    },
+    {
+      "reviewId": "violet-2014/chicagotribune--chris-jones.json",
+      "oldUrl": "http://www.chicagotribune.com/entertainment/theater/ct-violet-broadway-musical-review-20140420,0,5353158.column",
+      "newUrl": "https://www.chicagotribune.com/2014/04/21/broadway-review-violet-starring-sutton-foster/"
     }
   ]
 }
