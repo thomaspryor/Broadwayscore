@@ -36,18 +36,24 @@ Your task: Look for EVIDENCE that this image is WRONG. Only reject when you see 
 
 REJECT (match=false) only when you see POSITIVE EVIDENCE of these problems:
 - The image shows a DIFFERENT SHOW's title (e.g., image says "Hell's Kitchen" but the show is "Illinoise"). This is the most important check.
-- The image shows the show's name but with EXTRA WORDS forming a different title (e.g., "Cats: The Jellicle Ball" is NOT "Cats" — the subtitle makes it a different show). Any added subtitle, prefix, or qualifier visible in the image that doesn't match the exact title given below means it's a different show.
-- The image shows a non-Broadway venue name (text like "BAM", "Steppenwolf", "State Theatre New Jersey", "West End", etc.)
+- The image shows the show's name but with EXTRA WORDS forming a MEANINGFULLY DIFFERENT title (e.g., "Cats: The Jellicle Ball" is NOT "Cats" — it's a completely different show). However, generic Broadway marketing phrases are NOT different titles and must be ACCEPTED: "The Musical", "A New Musical", "The Broadway Musical", "A Musical Comedy", "A Musical Fable", "A New Play", "A Memory Play", playwright credits like "Noel Coward's [Show]" or "A New Play by [Author]", and star names in marketing like "[Star] in [Show]". Only reject when the added words create a genuinely different show.
+- The image shows a non-Broadway venue name (text like "BAM", "State Theatre New Jersey", "West End", etc.) — BUT see ACCEPT rules for known Broadway producers below
+- The image shows a theater company name or logo that is NOT a Broadway producer (e.g., "CenterREP", "Berkeley Rep", "Goodman Theatre", "Arena Stage", "Seattle Rep", "Gallery Players", or any regional, community, or touring company branding) — BUT see ACCEPT rules for known Broadway producers below
+- The image is PRIMARILY focused on "National Tour", "US Tour", "UK Tour", or a non-NYC city as the production location. (Small-print tour mentions on an otherwise correct Broadway poster are OK — only reject when tour branding is the main focus.)
+- Community theater markers: school names, "Community Players", "Youth Production", amateur company logos
 - The image is clearly a "concert version" or "in concert" variant (visible text says "In Concert")
 - The image is a generic placeholder: "Coming soon", stock photo, blank/solid color, website logo, app icon
 - The image shows a yellow PLAYBILL program cover (physical program photo, not promotional art)
 - The image is a seating chart, venue map, ticket listing, or social media logo
 - The image shows a completely different show's recognizable artwork or cast
+- The image is a stand-alone closing ADVERTISEMENT with just text and no actual poster art (e.g., "MUST CLOSE MAY 26" in plain text, or "FINAL WEEKS" as the entire image without any show artwork)
 
 ACCEPT (match=true) in these cases:
 - Official poster art, key art, or promotional graphics showing the correct show title
 - Show logos, stylized title treatments, or title cards with design elements
-- Closing notice images ("Final Performance", "Must Close") for the correct show
+- Closing notice OVERLAID on the show's actual poster art (e.g., "FINAL WEEKS" banner on top of the real poster) — this is fine, the base image is still correct
+- Known Broadway-producing nonprofits on the poster: Manhattan Theatre Club (MTC), Lincoln Center Theater (LCT), Roundabout Theatre Company, Second Stage Theater, The New Group. These ARE Broadway producers — their logos do NOT mean it's a non-Broadway production.
+- Originating company credits: "National Theatre", "Royal Shakespeare Company", "Donmar Warehouse", "Steppenwolf" on an otherwise correct Broadway poster — ACCEPT. Many Broadway shows transfer from these venues and the poster credits the original producer.
 - You cannot determine whether the image is from this specific production year vs another year — ACCEPT (benefit of the doubt)
 
 REJECT production photos (match=false, imageType="production_still"):
@@ -64,7 +70,7 @@ Reply with ONLY this JSON (no markdown fencing, no explanation):
 Or if there's a problem:
 {"match":false,"confidence":"high","description":"brief description of what the image actually shows","issues":["category"],"imageType":"other"}
 
-Issue categories: wrong_show, wrong_production, non_broadway, placeholder, playbill_cover, seating_chart, generic_image, social_media_logo, ticket_listing, venue_photo, production_photo
+Issue categories: wrong_show, wrong_production, non_broadway, regional_production, community_theater, closing_ad, placeholder, playbill_cover, seating_chart, generic_image, social_media_logo, ticket_listing, venue_photo, production_photo
 
 Also classify the image type. Add an "imageType" field to your JSON response:
 - "promotional_art" — Official poster, key art, logo treatment, title card with stylized design, marketing material
