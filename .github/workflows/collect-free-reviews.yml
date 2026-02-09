@@ -301,6 +301,7 @@ jobs:
           fi
 
       - name: Count remaining and chain
+        if: always()
         id: chain
         env:
           EXCLUDE_DOMAINS: ${{ env.PAYWALL_DOMAINS }}

@@ -280,6 +280,7 @@ jobs:
           fi
 
       - name: Count remaining and chain
+        if: always()
         id: chain
         env:
           GH_TOKEN: ${{ github.token }}
