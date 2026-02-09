@@ -1,353 +1,239 @@
 {
-  "runDate": "2026-02-09T18:36:25.137Z",
+  "runDate": "2026-02-09T19:09:49.884Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "mj-2022,maybe-happy-ending-2024,and-juliet-2022,six-2021,all-out-2025,chess-2025,hand-to-god-2015,pass-over-2021,king-charles-iii-2015,something-rotten-2015,once-2012,bullets-over-broadway-2014,lobby-hero-2018,pippin-2013,sylvia-2015,a-view-from-the-bridge-2015,falsettos-2016,jitney-2017,oh-hello-on-broadway-2016,red-2010,the-real-thing-2014,clydes-2021,good-night-oscar-2023,orphans-2013,the-curious-incident-of-the-dog-in-the-nighttime-2014,time-and-the-conways-2017,1984-2017,bad-cinderella-2023,camelot-2023,fun-home-2015,indecent-2017,lombardi-2010,newsies-the-musical-2012,pretty-woman-the-musical-2018,tammy-faye-2024,the-rose-tattoo-2019,after-midnight-2013,bandstand-2017,disaster-2016,kimberly-akimbo-2022,meteor-shower-2017,sea-wall-a-life-2019,the-anarchist-2012,the-humans-2016,the-minutes-2022,travesties-2018,a-little-night-music-2009,breakfast-at-tiffanys-2013,cats-2016,finding-neverland-2015,girl-from-the-north-country-2022,hillary-and-clinton-2019,john-lithgow-stories-by-heart-2018,picnic-2013,the-big-knife-2013,the-sign-in-sidney-brusteins-window-2023,uncle-vanya-2024,you-cant-take-it-with-you-2014,all-my-sons-2008,charlie-and-the-chocolate-factory-2017,enron-2010,gary-a-sequel-to-titus-andronicus-2019,here-lies-love-2023,merrily-we-roll-along-2023,natasha-pierre-and-the-great-comet-of-1812-2016,suffs-2024,the-house-of-blue-leaves-2011,the-parisian-woman-2017,waiting-for-godot-2013,a-view-from-the-bridge-2010,baby-its-you-2011,bronx-bombers-2014,choir-boy-2019,exit-the-king-2009,harmony-2023,lady-day-at-emersons-bar-and-grill-2014,master-class-2011,promises-promises-2010,south-pacific-2008,the-kite-runner-2022,the-realistic-joneses-2014,to-kill-a-mockingbird-2018,a-wonderful-world-the-louis-armstrong-musical-2024,appropriate-2023,doubt-2024,gypsy-2008,in-the-heights-2008,leap-of-faith-2012,mary-stuart-2009,peter-pan-goes-wrong-2023,romeo-and-juliet-2013,stephen-sondheims-old-friends-2025,the-39-steps-2008,the-glass-menagerie-2017,the-notebook-2024,the-royal-family-2009,the-year-of-magical-thinking-2007,west-side-story-2009,9-to-5-2009,a-time-to-kill-2013,boeingboeing-2008,colin-quinn-long-story-short-2010,eureka-day-2024,gettin-the-band-back-together-2018,impressionism-2009,la-bete-2010,lovemusik-2007,once-upon-a-mattress-2024,purpose-2025,rock-n-roll-2007,spring-awakening-2006,the-glass-menagerie-2013,the-new-one-2018,the-phantom-of-the-opera-1988,the-story-of-my-life-2009,110-in-the-shade-2007,an-enemy-of-the-people-2012,clybourne-park-2012,cyrano-de-bergerac-2012,equus-2008,hair-2011,hot-feet-2006,journeys-end-2007,lestat-2006,oleanna-2009,pygmalion-2007,ring-of-fire-2006,the-constant-wife-2005,the-odd-couple-2005,translations-2007,well-2006",
+    "showFilter": "",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
-    "failed": 89,
+    "processed": 25,
+    "failed": 75,
     "skipped": 0,
-    "successRate": "11.0%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 9,
     "browserbase": 0,
-    "scrapingbee": 3,
-    "brightdata": 1,
-    "archive": 5
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 16
   },
   "statistics": {
-    "tier1Attempts": 64,
-    "tier1Success": 5,
+    "tier1Attempts": 50,
+    "tier1Success": 24,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 70,
-    "tier2Success": 21,
-    "tier3Attempts": 50,
-    "tier3Success": 13,
-    "tier4Attempts": 138,
-    "tier4Success": 37,
-    "totalFailed": 89,
-    "scrapingBeeCreditsUsed": 392,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 133,
+    "tier4Success": 50,
+    "totalFailed": 75,
+    "scrapingBeeCreditsUsed": 20,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 42,
-    "urlDiscoverySuccess": 30,
+    "urlDiscoveryAttempts": 27,
+    "urlDiscoverySuccess": 9,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "and-juliet-2022/thewrap--robert-hofler.json",
-    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "mj-2022/theatermania--jesse-green.json",
-    "maybe-happy-ending-2024/washpost--naveen-kumar.json",
-    "maybe-happy-ending-2024/washpost--peter-marks.json",
-    "a-little-night-music-2009/hollywood-reporter--frank-scheck.json",
-    "camelot-2023/nytimes--jesse-green.json",
-    "lombardi-2010/newyorker--uncredited.json",
-    "sea-wall-a-life-2019/nyt-theater--jonathan-mandell.json",
-    "the-39-steps-2008/nytimes--ben-brantley.json"
+    "aladdin-2014/ew--thom-geier.json",
+    "33-variations-2009/ew--lisa-schwarzbaum.json",
+    "700-sundays-2013/ew--jessica-shaw.json",
+    "a-delicate-balance-2014/ew--marc-snetiker.json",
+    "a-delicate-balance-2014/ew--unknown.json",
+    "a-life-in-the-theatre-2010/ew--tanner-stransky.json",
+    "a-night-with-janis-joplin-2013/ew--melissa-maerz.json",
+    "a-raisin-in-the-sun-2014/ew--lisa-schwarzbaum.json",
+    "all-the-way-2014/ew--thom-geier.json",
+    "betrayal-2013/ew--allison-adato.json",
+    "betrayal-2019/ew--unknown.json",
+    "cat-on-a-hot-tin-roof-2008/ew--thom-geier.json",
+    "collected-stories-2010/ew--melissa-rose-bernardo.json",
+    "constellations-2015/ew--melissa-maerz.json",
+    "death-of-a-salesman-2012/ew--thom-geler.json",
+    "doctor-zhivago-2015/ew--jessica-shaw.json",
+    "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
+    "exit-the-king-2009/ew--thom-geier.json",
+    "fences-2010/ew--melissa-rose-bernardo.json",
+    "golden-boy-2012/ew--adam-markovitz.json",
+    "guys-and-dolls-2009/ew--thom-geier.json",
+    "hedwig-and-the-angry-inch-2014/ew--thom-geier.json",
+    "hedwig-and-the-angry-inch-2014/ew--unknown.json",
+    "hillary-and-clinton-2019/ew--jessica-shaw.json",
+    "holler-if-ya-hear-me-2014/ew--unknown.json"
   ],
   "failed": [
-    "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
-    "mj-2022/talkinbroadway--matthew-murray.json",
-    "six-2021/talkinbroadway--matthew-murray.json",
-    "after-midnight-2013/nyt-theater--david-nounou.json",
-    "all-my-sons-2008/nytimes--jesse-green.json",
-    "baby-its-you-2011/nytimes--ben-brantley.json",
-    "bandstand-2017/hollywood-reporter--david-rooney.json",
-    "bandstand-2017/nytimes--jesse-green.json",
-    "boeingboeing-2008/nytimes--ben-brantley.json",
-    "boeingboeing-2008/variety--charles-isherwood.json",
-    "breakfast-at-tiffanys-2013/nytimes--ben-brantley.json",
-    "cats-2016/nytimes--ben-brantley.json",
-    "charlie-and-the-chocolate-factory-2017/nyt-theater--david-nounou.json",
-    "choir-boy-2019/vulture--jesse-green.json",
-    "clydes-2021/nytimes--jesse-green.json",
-    "clydes-2021/vulture--jesse-green.json",
-    "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
-    "falsettos-2016/nytimes--ben-brantley.json",
-    "finding-neverland-2015/nytimes--ben-brantley.json",
-    "fun-home-2015/vulture--jesse-green.json",
-    "girl-from-the-north-country-2022/nytimes--jesse-green.json",
-    "gypsy-2008/nytimes--ben-brantley.json",
-    "gypsy-2008/vulture--jesse-green.json",
-    "hair-2011/nytimes--ben-brantley.json",
-    "hand-to-god-2015/vulture--jesse-green.json",
-    "here-lies-love-2023/vulture--helen-shaw.json",
-    "hillary-and-clinton-2019/nytimes--ben-brantley.json",
-    "hot-feet-2006/nytimes--ben-brantley.json",
-    "impressionism-2009/nytimes--ben-brantley.json",
-    "in-the-heights-2008/nytimes--charles-isherwood.json",
-    "jitney-2017/nytimes--ben-brantley.json",
-    "jitney-2017/vulture--jesse-green.json",
-    "journeys-end-2007/nytimes--ben-brantley.json",
-    "king-charles-iii-2015/hollywood-reporter--david-rooney.json",
-    "king-charles-iii-2015/nytimes--ben-brantley.json",
-    "king-charles-iii-2015/vulture--jesse-green.json",
-    "la-bete-2010/nytimes--ben-brantley.json",
-    "lady-day-at-emersons-bar-and-grill-2014/hollywood-reporter--david-rooney.json",
-    "lady-day-at-emersons-bar-and-grill-2014/nytimes--ben-brantley.json",
-    "leap-of-faith-2012/nytimes--ben-brantley.json",
-    "lestat-2006/nytimes--ben-brantley.json",
-    "lobby-hero-2018/hollywood-reporter--david-rooney.json",
-    "lobby-hero-2018/vulture--jesse-green.json",
-    "lombardi-2010/hollywood-reporter--david-rooney.json",
-    "lombardi-2010/nytimes--ben-brantley.json",
-    "lovemusik-2007/nytimes--ben-brantley.json",
-    "lovemusik-2007/variety--charles-isherwood.json",
-    "master-class-2011/hollywood-reporter--david-rooney.json",
-    "meteor-shower-2017/nytimes--ben-brantley.json",
-    "newsies-the-musical-2012/nytimes--ben-brantley.json",
-    "newsies-the-musical-2012/vulture--jesse-green.json",
-    "oleanna-2009/nytimes--ben-brantley.json",
-    "once-2012/hollywood-reporter--david-rooney.json",
-    "once-upon-a-mattress-2024/nytimes--jesse-green.json",
-    "orphans-2013/vulture--jesse-green.json",
-    "pass-over-2021/hollywood-reporter--david-rooney.json",
-    "pass-over-2021/nytg--david-gordon.json",
-    "pass-over-2021/nytimes--jesse-green.json",
-    "pass-over-2021/variety--aramide-tinubu.json",
-    "pass-over-2021/vulture--helen-shaw.json",
-    "peter-pan-goes-wrong-2023/nyt-theater--david-nounou.json",
-    "peter-pan-goes-wrong-2023/nytimes--jesse-green.json",
-    "picnic-2013/nytimes--ben-brantley.json",
-    "picnic-2013/vulture--jesse-green.json",
-    "pippin-2013/hollywood-reporter--david-rooney.json",
-    "pippin-2013/nytimes--ben-brantley.json",
-    "pippin-2013/vulture--jesse-green.json",
-    "pretty-woman-the-musical-2018/nytimes--ben-brantley.json",
-    "promises-promises-2010/nytimes--ben-brantley.json",
-    "ring-of-fire-2006/nytimes--ben-brantley.json",
-    "rock-n-roll-2007/nytimes--ben-brantley.json",
-    "romeo-and-juliet-2013/vulture--jesse-green.json",
-    "something-rotten-2015/vulture--jesse-green.json",
-    "sylvia-2015/hollywood-reporter--david-rooney.json",
-    "sylvia-2015/vulture--jesse-green.json",
-    "tammy-faye-2024/variety--aramide-tinubu.json",
-    "tammy-faye-2024/vulture--jackson-mchenry.json",
-    "the-39-steps-2008/variety--charles-isherwood.json",
-    "the-anarchist-2012/hollywood-reporter--david-rooney.json",
-    "the-anarchist-2012/nytimes--ben-brantley.json",
-    "the-big-knife-2013/hollywood-reporter--david-rooney.json",
-    "the-big-knife-2013/nytimes--ben-brantley.json",
-    "the-big-knife-2013/variety--marilyn-stasio.json",
-    "the-big-knife-2013/vulture--jesse-green.json",
-    "the-curious-incident-of-the-dog-in-the-nighttime-2014/hollywood-reporter--david-rooney.json",
-    "the-curious-incident-of-the-dog-in-the-nighttime-2014/variety--marilyn-stasio.json",
-    "the-glass-menagerie-2013/variety--marilyn-stasio.json",
-    "the-glass-menagerie-2017/variety--marilyn-stasio.json",
-    "the-humans-2016/hollywood-reporter--david-rooney.json"
+    "chicago-1996/ew--melissa-rose-bernardo.json",
+    "harry-potter-2021/ew--kristen-baldwin.json",
+    "hells-kitchen-2024/ew--joey-nolfi.json",
+    "mj-2022/ew--joey-nolfi.json",
+    "mj-2022/ew--kristen-baldwin.json",
+    "the-lion-king-1997/ew--jess-cagle.json",
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/ew--lisa-schwarzbaum.json",
+    "1776-2022/ew--leah-greenblatt.json",
+    "9-to-5-2009/ew--unknown.json",
+    "a-behanding-in-spokane-2010/ew--thom-geier.json",
+    "a-dolls-house-part-2-2017/ew--maya-stanton.json",
+    "a-free-man-of-color-2010/ew--thom-geier.json",
+    "a-little-night-music-2009/ew--thom-geier.json",
+    "a-streetcar-named-desire-2012/ew--unknown.json",
+    "a-time-to-kill-2013/ew--thom-geier.json",
+    "act-one-2014/ew--melissa-rose-bernardo.json",
+    "after-midnight-2013/ew--thom-geier.json",
+    "airline-highway-2015/ew--jason-clark.json",
+    "amazing-grace-2015/ew--melissa-rose-bernardo.json",
+    "amelie-a-new-musical-2017/ew--marc-snetiker.json",
+    "american-buffalo-2022/ew--kristen-baldwin.json",
+    "american-idiot-2010/entertainment-weekly--leah-greenblatt.json",
+    "an-american-in-paris-2015/ew--melissa-rose-bernardo.json",
+    "anastasia-2017/ew--caitlin-brody.json",
+    "anastasia-2017/ew--david-canfield.json",
+    "angels-in-america-2018/ew--allison-adato.json",
+    "anything-goes-2011/ew--lisa-schwarzbaum.json",
+    "arcadia-2011/ew--melissa-rose-bernardo.json",
+    "baby-its-you-2011/ew--clark-collis.json",
+    "bandstand-2017/ew--breanne-l-heldman.json",
+    "beetlejuice-2019/ew--kristen-baldwin.json",
+    "big-fish-2013/ew--thom-geier.json",
+    "bonnie-and-clyde-2011/ew--thom-geier.json",
+    "brief-encounter-2010/ew--thom-geier.json",
+    "bullets-over-broadway-2014/ew--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "carousel-2018/ew--breanne-l-heldman.json",
+    "casa-valentina-2014/ew--adam-markovitz.json",
+    "casa-valentina-2014/ew--adam-markowitz.json",
+    "catch-me-if-you-can-2011/ew--thom-geier.json",
+    "cats-2016/ew--melissa-rose-bernardo.json",
+    "charlie-and-the-chocolate-factory-2017/ew--chris-nashawaty.json",
+    "chinglish-2011/ew--melissa-rose-bernardo.json",
+    "cirque-du-soleil-paramour-2016/ew--jesse-oxfeld.json",
+    "clybourne-park-2012/ew--melissa-rose-bernardo.json",
+    "company-2021/ew--unknown.json",
+    "cyrano-de-bergerac-2007/ew--tanner-stransky.json",
+    "cyrano-de-bergerac-2012/ew--tanner-stransky.json",
+    "dead-accounts-2012/ew--thom-geier.json",
+    "dont-dress-for-dinner-2012/ew--thom-geier.json",
+    "enron-2010/entertainment-weekly--thom-geier.json",
+    "enron-2010/ew--thom-geier.json",
+    "everyday-rapture-2010/entertainment-weekly--thom-geier.json",
+    "falsettos-2016/ew--melissa-rose-bernardo.json",
+    "fela-2009/ew--thom-geier.json",
+    "fela-2012/ew--thom-geier.json",
+    "finding-neverland-2015/ew--jessica-shaw.json",
+    "follies-2011/ew--melissa-rose-bernardo.json",
+    "fool-for-love-2015/ew--unknown.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/ew--leah-greenblatt.json",
+    "fun-home-2015/ew--leah-greenblatt.json",
+    "ghetto-klown-2011/ew--keith-staskiewicz.json",
+    "gore-vidals-the-best-man-2012/ew--thom-geier.json",
+    "grease-2007/ew--thom-geier.json",
+    "groundhog-day-2017/ew--chris-nashawaty.json",
+    "groundhog-day-2017/ew--chris-nashawty.json",
+    "hairspray-2002/ew--unknown.json",
+    "hands-on-a-hardbody-2013/ew--clark-collis.json",
+    "harvey-2012/ew--thom-geier.json",
+    "head-over-heels-2018/ew--kelly-connolly.json",
+    "heisenberg-2016/ew--breanne-l-heldman.json",
+    "hello-dolly-2017/ew--kelly-connolly.json",
+    "hello-dolly-2017/ew--maya-stanton.json",
+    "here-lies-love-2023/ew--joey-nolfi.json"
   ],
   "tierDetails": {
     "playwright": [
-      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "sea-wall-a-life-2019/nyt-theater--jonathan-mandell.json"
+      "700-sundays-2013/ew--jessica-shaw.json",
+      "a-delicate-balance-2014/ew--marc-snetiker.json",
+      "a-delicate-balance-2014/ew--unknown.json",
+      "a-night-with-janis-joplin-2013/ew--melissa-maerz.json",
+      "all-the-way-2014/ew--thom-geier.json",
+      "betrayal-2019/ew--unknown.json",
+      "cat-on-a-hot-tin-roof-2008/ew--thom-geier.json",
+      "constellations-2015/ew--melissa-maerz.json",
+      "holler-if-ya-hear-me-2014/ew--unknown.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "maybe-happy-ending-2024/washpost--naveen-kumar.json",
-      "maybe-happy-ending-2024/washpost--peter-marks.json",
-      "camelot-2023/nytimes--jesse-green.json"
-    ],
-    "brightdata": [
-      "mj-2022/theatermania--jesse-green.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archive": [
-      "and-juliet-2022/thewrap--robert-hofler.json",
-      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-      "a-little-night-music-2009/hollywood-reporter--frank-scheck.json",
-      "lombardi-2010/newyorker--uncredited.json",
-      "the-39-steps-2008/nytimes--ben-brantley.json"
+      "aladdin-2014/ew--thom-geier.json",
+      "33-variations-2009/ew--lisa-schwarzbaum.json",
+      "a-life-in-the-theatre-2010/ew--tanner-stransky.json",
+      "a-raisin-in-the-sun-2014/ew--lisa-schwarzbaum.json",
+      "betrayal-2013/ew--allison-adato.json",
+      "collected-stories-2010/ew--melissa-rose-bernardo.json",
+      "death-of-a-salesman-2012/ew--thom-geler.json",
+      "doctor-zhivago-2015/ew--jessica-shaw.json",
+      "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
+      "exit-the-king-2009/ew--thom-geier.json",
+      "fences-2010/ew--melissa-rose-bernardo.json",
+      "golden-boy-2012/ew--adam-markovitz.json",
+      "guys-and-dolls-2009/ew--thom-geier.json",
+      "hedwig-and-the-angry-inch-2014/ew--thom-geier.json",
+      "hedwig-and-the-angry-inch-2014/ew--unknown.json",
+      "hillary-and-clinton-2019/ew--jessica-shaw.json"
     ]
   },
   "failuresByOutlet": {
-    "Talkin' Broadway": {
-      "count": 2,
-      "domain": "talkinbroadway.com",
+    "Entertainment Weekly": {
+      "count": 16,
+      "domain": "ew.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "The New York Times": {
-      "count": 9,
-      "domain": "nytimes.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Vulture": {
-      "count": 2,
-      "domain": "vulture.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "The Hollywood Reporter": {
-      "count": 3,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "after-midnight-2013/nyt-theater--david-nounou.json",
-      "oldUrl": "https://newyorktheater.me/2013/11/14/after-midnight-review/",
-      "newUrl": "https://newyorktheater.me/2013/11/03/after-midnight-review-ellington-alive-on-broadway/"
+      "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
+      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOorIWhX-0MhCcAuVNFg2zI6OgPRep9eCEUl-RFK2VDj3HWQrRolq"
     },
     {
-      "reviewId": "baby-its-you-2011/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-with-music-by-burt-bacharach-review.html",
-      "newUrl": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-story-of-the-shirelles-review.html"
+      "reviewId": "hells-kitchen-2024/ew--joey-nolfi.json",
+      "oldUrl": "https://ew.com/hells-kitchen-broadway-review-8631254",
+      "newUrl": "https://ew.com/hells-kitchen-review-broadway-alicia-keys-8635661?srsltid=AfmBOooccKJKIGChVRZPbadJcdKyqYXGkRO8RPfLSbpsQnurbtiq5oqI"
     },
     {
-      "reviewId": "bandstand-2017/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/bandstand-theater-review-1000180/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/bandstand-997614/"
+      "reviewId": "the-lion-king-1997/ew--jess-cagle.json",
+      "oldUrl": "http://www.ew.com/ew/article/0,,290523,00.html",
+      "newUrl": "https://ew.com/article/2010/08/25/the-lion-king-broadway-review/?srsltid=AfmBOoqk2A1y_SoZIaLR6U8tKtyCFBD_su4X8mpm619pNCnwEwy3hQ2a"
     },
     {
-      "reviewId": "bandstand-2017/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2017/04/27/theater/bandstand-review-broadway-world-war-ii.html",
-      "newUrl": "https://www.nytimes.com/2017/04/26/theater/bandstand-review-broadway.html"
+      "reviewId": "american-buffalo-2022/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/american-buffalo-broadway-review-sam-rockwell-laurence-fishburne/",
+      "newUrl": "https://ew.com/theater/theater-reviews/american-buffalo-review-sam-rockwell-laurence-fishburne-david-mamet/?srsltid=AfmBOorcZyGxTFrJM_3vR7AAvaP1b0g1G_W0Nv2TmPss9bNVYM4ynxPA"
     },
     {
-      "reviewId": "charlie-and-the-chocolate-factory-2017/nyt-theater--david-nounou.json",
-      "oldUrl": "https://newyorktheater.me/2017/04/24/charlie-and-the-chocolate-factory-review/",
-      "newUrl": "https://newyorktheater.me/2017/04/26/charlie-and-the-chocolate-factory-broadway-review-death-by-chocolate/"
+      "reviewId": "anastasia-2017/ew--david-canfield.json",
+      "oldUrl": "https://ew.com/theater/2017/04/25/anastasia-broadway-review/",
+      "newUrl": "https://ew.com/theater/2017/04/24/anastasia-broadway-review/?srsltid=AfmBOop9ps4IsdM5bQKJ9TKOBEECjJ5LmxST_BgVdylcNnuQ0wjJH0hQ"
     },
     {
-      "reviewId": "choir-boy-2019/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2019/01/theater-review-choir-boy-on-broadway.html",
-      "newUrl": "https://www.vulture.com/2019/01/theater-reviews-choir-boy-and-blue-ridge.html"
+      "reviewId": "beetlejuice-2019/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/2019/04/26/beetlejuice-broadway-review/",
+      "newUrl": "https://ew.com/theater-reviews/2019/04/25/beetlejuice-musical-review/?srsltid=AfmBOopwx0gbSg2tU33-fne-PZGO2-3YzlkbD0BF3RVcyuy-CY6piBNc"
     },
     {
-      "reviewId": "clydes-2021/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2021/12/theater-review-clydes-broadway.html",
-      "newUrl": "https://www.vulture.com/2021/11/theater-review-clydes-on-broadway-in-the-southern-breeze.html"
+      "reviewId": "betrayal-2019/ew--unknown.json",
+      "oldUrl": "http://www.ew.com/ew/article/0,,20364394_20749744,00.html",
+      "newUrl": "https://ew.com/theater-reviews/2019/09/05/betrayal-broadway-review/?srsltid=AfmBOor93ccK51BUM6yKzxV9ntjKKQqKTKX8QI-SSrc0g7jTJuBNLntf"
     },
     {
-      "reviewId": "fun-home-2015/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2015/04/theater-review-fun-home.html",
-      "newUrl": "https://www.vulture.com/2015/04/theater-review-fun-home-in-its-new-round-house.html"
+      "reviewId": "big-fish-2013/ew--thom-geier.json",
+      "oldUrl": "https://www.ew.com/ew/article/0,,20364394_20742471,00.html",
+      "newUrl": "https://ew.com/article/2013/10/11/big-fish-ew-review/?srsltid=AfmBOorPnmg8Q-2nT7bZCVGVQiW5dM-N3kXcoxdRAF7qGO4Jmkylh1Xy"
     },
     {
-      "reviewId": "girl-from-the-north-country-2022/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2022/03/03/theater/girl-from-the-north-country-review.html",
-      "newUrl": "https://www.nytimes.com/2020/03/05/theater/girl-from-the-north-country-review.html"
-    },
-    {
-      "reviewId": "hair-2011/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2011/09/24/theater/reviews/hair-at-al-hirschfeld-theater-review.html",
-      "newUrl": "https://www.nytimes.com/2011/07/14/theater/reviews/hair-in-diane-pauluss-staging-on-broadway-review.html"
-    },
-    {
-      "reviewId": "hot-feet-2006/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2006/04/21/theater/reviews/21feet.html",
-      "newUrl": "https://www.nytimes.com/2006/05/01/theater/reviews/01hot.html"
-    },
-    {
-      "reviewId": "lady-day-at-emersons-bar-and-grill-2014/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/lady-day-at-emersons-bar-695193/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/theater-review-audra-mcdonald-lady-695753/"
-    },
-    {
-      "reviewId": "leap-of-faith-2012/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2012/04/27/theater/reviews/leap-of-faith-at-st-james-theater.html",
-      "newUrl": "https://www.nytimes.com/2012/04/27/theater/reviews/leap-of-faith-with-raul-esparza-at-st-james-theater.html"
-    },
-    {
-      "reviewId": "lobby-hero-2018/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2018/03/theater-review-lobby-hero-on-broadway.html",
-      "newUrl": "https://www.vulture.com/2018/03/theater-review-lobby-hero-comes-knocking-again.html"
-    },
-    {
-      "reviewId": "lombardi-2010/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2010/10/22/theater/reviews/22lombardi.html",
-      "newUrl": "https://www.nytimes.com/2010/10/22/theater/reviews/22lomb.html"
-    },
-    {
-      "reviewId": "master-class-2011/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/master-class-broadway-review-267974/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/master-class-theater-review-208970/"
-    },
-    {
-      "reviewId": "meteor-shower-2017/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2017/11/30/theater/meteor-shower-review.html",
-      "newUrl": "https://www.nytimes.com/2017/11/29/theater/meteor-shower-amy-schumer-steve-martin-review.html"
-    },
-    {
-      "reviewId": "newsies-the-musical-2012/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2012/03/30/theater/reviews/newsies-at-the-nederlander-theater.html",
-      "newUrl": "https://www.nytimes.com/2012/03/30/theater/reviews/newsies-the-musical-by-alan-menken-and-harvey-fierstein.html"
-    },
-    {
-      "reviewId": "once-2012/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/once-broadway-review-302031/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/once-theater-review-2-301366/"
-    },
-    {
-      "reviewId": "once-upon-a-mattress-2024/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2024/08/13/theater/once-upon-a-mattress-review.html",
-      "newUrl": "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html"
-    },
-    {
-      "reviewId": "pass-over-2021/nytg--david-gordon.json",
-      "oldUrl": "https://newyorktheatreguide.com/reviews/pass-over",
-      "newUrl": "https://www.newyorktheatreguide.com/reviews/pass-over-broadway-review-no-one-is-off-the-hook-in-this-challenging-yet-optimistic-play"
-    },
-    {
-      "reviewId": "pass-over-2021/variety--aramide-tinubu.json",
-      "oldUrl": "https://variety.com/2021/legit/reviews/pass-over-review-broadway-1235059814/",
-      "newUrl": "https://variety.com/2021/legit/reviews/pass-over-antoinette-nwandu-broadway-1235046615/"
-    },
-    {
-      "reviewId": "peter-pan-goes-wrong-2023/nyt-theater--david-nounou.json",
-      "oldUrl": "https://newyorktheater.me/2023/04/10/peter-pan-goes-wrong-broadway-review/",
-      "newUrl": "https://newyorktheater.me/2023/04/21/peter-pan-goes-wrong-broadway-review/"
-    },
-    {
-      "reviewId": "picnic-2013/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2013/01/14/theater/reviews/picnic-by-william-inge-on-broadway.html",
-      "newUrl": "https://www.nytimes.com/2013/01/14/theater/reviews/picnic-at-american-airlines-theater.html"
-    },
-    {
-      "reviewId": "pippin-2013/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2013/04/26/theater/reviews/pippin-revival-at-the-music-box-theater.html",
-      "newUrl": "https://www.nytimes.com/2013/04/26/theater/reviews/pippin-directed-by-diane-paulus-at-the-music-box-theater.html"
-    },
-    {
-      "reviewId": "tammy-faye-2024/variety--aramide-tinubu.json",
-      "oldUrl": "https://variety.com/2024/legit/reviews/tammy-faye-review-elton-john-musical-1236190053/",
-      "newUrl": "https://variety.com/2024/legit/reviews/tammy-faye-review-broadway-musical-elton-john-1236210176/"
-    },
-    {
-      "reviewId": "tammy-faye-2024/vulture--jackson-mchenry.json",
-      "oldUrl": "https://www.vulture.com/article/tammy-faye-broadway-review.html",
-      "newUrl": "https://www.vulture.com/article/theater-review-broadway-musical-tammy-faye.html"
-    },
-    {
-      "reviewId": "the-anarchist-2012/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/anarchist-theater-review-393955/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/david-mamets-anarchist-theater-review-792763/"
-    },
-    {
-      "reviewId": "the-big-knife-2013/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2013/04/17/theater/reviews/the-big-knife-with-bobby-cannavale-opens-on-broadway.html",
-      "newUrl": "https://www.nytimes.com/interactive/2013/04/17/theater/201304170-big-knife.html?rref=collection%2Ftimestopic%2FOdets%2C%20Clifford"
-    },
-    {
-      "reviewId": "the-curious-incident-of-the-dog-in-the-nighttime-2014/variety--marilyn-stasio.json",
-      "oldUrl": "https://variety.com/2014/legit/reviews/broadway-review-the-curious-incident-of-the-dog-in-the-night-time-1201334006/",
-      "newUrl": "https://variety.com/2014/legit/reviews/broadway-review-curious-incident-dog-night-time-1201321871/"
+      "reviewId": "bullets-over-broadway-2014/ew--unknown.json",
+      "oldUrl": "https://www.ew.com/ew/article/0,,20364394_20805531,00.html",
+      "newUrl": "https://ew.com/article/1994/10/21/movie-review-bullets-over-broadway-2/?srsltid=AfmBOooyW9fleQire-hXykVL36f2YBgFGa27L4mZ1tTPSh-s3wIOW8ZS"
     }
   ]
 }
