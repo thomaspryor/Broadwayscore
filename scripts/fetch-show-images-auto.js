@@ -18,7 +18,7 @@
  *
  * No hardcoded IDs - works for any show!
  *
- * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images]
+ * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images] [--dry-run] [--audit-existing]
  */
 
 const https = require('https');
@@ -30,8 +30,14 @@ const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json'
 const PLAYBILL_URLS_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
 const IBDB_IMAGE_CACHE_PATH = path.join(__dirname, '..', 'data', 'ibdb-image-cache.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
+const DRY_RUN_DIR = path.join(__dirname, '..', 'data', 'audit', 'image-dry-run');
+const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
+
+// Module-level dry-run state (set in main)
+let dryRunMode = false;
+let dryRunResults = [];
 
 // ============================================================
 // PINNED IMAGES — Manually curated thumbnails, NEVER overwrite
@@ -979,6 +985,66 @@ function isImageBuffer(buffer) {
   return false;
 }
 
+// ============================================================
+// Image dimension detection from binary headers
+// Supports JPEG (SOF0/SOF2), PNG (IHDR), WebP (VP8/VP8L/VP8X)
+// Returns { width, height } or null on parse failure (fail-open)
+// ============================================================
+
+function getImageDimensions(buffer) {
+  if (!buffer || buffer.length < 30) return null;
+  try {
+    if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4E && buffer[3] === 0x47) {
+      const width = buffer.readUInt32BE(16);
+      const height = buffer.readUInt32BE(20);
+      return { width, height };
+    }
+    if (buffer[0] === 0xFF && buffer[1] === 0xD8) {
+      let offset = 2;
+      while (offset < buffer.length - 9) {
+        if (buffer[offset] !== 0xFF) { offset++; continue; }
+        const marker = buffer[offset + 1];
+        if (marker === 0xC0 || marker === 0xC2) {
+          const height = buffer.readUInt16BE(offset + 5);
+          const width = buffer.readUInt16BE(offset + 7);
+          return { width, height };
+        }
+        if (marker === 0xD8 || marker === 0xD9) { offset += 2; continue; }
+        const len = buffer.readUInt16BE(offset + 2);
+        offset += 2 + len;
+      }
+      return null;
+    }
+    if (buffer[0] === 0x52 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x46) {
+      const fourCC = buffer.toString('ascii', 12, 16);
+      if (fourCC === 'VP8 ' && buffer.length > 29) {
+        const width = buffer.readUInt16LE(26) & 0x3FFF;
+        const height = buffer.readUInt16LE(28) & 0x3FFF;
+        return { width, height };
+      }
+      if (fourCC === 'VP8L' && buffer.length > 25) {
+        const bits = buffer.readUInt32LE(21);
+        const width = (bits & 0x3FFF) + 1;
+        const height = ((bits >> 14) & 0x3FFF) + 1;
+        return { width, height };
+      }
+      if (fourCC === 'VP8X' && buffer.length > 29) {
+        const width = (buffer[24] | (buffer[25] << 8) | (buffer[26] << 16)) + 1;
+        const height = (buffer[27] | (buffer[28] << 8) | (buffer[29] << 16)) + 1;
+        return { width, height };
+      }
+    }
+  } catch { }
+  return null;
+}
+
+function isNativeSquareBuffer(buffer) {
+  const dims = getImageDimensions(buffer);
+  if (!dims) return false;
+  const ratio = dims.width / dims.height;
+  return ratio >= 0.85 && ratio <= 1.15;
+}
+
 function extractDirectImageUrl(url) {
   // Google redirect URLs: google.com/imgres?imgurl=ACTUAL_URL&...
   if (url.includes('google.com/imgres')) {
@@ -1098,7 +1164,8 @@ function filterGoogleCandidates(results, maxCount = 10) {
 async function fetchFromGoogleImages(show) {
   const year = show.openingDate ? show.openingDate.substring(0, 4) : '';
   const safeTitle = show.title.replace(/"/g, '');
-  const showDir = path.join(IMAGES_DIR, show.id);
+  const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
+  const showDir = path.join(outputBase, show.id);
   fs.mkdirSync(showDir, { recursive: true });
 
   let thumbnailBuffer = null;
@@ -1109,8 +1176,11 @@ async function fetchFromGoogleImages(show) {
 
   // ============================================================
   // SEARCH 1: Square images (for homepage thumbnail cards)
+  // Year-aware query with quoted title to prevent partial matches
   // ============================================================
-  const squareQuery = `${safeTitle} Broadway square`;
+  const squareQuery = year
+    ? `"${safeTitle}" ${year} Broadway square`
+    : `"${safeTitle}" Broadway square`;
   console.log(`   Trying Google Images (square): "${squareQuery}"`);
 
   try {
@@ -1121,10 +1191,34 @@ async function fetchFromGoogleImages(show) {
     for (const result of squareCandidates) {
       const buffer = await extractImageBuffer(result);
       if (buffer) {
-        console.log(`   ✓ Valid square image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}`);
+        const dims = getImageDimensions(buffer);
+        if (dims && !isNativeSquareBuffer(buffer)) {
+          console.log(`   ⚠ Skipping non-square image (${dims.width}x${dims.height}) from ${result.domain}`);
+          continue;
+        }
+        console.log(`   ✓ Valid square image (${(buffer.length/1024).toFixed(0)} KB${dims ? `, ${dims.width}x${dims.height}` : ''}) from ${result.domain}`);
         thumbnailBuffer = buffer;
         thumbnailResult = result;
         break;
+      }
+    }
+
+    // Fallback: retry without year if year query returned 0 candidates
+    if (!thumbnailBuffer && year && squareCandidates.length === 0) {
+      const fallbackQuery = `"${safeTitle}" Broadway square`;
+      console.log(`   Retrying square search without year: "${fallbackQuery}"`);
+      const fallbackResults = await searchGoogleImages(fallbackQuery);
+      const fallbackCandidates = filterGoogleCandidates(fallbackResults, 10);
+      for (const result of fallbackCandidates) {
+        const buffer = await extractImageBuffer(result);
+        if (buffer) {
+          const dims = getImageDimensions(buffer);
+          if (dims && !isNativeSquareBuffer(buffer)) continue;
+          thumbnailBuffer = buffer;
+          thumbnailResult = result;
+          squareCandidates = fallbackCandidates;
+          break;
+        }
       }
     }
   } catch (err) {
@@ -1135,8 +1229,11 @@ async function fetchFromGoogleImages(show) {
 
   // ============================================================
   // SEARCH 2: Poster images (for show detail pages)
+  // Year-aware query with quoted title
   // ============================================================
-  const posterQuery = `${safeTitle} Broadway poster`;
+  const posterQuery = year
+    ? `"${safeTitle}" ${year} Broadway poster`
+    : `"${safeTitle}" Broadway poster`;
   console.log(`   Trying Google Images (poster): "${posterQuery}"`);
 
   try {
@@ -1150,6 +1247,21 @@ async function fetchFromGoogleImages(show) {
         console.log(`   ✓ Valid poster image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}`);
         posterBuffer = buffer;
         break;
+      }
+    }
+
+    // Fallback: retry without year if year query returned 0 candidates
+    if (!posterBuffer && year && posterCandidates.length === 0) {
+      const fallbackQuery = `"${safeTitle}" Broadway poster`;
+      console.log(`   Retrying poster search without year: "${fallbackQuery}"`);
+      const fallbackResults = await searchGoogleImages(fallbackQuery);
+      posterCandidates = filterGoogleCandidates(fallbackResults, 10);
+      for (const result of posterCandidates) {
+        const buffer = await extractImageBuffer(result);
+        if (buffer) {
+          posterBuffer = buffer;
+          break;
+        }
       }
     }
   } catch (err) {
@@ -1204,7 +1316,8 @@ async function tryNextGoogleCandidate(show, remainingCandidates) {
 
       console.log(`   ✓ Trying next Google Images candidate (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}: ${result.title?.substring(0, 50)}`);
 
-      const showDir = path.join(IMAGES_DIR, show.id);
+      const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
+      const showDir = path.join(outputBase, show.id);
       fs.mkdirSync(showDir, { recursive: true });
       const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
       fs.writeFileSync(thumbnailPath, buffer);
@@ -1570,7 +1683,8 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
   for (const show of apiShows) {
     const result = await processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verifyCtx);
     if (result && result.images) {
-      applyImages(result.show, result.images);
+      if (!dryRunMode) applyImages(result.show, result.images);
+      if (dryRunMode) dryRunResults.push({ showId: result.show.id, title: result.show.title, currentThumbnail: result.show.images?.thumbnail || null, newImages: result.images, source: result.apiSourced ? 'TodayTix API' : 'scrape' });
       results.success.push(show.title);
     } else {
       results.failed.push(show.title);
@@ -1591,7 +1705,8 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
 
     for (const settled of batchResults) {
       if (settled.status === 'fulfilled' && settled.value && settled.value.images) {
-        applyImages(settled.value.show, settled.value.images);
+        if (!dryRunMode) applyImages(settled.value.show, settled.value.images);
+        if (dryRunMode) dryRunResults.push({ showId: settled.value.show.id, title: settled.value.show.title, currentThumbnail: settled.value.show.images?.thumbnail || null, newImages: settled.value.images, source: settled.value.apiSourced ? 'TodayTix API' : 'scrape' });
         results.success.push(settled.value.show.title);
       } else {
         const show = settled.status === 'fulfilled' ? settled.value?.show : batch[0];
@@ -1605,7 +1720,7 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
     }
 
     // Checkpoint every 25 shows to save progress (protects against timeout)
-    if (checkpoint && processed % 25 < scrapeConcurrency && results.success.length > 0) {
+    if (!dryRunMode && checkpoint && processed % 25 < scrapeConcurrency && results.success.length > 0) {
       console.log(`\n   💾 CHECKPOINT at ${processed}/${scrapeShows.length} — saving progress...`);
       saveTodayTixIds(todayTixIds);
       if (ibdbImageCache) saveIbdbImageCache(ibdbImageCache);
@@ -1618,9 +1733,11 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
     }
   }
 
-  // Final save of caches
-  saveTodayTixIds(todayTixIds);
-  if (ibdbImageCache) saveIbdbImageCache(ibdbImageCache);
+  // Final save of caches (skip in dry-run mode)
+  if (!dryRunMode) {
+    saveTodayTixIds(todayTixIds);
+    if (ibdbImageCache) saveIbdbImageCache(ibdbImageCache);
+  }
 
   return results;
 }
@@ -1639,6 +1756,58 @@ function applyImages(show, images) {
   show.images = images;
 }
 
+// Generate a phone-friendly HTML comparison page for dry-run results
+function generateComparisonPage(results) {
+  const htmlPath = path.join(DRY_RUN_DIR, 'comparison.html');
+  const showCards = results.map(r => {
+    const currentSrc = r.currentThumbnail
+      ? (r.currentThumbnail.startsWith('http') ? r.currentThumbnail : `../../public${r.currentThumbnail}`)
+      : '';
+    const newSrc = `${r.showId}/thumbnail.jpg`;
+    return `
+    <div class="card">
+      <h3>${r.title} <span class="show-id">(${r.showId})</span></h3>
+      <div class="images">
+        <div class="img-box">
+          <div class="label">Current</div>
+          ${currentSrc ? `<img src="${currentSrc}" onerror="this.src='';this.alt='(missing)'" />` : '<div class="placeholder">No image</div>'}
+        </div>
+        <div class="img-box">
+          <div class="label">New Candidate</div>
+          <img src="${newSrc}" onerror="this.src='';this.alt='(failed to load)'" />
+        </div>
+      </div>
+      <div class="meta">Source: ${r.source || 'unknown'}</div>
+    </div>`;
+  }).join('\n');
+  const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image Pipeline v7 - Dry Run Comparison</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, system-ui, sans-serif; background: #1a1a2e; color: #e0e0e0; padding: 20px; }
+  h1 { text-align: center; margin-bottom: 8px; color: #fff; }
+  .subtitle { text-align: center; color: #888; margin-bottom: 24px; }
+  .card { background: #16213e; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+  .card h3 { margin-bottom: 12px; font-size: 16px; }
+  .show-id { color: #666; font-weight: normal; font-size: 12px; }
+  .images { display: flex; gap: 12px; }
+  .img-box { flex: 1; text-align: center; }
+  .img-box img { width: 100%; max-width: 300px; border-radius: 8px; border: 2px solid #333; }
+  .label { font-size: 12px; color: #aaa; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+  .placeholder { width: 100%; max-width: 300px; height: 200px; background: #0f3460; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #666; margin: 0 auto; }
+  .meta { margin-top: 8px; font-size: 12px; color: #666; }
+  @media (max-width: 600px) { .images { flex-direction: column; align-items: center; } }
+</style>
+</head><body>
+<h1>Image Pipeline v7 - Dry Run</h1>
+<p class="subtitle">${results.length} candidates - ${new Date().toISOString().split('T')[0]}</p>
+${showCards}
+</body></html>`;
+  fs.writeFileSync(htmlPath, html);
+  console.log(`Comparison page: ${htmlPath}`);
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
@@ -1647,8 +1816,17 @@ async function main() {
   const concurrency = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '5', 10);
   // Verification is ON by default — use --no-verify to skip (faster but less safe)
   const verifyEnabled = !args.includes('--no-verify');
+  const isDryRun = args.includes('--dry-run');
+  const auditExisting = args.includes('--audit-existing');
 
-  if (!SCRAPINGBEE_API_KEY && !BRIGHTDATA_TOKEN) {
+  if (isDryRun) {
+    dryRunMode = true;
+    dryRunResults = [];
+    fs.mkdirSync(DRY_RUN_DIR, { recursive: true });
+    console.log(`DRY-RUN MODE: Images saved to ${DRY_RUN_DIR}, shows.json NOT modified`);
+  }
+
+  if (!SCRAPINGBEE_API_KEY && !BRIGHTDATA_TOKEN && !auditExisting) {
     console.error('ERROR: Set SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN environment variable');
     process.exit(1);
   }
@@ -1675,6 +1853,80 @@ async function main() {
   console.log('='.repeat(60));
 
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
+
+  // ============================================================
+  // AUDIT-EXISTING MODE: Scan current images through Gemini (REPORT-ONLY)
+  // ============================================================
+  if (auditExisting) {
+    console.log('\n' + '='.repeat(60));
+    console.log('AUDIT EXISTING IMAGES (REPORT-ONLY)');
+    console.log('='.repeat(60));
+
+    const { verifyImage, createRateLimiter } = require('./lib/verify-image');
+    const rateLimiter = createRateLimiter(15);
+    const flagged = [];
+    const passed = [];
+    const errors = [];
+    let scanned = 0;
+
+    const showsToAudit = showFilter
+      ? showsData.shows.filter(s => s.id === showFilter || s.slug === showFilter)
+      : showsData.shows.filter(s => s.images?.thumbnail);
+
+    console.log(`Scanning ${showsToAudit.length} shows with thumbnails...\n`);
+
+    for (const show of showsToAudit) {
+      const thumb = show.images?.thumbnail;
+      if (!thumb) continue;
+      scanned++;
+      let imageBuffer;
+      try {
+        if (thumb.startsWith('/images/')) {
+          const localPath = path.join(__dirname, '..', 'public', thumb);
+          if (!fs.existsSync(localPath)) {
+            errors.push({ showId: show.id, error: `File not found: ${localPath}` });
+            continue;
+          }
+          imageBuffer = fs.readFileSync(localPath);
+        } else if (thumb.startsWith('http')) {
+          const resp = await fetch(thumb, { signal: AbortSignal.timeout(15000) });
+          if (!resp.ok) { errors.push({ showId: show.id, error: `HTTP ${resp.status}` }); continue; }
+          imageBuffer = Buffer.from(await resp.arrayBuffer());
+        } else {
+          errors.push({ showId: show.id, error: `Unknown format: ${thumb}` });
+          continue;
+        }
+      } catch (err) { errors.push({ showId: show.id, error: err.message }); continue; }
+
+      const year = show.openingDate ? show.openingDate.substring(0, 4) : null;
+      const result = await verifyImage(imageBuffer, show.title, { year, rateLimiter });
+
+      if (result.match === false && (result.confidence === 'high' || result.confidence === 'medium')) {
+        console.log(`  ✗ FLAGGED: ${show.id} — ${result.description} [${result.issues.join(', ')}]`);
+        flagged.push({ showId: show.id, title: show.title, thumbnail: thumb, verifyResult: result });
+      } else {
+        passed.push(show.id);
+        if (scanned % 50 === 0) console.log(`  ... ${scanned}/${showsToAudit.length} scanned, ${flagged.length} flagged`);
+      }
+    }
+
+    const report = { timestamp: new Date().toISOString(), pipelineVersion: 'v7', totalScanned: scanned, flagged, passedCount: passed.length, errors };
+    fs.mkdirSync(AUDIT_DIR, { recursive: true });
+    const reportPath = path.join(AUDIT_DIR, 'existing-image-audit.json');
+    fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
+
+    console.log('\n' + '='.repeat(60));
+    console.log('AUDIT RESULTS');
+    console.log('='.repeat(60));
+    console.log(`Scanned: ${scanned}\nPassed: ${passed.length}\nFlagged: ${flagged.length}\nErrors: ${errors.length}`);
+    console.log(`\nReport saved to: ${reportPath}`);
+    if (flagged.length > 0) {
+      console.log('\nFlagged shows:');
+      for (const f of flagged) console.log(`  ${f.showId}: ${f.verifyResult.description} [${f.verifyResult.issues.join(', ')}]`);
+    }
+    return;
+  }
+
   const todayTixIds = loadTodayTixIds();
 
   // Batch-fetch all active NYC shows from TodayTix API (free, no ScrapingBee needed)
@@ -1722,9 +1974,19 @@ async function main() {
   // Use concurrent processing for large batches, sequential for small
   const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, saveShowsData);
 
-  // Final save
-  if (results.success.length > 0) {
+  // Final save (skip in dry-run mode)
+  if (results.success.length > 0 && !dryRunMode) {
     saveShowsData();
+  }
+
+  // Dry-run report + HTML comparison page
+  if (dryRunMode && dryRunResults.length > 0) {
+    const report = { timestamp: new Date().toISOString(), pipelineVersion: 'v7', totalCandidates: dryRunResults.length, candidates: dryRunResults };
+    fs.mkdirSync(DRY_RUN_DIR, { recursive: true });
+    const reportPath = path.join(DRY_RUN_DIR, 'dry-run-report.json');
+    fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
+    console.log(`\nDry-run report: ${reportPath}`);
+    generateComparisonPage(dryRunResults);
   }
 
   // Summary
