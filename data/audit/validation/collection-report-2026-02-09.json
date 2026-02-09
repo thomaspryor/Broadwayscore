@@ -1,345 +1,240 @@
 {
-  "runDate": "2026-02-09T15:42:37.048Z",
+  "runDate": "2026-02-09T15:51:16.183Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "wicked-2003,the-lion-king-1997,hells-kitchen-2024,death-becomes-her-2024,the-great-gatsby-2024,the-music-man-2022,the-color-purple-2015,school-of-rock-the-musical-2015,anastasia-2017,kiss-me-kate-2019,a-strange-loop-2022,company-2021,of-mice-and-men-2014,plaza-suite-2022,the-father-2016,funny-girl-2022,kpop-2022,oklahoma-2019,summer-2018,yellow-face-2024,clydes-2021,evita-2012,one-man-two-guvnors-2012,the-country-house-2014,time-and-the-conways-2017,1984-2017,a-christmas-story-the-musical-2012,camelot-2023,fun-home-2015,indecent-2017,lombardi-2010,newsies-the-musical-2012,pretty-woman-the-musical-2018,tammy-faye-2024,the-rose-tattoo-2019,after-midnight-2013,bandstand-2017,disaster-2016,kimberly-akimbo-2022,meteor-shower-2017,sea-wall-a-life-2019,the-anarchist-2012,the-humans-2016,the-minutes-2022,travesties-2018,a-little-night-music-2009,bonnie-and-clyde-2011,caroline-or-change-2021,finding-neverland-2015,girl-from-the-north-country-2022,hillary-and-clinton-2019,john-lithgow-stories-by-heart-2018,picnic-2013,the-big-knife-2013,the-other-place-2013,time-stands-still-2010,wolf-hall-parts-one-and-two-2015,aint-no-mo-2022,catch-me-if-you-can-2011,dear-evan-hansen-2016,flying-over-sunset-2021,heisenberg-2016,life-of-pi-2023,misery-2015,private-lives-2011,the-assembled-parties-2013,the-nance-2013,therese-raquin-2015,a-dolls-house-2023,american-idiot-2010,bernhardthamlet-2018,cat-on-a-hot-tin-roof-2013,crybaby-2008,ghetto-klown-2011,ill-eat-you-last-a-chat-with-sue-mengers-2013,lempicka-2024,pictures-from-home-2023,saint-joan-2018,stereophonic-2024,the-mystery-of-edwin-drood-2012,the-velocity-of-autumn-2014,wonderland-2011,back-to-the-future-2023,elf-2012,hangmen-2022,in-the-next-room-2009,lysistrata-jones-2011,motown-the-musical-2016,pirates-the-penzance-musical-2025,scandalous-2012,superior-donuts-2009,the-color-purple-2005,the-history-boys-2006,the-philanthropist-2009,the-skin-of-our-teeth-2022,title-of-show-2008,wit-2012,a-steady-rain-2009,august-osage-county-2007,brighton-beach-memoirs-2009,curtains-2007,fela-2012,guys-and-dolls-2009,it-shoulda-been-you-2015,lennon-2005,martin-short-fame-becomes-me-2006,other-desert-cities-2011,real-women-have-curves-2025,slave-play-2021,sunday-in-the-park-with-george-2008,the-lightning-thief-2019,the-norman-conquests-2009,the-road-to-mecca-2012,the-woman-in-white-2005,absurd-person-singular-2005,beetlejuice-2022,company-2006,dead-outlaw-2025,glengarry-glen-ross-2025,hedda-gabler-2009,inherit-the-wind-2007,legally-blonde-2007,mothers-and-sons-2014,prelude-to-a-kiss-2007,radio-golf-2007,shrek-the-musical-2008,the-gershwins-porgy-and-bess-2012,the-seafarer-2007,waiting-for-godot-2009,women-on-the-verge-of-a-nervous-breakdown-2010",
+    "showFilter": "",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 10,
-    "failed": 90,
+    "processed": 35,
+    "failed": 65,
     "skipped": 0,
-    "successRate": "10.0%"
+    "successRate": "35.0%"
   },
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
-    "brightdata": 1,
-    "archive": 3
+    "scrapingbee": 7,
+    "brightdata": 27,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 66,
-    "tier1Success": 6,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 78,
-    "tier2Success": 20,
-    "tier3Attempts": 57,
-    "tier3Success": 19,
-    "tier4Attempts": 136,
-    "tier4Success": 21,
-    "totalFailed": 88,
-    "scrapingBeeCreditsUsed": 460,
+    "tier2Attempts": 79,
+    "tier2Success": 50,
+    "tier3Attempts": 29,
+    "tier3Success": 28,
+    "tier4Attempts": 62,
+    "tier4Success": 1,
+    "totalFailed": 65,
+    "scrapingBeeCreditsUsed": 805,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 41,
-    "urlDiscoverySuccess": 27,
+    "urlDiscoveryAttempts": 25,
+    "urlDiscoverySuccess": 7,
     "urlDiscoveryCapped": 0
   },
   "processed": [
     "hells-kitchen-2024/theatermania--david-gordon.json",
-    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-    "the-lion-king-1997/timeout--adam-feldman.json",
-    "wicked-2003/ew--alice-king.json",
-    "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-    "wicked-2003/washpost--peter-marks.json",
-    "anastasia-2017/nytg--david-gordon.json",
-    "pictures-from-home-2023/newyorker--helen-shaw.json",
-    "sea-wall-a-life-2019/nyt-theater--jonathan-mandell.json",
-    "the-father-2016/act-three-the-reviews--doug-marino.json"
+    "mj-2022/theatermania--jesse-green.json",
+    "oh-mary-2024/theatermania--jesse-green.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
+    "a-christmas-carol-2019/theatermania--jesse-green.json",
+    "a-dolls-house-2023/theatermania--jesse-green.json",
+    "a-little-night-music-2009/theatermania--david-rooney.json",
+    "a-night-with-janis-joplin-2013/theatermania--charles-isherwood.json",
+    "a-view-from-the-bridge-2010/theatermania--andy-propst.json",
+    "a-view-from-the-bridge-2015/theatermania--jesse-green.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/theatermania--david-gordon.json",
+    "after-midnight-2013/theatermania--charles-isherwood.json",
+    "almost-famous-2022/theatermania--kenji-fujishima.json",
+    "an-enemy-of-the-people-2024/theatermania--adam-feldman.json",
+    "bengal-tiger-at-the-baghdad-zoo-2011/theatermania--david-finkle.json",
+    "between-riverside-and-crazy-2022/theatermania--jesse-green.json",
+    "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json",
+    "bob-fosses-dancin-2023/theatermania--charles-isherwood.json",
+    "born-yesterday-2011/theatermania--andy-propst.json",
+    "bright-star-2016/theatermania--evan-henerson.json",
+    "bring-it-on-the-musical-2012/theatermania--charles-isherwood.json",
+    "clybourne-park-2012/theatermania--charles-isherwood.json",
+    "company-2021/theatermania--jesse-green.json",
+    "cost-of-living-2022/theatermania--adam-feldman.json",
+    "cost-of-living-2022/theatermania--jesse-green.json",
+    "cyrano-de-bergerac-2012/theatermania--david-finkle.json",
+    "death-of-a-salesman-2012/theatermania--charles-isherwood.json",
+    "death-of-a-salesman-2012/theatermania--david-finkle.json",
+    "disgraced-2014/theatermania--charles-isherwood.json",
+    "elf-2012/theatermania--charles-isherwood.json",
+    "end-of-the-rainbow-2012/theatermania--adam-feldman.json",
+    "end-of-the-rainbow-2012/theatermania--david-rooney.json",
+    "evita-2012/theatermania--david-finkle.json",
+    "evita-2012/theatermania--david-rooney.json",
+    "finding-neverland-2015/theatermania--jesse-green.json"
   ],
   "failed": [
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "death-becomes-her-2024/wsj--charles-isherwood.json",
-    "the-great-gatsby-2024/theatermania--david-gordon.json",
-    "wicked-2003/wsj--terry-teachout.json",
-    "wicked-2003/weliveentertainment-aaron-neuwirth--aaron-neuwirth.json",
-    "a-little-night-music-2009/hollywood-reporter--frank-scheck.json",
-    "a-strange-loop-2022/nytimes--jesse-green.json",
-    "after-midnight-2013/nyt-theater--david-nounou.json",
-    "aint-no-mo-2022/variety--peter-marks.json",
-    "august-osage-county-2007/nytimes--ben-brantley.json",
-    "bandstand-2017/hollywood-reporter--david-rooney.json",
-    "bandstand-2017/nytimes--jesse-green.json",
-    "bernhardthamlet-2018/variety--marilyn-stasio.json",
-    "bonnie-and-clyde-2011/nytimes--ben-brantley.json",
-    "camelot-2023/nytimes--jesse-green.json",
-    "caroline-or-change-2021/variety--aramide-tinubu.json",
-    "catch-me-if-you-can-2011/variety--marilyn-stasio.json",
-    "catch-me-if-you-can-2011/vulture--jesse-green.json",
-    "clydes-2021/hollywood-reporter--david-rooney.json",
-    "clydes-2021/nytimes--jesse-green.json",
-    "clydes-2021/vulture--jesse-green.json",
-    "company-2006/nytimes--ben-brantley.json",
-    "company-2021/nyt-theater--jonathan-mandell.json",
-    "company-2021/nytimes--jesse-green.json",
-    "company-2021/variety--peter-marks.json",
-    "crybaby-2008/nytimes--ben-brantley.json",
-    "crybaby-2008/variety--charles-isherwood.json",
-    "finding-neverland-2015/nytimes--ben-brantley.json",
-    "fun-home-2015/vulture--jesse-green.json",
-    "girl-from-the-north-country-2022/nytimes--jesse-green.json",
-    "guys-and-dolls-2009/nytimes--ben-brantley.json",
-    "hillary-and-clinton-2019/nytimes--ben-brantley.json",
-    "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json",
-    "in-the-next-room-2009/nytimes--ben-brantley.json",
-    "inherit-the-wind-2007/nytimes--ben-brantley.json",
-    "kiss-me-kate-2019/nytimes--jesse-green.json",
-    "kiss-me-kate-2019/variety--marilyn-stasio.json",
-    "kpop-2022/nytimes--jesse-green.json",
-    "kpop-2022/variety--aramide-tinubu.json",
-    "kpop-2022/vulture--helen-shaw.json",
-    "lennon-2005/nytimes--ben-brantley.json",
-    "life-of-pi-2023/variety--aramide-tinubu.json",
-    "lombardi-2010/hollywood-reporter--david-rooney.json",
-    "lombardi-2010/newyorker--uncredited.json",
-    "lombardi-2010/nytimes--ben-brantley.json",
-    "lysistrata-jones-2011/nytimes--ben-brantley.json",
-    "martin-short-fame-becomes-me-2006/nytimes--ben-brantley.json",
-    "meteor-shower-2017/nytimes--ben-brantley.json",
-    "mothers-and-sons-2014/hollywood-reporter--david-rooney.json",
-    "newsies-the-musical-2012/nytimes--ben-brantley.json",
-    "newsies-the-musical-2012/vulture--jesse-green.json",
-    "of-mice-and-men-2014/hollywood-reporter--david-rooney.json",
-    "of-mice-and-men-2014/nytimes--charles-isherwood.json",
-    "of-mice-and-men-2014/variety--marilyn-stasio.json",
-    "oklahoma-2019/hollywood-reporter--david-rooney.json",
-    "oklahoma-2019/nytimes--jesse-green.json",
-    "oklahoma-2019/vulture--jesse-green.json",
-    "one-man-two-guvnors-2012/variety--marilyn-stasio.json",
-    "one-man-two-guvnors-2012/vulture--jesse-green.json",
-    "picnic-2013/nytimes--ben-brantley.json",
-    "picnic-2013/vulture--jesse-green.json",
-    "plaza-suite-2022/hollywood-reporter--angie-han.json",
-    "plaza-suite-2022/nytimes--jesse-green.json",
-    "plaza-suite-2022/variety--frank-rizzo.json",
-    "plaza-suite-2022/vulture--sara-holdren.json",
-    "pretty-woman-the-musical-2018/nytimes--ben-brantley.json",
-    "real-women-have-curves-2025/nytimes--collins-hughes.json",
-    "saint-joan-2018/nytimes--ben-brantley.json",
-    "school-of-rock-the-musical-2015/hollywood-reporter--david-rooney.json",
-    "school-of-rock-the-musical-2015/nytimes--ben-brantley.json",
-    "school-of-rock-the-musical-2015/variety--marilyn-stasio.json",
-    "school-of-rock-the-musical-2015/vulture--jesse-green.json",
-    "summer-2018/hollywood-reporter--david-rooney.json",
-    "summer-2018/nytimes--jesse-green.json",
-    "summer-2018/vulture--jesse-green.json",
-    "sunday-in-the-park-with-george-2008/nytimes--ben-brantley.json",
-    "superior-donuts-2009/nytimes--charles-isherwood.json",
-    "superior-donuts-2009/variety--david-rooney.json",
-    "tammy-faye-2024/variety--aramide-tinubu.json",
-    "tammy-faye-2024/vulture--jackson-mchenry.json",
-    "the-anarchist-2012/hollywood-reporter--david-rooney.json",
-    "the-anarchist-2012/nytimes--ben-brantley.json",
-    "the-big-knife-2013/hollywood-reporter--david-rooney.json",
-    "the-big-knife-2013/nytimes--ben-brantley.json",
-    "the-big-knife-2013/variety--marilyn-stasio.json",
-    "the-big-knife-2013/vulture--jesse-green.json",
-    "the-color-purple-2005/nytimes--ben-brantley.json",
-    "the-color-purple-2015/nytimes--charles-isherwood.json",
-    "the-color-purple-2015/vulture--jesse-green.json",
-    "the-country-house-2014/variety--marilyn-stasio.json"
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "aladdin-2014/theatermania--david-finkle.json",
+    "all-out-2025/theatermania--zachary-stewart.json",
+    "and-juliet-2022/theatermania--hayley-levitt.json",
+    "and-juliet-2022/theatermania--jesse-green.json",
+    "death-becomes-her-2024/theatermania--jesse-green.json",
+    "hadestown-2019/theatermania--jesse-green.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/theatermania--adam-hetrick.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json",
+    "110-in-the-shade-2007/theatermania--david-finkle.json",
+    "13-2008/theatermania--david-finkle.json",
+    "1984-2017/theatermania--adam-feldman.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--jesse-green.json",
+    "a-behanding-in-spokane-2010/theatermania--david-finkle.json",
+    "a-christmas-story-the-musical-2012/theatermania--charles-isherwood.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/theatermania--jesse-green.json",
+    "absurd-person-singular-2005/theatermania--david-rooney.json",
+    "act-one-2014/theatermania--charles-isherwood.json",
+    "after-miss-julie-2009/theatermania--andy-propst.json",
+    "after-the-night-and-the-music-2005/theatermania--david-finkle.json",
+    "all-in-comedy-about-love-2024/theatermania--pete-hempstead.json",
+    "all-my-sons-2008/theatermania--kenji-fujishima.json",
+    "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
+    "american-buffalo-2008/theatermania--andy-propst.json",
+    "chaplin-2012/theatermania--david-finkle.json",
+    "children-of-a-lesser-god-2018/theatermania--david-gordon.json",
+    "children-of-a-lesser-god-2018/theatermania--zachary-stewart.json",
+    "china-doll-2015/theatermania--andy-propst.json",
+    "china-doll-2015/theatermania--david-gordon.json",
+    "chinglish-2011/theatermania--david-finkle.json",
+    "choir-boy-2019/theatermania--adam-feldman.json",
+    "choir-boy-2019/theatermania--david-gordon.json",
+    "clydes-2021/theatermania--david-gordon.json",
+    "clydes-2021/theatermania--jesse-green.json",
+    "dames-at-sea-2015/theatermania--andy-propst.json",
+    "dead-outlaw-2025/theatermania--zachary-stewart.json",
+    "dear-evan-hansen-2016/theatermania--hayley-levitt.json",
+    "death-of-a-salesman-2022/theatermania--adam-feldman.json",
+    "diana-the-musical-2021/theatermania--adam-feldman.json",
+    "diana-the-musical-2021/theatermania--david-gordon.json",
+    "disaster-2016/theatermania--adam-feldman.json",
+    "disaster-2016/theatermania--david-gordon.json",
+    "dividing-the-estate-2008/theatermania--david-finkle.json",
+    "doctor-zhivago-2015/theatermania--jesse-green.json",
+    "doubt-2024/theatermania--andy-propst.json",
+    "eclipsed-2016/theatermania--adam-feldman.json",
+    "eclipsed-2016/theatermania--zachary-stewart.json",
+    "elf-2012/theatermania--david-finkle.json",
+    "elf-2024/theatermania--meg-masseron.json",
+    "english-2025/theatermania--zachary-stewart.json",
+    "equus-2008/theatermania--brian-scott-lipton.json",
+    "escape-to-margaritaville-2018/theatermania--hayley-levitt.json",
+    "eureka-day-2024/theatermania--zachary-stewart.json",
+    "falsettos-2016/theatermania--jesse-green.json",
+    "falsettos-2016/theatermania--zachary-stewart.json",
+    "fat-ham-2023/theatermania--adam-feldman.json",
+    "fat-ham-2023/theatermania--jesse-green.json",
+    "fat-ham-2023/theatermania--matt-windman.json",
+    "fat-ham-2023/theatermania--pete-hempstead.json",
+    "fiddler-on-the-roof-2015/theatermania--adam-feldman.json",
+    "fiddler-on-the-roof-2015/theatermania--zachary-stewart.json",
+    "finding-neverland-2015/theatermania--david-gordon.json",
+    "fish-in-the-dark-2015/theatermania--adam-feldman.json",
+    "fish-in-the-dark-2015/theatermania--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-      "the-lion-king-1997/timeout--adam-feldman.json",
-      "anastasia-2017/nytg--david-gordon.json",
-      "sea-wall-a-life-2019/nyt-theater--jonathan-mandell.json",
-      "the-father-2016/act-three-the-reviews--doug-marino.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [
-      "wicked-2003/washpost--peter-marks.json",
-      "oklahoma-2019/nytimes--jesse-green.json"
+      "a-christmas-carol-2019/theatermania--jesse-green.json",
+      "a-little-night-music-2009/theatermania--david-rooney.json",
+      "a-view-from-the-bridge-2015/theatermania--jesse-green.json",
+      "bright-star-2016/theatermania--evan-henerson.json",
+      "company-2021/theatermania--jesse-green.json",
+      "death-of-a-salesman-2012/theatermania--charles-isherwood.json",
+      "finding-neverland-2015/theatermania--jesse-green.json"
     ],
     "brightdata": [
-      "hells-kitchen-2024/theatermania--david-gordon.json"
+      "hells-kitchen-2024/theatermania--david-gordon.json",
+      "mj-2022/theatermania--jesse-green.json",
+      "oh-mary-2024/theatermania--jesse-green.json",
+      "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
+      "a-dolls-house-2023/theatermania--jesse-green.json",
+      "a-night-with-janis-joplin-2013/theatermania--charles-isherwood.json",
+      "a-view-from-the-bridge-2010/theatermania--andy-propst.json",
+      "a-wonderful-world-the-louis-armstrong-musical-2024/theatermania--david-gordon.json",
+      "after-midnight-2013/theatermania--charles-isherwood.json",
+      "almost-famous-2022/theatermania--kenji-fujishima.json",
+      "an-enemy-of-the-people-2024/theatermania--adam-feldman.json",
+      "bengal-tiger-at-the-baghdad-zoo-2011/theatermania--david-finkle.json",
+      "between-riverside-and-crazy-2022/theatermania--jesse-green.json",
+      "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json",
+      "bob-fosses-dancin-2023/theatermania--charles-isherwood.json",
+      "born-yesterday-2011/theatermania--andy-propst.json",
+      "bring-it-on-the-musical-2012/theatermania--charles-isherwood.json",
+      "clybourne-park-2012/theatermania--charles-isherwood.json",
+      "cost-of-living-2022/theatermania--adam-feldman.json",
+      "cost-of-living-2022/theatermania--jesse-green.json",
+      "cyrano-de-bergerac-2012/theatermania--david-finkle.json",
+      "death-of-a-salesman-2012/theatermania--david-finkle.json",
+      "disgraced-2014/theatermania--charles-isherwood.json",
+      "elf-2012/theatermania--charles-isherwood.json",
+      "end-of-the-rainbow-2012/theatermania--adam-feldman.json",
+      "end-of-the-rainbow-2012/theatermania--david-rooney.json",
+      "evita-2012/theatermania--david-finkle.json"
     ],
     "archive": [
-      "wicked-2003/ew--alice-king.json",
-      "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-      "pictures-from-home-2023/newyorker--helen-shaw.json"
+      "evita-2012/theatermania--david-rooney.json"
     ]
   },
   "failuresByOutlet": {
-    "The Hollywood Reporter": {
-      "count": 3,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The New York Times": {
-      "count": 9,
-      "domain": "nytimes.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Vulture": {
-      "count": 5,
-      "domain": "vulture.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Variety": {
-      "count": 4,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The New Yorker": {
+    "TheaterMania": {
       "count": 1,
-      "domain": "newyorker.com",
+      "domain": "theatermania.com",
       "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
+      "isPaywalled": false,
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "a-little-night-music-2009/hollywood-reporter--frank-scheck.json",
-      "oldUrl": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-review-1004107085.story",
-      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/night-music-theater-review-93806/"
+      "reviewId": "hadestown-2019/theatermania--jesse-green.json",
+      "oldUrl": "https://www.theatermania.com/broadway/reviews/hadestown_88061.html",
+      "newUrl": "https://www.theatermania.com/news/review-hadestown-national-tour-smolders-without-lighting-a-fire_93771/"
     },
     {
-      "reviewId": "a-strange-loop-2022/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2022/04/27/theater/a-strange-loop-review.html",
-      "newUrl": "https://www.nytimes.com/2022/04/26/theater/a-strange-loop-review-broadway.html"
+      "reviewId": "clydes-2021/theatermania--david-gordon.json",
+      "oldUrl": "https://www.theatermania.com/broadway/reviews/clydes_91254.html",
+      "newUrl": "https://www.theatermania.com/news/review-lynn-nottages-clydes-and-the-sandwich-shop-on-the-road-to-redemption_93040/"
     },
     {
-      "reviewId": "after-midnight-2013/nyt-theater--david-nounou.json",
-      "oldUrl": "https://newyorktheater.me/2013/11/14/after-midnight-review/",
-      "newUrl": "https://newyorktheater.me/2013/11/03/after-midnight-review-ellington-alive-on-broadway/"
+      "reviewId": "clydes-2021/theatermania--jesse-green.json",
+      "oldUrl": "https://www.theatermania.com/broadway/reviews/clydes-lynn-nottage_89234.html",
+      "newUrl": "https://www.theatermania.com/news/review-lynn-nottages-clydes-and-the-sandwich-shop-on-the-road-to-redemption_93040/"
     },
     {
-      "reviewId": "aint-no-mo-2022/variety--peter-marks.json",
-      "oldUrl": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-jordan-e-cooper-1235445436/",
-      "newUrl": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/"
+      "reviewId": "death-of-a-salesman-2022/theatermania--adam-feldman.json",
+      "oldUrl": "https://www.theatermania.com/new-york-city-theater/reviews/death-of-a-salesman-wendell-pierce-sharon-d-clarke_91546.html",
+      "newUrl": "https://www.theatermania.com/news/review-arthur-millers-death-of-a-salesman-returns-to-broadway-as-devastating-as-ever_94401/"
     },
     {
-      "reviewId": "bandstand-2017/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2017/04/27/theater/bandstand-review-broadway-world-war-ii.html",
-      "newUrl": "https://www.nytimes.com/2017/04/26/theater/bandstand-review-broadway.html"
+      "reviewId": "diana-the-musical-2021/theatermania--adam-feldman.json",
+      "oldUrl": "https://www.theatermania.com/broadway/reviews/diana-broadway_89439.html",
+      "newUrl": "https://www.theatermania.com/news/review-live-on-broadway-diana-the-musical-is-a-cult-classic-in-the-making_93013/"
     },
     {
-      "reviewId": "clydes-2021/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2021/12/theater-review-clydes-broadway.html",
-      "newUrl": "https://www.vulture.com/2021/11/theater-review-clydes-on-broadway-in-the-southern-breeze.html"
+      "reviewId": "diana-the-musical-2021/theatermania--david-gordon.json",
+      "oldUrl": "https://www.theatermania.com/broadway-theater/reviews/diana-the-musical_90134",
+      "newUrl": "https://www.theatermania.com/news/review-live-on-broadway-diana-the-musical-is-a-cult-classic-in-the-making_93013/"
     },
     {
-      "reviewId": "company-2021/nyt-theater--jonathan-mandell.json",
-      "oldUrl": "https://newyorktheater.me/2021/12/11/company-revival-review/",
-      "newUrl": "https://newyorktheater.me/2021/12/09/company-on-broadway-review-sondheim-helps-us-survive-being-alive/"
-    },
-    {
-      "reviewId": "company-2021/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2021/12/09/theater/company-review-patti-lupone.html",
-      "newUrl": "https://www.nytimes.com/2021/12/09/theater/company-review-sondheim.html"
-    },
-    {
-      "reviewId": "company-2021/variety--peter-marks.json",
-      "oldUrl": "https://variety.com/2021/legit/reviews/company-review-broadway-revival-katrina-lenk-patti-lupone-1235132937/",
-      "newUrl": "https://variety.com/2021/legit/reviews/company-review-broadway-patti-lupone-1235129438/"
-    },
-    {
-      "reviewId": "crybaby-2008/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2008/04/25/theater/reviews/25baby.html",
-      "newUrl": "https://www.nytimes.com/2008/04/25/theater/reviews/25cryb.html"
-    },
-    {
-      "reviewId": "fun-home-2015/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2015/04/theater-review-fun-home.html",
-      "newUrl": "https://www.vulture.com/2015/04/theater-review-fun-home-in-its-new-round-house.html"
-    },
-    {
-      "reviewId": "girl-from-the-north-country-2022/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2022/03/03/theater/girl-from-the-north-country-review.html",
-      "newUrl": "https://www.nytimes.com/2020/03/05/theater/girl-from-the-north-country-review.html"
-    },
-    {
-      "reviewId": "lombardi-2010/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2010/10/22/theater/reviews/22lombardi.html",
-      "newUrl": "https://www.nytimes.com/2010/10/22/theater/reviews/22lomb.html"
-    },
-    {
-      "reviewId": "lysistrata-jones-2011/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2011/12/15/theater/reviews/lysistrata-jones-review.html",
-      "newUrl": "https://www.nytimes.com/2011/12/15/theater/reviews/lysistrata-jones-at-walter-kerr-theater-review.html"
-    },
-    {
-      "reviewId": "martin-short-fame-becomes-me-2006/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2006/08/18/theater/reviews/18short.html",
-      "newUrl": "https://www.nytimes.com/2006/08/18/theater/reviews/18fame.html"
-    },
-    {
-      "reviewId": "meteor-shower-2017/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2017/11/30/theater/meteor-shower-review.html",
-      "newUrl": "https://www.nytimes.com/2017/11/29/theater/meteor-shower-amy-schumer-steve-martin-review.html"
-    },
-    {
-      "reviewId": "newsies-the-musical-2012/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2012/03/30/theater/reviews/newsies-at-the-nederlander-theater.html",
-      "newUrl": "https://www.nytimes.com/2012/03/30/theater/reviews/newsies-the-musical-by-alan-menken-and-harvey-fierstein.html"
-    },
-    {
-      "reviewId": "oklahoma-2019/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2019/04/08/theater/oklahoma-review-broadway.html",
-      "newUrl": "https://www.nytimes.com/2019/04/07/theater/oklahoma-review.html"
-    },
-    {
-      "reviewId": "oklahoma-2019/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2019/04/theater-review-oklahoma-on-broadway.html",
-      "newUrl": "https://www.vulture.com/2019/04/the-brightness-amid-the-menace-re-reviewing-oklahoma.html"
-    },
-    {
-      "reviewId": "one-man-two-guvnors-2012/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2012/04/theater-review-one-man-two-guvnors.html",
-      "newUrl": "https://www.vulture.com/2012/04/stage-dive-theater-review-one-man-two-guvnors.html"
-    },
-    {
-      "reviewId": "picnic-2013/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2013/01/14/theater/reviews/picnic-by-william-inge-on-broadway.html",
-      "newUrl": "https://www.nytimes.com/2013/01/14/theater/reviews/picnic-at-american-airlines-theater.html"
-    },
-    {
-      "reviewId": "plaza-suite-2022/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/plaza-suite-theater-review-1235117087/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/plaza-suite-review-matthew-broderick-sarah-jessica-parker-neil-simon-broadway-1235119408/"
-    },
-    {
-      "reviewId": "plaza-suite-2022/vulture--sara-holdren.json",
-      "oldUrl": "https://www.vulture.com/2022/03/theater-review-plaza-suite-on-broadway.html",
-      "newUrl": "https://www.vulture.com/2022/03/theater-review-plaza-suite-with-parker-and-broderick.html"
-    },
-    {
-      "reviewId": "sunday-in-the-park-with-george-2008/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2008/02/10/theater/reviews/10sund.html",
-      "newUrl": "https://www.nytimes.com/2008/02/22/theater/reviews/22geor.html"
-    },
-    {
-      "reviewId": "the-anarchist-2012/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/anarchist-theater-review-393955/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/david-mamets-anarchist-theater-review-792763/"
-    },
-    {
-      "reviewId": "the-big-knife-2013/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2013/04/17/theater/reviews/the-big-knife-with-bobby-cannavale-opens-on-broadway.html",
-      "newUrl": "https://www.nytimes.com/interactive/2013/04/17/theater/201304170-big-knife.html?rref=collection%2Ftimestopic%2FOdets%2C%20Clifford"
-    },
-    {
-      "reviewId": "the-color-purple-2005/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2005/12/02/theater/reviews/the-color-purple-comes-to-broadway-bruised-but-unbroken.html",
-      "newUrl": "https://www.nytimes.com/2005/12/02/theater/02purp.html"
+      "reviewId": "fat-ham-2023/theatermania--jesse-green.json",
+      "oldUrl": "https://www.theatermania.com/broadway/reviews/fat-ham-james-ijames_90646.html",
+      "newUrl": "https://www.theatermania.com/news/review-fat-ham-comes-to-broadway-with-a-sizzling-cast-in-an-underbaked-play_1697801/"
     }
   ]
 }
