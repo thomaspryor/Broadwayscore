@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-09T06:14:00.487Z",
+  "runDate": "2026-02-09T07:27:48.373Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,49 +11,47 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 13,
-    "failed": 87,
+    "processed": 11,
+    "failed": 89,
     "skipped": 0,
-    "successRate": "13.0%"
+    "successRate": "11.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 12
+    "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 71,
-    "tier1Success": 71,
+    "tier1Attempts": 73,
+    "tier1Success": 73,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 58,
-    "tier2Success": 57,
-    "tier3Attempts": 58,
-    "tier3Success": 58,
-    "tier4Attempts": 106,
-    "tier4Success": 58,
-    "totalFailed": 87,
-    "scrapingBeeCreditsUsed": 579,
+    "tier2Attempts": 61,
+    "tier2Success": 61,
+    "tier3Attempts": 61,
+    "tier3Success": 61,
+    "tier4Attempts": 107,
+    "tier4Success": 66,
+    "totalFailed": 89,
+    "scrapingBeeCreditsUsed": 620,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 14,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoverySuccess": 3,
     "urlDiscoveryCapped": 0
   },
   "processed": [
     "hamilton-2015/timeout--adam-feldman.json",
-    "hamilton-2015/timeout--david-cote.json",
+    "the-lion-king-1997/timeout--adam-feldman.json",
     "the-lion-king-1997/timeout--jenna-scherer.json",
     "a-catered-affair-2008/timeout--david-cote.json",
-    "a-christmas-story-the-musical-2012/timeout--david-cote.json",
-    "a-dolls-house-part-2-2017/timeout--adam-feldman.json",
+    "airline-highway-2015/timeout--kris-vire.json",
     "all-the-way-2014/timeout--adam-feldman.json",
     "all-the-way-2014/timeout--david-cote.json",
     "allegiance-2015/timeout--adam-feldman.json",
     "allegiance-2015/timeout--david-cote.json",
-    "amazing-grace-2015/timeout--kris-vire.json",
     "american-psycho-2016/timeout--adam-feldman.json",
     "an-american-in-paris-2015/timeout--adam-feldman.json"
   ],
@@ -67,6 +65,7 @@
     "chicago-1996/timeout--unknown.json",
     "death-becomes-her-2024/timeout--adam-feldman.json",
     "hadestown-2019/timeout--adam-feldman.json",
+    "hamilton-2015/timeout--david-cote.json",
     "hells-kitchen-2024/timeout--adam-feldman.json",
     "just-in-time-2025/timeout--adam-feldman.json",
     "marjorie-prime-2025/timeout--adam-feldman.json",
@@ -80,7 +79,6 @@
     "six-2021/timeout--adam-feldman.json",
     "stranger-things-2024/timeout--adam-feldman.json",
     "the-great-gatsby-2024/timeout--adam-feldman.json",
-    "the-lion-king-1997/timeout--adam-feldman.json",
     "the-outsiders-2024/timeout--adam-feldman.json",
     "wicked-2003/timeout--david-cote.json",
     "1776-2022/timeout--adam-feldman.json",
@@ -94,9 +92,11 @@
     "a-chorus-line-2006/timeout--tim-bano.json",
     "a-christmas-carol-2019/timeout--adam-feldman.json",
     "a-christmas-carol-2022/timeout--adam-feldman.json",
+    "a-christmas-story-the-musical-2012/timeout--david-cote.json",
     "a-delicate-balance-2014/timeout--adam-feldman.json",
     "a-delicate-balance-2014/timeout--david-cote.json",
     "a-dolls-house-2023/timeout--adam-feldman.json",
+    "a-dolls-house-part-2-2017/timeout--adam-feldman.json",
     "a-life-in-the-theatre-2010/timeout--adam-feldman.json",
     "a-little-night-music-2009/timeout--david-cote.json",
     "a-moon-for-the-misbegotten-2007/timeout--tim-bano.json",
@@ -115,13 +115,13 @@
     "aint-no-mo-2022/timeout--adam-feldman.json",
     "aint-too-proud-2019/timeout--adam-feldman.json",
     "airline-highway-2015/timeout--adam-feldman.json",
-    "airline-highway-2015/timeout--kris-vire.json",
     "all-in-comedy-about-love-2024/timeout--adam-feldman.json",
     "all-my-sons-2019/timeout--adam-feldman.json",
     "all-my-sons-2019/timeout--helen-shaw.json",
     "almost-famous-2022/timeout--adam-feldman.json",
     "amazing-grace-2015/timeout--adam-feldman.json",
     "amazing-grace-2015/timeout--david-cote.json",
+    "amazing-grace-2015/timeout--kris-vire.json",
     "amelie-a-new-musical-2017/timeout--adam-feldman.json",
     "american-buffalo-2008/timeout--david-cote.json",
     "american-buffalo-2022/timeout--adam-feldman.json",
@@ -147,30 +147,27 @@
     "blithe-spirit-2009/timeout--tom-wicker.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-lion-king-1997/timeout--jenna-scherer.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
       "hamilton-2015/timeout--adam-feldman.json",
-      "hamilton-2015/timeout--david-cote.json",
+      "the-lion-king-1997/timeout--adam-feldman.json",
+      "the-lion-king-1997/timeout--jenna-scherer.json",
       "a-catered-affair-2008/timeout--david-cote.json",
-      "a-christmas-story-the-musical-2012/timeout--david-cote.json",
-      "a-dolls-house-part-2-2017/timeout--adam-feldman.json",
+      "airline-highway-2015/timeout--kris-vire.json",
       "all-the-way-2014/timeout--adam-feldman.json",
       "all-the-way-2014/timeout--david-cote.json",
       "allegiance-2015/timeout--adam-feldman.json",
       "allegiance-2015/timeout--david-cote.json",
-      "amazing-grace-2015/timeout--kris-vire.json",
       "american-psycho-2016/timeout--adam-feldman.json",
       "an-american-in-paris-2015/timeout--adam-feldman.json"
     ]
   },
   "failuresByOutlet": {
     "Time Out New York": {
-      "count": 6,
+      "count": 5,
       "domain": "timeout.com",
       "hasCredentials": false,
       "isPaywalled": false,
@@ -178,6 +175,11 @@
     }
   },
   "urlDiscoveries": [
+    {
+      "reviewId": "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/a-bronx-tale-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/a-bronx-tale-the-musical"
+    },
     {
       "reviewId": "a-view-from-the-bridge-2015/timeout--adam-feldman.json",
       "oldUrl": "https://www.timeout.com/newyork/theater/a-view-from-the-bridge-theater-review",
