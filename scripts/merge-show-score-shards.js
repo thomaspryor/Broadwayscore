@@ -25,6 +25,25 @@ for (const s of showsData.shows) showMapById[s.id] = s;
 const urlsPath = path.join(__dirname, '../data/show-score-urls.json');
 const shardDir = path.join(__dirname, '../data/show-score-shards');
 
+// Build multi-production lookup: for each title base, find the most recent production.
+// ShowScore has ONE page per title — only the most recent production gets the data.
+const mostRecentByTitle = {};
+for (const s of showsData.shows) {
+  const titleBase = s.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+  const existing = mostRecentByTitle[titleBase];
+  if (!existing || (s.openingDate || '') > (existing.openingDate || '')) {
+    mostRecentByTitle[titleBase] = s;
+  }
+}
+
+function isMostRecentProduction(showId) {
+  const show = showMapById[showId];
+  if (!show) return true; // Unknown show, allow
+  const titleBase = show.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+  const newest = mostRecentByTitle[titleBase];
+  return !newest || newest.id === showId;
+}
+
 function main() {
   console.log('=== Show Score Shard Merger ===\n');
 
@@ -70,6 +89,8 @@ function main() {
 
   let newUrls = 0;
   for (const [showId, url] of Object.entries(allUrls)) {
+    // Only cache URLs for the most recent production
+    if (!isMostRecentProduction(showId)) continue;
     if (!urlData.shows[showId]) {
       newUrls++;
     }
@@ -84,8 +105,16 @@ function main() {
 
   let merged = 0;
   let created = 0;
+  let skippedOlder = 0;
 
   for (const [showId, showScoreData] of Object.entries(allScores)) {
+    // Multi-production guard: only the most recent production gets ShowScore data
+    if (!isMostRecentProduction(showId)) {
+      console.log(`  SKIP ${showId}: not the most recent production of this title`);
+      skippedOlder++;
+      continue;
+    }
+
     if (!audienceBuzz.shows[showId]) {
       audienceBuzz.shows[showId] = {
         designation: 'Shrugging',
@@ -118,7 +147,7 @@ function main() {
     merged++;
   }
 
-  console.log(`Merged: ${merged} shows (${created} new entries)`);
+  console.log(`Merged: ${merged} shows (${created} new entries, ${skippedOlder} older productions skipped)`);
 
   // Update metadata
   audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
