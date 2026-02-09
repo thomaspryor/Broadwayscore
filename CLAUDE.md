@@ -126,7 +126,9 @@ WoW/YoY for capacity and ATP self-computed from `grosses-history.json`.
   }}
 }
 ```
-**Weighting:** All sources weighted proportionally by `reviewCount` volume. 80% ceiling on any single source. Solo source gets 100%. Shared module: `scripts/lib/audience-weighting.js`.
+**Weighting:** All sources weighted proportionally by `reviewCount` volume. 80% ceiling on any single source. Solo source gets 100%. **Reddit quality gates:** min 50 classified comments + excluded for shows closed >3 years ago (nostalgic mentions, not fresh reviews). Shared module: `scripts/lib/audience-weighting.js`.
+
+**Multi-production dedup:** ShowScore sometimes has separate pages per production (e.g. `/sunset-boulevard` = 2017, `/sunset-boulevard-broadway` = 2024). When only one page exists, only the newest production gets data. When separate pages exist, each gets its own. Prevention in 4 scripts (`scrape-show-score-audience.js`, `merge-show-score-shards.js`, `scrape-reddit-sentiment.js`, `merge-reddit-shards.js`): `isMostRecentProduction()` guard + `titlesMatch()` title validation + NFD diacritics normalization.
 
 ### Commercial Data Schema
 ```typescript
