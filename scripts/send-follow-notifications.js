@@ -122,10 +122,10 @@ function buildEmailHtml(showTitle, changes, showUrl, showId, email) {
   }).join('');
 
   return `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background-color:#0f0f14;font-family:${FONT};">
-<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0f0f14;padding:32px 16px;">
-<tr><td align="center">
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"></head>
+<body bgcolor="#0f0f14" style="margin:0;padding:0;background-color:#0f0f14;background:#0f0f14;font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0f0f14" style="background-color:#0f0f14;background:#0f0f14;padding:32px 16px;">
+<tr><td align="center" bgcolor="#0f0f14">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
   <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
     <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
@@ -134,7 +134,7 @@ function buildEmailHtml(showTitle, changes, showUrl, showId, email) {
     <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">Updates for ${escapeHtml(showTitle)}</h1>
   </td></tr>
   <tr><td style="padding:16px 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1a1a24" style="background-color:#1a1a24;background:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
       <tr><td style="padding:16px 20px 4px;">
         <p style="margin:0 0 8px;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">What's new</p>
       </td></tr>
@@ -231,10 +231,10 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
   </td></tr>` : '';
 
   return `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background-color:#0f0f14;font-family:${FONT};">
-<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0f0f14;padding:32px 16px;">
-<tr><td align="center">
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"></head>
+<body bgcolor="#0f0f14" style="margin:0;padding:0;background-color:#0f0f14;background:#0f0f14;font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0f0f14" style="background-color:#0f0f14;background:#0f0f14;padding:32px 16px;">
+<tr><td align="center" bgcolor="#0f0f14">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
   <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
     <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
@@ -246,12 +246,12 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
     <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(showTitle)}" width="560" style="display:block;width:100%;max-width:560px;height:auto;border-radius:12px;" />
   </td></tr>` : ''}
   <tr><td style="padding:16px 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1a1a24" style="background-color:#1a1a24;background:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
       <tr><td style="padding:24px;">
         <table cellpadding="0" cellspacing="0">
           <tr>
-            <td style="width:72px;height:72px;background-color:${sc.bg};border-radius:12px;text-align:center;vertical-align:middle;">
-              <span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;">${scoreDisplay}</span>
+            <td width="72" height="72" bgcolor="${sc.bg}" style="width:72px;height:72px;background-color:${sc.bg};background:${sc.bg};border-radius:12px;text-align:center;vertical-align:middle;">
+              <font color="${sc.text}"><span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;">${scoreDisplay}</span></font>
             </td>
             <td style="padding-left:16px;vertical-align:middle;">
               <p style="margin:0 0 4px;font-size:18px;font-weight:700;color:${sc.bg};font-family:${FONT};">${sc.label}</p>
