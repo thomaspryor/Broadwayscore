@@ -2,7 +2,8 @@
   "processed": [
     "mj-2022/hollywood-reporter--love-gyarkye.json",
     "mj-2022/hollywood-reporter--lovia-gayarkye.json",
-    "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json"
   ],
   "failed": [
     "chess-2025/nyt-theater--jonathan-mandell.json",
@@ -11,11 +12,22 @@
     "the-outsiders-2024/hollywood-reporter--david-rooney.json",
     "the-outsiders-2024/variety--aramide-tinubu.json",
     "the-outsiders-2024/variety--naveen-kumar.json",
-    "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json"
+    "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
+    "buena-vista-social-club-2025/new-york-sun--elysa-gardner.json",
+    "bug-2026/theatre-reviews-limited--david-roberts.json",
+    "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "harry-potter-2021/national-review--kyle-smith.json",
+    "mj-2022/thewrap--steve-pond.json",
+    "buena-vista-social-club-2025/cititour--brian-scott-lipton.json",
+    "buena-vista-social-club-2025/theatrely--juan-a-ramirez.json",
+    "bug-2026/cititour--brian-scott-lipton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
@@ -27,6 +39,6 @@
     ]
   },
   "startTime": "2026-02-09T16:32:27.547Z",
-  "lastProcessed": "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "bug-2026/cititour--brian-scott-lipton.json",
   "log": []
 }
