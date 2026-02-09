@@ -3062,6 +3062,18 @@ function findReviewsToProcess() {
     return reviews;
   }
 
+  // Load show statuses so we can prioritize open/preview shows
+  const openShowIds = new Set();
+  try {
+    const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+    (showsData.shows || showsData).forEach(s => {
+      if (s.status === 'open' || s.status === 'previews') openShowIds.add(s.id);
+    });
+    console.log(`  Prioritizing ${openShowIds.size} open/preview shows`);
+  } catch (e) {
+    console.log('  ⚠ Could not load shows.json for prioritization');
+  }
+
   const shows = fs.readdirSync(CONFIG.reviewTextsDir)
     .filter(f => fs.statSync(path.join(CONFIG.reviewTextsDir, f)).isDirectory());
 
@@ -3200,6 +3212,7 @@ function findReviewsToProcess() {
           priority: tierNum,
           publishDate,
           showNotMentioned: data.showNotMentioned || false,
+          isOpenShow: openShowIds.has(showId),
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -3207,8 +3220,11 @@ function findReviewsToProcess() {
     }
   }
 
-  // Sort by priority (Tier 1 outlets first)
-  reviews.sort((a, b) => a.priority - b.priority);
+  // Sort: open/preview shows first, then by outlet tier priority
+  reviews.sort((a, b) => {
+    if (a.isOpenShow !== b.isOpenShow) return a.isOpenShow ? -1 : 1;
+    return a.priority - b.priority;
+  });
 
   // Apply max limit
   if (CONFIG.maxReviews > 0) {
