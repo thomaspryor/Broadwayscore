@@ -102,6 +102,17 @@ function getScoreColor(score) {
   return { bg: '#ef4444', text: '#ffffff', label: 'Stay Away' };
 }
 
+// Map change types to show page section anchors for deep linking
+function getChangeAnchor(changeType) {
+  switch (changeType) {
+    case 'lottery-added': return '#discount-tickets';
+    case 'cast-change': return '#cast-updates-heading';
+    case 'new-reviews':
+    case 'score-change': return '#critic-reviews';
+    default: return '';
+  }
+}
+
 function buildUnfollowUrl(showId, showTitle, email) {
   return `https://broadwayscorecard.com/unfollow?email=${encodeURIComponent(email)}&show=${encodeURIComponent(showId)}&title=${encodeURIComponent(showTitle)}`;
 }
@@ -118,7 +129,9 @@ function buildFooterHtml(showTitle, showId, email) {
 
 function buildEmailHtml(showTitle, changes, showUrl, showId, email) {
   const changesHtml = changes.map(c => {
-    return `<tr><td style="padding:8px 20px;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.5;font-family:${FONT};border-left:2px solid #d4a574;">&#8226;&nbsp; ${escapeHtml(c.message)}</td></tr>`;
+    const anchor = getChangeAnchor(c.type);
+    const linkUrl = `${showUrl}${anchor}`;
+    return `<tr><td style="padding:8px 20px;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.5;font-family:${FONT};border-left:2px solid #d4a574;">&#8226;&nbsp; <a href="${escapeHtml(linkUrl)}" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-decoration-color:rgba(255,255,255,0.2);text-underline-offset:2px;">${escapeHtml(c.message)}</a></td></tr>`;
   }).join('');
 
   return `<!DOCTYPE html>
@@ -225,7 +238,11 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
       <tr><td style="padding:16px 20px 4px;">
         <p style="margin:0 0 8px;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">Also new</p>
       </td></tr>
-      ${otherChanges.map(c => `<tr><td style="padding:8px 20px;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.5;font-family:${FONT};border-left:2px solid #d4a574;">&#8226;&nbsp; ${escapeHtml(c.message)}</td></tr>`).join('')}
+      ${otherChanges.map(c => {
+        const anchor = getChangeAnchor(c.type);
+        const linkUrl = `${showUrl}${anchor}`;
+        return `<tr><td style="padding:8px 20px;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.5;font-family:${FONT};border-left:2px solid #d4a574;">&#8226;&nbsp; <a href="${escapeHtml(linkUrl)}" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-decoration-color:rgba(255,255,255,0.2);text-underline-offset:2px;">${escapeHtml(c.message)}</a></td></tr>`;
+      }).join('')}
       <tr><td style="padding-bottom:12px;"></td></tr>
     </table>
   </td></tr>` : '';
@@ -240,7 +257,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
     <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
   </td></tr>
   <tr><td style="padding:28px 0 8px;">
-    <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${escapeHtml(showTitle)} Is Now Open</h1>
+    <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${escapeHtml(showTitle)} Critic Reviews Are In${openingChange.score != null ? ` \u2014 Critic Score: ${Math.round(openingChange.score)}` : ''}</h1>
   </td></tr>${imageUrl ? `
   <tr><td style="padding:16px 0 0;">
     <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(showTitle)}" width="560" style="display:block;width:100%;max-width:560px;height:auto;border-radius:12px;" />
@@ -263,6 +280,9 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
       ${breakdownHtml}
       ${consensusHtml}
       ${metaHtml}
+      ${reviewCount > 0 ? `<tr><td style="padding:20px 24px 0;" align="center">
+        <a href="${escapeHtml(showUrl)}#critic-reviews" style="display:inline-block;padding:10px 24px;background-color:rgba(255,255,255,0.08);color:#d4a574;font-size:13px;font-weight:600;text-decoration:none;border-radius:6px;border:1px solid rgba(212,165,116,0.2);font-family:${FONT};">Scan All ${reviewCount} Reviews</a>
+      </td></tr>` : ''}
       <tr><td style="padding-bottom:20px;"></td></tr>
     </table>
   </td></tr>
@@ -405,7 +425,7 @@ async function main() {
       : buildEmailHtml(showTitle, changes, showUrl, showId, email);
 
     const subject = openingNight
-      ? `${showTitle} is now open on Broadway${openingNight.score ? ` \u2014 Critic Score: ${Math.round(openingNight.score)}` : ''}`
+      ? `${showTitle} is now open, and the critic reviews are in`
       : `Updates for ${showTitle} on Broadway Scorecard`;
 
     if (DRY_RUN) {
