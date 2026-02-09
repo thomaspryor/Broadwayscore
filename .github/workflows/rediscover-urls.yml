@@ -1,0 +1,93 @@
+name: Rediscover Review URLs
+
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: 'Phase to run (1=protocol, 2=redirects, 3=SERP, empty=all)'
+        required: false
+        default: ''
+      limit:
+        description: 'Max reviews per phase'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+      show_filter:
+        description: 'Show slug to filter (optional)'
+        required: false
+        default: ''
+  schedule:
+    - cron: '0 1 * * 0'  # Weekly Sunday 1 AM UTC
+
+jobs:
+  rediscover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install axios
+
+      - name: Build CLI args
+        id: args
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ -n "${{ inputs.phase }}" ]; then
+            ARGS="$ARGS --phase=${{ inputs.phase }}"
+          fi
+          if [ -n "${{ inputs.limit }}" ]; then
+            ARGS="$ARGS --limit=${{ inputs.limit }}"
+          fi
+          if [ -n "${{ inputs.show_filter }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show_filter }}"
+          fi
+          echo "args=$ARGS" >> $GITHUB_OUTPUT
+
+      - name: Run URL rediscovery
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          CI: true
+        run: node scripts/rediscover-review-urls.js ${{ steps.args.outputs.args }}
+
+      - name: Final commit and push
+        if: always() && inputs.dry_run != 'true'
+        run: |
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+          git add data/review-texts/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: URL rediscovery complete"
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git rebase origin/main || {
+              git checkout --ours data/
+              git add data/
+              git rebase --continue || {
+                git rebase --abort
+                git merge origin/main -X ours --no-edit
+              }
+            }
+            git push origin HEAD:main && break
+            echo "Push attempt $i failed, retrying..."
+            sleep $((i * 3))
+          done
