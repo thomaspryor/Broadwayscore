@@ -1818,6 +1818,7 @@ async function main() {
   const verifyEnabled = !args.includes('--no-verify');
   const isDryRun = args.includes('--dry-run');
   const auditExisting = args.includes('--audit-existing');
+  const refetchFlagged = args.includes('--flagged');
 
   if (isDryRun) {
     dryRunMode = true;
@@ -1940,7 +1941,7 @@ async function main() {
 
   // Filter shows - include all statuses when fetching missing, bad-images, or specific shows
   let shows = showsData.shows;
-  if (!onlyMissing && !badImagesOnly && !showFilter) {
+  if (!onlyMissing && !badImagesOnly && !showFilter && !refetchFlagged) {
     shows = shows.filter(s => s.status === 'open' || s.status === 'previews');
   }
 
@@ -1959,6 +1960,26 @@ async function main() {
     console.log(`\nDetected ${badShows.length} shows with bad (identical) images:`);
     badShows.forEach(s => console.log(`  - ${s.id}`));
     shows = badShows;
+  }
+
+  if (refetchFlagged) {
+    const auditPath = path.join(AUDIT_DIR, 'existing-image-audit.json');
+    if (!fs.existsSync(auditPath)) {
+      console.error('ERROR: No audit report found. Run --audit-existing first.');
+      process.exit(1);
+    }
+    const audit = JSON.parse(fs.readFileSync(auditPath, 'utf8'));
+    const flaggedIds = new Set(audit.flagged.map(f => f.showId));
+    shows = shows.filter(s => flaggedIds.has(s.id));
+    console.log(`\nRe-fetching ${shows.length} flagged shows from audit report:`);
+    shows.forEach(s => console.log(`  - ${s.id}`));
+    // Auto-enable dry-run for safety
+    if (!dryRunMode) {
+      dryRunMode = true;
+      dryRunResults = [];
+      fs.mkdirSync(DRY_RUN_DIR, { recursive: true });
+      console.log(`\nAuto-enabled DRY-RUN mode for safety (use --dry-run explicitly to suppress this message)`);
+    }
   }
 
   console.log(`\nProcessing ${shows.length} shows...\n`);
