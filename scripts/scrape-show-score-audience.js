@@ -46,9 +46,10 @@ const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const showMapById = {};
 for (const s of showsData.shows) showMapById[s.id] = s;
 
-// Build multi-production lookup: for each title base, find the most recent production
-// ShowScore has ONE page per title (with -broadway suffix = current production).
-// Only the most recent production should get ShowScore data to avoid duplicates.
+// Build multi-production lookup: for each title base, find the most recent production.
+// ShowScore sometimes has separate pages per production (e.g. /sunset-boulevard = 2017,
+// /sunset-boulevard-broadway = 2024). When only ONE page exists, only the newest production
+// gets the data. When separate pages exist, each production can have its own.
 const mostRecentByTitle = {};
 for (const s of showsData.shows) {
   const titleBase = s.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
@@ -60,13 +61,22 @@ for (const s of showsData.shows) {
 
 /**
  * Check if this show is the most recent production of its title.
- * ShowScore cumulates reviews across productions on one page,
- * so only the most recent production should hold the data.
  */
 function isMostRecentProduction(show) {
   const titleBase = show.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
   const newest = mostRecentByTitle[titleBase];
   return !newest || newest.id === show.id;
+}
+
+/**
+ * Get the newest production's cached URL for this show's title.
+ * Returns null if the show IS the newest or if the newest has no cached URL.
+ */
+function getNewestProductionUrl(show) {
+  if (isMostRecentProduction(show)) return null;
+  const titleBase = show.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+  const newestShow = mostRecentByTitle[titleBase];
+  return newestShow ? getCachedUrl(newestShow.id) : null;
 }
 const urlData = JSON.parse(fs.readFileSync(urlsPath, 'utf8'));
 const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
@@ -262,16 +272,27 @@ function isValidShowScorePage(html, url, showTitle) {
  * Discover Show Score URL for a show by trying candidate patterns
  */
 async function discoverShowScoreUrl(show) {
-  // Multi-production guard: only discover URLs for the most recent production
+  // For older productions, only discover if the newest already has a URL
+  // (so we can ensure we find a DIFFERENT page, not the same one)
+  let newestUrl = null;
   if (!isMostRecentProduction(show)) {
-    console.log(`  SKIP discovery: ${show.id} is not the most recent production of "${show.title}"`);
-    return null;
+    newestUrl = getNewestProductionUrl(show);
+    if (!newestUrl) {
+      console.log(`  SKIP discovery: ${show.id} — newest production not yet discovered`);
+      return null;
+    }
+    console.log(`  Older production — looking for own page (newest uses: ${newestUrl})`);
   }
 
   const candidates = generateCandidateUrls(show);
   if (verbose) console.log(`  Trying ${candidates.length} URL patterns...`);
 
   for (const url of candidates) {
+    // For older productions, skip the URL the newest production already uses
+    if (newestUrl && url === newestUrl) {
+      if (verbose) console.log(`  Skip: ${url} (same as newest production)`);
+      continue;
+    }
     try {
       if (verbose) console.log(`  Trying: ${url}`);
       const html = await fetchViaScrapingBee(url, 0); // No retries during discovery
@@ -358,10 +379,21 @@ function getCachedUrl(showId) {
  * Process a single show (cache-only — URL must already be in show-score-urls.json)
  */
 async function processShow(show) {
-  // Multi-production guard: skip older productions
+  // Multi-production guard: older productions only processed if they have their own page
   if (!isMostRecentProduction(show)) {
-    if (verbose) console.log(`\n  SKIP: ${show.id} — not most recent production of "${show.title}"`);
-    return null;
+    const myUrl = getCachedUrl(show.id);
+    const newestUrl = getNewestProductionUrl(show);
+    if (!myUrl) {
+      if (verbose) console.log(`\n  SKIP: ${show.id} — older production, no own ShowScore page`);
+      return null;
+    }
+    if (newestUrl && myUrl === newestUrl) {
+      console.log(`\n  SKIP: ${show.id} — same URL as newest production, removing duplicate`);
+      if (urlData.shows) delete urlData.shows[show.id];
+      if (!dryRun) saveUrlCache();
+      return null;
+    }
+    console.log(`\n  ${show.id}: older production with own ShowScore page`);
   }
 
   const url = getCachedUrl(show.id);
