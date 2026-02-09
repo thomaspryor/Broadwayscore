@@ -5,7 +5,9 @@
     "hadestown-2019/medium--christian-lewis.json",
     "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
     "a-little-night-music-2009/hollywood-reporter--frank-scheck.json",
-    "an-american-in-paris-2015/nytg--kathleen-campion.json"
+    "an-american-in-paris-2015/nytg--kathleen-campion.json",
+    "betrayal-2013/hollywood-reporter--david-rooney.json",
+    "betrayal-2013/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "and-juliet-2022/variety--aramide-tinubu.json",
@@ -81,16 +83,27 @@
     "august-osage-county-2007/variety--charles-isherwood.json",
     "august-osage-county-2007/variety--david-rooney.json",
     "baby-its-you-2011/variety--steven-suskin.json",
-    "bandstand-2017/hollywood-reporter--david-rooney.json"
+    "bandstand-2017/hollywood-reporter--david-rooney.json",
+    "bandstand-2017/hollywood-reporter--frank-scheck.json",
+    "bandstand-2017/nyt-theater--jonathan-mandell.json",
+    "bandstand-2017/variety--frank-rizzo.json",
+    "bandstand-2017/variety--marilyn-stasio.json",
+    "bernhardthamlet-2018/hollywood-reporter--david-rooney.json",
+    "bernhardthamlet-2018/variety--marilyn-stasio.json",
+    "billy-elliot-the-musical-2008/variety--david-rooney.json",
+    "bob-fosses-dancin-2023/nyt-theater--jonathan-mandell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "hadestown-2019/medium--christian-lewis.json",
-      "an-american-in-paris-2015/nytg--kathleen-campion.json"
+      "an-american-in-paris-2015/nytg--kathleen-campion.json",
+      "betrayal-2013/nyt-theater--jonathan-mandell.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "betrayal-2013/hollywood-reporter--david-rooney.json"
+    ],
     "brightdata": [],
     "archive": [
       "and-juliet-2022/thewrap--robert-hofler.json",
@@ -100,6 +113,6 @@
     ]
   },
   "startTime": "2026-02-09T10:22:07.279Z",
-  "lastProcessed": "bandstand-2017/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "bob-fosses-dancin-2023/nyt-theater--jonathan-mandell.json",
   "log": []
 }
