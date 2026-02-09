@@ -97,7 +97,8 @@ async function main() {
     openingYear: s.openingDate ? parseInt(s.openingDate.split('-')[0]) : null,
     venue: s.venue,
     slug: s.slug,
-    id: s.id
+    id: s.id,
+    ibdbUrl: s.ibdbUrl || null  // Pass stored URL to avoid re-searching wrong production
   }));
 
   const ibdbResults = await batchLookupIBDBDates(lookupList);
@@ -116,6 +117,15 @@ async function main() {
     if (!ibdb.found && !hasCreativeTeamData) continue;
 
     const showChanges = [];
+
+    // Store IBDB URL for audit trail (prevents re-matching wrong production on future runs)
+    if (ibdb.ibdbUrl && ibdb.ibdbUrl !== show.ibdbUrl) {
+      showChanges.push({
+        field: 'ibdbUrl',
+        old: show.ibdbUrl || 'null',
+        new: ibdb.ibdbUrl
+      });
+    }
 
     // Check previewsStartDate
     if (ibdb.previewsStartDate) {

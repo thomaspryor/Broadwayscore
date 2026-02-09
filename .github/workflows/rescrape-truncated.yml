@@ -96,9 +96,24 @@ jobs:
           node -e "
             const fs = require('fs');
             const counts = JSON.parse(fs.readFileSync('/tmp/show-counts.json', 'utf8'));
-            const shows = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+            // Load show statuses to prioritize open/preview shows
+            const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+            const openIds = new Set();
+            (showsData.shows || showsData).forEach(s => {
+              if (s.status === 'open' || s.status === 'previews') openIds.add(s.id);
+            });
+            // Sort: open/preview shows first, then by descending count
+            const shows = Object.entries(counts).sort((a,b) => {
+              const aOpen = openIds.has(a[0]) ? 0 : 1;
+              const bOpen = openIds.has(b[0]) ? 0 : 1;
+              if (aOpen !== bOpen) return aOpen - bOpen;
+              return b[1] - a[1];
+            });
+            const openCount = shows.filter(([id]) => openIds.has(id)).length;
+            console.log('Open/preview shows with truncated reviews: ' + openCount + '/' + shows.length);
             const jobs = parseInt(process.env.JOBS);
             const partitions = Array.from({length: jobs}, () => ({shows: [], count: 0}));
+            // Round-robin — open shows distributed first across all partitions
             shows.forEach(([show, count]) => {
               const lightest = partitions.reduce((min, p, i) => p.count < partitions[min].count ? i : min, 0);
               partitions[lightest].shows.push(show);
@@ -280,6 +295,7 @@ jobs:
           fi
 
       - name: Count remaining and chain
+        if: always()
         id: chain
         env:
           GH_TOKEN: ${{ github.token }}
