@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-09T13:32:44.126Z",
+  "runDate": "2026-02-09T13:51:10.054Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,174 +11,163 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 99,
+    "processed": 2,
+    "failed": 42,
     "skipped": 0,
-    "successRate": "1.0%"
+    "successRate": "4.5%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 96,
+    "tier1Attempts": 0,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 96,
-    "tier2Success": 19,
-    "tier3Attempts": 77,
-    "tier3Success": 5,
-    "tier4Attempts": 100,
-    "tier4Success": 1,
-    "totalFailed": 99,
-    "scrapingBeeCreditsUsed": 274,
+    "tier2Attempts": 33,
+    "tier2Success": 10,
+    "tier3Attempts": 23,
+    "tier3Success": 1,
+    "tier4Attempts": 54,
+    "tier4Success": 18,
+    "totalFailed": 41,
+    "scrapingBeeCreditsUsed": 128,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 73,
-    "urlDiscoverySuccess": 3,
+    "urlDiscoveryAttempts": 19,
+    "urlDiscoverySuccess": 10,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "grey-house-2023/newyorker--dan-stahl.json"
+    "and-juliet-2022/nydailynews--chris-jones.json",
+    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json"
   ],
   "failed": [
-    "book-of-mormon-2011/newyorker--hilton-als.json",
-    "hadestown-2019/newyorker--hilton-als.json",
-    "hells-kitchen-2024/newyorker--naomi-fry.json",
-    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-    "mj-2022/newyorker--naomi-fry.json",
-    "six-2021/newyorker--naomi-fry.json",
-    "the-lion-king-1997/newyorker--john-lahr.json",
-    "the-outsiders-2024/newyorker--naomi-fry.json",
-    "wicked-2003/newyorker--.json",
-    "wicked-2003/newyorker--john-lahr.json",
-    "1776-2022/newyorker--helen-shaw.json",
-    "1776-2022/newyorker--naomi-fry.json",
-    "a-behanding-in-spokane-2010/newyorker--hinton-als.json",
-    "a-dolls-house-2023/newyorker--naomi-fry.json",
-    "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
-    "anastasia-2017/newyorker--hilton-als.json",
-    "angels-in-america-2018/newyorker--hilton-als.json",
-    "anything-goes-2011/newyorker--john-lahr.json",
-    "appropriate-2023/newyorker--naomi-fry.json",
-    "art-2025/newyorker--helen-shaw.json",
-    "august-osage-county-2007/newyorker--hilton-als.json",
-    "beetlejuice-2019/newyorker--hilton-als.json",
-    "bernhardthamlet-2018/newyorker--hilton-als.json",
-    "betrayal-2013/newyorker--john-lahr.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "brief-encounter-2010/newyorker--uncredited.json",
-    "cabaret-2014/newyorker--hilton-als.json",
-    "cabaret-2024/newyorker--naomi-fry.json",
-    "carousel-2018/newyorker--hilton-als.json",
-    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
-    "clybourne-park-2012/newyorker--hilton-als.json",
-    "clydes-2021/newyorker--hilton-als.json",
-    "clydes-2021/newyorker--naomi-fry.json",
-    "come-from-away-2017/newyorker--hilton-als.json",
-    "company-2006/newyorker--john-lahr.json",
-    "cost-of-living-2022/newyorker--vinson-cunningham.json",
-    "cult-of-love-2024/newyorker--helen-shaw.json",
-    "curtains-2007/newyorker--john-lahr.json",
-    "death-of-a-salesman-2012/newyorker--hilton-als.json",
-    "death-of-a-salesman-2012/newyorker--john-lahr.json",
-    "death-of-a-salesman-2022/newyorker--naomi-fry.json",
-    "disgraced-2014/newyorker--hilton-als.json",
-    "eclipsed-2016/newyorker--hilton-als.json",
-    "faith-healer-2006/newyorker--john-lahr.json",
-    "falsettos-2016/newyorker--hilton-als.json",
-    "farinelli-and-the-king-2017/newyorker--hilton-als.json",
-    "fat-ham-2023/newyorker--naomi-fry.json",
-    "fat-ham-2023/newyorker--vinson-cunningham.json",
-    "fela-2009/newyorker--hilton-als.json",
-    "fences-2010/newyorker--hilton-als.json",
-    "fish-in-the-dark-2015/newyorker--hilton-als.json",
-    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/newyorker--naomi-fry.json",
-    "fun-home-2015/newyorker--michael-schulman.json",
-    "gary-a-sequel-to-titus-andronicus-2019/newyorker--hilton-als.json",
-    "god-of-carnage-2009/newyorker--hilton-als.json",
-    "god-of-carnage-2009/newyorker--john-lahr.json",
-    "good-night-and-good-luck-2025/newyorker--helen-shaw.json",
-    "grand-horizons-2020/newyorker--hilton-als.json",
-    "gypsy-2008/newyorker--hilton-als.json",
-    "gypsy-2008/newyorker--john-lahr.json",
-    "gypsy-2024/newyorker--naomi-fry.json",
-    "hand-to-god-2015/newyorker--hilton-als.json",
-    "hangmen-2022/newyorker--vinson-cunningham.json",
-    "harmony-2023/newyorker--naomi-fry.json",
-    "head-over-heels-2018/newyorker--michael-schulman.json",
-    "hello-dolly-2017/newyorker--hilton-als.json",
-    "here-lies-love-2023/newyorker--helen-shaw.json",
-    "here-lies-love-2023/newyorker--naomi-fry.json",
-    "hillary-and-clinton-2019/newyorker--hilton-als.json",
-    "home-2024/newyorker--vinson-cunningham.json",
-    "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
-    "hughie-2016/newyorker--hilton-als.json",
-    "in-the-heights-2008/newyorker--hilton-als.json",
-    "indecent-2017/newyorker--hilton-als.json",
-    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
-    "into-the-woods-2022/newyorker--naomi-fry.json",
-    "is-this-a-room-2021/newyorker--naomi-fry.json",
-    "jersey-boys-2005/newyorker--john-lahr.json",
-    "junk-2017/newyorker--hilton-als.json",
-    "just-for-us-2023/newyorker--naomi-fry.json",
-    "kimberly-akimbo-2022/newyorker--vinson-cunningham.json",
-    "king-charles-iii-2015/newyorker--hilton-als.json",
-    "king-kong-2018/newyorker--hilton-als.json",
-    "king-kong-2018/newyorker--vinson-cunningham.json",
-    "kinky-boots-2013/newyorker--hilton-als.json",
-    "kiss-me-kate-2019/newyorker--hilton-als.json",
-    "kpop-2022/newyorker--helen-shaw.json",
-    "la-bete-2010/newyorker--hilton-als.json",
-    "left-on-tenth-2024/newyorker--naomi-fry.json",
-    "leopoldstadt-2022/newyorker--helen-shaw.json",
-    "leopoldstadt-2022/newyorker--vinson-cunningham.json",
-    "les-liaisons-dangereuses-2016/newyorker--hilton-als.json",
-    "linda-vista-2019/newyorker--hilton-als.json",
-    "lombardi-2010/newyorker--uncredited.json",
-    "long-days-journey-into-night-2016/newyorker--hilton-als.json",
-    "machinal-2014/newyorker--hilton-als.json",
-    "mcneal-2024/newyorker--naomi-fry.json",
-    "mean-girls-2018/newyorker--hilton-als.json",
-    "mean-girls-2018/newyorker--michael-schulman.json"
+    "book-of-mormon-2011/chicagotribune--.json",
+    "book-of-mormon-2011/chicagotribune--chris-jones.json",
+    "death-becomes-her-2024/chicagotribune--chris-jones.json",
+    "stranger-things-2024/chicagotribune--chris-jones.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "gutenberg-2023/nydailynews--chris-jones.json",
+    "a-behanding-in-spokane-2010/chicagotribune--chris-jones.json",
+    "a-bronx-tale-the-musical-2016/chicagotribune--chris-jones.json",
+    "a-dolls-house-part-2-2017/chicagotribune--chris-jones.json",
+    "a-life-in-the-theatre-2010/chicagotribune--chris-jones.json",
+    "american-buffalo-2022/chicagotribune--chris-jones.json",
+    "big-fish-2013/chicagotribune--unknown.json",
+    "bloody-bloody-andrew-jackson-2010/chicagotribune--chris-jones.json",
+    "catch-me-if-you-can-2011/chicagotribune--chris-jones.json",
+    "hello-dolly-2017/chicagotribune--chris-jones.json",
+    "la-bete-2010/chicagotribune--.json",
+    "once-upon-a-one-more-time-2023/chicagotribune--chris-jones.json",
+    "othello-2025/chicagotribune--chris-jones.json",
+    "pippin-2013/chicagotribune--chris-jones.json",
+    "pirates-the-penzance-musical-2025/chicagotribune--chris-jones.json",
+    "promises-promises-2010/chicagotribune--chris-jones.json",
+    "the-bridges-of-madison-county-2014/chicagotribune--chris-jones.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
+    "the-house-of-blue-leaves-2011/chicagotribune--chris-jones.json",
+    "the-humans-2016/chicagotribune--chris-jones.json",
+    "the-miracle-worker-2010/chicagotribune--chris-jones.json",
+    "the-mystery-of-edwin-drood-2012/chicagotribune--chris-jones.json",
+    "the-nap-2018/chicagotribune--chris-jones.json",
+    "the-piano-lesson-2022/chicagotribune--chris-jones.json",
+    "the-price-2017/chicagotribune--chris-jones.json",
+    "the-rose-tattoo-2019/chicagotribune--chris-jones.json",
+    "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
+    "the-waverly-gallery-2018/chicagotribune--chris-jones.json",
+    "violet-2014/chicagotribune--chris-jones.json",
+    "waiting-for-godot-2009/chicagotribune--chris-jones.json",
+    "war-horse-2011/chicagotribune--chris-jones.json",
+    "war-paint-2017/chicagotribune--chris-jones.json",
+    "water-for-elephants-2024/chicagotribune--chris-jones.json",
+    "west-side-story-2020/chicagotribune--chris-jones.json",
+    "wit-2012/chicagotribune--chris-jones.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/chicagotribune--chris-jones.json",
+    "yellow-face-2024/chicagotribune--chris-jones.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [
-      "grey-house-2023/newyorker--dan-stahl.json"
+      "and-juliet-2022/nydailynews--chris-jones.json",
+      "the-bridges-of-madison-county-2014/chicagotribune--chris-jones.json"
     ],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json"
+    ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 69,
-      "domain": "newyorker.com",
+    "Chicago Tribune": {
+      "count": 11,
+      "domain": "chicagotribune.com",
       "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Chicago Tribune": {
+      "count": 1,
+      "domain": "chicagotribune.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "a-dolls-house-2023/newyorker--naomi-fry.json",
-      "oldUrl": "https://www.newyorker.com/magazine/2023/03/27/a-dolls-house-theatre-review",
-      "newUrl": "https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain"
+      "reviewId": "book-of-mormon-2011/chicagotribune--.json",
+      "oldUrl": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-park/",
+      "newUrl": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in-a-hilarious-book-of-mormon/"
     },
     {
-      "reviewId": "appropriate-2023/newyorker--naomi-fry.json",
-      "oldUrl": "https://www.newyorker.com/magazine/2023/12/25/appropriate-theatre-review",
-      "newUrl": "https://www.newyorker.com/magazine/2024/01/01/appropriate-theatre-review-broadway"
+      "reviewId": "book-of-mormon-2011/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-park/",
+      "newUrl": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in-a-hilarious-book-of-mormon/"
     },
     {
-      "reviewId": "here-lies-love-2023/newyorker--naomi-fry.json",
-      "oldUrl": "https://www.newyorker.com/magazine/2023/08/14/here-lies-love-broadway-review",
-      "newUrl": "https://www.newyorker.com/magazine/2023/07/31/here-lies-love-uncle-vanya-theatre-reviews"
+      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
+      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
+    },
+    {
+      "reviewId": "american-buffalo-2022/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/ct-ent-american-buffalo-broadway-review-20220415-6xqzlqxoqfgkxbwxvyqzqzqzqz-story.html",
+      "newUrl": "https://www.chicagotribune.com/2022/04/14/review-american-buffalo-opens-on-broadway-with-laurence-fishburne-a-blast-of-a-mamet-play-that-stops-short-of-the-biggest-score/"
+    },
+    {
+      "reviewId": "big-fish-2013/chicagotribune--unknown.json",
+      "oldUrl": "http://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ent-1007-big-fish-broadway-review-20131007,0,1670962.column?track=rss",
+      "newUrl": "https://www.chicagotribune.com/2013/10/06/broadway-review-big-fish/"
+    },
+    {
+      "reviewId": "catch-me-if-you-can-2011/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2011/04/01/catch-me-if-you-can-on-broadway-adaptation-couldve-stuck-more-closely-to-the-script/",
+      "newUrl": "https://www.chicagotribune.com/2025/09/05/review-catch-me-if-you-can-marriott/"
+    },
+    {
+      "reviewId": "pippin-2013/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2013/04/26/pippin-broadway-review/",
+      "newUrl": "https://www.chicagotribune.com/2013/04/25/broadway-review-pippin-pulls-off-a-theatrical-high-wire-act-2/"
+    },
+    {
+      "reviewId": "promises-promises-2010/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2010/04/01/promises-broadway-review-sean-hayes-promises-promises-no-love-connection/",
+      "newUrl": "https://www.chicagotribune.com/2023/12/08/review-promises-promises-by-blank-theatre-is-a-fun-retro-night-out-with-burt-bacharach/"
+    },
+    {
+      "reviewId": "the-bridges-of-madison-county-2014/chicagotribune--chris-jones.json",
+      "oldUrl": "http://www.chicagotribune.com/entertainment/theater/chi-bridges-madison-county-review,0,4766242.column",
+      "newUrl": "https://www.chicagotribune.com/2014/02/20/broadway-review-the-bridges-of-madison-county/"
+    },
+    {
+      "reviewId": "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2014/10/06/the-curious-incident-of-the-dog-in-the-night-time-broadway-review/",
+      "newUrl": "https://www.chicagotribune.com/2014/10/06/review-the-curious-incident-of-the-dog-in-the-night-time/"
     }
   ]
 }
