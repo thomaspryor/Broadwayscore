@@ -43,6 +43,8 @@ const showScorePath = path.join(__dirname, '../data/show-score.json');
 
 // Load data
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+const showMapById = {};
+for (const s of showsData.shows) showMapById[s.id] = s;
 const urlData = JSON.parse(fs.readFileSync(urlsPath, 'utf8'));
 const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
 const showScoreData = JSON.parse(fs.readFileSync(showScorePath, 'utf8'));
@@ -339,7 +341,9 @@ function updateAudienceBuzz(showId, showTitle, showScoreData) {
 
   // Recalculate combined score with dynamic weighting
   const sources = audienceBuzz.shows[showId].sources;
-  const { score, weights } = calculateCombinedScore(sources);
+  const sd = showMapById[showId];
+  const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status } : undefined;
+  const { score, weights } = calculateCombinedScore(sources, showInfo);
 
   if (score !== null) {
     audienceBuzz.shows[showId].combinedScore = score;

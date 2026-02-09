@@ -63,6 +63,8 @@ const showsPath = path.join(__dirname, '../data/shows.json');
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+const showMapById = {};
+for (const s of showsData.shows) showMapById[s.id] = s;
 let audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
 
 /**
@@ -418,7 +420,9 @@ function updateAudienceBuzz(showId, redditData) {
 
   // Recalculate combined score
   const sources = audienceBuzz.shows[showId].sources;
-  const { score, weights } = calculateCombinedScore(sources);
+  const sd = showMapById[showId];
+  const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status } : undefined;
+  const { score, weights } = calculateCombinedScore(sources, showInfo);
 
   if (score !== null) {
     audienceBuzz.shows[showId].combinedScore = score;
