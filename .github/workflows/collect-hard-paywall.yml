@@ -437,7 +437,7 @@ jobs:
           retention-days: 30
 
   rebuild-all:
-    if: ${{ inputs.domain == 'all' && inputs.dry_run != true }}
+    if: ${{ inputs.domain == 'all' && inputs.dry_run != true && always() }}
     needs: collect-all
     runs-on: ubuntu-latest
     timeout-minutes: 15

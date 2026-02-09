@@ -440,7 +440,7 @@ jobs:
 
   # Trigger rebuild after all parallel jobs complete
   rebuild-all:
-    if: ${{ inputs.domain == 'all' && !inputs.dry_run }}
+    if: ${{ inputs.domain == 'all' && !inputs.dry_run && always() }}
     needs: collect-all
     runs-on: ubuntu-latest
     timeout-minutes: 15
