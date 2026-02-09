@@ -19,6 +19,9 @@ const dryRun = args.includes('--dry-run');
 const cleanup = args.includes('--cleanup');
 
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
+const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
+const showMapById = {};
+for (const s of showsData.shows) showMapById[s.id] = s;
 const shardDir = path.join(__dirname, '../data/reddit-shards');
 
 function main() {
@@ -88,7 +91,9 @@ function main() {
 
     // Recalculate combined score
     const sources = audienceBuzz.shows[showId].sources;
-    const { score } = calculateCombinedScore(sources);
+    const sd = showMapById[showId];
+    const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status } : undefined;
+    const { score } = calculateCombinedScore(sources, showInfo);
 
     if (score !== null) {
       audienceBuzz.shows[showId].combinedScore = score;

@@ -5,6 +5,12 @@
  * Reads show-changes-digest.json + followers.json, sends notification
  * emails via Resend for each show with meaningful changes and followers.
  *
+ * Opening-night changes get a rich email with critic score card, review
+ * breakdown, and consensus text. All other changes get a bullet-list email.
+ *
+ * Delivery-safe: after sending, removes fully-delivered shows from the
+ * digest so undelivered changes persist for the next run.
+ *
  * Usage: node scripts/send-follow-notifications.js [--dry-run]
  *
  * Env: RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS
@@ -28,9 +34,10 @@ const BUDGET_RESERVE = 500;
 const MAX_SENDS_PER_RUN = Math.min(MONTHLY_LIMIT - BUDGET_RESERVE, 100); // 100/day limit on free tier
 
 const FROM_EMAIL = 'updates@broadwayscorecard.com';
+const FONT = "Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif";
 
 // High-priority change types — a single one of these warrants an email
-const HIGH_PRIORITY_TYPES = ['status-change', 'cast-change', 'lottery-added', 'recoupment'];
+const HIGH_PRIORITY_TYPES = ['opening-night', 'status-change', 'cast-change', 'lottery-added', 'recoupment'];
 
 function loadJSON(filePath) {
   try {
@@ -86,47 +93,184 @@ function escapeHtml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function buildEmailHtml(showTitle, changes, showUrl) {
+function getScoreColor(score) {
+  if (score == null) return { bg: '#6b7280', text: '#ffffff', label: 'TBD' };
+  if (score >= 85) return { bg: '#FFD700', text: '#1a1a1a', label: 'Must-See' };
+  if (score >= 75) return { bg: '#22c55e', text: '#ffffff', label: 'Recommended' };
+  if (score >= 65) return { bg: '#14b8a6', text: '#ffffff', label: 'Worth Seeing' };
+  if (score >= 55) return { bg: '#f59e0b', text: '#1a1a1a', label: 'Skippable' };
+  return { bg: '#ef4444', text: '#ffffff', label: 'Stay Away' };
+}
+
+function buildUnfollowUrl(showId, showTitle, email) {
+  return `https://broadwayscorecard.com/unfollow?email=${encodeURIComponent(email)}&show=${encodeURIComponent(showId)}&title=${encodeURIComponent(showTitle)}`;
+}
+
+function buildFooterHtml(showTitle, showId, email) {
+  const unfollowUrl = buildUnfollowUrl(showId, showTitle, email);
+  return `<tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
+    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;font-family:${FONT};">
+      You're receiving this because you followed ${escapeHtml(showTitle)} on <a href="https://broadwayscorecard.com" style="color:#d4a574;">Broadway Scorecard</a>.<br>
+      <a href="${escapeHtml(unfollowUrl)}" style="color:rgba(255,255,255,0.35);">Unfollow this show</a>
+    </p>
+  </td></tr>`;
+}
+
+function buildEmailHtml(showTitle, changes, showUrl, showId, email) {
   const changesHtml = changes.map(c => {
-    const icon = c.type === 'status-change' ? '&#127917;' :
-                 c.type === 'new-reviews' ? '&#128221;' :
-                 c.type === 'score-change' ? '&#128200;' :
-                 c.type === 'cast-change' ? '&#127917;' :
-                 c.type === 'lottery-added' ? '&#127922;' :
-                 c.type === 'recoupment' ? '&#128176;' :
-                 c.type === 'date-change' ? '&#128197;' : '&#8226;';
-    return `<tr><td style="padding:6px 12px;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.5;">${icon}&nbsp; ${escapeHtml(c.message)}</td></tr>`;
+    return `<tr><td style="padding:8px 20px;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.5;font-family:${FONT};border-left:2px solid #d4a574;">&#8226;&nbsp; ${escapeHtml(c.message)}</td></tr>`;
   }).join('');
 
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background-color:#0a0a0f;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0a0a0f;padding:32px 16px;">
+<body style="margin:0;padding:0;background-color:#0f0f14;font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0f0f14;padding:32px 16px;">
 <tr><td align="center">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
-  <tr><td style="padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.1);">
-    <span style="font-size:14px;font-weight:600;color:#a78bfa;letter-spacing:0.5px;text-transform:uppercase;">Broadway Scorecard</span>
+  <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
   </td></tr>
   <tr><td style="padding:28px 0 8px;">
-    <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;">Updates for ${escapeHtml(showTitle)}</h1>
+    <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">Updates for ${escapeHtml(showTitle)}</h1>
   </td></tr>
   <tr><td style="padding:16px 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
-      <tr><td style="padding:16px 12px 4px;">
-        <p style="margin:0 0 8px 12px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px;">What's new</p>
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
+      <tr><td style="padding:16px 20px 4px;">
+        <p style="margin:0 0 8px;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">What's new</p>
       </td></tr>
       ${changesHtml}
       <tr><td style="padding-bottom:12px;"></td></tr>
     </table>
   </td></tr>
   <tr><td style="padding:8px 0 32px;" align="center">
-    <a href="${escapeHtml(showUrl)}" style="display:inline-block;padding:12px 32px;background-color:#a78bfa;color:#0a0a0f;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px;">View Full Details</a>
+    <a href="${escapeHtml(showUrl)}" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">View Full Details</a>
   </td></tr>
-  <tr><td style="padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);">
-    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.3);line-height:1.6;">
-      You're receiving this because you followed ${escapeHtml(showTitle)} on <a href="https://broadwayscorecard.com" style="color:rgba(255,255,255,0.4);">Broadway Scorecard</a>.
-    </p>
+  ${buildFooterHtml(showTitle, showId, email)}
+</table>
+</td></tr></table>
+</body></html>`;
+}
+
+function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, showId, email, imageUrl) {
+  const sc = getScoreColor(openingChange.score);
+  const scoreDisplay = openingChange.score != null ? Math.round(openingChange.score) : '?';
+  const reviewCount = openingChange.reviewCount || 0;
+  const positive = openingChange.positive || 0;
+  const mixed = openingChange.mixed || 0;
+  const negative = openingChange.negative || 0;
+  const total = positive + mixed + negative;
+
+  // Review subtitle
+  const reviewSubtitle = reviewCount > 0
+    ? `Based on ${reviewCount} Critic Review${reviewCount !== 1 ? 's' : ''}`
+    : 'Reviews pending';
+
+  // Breakdown bar widths (percentage, min 1% if nonzero to stay visible)
+  let posW = 0, mixW = 0, negW = 0;
+  if (total > 0) {
+    posW = Math.max(Math.round(positive / total * 100), positive > 0 ? 1 : 0);
+    negW = Math.max(Math.round(negative / total * 100), negative > 0 ? 1 : 0);
+    mixW = 100 - posW - negW;
+    if (mixW < 0) mixW = 0;
+    if (mixed > 0 && mixW === 0) { mixW = 1; posW = Math.max(posW - 1, 0); }
+  }
+
+  // Breakdown bar HTML (only show if we have reviews)
+  const breakdownHtml = total > 0 ? `
+  <tr><td style="padding:16px 24px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:6px;overflow:hidden;">
+      <tr>
+        ${posW > 0 ? `<td style="width:${posW}%;height:8px;background-color:#22c55e;"></td>` : ''}
+        ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#f59e0b;"></td>` : ''}
+        ${negW > 0 ? `<td style="width:${negW}%;height:8px;background-color:#ef4444;"></td>` : ''}
+      </tr>
+    </table>
   </td></tr>
+  <tr><td style="padding:8px 24px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
+          <span style="color:#22c55e;font-weight:600;">${positive}</span> Positive
+        </td>
+        <td align="center" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
+          <span style="color:#f59e0b;font-weight:600;">${mixed}</span> Mixed
+        </td>
+        <td align="right" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
+          <span style="color:#ef4444;font-weight:600;">${negative}</span> Negative
+        </td>
+      </tr>
+    </table>
+  </td></tr>` : '';
+
+  // Consensus block (only show if available)
+  const consensusHtml = openingChange.consensusText ? `
+  <tr><td style="padding:20px 24px 0;">
+    <p style="margin:0 0 6px;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">Critics' Take</p>
+    <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.75);line-height:1.6;font-style:italic;font-family:${FONT};">"${escapeHtml(openingChange.consensusText)}"</p>
+  </td></tr>` : '';
+
+  // Show type + venue line
+  const metaParts = [];
+  if (openingChange.showType) metaParts.push(openingChange.showType);
+  if (openingChange.venue) metaParts.push(openingChange.venue);
+  const metaHtml = metaParts.length > 0 ? `
+  <tr><td style="padding:16px 24px 0;">
+    <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.35);font-family:${FONT};">${escapeHtml(metaParts.join(' \u00B7 '))}</p>
+  </td></tr>` : '';
+
+  // Other changes (lottery added, etc.) as bullet items below the card
+  const otherHtml = otherChanges.length > 0 ? `
+  <tr><td style="padding:20px 0 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
+      <tr><td style="padding:16px 20px 4px;">
+        <p style="margin:0 0 8px;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">Also new</p>
+      </td></tr>
+      ${otherChanges.map(c => `<tr><td style="padding:8px 20px;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.5;font-family:${FONT};border-left:2px solid #d4a574;">&#8226;&nbsp; ${escapeHtml(c.message)}</td></tr>`).join('')}
+      <tr><td style="padding-bottom:12px;"></td></tr>
+    </table>
+  </td></tr>` : '';
+
+  return `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#0f0f14;font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0f0f14;padding:32px 16px;">
+<tr><td align="center">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+  <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+  </td></tr>
+  <tr><td style="padding:28px 0 8px;">
+    <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${escapeHtml(showTitle)} Is Now Open</h1>
+  </td></tr>${imageUrl ? `
+  <tr><td style="padding:16px 0 0;">
+    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(showTitle)}" width="560" style="display:block;width:100%;max-width:560px;height:auto;border-radius:12px;" />
+  </td></tr>` : ''}
+  <tr><td style="padding:16px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
+      <tr><td style="padding:24px;">
+        <table cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="width:72px;height:72px;background-color:${sc.bg};border-radius:12px;text-align:center;vertical-align:middle;">
+              <span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;">${scoreDisplay}</span>
+            </td>
+            <td style="padding-left:16px;vertical-align:middle;">
+              <p style="margin:0 0 4px;font-size:18px;font-weight:700;color:${sc.bg};font-family:${FONT};">${sc.label}</p>
+              <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};">${reviewSubtitle}</p>
+            </td>
+          </tr>
+        </table>
+      </td></tr>
+      ${breakdownHtml}
+      ${consensusHtml}
+      ${metaHtml}
+      <tr><td style="padding-bottom:20px;"></td></tr>
+    </table>
+  </td></tr>
+  ${otherHtml}
+  <tr><td style="padding:8px 0 32px;" align="center">
+    <a href="${escapeHtml(showUrl)}" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">View Full Details</a>
+  </td></tr>
+  ${buildFooterHtml(showTitle, showId, email)}
 </table>
 </td></tr></table>
 </body></html>`;
@@ -145,7 +289,7 @@ async function main() {
   if (DRY_RUN) console.log('** DRY RUN — no emails will be sent **\n');
 
   const digest = loadJSON(DIGEST_PATH);
-  if (!digest || !digest.changes) {
+  if (!digest || !digest.changes || Object.keys(digest.changes).length === 0) {
     console.log('No digest found or no changes detected — nothing to send');
     process.exit(0);
   }
@@ -195,15 +339,22 @@ async function main() {
     }
   }
 
+  // Priority queue: opening-night emails first (Pre-Mortem P1)
+  sendQueue.sort((a, b) => {
+    const aOpening = a.changes.some(c => c.type === 'opening-night') ? 0 : 1;
+    const bOpening = b.changes.some(c => c.type === 'opening-night') ? 0 : 1;
+    return aOpening - bOpening;
+  });
+
   console.log(`\nSend queue: ${sendQueue.length} emails across ${changesEntries.length} changed shows`);
   console.log(`Budget: ${MAX_SENDS_PER_RUN} max sends per run`);
 
-  // Budget pre-check
+  // Budget warning (no longer blocks — sends what it can, keeps the rest)
   if (sendQueue.length > MAX_SENDS_PER_RUN) {
-    const msg = `Follow notifications budget exceeded: ${sendQueue.length} needed, ${MAX_SENDS_PER_RUN} max. Skipping send.`;
-    console.error(msg);
+    const msg = `Follow notifications: ${sendQueue.length} needed, ${MAX_SENDS_PER_RUN} max. Will send ${MAX_SENDS_PER_RUN} (prioritizing opening nights), rest persists for next run.`;
+    console.warn(msg);
     await sendAlert({
-      title: 'Follow Notification Budget Exceeded',
+      title: 'Follow Notification Budget Warning',
       description: msg,
       severity: 'warning',
       fields: [
@@ -211,7 +362,6 @@ async function main() {
         { name: 'Budget', value: String(MAX_SENDS_PER_RUN) },
       ],
     });
-    process.exit(0);
   }
 
   if (sendQueue.length === 0) {
@@ -219,20 +369,52 @@ async function main() {
     process.exit(0);
   }
 
-  // Send emails
+  // Track which shows had ALL emails sent (for delivery-safe snapshot)
+  const emailsPerShow = {};
+  const sentPerShow = {};
+  for (const item of sendQueue) {
+    emailsPerShow[item.showId] = (emailsPerShow[item.showId] || 0) + 1;
+    sentPerShow[item.showId] = 0;
+  }
+
+  // Send emails (capped at budget)
   let sentCount = 0;
   let errorCount = 0;
   const sentKeys = [...alreadySent];
 
   for (const { showId, email, changes } of sendQueue) {
+    if (sentCount >= MAX_SENDS_PER_RUN) {
+      console.log(`\nBudget reached (${MAX_SENDS_PER_RUN}). Remaining emails will persist for next run.`);
+      break;
+    }
+
     const show = showsMap[showId];
     const showTitle = show?.title || showId;
     const showUrl = `https://broadwayscorecard.com/show/${show?.slug || showId}`;
 
+    // Route: opening-night → rich template, else → generic
+    const openingNight = changes.find(c => c.type === 'opening-night');
+    const otherChanges = changes.filter(c => c.type !== 'opening-night');
+
+    // Show image: prefer thumbnail → poster → hero
+    const imagePath = show?.images?.thumbnail || show?.images?.poster || show?.images?.hero;
+    const imageUrl = imagePath ? `https://broadwayscorecard.com${imagePath}` : null;
+
+    const html = openingNight
+      ? buildOpeningNightHtml(showTitle, openingNight, otherChanges, showUrl, showId, email, imageUrl)
+      : buildEmailHtml(showTitle, changes, showUrl, showId, email);
+
+    const subject = openingNight
+      ? `${showTitle} is now open on Broadway${openingNight.score ? ` \u2014 Critic Score: ${Math.round(openingNight.score)}` : ''}`
+      : `Updates for ${showTitle} on Broadway Scorecard`;
+
     if (DRY_RUN) {
       console.log(`  [DRY] Would send to ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} for ${showTitle}`);
+      console.log(`         Subject: ${subject}`);
       console.log(`         Changes: ${changes.map(c => c.message).join('; ')}`);
+      if (openingNight) console.log(`         [OPENING NIGHT template — score: ${openingNight.score || 'TBD'}, reviews: ${openingNight.reviewCount || 0}]`);
       sentCount++;
+      sentPerShow[showId]++;
       continue;
     }
 
@@ -240,16 +422,17 @@ async function main() {
       await postJSON('https://api.resend.com/emails', {
         from: `Broadway Scorecard <${FROM_EMAIL}>`,
         to: [email],
-        subject: `Updates for ${showTitle} on Broadway Scorecard`,
-        html: buildEmailHtml(showTitle, changes, showUrl),
+        subject,
+        html,
       }, {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       });
 
       sentCount++;
+      sentPerShow[showId]++;
       const key = `${showId}:${email}`;
       sentKeys.push(key);
-      console.log(`  Sent to ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} for ${showTitle} (${sentCount}/${sendQueue.length})`);
+      console.log(`  Sent to ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} for ${showTitle} (${sentCount}/${Math.min(sendQueue.length, MAX_SENDS_PER_RUN)})`);
 
       // Checkpoint every 25 sends
       if (sentCount % 25 === 0) {
@@ -281,8 +464,32 @@ async function main() {
 
   console.log(`\nDone: ${sentCount} sent, ${errorCount} errors`);
 
+  // Delivery-safe snapshot: remove only fully-delivered shows from digest
+  // Undelivered shows persist for next run (Pre-Mortem P0)
+  if (!DRY_RUN) {
+    const fullyDelivered = [];
+    for (const [showId, needed] of Object.entries(emailsPerShow)) {
+      if (sentPerShow[showId] >= needed) {
+        fullyDelivered.push(showId);
+      }
+    }
+
+    if (fullyDelivered.length > 0) {
+      for (const showId of fullyDelivered) {
+        delete digest.changes[showId];
+      }
+      fs.writeFileSync(DIGEST_PATH, JSON.stringify(digest, null, 2));
+      console.log(`Removed ${fullyDelivered.length} fully-delivered shows from digest`);
+
+      const remaining = Object.keys(digest.changes).length;
+      if (remaining > 0) {
+        console.log(`${remaining} shows with undelivered changes persist for next run`);
+      }
+    }
+  }
+
   // Clean up checkpoint on full success
-  if (!DRY_RUN && errorCount === 0 && sentCount === sendQueue.length) {
+  if (!DRY_RUN && errorCount === 0 && sentCount >= sendQueue.length) {
     try { fs.unlinkSync(CHECKPOINT_PATH); } catch { /* ok */ }
     console.log('Checkpoint cleaned up (full success)');
   }

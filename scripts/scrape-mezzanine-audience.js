@@ -43,6 +43,8 @@ const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 
 // Load data
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+const showMapById = {};
+for (const s of showsData.shows) showMapById[s.id] = s;
 const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
 
 /**
@@ -288,7 +290,9 @@ function updateAudienceBuzz(match) {
   };
 
   // Recalculate combined score
-  const { score, weights } = calculateCombinedScore(show.sources);
+  const sd = showMapById[showId];
+  const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status } : undefined;
+  const { score, weights } = calculateCombinedScore(show.sources, showInfo);
 
   if (score !== null) {
     show.combinedScore = score;

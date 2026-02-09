@@ -6,6 +6,12 @@
  * against the previous digest's currentState. Outputs a digest with
  * changes and current state for the notification sender.
  *
+ * Opening-night changes are enriched with critic score, review breakdown,
+ * and consensus text for the rich email template.
+ *
+ * Undelivered changes from the previous digest are carried forward so
+ * notifications are never permanently lost if budget is exceeded.
+ *
  * Usage: node scripts/detect-show-changes.js
  */
 
@@ -17,8 +23,9 @@ const DIGEST_PATH = path.join(__dirname, '..', 'data', 'audit', 'show-changes-di
 
 // Thresholds for change detection — only report high-signal changes
 const THRESHOLDS = {
-  minNewReviews: 3,      // 3+ new reviews to report
-  minScoreChange: 5,     // 5+ point score change to report
+  minNewReviews: 3,        // 3+ new reviews to report
+  minScoreChange: 3,       // 3+ point critic score change to report
+  minAudienceChange: 5,    // 5+ point audience score change to report
 };
 
 function loadJSON(filePath) {
@@ -39,7 +46,12 @@ function hashCreativeTeam(creativeTeam) {
   return crypto.createHash('md5').update(sorted).digest('hex').slice(0, 12);
 }
 
-function buildCurrentState(shows, reviews, lotteryRush, commercial) {
+function formatDate(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00Z'); // avoid timezone shift
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+function buildCurrentState(shows, reviews, lotteryRush, commercial, audienceBuzz) {
   const state = {};
 
   if (!shows) return state;
@@ -56,8 +68,8 @@ function buildCurrentState(shows, reviews, lotteryRush, commercial) {
       if (!sid) continue;
       if (!reviewsByShow[sid]) reviewsByShow[sid] = { count: 0, scores: [] };
       reviewsByShow[sid].count++;
-      if (review.adjustedScore != null) {
-        reviewsByShow[sid].scores.push(review.adjustedScore);
+      if (review.assignedScore != null) {
+        reviewsByShow[sid].scores.push(review.assignedScore);
       }
     }
   }
@@ -84,6 +96,17 @@ function buildCurrentState(shows, reviews, lotteryRush, commercial) {
     }
   }
 
+  // Build audience buzz map
+  const audienceMap = {};
+  if (audienceBuzz) {
+    const buzzShows = audienceBuzz.shows || {};
+    for (const [showId, data] of Object.entries(buzzShows)) {
+      if (data.combinedScore != null) {
+        audienceMap[showId] = Math.round(data.combinedScore * 10) / 10;
+      }
+    }
+  }
+
   for (const show of showsArr) {
     const id = show.id || show.slug;
     if (!id) continue;
@@ -105,14 +128,26 @@ function buildCurrentState(shows, reviews, lotteryRush, commercial) {
       crewHash: hashCreativeTeam(show.creativeTeam),
       lotteryTypes: lotteryMap[id] || null,
       recouped: commercialMap[id] || false,
+      audienceScore: audienceMap[id] || null,
     };
   }
 
   return state;
 }
 
-function detectChanges(currentState, previousState) {
+function detectChanges(currentState, previousState, extras) {
   const changes = {};
+  const reviews = extras?.reviews;
+  const consensus = extras?.consensus;
+  const showsMap = extras?.showsMap || {};
+
+  // Build reviews array for opening-night enrichment
+  const allReviews = [];
+  if (reviews) {
+    const reviewsList = reviews.reviews || reviews;
+    const reviewsArr = Array.isArray(reviewsList) ? reviewsList : Object.values(reviewsList);
+    allReviews.push(...reviewsArr);
+  }
 
   for (const [showId, current] of Object.entries(currentState)) {
     const prev = previousState[showId];
@@ -120,26 +155,72 @@ function detectChanges(currentState, previousState) {
 
     const showChanges = [];
 
-    // Status change (always report)
+    // Status change
     if (current.status !== prev.status) {
-      showChanges.push({
-        type: 'status-change',
-        message: `Status changed: ${prev.status} → ${current.status}`,
-      });
+      if (prev.status === 'previews' && current.status === 'open') {
+        // Opening night — enriched payload for rich email template
+        const showReviews = allReviews.filter(r => r.showId === showId && r.assignedScore != null);
+        const positive = showReviews.filter(r => r.assignedScore >= 65).length;
+        const mixed = showReviews.filter(r => r.assignedScore >= 55 && r.assignedScore < 65).length;
+        const negative = showReviews.filter(r => r.assignedScore < 55).length;
+
+        // Get consensus (null-safe — may not exist yet for just-opened shows)
+        const consensusData = consensus?.shows?.[showId];
+        const consensusText = consensusData?.text || null;
+
+        // Get show metadata
+        const show = showsMap[showId];
+
+        showChanges.push({
+          type: 'opening-night',
+          message: 'Show has officially opened on Broadway',
+          score: current.score,
+          reviewCount: current.reviewCount,
+          positive,
+          mixed,
+          negative,
+          consensusText,
+          showType: show?.type || null,
+          venue: show?.venue || null,
+        });
+      } else {
+        showChanges.push({
+          type: 'status-change',
+          message: `Status changed: ${prev.status} → ${current.status}`,
+        });
+      }
     }
 
-    // Opening/closing date change (always report)
+    // Opening date change (always report)
     if (current.openingDate !== prev.openingDate && current.openingDate) {
       showChanges.push({
         type: 'date-change',
-        message: `Opening date updated to ${current.openingDate}`,
+        message: `Opening date updated to ${formatDate(current.openingDate)}`,
       });
     }
-    if (current.closingDate !== prev.closingDate && current.closingDate) {
-      showChanges.push({
-        type: 'date-change',
-        message: `Closing date set: ${current.closingDate}`,
-      });
+
+    // Closing date change — split into subtypes
+    if (current.closingDate !== prev.closingDate) {
+      if (!prev.closingDate && current.closingDate) {
+        showChanges.push({
+          type: 'closing-announced',
+          message: `Closing date announced: ${formatDate(current.closingDate)}`,
+        });
+      } else if (prev.closingDate && current.closingDate) {
+        const prevDate = new Date(prev.closingDate);
+        const currDate = new Date(current.closingDate);
+        if (currDate > prevDate) {
+          showChanges.push({
+            type: 'closing-extended',
+            message: `Run extended through ${formatDate(current.closingDate)}`,
+          });
+        } else if (currDate < prevDate) {
+          showChanges.push({
+            type: 'closing-shortened',
+            message: `Closing date moved up to ${formatDate(current.closingDate)}`,
+          });
+        }
+      }
     }
 
     // New reviews (threshold: 3+)
@@ -151,7 +232,7 @@ function detectChanges(currentState, previousState) {
       });
     }
 
-    // Score shift (threshold: 5+)
+    // Critic score shift (threshold: 3+)
     if (current.score != null && prev.score != null) {
       const scoreDiff = Math.round((current.score - prev.score) * 10) / 10;
       if (Math.abs(scoreDiff) >= THRESHOLDS.minScoreChange) {
@@ -159,6 +240,18 @@ function detectChanges(currentState, previousState) {
         showChanges.push({
           type: 'score-change',
           message: `Score changed: ${prev.score} → ${current.score} (${direction}${scoreDiff})`,
+        });
+      }
+    }
+
+    // Audience score shift (threshold: 5+)
+    if (current.audienceScore != null && prev.audienceScore != null) {
+      const audienceDiff = Math.round((current.audienceScore - prev.audienceScore) * 10) / 10;
+      if (Math.abs(audienceDiff) >= THRESHOLDS.minAudienceChange) {
+        const direction = audienceDiff > 0 ? '+' : '';
+        showChanges.push({
+          type: 'audience-change',
+          message: `Audience score changed: ${prev.audienceScore} → ${current.audienceScore} (${direction}${audienceDiff})`,
         });
       }
     }
@@ -209,32 +302,61 @@ function main() {
   const reviews = loadJSON(path.join(dataDir, 'reviews.json'));
   const lotteryRush = loadJSON(path.join(dataDir, 'lottery-rush.json'));
   const commercial = loadJSON(path.join(dataDir, 'commercial.json'));
+  const audienceBuzz = loadJSON(path.join(dataDir, 'audience-buzz.json'));
+  const consensus = loadJSON(path.join(dataDir, 'critic-consensus.json'));
 
   if (!shows) {
     console.error('ERROR: Could not load shows.json — cannot detect changes');
     process.exit(1);
   }
 
+  // Build shows map for enrichment
+  const showsList = shows.shows || shows;
+  const showsArr = Array.isArray(showsList) ? showsList : Object.values(showsList);
+  const showsMap = {};
+  for (const s of showsArr) {
+    if (s.id || s.slug) showsMap[s.id || s.slug] = s;
+  }
+
   // Build current state
-  const currentState = buildCurrentState(shows, reviews, lotteryRush, commercial);
+  const currentState = buildCurrentState(shows, reviews, lotteryRush, commercial, audienceBuzz);
   console.log(`Built current state for ${Object.keys(currentState).length} shows`);
 
   // Load previous digest
   let previousState = {};
+  let prevPendingChanges = {};
   try {
     const prevDigest = JSON.parse(fs.readFileSync(DIGEST_PATH, 'utf8'));
     previousState = prevDigest.currentState || {};
+    // Carry forward any undelivered changes from previous run
+    prevPendingChanges = prevDigest.changes || {};
     console.log(`Loaded previous state with ${Object.keys(previousState).length} shows`);
+    const pendingCount = Object.keys(prevPendingChanges).length;
+    if (pendingCount > 0) {
+      console.log(`  (${pendingCount} shows have pending undelivered changes)`);
+    }
   } catch {
     console.log('No previous digest found — first run, establishing baseline');
   }
 
-  // Detect changes
-  const changes = detectChanges(currentState, previousState);
+  // Detect new changes
+  const newChanges = detectChanges(currentState, previousState, { reviews, consensus, showsMap });
+
+  // Merge: pending undelivered changes + newly detected
+  // New detections take priority (fresher data)
+  const changes = {};
+  for (const [showId, pendingChanges] of Object.entries(prevPendingChanges)) {
+    changes[showId] = pendingChanges;
+  }
+  for (const [showId, newShowChanges] of Object.entries(newChanges)) {
+    changes[showId] = newShowChanges; // fresher data wins
+  }
+
   const changedShowCount = Object.keys(changes).length;
   const totalChanges = Object.values(changes).reduce((sum, arr) => sum + arr.length, 0);
 
-  console.log(`\nDetected ${totalChanges} changes across ${changedShowCount} shows`);
+  console.log(`\nDetected ${Object.keys(newChanges).length} newly changed shows`);
+  console.log(`Total pending: ${totalChanges} changes across ${changedShowCount} shows`);
   for (const [showId, showChanges] of Object.entries(changes)) {
     console.log(`  ${showId}:`);
     for (const change of showChanges) {

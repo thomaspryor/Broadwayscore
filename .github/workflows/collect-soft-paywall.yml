@@ -203,7 +203,7 @@ jobs:
           fi
 
       - name: Count remaining and chain
-        if: steps.push.outputs.has_changes == 'true'
+        if: always()
         id: chain
         env:
           DOMAIN_FILTER: ${{ inputs.domain }}
@@ -492,6 +492,7 @@ jobs:
           fi
 
       - name: Count remaining and chain
+        if: always()
         id: chain
         env:
           DOMAIN_LIST: ${{ env.SOFT_PAYWALL_DOMAINS }}
