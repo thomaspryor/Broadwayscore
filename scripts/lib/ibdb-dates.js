@@ -537,16 +537,24 @@ async function lookupIBDBDates(title, options = {}) {
   };
 
   try {
-    // Step 1: Search for IBDB production page
-    const searchResults = await searchIBDB(title, options);
+    let bestMatch;
 
-    if (searchResults.length === 0) {
-      console.log(`  ❌ No IBDB results found for "${title}"`);
-      return notFound;
+    // Step 0: If a stored IBDB URL exists, use it directly (skip search)
+    if (options.ibdbUrl) {
+      console.log(`  📎 Using stored IBDB URL: ${options.ibdbUrl}`);
+      bestMatch = { url: options.ibdbUrl, title: title, year: null };
+    } else {
+      // Step 1: Search for IBDB production page
+      const searchResults = await searchIBDB(title, options);
+
+      if (searchResults.length === 0) {
+        console.log(`  ❌ No IBDB results found for "${title}"`);
+        return notFound;
+      }
+
+      // Step 2: Find best matching production
+      bestMatch = findBestProduction(searchResults, options);
     }
-
-    // Step 2: Find best matching production
-    const bestMatch = findBestProduction(searchResults, options);
 
     if (!bestMatch) {
       console.log(`  ❌ No suitable IBDB production found for "${title}"`);
@@ -559,6 +567,30 @@ async function lookupIBDBDates(title, options = {}) {
     if (!dates.openingDate && !dates.previewsStartDate) {
       console.log(`  ❌ No dates extracted from IBDB page for "${title}"`);
       return { ...notFound, ibdbUrl: bestMatch.url, creativeTeam: dates.creativeTeam || [] };
+    }
+
+    // Step 4: PRODUCTION YEAR VALIDATION GATE
+    // Prevents wrong-production matching (e.g., 1988 Chess instead of 2025 Chess)
+    // This is the primary defense against ALL creative team role contamination.
+    if (options.openingYear && dates.openingDate) {
+      const ibdbYear = parseInt(dates.openingDate.split('-')[0]);
+      const expectedYear = options.openingYear;
+      const yearDiff = Math.abs(ibdbYear - expectedYear);
+
+      if (yearDiff > 1) {
+        console.log(`  ⛔ WRONG PRODUCTION: IBDB page year (${ibdbYear}) differs from expected (${expectedYear}) by ${yearDiff} years`);
+        console.log(`     Rejecting creative team data to prevent contamination`);
+        console.log(`     URL: ${bestMatch.url}`);
+        return notFound;
+      }
+
+      if (yearDiff === 1) {
+        console.log(`  ⚠️  IBDB year (${ibdbYear}) differs from expected (${expectedYear}) by 1 year — allowing (year-boundary tolerance)`);
+      }
+    } else if (!options.openingYear) {
+      // No expected year — require title match on the scraped page as minimum validation
+      // (This catches discover-new-shows.js calls where openingDate may not exist yet)
+      console.log(`  ⚠️  No opening year for "${title}" — cannot validate IBDB production match`);
     }
 
     console.log(`  ✅ IBDB dates for "${title}":`);
@@ -603,7 +635,8 @@ async function batchLookupIBDBDates(shows, options = {}) {
 
     const dates = await lookupIBDBDates(show.title, {
       openingYear: show.openingYear,
-      venue: show.venue
+      venue: show.venue,
+      ibdbUrl: show.ibdbUrl || null
     });
 
     results.set(show.title, dates);
