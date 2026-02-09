@@ -24,6 +24,24 @@ const showMapById = {};
 for (const s of showsData.shows) showMapById[s.id] = s;
 const shardDir = path.join(__dirname, '../data/reddit-shards');
 
+// Multi-production guard: only the most recent production gets Reddit data
+const mostRecentByTitle = {};
+for (const s of showsData.shows) {
+  const titleBase = s.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+  const existing = mostRecentByTitle[titleBase];
+  if (!existing || (s.openingDate || '') > (existing.openingDate || '')) {
+    mostRecentByTitle[titleBase] = s;
+  }
+}
+
+function isMostRecentProduction(showId) {
+  const show = showMapById[showId];
+  if (!show) return true;
+  const titleBase = show.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+  const newest = mostRecentByTitle[titleBase];
+  return !newest || newest.id === showId;
+}
+
 function main() {
   console.log('=== Reddit Shard Merger ===\n');
 
@@ -73,6 +91,13 @@ function main() {
   let created = 0;
 
   for (const [showId, redditData] of Object.entries(allRedditData)) {
+    // Multi-production guard: only assign to most recent production
+    if (!isMostRecentProduction(showId)) {
+      console.log(`  SKIP ${showId}: not the most recent production of this title`);
+      skipped++;
+      continue;
+    }
+
     if (!audienceBuzz.shows[showId]) {
       // Show doesn't exist in buzz yet — create a skeleton entry
       audienceBuzz.shows[showId] = {
