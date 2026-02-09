@@ -1,7 +1,8 @@
 {
   "processed": [
     "hamilton-2015/timeout--adam-feldman.json",
-    "hamilton-2015/timeout--david-cote.json"
+    "hamilton-2015/timeout--david-cote.json",
+    "the-lion-king-1997/timeout--adam-feldman.json"
   ],
   "failed": [
     "aladdin-2014/timeout--adam-feldman.json",
@@ -21,11 +22,22 @@
     "moulin-rouge-2019/timeout--adam-feldman.json",
     "oedipus-2025/timeout--adam-feldman.json",
     "oh-mary-2024/timeout--adam-feldman.json",
-    "operation-mincemeat-2025/timeout--adam-feldman.json"
+    "operation-mincemeat-2025/timeout--adam-feldman.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "six-2021/timeout--adam-feldman.json",
+    "stranger-things-2024/timeout--adam-feldman.json",
+    "the-great-gatsby-2024/timeout--adam-feldman.json",
+    "the-outsiders-2024/timeout--adam-feldman.json",
+    "wicked-2003/timeout--david-cote.json",
+    "1776-2022/timeout--adam-feldman.json",
+    "1984-2017/timeout--adam-feldman.json",
+    "700-sundays-2013/timeout--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-lion-king-1997/timeout--adam-feldman.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -35,6 +47,6 @@
     ]
   },
   "startTime": "2026-02-09T16:32:59.633Z",
-  "lastProcessed": "operation-mincemeat-2025/timeout--adam-feldman.json",
+  "lastProcessed": "700-sundays-2013/timeout--david-cote.json",
   "log": []
 }
