@@ -1,15 +1,34 @@
 {
-  "updatedAt": "2026-02-10T03:39:15.891Z",
-  "processed": 17,
-  "failed": 83,
-  "successRate": "17.0%",
+  "updatedAt": "2026-02-10T03:47:35.959Z",
+  "processed": 3,
+  "failed": 7,
+  "successRate": "30.0%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 1,
+    "browserbase": 4,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 17
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T03:45:35.396Z",
+      "event": "bb-session",
+      "session": "d1e523eb",
+      "url": "https://variety.com/2025/legit/reviews/ragtime-review-broadway-lincoln-center-th"
+    },
+    {
+      "t": "2026-02-10T03:45:57.432Z",
+      "event": "bb-session",
+      "session": "d74aa89e",
+      "url": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-b"
+    },
+    {
+      "t": "2026-02-10T03:46:38.950Z",
+      "event": "bb-session",
+      "session": "212a3aae",
+      "url": "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is"
+    }
+  ]
 }
