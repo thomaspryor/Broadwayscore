@@ -1,62 +1,67 @@
 {
-  "updatedAt": "2026-02-10T17:57:34.518Z",
-  "processed": 3,
-  "failed": 147,
-  "successRate": "2.0%",
+  "updatedAt": "2026-02-10T17:59:31.230Z",
+  "processed": 10,
+  "failed": 150,
+  "successRate": "6.3%",
   "tierBreakdown": {
     "playwright": 3,
     "browserbase": 1,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "scrapingbee": 1,
+    "brightdata": 2,
+    "archive": 5
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:11:57.505Z",
+      "t": "2026-02-10T16:14:09.718Z",
       "event": "bb-session",
-      "session": "ec39d8c7",
-      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+      "session": "bddd114d",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
     },
     {
-      "t": "2026-02-10T16:12:41.360Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-10T16:13:33.910Z",
-      "event": "bb-session",
-      "session": "f8fef17f",
-      "url": "https://www.nydailynews.com/2025/12/08/broadway-review-marjorie-prime-cynthia-ni"
-    },
-    {
-      "t": "2026-02-10T16:15:41.696Z",
-      "event": "bb-session",
-      "session": "ffc30147",
-      "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the"
-    },
-    {
-      "t": "2026-02-10T16:16:24.931Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-10T16:21:30.044Z",
-      "event": "bb-session",
-      "session": "173876c5",
-      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
-    },
-    {
-      "t": "2026-02-10T16:23:54.373Z",
-      "event": "bb-session",
-      "session": "e6377a6d",
-      "url": "https://www.nytimes.com/2016/12/01/theater/a-bronx-tale-review.html"
-    },
-    {
-      "t": "2026-02-10T16:24:37.699Z",
+      "t": "2026-02-10T16:14:55.077Z",
       "event": "bb-login-fail",
       "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740644498\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAKFsqxcp2gBgALPhWIg==&cid=0Ws8~esu6FyVsBiTHp7os1Pjg1Fydegm1IXpqu9gH6~KrXGDwsRT8sEzlbkJinLWnVstgnxIrxAvtA9~IXaO0IPQTnQ8DK~jd1yGXrXBTdC6qiNroESyi9Y9MJdCEj3k&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740644498\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740644498\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAKFsqxcp2gBgALPhWIg==&cid=0Ws8~esu6FyVsBiTHp7os1Pjg1Fydegm1IXpqu9gH6~KrXGDwsRT8sEzlbkJinLWnVstgnxIrxAvtA9~IXaO0IPQTnQ8DK~jd1yGXrXBTdC6qiNroESyi9Y9MJdCEj3k&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740644498\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    27 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740644498\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAKFsqxcp2gBgALPhWIg==&cid=0Ws8~esu6FyVsBiTHp7os1Pjg1Fydegm1IXpqu9gH6~KrXGDwsRT8sEzlbkJinLWnVstgnxIrxAvtA9~IXaO0IPQTnQ8DK~jd1yGXrXBTdC6qiNroESyi9Y9MJdCEj3k&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740644498\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740061689\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMATWsyT2FVtg4ALPe1oA==&cid=dgglU_I2MxuvUtO~ILysG3FL9_eXJoBiWaa4x9OJFGDCWoP9qvBo7VdpOO8P46q8HEHkKdMp_UC4NH6WjhBJMDQBrYCIe~15zg9w8i7yHmmZL_Dg7_yTGu7h05_rN9z0&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740061689\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740061689\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMATWsyT2FVtg4ALPe1oA==&cid=dgglU_I2MxuvUtO~ILysG3FL9_eXJoBiWaa4x9OJFGDCWoP9qvBo7VdpOO8P46q8HEHkKdMp_UC4NH6WjhBJMDQBrYCIe~15zg9w8i7yHmmZL_Dg7_yTGu7h05_rN9z0&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740061689\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    20 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740061689\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMATWsyT2FVtg4ALPe1oA==&cid=dgglU_I2MxuvUtO~ILysG3FL9_eXJoBiWaa4x9OJFGDCWoP9qvBo7VdpOO8P46q8HEHkKdMp_UC4NH6WjhBJMDQBrYCIe~15zg9w8i7yHmmZL_Dg7_yTGu7h05_rN9z0&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740061689\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n"
+    },
+    {
+      "t": "2026-02-10T16:17:21.983Z",
+      "event": "bb-session",
+      "session": "edf18ba0",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
+    },
+    {
+      "t": "2026-02-10T16:17:23.986Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:20:08.520Z",
+      "event": "bb-session",
+      "session": "a8234425",
+      "url": "https://www.newyorker.com/magazine/2021/11/01/six-brings-pop-feminism-to-broadwa"
+    },
+    {
+      "t": "2026-02-10T16:20:10.866Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:20:48.109Z",
+      "event": "bb-session",
+      "session": "8b27e068",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
+    },
+    {
+      "t": "2026-02-10T16:23:09.758Z",
+      "event": "bb-session",
+      "session": "36b1b13c",
+      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
+    },
+    {
+      "t": "2026-02-10T16:23:11.902Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     }
   ]
 }
