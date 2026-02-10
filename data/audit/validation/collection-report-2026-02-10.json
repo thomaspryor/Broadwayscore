@@ -1,112 +1,365 @@
 {
-  "runDate": "2026-02-10T08:49:13.721Z",
+  "runDate": "2026-02-10T09:10:07.523Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "hells-kitchen-2024",
-    "aggressive": false,
+    "showFilter": "harry-potter-2021,and-juliet-2022,hells-kitchen-2024,death-becomes-her-2024,ragtime-2025,long-days-journey-into-night-2016,the-color-purple-2015,matilda-the-musical-2013,tootsie-2019,parade-2023,bullets-over-broadway-2014,ink-2019,pippin-2013,the-father-2016,carousel-2018,funny-girl-2022,miss-saigon-2017,once-on-this-island-2017,the-height-of-the-storm-2019,american-buffalo-2022,disgraced-2014,hedwig-and-the-angry-inch-2014,orphans-2013,the-country-house-2014,torch-song-2018,bad-cinderella-2023,cost-of-living-2022,how-i-learned-to-drive-2022,left-on-tenth-2024,mcneal-2024,once-upon-a-one-more-time-2023,tammy-faye-2024,the-hills-of-california-2024,1776-2022,a-delicate-balance-2014,amazing-grace-2015,bonnie-and-clyde-2011,escape-to-margaritaville-2018,jerusalem-2011,machinal-2014,peter-and-the-starcatcher-2012,straight-white-men-2018,the-humans-2016,the-minutes-2022,travesties-2018,between-riverside-and-crazy-2022,caroline-or-change-2021,fences-2010,gigi-2015,good-people-2011,is-this-a-room-2021,picnic-2013,sunset-boulevard-2024,the-crucible-2016,thoughts-of-a-colored-man-2021,violet-2014,a-bronx-tale-the-musical-2016,aint-no-mo-2022,bengal-tiger-at-the-baghdad-zoo-2011,come-fly-away-2010,farinelli-and-the-king-2017,grey-gardens-2006,how-to-succeed-in-business-without-really-trying-2011,merrily-we-roll-along-2023,natasha-pierre-and-the-great-comet-of-1812-2016,suffs-2024,the-house-of-blue-leaves-2011,the-parisian-woman-2017,700-sundays-2013,american-idiot-2010,bernhardthamlet-2018,cat-on-a-hot-tin-roof-2013,days-of-wine-and-roses-2024,grey-house-2023,joe-turners-come-and-gone-2009,liberation-2025,promises-promises-2010,south-pacific-2008,the-kite-runner-2022,the-roommate-2024,the-winslow-boy-2013,13-2008,american-son-2018,bye-bye-birdie-2009,everyday-rapture-2010,harvey-2012,jekyll-and-hyde-2013,man-and-boy-2011,mr-saturday-night-2022,prima-facie-2023,scandalous-2012,superior-donuts-2009,the-color-purple-2005,the-history-boys-2006,the-philanthropist-2009,the-skin-of-our-teeth-2022,title-of-show-2008,wit-2012,august-osage-county-2007,brighton-beach-memoirs-2009,deuce-2007,floyd-collins-2025,heart-of-rock-and-roll-2024,job-2024,looped-2010,mike-birbiglia-the-old-man-and-the-pool-2022,other-desert-cities-2011,real-women-have-curves-2025,slave-play-2021,sunday-in-the-park-with-george-2008,the-homecoming-2007,the-norman-conquests-2009,the-road-to-mecca-2012,the-woman-in-white-2005,absurd-person-singular-2005,beetlejuice-2022,company-2006,dead-outlaw-2025,equus-2008,hair-2011,hot-feet-2006,journeys-end-2007,lestat-2006,pal-joey-2008,queen-versailles-2025,shining-city-2006,the-country-girl-2008,the-odd-couple-2005,translations-2007,well-2006",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 20,
+    "processed": 14,
+    "failed": 86,
     "skipped": 0,
-    "successRate": "9.1%"
+    "successRate": "14.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 1,
-    "archive": 0
+    "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 7,
+    "tier1Attempts": 51,
+    "tier1Success": 5,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 10,
-    "tier2Success": 4,
-    "tier3Attempts": 9,
-    "tier3Success": 6,
-    "tier4Attempts": 15,
-    "tier4Success": 5,
-    "totalFailed": 20,
-    "scrapingBeeCreditsUsed": 57,
+    "tier2Attempts": 65,
+    "tier2Success": 11,
+    "tier3Attempts": 56,
+    "tier3Success": 17,
+    "tier4Attempts": 137,
+    "tier4Success": 45,
+    "totalFailed": 86,
+    "scrapingBeeCreditsUsed": 332,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 7,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 42,
+    "urlDiscoverySuccess": 29,
     "urlDiscoveryCapped": 0
   },
   "processed": [
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
     "hells-kitchen-2024/theatermania--david-gordon.json",
-    "hells-kitchen-2024/thewrap--steve-pond.json"
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/the-times--ann-treneman.json",
+    "bye-bye-birdie-2009/nytimes--ben-brantley.json",
+    "come-fly-away-2010/hollywood-reporter--franck-scheck.json",
+    "everyday-rapture-2010/hollywood-reporter--frank-scheck.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "left-on-tenth-2024/nytimes--jesse-green.json",
+    "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
+    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+    "the-father-2016/act-three-the-reviews--doug-marino.json",
+    "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
-    "hells-kitchen-2024/newyorker--naomi-fry.json",
-    "hells-kitchen-2024/nytg--david-gordon.json",
-    "hells-kitchen-2024/vulture--sara-holdren.json",
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/observer--david-cote.json",
-    "hells-kitchen-2024/observer--rex-reed.json",
-    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "hells-kitchen-2024/timeout--adam-feldman.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json",
-    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
-    "hells-kitchen-2024/showbiz411-roger-friedman--roger-friedman.json",
-    "hells-kitchen-2024/slantmagazine--dan-rubins.json",
-    "hells-kitchen-2024/talkinbroadway--howard-miller.json",
-    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
-    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
-    "hells-kitchen-2024/usatoday--david-oliver.json",
-    "hells-kitchen-2024/washpost--peter-marks.json"
+    "death-becomes-her-2024/wsj--charles-isherwood.json",
+    "harry-potter-2021/ew--kristen-baldwin.json",
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "harry-potter-2021/buy-tickets--unknown.json",
+    "1776-2022/variety--peter-marks.json",
+    "aint-no-mo-2022/variety--peter-marks.json",
+    "carousel-2018/nytimes--jesse-green.json",
+    "come-fly-away-2010/nytimes--ben-brantley.json",
+    "company-2006/nytimes--ben-brantley.json",
+    "deuce-2007/nytimes--ben-brantley.json",
+    "escape-to-margaritaville-2018/nytimes--jesse-green.json",
+    "farinelli-and-the-king-2017/vulture--jesse-green.json",
+    "good-people-2011/variety--marilyn-stasio.json",
+    "hair-2011/nytimes--ben-brantley.json",
+    "harvey-2012/nytimes--charles-isherwood.json",
+    "harvey-2012/vulture--jesse-green.json",
+    "hot-feet-2006/nytimes--ben-brantley.json",
+    "how-to-succeed-in-business-without-really-trying-2011/vulture--jesse-green.json",
+    "ink-2019/nytimes--ben-brantley.json",
+    "is-this-a-room-2021/nytimes--jesse-green.json",
+    "is-this-a-room-2021/vulture--helen-shaw.json",
+    "jerusalem-2011/nytimes--ben-brantley.json",
+    "joe-turners-come-and-gone-2009/nytimes--ben-brantley.json",
+    "journeys-end-2007/nytimes--ben-brantley.json",
+    "lestat-2006/nytimes--ben-brantley.json",
+    "long-days-journey-into-night-2016/hollywood-reporter--david-rooney.json",
+    "long-days-journey-into-night-2016/variety--marilyn-stasio.json",
+    "machinal-2014/hollywood-reporter--david-rooney.json",
+    "man-and-boy-2011/nytimes--ben-brantley.json",
+    "matilda-the-musical-2013/hollywood-reporter--david-rooney.json",
+    "matilda-the-musical-2013/nytimes--ben-brantley.json",
+    "matilda-the-musical-2013/variety--marilyn-stasio.json",
+    "matilda-the-musical-2013/vulture--jesse-green.json",
+    "mcneal-2024/hollywood-reporter--angie-han.json",
+    "mcneal-2024/variety--peter-marks.json",
+    "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json",
+    "miss-saigon-2017/vulture--jesse-green.json",
+    "once-on-this-island-2017/variety--marilyn-stasio.json",
+    "once-on-this-island-2017/vulture--jesse-green.json",
+    "orphans-2013/vulture--jesse-green.json",
+    "parade-2023/variety--aramide-tinubu.json",
+    "peter-and-the-starcatcher-2012/nytimes--ben-brantley.json",
+    "picnic-2013/nytimes--ben-brantley.json",
+    "picnic-2013/vulture--jesse-green.json",
+    "pippin-2013/hollywood-reporter--david-rooney.json",
+    "pippin-2013/nytimes--ben-brantley.json",
+    "pippin-2013/vulture--jesse-green.json",
+    "promises-promises-2010/nytimes--ben-brantley.json",
+    "shining-city-2006/nytimes--ben-brantley.json",
+    "straight-white-men-2018/hollywood-reporter--david-rooney.json",
+    "straight-white-men-2018/variety--marilyn-stasio.json",
+    "sunday-in-the-park-with-george-2008/nytimes--ben-brantley.json",
+    "superior-donuts-2009/nytimes--charles-isherwood.json",
+    "superior-donuts-2009/variety--david-rooney.json",
+    "tammy-faye-2024/variety--aramide-tinubu.json",
+    "tammy-faye-2024/vulture--jackson-mchenry.json",
+    "the-color-purple-2005/nytimes--ben-brantley.json",
+    "the-father-2016/hollywood-reporter--david-rooney.json",
+    "the-height-of-the-storm-2019/nytimes--ben-brantley.json",
+    "the-humans-2016/hollywood-reporter--david-rooney.json",
+    "the-humans-2016/nytimes--ben-brantley.json",
+    "the-minutes-2022/nytimes--jesse-green.json",
+    "the-minutes-2022/vulture--jesse-green.json",
+    "the-philanthropist-2009/nytimes--ben-brantley.json",
+    "the-skin-of-our-teeth-2022/nytimes--jesse-margolin.json",
+    "the-skin-of-our-teeth-2022/vulture--sara-holdren.json",
+    "the-woman-in-white-2005/nytimes--ben-brantley.json",
+    "the-woman-in-white-2005/variety--charles-isherwood.json",
+    "thoughts-of-a-colored-man-2021/nytimes--jesse-green.json",
+    "thoughts-of-a-colored-man-2021/variety--aramide-tinubu.json",
+    "tootsie-2019/hollywood-reporter--david-rooney.json",
+    "tootsie-2019/nytimes--jesse-green.json",
+    "tootsie-2019/variety--marilyn-stasio.json",
+    "tootsie-2019/vulture--jesse-green.json",
+    "torch-song-2018/hollywood-reporter--david-rooney.json",
+    "torch-song-2018/nytimes--ben-brantley.json",
+    "travesties-2018/vulture--jesse-green.json",
+    "violet-2014/nytimes--ben-brantley.json",
+    "violet-2014/variety--marilyn-stasio.json",
+    "well-2006/nytimes--ben-brantley.json",
+    "wit-2012/variety--marilyn-stasio.json",
+    "13-2008/nypost--frank-scheck.json",
+    "1776-2022/deadline--pete-hammond.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+      "the-father-2016/act-three-the-reviews--doug-marino.json",
+      "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json"
+    ],
     "browserbase": [],
     "scrapingbee": [
-      "hells-kitchen-2024/thewrap--steve-pond.json"
+      "bye-bye-birdie-2009/nytimes--ben-brantley.json",
+      "grey-house-2023/newyorker--dan-stahl.json"
     ],
     "brightdata": [
       "hells-kitchen-2024/theatermania--david-gordon.json"
     ],
-    "archive": []
+    "archive": [
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json",
+      "harry-potter-2021/the-times--ann-treneman.json",
+      "come-fly-away-2010/hollywood-reporter--franck-scheck.json",
+      "everyday-rapture-2010/hollywood-reporter--frank-scheck.json",
+      "left-on-tenth-2024/nytimes--jesse-green.json",
+      "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
+      "mr-saturday-night-2022/newyorker--vinson-cunningham.json"
+    ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
+    "IndieWire": {
       "count": 1,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
+      "domain": "indiewire.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The New York Times": {
+      "count": 10,
+      "domain": "nytimes.com",
+      "hasCredentials": false,
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "Rolling Stone": {
-      "count": 1,
-      "domain": "rollingstone.com",
+    "Vulture": {
+      "count": 4,
+      "domain": "vulture.com",
       "hasCredentials": false,
-      "isPaywalled": false,
+      "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "Talkin' Broadway": {
+    "The Hollywood Reporter": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": false
+      "isKnownBlocked": true
+    },
+    "Variety": {
+      "count": 1,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "New York Post": {
+      "count": 1,
+      "domain": "nypost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "hells-kitchen-2024/nytg--david-gordon.json",
-      "oldUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen",
-      "newUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen-broadway-review-alicia-keys"
+      "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
+      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOoqWpHWxMsUkd1G5565CAlTB5conxnELT984dld0Ai1uvWPQHeJL"
+    },
+    {
+      "reviewId": "1776-2022/variety--peter-marks.json",
+      "oldUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235421172/",
+      "newUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+    },
+    {
+      "reviewId": "aint-no-mo-2022/variety--peter-marks.json",
+      "oldUrl": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-jordan-e-cooper-1235445436/",
+      "newUrl": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/"
+    },
+    {
+      "reviewId": "carousel-2018/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2018/04/13/theater/carousel-review-broadway.html",
+      "newUrl": "https://www.nytimes.com/2018/04/12/theater/carousel-review-broadway.html"
+    },
+    {
+      "reviewId": "deuce-2007/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2007/05/16/theater/reviews/16deuc.html",
+      "newUrl": "https://www.nytimes.com/2007/05/07/theater/reviews/07deuc.html"
+    },
+    {
+      "reviewId": "farinelli-and-the-king-2017/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2017/12/theater-review-farinelli-and-the-king.html",
+      "newUrl": "https://www.vulture.com/2017/12/two-critics-review-one-show-farinelli-and-the-king.html"
+    },
+    {
+      "reviewId": "hair-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/09/24/theater/reviews/hair-at-al-hirschfeld-theater-review.html",
+      "newUrl": "https://www.nytimes.com/2011/07/14/theater/reviews/hair-in-diane-pauluss-staging-on-broadway-review.html"
+    },
+    {
+      "reviewId": "ink-2019/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2019/04/25/theater/ink-review.html",
+      "newUrl": "https://www.nytimes.com/2019/04/24/theater/ink-review.html"
+    },
+    {
+      "reviewId": "is-this-a-room-2021/vulture--helen-shaw.json",
+      "oldUrl": "https://www.vulture.com/2021/10/theater-review-is-this-a-room-broadway.html",
+      "newUrl": "https://www.vulture.com/2021/10/theater-review-is-this-a-room-on-broadway.html"
+    },
+    {
+      "reviewId": "man-and-boy-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/11/15/theater/reviews/man-and-boy-with-frank-langella-review.html",
+      "newUrl": "https://www.nytimes.com/2011/10/10/theater/reviews/man-and-boy-with-frank-langella-review.html"
+    },
+    {
+      "reviewId": "matilda-the-musical-2013/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-opens-on-broadway.html",
+      "newUrl": "https://www.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shubert-theater.html"
+    },
+    {
+      "reviewId": "parade-2023/variety--aramide-tinubu.json",
+      "oldUrl": "https://variety.com/2023/legit/reviews/parade-review-broadway-revival-ben-platt-micaela-diamond-1235555983/",
+      "newUrl": "https://variety.com/2023/legit/reviews/parade-review-ben-platt-broadway-musical-1235555503/"
+    },
+    {
+      "reviewId": "picnic-2013/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2013/01/14/theater/reviews/picnic-by-william-inge-on-broadway.html",
+      "newUrl": "https://www.nytimes.com/2013/01/14/theater/reviews/picnic-at-american-airlines-theater.html"
+    },
+    {
+      "reviewId": "pippin-2013/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2013/04/26/theater/reviews/pippin-revival-at-the-music-box-theater.html",
+      "newUrl": "https://www.nytimes.com/2013/04/26/theater/reviews/pippin-directed-by-diane-paulus-at-the-music-box-theater.html"
+    },
+    {
+      "reviewId": "shining-city-2006/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2006/05/31/theater/reviews/31shin.html",
+      "newUrl": "https://www.nytimes.com/2006/05/10/theater/reviews/shining-city-conor-mcphersons-study-of-loneliness-in-a.html"
+    },
+    {
+      "reviewId": "straight-white-men-2018/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/theater-review-straight-white-men-1129162/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/straight-white-men-theater-review-1129164/"
+    },
+    {
+      "reviewId": "sunday-in-the-park-with-george-2008/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2008/02/10/theater/reviews/10sund.html",
+      "newUrl": "https://www.nytimes.com/2008/02/22/theater/reviews/22geor.html"
+    },
+    {
+      "reviewId": "tammy-faye-2024/variety--aramide-tinubu.json",
+      "oldUrl": "https://variety.com/2024/legit/reviews/tammy-faye-review-elton-john-musical-1236190053/",
+      "newUrl": "https://variety.com/2024/legit/reviews/tammy-faye-review-broadway-musical-elton-john-1236210176/"
+    },
+    {
+      "reviewId": "tammy-faye-2024/vulture--jackson-mchenry.json",
+      "oldUrl": "https://www.vulture.com/article/tammy-faye-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-review-broadway-musical-tammy-faye.html"
+    },
+    {
+      "reviewId": "the-color-purple-2005/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2005/12/02/theater/reviews/the-color-purple-comes-to-broadway-bruised-but-unbroken.html",
+      "newUrl": "https://www.nytimes.com/2005/12/02/theater/02purp.html"
+    },
+    {
+      "reviewId": "the-father-2016/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/father-theater-review-876308/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/frank-langella-father-theater-review-883674/"
+    },
+    {
+      "reviewId": "the-height-of-the-storm-2019/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2019/09/25/theater/the-height-of-the-storm-review.html",
+      "newUrl": "https://www.nytimes.com/2019/09/24/theater/review-in-the-height-of-the-storm-two-stars-and-an-enigma.html"
+    },
+    {
+      "reviewId": "the-minutes-2022/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2022/04/theater-review-the-minutes-broadway.html",
+      "newUrl": "https://www.vulture.com/article/the-minutes-tracy-letts-broadway-review.html"
+    },
+    {
+      "reviewId": "the-skin-of-our-teeth-2022/nytimes--jesse-margolin.json",
+      "oldUrl": "https://www.nytimes.com/2022/04/24/theater/the-skin-of-our-teeth-review.html",
+      "newUrl": "https://www.nytimes.com/2022/04/25/theater/skin-of-our-teeth-review-lincoln-center.html"
+    },
+    {
+      "reviewId": "the-skin-of-our-teeth-2022/vulture--sara-holdren.json",
+      "oldUrl": "https://www.vulture.com/2022/04/theater-review-the-skin-of-our-teeth-on-broadway.html",
+      "newUrl": "https://www.vulture.com/2022/04/theater-review-skin-teeth-wilder-broadway-vivian-beaumont.html"
+    },
+    {
+      "reviewId": "tootsie-2019/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2019/04/theater-review-tootsie-on-broadway.html",
+      "newUrl": "https://www.vulture.com/2019/04/theater-review-can-tootsie-work-when-its-not-1982.html"
+    },
+    {
+      "reviewId": "torch-song-2018/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/torch-song-broadway-review-1155259/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/torch-song-theater-1157170/"
+    },
+    {
+      "reviewId": "torch-song-2018/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2018/11/01/theater/torch-song-review-harvey-fierstein.html",
+      "newUrl": "https://www.nytimes.com/2018/11/01/theater/torch-song-review.html"
+    },
+    {
+      "reviewId": "1776-2022/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2022/10/1776-broadway-review-roundabout-theatre-company-american-airlines-theatre-1235149772/",
+      "newUrl": "https://deadline.com/2022/10/1776-broadway-review-1235136437/"
     }
   ]
 }
