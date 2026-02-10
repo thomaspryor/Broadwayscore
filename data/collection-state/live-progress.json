@@ -1,62 +1,52 @@
 {
-  "updatedAt": "2026-02-10T16:29:50.549Z",
-  "processed": 2,
-  "failed": 49,
-  "successRate": "3.9%",
+  "updatedAt": "2026-02-10T16:38:05.508Z",
+  "processed": 7,
+  "failed": 73,
+  "successRate": "8.8%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 2,
+    "playwright": 3,
+    "browserbase": 3,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 1
+    "archive": 3
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:06:30.128Z",
+      "t": "2026-02-10T15:55:10.358Z",
       "event": "bb-session",
-      "session": "577c37c9",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
+      "session": "f213317b",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
     },
     {
-      "t": "2026-02-10T16:08:38.581Z",
+      "t": "2026-02-10T15:55:52.357Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770738919228\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA2IJ4BI_D-ocALPe1oA==&cid=RiieTcsfswbH3EGrzAjH4g95b2uhT6EKPeyIjnWKZhfm8Ep_u0K2WFsDJGs0hsRJSJqttMilTULwy8xOYjOEjkFXdIVW2OzBcjKGjuzdyh8F2sYwi5LlRzW7eoR0B3ax&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770738919228\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770738919228\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA2IJ4BI_D-ocALPe1oA==&cid=RiieTcsfswbH3EGrzAjH4g95b2uhT6EKPeyIjnWKZhfm8Ep_u0K2WFsDJGs0hsRJSJqttMilTULwy8xOYjOEjkFXdIVW2OzBcjKGjuzdyh8F2sYwi5LlRzW7eoR0B3ax&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770738919228\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    33 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770738919228\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA2IJ4BI_D-ocALPe1oA==&cid=RiieTcsfswbH3EGrzAjH4g95b2uhT6EKPeyIjnWKZhfm8Ep_u0K2WFsDJGs0hsRJSJqttMilTULwy8xOYjOEjkFXdIVW2OzBcjKGjuzdyh8F2sYwi5LlRzW7eoR0B3ax&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770738919228\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-10T15:56:22.002Z",
       "event": "bb-session",
-      "session": "064df0fa",
-      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
+      "session": "5af7bfc9",
+      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
     },
     {
-      "t": "2026-02-10T16:08:41.043Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-10T16:09:26.315Z",
+      "t": "2026-02-10T15:56:49.033Z",
       "event": "bb-session",
-      "session": "faf3f50a",
-      "url": "https://variety.com/2025/film/reviews/wicked-for-good-review-1236581742/"
+      "session": "7bb9cdf4",
+      "url": "https://www.theatermania.com/news/review-the-25th-annual-putnam-county-spelling-"
     },
     {
-      "t": "2026-02-10T16:10:55.158Z",
+      "t": "2026-02-10T16:00:49.330Z",
       "event": "bb-session",
-      "session": "ec66e7ee",
-      "url": "https://www.indiewire.com/criticism/movies/wicked-for-good-review-part-2-1235160"
+      "session": "80ced39d",
+      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
     },
     {
-      "t": "2026-02-10T16:11:48.750Z",
+      "t": "2026-02-10T16:10:45.893Z",
       "event": "bb-session",
-      "session": "cb331d83",
-      "url": "https://www.theatermania.com/news/review-wicked-for-good-flies-to-epic-heights-w"
-    },
-    {
-      "t": "2026-02-10T16:13:14.251Z",
-      "event": "bb-session",
-      "session": "00da9959",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-02-10T16:14:00.330Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "session": "22745d17",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
     }
   ]
 }
