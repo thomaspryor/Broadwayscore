@@ -1,51 +1,61 @@
 {
-  "updatedAt": "2026-02-10T18:30:26.123Z",
-  "processed": 22,
-  "failed": 258,
-  "successRate": "7.9%",
+  "updatedAt": "2026-02-10T18:34:07.308Z",
+  "processed": 11,
+  "failed": 189,
+  "successRate": "5.5%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 2,
     "browserbase": 1,
-    "scrapingbee": 2,
-    "brightdata": 1,
-    "archive": 13
+    "scrapingbee": 6,
+    "brightdata": 2,
+    "archive": 4
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:15:10.796Z",
+      "t": "2026-02-10T15:56:20.521Z",
       "event": "bb-session",
-      "session": "20c36c5c",
-      "url": "https://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als"
+      "session": "f88f9e39",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
     },
     {
-      "t": "2026-02-10T16:15:15.966Z",
+      "t": "2026-02-10T15:56:22.473Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:15:42.938Z",
+      "t": "2026-02-10T15:58:57.823Z",
       "event": "bb-session",
-      "session": "7cd83478",
-      "url": "https://www.variety.com/review/VE1117942352.html?categoryId=33&cs=1"
+      "session": "5da89040",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
     },
     {
-      "t": "2026-02-10T16:16:49.584Z",
-      "event": "bb-session",
-      "session": "a4bc6df0",
-      "url": "https://www.hollywoodreporter.com/review/amelie-a-new-musical-theater-957477"
+      "t": "2026-02-10T15:59:00.266Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:17:21.460Z",
+      "t": "2026-02-10T16:02:06.899Z",
       "event": "bb-session",
-      "session": "0727ea8a",
-      "url": "https://variety.com/2017/legit/reviews/amelie-a-new-musical-review-1202020405/"
+      "session": "071cbef5",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
     },
     {
-      "t": "2026-02-10T16:19:40.450Z",
+      "t": "2026-02-10T16:02:58.366Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:06:13.601Z",
       "event": "bb-session",
-      "session": "3d37ab6a",
-      "url": "https://variety.com/2023/legit/reviews/back-to-the-future-musical-broadway-revie"
+      "session": "e3e5d82f",
+      "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
+    },
+    {
+      "t": "2026-02-10T16:06:39.994Z",
+      "event": "bb-session",
+      "session": "757c446b",
+      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
     }
   ]
 }
