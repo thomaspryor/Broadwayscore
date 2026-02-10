@@ -8,8 +8,6 @@ const DISMISSED_PREFIX = 'bsc_show_follow_dismissed_';
 const SUBSCRIBED_KEY = 'bsc_email_subscribed';
 const FOLLOW_PREFIX = 'bsc_show_follow_subscribed_';
 
-const FORMSPREE_FOLLOW_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID || '';
-
 interface ShowFollowBannerProps {
   showId: string;
   showTitle: string;
@@ -79,17 +77,6 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
     e.preventDefault();
     const ok = await submit(email);
     if (ok) {
-      // Also submit to Formspree for server-side follower tracking
-      if (FORMSPREE_FOLLOW_FORM_ID) {
-        try {
-          await fetch(`https://formspree.io/f/${FORMSPREE_FOLLOW_FORM_ID}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email.toLowerCase().trim(), showId, showTitle }),
-          });
-        } catch { /* Formspree failure is non-critical */ }
-      }
-
       // Save per-show follow state
       try {
         localStorage.setItem(`${FOLLOW_PREFIX}${showId}`, 'true');
