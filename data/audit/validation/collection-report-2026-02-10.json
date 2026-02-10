@@ -2,7 +2,7 @@
   "runDate": "2026-02-10T09:29:52.898Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "the-lion-king-1997",
     "aggressive": false,
@@ -17,7 +17,7 @@
     "successRate": "4.5%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -69,7 +69,10 @@
     "the-lion-king-1997/washpost--lloyd-rose.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "a-night-with-janis-joplin-2013/ew--melissa-maerz.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -89,7 +92,7 @@
       "count": 1,
       "domain": "usatoday.com",
       "hasCredentials": false,
-      "isPaywalled": false,
+      "isPaywalled": true,
       "isKnownBlocked": false
     },
     "Albuquerque Journal": {
