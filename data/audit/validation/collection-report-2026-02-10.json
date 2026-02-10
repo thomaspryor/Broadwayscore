@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-10T11:20:56.082Z",
+  "runDate": "2026-02-10T11:33:17.321Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hadestown-2019",
+    "showFilter": "hells-kitchen-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 16,
+    "failed": 21,
     "skipped": 0,
-    "successRate": "5.9%"
+    "successRate": "4.5%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -25,50 +25,55 @@
   },
   "statistics": {
     "tier1Attempts": 12,
-    "tier1Success": 6,
+    "tier1Success": 7,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 7,
-    "tier2Success": 1,
-    "tier3Attempts": 7,
-    "tier3Success": 2,
-    "tier4Attempts": 14,
-    "tier4Success": 6,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 21,
+    "tier2Attempts": 9,
+    "tier2Success": 3,
+    "tier3Attempts": 9,
+    "tier3Success": 6,
+    "tier4Attempts": 15,
+    "tier4Success": 5,
+    "totalFailed": 21,
+    "scrapingBeeCreditsUsed": 47,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 7,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-2019/medium--christian-lewis.json"
+    "hells-kitchen-2024/theatermania--david-gordon.json"
   ],
   "failed": [
-    "hadestown-2019/newyorker--hilton-als.json",
-    "hadestown-2019/deadline--pete-hammond.json",
-    "hadestown-2019/guardian--adrian-horton.json",
-    "hadestown-2019/broadway-and-me--janice-c-simpson.json",
-    "hadestown-2019/buy-tickets--unknown.json",
-    "hadestown-2019/caroleditosti--carole-di-tosti.json",
-    "hadestown-2019/curtainup--elyse-sommer.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/gotham-playgoer--elizabeth-wollman.json",
-    "hadestown-2019/njcom--christopher-kelly.json",
-    "hadestown-2019/rollingstone--will-hermes.json",
-    "hadestown-2019/talkinbroadway--howard-miller.json",
-    "hadestown-2019/talkinbroadway--matthew-murray.json",
-    "hadestown-2019/towleroad--naveen-kumar.json",
-    "hadestown-2019/towleroad-naveen-kumar--naveen-kumar.json",
-    "hadestown-2019/washpost--peter-marks.json"
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "hells-kitchen-2024/nytg--david-gordon.json",
+    "hells-kitchen-2024/vulture--sara-holdren.json",
+    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/guardian--adrian-horton.json",
+    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+    "hells-kitchen-2024/observer--david-cote.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "hells-kitchen-2024/thewrap--steve-pond.json",
+    "hells-kitchen-2024/timeout--adam-feldman.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json",
+    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
+    "hells-kitchen-2024/showbiz411-roger-friedman--roger-friedman.json",
+    "hells-kitchen-2024/slantmagazine--dan-rubins.json",
+    "hells-kitchen-2024/talkinbroadway--howard-miller.json",
+    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
+    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
+    "hells-kitchen-2024/usatoday--david-oliver.json",
+    "hells-kitchen-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "hadestown-2019/medium--christian-lewis.json"
+      "hells-kitchen-2024/theatermania--david-gordon.json"
     ],
     "archive": []
   },
@@ -80,27 +85,26 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "BUY TICKETS": {
+    "Rolling Stone": {
       "count": 1,
-      "domain": "us.atgtickets.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
+      "domain": "rollingstone.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
     "Talkin' Broadway": {
-      "count": 2,
+      "count": 1,
       "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "hells-kitchen-2024/nytg--david-gordon.json",
+      "oldUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen",
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen-broadway-review-alicia-keys"
+    }
+  ]
 }
