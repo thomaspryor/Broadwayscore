@@ -202,7 +202,7 @@ function matchProductions(productions, shows) {
         }
       }
 
-      if (confidence !== 'none' && p.ratingsCount >= 5) {
+      if (confidence !== 'none' && p.ratingsCount >= 1) {
         const yearVerified = openYear && mYear && Math.abs(mYear - openYear) <= 1;
         // Require year verification for non-high confidence
         if (!yearVerified && confidence !== 'high') continue;
