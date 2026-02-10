@@ -202,10 +202,13 @@ WoW/YoY for capacity and ATP self-computed from `grosses-history.json`.
 - `scripts/scrape-grosses.ts` — BroadwayWorld weekly grosses + history enrichment
 - `scripts/update-commercial-data.js` — Weekly commercial automation
 - `scripts/generate-critic-consensus.js` — LLM editorial summaries
+- `scripts/discover-opening-night-reviews.js` — SERP-based review discovery for Tier 1+2 outlets on opening night (`--show=SLUG`, `--dry-run`, `--tiers=1,2`)
+- `scripts/send-opening-night-broadcast.js` — Broadcasts opening-night emails to all subscribers via Resend (`--dry-run`, `--lookback=DAYS`). 12+ scored reviews required, 95 send budget cap, multi-show coalescing.
+- `scripts/seed-subscribers.js` — One-time Loops CSV → Formspree seeder for bootstrapping subscriber list
 - `scripts/fetch-show-images-auto.js` — Image fetcher: TodayTix → page scrape → Playbill fallback. **Has `PINNED_IMAGES` set — NEVER overwrite these thumbnails** (manually curated promotional art). To update a pinned image: remove from the set first, then re-fetch.
 - `scripts/lib/verify-image.js` — Gemini 2.0 Flash vision gate for image verification (used by fetch pipeline with `--verify`)
 
-**Libraries:** `scripts/lib/` — `deduplication.js` (9-check show dedup), `review-normalization.js` (outlet/critic normalization), `text-cleaning.js` (HTML entities, junk stripping), `content-quality.js` (content tier classification + garbage detection), `excerpt-validation.js` (cross-show excerpt detection + tour review detection — see "Excerpt & Consensus Quality Gates" below), `ibdb-dates.js` (IBDB date/creative team lookup), `show-matching.js` (title→show matching), `scraper.js` (Bright Data → ScrapingBee → Playwright fallback), `deep-research-guardian.js`, `source-validator.js`, `parse-grosses.js`, `audience-weighting.js` (shared proportional weighting for audience buzz), `buzz-classifier.js` (LLM sentiment classification — 4 concurrent batches, provider chain: Kimi → Gemini → OpenAI → Claude), `reddit-api.js` (Reddit API with 3-tier fallback: direct → Bright Data → ScrapingBee, adaptive rate limiting 7s/12s/20s)
+**Libraries:** `scripts/lib/` — `email-templates.js` (shared email HTML builders for follow notifications + opening night broadcasts), `deduplication.js` (9-check show dedup), `review-normalization.js` (outlet/critic normalization), `text-cleaning.js` (HTML entities, junk stripping), `content-quality.js` (content tier classification + garbage detection), `excerpt-validation.js` (cross-show excerpt detection + tour review detection — see "Excerpt & Consensus Quality Gates" below), `ibdb-dates.js` (IBDB date/creative team lookup), `show-matching.js` (title→show matching), `scraper.js` (Bright Data → ScrapingBee → Playwright fallback), `deep-research-guardian.js`, `source-validator.js`, `parse-grosses.js`, `audience-weighting.js` (shared proportional weighting for audience buzz), `buzz-classifier.js` (LLM sentiment classification — 4 concurrent batches, provider chain: Kimi → Gemini → OpenAI → Claude), `reddit-api.js` (Reddit API with 3-tier fallback: direct → Bright Data → ScrapingBee, adaptive rate limiting 7s/12s/20s)
 
 **Audit/Scrapers:** `scripts/audit-content-quality.js` (run after bulk changes), `scripts/audit-aggregator-coverage.js` (`--output-gaps`, `--status=`, `--show=`), `scripts/audit-critic-outlets.js`, `scripts/scrape-playbill-verdict.js`, `scripts/scrape-nyc-theatre-roundups.js`, `scripts/scrape-nysr-reviews.js`, `scripts/adjudicate-review-queue.js` (daily auto-adjudication), `scripts/build-sqlite.js` / `scripts/query.js` / `scripts/schema.sql`
 
@@ -288,8 +291,20 @@ See `.github/workflows/CLAUDE.md` for individual workflow descriptions.
 | `scrape-new-aggregators.yml` | Yes | Yes | Weekly Sun 11 AM UTC |
 | `fetch-guardian-reviews.yml` | Yes | Yes | Manual |
 | `process-review-submission.yml` | Yes | Yes | Manual |
+| `opening-night-broadcast.yml` | Yes | Yes | 2x daily 4+5 AM UTC, discovers + scores + broadcasts |
 
 **For bulk imports:** Run parallel gather-reviews, then `gh workflow run "Rebuild Reviews Data"`.
+
+### Opening Night Broadcast System
+
+Sends rich email to ALL general subscribers when a show opens with 12+ scored reviews. Pipeline: sync subscribers from Formspree → discover reviews via SERP (Tier 1+2 outlets) → gather from aggregators → rebuild/score → generate consensus → broadcast via Resend.
+
+- **Subscriber dual-write:** `useLoopsCapture.ts` writes to both Loops (primary) and Formspree (queryable). Distinguished from per-show follows by `action: 'subscribe'` (no `showId`).
+- **Subscriber sync:** `sync-followers.js` pulls from Formspree API → `data/subscribers.json` (gitignored, never committed — PII)
+- **Broadcast tracking:** `data/opening-night-sent.json` (gitignored) tracks send count per broadcast for resume
+- **Unsubscribe page:** `/unsubscribe?email={email}` — CAN-SPAM compliant
+- **Budget:** Resend 100/day → cap at 95 sends (headroom for per-show follow emails). Discord alert if subscribers exceed cap.
+- **Seeding:** One-time `scripts/seed-subscribers.js` for bootstrapping from Loops CSV export
 
 ### Workflow Robustness Checklist
 
@@ -313,6 +328,9 @@ See `.github/workflows/CLAUDE.md` for individual workflow descriptions.
 | `BROWSERBASE_API_KEY` / `_PROJECT_ID` | Browser cloud + CAPTCHA ($0.10/session) |
 | `MEZZANINE_APP_ID` / `_SESSION_TOKEN` | Mezzanine Parse API (token may expire) |
 | `FORMSPREE_TOKEN` | Feedback form |
+| `FORMSPREE_FOLLOW_API_KEY` / `_FORM_ID` | Formspree follow/subscriber API (dual-write + sync) |
+| `RESEND_API_KEY` | Email sending (opening night broadcasts + follow notifications) |
+| `DISCORD_WEBHOOK_ALERTS` | Discord alerts for budget warnings, errors |
 
 ```yaml
 # CORRECT - explicitly pass secrets:
