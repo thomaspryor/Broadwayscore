@@ -5,11 +5,11 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 10135,
-      "skippedNoScore": 9336,
+      "skippedNoScore": 9334,
       "skippedDuplicate": 44,
-      "skippedDuplicateUrl": 286,
+      "skippedDuplicateUrl": 284,
       "skippedCrossOutletDuplicateUrl": 41,
-      "skippedDuplicateText": 374,
+      "skippedDuplicateText": 379,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 769,
       "recoveredFromGarbage": 129,
@@ -19,10 +19,10 @@
         "explicit-slash": 8,
         "explicit-letterGrade": 1,
         "human-review": 56,
-        "originalScore-priority0": 1073,
-        "llmScore": 4589,
+        "originalScore-priority0": 1074,
+        "llmScore": 4590,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 4210,
+        "llmScore-lowconf": 4208,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -47860,7 +47860,7 @@
       "pullQuote": "The extreme one offered here frequently defaces it.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "cabaret-2014",
@@ -48371,6 +48371,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "cabaret-2024",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 63,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Jesse Green",
+      "url": "https://www.nytimes.com/2024/04/21/theater/cabaret-review-eddie-redmayne.html",
+      "publishDate": "April 21, 2024",
+      "originalRating": null,
+      "pullQuote": "The problem for me is that 'Cabaret' has a distinctive profile already. The extreme one offered here frequently defaces it.",
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "contentTier": "complete"
     },
     {
       "showId": "cabaret-2024",
@@ -54089,7 +54106,7 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 18,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Jesse Green",
@@ -54099,7 +54116,7 @@
       "pullQuote": "So why did the thing turn into a hideous, cheap-looking, melted Whitman's sampler?",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "chess-2025",
@@ -56922,6 +56939,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "chinglish-2011",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 79,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Charles Isherwood",
+      "url": "https://artsbeat.blogs.nytimes.com/2011/10/30/curtain-down-heads-up-readers-review-chinglish/?ref=davidhenryhwang",
+      "publishDate": "October 27, 2011",
+      "originalRating": null,
+      "pullQuote": "Mr. Hwang has written a smart, funny and ultimately touching play",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "chinglish-2011",
@@ -64323,7 +64357,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 52,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Charles Isherwood",
@@ -64333,7 +64367,7 @@
       "pullQuote": "But 'Dames' ultimately founders on our familiarity, not with the genre it plays with like a cat's toy, but with the long history, since its creation, of similar simulations of old-school entertainments.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "dames-at-sea-2015",
@@ -83994,18 +84028,18 @@
       "showId": "fool-for-love-2015",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 61,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Adam Feldman",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "David Cote",
       "url": "http://www.timeout.com/newyork/theater/fool-for-love-1",
-      "publishDate": "October 8, 2015",
-      "originalRating": null,
-      "pullQuote": "The production is sleek and well-acted, but it lacks the raw, desperate energy that makes Shepard's work so compelling.",
+      "publishDate": null,
+      "originalRating": "4/5",
+      "pullQuote": "But it’s Rockwell and Arianda who really strike the sparks, blow on the embers and get the fire raging.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "fool-for-love-2015",
@@ -87048,7 +87082,7 @@
       "pullQuote": "Pierce manages to create a vivid sense of each character through vocal work alone, and his manic energy keeps the show moving at a breakneck pace.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "fully-committed-2016",
@@ -124125,23 +124159,6 @@
     },
     {
       "showId": "new-york-new-york-2023",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 61,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jesse Green",
-      "url": "https://www.nytimes.com/2023/04/27/theater/new-york-new-york-review.html",
-      "publishDate": "April 27, 2023",
-      "originalRating": null,
-      "pullQuote": "The new musical 'New York, New York' is a big, expensive love letter to the city that never sleeps, but it's also a show that never quite wakes up to its own potential.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "new-york-new-york-2023",
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 62,
@@ -155306,13 +155323,13 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Maya Stanton",
-      "url": "http://www.ew.com/ew/article/0,,20364394_20738449,00.html",
+      "url": "https://ew.com/theater/2017/03/09/glass-menagerie-ew-stage-review/?srsltid=AfmBOorBT7SACkZDHrv_9tbwT6jKONHs9eHP4s3Euln2Op6tFqXAPjNE",
       "publishDate": null,
       "originalRating": "D",
       "pullQuote": "The rare revival that breathes new life into a classic rather than defaulting to convention, this Menagerie is well worth another look.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-glass-menagerie-2017",
@@ -161077,23 +161094,6 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "complete"
-    },
-    {
-      "showId": "the-outsiders-2024",
-      "outletId": "culturesauce",
-      "outlet": "Culture Sauce",
-      "assignedScore": 89,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Thom Geier",
-      "url": "https://culturesauce.com/2024/04/11/the-outsiders-musical-broadway-review/",
-      "publishDate": "2024-04-11",
-      "originalRating": null,
-      "pullQuote": "Hinton novel (and Francis Ford Coppola movie) but a genuinely great American musical. The songs here, by the indie folk duo Jamestown Revival (with Justin Levine) don’t feel like pro forma music breaks but organic engines driving a tragic story of class conflict and brotherly love to onstage moments with real heft.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "the-outsiders-2024",
