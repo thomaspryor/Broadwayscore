@@ -329,6 +329,12 @@ const OUTLET_WAIT_CONFIGS = {
     waitTimeout: 15000,
     extraWait: 2000,
   },
+  // Condé Nast - New Yorker uses specific body container
+  'newyorker.com': {
+    waitForSelector: '.body__inner-container, [class*="BodyWrapper"]',
+    waitTimeout: 20000,
+    extraWait: 3000,
+  },
 };
 
 // Statistics tracking
@@ -436,6 +442,9 @@ async function dismissPaywallOverlays(page) {
         // Condé Nast (Vulture, New Yorker, NY Mag)
         '[class*="PaywallBarrier"]', '[class*="paywall-bar"]',
         '[data-testid="PaywallBarrier"]', '.paywall-bar',
+        '[class*="PaywallModal"]', '.paywall-modal',
+        '[class*="consumer-marketing-unit"]',
+        '[class*="RecircList"]', '.recirc-list-wrapper',
         // WSJ
         '.wsj-snippet-login', '#cx-snippet-overlay', '[class*="snippet"]',
         // WaPo
@@ -1550,7 +1559,7 @@ async function fetchWithScrapingBee(url, useStealth = false) {
       throw new Error(`CAPTCHA detected (${proxyType})`);
     }
 
-    const text = extractTextFromHtml(html);
+    const text = extractTextFromHtml(html, url);
 
     if (text && text.length > 500) {
       stats.tier2Success++;
@@ -1615,7 +1624,7 @@ async function fetchWithBrightData(url) {
       throw new Error('Access blocked in Bright Data response');
     }
 
-    const text = extractTextFromHtml(html);
+    const text = extractTextFromHtml(html, url);
 
     if (text && text.length > 500) {
       stats.tier3Success++;
@@ -1664,7 +1673,7 @@ async function fetchFromArchive(url) {
   });
 
   const html = response.data;
-  const text = extractTextFromHtml(html);
+  const text = extractTextFromHtml(html, url);
 
   if (text && text.length > 500) {
     stats.tier4Success++;
@@ -1691,7 +1700,11 @@ async function fetchFromArchiveCDX(url) {
   }
 
   // Query CDX API for snapshots
-  const cdxUrl = `http://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=10&from=2014&to=2026`;
+  // New Yorker articles go back to 2008+, so use wider date range for paywalled sites
+  const isPaywalledSite = url.includes('newyorker.com') || url.includes('nytimes.com') || url.includes('wsj.com');
+  const fromYear = isPaywalledSite ? '2008' : '2014';
+  const snapshotLimit = isPaywalledSite ? 20 : 10;
+  const cdxUrl = `http://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=${snapshotLimit}&from=${fromYear}&to=2026`;
   const cdxResp = await axios.get(cdxUrl, { timeout: 15000 });
 
   const rows = cdxResp.data;
@@ -1710,8 +1723,8 @@ async function fetchFromArchiveCDX(url) {
 
   console.log(`    → CDX found ${snapshots.length} snapshots (oldest: ${snapshots[0][1]}, newest: ${snapshots[snapshots.length - 1][1]})`);
 
-  // Try up to 5 snapshots, oldest-first
-  const maxAttempts = Math.min(snapshots.length, 5);
+  // Try more snapshots for paywalled sites (pre-paywall snapshots are gold)
+  const maxAttempts = Math.min(snapshots.length, isPaywalledSite ? 8 : 5);
   let lastError = null;
 
   for (let i = 0; i < maxAttempts; i++) {
@@ -1727,7 +1740,7 @@ async function fetchFromArchiveCDX(url) {
       });
 
       const html = response.data;
-      const text = extractTextFromHtml(html);
+      const text = extractTextFromHtml(html, original);
 
       if (text && text.length > 500) {
         console.log(`    → CDX snapshot ${timestamp} yielded ${text.length} chars`);
@@ -2386,6 +2399,8 @@ async function extractArticleText(page) {
   return await page.evaluate(() => {
     // Site-specific selectors first (most precise), then generic fallbacks
     const selectors = [
+      // New Yorker (Condé Nast) - most precise selector
+      '.body__inner-container',
       // NYT
       '[data-testid="article-body"]',
       'section[name="articleBody"]',
@@ -2472,17 +2487,36 @@ async function extractArticleText(page) {
       }
     }
 
-    return bestText
+    let cleaned = bestText
       .replace(/\s+/g, ' ')
       .replace(/Subscribe to our newsletter[^.]*\./gi, '')
       .replace(/Sign up for[^.]*\./gi, '')
       .replace(/Advertisement/gi, '')
       .trim();
+
+    // New Yorker: truncate at ♦ end-of-article marker
+    const diamondIdx = cleaned.indexOf('\u2666');
+    if (diamondIdx > 500) {
+      cleaned = cleaned.substring(0, diamondIdx).trim();
+    }
+    // New Yorker: truncate at print edition footer
+    const printIdx = cleaned.indexOf('Published in the print edition');
+    if (printIdx > 500) {
+      cleaned = cleaned.substring(0, printIdx).trim();
+    }
+
+    return cleaned;
   });
 }
 
-function extractTextFromHtml(html) {
+function extractTextFromHtml(html, url) {
   if (!html || typeof html !== 'string') return '';
+
+  // New Yorker-specific extraction: isolate article body before generic parsing
+  if (url && url.includes('newyorker.com')) {
+    const nyText = extractNewYorkerFromHtml(html);
+    if (nyText && nyText.length > 500) return nyText;
+  }
 
   // Remove scripts, styles, nav, etc.
   let text = html
@@ -2524,6 +2558,88 @@ function extractTextFromHtml(html) {
   }
 
   return paragraphs.join('\n\n');
+}
+
+/**
+ * New Yorker-specific HTML extraction.
+ * Isolates the article body container and strips recirc/newsletter/ad noise.
+ * The ♦ character is New Yorker's traditional end-of-article marker.
+ */
+function extractNewYorkerFromHtml(html) {
+  // Strip noise sections before extracting paragraphs
+  let cleaned = html
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, '')
+    .replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, '')
+    .replace(/<aside[^>]*>[\s\S]*?<\/aside>/gi, '');
+
+  // Try to isolate the article body container
+  const bodyContainerMatch = cleaned.match(
+    /class="[^"]*body__inner-container[^"]*"[^>]*>([\s\S]*?)(?:<div[^>]*class="[^"]*ContentFooter|<div[^>]*class="[^"]*recirc-list|$)/i
+  );
+
+  // Also try BodyWrapper pattern (Condé Nast CMS variant)
+  const bodyWrapperMatch = !bodyContainerMatch && cleaned.match(
+    /class="[^"]*BodyWrapper[^"]*"[^>]*>([\s\S]*?)(?:<div[^>]*class="[^"]*ContentFooter|<div[^>]*class="[^"]*recirc-list|$)/i
+  );
+
+  const articleHtml = (bodyContainerMatch || bodyWrapperMatch)?.[1] || cleaned;
+
+  // Remove inline newsletter, audio embeds, and ad containers within article
+  const strippedHtml = articleHtml
+    .replace(/<div[^>]*class="[^"]*Newsletter[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+    .replace(/<div[^>]*class="[^"]*AudioEmbed[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+    .replace(/<div[^>]*class="[^"]*VideoFigure[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+    .replace(/<div[^>]*class="[^"]*AdWrapper[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+    .replace(/<div[^>]*class="[^"]*consumer-marketing[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '');
+
+  // Extract paragraphs
+  const paragraphs = [];
+  const pRegex = /<p[^>]*>([\s\S]*?)<\/p>/gi;
+  let match;
+  while ((match = pRegex.exec(strippedHtml)) !== null) {
+    const pText = match[1]
+      .replace(/<[^>]+>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&#x27;/g, "'")
+      .replace(/&rsquo;/g, "\u2019")
+      .replace(/&lsquo;/g, "\u2018")
+      .replace(/&rdquo;/g, "\u201D")
+      .replace(/&ldquo;/g, "\u201C")
+      .replace(/&mdash;/g, '\u2014')
+      .replace(/&ndash;/g, '\u2013')
+      .trim();
+
+    if (pText.length > 30 &&
+        !pText.toLowerCase().includes('cookie') &&
+        !pText.toLowerCase().includes('subscribe') &&
+        !pText.toLowerCase().includes('sign up for') &&
+        !pText.toLowerCase().includes('newsletter')) {
+      paragraphs.push(pText);
+    }
+  }
+
+  let result = paragraphs.join('\n\n');
+
+  // Truncate at ♦ (New Yorker end-of-article marker) if present
+  const diamondIdx = result.indexOf('\u2666');
+  if (diamondIdx > 500) {
+    result = result.substring(0, diamondIdx).trim();
+  }
+
+  // Also truncate at "Published in the print edition" footer text
+  const printIdx = result.indexOf('Published in the print edition');
+  if (printIdx > 500) {
+    result = result.substring(0, printIdx).trim();
+  }
+
+  return result;
 }
 
 function validateReviewText(text, review) {
