@@ -1,84 +1,85 @@
 {
-  "runDate": "2026-02-10T18:02:32.641Z",
+  "runDate": "2026-02-10T18:11:43.816Z",
   "config": {
     "batchSize": 20,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "book-of-mormon-2011",
+    "showFilter": "mj-2022",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 20,
+    "processed": 4,
+    "failed": 18,
     "skipped": 0,
-    "successRate": "13.0%"
+    "successRate": "18.2%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "brightdata": 2,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 4,
+    "tier1Attempts": 15,
+    "tier1Success": 9,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 9,
+    "tier2Attempts": 14,
     "tier2Success": 4,
-    "tier3Attempts": 5,
-    "tier3Success": 0,
-    "tier4Attempts": 16,
-    "tier4Success": 7,
-    "totalFailed": 20,
-    "scrapingBeeCreditsUsed": 46,
+    "tier3Attempts": 10,
+    "tier3Success": 3,
+    "tier4Attempts": 15,
+    "tier4Success": 2,
+    "totalFailed": 18,
+    "scrapingBeeCreditsUsed": 150,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 6,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 5,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "book-of-mormon-2011/newyorkmagazine--scott-brown.json",
-    "book-of-mormon-2011/vulture--scott-brown.json",
-    "book-of-mormon-2011/stagezine--scott-harrah.json"
+    "mj-2022/hollywood-reporter--lovia-gayarkye.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/theatermania--jesse-green.json",
+    "mj-2022/theater-life--patrick-christiano.json"
   ],
   "failed": [
-    "book-of-mormon-2011/hollywood-reporter--david-rooney.json",
-    "book-of-mormon-2011/newyorker--hilton-als.json",
-    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
-    "book-of-mormon-2011/timeout--david-cote.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "book-of-mormon-2011/cititour--lesley-alexander.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/backstage--david-sheward.json",
-    "book-of-mormon-2011/broadway-voice--gregory-g-allen.json",
-    "book-of-mormon-2011/chicagotribune--.json",
-    "book-of-mormon-2011/chicagotribune--chris-jones.json",
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "book-of-mormon-2011/latimes--charles-mcnulty.json",
-    "book-of-mormon-2011/ny-1--roma-torre.json",
-    "book-of-mormon-2011/stu-on-broadway--stu-brown.json",
-    "book-of-mormon-2011/the-independent-uk--peter-marks.json",
-    "book-of-mormon-2011/theatre-is-easy--dan-dinero.json",
-    "book-of-mormon-2011/village-voice--michael-musto.json",
-    "book-of-mormon-2011/washpost--.json",
-    "book-of-mormon-2011/washpost--unknown.json"
+    "mj-2022/hollywood-reporter--angie-han.json",
+    "mj-2022/newyorker--naomi-fry.json",
+    "mj-2022/vulture--jackson-mchenry.json",
+    "mj-2022/deadline--pete-hammond.json",
+    "mj-2022/thewrap--steve-pond.json",
+    "mj-2022/timeout--adam-feldman.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "mj-2022/ap--mark-kennedy.json",
+    "mj-2022/exeunt-magazine--juliet-hindell.json",
+    "mj-2022/front-row-center--brittany-crowell.json",
+    "mj-2022/slantmagazine--dan-rubins.json",
+    "mj-2022/talkinbroadway--howard-miller.json",
+    "mj-2022/talkinbroadway--matthew-murray.json",
+    "mj-2022/theater-life--samuel-l-leiter.json",
+    "mj-2022/theater-pizzazz--cooper-lawrence.json",
+    "mj-2022/theater-scene--joel-benjamin.json",
+    "mj-2022/usatoday--david-rooney.json",
+    "mj-2022/usatoday--elysa-gardner.json"
   ],
   "tierDetails": {
     "playwright": [
-      "book-of-mormon-2011/stagezine--scott-harrah.json"
+      "mj-2022/theater-life--patrick-christiano.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "mj-2022/hollywood-reporter--lovia-gayarkye.json",
+      "mj-2022/theatermania--jesse-green.json"
+    ],
     "archive": [
-      "book-of-mormon-2011/newyorkmagazine--scott-brown.json",
-      "book-of-mormon-2011/vulture--scott-brown.json"
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
     ]
   },
   "failuresByOutlet": {
@@ -89,6 +90,13 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
+    "TheWrap": {
+      "count": 1,
+      "domain": "thewrap.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
     "The Wall Street Journal": {
       "count": 1,
       "domain": "wsj.com",
@@ -96,16 +104,9 @@
       "isPaywalled": true,
       "isKnownBlocked": true
     },
-    "Broadway Voice": {
+    "Talkin' Broadway": {
       "count": 1,
-      "domain": "bwayvoice.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Village Voice": {
-      "count": 1,
-      "domain": "villagevoice.com",
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -113,9 +114,14 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "book-of-mormon-2011/chicagotribune--.json",
-      "oldUrl": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-park/",
-      "newUrl": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in-a-hilarious-book-of-mormon/"
+      "reviewId": "mj-2022/vulture--jackson-mchenry.json",
+      "oldUrl": "https://www.vulture.com/2022/02/mj-the-musical-broadway-review.html",
+      "newUrl": "https://www.vulture.com/2022/02/theater-review-mj-michael-jackson-bio-musical-broadway-nyc.html"
+    },
+    {
+      "reviewId": "mj-2022/usatoday--elysa-gardner.json",
+      "oldUrl": "https://www.usatoday.com/story/entertainment/theater/2022/02/02/mj-musical-broadway-review-michael-jackson/9309958002/",
+      "newUrl": "https://collegesportswire.usatoday.com/story/entertainment/arts/2022/02/02/mj-musical-review-michael-jackson-show-opens-broadway/9287724002/"
     }
   ]
 }
