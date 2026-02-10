@@ -83,6 +83,13 @@
     "archive": []
   },
   "failuresByOutlet": {
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
     "The New Yorker": {
       "count": 1,
       "domain": "newyorker.com",
@@ -121,6 +128,13 @@
     "Talkin' Broadway": {
       "count": 1,
       "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "unknown": {
+      "count": 1,
+      "domain": "streetdirectory.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false

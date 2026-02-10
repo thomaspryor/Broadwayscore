@@ -1,57 +1,67 @@
 {
-  "updatedAt": "2026-02-10T18:15:24.530Z",
-  "processed": 14,
-  "failed": 186,
-  "successRate": "7.0%",
+  "updatedAt": "2026-02-10T18:19:10.898Z",
+  "processed": 10,
+  "failed": 180,
+  "successRate": "5.3%",
   "tierBreakdown": {
-    "playwright": 4,
-    "browserbase": 3,
-    "scrapingbee": 5,
-    "brightdata": 1,
-    "archive": 5
+    "playwright": 2,
+    "browserbase": 1,
+    "scrapingbee": 2,
+    "brightdata": 2,
+    "archive": 4
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:06:13.076Z",
+      "t": "2026-02-10T16:37:09.065Z",
       "event": "bb-session",
-      "session": "a70e4864",
-      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+      "session": "47cd9296",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
     },
     {
-      "t": "2026-02-10T16:06:15.388Z",
+      "t": "2026-02-10T16:37:53.756Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770741440404\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAwVhUapy8LI8ANBsspA==&cid=JtM_x3C5WTw4HfWQsECw7lxxu4SUw3cY_QcK_JEh9fX_BpgtFaY7pfoNmKD8s1GvmsBESsBFqMHI2ZZOOMUZo2VlsMuK6f7KOWyVjRrkzFwD2QEI1PpisO5rIhhPBYyv&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770741440404\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770741440404\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAwVhUapy8LI8ANBsspA==&cid=JtM_x3C5WTw4HfWQsECw7lxxu4SUw3cY_QcK_JEh9fX_BpgtFaY7pfoNmKD8s1GvmsBESsBFqMHI2ZZOOMUZo2VlsMuK6f7KOWyVjRrkzFwD2QEI1PpisO5rIhhPBYyv&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770741440404\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770741440404\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAwVhUapy8LI8ANBsspA==&cid=JtM_x3C5WTw4HfWQsECw7lxxu4SUw3cY_QcK_JEh9fX_BpgtFaY7pfoNmKD8s1GvmsBESsBFqMHI2ZZOOMUZo2VlsMuK6f7KOWyVjRrkzFwD2QEI1PpisO5rIhhPBYyv&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770741440404\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-02-10T16:40:16.345Z",
+      "event": "bb-session",
+      "session": "c8561023",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
+    },
+    {
+      "t": "2026-02-10T16:40:18.476Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:06:58.349Z",
+      "t": "2026-02-10T16:42:47.527Z",
       "event": "bb-session",
-      "session": "f1a63114",
-      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+      "session": "48b01992",
+      "url": "https://www.newyorker.com/magazine/2021/11/01/six-brings-pop-feminism-to-broadwa"
     },
     {
-      "t": "2026-02-10T16:08:14.478Z",
-      "event": "bb-session",
-      "session": "31952850",
-      "url": "https://theater.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-with-"
+      "t": "2026-02-10T16:42:49.755Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:09:02.404Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770739708967\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAZQHEekDhGCgALPhWIg==&cid=dT9zDbDYW6r8pCALqIpknjoocW~MDVYCHpM_mgRJHZyrh2ahLzo7lrEAvNO_3BKzm1SERuAocTaEIpCx4GbnL3~3cw~qvy1d~sI_b7mm2r_LDvCFVQ6feaTsGQ~1gDnX&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770739708967\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770739708967\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAZQHEekDhGCgALPhWIg==&cid=dT9zDbDYW6r8pCALqIpknjoocW~MDVYCHpM_mgRJHZyrh2ahLzo7lrEAvNO_3BKzm1SERuAocTaEIpCx4GbnL3~3cw~qvy1d~sI_b7mm2r_LDvCFVQ6feaTsGQ~1gDnX&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770739708967\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    16 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770739708967\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAZQHEekDhGCgALPhWIg==&cid=dT9zDbDYW6r8pCALqIpknjoocW~MDVYCHpM_mgRJHZyrh2ahLzo7lrEAvNO_3BKzm1SERuAocTaEIpCx4GbnL3~3cw~qvy1d~sI_b7mm2r_LDvCFVQ6feaTsGQ~1gDnX&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770739708967\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+      "t": "2026-02-10T16:43:25.540Z",
+      "event": "bb-session",
+      "session": "0543c32e",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
     },
     {
-      "t": "2026-02-10T16:11:33.453Z",
+      "t": "2026-02-10T16:45:34.315Z",
       "event": "bb-session",
-      "session": "76029a18",
-      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-12360"
+      "session": "5ef8e6b2",
+      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
     },
     {
-      "t": "2026-02-10T16:13:05.075Z",
-      "event": "bb-session",
-      "session": "8056bc74",
-      "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-ny-broadway"
+      "t": "2026-02-10T16:45:36.051Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     }
   ]
 }
