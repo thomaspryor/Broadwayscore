@@ -1,15 +1,51 @@
 {
-  "updatedAt": "2026-02-10T20:10:43.883Z",
-  "processed": 5,
-  "failed": 16,
-  "successRate": "23.8%",
+  "updatedAt": "2026-02-10T20:13:48.525Z",
+  "processed": 13,
+  "failed": 317,
+  "successRate": "3.9%",
   "tierBreakdown": {
-    "playwright": 3,
-    "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 1
+    "playwright": 6,
+    "browserbase": 2,
+    "scrapingbee": 0,
+    "brightdata": 3,
+    "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T16:04:33.335Z",
+      "event": "bb-session",
+      "session": "9cacf823",
+      "url": "https://variety.com/2025/legit/reviews/ragtime-review-broadway-lincoln-center-th"
+    },
+    {
+      "t": "2026-02-10T16:05:02.764Z",
+      "event": "bb-session",
+      "session": "60ef95d5",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-02-10T16:05:49.472Z",
+      "event": "bb-session",
+      "session": "ccead434",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-02-10T16:08:23.178Z",
+      "event": "bb-session",
+      "session": "851ae91c",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/the-outsiders-theatre-review"
+    },
+    {
+      "t": "2026-02-10T16:08:25.433Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:09:12.961Z",
+      "event": "bb-session",
+      "session": "663d23bb",
+      "url": "https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-1235971032/"
+    }
+  ]
 }
