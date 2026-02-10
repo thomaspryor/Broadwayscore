@@ -1,62 +1,56 @@
 {
-  "updatedAt": "2026-02-10T16:29:50.549Z",
-  "processed": 2,
-  "failed": 49,
-  "successRate": "3.9%",
+  "updatedAt": "2026-02-10T16:38:00.530Z",
+  "processed": 36,
+  "failed": 334,
+  "successRate": "9.7%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 2,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 1
+    "playwright": 11,
+    "browserbase": 3,
+    "scrapingbee": 8,
+    "brightdata": 5,
+    "archive": 14
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:06:30.128Z",
+      "t": "2026-02-10T12:00:33.388Z",
       "event": "bb-session",
-      "session": "577c37c9",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
+      "session": "05879339",
+      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
     },
     {
-      "t": "2026-02-10T16:08:38.581Z",
-      "event": "bb-session",
-      "session": "064df0fa",
-      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
-    },
-    {
-      "t": "2026-02-10T16:08:41.043Z",
+      "t": "2026-02-10T12:00:35.469Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:09:26.315Z",
+      "t": "2026-02-10T12:01:15.515Z",
       "event": "bb-session",
-      "session": "faf3f50a",
-      "url": "https://variety.com/2025/film/reviews/wicked-for-good-review-1236581742/"
+      "session": "c1c959f2",
+      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
     },
     {
-      "t": "2026-02-10T16:10:55.158Z",
+      "t": "2026-02-10T12:01:29.590Z",
       "event": "bb-session",
-      "session": "ec66e7ee",
-      "url": "https://www.indiewire.com/criticism/movies/wicked-for-good-review-part-2-1235160"
+      "session": "98bf64a3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235"
     },
     {
-      "t": "2026-02-10T16:11:48.750Z",
+      "t": "2026-02-10T12:01:59.028Z",
       "event": "bb-session",
-      "session": "cb331d83",
-      "url": "https://www.theatermania.com/news/review-wicked-for-good-flies-to-epic-heights-w"
+      "session": "14f32229",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
     },
     {
-      "t": "2026-02-10T16:13:14.251Z",
+      "t": "2026-02-10T12:04:23.797Z",
       "event": "bb-session",
-      "session": "00da9959",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
+      "session": "1b9cdb9d",
+      "url": "https://www.newyorker.com/magazine/2022/02/21/mj-sanitizes-michael-jackson"
     },
     {
-      "t": "2026-02-10T16:14:00.330Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-10T12:04:25.827Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     }
   ]
 }
