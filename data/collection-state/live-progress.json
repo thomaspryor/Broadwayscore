@@ -1,61 +1,56 @@
 {
-  "updatedAt": "2026-02-10T18:34:07.308Z",
-  "processed": 11,
-  "failed": 189,
-  "successRate": "5.5%",
+  "updatedAt": "2026-02-10T18:36:21.478Z",
+  "processed": 52,
+  "failed": 268,
+  "successRate": "16.3%",
   "tierBreakdown": {
-    "playwright": 2,
-    "browserbase": 1,
-    "scrapingbee": 6,
-    "brightdata": 2,
-    "archive": 4
+    "playwright": 6,
+    "browserbase": 2,
+    "scrapingbee": 10,
+    "brightdata": 5,
+    "archive": 31
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T15:56:20.521Z",
+      "t": "2026-02-10T15:57:22.741Z",
       "event": "bb-session",
-      "session": "f88f9e39",
-      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
+      "session": "f193a2b8",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
     },
     {
-      "t": "2026-02-10T15:56:22.473Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-10T15:58:57.823Z",
-      "event": "bb-session",
-      "session": "5da89040",
-      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
-    },
-    {
-      "t": "2026-02-10T15:59:00.266Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-10T16:02:06.899Z",
-      "event": "bb-session",
-      "session": "071cbef5",
-      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
-    },
-    {
-      "t": "2026-02-10T16:02:58.366Z",
+      "t": "2026-02-10T15:58:06.045Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-02-10T16:06:13.601Z",
+      "t": "2026-02-10T15:58:52.346Z",
       "event": "bb-session",
-      "session": "e3e5d82f",
-      "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
+      "session": "6cee588a",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
     },
     {
-      "t": "2026-02-10T16:06:39.994Z",
+      "t": "2026-02-10T15:59:36.228Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:01:48.775Z",
       "event": "bb-session",
-      "session": "757c446b",
-      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
+      "session": "7a6e7625",
+      "url": "https://www.indiewire.com/2018/04/harry-potter-cursed-child-broadway-review-1201"
+    },
+    {
+      "t": "2026-02-10T16:18:14.260Z",
+      "event": "bb-session",
+      "session": "819f6e63",
+      "url": "https://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+    },
+    {
+      "t": "2026-02-10T16:18:45.398Z",
+      "event": "bb-session",
+      "session": "81d02834",
+      "url": "https://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-656"
     }
   ]
 }
