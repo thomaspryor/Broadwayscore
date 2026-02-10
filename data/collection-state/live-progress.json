@@ -1,15 +1,51 @@
 {
-  "updatedAt": "2026-02-10T19:07:28.113Z",
-  "processed": 5,
-  "failed": 16,
-  "successRate": "23.8%",
+  "updatedAt": "2026-02-10T19:07:39.478Z",
+  "processed": 18,
+  "failed": 232,
+  "successRate": "7.2%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 0,
-    "scrapingbee": 1,
+    "playwright": 6,
+    "browserbase": 1,
+    "scrapingbee": 4,
     "brightdata": 1,
-    "archive": 3
+    "archive": 10
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T16:08:45.715Z",
+      "event": "bb-session",
+      "session": "858c2be9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maybe-happy-ending-broadway-rev"
+    },
+    {
+      "t": "2026-02-10T16:10:58.638Z",
+      "event": "bb-session",
+      "session": "f9357e64",
+      "url": "https://www.newyorker.com/magazine/2024/12/02/maybe-happy-ending-theatre-review"
+    },
+    {
+      "t": "2026-02-10T16:11:01.005Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:12:01.944Z",
+      "event": "bb-session",
+      "session": "f4b3686f",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123621"
+    },
+    {
+      "t": "2026-02-10T16:13:54.364Z",
+      "event": "bb-session",
+      "session": "0b355b91",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-02-10T16:14:22.762Z",
+      "event": "bb-session",
+      "session": "2f191161",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123622"
+    }
+  ]
 }
