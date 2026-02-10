@@ -1,15 +1,45 @@
 {
-  "updatedAt": "2026-02-10T04:59:13.582Z",
-  "processed": 10,
-  "failed": 80,
-  "successRate": "11.1%",
+  "updatedAt": "2026-02-10T05:03:40.701Z",
+  "processed": 1,
+  "failed": 26,
+  "successRate": "3.7%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 0,
-    "scrapingbee": 1,
+    "playwright": 0,
+    "browserbase": 1,
+    "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 7
+    "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T04:51:14.763Z",
+      "event": "bb-session",
+      "session": "e25f9754",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+    },
+    {
+      "t": "2026-02-10T04:51:16.976Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T04:54:20.693Z",
+      "event": "bb-session",
+      "session": "1d7eb42a",
+      "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
+    },
+    {
+      "t": "2026-02-10T04:54:37.001Z",
+      "event": "bb-session",
+      "session": "aac675c7",
+      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
+    },
+    {
+      "t": "2026-02-10T04:55:15.211Z",
+      "event": "bb-session",
+      "session": "92898681",
+      "url": "https://www.theatermania.com/broadway/reviews/hells-kitchen_96263"
+    }
+  ]
 }
