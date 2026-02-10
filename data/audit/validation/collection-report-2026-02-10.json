@@ -1,126 +1,97 @@
 {
-  "runDate": "2026-02-10T18:20:02.999Z",
+  "runDate": "2026-02-10T18:26:12.922Z",
   "config": {
-    "batchSize": 20,
+    "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "wicked-2003",
-    "aggressive": false,
+    "showFilter": "harry-potter-2021",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 48,
+    "processed": 5,
+    "failed": 19,
     "skipped": 0,
-    "successRate": "4.0%"
+    "successRate": "20.8%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 1
+    "scrapingbee": 1,
+    "brightdata": 0,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 39,
-    "tier1Success": 31,
+    "tier1Attempts": 18,
+    "tier1Success": 7,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 21,
-    "tier2Success": 10,
-    "tier3Attempts": 11,
-    "tier3Success": 5,
-    "tier4Attempts": 13,
-    "tier4Success": 5,
-    "totalFailed": 48,
-    "scrapingBeeCreditsUsed": 282,
+    "tier2Attempts": 7,
+    "tier2Success": 5,
+    "tier3Attempts": 3,
+    "tier3Success": 0,
+    "tier4Attempts": 26,
+    "tier4Success": 7,
+    "totalFailed": 19,
+    "scrapingBeeCreditsUsed": 67,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 7,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/ajc--wendell-brock.json"
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/buy-tickets--unknown.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/the-times--ann-treneman.json"
   ],
   "failed": [
-    "wicked-2003/hollywood-reporter--david-rooney.json",
-    "wicked-2003/newyorker--.json",
-    "wicked-2003/newyorker--john-lahr.json",
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "wicked-2003/variety--charles-isherwood.json",
-    "wicked-2003/variety--peter-debruge.json",
-    "wicked-2003/vulture--bilge-eberi.json",
-    "wicked-2003/bbc-caryn-james--caryn-james.json",
-    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
-    "wicked-2003/cleveland-jewish-news--sheri-gross.json",
-    "wicked-2003/guardian--peter-bradshaw.json",
-    "wicked-2003/indiewire--kate-erbland.json",
-    "wicked-2003/newsweek--billie-melissa.json",
-    "wicked-2003/nexus-point-news-demet-koc--demet-koc.json",
-    "wicked-2003/theatermania--david-gordon.json",
-    "wicked-2003/timeout--david-cote.json",
-    "wicked-2003/wsj--terry-teachout.json",
-    "wicked-2003/about-entertainment--chris-caggiano.json",
-    "wicked-2003/austincom--dani-dudek.json",
-    "wicked-2003/av-club-jesse-hassenger--jesse-hassenger.json",
-    "wicked-2003/awards-watch-sophia-ciminello--sophia-ciminello.json",
-    "wicked-2003/cbr-caralynn-matassa--caralynn-matassa.json",
-    "wicked-2003/collider-therese-lacson--therese-lacson.json",
-    "wicked-2003/consequence-liz-shannon-miller--liz-shannon-miller.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/den-of-geek-david-crow--david-crow.json",
-    "wicked-2003/empire-john-nugent--john-nugent.json",
-    "wicked-2003/financialtimes--danny-leigh.json",
-    "wicked-2003/fresh-fiction-courtney-howard--courtney-howard.json",
-    "wicked-2003/frontmezzjunkies--unknown.json",
-    "wicked-2003/huron-daily-jake-coyle--jake-coyle.json",
-    "wicked-2003/inverse-lyvie-scott--lyvie-scott.json",
-    "wicked-2003/joysauce-siddhant-adlakha--siddhant-adlakha.json",
-    "wicked-2003/latimes--amy-nicholson.json",
-    "wicked-2003/mamas-geeky-tessa-smith--tessa-smith.json",
-    "wicked-2003/mashable-kristy-puchko--kristy-puchko.json",
-    "wicked-2003/radio-times-james-mottram--james-mottram.json",
-    "wicked-2003/rollingstone--david-fear.json",
-    "wicked-2003/scmp-james-mottram--james-mottram.json",
-    "wicked-2003/screen-daily-tim-grierson--tim-grierson.json",
-    "wicked-2003/sfchronicle--lily-janiak.json",
-    "wicked-2003/showbiz-411-roger-friedman--roger-friedman.json",
-    "wicked-2003/solzy-at-the-movies-danielle-solzman--danielle-solzman.json",
-    "wicked-2003/the-chronicle--howard-gollop.json",
-    "wicked-2003/the-times--kevin-maher.json",
-    "wicked-2003/trib-live--alexis-papalia.json",
-    "wicked-2003/village-voice--michael-feingold.json",
-    "wicked-2003/we-are-green-bay--warren-gerds.json"
+    "harry-potter-2021/ew--kristen-baldwin.json",
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "harry-potter-2021/national-review--kyle-smith.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/forward--matthew-murphy.json",
+    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/exeunt-magazine--kev-berry.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
+    "harry-potter-2021/sfist-jay-barmann--jay-barmann.json",
+    "harry-potter-2021/telegraph--diana-snyder.json",
+    "harry-potter-2021/the-san-francisco-chronicle-lily-janiak--lily-janiak.json",
+    "harry-potter-2021/the-telegraph-uk--diane-snyder.json",
+    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [
-      "wicked-2003/ajc--wendell-brock.json"
+    "playwright": [
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
+    "browserbase": [],
+    "scrapingbee": [
+      "harry-potter-2021/buy-tickets--unknown.json"
+    ],
+    "brightdata": [],
     "archive": [
-      "wicked-2003/ew--alice-king.json"
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json",
+      "harry-potter-2021/the-times--ann-treneman.json"
     ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
+    "Broadway Blog": {
       "count": 1,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
+      "domain": "thebroadwayblog.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
     },
     "CurtainUp": {
       "count": 1,
@@ -129,9 +100,23 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Huron Daily (Jake Coyle)": {
+    "Front Mezz Junkies": {
       "count": 1,
-      "domain": "michigansthumb.com",
+      "domain": "frontmezzjunkies.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Theater Pizzazz": {
+      "count": 1,
+      "domain": "theaterpizzazz.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Zeal NYC": {
+      "count": 1,
+      "domain": "zealnyc.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -139,9 +124,14 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "wicked-2003/trib-live--alexis-papalia.json",
-      "oldUrl": "https://triblive.com/aande/theater-arts/review-latest-wicked-production-at-benedum-center-is-as-enchanting-as-ever/",
-      "newUrl": "https://community.triblive.com/c/downtown-pittsburgh-news/news/3959160"
+      "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
+      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOorJPHvhiT5NvRggKaaEPvcwv5kd5vP7fqmUA0dkQzMev3zKMvBT"
+    },
+    {
+      "reviewId": "harry-potter-2021/curtainup--elyse-sommer.json",
+      "oldUrl": "https://www.curtainup.com/harrypottercursedchild.html",
+      "newUrl": "http://www.curtainup.com/harrypotterbway18.html"
     }
   ]
 }
