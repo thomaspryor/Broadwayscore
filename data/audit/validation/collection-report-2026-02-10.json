@@ -1,165 +1,356 @@
 {
-  "runDate": "2026-02-10T13:25:24.115Z",
+  "runDate": "2026-02-10T13:31:28.047Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "aladdin-2014,the-lion-king-1997,and-juliet-2022,oedipus-2025,all-out-2025,chess-2025,american-psycho-2016,the-waverly-gallery-2018,tootsie-2019,long-days-journey-into-night-2016,pippin-2013,angels-in-america-2018,fish-in-the-dark-2015,into-the-woods-2022,oslo-2017,sylvia-2015,bullets-over-broadway-2014,ohio-state-murders-2022,romeo-juliet-2024,yellow-face-2024,clydes-2021,frozen-2018,jitney-2017,orphans-2013,the-country-house-2014,1776-2022,1984-2017,camelot-2023,gypsy-2024,lombardi-2010,motown-the-musical-2013,prince-of-broadway-2017,the-curious-incident-of-the-dog-in-the-nighttime-2014,the-river-2014,a-beautiful-noise-the-neil-diamond-musical-2022,all-my-sons-2019,china-doll-2015,fat-ham-2023,head-over-heels-2018,kimberly-akimbo-2022,machinal-2014,peter-and-the-starcatcher-2012,straight-white-men-2018,the-heiress-2012,the-minutes-2022,travesties-2018,aint-too-proud-2019,bonnie-and-clyde-2011,catch-me-if-you-can-2011,flying-over-sunset-2021,god-of-carnage-2009,holler-if-ya-hear-me-2014,life-of-pi-2023,richard-iii-2013,the-audience-2015,the-front-page-2016,thoughts-of-a-colored-man-2021,violet-2014,a-gentlemans-guide-to-love-and-murder-2013,airline-highway-2015,bernhardthamlet-2018,charlie-and-the-chocolate-factory-2017,enron-2010,glengarry-glen-ross-2012,how-to-succeed-in-business-without-really-trying-2011,misery-2015,pictures-from-home-2023,the-assembled-parties-2013,the-importance-of-being-earnest-2011,therese-raquin-2015,a-view-from-the-bridge-2010,birthday-candles-2022,cirque-du-soleil-paramour-2016,exit-the-king-2009,hangmen-2022,joe-turners-come-and-gone-2009,liberation-2025,purlie-victorious-2023,south-pacific-2008,that-championship-season-2011,the-present-2017,the-wedding-singer-2006,waiting-for-godot-2013,annie-2012,brief-encounter-2010,everyday-rapture-2010,godspell-2011,leap-of-faith-2012,mary-poppins-2006,passing-strange-2008,redwood-2025,souvenir-2005,the-39-steps-2008,the-glass-menagerie-2017,the-notebook-2024,the-royal-family-2009,three-days-of-rain-2006,wonderland-2011,a-streetcar-named-desire-2012,beautiful-the-carole-king-musical-2014,cat-on-a-hot-tin-roof-2008,deuce-2007,glory-days-2008,high-2011,it-shoulda-been-you-2015,lend-me-a-tenor-2010,martin-short-fame-becomes-me-2006,once-upon-a-mattress-2024,purpose-2025,shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016,summer-1976-2023,the-glass-menagerie-2013,the-motherfucker-with-the-hat-2011,the-phantom-of-the-opera-1988,the-thanksgiving-play-2023,waiting-for-godot-2009,a-catered-affair-2008,an-enemy-of-the-people-2012,cymbeline-2007,dont-dress-for-dinner-2012,festen-2006,hedda-gabler-2009,irving-berlins-white-christmas-2009,les-miserables-1987,november-2008,primo-2005,rent-1996,the-coast-of-utopia-2006,the-miracle-worker-2010,the-shark-is-broken-2023,walking-with-ghosts-2022",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 100,
+    "processed": 15,
+    "failed": 85,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "15.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "scrapingbee": 1,
+    "brightdata": 1,
+    "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 45,
+    "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 100,
-    "tier2Success": 55,
-    "tier3Attempts": 100,
-    "tier3Success": 98,
-    "tier4Attempts": 99,
-    "tier4Success": 35,
-    "totalFailed": 100,
-    "scrapingBeeCreditsUsed": 561,
+    "tier2Attempts": 56,
+    "tier2Success": 11,
+    "tier3Attempts": 45,
+    "tier3Success": 11,
+    "tier4Attempts": 137,
+    "tier4Success": 57,
+    "totalFailed": 85,
+    "scrapingBeeCreditsUsed": 260,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 40,
+    "urlDiscoverySuccess": 27,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "aladdin-2014/ew--thom-geier.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "oedipus-2025/wsj--charles-isherwood.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+    "all-my-sons-2019/nyt-theater--raven-snook.json",
+    "all-my-sons-2019/nytimes--ben-brantley.json",
+    "all-my-sons-2019/nytimes--jesse-green.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+    "everyday-rapture-2010/hollywood-reporter--frank-scheck.json",
+    "lend-me-a-tenor-2010/hollywood-reporter--frank-scheck.json",
+    "lombardi-2010/newyorker--uncredited.json",
+    "pictures-from-home-2023/newyorker--helen-shaw.json",
+    "the-39-steps-2008/nytimes--ben-brantley.json",
+    "waiting-for-godot-2009/hollywood-reporter--frank-scheck.json",
+    "1776-2022/nydailynews--chris-jones.json"
+  ],
   "failed": [
-    "and-juliet-2022/observer--rex-reed.json",
-    "hells-kitchen-2024/observer--david-cote.json",
-    "hells-kitchen-2024/observer--rex-reed.json",
-    "maybe-happy-ending-2024/observer--rex-reed.json",
-    "moulin-rouge-2019/observer--rex-reed.json",
-    "oh-mary-2024/observer--david-cote.json",
-    "six-2021/observer--david-cote.json",
-    "the-great-gatsby-2024/observer--david-cote.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/observer--david-cote.json",
-    "a-behanding-in-spokane-2010/observer--jesse-oxfeld.json",
-    "a-bronx-tale-2007/observer--rex-reed.json",
-    "a-christmas-carol-2019/observer--david-cote.json",
-    "a-christmas-carol-2019/observer--rex-reed.json",
-    "a-dolls-house-2023/observer--david-cote.json",
-    "a-dolls-house-part-2-2017/observer--rex-reed.json",
-    "a-little-night-music-2009/observer--jesse-oxfeld.json",
-    "a-strange-loop-2022/observer--david-cote.json",
-    "a-strange-loop-2022/observer--rex-reed.json",
-    "aint-no-mo-2022/observer--rex-reed.json",
-    "appropriate-2023/observer--rex-reed.json",
-    "art-2025/observer--david-cote.json",
-    "august-osage-county-2007/observer--unknown.json",
-    "back-to-the-future-2023/observer--david-cote.json",
-    "bad-cinderella-2023/observer--david-cote.json",
-    "beetlejuice-2019/observer--rex-reed.json",
-    "beetlejuice-2022/observer--rex-reed.json",
-    "bernhardthamlet-2018/observer--david-cote.json",
-    "blackbird-2016/observer--rex-reed.json",
-    "born-yesterday-2011/observer--jesse-oxfeld.json",
-    "brief-encounter-2010/observer--jesse-oxfeld.json",
-    "bullets-over-broadway-2014/observer--rex-reed.json",
-    "cabaret-2024/observer--jesse-green.json",
-    "cabaret-2024/observer--rex-reed.json",
-    "camelot-2023/observer--david-cote.json",
-    "caroline-or-change-2021/observer--david-cote.json",
-    "carousel-2018/observer--rex-reed.json",
-    "how-to-dance-in-ohio-2023/observer--jesse-green.json",
-    "illinoise-2024/observer--jesse-green.json",
-    "illinoise-2024/observer--rex-reed.json",
-    "into-the-woods-2022/observer--jesse-green.json",
-    "latin-history-for-morons-2017/observer--rex-reed.json",
-    "lempicka-2024/observer--rex-reed.json",
-    "lend-me-a-tenor-2010/observer--jesse-oxfeld.json",
-    "les-liaisons-dangereuses-2016/observer--rex-reed.json",
-    "linda-vista-2019/observer--david-cote.json",
-    "living-on-love-2015/observer--rex-reed.json",
-    "lombardi-2010/observer--jesse-oxfeld.json",
-    "long-days-journey-into-night-2016/observer--rex-reed.json",
-    "lovemusik-2007/observer--john-heilpern.json",
-    "macbeth-2022/observer--david-cote.json",
-    "magicbird-2012/observer--rex-reed.json",
-    "mamma-mia-2025/observer--david-cote.json",
-    "mcneal-2024/observer--rex-reed.json",
-    "mean-girls-2018/observer--rex-reed.json",
-    "meteor-shower-2017/observer--rex-reed.json",
-    "million-dollar-quartet-2010/observer--jesse-oxfeld.json",
-    "misery-2015/observer--rex-reed.json",
-    "miss-saigon-2017/observer--rex-reed.json",
-    "motown-the-musical-2013/observer--rex-reed.json",
-    "mrs-doubtfire-2021/observer--david-cote.json",
-    "my-name-is-lucy-barton-2020/observer--rex-reed.json",
-    "network-2018/observer--rex-reed.json",
-    "new-york-new-york-2023/observer--rex-reed.json",
-    "next-fall-2010/observer--jesse-oxfeld.json",
-    "no-mans-land-2013/observer--rex-reed.json",
-    "of-mice-and-men-2014/observer--rex-reed.json",
-    "oh-hello-on-broadway-2016/observer--rex-reed.json",
-    "ohio-state-murders-2022/observer--jesse-green.json",
-    "oklahoma-2019/observer--rex-reed.json",
-    "old-times-2015/observer--rex-reed.json",
-    "on-the-town-2014/observer--rex-reed.json",
-    "on-your-feet-2015/observer--rex-reed.json",
-    "once-2012/observer--rex-reed.json",
-    "once-on-this-island-2017/observer--rex-reed.json",
-    "once-upon-a-mattress-2024/observer--david-cote.json",
-    "orphans-2013/observer--rex-reed.json",
-    "othello-2025/observer--david-cote.json",
-    "our-mothers-brief-affair-2016/observer--rex-reed.json",
-    "parade-2023/observer--jesse-green.json",
-    "pass-over-2021/observer--david-cote.json",
-    "pass-over-2021/observer--jesse-green.json",
-    "peter-pan-goes-wrong-2023/observer--david-cote.json",
-    "picnic-2013/observer--rex-reed.json",
-    "pictures-from-home-2023/observer--david-cote.json",
-    "plaza-suite-2022/observer--david-cote.json",
-    "pretty-woman-the-musical-2018/observer--rex-reed.json",
-    "prima-facie-2023/observer--david-cote.json",
-    "prince-of-broadway-2017/observer--rex-reed.json",
-    "private-lives-2011/observer--rex-reed.json",
-    "race-2009/observer--jesse-oxfeld.json",
-    "reasons-to-be-pretty-2009/observer--jesse-oxfeld.json",
-    "red-2010/observer--jesse-oxfeld.json",
-    "red-2010/observer--rex-reed.json",
-    "romeo-juliet-2024/observer--david-cote.json",
-    "sea-wall-a-life-2019/observer--david-cote.json",
-    "shucked-2023/observer--david-cote.json",
-    "significant-other-2017/observer--rex-reed.json",
-    "six-degrees-of-separation-2017/observer--rex-reed.json",
-    "slave-play-2021/observer--david-cote.json",
-    "smash-2025/observer--david-cote.json"
+    "aladdin-2014/amny--joe-dziemianowicz.json",
+    "oedipus-2025/washpost--melissa-rose-bernardo.json",
+    "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
+    "1776-2022/variety--peter-marks.json",
+    "camelot-2023/nytimes--jesse-green.json",
+    "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+    "catch-me-if-you-can-2011/variety--marilyn-stasio.json",
+    "catch-me-if-you-can-2011/vulture--jesse-green.json",
+    "cirque-du-soleil-paramour-2016/vulture--jesse-green.json",
+    "clydes-2021/nytimes--jesse-green.json",
+    "clydes-2021/vulture--jesse-green.json",
+    "deuce-2007/nytimes--ben-brantley.json",
+    "fat-ham-2023/hollywood-reporter--david-rooney.json",
+    "frozen-2018/nytimes--ben-brantley.json",
+    "frozen-2018/vulture--jesse-green.json",
+    "glory-days-2008/nytimes--charles-isherwood.json",
+    "godspell-2011/nytimes--ben-brantley.json",
+    "high-2011/nytimes--ben-brantley.json",
+    "holler-if-ya-hear-me-2014/nytimes--ben-brantley.json",
+    "holler-if-ya-hear-me-2014/vulture--jesse-green.json",
+    "how-to-succeed-in-business-without-really-trying-2011/vulture--jesse-green.json",
+    "into-the-woods-2022/nytimes--jesse-green.json",
+    "jitney-2017/vulture--jesse-green.json",
+    "joe-turners-come-and-gone-2009/nytimes--ben-brantley.json",
+    "leap-of-faith-2012/nytimes--ben-brantley.json",
+    "life-of-pi-2023/variety--aramide-tinubu.json",
+    "lombardi-2010/hollywood-reporter--david-rooney.json",
+    "lombardi-2010/nytimes--ben-brantley.json",
+    "long-days-journey-into-night-2016/hollywood-reporter--david-rooney.json",
+    "long-days-journey-into-night-2016/variety--marilyn-stasio.json",
+    "machinal-2014/hollywood-reporter--david-rooney.json",
+    "martin-short-fame-becomes-me-2006/nytimes--ben-brantley.json",
+    "mary-poppins-2006/nytimes--ben-brantley.json",
+    "motown-the-musical-2013/hollywood-reporter--david-rooney.json",
+    "motown-the-musical-2013/nytimes--ben-brantley.json",
+    "motown-the-musical-2013/vulture--jesse-green.json",
+    "november-2008/nytimes--ben-brantley.json",
+    "ohio-state-murders-2022/nytimes--jesse-green.json",
+    "once-upon-a-mattress-2024/nytimes--jesse-green.json",
+    "orphans-2013/vulture--jesse-green.json",
+    "peter-and-the-starcatcher-2012/nytimes--ben-brantley.json",
+    "pippin-2013/hollywood-reporter--david-rooney.json",
+    "pippin-2013/nytimes--ben-brantley.json",
+    "pippin-2013/vulture--jesse-green.json",
+    "primo-2005/nytimes--ben-brantley.json",
+    "prince-of-broadway-2017/hollywood-reporter--david-rooney.json",
+    "prince-of-broadway-2017/nytimes--ben-brantley.json",
+    "prince-of-broadway-2017/variety--marilyn-stasio.json",
+    "richard-iii-2013/nytimes--ben-brantley.json",
+    "romeo-juliet-2024/vulture--jackson-mchenry.json",
+    "straight-white-men-2018/hollywood-reporter--david-rooney.json",
+    "straight-white-men-2018/variety--marilyn-stasio.json",
+    "sylvia-2015/hollywood-reporter--david-rooney.json",
+    "sylvia-2015/vulture--jesse-green.json",
+    "that-championship-season-2011/vulture--jesse-green.json",
+    "the-coast-of-utopia-2006/nytimes--ben-brantley.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/hollywood-reporter--david-rooney.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/variety--marilyn-stasio.json",
+    "the-minutes-2022/vulture--jesse-green.json",
+    "the-motherfucker-with-the-hat-2011/hollywood-reporter--david-rooney.json",
+    "the-motherfucker-with-the-hat-2011/nytimes--ben-brantley.json",
+    "the-present-2017/hollywood-reporter--david-rooney.json",
+    "the-present-2017/nytimes--ben-brantley.json",
+    "the-river-2014/hollywood-reporter--david-rooney.json",
+    "the-royal-family-2009/nytimes--ben-brantley.json",
+    "the-waverly-gallery-2018/hollywood-reporter--david-rooney.json",
+    "the-waverly-gallery-2018/nytimes--jesse-green.json",
+    "the-waverly-gallery-2018/variety--marilyn-stasio.json",
+    "the-wedding-singer-2006/variety--charles-isherwood.json",
+    "therese-raquin-2015/variety--marilyn-stasio.json",
+    "thoughts-of-a-colored-man-2021/nytimes--jesse-green.json",
+    "thoughts-of-a-colored-man-2021/variety--aramide-tinubu.json",
+    "three-days-of-rain-2006/nytimes--ben-brantley.json",
+    "tootsie-2019/hollywood-reporter--david-rooney.json",
+    "tootsie-2019/nytimes--jesse-green.json",
+    "tootsie-2019/variety--marilyn-stasio.json",
+    "travesties-2018/vulture--jesse-green.json",
+    "violet-2014/nytimes--ben-brantley.json",
+    "violet-2014/variety--marilyn-stasio.json",
+    "waiting-for-godot-2009/nytimes--charles-isherwood.json",
+    "wonderland-2011/hollywood-reporter--david-rooney.json",
+    "wonderland-2011/nytimes--ben-brantley.json",
+    "yellow-face-2024/variety--aramide-tinubu.json",
+    "yellow-face-2024/vulture--jackson-mchenry.json",
+    "1776-2022/deadline--pete-hammond.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "all-my-sons-2019/nyt-theater--raven-snook.json",
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
+    ],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
-    "archive": []
+    "scrapingbee": [
+      "1776-2022/nydailynews--chris-jones.json"
+    ],
+    "brightdata": [
+      "waiting-for-godot-2009/hollywood-reporter--frank-scheck.json"
+    ],
+    "archive": [
+      "aladdin-2014/ew--thom-geier.json",
+      "aladdin-2014/wsj--terry-teachout.json",
+      "oedipus-2025/wsj--charles-isherwood.json",
+      "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+      "all-my-sons-2019/nytimes--ben-brantley.json",
+      "all-my-sons-2019/nytimes--jesse-green.json",
+      "everyday-rapture-2010/hollywood-reporter--frank-scheck.json",
+      "lend-me-a-tenor-2010/hollywood-reporter--frank-scheck.json",
+      "lombardi-2010/newyorker--uncredited.json",
+      "pictures-from-home-2023/newyorker--helen-shaw.json",
+      "the-39-steps-2008/nytimes--ben-brantley.json"
+    ]
   },
   "failuresByOutlet": {
-    "Observer": {
+    "amNewYork": {
       "count": 1,
-      "domain": "observer.com",
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Broadway Voice": {
+      "count": 1,
+      "domain": "bwayvoice.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Vulture": {
+      "count": 4,
+      "domain": "vulture.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "The New York Times": {
+      "count": 6,
+      "domain": "nytimes.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Variety": {
+      "count": 2,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Hollywood Reporter": {
+      "count": 2,
+      "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "1776-2022/variety--peter-marks.json",
+      "oldUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235421172/",
+      "newUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+    },
+    {
+      "reviewId": "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2008/03/07/theater/reviews/07cat.html",
+      "newUrl": "https://www.nytimes.com/2008/03/07/theater/reviews/07roof.html"
+    },
+    {
+      "reviewId": "clydes-2021/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2021/12/theater-review-clydes-broadway.html",
+      "newUrl": "https://www.vulture.com/2021/11/theater-review-clydes-on-broadway-in-the-southern-breeze.html"
+    },
+    {
+      "reviewId": "deuce-2007/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2007/05/16/theater/reviews/16deuc.html",
+      "newUrl": "https://www.nytimes.com/2007/05/07/theater/reviews/07deuc.html"
+    },
+    {
+      "reviewId": "fat-ham-2023/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-review-1235369063/",
+      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review-1235391595/"
+    },
+    {
+      "reviewId": "frozen-2018/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2018/03/theater-review-frozen-on-broadway.html",
+      "newUrl": "https://www.vulture.com/2018/03/theater-review-frozen-is-in-place-on-broadway-to-stay.html"
+    },
+    {
+      "reviewId": "glory-days-2008/nytimes--charles-isherwood.json",
+      "oldUrl": "https://www.nytimes.com/2008/05/07/theater/reviews/07glor.html",
+      "newUrl": "https://www.nytimes.com/2008/05/07/theater/reviews/07glory.html"
+    },
+    {
+      "reviewId": "godspell-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/11/08/theater/reviews/godspell-revival-at-circle-in-the-square-review.html",
+      "newUrl": "https://www.nytimes.com/2011/11/08/theater/reviews/godspell-at-the-circle-in-the-square-review.html"
+    },
+    {
+      "reviewId": "holler-if-ya-hear-me-2014/vulture--jesse-green.json",
+      "oldUrl": "http://www.vulture.com/2014/06/theater-review-holler-if-ya-hear-me.html",
+      "newUrl": "https://www.vulture.com/2014/06/theater-review-holler-if-ya-hear-me.html"
+    },
+    {
+      "reviewId": "into-the-woods-2022/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2022/07/11/theater/into-the-woods-review.html",
+      "newUrl": "https://www.nytimes.com/2022/07/10/theater/into-the-woods-review.html"
+    },
+    {
+      "reviewId": "leap-of-faith-2012/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2012/04/27/theater/reviews/leap-of-faith-at-st-james-theater.html",
+      "newUrl": "https://www.nytimes.com/2012/04/27/theater/reviews/leap-of-faith-with-raul-esparza-at-st-james-theater.html"
+    },
+    {
+      "reviewId": "lombardi-2010/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2010/10/22/theater/reviews/22lombardi.html",
+      "newUrl": "https://archive.nytimes.com/fifthdown.blogs.nytimes.com/2010/10/25/reviews-of-lombardi-on-broadway/"
+    },
+    {
+      "reviewId": "martin-short-fame-becomes-me-2006/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2006/08/18/theater/reviews/18short.html",
+      "newUrl": "https://www.nytimes.com/2006/08/18/theater/reviews/18fame.html"
+    },
+    {
+      "reviewId": "motown-the-musical-2013/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2013/04/15/theater/reviews/motown-the-musical-at-the-lunt-fontanne-theater.html",
+      "newUrl": "https://www.nytimes.com/2013/04/15/theater/reviews/motown-the-musical-berry-gordys-story.html"
+    },
+    {
+      "reviewId": "once-upon-a-mattress-2024/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2024/08/13/theater/once-upon-a-mattress-review.html",
+      "newUrl": "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html"
+    },
+    {
+      "reviewId": "romeo-juliet-2024/vulture--jackson-mchenry.json",
+      "oldUrl": "https://www.vulture.com/article/romeo-juliet-broadway-review-kit-connor-rachel-zegler.html",
+      "newUrl": "https://www.vulture.com/article/theater-review-connor-zegler-gold-romeo-juliet.html"
+    },
+    {
+      "reviewId": "straight-white-men-2018/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/theater-review-straight-white-men-1129162/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/straight-white-men-theater-review-1129164/"
+    },
+    {
+      "reviewId": "the-coast-of-utopia-2006/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2006/11/28/theater/reviews/28voya.html",
+      "newUrl": "https://www.nytimes.com/2006/12/22/theater/reviews/22ship.html"
+    },
+    {
+      "reviewId": "the-curious-incident-of-the-dog-in-the-nighttime-2014/variety--marilyn-stasio.json",
+      "oldUrl": "https://variety.com/2014/legit/reviews/broadway-review-the-curious-incident-of-the-dog-in-the-night-time-1201334006/",
+      "newUrl": "https://variety.com/2014/legit/reviews/broadway-review-curious-incident-dog-night-time-1201321871/"
+    },
+    {
+      "reviewId": "the-minutes-2022/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2022/04/theater-review-the-minutes-broadway.html",
+      "newUrl": "https://www.vulture.com/article/the-minutes-tracy-letts-broadway-review.html"
+    },
+    {
+      "reviewId": "the-royal-family-2009/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2009/10/20/theater/reviews/20royal.html",
+      "newUrl": "https://www.nytimes.com/2018/07/05/theater/royal-family-of-broadway-barrington-stage-review.html"
+    },
+    {
+      "reviewId": "the-waverly-gallery-2018/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/culture-news/waverly-gallery-theater-review-1152572/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/waverly-gallery-theater-1155139/"
+    },
+    {
+      "reviewId": "thoughts-of-a-colored-man-2021/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2021/10/31/theater/thoughts-of-a-colored-man-review.html",
+      "newUrl": "https://www.nytimes.com/2021/10/13/theater/thoughts-of-a-colored-man-review.html"
+    },
+    {
+      "reviewId": "three-days-of-rain-2006/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2006/03/07/theater/reviews/07rain.html",
+      "newUrl": "https://www.nytimes.com/2006/04/20/theater/reviews/enough-said-about-three-days-of-rain-lets-talk-julia.html"
+    },
+    {
+      "reviewId": "wonderland-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/04/18/theater/reviews/wonderland-musical-at-marquis-theater-review.html",
+      "newUrl": "https://www.nytimes.com/2011/04/18/theater/reviews/wonderland-gregory-boyd-frank-wildhorn-review.html"
+    },
+    {
+      "reviewId": "yellow-face-2024/vulture--jackson-mchenry.json",
+      "oldUrl": "https://www.vulture.com/article/yellow-face-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html"
+    },
+    {
+      "reviewId": "1776-2022/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2022/10/1776-broadway-review-roundabout-theatre-company-american-airlines-theatre-1235149772/",
+      "newUrl": "https://deadline.com/2022/10/1776-broadway-review-1235136437/"
+    }
+  ]
 }
