@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-10T03:18:12.704Z",
+  "runDate": "2026-02-10T03:24:18.802Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,158 +11,263 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 46,
+    "processed": 27,
+    "failed": 73,
     "skipped": 0,
-    "successRate": "6.1%"
+    "successRate": "27.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 9,
     "browserbase": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 18
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 54,
+    "tier1Success": 27,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 25,
-    "tier2Success": 8,
-    "tier3Attempts": 17,
-    "tier3Success": 1,
-    "tier4Attempts": 57,
-    "tier4Success": 32,
-    "totalFailed": 46,
-    "scrapingBeeCreditsUsed": 104,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 138,
+    "tier4Success": 57,
+    "totalFailed": 73,
+    "scrapingBeeCreditsUsed": 27,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 15,
-    "urlDiscoverySuccess": 8,
+    "urlDiscoveryAttempts": 28,
+    "urlDiscoverySuccess": 14,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "mothers-and-sons-2014/chicagotribune--chris-jones.json",
-    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
-    "once-on-this-island-2017/chicagotribune--chris-jones.json"
+    "aladdin-2014/ew--thom-geier.json",
+    "wicked-2003/ew--alice-king.json",
+    "700-sundays-2013/ew--jessica-shaw.json",
+    "a-delicate-balance-2014/ew--marc-snetiker.json",
+    "a-delicate-balance-2014/ew--unknown.json",
+    "a-life-in-the-theatre-2010/ew--tanner-stransky.json",
+    "a-night-with-janis-joplin-2013/ew--melissa-maerz.json",
+    "a-raisin-in-the-sun-2014/ew--lisa-schwarzbaum.json",
+    "all-the-way-2014/ew--thom-geier.json",
+    "betrayal-2013/ew--allison-adato.json",
+    "cat-on-a-hot-tin-roof-2008/ew--thom-geier.json",
+    "collected-stories-2010/ew--melissa-rose-bernardo.json",
+    "constellations-2015/ew--melissa-maerz.json",
+    "doctor-zhivago-2015/ew--jessica-shaw.json",
+    "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
+    "exit-the-king-2009/ew--thom-geier.json",
+    "fences-2010/ew--melissa-rose-bernardo.json",
+    "golden-boy-2012/ew--adam-markovitz.json",
+    "guys-and-dolls-2009/ew--thom-geier.json",
+    "hedwig-and-the-angry-inch-2014/ew--thom-geier.json",
+    "hedwig-and-the-angry-inch-2014/ew--unknown.json",
+    "hillary-and-clinton-2019/ew--jessica-shaw.json",
+    "holler-if-ya-hear-me-2014/ew--unknown.json",
+    "ifthen-2014/ew--unknown.json",
+    "jesus-christ-superstar-2012/ew--melissa-rose-bernardo.json",
+    "macbeth-2022/ew--unknown.json",
+    "mary-poppins-2006/ew--steve-daly.json"
   ],
   "failed": [
-    "and-juliet-2022/nydailynews--chris-jones.json",
-    "book-of-mormon-2011/chicagotribune--.json",
-    "book-of-mormon-2011/chicagotribune--chris-jones.json",
-    "chicago-1996/chicagotribune--chris-jones.json",
-    "death-becomes-her-2024/chicagotribune--chris-jones.json",
-    "stranger-things-2024/chicagotribune--chris-jones.json",
-    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
-    "gutenberg-2023/nydailynews--chris-jones.json",
-    "a-behanding-in-spokane-2010/chicagotribune--chris-jones.json",
-    "a-bronx-tale-the-musical-2016/chicagotribune--chris-jones.json",
-    "gigi-2015/chicagotribune--chris-jones.json",
-    "glengarry-glen-ross-2012/chicagotribune--chris-jones.json",
-    "groundhog-day-2017/chicagotribune--sam-marlowe.json",
-    "hand-to-god-2015/chicagotribune--chris-jones.json",
-    "head-over-heels-2018/chicagotribune--chris-jones.json",
-    "hello-dolly-2017/chicagotribune--chris-jones.json",
-    "ifthen-2014/chicagotribune--chris-jones.json",
-    "ill-eat-you-last-a-chat-with-sue-mengers-2013/chicagotribune--chris-jones.json",
-    "indecent-2017/chicagotribune--chris-jones.json",
-    "it-shoulda-been-you-2015/chicagotribune--chris-jones.json",
-    "its-only-a-play-2014/chicagotribune--chris-jones.json",
-    "macbeth-2022/chicagotribune--unknown.json",
-    "machinal-2014/chicagotribune--unknown.json",
-    "of-mice-and-men-2014/chicagotribune--chris-jones.json",
-    "on-the-twentieth-century-2015/chicagotribune--chris-jones.json",
-    "on-your-feet-2015/chicagotribune--chris-jones.json",
-    "on-your-feet-2015/chicagotribune--unknown.json",
-    "pippin-2013/chicagotribune--chris-jones.json",
-    "pretty-woman-the-musical-2018/chicagotribune--chris-jones.json",
-    "prince-of-broadway-2017/chicagotribune--chris-jones.json",
-    "promises-promises-2010/chicagotribune--chris-jones.json",
-    "the-color-purple-2005/chicagotribune--unknown.json",
-    "the-columnist-2012/chicagotribune--chris-jones.json",
-    "the-crucible-2016/chicagotribune--chris-jones.json",
-    "the-crucible-2016/chicagotribune--unknown.json",
-    "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
-    "the-ferryman-2018/chicagotribune--chris-jones.json",
-    "the-gershwins-porgy-and-bess-2012/chicagotribune--chris-jones.json",
-    "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
-    "the-house-of-blue-leaves-2011/chicagotribune--chris-jones.json",
-    "the-humans-2016/chicagotribune--chris-jones.json",
-    "the-miracle-worker-2010/chicagotribune--chris-jones.json",
-    "the-mystery-of-edwin-drood-2012/chicagotribune--chris-jones.json",
-    "the-price-2017/chicagotribune--chris-jones.json",
-    "this-is-our-youth-2014/chicagotribune--chris-jones.json",
-    "three-tall-women-2018/chicagotribune--chris-jones.json"
+    "harry-potter-2021/ew--kristen-baldwin.json",
+    "hells-kitchen-2024/ew--joey-nolfi.json",
+    "mj-2022/ew--joey-nolfi.json",
+    "mj-2022/ew--kristen-baldwin.json",
+    "the-lion-king-1997/ew--jess-cagle.json",
+    "wicked-2003/ew--lisa-schwarzbaum.json",
+    "1776-2022/ew--leah-greenblatt.json",
+    "33-variations-2009/ew--lisa-schwarzbaum.json",
+    "9-to-5-2009/ew--unknown.json",
+    "a-behanding-in-spokane-2010/ew--thom-geier.json",
+    "a-dolls-house-part-2-2017/ew--maya-stanton.json",
+    "a-free-man-of-color-2010/ew--thom-geier.json",
+    "a-little-night-music-2009/ew--thom-geier.json",
+    "american-buffalo-2022/ew--kristen-baldwin.json",
+    "american-idiot-2010/entertainment-weekly--leah-greenblatt.json",
+    "an-american-in-paris-2015/ew--melissa-rose-bernardo.json",
+    "anastasia-2017/ew--caitlin-brody.json",
+    "anastasia-2017/ew--david-canfield.json",
+    "angels-in-america-2018/ew--allison-adato.json",
+    "anything-goes-2011/ew--lisa-schwarzbaum.json",
+    "arcadia-2011/ew--melissa-rose-bernardo.json",
+    "baby-its-you-2011/ew--clark-collis.json",
+    "bandstand-2017/ew--breanne-l-heldman.json",
+    "beetlejuice-2019/ew--kristen-baldwin.json",
+    "big-fish-2013/ew--thom-geier.json",
+    "bonnie-and-clyde-2011/ew--thom-geier.json",
+    "brief-encounter-2010/ew--thom-geier.json",
+    "bullets-over-broadway-2014/ew--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "carousel-2018/ew--breanne-l-heldman.json",
+    "casa-valentina-2014/ew--adam-markovitz.json",
+    "casa-valentina-2014/ew--adam-markowitz.json",
+    "death-of-a-salesman-2012/ew--thom-geler.json",
+    "fela-2012/ew--thom-geier.json",
+    "finding-neverland-2015/ew--jessica-shaw.json",
+    "follies-2011/ew--melissa-rose-bernardo.json",
+    "fool-for-love-2015/ew--unknown.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/ew--leah-greenblatt.json",
+    "fun-home-2015/ew--leah-greenblatt.json",
+    "hands-on-a-hardbody-2013/ew--clark-collis.json",
+    "heisenberg-2016/ew--breanne-l-heldman.json",
+    "hello-dolly-2017/ew--kelly-connolly.json",
+    "hello-dolly-2017/ew--maya-stanton.json",
+    "in-the-heights-2008/ew--melissa-rose-bernardo.json",
+    "in-transit-2016/ew--breanne-l-heldman.json",
+    "indecent-2017/ew--melissa-rose-bernardo.json",
+    "into-the-woods-2022/ew--joey-nolfi.json",
+    "is-he-dead-2007/ew--thom-geier.json",
+    "jerusalem-2011/ew--lisa-schwarzbaum.json",
+    "jitney-2017/ew--maya-stanton.json",
+    "junk-2017/ew--isabella-biedenharn.json",
+    "king-charles-iii-2015/ew--unknown.json",
+    "king-lear-2019/ew--allison-adato.json",
+    "king-lear-2019/ew--unknown.json",
+    "kinky-boots-2013/ew--thom-geier.json",
+    "kiss-me-kate-2019/ew--dave-quinn.json",
+    "kiss-me-kate-2019/ew--kristen-baldwin.json",
+    "la-cage-aux-folles-2010/entertainment-weekly--thom-geier.json",
+    "leap-of-faith-2012/ew--thom-geier.json",
+    "lend-me-a-tenor-2010/ew--tanner-stransky.json",
+    "lombardi-2010/ew--jeff-labrecque.json",
+    "long-days-journey-into-night-2016/ew--melissa-rose-bernardo.json",
+    "long-days-journey-into-night-2016/ew--unknown.json",
+    "lucky-guy-2013/ew--lisa-schwarzbaum.json",
+    "lysistrata-jones-2011/ew--thom-geier.json",
+    "macbeth-2013/ew--leah-greenblatt.json",
+    "macbeth-2013/ew--unknown.json",
+    "magicbird-2012/ew--chris-nashawaty.json",
+    "marvins-room-2017/ew--allison-adato.json",
+    "mcneal-2024/ew--joey-nolfi.json",
+    "mean-girls-2018/ew--kristen-baldwin.json",
+    "million-dollar-quartet-2010/ew--clark-collis.json",
+    "misery-2015/ew--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [
-      "mothers-and-sons-2014/chicagotribune--chris-jones.json",
-      "once-on-this-island-2017/chicagotribune--chris-jones.json"
+    "playwright": [
+      "700-sundays-2013/ew--jessica-shaw.json",
+      "a-delicate-balance-2014/ew--marc-snetiker.json",
+      "a-delicate-balance-2014/ew--unknown.json",
+      "a-night-with-janis-joplin-2013/ew--melissa-maerz.json",
+      "all-the-way-2014/ew--thom-geier.json",
+      "cat-on-a-hot-tin-roof-2008/ew--thom-geier.json",
+      "constellations-2015/ew--melissa-maerz.json",
+      "holler-if-ya-hear-me-2014/ew--unknown.json",
+      "ifthen-2014/ew--unknown.json"
     ],
+    "browserbase": [],
+    "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json"
+      "aladdin-2014/ew--thom-geier.json",
+      "wicked-2003/ew--alice-king.json",
+      "a-life-in-the-theatre-2010/ew--tanner-stransky.json",
+      "a-raisin-in-the-sun-2014/ew--lisa-schwarzbaum.json",
+      "betrayal-2013/ew--allison-adato.json",
+      "collected-stories-2010/ew--melissa-rose-bernardo.json",
+      "doctor-zhivago-2015/ew--jessica-shaw.json",
+      "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
+      "exit-the-king-2009/ew--thom-geier.json",
+      "fences-2010/ew--melissa-rose-bernardo.json",
+      "golden-boy-2012/ew--adam-markovitz.json",
+      "guys-and-dolls-2009/ew--thom-geier.json",
+      "hedwig-and-the-angry-inch-2014/ew--thom-geier.json",
+      "hedwig-and-the-angry-inch-2014/ew--unknown.json",
+      "hillary-and-clinton-2019/ew--jessica-shaw.json",
+      "jesus-christ-superstar-2012/ew--melissa-rose-bernardo.json",
+      "macbeth-2022/ew--unknown.json",
+      "mary-poppins-2006/ew--steve-daly.json"
     ]
   },
   "failuresByOutlet": {
-    "Chicago Tribune": {
-      "count": 6,
-      "domain": "chicagotribune.com",
+    "Entertainment Weekly": {
+      "count": 11,
+      "domain": "ew.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     },
-    "The Chicago Tribune": {
+    "Entertainment  Weekly": {
       "count": 1,
-      "domain": "chicagotribune.com",
+      "domain": "ew.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "book-of-mormon-2011/chicagotribune--.json",
-      "oldUrl": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-park/",
-      "newUrl": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in-a-hilarious-book-of-mormon/"
+      "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
+      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOopwpXzX7zb5BAw_BmzHOAHAOg-x4d6Hb-a2pUL_Ar9kVbo38wBT"
     },
     {
-      "reviewId": "chicago-1996/chicagotribune--chris-jones.json",
-      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-first-wives-club-review-20150312-column.html",
-      "newUrl": "http://timeline.chicagotribune.com/chi-theater-guide-chicago-tribune-critics-picks/step/ct-ent-0617-perfect-review-20130614"
+      "reviewId": "a-behanding-in-spokane-2010/ew--thom-geier.json",
+      "oldUrl": "https://www.ew.com/ew/article/0,,20348704,00.html",
+      "newUrl": "https://ew.com/article/2010/03/26/stage-review-behanding-spokane/?srsltid=AfmBOop_YsAah5j9TbcE0X2qaywzr8b9F7f0hTwUc6O0RomujFd_23So"
     },
     {
-      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
-      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
-      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
+      "reviewId": "american-buffalo-2022/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/american-buffalo-broadway-review-sam-rockwell-laurence-fishburne",
+      "newUrl": "https://ew.com/theater/theater-reviews/american-buffalo-review-sam-rockwell-laurence-fishburne-david-mamet/?srsltid=AfmBOopMpzS4EFou4RbN8I0RDikjGMI8MMrnwi1lVCB8gEbxaPsmOYsR"
     },
     {
-      "reviewId": "machinal-2014/chicagotribune--unknown.json",
-      "oldUrl": "https://www.chicagotribune.com/sns-201401162200reedbusivarietyn1201060746-20140116,0,6157713.story",
-      "newUrl": "https://www.chicagotribune.com/2014/01/16/broadway-review-machinal-starring-rebecca-hall/"
+      "reviewId": "anastasia-2017/ew--david-canfield.json",
+      "oldUrl": "https://ew.com/theater/2017/04/25/anastasia-broadway-review",
+      "newUrl": "https://ew.com/theater/2017/04/24/anastasia-broadway-review/?srsltid=ARcRdnqnBoh7TuUI8fGyYYW2Em-eGa1iGuP8VR_y5Q_hU6uKD1gmLmTv"
     },
     {
-      "reviewId": "on-the-twentieth-century-2015/chicagotribune--chris-jones.json",
-      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/broadway/sc-20th-century-broadway-review-20150325-column.html",
-      "newUrl": "https://www.chicagotribune.com/2024/05/17/review-on-the-twentieth-century-by-blank-theatre-is-a-rare-chance-to-hope-aboard-this-musical/"
+      "reviewId": "beetlejuice-2019/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/2019/04/26/beetlejuice-broadway-review",
+      "newUrl": "https://ew.com/theater-reviews/2019/04/25/beetlejuice-musical-review/?srsltid=AfmBOopNQN3FSZTxuU0VZw6yWQ16-JwTEO-yti95iHZ8RHuAEMdxT2up"
     },
     {
-      "reviewId": "pippin-2013/chicagotribune--chris-jones.json",
-      "oldUrl": "https://www.chicagotribune.com/2013/04/26/pippin-broadway-review/",
-      "newUrl": "https://www.chicagotribune.com/2013/04/25/broadway-review-pippin-pulls-off-a-theatrical-high-wire-act-2/"
+      "reviewId": "bullets-over-broadway-2014/ew--unknown.json",
+      "oldUrl": "https://www.ew.com/ew/article/0,,20364394_20805531,00.html",
+      "newUrl": "https://ew.com/article/1994/10/21/movie-review-bullets-over-broadway-2/?srsltid=AfmBOorjcmUYcffr_zPFz_LT7cenJ93ZL3z9nNtEsZE-Ubg4mY-NmDCz"
     },
     {
-      "reviewId": "promises-promises-2010/chicagotribune--chris-jones.json",
-      "oldUrl": "https://www.chicagotribune.com/2010/04/01/promises-broadway-review-sean-hayes-promises-promises-no-love-connection/",
-      "newUrl": "https://www.chicagotribune.com/2023/12/08/review-promises-promises-by-blank-theatre-is-a-fun-retro-night-out-with-burt-bacharach/"
+      "reviewId": "ifthen-2014/ew--unknown.json",
+      "oldUrl": "https://ew.com/article/2014/04/04/ifthen-ew-stage-review/?srsltid=AfmBOorxJUDgHRMQ-VzeRxb8zroTo9eOKK90KIiM_0VNj2I5ZXO2qThj",
+      "newUrl": "https://ew.com/article/2014/04/04/ifthen-ew-stage-review/?srsltid=AfmBOoqIn1mrZtphLWrNI760DIuE_sa8xU19elwaMUbpi6WjYo__8DbA"
     },
     {
-      "reviewId": "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
-      "oldUrl": "https://www.chicagotribune.com/2014/10/06/the-curious-incident-of-the-dog-in-the-night-time-broadway-review/",
-      "newUrl": "https://www.chicagotribune.com/2014/10/06/review-the-curious-incident-of-the-dog-in-the-night-time/"
+      "reviewId": "in-the-heights-2008/ew--melissa-rose-bernardo.json",
+      "oldUrl": "https://www.ew.com/ew/article/0,,20183584,00.html",
+      "newUrl": "https://ew.com/movies/movie-reviews/in-the-heights-movie-review/?srsltid=AfmBOooC98luYmObszxGuLXzXvf0aivjchb-yG2fKGuRivLZAQaEAV5v"
+    },
+    {
+      "reviewId": "indecent-2017/ew--melissa-rose-bernardo.json",
+      "oldUrl": "https://ew.com/theater/2017/04/19/indecent-broadway-review",
+      "newUrl": "https://ew.com/theater/2017/04/18/indecent-broadway-review/?srsltid=AfmBOoqhzmGoBu_GUlKP4vQ1fkub1n2wOxnPo0hje5OieUhVh60JYats"
+    },
+    {
+      "reviewId": "into-the-woods-2022/ew--joey-nolfi.json",
+      "oldUrl": "https://ew.com/theater/into-the-woods-broadway-review-2022/",
+      "newUrl": "https://ew.com/theater/into-the-woods-review-stephen-sondheims-fairytale-remains-as-magic-as-ever/?srsltid=AfmBOopuKckv4X8jkqQOuCglZ1DC-BFNsPl-f87xAo8mFpq3wwg0z-3y"
+    },
+    {
+      "reviewId": "king-lear-2019/ew--allison-adato.json",
+      "oldUrl": "https://www.ew.com/ew/article/0,,20364394_20840673,00.html",
+      "newUrl": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/?srsltid=AfmBOoqbWA6c_n9DrIlHHp1vlGttYuWS0KlI78bYS-F_N1NeBltSOXG7"
+    },
+    {
+      "reviewId": "king-lear-2019/ew--unknown.json",
+      "oldUrl": "https://www.ew.com/ew/article/0,,20364394_20840673,00.html",
+      "newUrl": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/?srsltid=AfmBOorpNqDue5vdJi3KSakZjLnBPSw0LsO9578r6-3zsbwLFzvjZtWg"
+    },
+    {
+      "reviewId": "kiss-me-kate-2019/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/2019/03/15/kiss-me-kate-broadway-review",
+      "newUrl": "https://ew.com/theater-reviews/2019/03/14/kiss-me-kate-review/?srsltid=AfmBOooGr49zGTH4f2K-mZHqdKghio2DcqRyj02IxFbjzCp-0y4EM4yC"
+    },
+    {
+      "reviewId": "mcneal-2024/ew--joey-nolfi.json",
+      "oldUrl": "https://ew.com/mcneal-broadway-review-robert-downey-jr-7974025",
+      "newUrl": "https://ew.com/mcneal-review-robert-downey-jr-makes-broadway-debut-8720305?srsltid=AfmBOoq45agMd-yRETC2mShJKS0fUDYzh1f6Q3IeG7MM2RDFkScfSZjU"
     }
   ]
 }
