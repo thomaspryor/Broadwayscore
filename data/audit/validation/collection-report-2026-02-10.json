@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-10T05:01:31.119Z",
+  "runDate": "2026-02-10T07:50:07.030Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -17,27 +17,27 @@
     "successRate": "5.9%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archive": 0
   },
   "statistics": {
     "tier1Attempts": 12,
-    "tier1Success": 7,
-    "tier1_5Attempts": 1,
+    "tier1Success": 6,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 7,
-    "tier2Success": 2,
-    "tier3Attempts": 6,
-    "tier3Success": 1,
-    "tier4Attempts": 13,
-    "tier4Success": 7,
+    "tier2Attempts": 9,
+    "tier2Success": 1,
+    "tier3Attempts": 8,
+    "tier3Success": 3,
+    "tier4Attempts": 14,
+    "tier4Success": 4,
     "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 31,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.3,
+    "scrapingBeeCreditsUsed": 41,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -64,12 +64,12 @@
     "hadestown-2019/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "hadestown-2019/medium--christian-lewis.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "hadestown-2019/medium--christian-lewis.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {
