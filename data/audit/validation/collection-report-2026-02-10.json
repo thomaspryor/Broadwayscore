@@ -2,7 +2,7 @@
   "runDate": "2026-02-10T11:08:34.028Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "wicked-2003",
     "aggressive": false,
@@ -14,7 +14,7 @@
     "processed": 2,
     "failed": 32,
     "skipped": 0,
-    "successRate": "5.9%"
+    "successRate": "4.2%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -134,6 +134,5 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     }
-  },
-  "urlDiscoveries": []
+  ]
 }
