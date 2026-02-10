@@ -1,80 +1,99 @@
 {
   "processed": [
-    "aladdin-2014/ew--thom-geier.json",
-    "aladdin-2014/theatermania--david-finkle.json",
-    "aladdin-2014/wsj--terry-teachout.json",
-    "and-juliet-2022/theatermania--hayley-levitt.json",
-    "and-juliet-2022/thewrap--robert-hofler.json"
+    "mj-2022/hollywood-reporter--love-gyarkye.json",
+    "mj-2022/hollywood-reporter--lovia-gayarkye.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/theatermania--jesse-green.json",
+    "mj-2022/theater-life--patrick-christiano.json"
   ],
   "failed": [
-    "and-juliet-2022/variety--aramide-tinubu.json",
-    "buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
-    "maybe-happy-ending-2024/hollywood-reporter--angie-han.json",
-    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-    "maybe-happy-ending-2024/nyt-theater--jonathan-mandell.json",
-    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
-    "maybe-happy-ending-2024/variety--charles-isherwood.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "aladdin-2014/theatermania--charles-isherwood.json",
-    "aladdin-2014/timeout--adam-feldman.json",
-    "aladdin-2014/uinterview--danny-graugnard.json",
-    "and-juliet-2022/nydailynews--chris-jones.json",
-    "and-juliet-2022/observer--rex-reed.json",
-    "and-juliet-2022/theatermania--jesse-green.json",
-    "and-juliet-2022/timeout--adam-feldman.json"
+    "mj-2022/hollywood-reporter--angie-han.json",
+    "mj-2022/newyorker--naomi-fry.json",
+    "mj-2022/vulture--jackson-mchenry.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "mj-2022/deadline--pete-hammond.json",
+    "mj-2022/ew--joey-nolfi.json",
+    "mj-2022/ew--kristen-baldwin.json",
+    "mj-2022/thewrap--steve-pond.json",
+    "mj-2022/timeout--adam-feldman.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "six-2021/observer--david-cote.json",
+    "six-2021/timeout--adam-feldman.json",
+    "six-2021/wsj--charles-isherwood.json",
+    "mj-2022/cititour--brian-scott-lipton.json",
+    "mj-2022/ap--mark-kennedy.json",
+    "mj-2022/exeunt-magazine--juliet-hindell.json",
+    "mj-2022/front-row-center--brittany-crowell.json",
+    "mj-2022/slantmagazine--dan-rubins.json",
+    "mj-2022/talkinbroadway--howard-miller.json",
+    "mj-2022/talkinbroadway--matthew-murray.json",
+    "mj-2022/theater-life--samuel-l-leiter.json",
+    "mj-2022/theater-pizzazz--cooper-lawrence.json",
+    "mj-2022/theater-scene--joel-benjamin.json",
+    "mj-2022/usatoday--david-rooney.json",
+    "mj-2022/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [
-      "and-juliet-2022/theatermania--hayley-levitt.json"
+    "playwright": [
+      "mj-2022/theater-life--patrick-christiano.json"
     ],
-    "brightdata": [],
+    "browserbase": [
+      "data/review-texts/mj-2022/hollywood-reporter--love-gyarkye.json",
+      "mj-2022/hollywood-reporter--love-gyarkye.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gayarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gayarkye.json"
+    ],
+    "scrapingbee": [],
+    "brightdata": [
+      "mj-2022/theatermania--jesse-green.json"
+    ],
     "archive": [
-      "aladdin-2014/ew--thom-geier.json",
-      "aladdin-2014/theatermania--david-finkle.json",
-      "aladdin-2014/wsj--terry-teachout.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
     ]
   },
-  "startTime": "2026-02-10T03:48:20.335Z",
-  "lastProcessed": "and-juliet-2022/timeout--adam-feldman.json",
+  "startTime": "2026-02-10T03:44:36.068Z",
+  "lastProcessed": "mj-2022/usatoday--elysa-gardner.json",
   "log": [
     {
-      "t": "2026-02-10T03:48:47.942Z",
+      "t": "2026-02-10T03:44:38.933Z",
       "event": "bb-session",
-      "session": "034c9d13",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maybe-happy-ending-broadway-rev"
+      "session": "a529ea9f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235"
     },
     {
-      "t": "2026-02-10T03:51:12.283Z",
+      "t": "2026-02-10T03:45:09.666Z",
       "event": "bb-session",
-      "session": "46dc508d",
-      "url": "https://www.newyorker.com/magazine/2024/12/02/maybe-happy-ending-theatre-review"
+      "session": "a2100601",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
     },
     {
-      "t": "2026-02-10T03:51:14.553Z",
+      "t": "2026-02-10T03:45:24.060Z",
+      "event": "bb-session",
+      "session": "dd8473ed",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-02-10T03:47:32.731Z",
+      "event": "bb-session",
+      "session": "5bd95bb8",
+      "url": "https://www.newyorker.com/magazine/2022/02/21/mj-sanitizes-michael-jackson"
+    },
+    {
+      "t": "2026-02-10T03:47:34.856Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T03:52:04.116Z",
+      "t": "2026-02-10T03:49:35.068Z",
       "event": "bb-session",
-      "session": "c05f22de",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123621"
+      "session": "e1383c01",
+      "url": "https://www.vulture.com/2022/02/mj-the-musical-broadway-review.html"
     },
     {
-      "t": "2026-02-10T03:52:56.537Z",
-      "event": "bb-session",
-      "session": "d08c26a0",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123622"
-    },
-    {
-      "t": "2026-02-10T03:53:50.365Z",
-      "event": "bb-session",
-      "session": "731f69d2",
-      "url": "https://www.theatermania.com/new-york-city-theater/news/aladdin_70661.html"
+      "t": "2026-02-10T03:49:37.142Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
     }
   ]
 }
