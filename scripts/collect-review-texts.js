@@ -3077,7 +3077,7 @@ function findReviewsToProcess() {
   const shows = fs.readdirSync(CONFIG.reviewTextsDir)
     .filter(f => fs.statSync(path.join(CONFIG.reviewTextsDir, f)).isDirectory());
 
-  // Load failed fetches — skip permanently failed URLs (3+ failures)
+  // Load failed fetches — skip permanently failed URLs (5+ failures, or 3+ confirmed dead)
   const failedFetches = new Set();  // For retry mode: IDs to include
   const permanentlyFailed = new Set();  // IDs to always skip (too many failures)
   let permanentSkipCount = 0;
@@ -3088,7 +3088,12 @@ function findReviewsToProcess() {
       for (const f of failed) {
         const id = f.reviewId || `${f.showId}/${f.file}`;
         const count = f.failureCount || 1;
-        if (count >= 3) {
+        const reason = f.failureReason || '';
+        // Only permanently skip if: confirmed dead URL with 3+ failures, or any reason with 5+ failures
+        // garbage_content means the URL works but scraper got wrong page — always retriable
+        const isConfirmedDead = reason === 'url_dead_404' || reason === 'url_dead_410';
+        const threshold = isConfirmedDead ? 3 : 5;
+        if (reason !== 'garbage_content' && count >= threshold) {
           permanentlyFailed.add(id);
           permanentSkipCount++;
         } else if (CONFIG.retryFailed) {
@@ -3098,7 +3103,7 @@ function findReviewsToProcess() {
     } catch (e) {}
   }
   if (permanentSkipCount > 0) {
-    console.log(`  Skipping ${permanentSkipCount} permanently failed reviews (3+ failures)`);
+    console.log(`  Skipping ${permanentSkipCount} permanently failed reviews (confirmed dead 3+ or other 5+ failures)`);
   }
 
   for (const showId of shows) {
@@ -3432,8 +3437,10 @@ function recordFailedFetch(review, reason, details = {}) {
     // Non-fatal — don't crash the run over tracking
   }
 
-  if (entry.failureCount >= 3) {
-    console.log(`    ⚠ Permanently failed (${entry.failureCount} attempts) — will skip on future runs`);
+  const isConfirmedDead = reason === 'url_dead_404' || reason === 'url_dead_410';
+  const threshold = isConfirmedDead ? 3 : 5;
+  if (reason !== 'garbage_content' && entry.failureCount >= threshold) {
+    console.log(`    ⚠ Permanently failed (${entry.failureCount} attempts, reason: ${reason}) — will skip on future runs`);
   }
 }
 
