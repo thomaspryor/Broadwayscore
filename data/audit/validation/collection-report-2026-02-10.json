@@ -1,138 +1,111 @@
 {
-  "runDate": "2026-02-10T17:40:05.020Z",
+  "runDate": "2026-02-10T18:02:32.641Z",
   "config": {
-    "batchSize": 10,
+    "batchSize": 20,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "harry-potter-2021",
-    "aggressive": true,
+    "showFilter": "book-of-mormon-2011",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 19,
+    "processed": 3,
+    "failed": 20,
     "skipped": 0,
-    "successRate": "20.8%"
+    "successRate": "13.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 3
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 19,
-    "tier1Success": 6,
+    "tier1Attempts": 9,
+    "tier1Success": 4,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 11,
-    "tier2Success": 5,
-    "tier3Attempts": 7,
-    "tier3Success": 2,
-    "tier4Attempts": 27,
-    "tier4Success": 6,
-    "totalFailed": 18,
-    "scrapingBeeCreditsUsed": 86,
+    "tier2Attempts": 9,
+    "tier2Success": 4,
+    "tier3Attempts": 5,
+    "tier3Success": 0,
+    "tier4Attempts": 16,
+    "tier4Success": 7,
+    "totalFailed": 20,
+    "scrapingBeeCreditsUsed": 46,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 7,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoveryAttempts": 6,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/buy-tickets--unknown.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/the-times--ann-treneman.json"
+    "book-of-mormon-2011/newyorkmagazine--scott-brown.json",
+    "book-of-mormon-2011/vulture--scott-brown.json",
+    "book-of-mormon-2011/stagezine--scott-harrah.json"
   ],
   "failed": [
-    "harry-potter-2021/ew--kristen-baldwin.json",
-    "harry-potter-2021/indiewire--david-ehrlich.json",
-    "harry-potter-2021/national-review--kyle-smith.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "harry-potter-2021/forward--matthew-murphy.json",
-    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/broadwayworld--michael-dale.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/exeunt-magazine--kev-berry.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
-    "harry-potter-2021/sfist-jay-barmann--jay-barmann.json",
-    "harry-potter-2021/telegraph--diana-snyder.json",
-    "harry-potter-2021/the-san-francisco-chronicle-lily-janiak--lily-janiak.json",
-    "harry-potter-2021/the-telegraph-uk--diane-snyder.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "book-of-mormon-2011/hollywood-reporter--david-rooney.json",
+    "book-of-mormon-2011/newyorker--hilton-als.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "book-of-mormon-2011/timeout--david-cote.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "book-of-mormon-2011/cititour--lesley-alexander.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "book-of-mormon-2011/broadway-voice--gregory-g-allen.json",
+    "book-of-mormon-2011/chicagotribune--.json",
+    "book-of-mormon-2011/chicagotribune--chris-jones.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "book-of-mormon-2011/latimes--charles-mcnulty.json",
+    "book-of-mormon-2011/ny-1--roma-torre.json",
+    "book-of-mormon-2011/stu-on-broadway--stu-brown.json",
+    "book-of-mormon-2011/the-independent-uk--peter-marks.json",
+    "book-of-mormon-2011/theatre-is-easy--dan-dinero.json",
+    "book-of-mormon-2011/village-voice--michael-musto.json",
+    "book-of-mormon-2011/washpost--.json",
+    "book-of-mormon-2011/washpost--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+      "book-of-mormon-2011/stagezine--scott-harrah.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "harry-potter-2021/buy-tickets--unknown.json"
-    ],
-    "brightdata": [
-      "harry-potter-2021/broadwayworld--michael-dale.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archive": [
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "harry-potter-2021/the-times--ann-treneman.json"
+      "book-of-mormon-2011/newyorkmagazine--scott-brown.json",
+      "book-of-mormon-2011/vulture--scott-brown.json"
     ]
   },
   "failuresByOutlet": {
-    "IndieWire": {
+    "The New Yorker": {
       "count": 1,
-      "domain": "indiewire.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
       "isKnownBlocked": true
     },
-    "Broadway Blog": {
+    "Broadway Voice": {
       "count": 1,
-      "domain": "thebroadwayblog.com",
+      "domain": "bwayvoice.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "CurtainUp": {
+    "Village Voice": {
       "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Front Row Center": {
-      "count": 1,
-      "domain": "frontrowcenter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Front Mezz Junkies": {
-      "count": 1,
-      "domain": "frontmezzjunkies.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Theater Pizzazz": {
-      "count": 1,
-      "domain": "theaterpizzazz.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Zeal NYC": {
-      "count": 1,
-      "domain": "zealnyc.com",
+      "domain": "villagevoice.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -140,14 +113,9 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
-      "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
-      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOoqopGJNZWDgkagWUocrjeq7zIGYTbS5nF8eqhhI60tR-T-kTal4"
-    },
-    {
-      "reviewId": "harry-potter-2021/curtainup--elyse-sommer.json",
-      "oldUrl": "https://www.curtainup.com/harrypottercursedchild.html",
-      "newUrl": "http://www.curtainup.com/harrypotterbway18.html"
+      "reviewId": "book-of-mormon-2011/chicagotribune--.json",
+      "oldUrl": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-park/",
+      "newUrl": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in-a-hilarious-book-of-mormon/"
     }
   ]
 }
