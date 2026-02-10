@@ -1,51 +1,56 @@
 {
-  "updatedAt": "2026-02-10T22:01:15.413Z",
-  "processed": 119,
-  "failed": 541,
-  "successRate": "18.0%",
+  "updatedAt": "2026-02-10T22:05:10.248Z",
+  "processed": 101,
+  "failed": 469,
+  "successRate": "17.7%",
   "tierBreakdown": {
-    "playwright": 15,
-    "browserbase": 1,
-    "scrapingbee": 41,
-    "brightdata": 13,
-    "archive": 51
+    "playwright": 11,
+    "browserbase": 2,
+    "scrapingbee": 36,
+    "brightdata": 22,
+    "archive": 33
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:15:10.796Z",
+      "t": "2026-02-10T16:36:32.781Z",
       "event": "bb-session",
-      "session": "20c36c5c",
-      "url": "https://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als"
+      "session": "d8e99ba4",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235"
     },
     {
-      "t": "2026-02-10T16:15:15.966Z",
+      "t": "2026-02-10T16:37:00.483Z",
+      "event": "bb-session",
+      "session": "d0fe3df5",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-02-10T16:39:10.310Z",
+      "event": "bb-session",
+      "session": "e3b19f72",
+      "url": "https://www.newyorker.com/magazine/2022/02/21/mj-sanitizes-michael-jackson"
+    },
+    {
+      "t": "2026-02-10T16:39:12.716Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:15:42.938Z",
+      "t": "2026-02-10T16:41:00.754Z",
       "event": "bb-session",
-      "session": "7cd83478",
-      "url": "https://www.variety.com/review/VE1117942352.html?categoryId=33&cs=1"
+      "session": "fb10e3d0",
+      "url": "https://www.vulture.com/2022/02/mj-the-musical-broadway-review.html"
     },
     {
-      "t": "2026-02-10T16:16:49.584Z",
-      "event": "bb-session",
-      "session": "a4bc6df0",
-      "url": "https://www.hollywoodreporter.com/review/amelie-a-new-musical-theater-957477"
+      "t": "2026-02-10T16:41:02.474Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-10T16:17:21.460Z",
+      "t": "2026-02-10T16:41:55.288Z",
       "event": "bb-session",
-      "session": "0727ea8a",
-      "url": "https://variety.com/2017/legit/reviews/amelie-a-new-musical-review-1202020405/"
-    },
-    {
-      "t": "2026-02-10T16:19:40.450Z",
-      "event": "bb-session",
-      "session": "3d37ab6a",
-      "url": "https://variety.com/2023/legit/reviews/back-to-the-future-musical-broadway-revie"
+      "session": "df69650a",
+      "url": "https://deadline.com/2022/02/mj-the-musical-review-broadway-michael-jackson-1234"
     }
   ]
 }
