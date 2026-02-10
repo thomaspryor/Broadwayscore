@@ -1,15 +1,51 @@
 {
-  "updatedAt": "2026-02-10T08:49:10.952Z",
-  "processed": 2,
-  "failed": 20,
-  "successRate": "9.1%",
+  "updatedAt": "2026-02-10T08:57:40.511Z",
+  "processed": 83,
+  "failed": 407,
+  "successRate": "16.9%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 9,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 0
+    "scrapingbee": 28,
+    "brightdata": 6,
+    "archive": 42
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T03:48:47.942Z",
+      "event": "bb-session",
+      "session": "034c9d13",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maybe-happy-ending-broadway-rev"
+    },
+    {
+      "t": "2026-02-10T03:51:12.283Z",
+      "event": "bb-session",
+      "session": "46dc508d",
+      "url": "https://www.newyorker.com/magazine/2024/12/02/maybe-happy-ending-theatre-review"
+    },
+    {
+      "t": "2026-02-10T03:51:14.553Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T03:52:04.116Z",
+      "event": "bb-session",
+      "session": "c05f22de",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123621"
+    },
+    {
+      "t": "2026-02-10T03:52:56.537Z",
+      "event": "bb-session",
+      "session": "d08c26a0",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123622"
+    },
+    {
+      "t": "2026-02-10T03:53:50.365Z",
+      "event": "bb-session",
+      "session": "731f69d2",
+      "url": "https://www.theatermania.com/new-york-city-theater/news/aladdin_70661.html"
+    }
+  ]
 }
