@@ -14,10 +14,10 @@
     "processed": 0,
     "failed": 3,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "5.6%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -38,18 +38,22 @@
     "scrapingBeeCreditsUsed": 1,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 3,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "the-outsiders-2024/culturesauce--thom-geier.json"
+  ],
   "failed": [
     "cabaret-2024/newyorker--naomi-fry.json",
     "cabaret-2024/variety--aramide-tinubu.json",
     "cabaret-2024/vulture--helen-shaw.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-outsiders-2024/culturesauce--thom-geier.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
