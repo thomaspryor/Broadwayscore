@@ -1,15 +1,51 @@
 {
-  "updatedAt": "2026-02-10T04:33:27.959Z",
-  "processed": 47,
-  "failed": 53,
-  "successRate": "47.0%",
+  "updatedAt": "2026-02-10T04:37:31.873Z",
+  "processed": 4,
+  "failed": 76,
+  "successRate": "5.0%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 16,
-    "brightdata": 27,
-    "archive": 4
+    "playwright": 1,
+    "browserbase": 2,
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T03:46:17.116Z",
+      "event": "bb-session",
+      "session": "a28c58a6",
+      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-12360"
+    },
+    {
+      "t": "2026-02-10T03:47:16.826Z",
+      "event": "bb-session",
+      "session": "0cc63821",
+      "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the"
+    },
+    {
+      "t": "2026-02-10T03:48:08.955Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T03:49:40.702Z",
+      "event": "bb-session",
+      "session": "d7e031b8",
+      "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-wa"
+    },
+    {
+      "t": "2026-02-10T03:49:56.397Z",
+      "event": "bb-session",
+      "session": "1959112f",
+      "url": "https://www.theatermania.com/broadway/reviews/oh-mary-cole-escola_95834.html"
+    },
+    {
+      "t": "2026-02-10T03:54:15.513Z",
+      "event": "bb-session",
+      "session": "a8e2523d",
+      "url": "https://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1"
+    }
+  ]
 }
