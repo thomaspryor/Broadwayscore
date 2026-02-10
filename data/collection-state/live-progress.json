@@ -1,15 +1,22 @@
 {
-  "updatedAt": "2026-02-10T20:55:18.784Z",
-  "processed": 6,
-  "failed": 15,
-  "successRate": "28.6%",
+  "updatedAt": "2026-02-10T21:02:51.767Z",
+  "processed": 55,
+  "failed": 375,
+  "successRate": "12.8%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 10,
     "browserbase": 0,
-    "scrapingbee": 2,
-    "brightdata": 1,
-    "archive": 3
+    "scrapingbee": 15,
+    "brightdata": 13,
+    "archive": 18
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T17:03:36.255Z",
+      "event": "bb-session",
+      "session": "0c32e6f7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/hells-kitchen-broadway-review-1"
+    }
+  ]
 }
