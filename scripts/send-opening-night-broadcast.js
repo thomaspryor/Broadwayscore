@@ -167,7 +167,8 @@ async function main() {
   // Build show data for email template
   const showsForEmail = readyShows.map(({ show, stats }) => {
     const showId = show.id || show.slug;
-    const showConsensus = consensus[showId] || consensus[show.slug];
+    const consensusShows = consensus.shows || consensus;
+    const showConsensus = consensusShows[showId] || consensusShows[show.slug];
     const consensusText = showConsensus?.text || showConsensus?.consensus || null;
 
     // Compute score from reviews
