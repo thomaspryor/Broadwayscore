@@ -1,72 +1,85 @@
 {
   "processed": [
-    "hells-kitchen-2024/theatermania--david-gordon.json"
+    "wicked-2003/ajc--wendell-brock.json"
   ],
   "failed": [
-    "hells-kitchen-2024/newyorker--naomi-fry.json",
-    "hells-kitchen-2024/nytg--david-gordon.json",
-    "hells-kitchen-2024/vulture--sara-holdren.json",
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/observer--david-cote.json",
-    "hells-kitchen-2024/observer--rex-reed.json",
-    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "hells-kitchen-2024/thewrap--steve-pond.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json",
-    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
-    "hells-kitchen-2024/showbiz411-roger-friedman--roger-friedman.json",
-    "hells-kitchen-2024/slantmagazine--dan-rubins.json",
-    "hells-kitchen-2024/talkinbroadway--howard-miller.json",
-    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
-    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
-    "hells-kitchen-2024/usatoday--david-oliver.json",
-    "hells-kitchen-2024/washpost--peter-marks.json"
+    "wicked-2003/hollywood-reporter--david-rooney.json",
+    "wicked-2003/newyorker--.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/variety--peter-debruge.json",
+    "wicked-2003/vulture--bilge-eberi.json",
+    "wicked-2003/bbc-caryn-james--caryn-james.json",
+    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/guardian--peter-bradshaw.json",
+    "wicked-2003/indiewire--kate-erbland.json",
+    "wicked-2003/newsweek--billie-melissa.json",
+    "wicked-2003/nexus-point-news-demet-koc--demet-koc.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/den-of-geek-david-crow--david-crow.json",
+    "wicked-2003/empire-john-nugent--john-nugent.json",
+    "wicked-2003/fresh-fiction-courtney-howard--courtney-howard.json",
+    "wicked-2003/frontmezzjunkies--unknown.json",
+    "wicked-2003/huron-daily-jake-coyle--jake-coyle.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "browserbase": [
-      "data/review-texts/hells-kitchen-2024/observer--david-cote.json"
+      "data/review-texts/wicked-2003/hollywood-reporter--david-rooney.json",
+      "data/review-texts/wicked-2003/variety--peter-debruge.json"
     ],
     "scrapingbee": [],
     "brightdata": [
-      "hells-kitchen-2024/theatermania--david-gordon.json"
+      "wicked-2003/ajc--wendell-brock.json"
     ],
     "archive": []
   },
-  "startTime": "2026-02-10T13:51:39.397Z",
-  "lastProcessed": "hells-kitchen-2024/washpost--peter-marks.json",
+  "startTime": "2026-02-10T13:51:41.521Z",
+  "lastProcessed": "wicked-2003/huron-daily-jake-coyle--jake-coyle.json",
   "log": [
     {
-      "t": "2026-02-10T13:53:31.975Z",
+      "t": "2026-02-10T13:51:43.932Z",
       "event": "bb-session",
-      "session": "79d5969d",
-      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+      "session": "9955299a",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
     },
     {
-      "t": "2026-02-10T13:53:34.461Z",
+      "t": "2026-02-10T13:53:58.394Z",
+      "event": "bb-session",
+      "session": "edb626ca",
+      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
+    },
+    {
+      "t": "2026-02-10T13:54:00.429Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T13:59:18.645Z",
+      "t": "2026-02-10T13:54:49.356Z",
       "event": "bb-session",
-      "session": "ada390b1",
-      "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
+      "session": "fc98ef1a",
+      "url": "https://variety.com/2025/film/reviews/wicked-for-good-review-1236581742/"
     },
     {
-      "t": "2026-02-10T13:59:34.820Z",
+      "t": "2026-02-10T13:56:13.645Z",
       "event": "bb-session",
-      "session": "fd1d2092",
-      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
+      "session": "9b16eebd",
+      "url": "https://www.indiewire.com/criticism/movies/wicked-for-good-review-part-2-1235160"
     },
     {
-      "t": "2026-02-10T14:00:17.929Z",
+      "t": "2026-02-10T13:59:25.993Z",
       "event": "bb-session",
-      "session": "fe77b9d0",
-      "url": "https://www.theatermania.com/broadway/reviews/hells-kitchen_96263"
+      "session": "4327bfa4",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-02-10T14:00:11.117Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     }
   ]
 }
