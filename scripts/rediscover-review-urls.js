@@ -42,8 +42,8 @@ const CONFIG = {
   failedFetchesPath: path.join(process.cwd(), 'data/review-texts/failed-fetches.json'),
   scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '',
   isCI: !!process.env.CI || !!process.env.GITHUB_ACTIONS,
-  phase2Limit: 500,
-  phase3Limit: 200,
+  phase2Limit: 10000,
+  phase3Limit: 10000,
   phase2Delay: 500,  // ms between HTTP requests
   phase3Delay: 1000, // ms between SERP calls
 };
@@ -425,31 +425,48 @@ async function runPhase3(candidates) {
     return 0;
   }
 
-  // Phase 3 candidates: missing fullText AND (httpStatus=404 OR last fetchAttempt has 404 error)
-  const phase3Candidates = candidates.filter(c => {
+  // Phase 3 candidates: missing fullText, not yet rediscovered.
+  // Priority: confirmed 404s first, then never-attempted, then failed-other.
+  const confirmed404 = [];
+  const neverAttempted = [];
+  const failedOther = [];
+
+  for (const c of candidates) {
     try {
       const fresh = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
-      if (fresh.urlDiscoveryMethod) return false;
-      if (fresh.fullText && fresh.fullText.length > 100) return false;
-      if (!fresh.url) return false;
+      if (fresh.urlDiscoveryMethod) continue;
+      if (fresh.fullText && fresh.fullText.length > 100) continue;
+      if (!fresh.url) continue;
       c.url = fresh.url;
       c.data = fresh;
 
-      // Check for 404 indicators
-      if (fresh.httpStatus === 404 || fresh.httpStatus === 410) return true;
-
-      // Check last fetch attempt for 404-ish errors
+      // Categorize by priority
       const attempts = fresh.fetchAttempts || [];
-      if (attempts.length > 0) {
-        const lastError = (attempts[attempts.length - 1].error || '').toLowerCase();
-        if (lastError.includes('404') || lastError.includes('not found') || lastError.includes('dead')) return true;
+      const is404 = fresh.httpStatus === 404 || fresh.httpStatus === 410 ||
+        (attempts.length > 0 && ((attempts[attempts.length - 1].error || '').toLowerCase().match(/404|not found|dead/)));
+
+      if (is404) {
+        confirmed404.push(c);
+      } else if (attempts.length === 0) {
+        // Prioritize outlets with known domain mapping (better SERP results)
+        const oid = (c.outletId || '').toLowerCase();
+        if (OUTLET_DOMAINS[oid]) {
+          neverAttempted.unshift(c); // known domain → front of queue
+        } else {
+          neverAttempted.push(c); // unknown domain → back
+        }
+      } else {
+        failedOther.push(c);
       }
+    } catch (e) { /* skip */ }
+  }
 
-      return false;
-    } catch (e) { return false; }
-  });
+  const phase3Candidates = [...confirmed404, ...neverAttempted, ...failedOther];
 
-  console.log(`  Eligible (404 candidates): ${phase3Candidates.length}\n`);
+  console.log(`  Eligible for SERP search: ${phase3Candidates.length}`);
+  console.log(`    Confirmed 404: ${confirmed404.length}`);
+  console.log(`    Never attempted: ${neverAttempted.length}`);
+  console.log(`    Failed (other): ${failedOther.length}\n`);
 
   let processed = 0;
   let found = 0;

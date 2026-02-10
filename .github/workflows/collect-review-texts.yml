@@ -1,5 +1,10 @@
 name: Collect Review Texts
 
+# Prevent un-filtered runs from duplicating each other; show-targeted runs are independent
+concurrency:
+  group: collect-reviews-${{ github.event.inputs.show_filter || 'global' }}-${{ github.event.inputs.content_tier || 'all' }}
+  cancel-in-progress: false
+
 on:
   schedule:
     # Nightly at 2 AM UTC (9 PM EST) - automated backfill of truncated/stub reviews
@@ -124,6 +129,8 @@ jobs:
           NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
           VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
           VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          NEW_YORKER_EMAIL: ${{ secrets.NEW_YORKER_EMAIL }}
+          NEW_YORKER_PASSWORD: ${{ secrets.NEW_YORKER_PASSWORD }}
           WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
           WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
@@ -417,6 +424,8 @@ jobs:
           NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
           VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
           VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          NEW_YORKER_EMAIL: ${{ secrets.NEW_YORKER_EMAIL }}
+          NEW_YORKER_PASSWORD: ${{ secrets.NEW_YORKER_PASSWORD }}
           WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
           WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}

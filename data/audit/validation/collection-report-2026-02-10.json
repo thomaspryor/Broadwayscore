@@ -1,101 +1,113 @@
 {
-  "runDate": "2026-02-10T14:51:47.018Z",
+  "runDate": "2026-02-10T22:39:19.150Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hells-kitchen-2024",
-    "aggressive": false,
+    "showFilter": "harry-potter-2021",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 19,
+    "processed": 5,
+    "failed": 16,
     "skipped": 0,
-    "successRate": "9.5%"
+    "successRate": "23.8%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 0
+    "scrapingbee": 2,
+    "brightdata": 0,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 7,
+    "tier1Attempts": 16,
+    "tier1Success": 6,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 11,
-    "tier2Success": 4,
-    "tier3Attempts": 8,
-    "tier3Success": 5,
-    "tier4Attempts": 14,
-    "tier4Success": 1,
-    "totalFailed": 19,
-    "scrapingBeeCreditsUsed": 66,
+    "tier2Attempts": 10,
+    "tier2Success": 5,
+    "tier3Attempts": 6,
+    "tier3Success": 2,
+    "tier4Attempts": 22,
+    "tier4Success": 6,
+    "totalFailed": 15,
+    "scrapingBeeCreditsUsed": 65,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 6,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 5,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hells-kitchen-2024/theatermania--david-gordon.json",
-    "hells-kitchen-2024/thewrap--steve-pond.json"
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/buy-tickets--unknown.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/the-times--ann-treneman.json"
   ],
   "failed": [
-    "hells-kitchen-2024/newyorker--naomi-fry.json",
-    "hells-kitchen-2024/nytg--david-gordon.json",
-    "hells-kitchen-2024/vulture--sara-holdren.json",
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/observer--david-cote.json",
-    "hells-kitchen-2024/observer--rex-reed.json",
-    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json",
-    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
-    "hells-kitchen-2024/showbiz411-roger-friedman--roger-friedman.json",
-    "hells-kitchen-2024/slantmagazine--dan-rubins.json",
-    "hells-kitchen-2024/talkinbroadway--howard-miller.json",
-    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
-    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
-    "hells-kitchen-2024/usatoday--david-oliver.json",
-    "hells-kitchen-2024/washpost--peter-marks.json"
+    "harry-potter-2021/ew--kristen-baldwin.json",
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "harry-potter-2021/national-review--kyle-smith.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/forward--matthew-murphy.json",
+    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/exeunt-magazine--kev-berry.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
+    "harry-potter-2021/sfist-jay-barmann--jay-barmann.json",
+    "harry-potter-2021/telegraph--diana-snyder.json",
+    "harry-potter-2021/the-san-francisco-chronicle-lily-janiak--lily-janiak.json",
+    "harry-potter-2021/the-telegraph-uk--diane-snyder.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+    ],
     "browserbase": [],
     "scrapingbee": [
-      "hells-kitchen-2024/thewrap--steve-pond.json"
+      "harry-potter-2021/broadwayworld--michael-dale.json",
+      "harry-potter-2021/buy-tickets--unknown.json"
     ],
-    "brightdata": [
-      "hells-kitchen-2024/theatermania--david-gordon.json"
-    ],
-    "archive": []
+    "brightdata": [],
+    "archive": [
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json",
+      "harry-potter-2021/the-times--ann-treneman.json"
+    ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
+    "IndieWire": {
       "count": 1,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
+      "domain": "indiewire.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
     },
-    "Rolling Stone": {
+    "Broadway Blog": {
       "count": 1,
-      "domain": "rollingstone.com",
+      "domain": "thebroadwayblog.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Talkin' Broadway": {
+    "CurtainUp": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "curtainup.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Front Mezz Junkies": {
+      "count": 1,
+      "domain": "frontmezzjunkies.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -103,9 +115,14 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "hells-kitchen-2024/nytg--david-gordon.json",
-      "oldUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen",
-      "newUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen-broadway-review-alicia-keys"
+      "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
+      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOoqpZPS-M1efyl2XLvoWn0pBC3a7Ea59wHE51YZiMlCKqWOC1mzd"
+    },
+    {
+      "reviewId": "harry-potter-2021/curtainup--elyse-sommer.json",
+      "oldUrl": "https://www.curtainup.com/harrypottercursedchild.html",
+      "newUrl": "http://www.curtainup.com/harrypotterbway18.html"
     }
   ]
 }
