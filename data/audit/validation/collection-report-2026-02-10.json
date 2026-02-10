@@ -38,8 +38,8 @@
     "scrapingBeeCreditsUsed": 189,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 15,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -111,9 +111,9 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "CurtainUp": {
+    "Albuquerque Journal": {
       "count": 1,
-      "domain": "curtainup.com",
+      "domain": "abqjournal.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -140,5 +140,11 @@
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
+      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
+    }
+  ]
 }
