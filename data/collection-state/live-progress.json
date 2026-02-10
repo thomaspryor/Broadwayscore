@@ -1,56 +1,15 @@
 {
-  "updatedAt": "2026-02-10T13:31:22.337Z",
-  "processed": 6,
-  "failed": 134,
-  "successRate": "4.3%",
+  "updatedAt": "2026-02-10T13:33:41.610Z",
+  "processed": 10,
+  "failed": 10,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 2,
-    "browserbase": 2,
+    "playwright": 5,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 3
+    "brightdata": 0,
+    "archive": 5
   },
-  "browserbaseSessions": 5,
-  "recentActivity": [
-    {
-      "t": "2026-02-10T12:02:10.597Z",
-      "event": "bb-session",
-      "session": "26a688c1",
-      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
-    },
-    {
-      "t": "2026-02-10T12:02:12.624Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-10T12:04:47.594Z",
-      "event": "bb-session",
-      "session": "b44d9f77",
-      "url": "https://variety.com/2025/legit/reviews/ragtime-review-broadway-lincoln-center-th"
-    },
-    {
-      "t": "2026-02-10T12:09:03.816Z",
-      "event": "bb-session",
-      "session": "82bd4c07",
-      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
-    },
-    {
-      "t": "2026-02-10T12:09:47.474Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-10T12:11:44.873Z",
-      "event": "bb-session",
-      "session": "448c8275",
-      "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
-    },
-    {
-      "t": "2026-02-10T12:12:12.898Z",
-      "event": "bb-session",
-      "session": "845259f2",
-      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
