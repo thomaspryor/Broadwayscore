@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-10T14:28:01.532Z",
+  "runDate": "2026-02-10T14:34:22.546Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -14,14 +14,14 @@
     "processed": 0,
     "failed": 3,
     "skipped": 0,
-    "successRate": "9.1%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 3,
-    "scrapingbee": 1,
+    "browserbase": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -42,10 +42,7 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/ajc--wendell-brock.json"
-  ],
+  "processed": [],
   "failed": [
     "moulin-rouge-2019/vulture--sara-holdren.json",
     "moulin-rouge-2019/theater-news-online-jeremy-gerard--jeremy-gerard.json",
@@ -53,18 +50,10 @@
   ],
   "tierDetails": {
     "playwright": [],
-    "browserbase": [
-      "data/review-texts/wicked-2003/hollywood-reporter--david-rooney.json",
-      "data/review-texts/wicked-2003/nytimes--charles-isherwood.json",
-      "data/review-texts/wicked-2003/variety--peter-debruge.json"
-    ],
-    "scrapingbee": [
-      "wicked-2003/ajc--wendell-brock.json"
-    ],
+    "browserbase": [],
+    "scrapingbee": [],
     "brightdata": [],
-    "archive": [
-      "wicked-2003/ew--alice-king.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
