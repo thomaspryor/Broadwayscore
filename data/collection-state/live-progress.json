@@ -1,15 +1,22 @@
 {
-  "updatedAt": "2026-02-10T16:51:54.982Z",
-  "processed": 7,
-  "failed": 93,
-  "successRate": "7.0%",
+  "updatedAt": "2026-02-10T16:53:48.439Z",
+  "processed": 2,
+  "failed": 9,
+  "successRate": "18.2%",
   "tierBreakdown": {
-    "playwright": 4,
-    "browserbase": 0,
+    "playwright": 0,
+    "browserbase": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T16:49:02.932Z",
+      "event": "bb-session",
+      "session": "625b3d44",
+      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+    }
+  ]
 }
