@@ -1,92 +1,359 @@
 {
-  "runDate": "2026-02-10T09:22:52.873Z",
+  "runDate": "2026-02-10T09:27:10.173Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "moulin-rouge-2019",
-    "aggressive": false,
+    "showFilter": "book-of-mormon-2011,moulin-rouge-2019,maybe-happy-ending-2024,marjorie-prime-2025,the-great-gatsby-2024,lucky-guy-2013,the-music-man-2022,school-of-rock-the-musical-2015,anastasia-2017,kiss-me-kate-2019,race-2009,lobby-hero-2018,plaza-suite-2022,the-last-ship-2014,death-of-a-salesman-2022,into-the-woods-2022,of-mice-and-men-2014,present-laughter-2017,the-real-thing-2014,beetlejuice-2019,eclipsed-2016,hello-dolly-2017,shucked-2023,the-curious-incident-of-the-dog-in-the-nighttime-2014,waitress-2016,betrayal-2019,diana-the-musical-2021,in-transit-2016,linda-vista-2019,motown-the-musical-2013,pretty-woman-the-musical-2018,the-boys-in-the-band-2018,the-river-2014,a-beautiful-noise-the-neil-diamond-musical-2022,a-life-in-the-theatre-2010,anything-goes-2011,burn-this-2019,finding-neverland-2015,kimberly-akimbo-2022,meteor-shower-2017,rocky-2014,the-addams-family-2010,the-inheritance-2019,the-play-that-goes-wrong-2017,war-horse-2011,bob-fosses-dancin-2023,cats-2016,first-date-2013,girl-from-the-north-country-2022,hillary-and-clinton-2019,les-liaisons-dangereuses-2016,richard-iii-2013,the-audience-2015,the-heiress-2012,three-tall-women-2018,what-the-constitution-means-to-me-2019,a-night-with-janis-joplin-2013,airline-highway-2015,catch-me-if-you-can-2011,dames-at-sea-2015,fiddler-on-the-roof-2015,head-over-heels-2018,john-lithgow-stories-by-heart-2018,million-dollar-quartet-2010,patriots-2024,the-assembled-parties-2013,the-importance-of-being-earnest-2011,therese-raquin-2015,a-dolls-house-2023,ann-2013,birthday-candles-2022,cats-1982,end-of-the-rainbow-2012,gutenberg-2023,la-cage-aux-folles-2010,master-class-2011,purlie-victorious-2023,speedtheplow-2008,the-mountaintop-2011,the-scottsboro-boys-2010,tina-2019,a-chorus-line-2006,annie-2012,chicken-and-biscuits-2021,godspell-2011,high-2011,jersey-boys-2005,mary-jane-2024,our-town-2024,priscilla-queen-of-the-desert-2011,smash-2025,sweeney-todd-2005,the-cottage-2023,the-iceman-cometh-2018,the-picture-of-dorian-gray-2025,the-snow-geese-2013,venus-in-fur-2011,33-variations-2009,a-streetcar-named-desire-2012,beautiful-the-carole-king-musical-2014,cat-on-a-hot-tin-roof-2008,driving-miss-daisy-2010,frostnixon-2007,i-need-that-2023,just-for-us-2023,love-letters-2014,mothers-and-sons-2014,our-mothers-brief-affair-2016,reasons-to-be-pretty-2009,soul-doctor-2013,sunday-in-the-park-with-george-2017,the-lightning-thief-2019,the-peewee-herman-show-2010,the-seagull-2008,thurgood-2008,blithe-spirit-2009,cymbeline-2007,dividing-the-estate-2008,finians-rainbow-2009,hamlet-2009,in-my-life-2005,lackawanna-blues-2021,marvins-room-2017,prelude-to-a-kiss-2007,radio-golf-2007,shrek-the-musical-2008,the-gershwins-porgy-and-bess-2012,the-ritz-2007,twelfth-night-2013,whos-afraid-of-virginia-woolf-2020",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 20,
+    "processed": 17,
+    "failed": 83,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "17.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "scrapingbee": 4,
+    "brightdata": 3,
+    "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 8,
+    "tier1Attempts": 47,
+    "tier1Success": 3,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 2,
-    "tier3Attempts": 5,
-    "tier3Success": 2,
-    "tier4Attempts": 8,
-    "tier4Success": 4,
-    "totalFailed": 20,
-    "scrapingBeeCreditsUsed": 33,
+    "tier2Attempts": 71,
+    "tier2Success": 18,
+    "tier3Attempts": 55,
+    "tier3Success": 20,
+    "tier4Attempts": 136,
+    "tier4Success": 32,
+    "totalFailed": 83,
+    "scrapingBeeCreditsUsed": 371,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 3,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 41,
+    "urlDiscoverySuccess": 30,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
+    "anastasia-2017/nytg--david-gordon.json",
+    "jersey-boys-2005/nytimes--ben-brantley.json",
+    "the-mountaintop-2011/nytimes--ben-brantley.json",
+    "venus-in-fur-2011/nytimes--ben-brantley.json",
+    "33-variations-2009/ew--lisa-schwarzbaum.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
+    "a-dolls-house-2023/theatermania--jesse-green.json",
+    "a-dolls-house-2023/thewrap--benjamin-lindsay.json",
+    "a-dolls-house-2023/thewrap--robert-hofler.json",
+    "a-life-in-the-theatre-2010/newsday--linda-winer.json",
+    "a-night-with-janis-joplin-2013/ew--melissa-maerz.json",
+    "a-night-with-janis-joplin-2013/theatermania--charles-isherwood.json",
+    "a-streetcar-named-desire-2012/nydailynews--unknown.json"
+  ],
   "failed": [
-    "moulin-rouge-2019/nyt-theater--jonathan-mandell.json",
-    "moulin-rouge-2019/nytg--mark-shenton.json",
-    "moulin-rouge-2019/nytg--tom-millward.json",
-    "moulin-rouge-2019/vulture--sara-holdren.json",
-    "moulin-rouge-2019/vulture--sarah-holdren.json",
-    "moulin-rouge-2019/broadwaynews--charles-isherwood.json",
-    "moulin-rouge-2019/newsday--barbara-schuler.json",
-    "moulin-rouge-2019/observer--rex-reed.json",
-    "moulin-rouge-2019/theater-news-online-jeremy-gerard--jeremy-gerard.json",
-    "moulin-rouge-2019/theatermania--jesse-green.json",
-    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-    "moulin-rouge-2019/timeout--adam-feldman.json",
-    "moulin-rouge-2019/amny--matt-windman.json",
-    "moulin-rouge-2019/buy-tickets--unknown.json",
-    "moulin-rouge-2019/curtainup--charles-wright.json",
-    "moulin-rouge-2019/frontmezzjunkies--steven-ross.json",
-    "moulin-rouge-2019/mashable-erin-strecker--erin-strecker.json",
-    "moulin-rouge-2019/njcom--christoher-kelly.json",
-    "moulin-rouge-2019/ny1--roma-torre.json",
-    "moulin-rouge-2019/nysr--ny1-roma-torre.json"
+    "book-of-mormon-2011/washpost--unknown.json",
+    "anything-goes-2011/nytimes--ben-brantley.json",
+    "beetlejuice-2019/nytimes--ben-brantley.json",
+    "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+    "catch-me-if-you-can-2011/variety--marilyn-stasio.json",
+    "catch-me-if-you-can-2011/vulture--jesse-green.json",
+    "cats-2016/nytimes--ben-brantley.json",
+    "eclipsed-2016/vulture--jesse-green.json",
+    "first-date-2013/nytimes--ben-brantley.json",
+    "girl-from-the-north-country-2022/nytimes--jesse-green.json",
+    "godspell-2011/nytimes--ben-brantley.json",
+    "high-2011/nytimes--ben-brantley.json",
+    "hillary-and-clinton-2019/nytimes--ben-brantley.json",
+    "in-my-life-2005/nytimes--ben-brantley.json",
+    "in-transit-2016/hollywood-reporter--david-rooney.json",
+    "into-the-woods-2022/nytimes--jesse-green.json",
+    "kiss-me-kate-2019/nytimes--jesse-green.json",
+    "kiss-me-kate-2019/variety--marilyn-stasio.json",
+    "les-liaisons-dangereuses-2016/variety--marilyn-stasio.json",
+    "linda-vista-2019/hollywood-reporter--david-rooney.json",
+    "linda-vista-2019/variety--aramide-tinubu.json",
+    "linda-vista-2019/vulture--jesse-green.json",
+    "lobby-hero-2018/hollywood-reporter--david-rooney.json",
+    "lobby-hero-2018/vulture--jesse-green.json",
+    "love-letters-2014/vulture--unknown.json",
+    "lucky-guy-2013/hollywood-reporter--david-rooney.json",
+    "lucky-guy-2013/variety--marilyn-stasio.json",
+    "lucky-guy-2013/vulture--jesse-green.json",
+    "master-class-2011/hollywood-reporter--david-rooney.json",
+    "meteor-shower-2017/nytimes--ben-brantley.json",
+    "million-dollar-quartet-2010/nytimes--ben-brantley.json",
+    "mothers-and-sons-2014/hollywood-reporter--david-rooney.json",
+    "motown-the-musical-2013/hollywood-reporter--david-rooney.json",
+    "motown-the-musical-2013/nytimes--ben-brantley.json",
+    "motown-the-musical-2013/vulture--jesse-green.json",
+    "of-mice-and-men-2014/hollywood-reporter--david-rooney.json",
+    "of-mice-and-men-2014/variety--marilyn-stasio.json",
+    "plaza-suite-2022/hollywood-reporter--angie-han.json",
+    "plaza-suite-2022/variety--frank-rizzo.json",
+    "plaza-suite-2022/vulture--sara-holdren.json",
+    "present-laughter-2017/nytimes--ben-brantley.json",
+    "present-laughter-2017/nytimes--unknown.json",
+    "present-laughter-2017/variety--marilyn-stasio.json",
+    "pretty-woman-the-musical-2018/nytimes--ben-brantley.json",
+    "race-2009/vulture--jesse-green.json",
+    "richard-iii-2013/nytimes--ben-brantley.json",
+    "rocky-2014/hollywood-reporter--david-rooney.json",
+    "speedtheplow-2008/variety--david-rooney.json",
+    "the-addams-family-2010/hollywood-reporter--frank-scheck.json",
+    "the-addams-family-2010/nytimes--ben-brantley.json",
+    "the-boys-in-the-band-2018/vulture--jesse-green.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/hollywood-reporter--david-rooney.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/variety--marilyn-stasio.json",
+    "the-iceman-cometh-2018/hollywood-reporter--david-rooney.json",
+    "the-last-ship-2014/vulture--jesse-green.json",
+    "the-music-man-2022/variety--peter-debruge.json",
+    "the-music-man-2022/vulture--helen-shaw.json",
+    "the-peewee-herman-show-2010/nytimes--ben-brantley.json",
+    "the-play-that-goes-wrong-2017/nytimes--jesse-green.json",
+    "the-real-thing-2014/hollywood-reporter--david-rooney.json",
+    "the-ritz-2007/nytimes--ben-brantley.json",
+    "the-river-2014/hollywood-reporter--david-rooney.json",
+    "the-scottsboro-boys-2010/nytimes--ben-brantley.json",
+    "the-seagull-2008/nytimes--ben-brantley.json",
+    "therese-raquin-2015/variety--marilyn-stasio.json",
+    "three-tall-women-2018/nytimes--ben-brantley.json",
+    "thurgood-2008/nytimes--ben-brantley.json",
+    "thurgood-2008/variety--charles-isherwood.json",
+    "tina-2019/hollywood-reporter--david-rooney.json",
+    "tina-2019/nytimes--jesse-green.json",
+    "tina-2019/variety--marilyn-stasio.json",
+    "twelfth-night-2013/nytimes--charles-isherwood.json",
+    "venus-in-fur-2011/variety--marilyn-stasio.json",
+    "waitress-2016/vulture--jesse-green.json",
+    "war-horse-2011/nytimes--ben-brantley.json",
+    "war-horse-2011/variety--marilyn-stasio.json",
+    "what-the-constitution-means-to-me-2019/vulture--jesse-green.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/new-york-sun--elysa-gardner.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/wsj--charles-isherwood.json",
+    "a-life-in-the-theatre-2010/ew--tanner-stransky.json",
+    "a-life-in-the-theatre-2010/wsj--terry-teachout.json",
+    "a-night-with-janis-joplin-2013/nydailynews--joe-dziemianowicz.json",
+    "a-night-with-janis-joplin-2013/nypost--elisabeth-vincentelli.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "a-night-with-janis-joplin-2013/ew--melissa-maerz.json"
+    ],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
-    "archive": []
+    "scrapingbee": [
+      "jersey-boys-2005/nytimes--ben-brantley.json",
+      "the-mountaintop-2011/nytimes--ben-brantley.json",
+      "a-dolls-house-2023/thewrap--benjamin-lindsay.json",
+      "a-dolls-house-2023/thewrap--robert-hofler.json"
+    ],
+    "brightdata": [
+      "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
+      "a-dolls-house-2023/theatermania--jesse-green.json",
+      "a-night-with-janis-joplin-2013/theatermania--charles-isherwood.json"
+    ],
+    "archive": [
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+      "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
+      "anastasia-2017/nytg--david-gordon.json",
+      "venus-in-fur-2011/nytimes--ben-brantley.json",
+      "33-variations-2009/ew--lisa-schwarzbaum.json",
+      "a-life-in-the-theatre-2010/newsday--linda-winer.json",
+      "a-streetcar-named-desire-2012/nydailynews--unknown.json"
+    ]
   },
   "failuresByOutlet": {
-    "BUY TICKETS": {
-      "count": 1,
-      "domain": "alhirschfeldbroadway.com",
+    "Vulture": {
+      "count": 4,
+      "domain": "vulture.com",
       "hasCredentials": false,
-      "isPaywalled": false,
+      "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "CurtainUp": {
+    "The New York Times": {
+      "count": 5,
+      "domain": "nytimes.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Variety": {
+      "count": 3,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Entertainment Weekly": {
       "count": 1,
-      "domain": "curtainup.com",
+      "domain": "ew.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "anything-goes-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/04/08/theater/reviews/anything-goes-on-broadway-review.html",
+      "newUrl": "https://www.nytimes.com/2011/04/08/theater/reviews/anything-goes-with-sutton-foster-joel-grey-review.html"
+    },
+    {
+      "reviewId": "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2008/03/07/theater/reviews/07cat.html",
+      "newUrl": "https://www.nytimes.com/2008/03/07/theater/reviews/07roof.html"
+    },
+    {
+      "reviewId": "eclipsed-2016/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2016/03/theater-review-eclipsed.html",
+      "newUrl": "https://www.vulture.com/2016/03/theater-reviews-eclipsed.html"
+    },
+    {
+      "reviewId": "first-date-2013/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2013/08/09/theater/reviews/first-date-at-the-longacre-theater.html",
+      "newUrl": "https://www.nytimes.com/2013/08/09/theater/reviews/first-date-a-musical-opens-on-broadway.html"
+    },
+    {
+      "reviewId": "girl-from-the-north-country-2022/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2022/03/03/theater/girl-from-the-north-country-review.html",
+      "newUrl": "https://www.nytimes.com/2020/03/05/theater/girl-from-the-north-country-review.html"
+    },
+    {
+      "reviewId": "godspell-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/11/08/theater/reviews/godspell-revival-at-circle-in-the-square-review.html",
+      "newUrl": "https://www.nytimes.com/2011/11/08/theater/reviews/godspell-at-the-circle-in-the-square-review.html"
+    },
+    {
+      "reviewId": "in-transit-2016/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/in-transit-theater-review-1058031/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/transit-review-955048/"
+    },
+    {
+      "reviewId": "into-the-woods-2022/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2022/07/11/theater/into-the-woods-review.html",
+      "newUrl": "https://www.nytimes.com/2022/07/10/theater/into-the-woods-review.html"
+    },
+    {
+      "reviewId": "jersey-boys-2005/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2005/11/07/theater/reviews/jersey-boys-the-four-seasons-story-told-with-energy-and-nostalgia.html",
+      "newUrl": "https://www.nytimes.com/2005/11/07/theater/reviews/from-bluecollar-boys-to-doowop-sensation-a-bands-rise-and-fall.html"
+    },
+    {
+      "reviewId": "kiss-me-kate-2019/variety--marilyn-stasio.json",
+      "oldUrl": "https://variety.com/2019/legit/reviews/kiss-me-kate-review-broadway-revival-1203163123/",
+      "newUrl": "https://variety.com/2019/legit/reviews/kiss-me-kate-review-broadway-kelli-ohara-1203162932/"
+    },
+    {
+      "reviewId": "les-liaisons-dangereuses-2016/variety--marilyn-stasio.json",
+      "oldUrl": "https://variety.com/2016/legit/reviews/les-liaisons-dangereuses-review-broadway-1201900414/",
+      "newUrl": "https://variety.com/2016/legit/reviews/les-liaisons-dangereuses-review-liev-schreiber-1201904602/"
+    },
+    {
+      "reviewId": "lobby-hero-2018/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2018/03/theater-review-lobby-hero-on-broadway.html",
+      "newUrl": "https://www.vulture.com/2018/03/theater-review-lobby-hero-comes-knocking-again.html"
+    },
+    {
+      "reviewId": "lucky-guy-2013/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/lucky-guy-theater-review-tom-437039/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/lucky-guy-theater-review-432116/"
+    },
+    {
+      "reviewId": "lucky-guy-2013/variety--marilyn-stasio.json",
+      "oldUrl": "https://variety.com/2013/legit/reviews/lucky-guy-1200334441/",
+      "newUrl": "https://variety.com/2013/legit/reviews/legit-review-lucky-guy-1200331512/"
+    },
+    {
+      "reviewId": "lucky-guy-2013/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2013/04/theater-review-lucky-guy.html",
+      "newUrl": "https://www.vulture.com/2013/04/theater-review-lucky-guys-love-for-newsrooms.html"
+    },
+    {
+      "reviewId": "master-class-2011/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/master-class-broadway-review-267974/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/master-class-theater-review-208970/"
+    },
+    {
+      "reviewId": "meteor-shower-2017/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2017/11/30/theater/meteor-shower-review.html",
+      "newUrl": "https://www.nytimes.com/2017/11/29/theater/meteor-shower-amy-schumer-steve-martin-review.html"
+    },
+    {
+      "reviewId": "motown-the-musical-2013/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2013/04/15/theater/reviews/motown-the-musical-at-the-lunt-fontanne-theater.html",
+      "newUrl": "https://www.nytimes.com/2013/04/15/theater/reviews/motown-the-musical-berry-gordys-story.html"
+    },
+    {
+      "reviewId": "plaza-suite-2022/hollywood-reporter--angie-han.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/plaza-suite-theater-review-1235117087/",
+      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/plaza-suite-review-matthew-broderick-sarah-jessica-parker-neil-simon-broadway-1235119408/"
+    },
+    {
+      "reviewId": "plaza-suite-2022/vulture--sara-holdren.json",
+      "oldUrl": "https://www.vulture.com/2022/03/theater-review-plaza-suite-on-broadway.html",
+      "newUrl": "https://www.vulture.com/2022/03/theater-review-plaza-suite-with-parker-and-broderick.html"
+    },
+    {
+      "reviewId": "the-addams-family-2010/hollywood-reporter--frank-scheck.json",
+      "oldUrl": "http://www.hollywoodreporter.com/hr/film-reviews/the-addams-family-theater-review-1004081703.story",
+      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/addams-family-theater-review-29475/"
+    },
+    {
+      "reviewId": "the-boys-in-the-band-2018/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2018/05/theater-review-the-boys-in-the-band-on-broadway.html",
+      "newUrl": "https://www.vulture.com/2018/05/theater-review-can-the-boys-in-the-band-work-in-2018.html"
+    },
+    {
+      "reviewId": "the-mountaintop-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/10/14/theater/reviews/the-mountaintop-with-samuel-l-jackson-review.html",
+      "newUrl": "https://www.nytimes.com/2011/10/14/theater/reviews/the-mountaintop-with-samuel-l-jackson-angela-bassett.html"
+    },
+    {
+      "reviewId": "the-music-man-2022/variety--peter-debruge.json",
+      "oldUrl": "https://variety.com/2022/legit/reviews/the-music-man-review-hugh-jackman-sutton-foster-1235180982/",
+      "newUrl": "https://variety.com/2022/legit/reviews/music-man-review-hugh-jackman-broadway-1235177555/"
+    },
+    {
+      "reviewId": "the-ritz-2007/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2007/08/12/theater/reviews/12ritz.html",
+      "newUrl": "https://www.nytimes.com/2007/10/12/theater/reviews/12ritz.html"
+    },
+    {
+      "reviewId": "three-tall-women-2018/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2018/03/25/theater/three-tall-women-review-glenda-jackson.html",
+      "newUrl": "https://www.nytimes.com/2018/03/29/theater/review-three-tall-women-glenda-jackson-albee.html"
+    },
+    {
+      "reviewId": "thurgood-2008/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2008/05/01/theater/reviews/01thur.html",
+      "newUrl": "https://www.nytimes.com/2008/05/01/theater/reviews/01thurgood.html"
+    },
+    {
+      "reviewId": "twelfth-night-2013/nytimes--charles-isherwood.json",
+      "oldUrl": "https://www.nytimes.com/2013/11/15/theater/reviews/twelfth-night-at-belasco-theater.html",
+      "newUrl": "https://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html"
+    },
+    {
+      "reviewId": "venus-in-fur-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/11/09/theater/reviews/venus-in-fur-with-nina-arianda-review.html",
+      "newUrl": "https://www.nytimes.com/2011/11/09/theater/reviews/venus-in-fur-by-david-ives-with-nina-arianda-review.html"
+    },
+    {
+      "reviewId": "war-horse-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/04/15/theater/reviews/war-horse-at-lincoln-center-review.html",
+      "newUrl": "https://www.nytimes.com/2011/04/15/theater/reviews/war-horse-from-national-theater-at-lincoln-center-review.html"
+    }
+  ]
 }
