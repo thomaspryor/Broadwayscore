@@ -1,61 +1,62 @@
 {
-  "updatedAt": "2026-02-10T16:27:31.112Z",
-  "processed": 1,
-  "failed": 23,
-  "successRate": "4.2%",
+  "updatedAt": "2026-02-10T16:29:50.549Z",
+  "processed": 2,
+  "failed": 49,
+  "successRate": "3.9%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 0,
+    "playwright": 0,
+    "browserbase": 2,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:08:57.216Z",
+      "t": "2026-02-10T16:06:30.128Z",
       "event": "bb-session",
-      "session": "f53fd280",
-      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+      "session": "577c37c9",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
     },
     {
-      "t": "2026-02-10T16:08:59.366Z",
+      "t": "2026-02-10T16:08:38.581Z",
+      "event": "bb-session",
+      "session": "064df0fa",
+      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
+    },
+    {
+      "t": "2026-02-10T16:08:41.043Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:17:31.355Z",
+      "t": "2026-02-10T16:09:26.315Z",
       "event": "bb-session",
-      "session": "31bd529d",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+      "session": "faf3f50a",
+      "url": "https://variety.com/2025/film/reviews/wicked-for-good-review-1236581742/"
     },
     {
-      "t": "2026-02-10T16:18:23.771Z",
+      "t": "2026-02-10T16:10:55.158Z",
+      "event": "bb-session",
+      "session": "ec66e7ee",
+      "url": "https://www.indiewire.com/criticism/movies/wicked-for-good-review-part-2-1235160"
+    },
+    {
+      "t": "2026-02-10T16:11:48.750Z",
+      "event": "bb-session",
+      "session": "cb331d83",
+      "url": "https://www.theatermania.com/news/review-wicked-for-good-flies-to-epic-heights-w"
+    },
+    {
+      "t": "2026-02-10T16:13:14.251Z",
+      "event": "bb-session",
+      "session": "00da9959",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-02-10T16:14:00.330Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-10T16:18:49.822Z",
-      "event": "bb-session",
-      "session": "05b19c41",
-      "url": "https://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/"
-    },
-    {
-      "t": "2026-02-10T16:18:51.846Z",
-      "event": "bb-login-uncertain",
-      "domain": "nymag.com"
-    },
-    {
-      "t": "2026-02-10T16:21:04.339Z",
-      "event": "bb-session",
-      "session": "92f57f0f",
-      "url": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-p"
-    },
-    {
-      "t": "2026-02-10T16:22:21.331Z",
-      "event": "bb-session",
-      "session": "0cd3293a",
-      "url": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in"
     }
   ]
 }
