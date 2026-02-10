@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-10T13:56:34.274Z",
+  "runDate": "2026-02-10T14:03:03.607Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -12,13 +12,13 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 5,
+    "failed": 3,
     "skipped": 0,
     "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archive": 0
@@ -26,18 +26,18 @@
   "statistics": {
     "tier1Attempts": 0,
     "tier1Success": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 5,
+    "totalFailed": 3,
     "scrapingBeeCreditsUsed": 3,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 3,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -45,16 +45,12 @@
   "processed": [],
   "failed": [
     "moulin-rouge-2019/vulture--sara-holdren.json",
-    "moulin-rouge-2019/vulture--sarah-holdren.json",
-    "moulin-rouge-2019/newsday--barbara-schuler.json",
     "moulin-rouge-2019/theater-news-online-jeremy-gerard--jeremy-gerard.json",
     "moulin-rouge-2019/theatermania--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [],
-    "browserbase": [
-      "data/review-texts/moulin-rouge-2019/newsday--barbara-schuler.json"
-    ],
+    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": []
