@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-10",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 10466,
-      "skippedNoScore": 8903,
+      "totalReviews": 10465,
+      "skippedNoScore": 8901,
       "skippedDuplicate": 44,
-      "skippedDuplicateUrl": 344,
+      "skippedDuplicateUrl": 342,
       "skippedCrossOutletDuplicateUrl": 39,
-      "skippedDuplicateText": 404,
+      "skippedDuplicateText": 409,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 774,
       "recoveredFromGarbage": 129,
@@ -19,10 +19,10 @@
         "explicit-slash": 8,
         "explicit-letterGrade": 1,
         "human-review": 56,
-        "originalScore-priority0": 1074,
-        "llmScore": 4642,
+        "originalScore-priority0": 1075,
+        "llmScore": 4639,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 4498,
+        "llmScore-lowconf": 4499,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -103116,7 +103116,7 @@
       "pullQuote": "Ideal fodder, then, for a modestly scaled and warm-hearted jukebox show that might prove to be one of the sleeper hits of the season. That’s thanks to an inestimably witty book with plenty of hard laughs and a suite of winning lead performances under director Gordon Greenberg.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -105202,7 +105202,7 @@
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Jeremy Gerard",
-      "url": "https://www.bloomberg.com/news/2011-04-20/kathleen-turner-s-swearing-nun-helps-hustler-in-high-review.html",
+      "url": "https://www.bloomberg.com/news/articles/2011-04-20/kathleen-turner-s-swearing-nun-helps-hustler-in-high-review",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "'High' plays more like an early workshop than a polished Broadway production.",
@@ -115091,23 +115091,6 @@
     },
     {
       "showId": "kinky-boots-2013",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 79,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.theguardian.com/stage/2013/apr/05/kinky-boots-review-broadway",
-      "publishDate": "April 5, 2013",
-      "originalRating": null,
-      "pullQuote": "Kinky Boots is a feel-good musical that wears its big heart on its sequined sleeve, delivering exactly the kind of uplifting entertainment that Broadway does best.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "kinky-boots-2013",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 75,
@@ -120732,7 +120715,7 @@
       "pullQuote": "Bergen and Cox bring decades of professional craft to their roles, but the play itself feels like a museum piece, preserved in amber from an earlier era of American theater.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "love-letters-2014",
@@ -126006,7 +125989,7 @@
       "pullQuote": "From those first moments, it is clear that the people behind Broadway's adaptation of Stephen King's popular thriller and the hit 1990 movie know exactly what they are doing.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "misery-2015",
@@ -127373,17 +127356,17 @@
       "outletId": "new-jersey-newsroom",
       "outlet": "New Jersey Newsroom",
       "assignedScore": 76,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Michael Sommers",
       "url": "http://www.newjerseynewsroom.com/movies/motown-the-musical-broadway-review-motowns-greatest-hits-stack-up-as-a-show",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "D",
       "pullQuote": "There simply is no resisting the powerfully familiar music that rocks the rafters of the Lunt-Fontanne Theater.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "motown-the-musical-2013",
@@ -130478,7 +130461,7 @@
       "pullQuote": "There are plenty of those funny bits, but they don’t gel into the hilarious whole “Noises Off” is supposed to be.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "noises-off-2016",
@@ -145305,13 +145288,13 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Robert Hofler",
-      "url": "http://www.thewrap.com/rocky-theater-review-sylvester-stallone-boxer-comes-out-swinging",
+      "url": "https://www.thewrap.com/rocky-theater-review-sylvester-stallones-boxer-now-punch-drunk-tunes/",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "The corny jokes and meet-cute lines don't land or define character; they just sit there surrounded by dead air.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "rocky-2014",
@@ -165176,6 +165159,23 @@
     },
     {
       "showId": "the-mountaintop-2011",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 20,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Pan",
+      "thumb": "Down",
+      "criticName": "David Cote",
+      "url": "https://newyork.timeout.com/arts-culture/theater/2077601/review-the-mountaintop",
+      "publishDate": "October 13, 2011",
+      "originalRating": "1/5",
+      "pullQuote": "The current production, staged by Kenny Leon with film stars Samuel L. Jackson and Angela Bassett, opens with considerable hype and celebrity wattage, neither of which does it any favors.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "the-mountaintop-2011",
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 45,
@@ -168079,7 +168079,7 @@
       "pullQuote": "The Present is a perfectly decent play that feels oddly beside the point. It's well-acted and handsomely staged, but it never quite justifies its existence as a Broadway production.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "the-present-2017",
@@ -168196,23 +168196,6 @@
       "publishDate": "March 17, 2017",
       "originalRating": null,
       "pullQuote": "The production succeeds in large part because of the four superb performances at its center.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "the-price-2017",
-      "outletId": "thewrap",
-      "outlet": "TheWrap",
-      "assignedScore": 76,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Robert Hofler",
-      "url": "http://www.thewrap.com/price-broadway-review-danny-devito-mark-ruffalo-tony-shalhoub/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Danny DeVito has single-handedly turns 'The Price' into a Jewish laugh riot with his expert turn as Mr. Solomon.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
