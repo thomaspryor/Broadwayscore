@@ -1,57 +1,51 @@
 {
-  "updatedAt": "2026-02-10T18:11:15.094Z",
-  "processed": 14,
-  "failed": 176,
-  "successRate": "7.4%",
+  "updatedAt": "2026-02-10T18:15:07.650Z",
+  "processed": 19,
+  "failed": 231,
+  "successRate": "7.6%",
   "tierBreakdown": {
-    "playwright": 4,
-    "browserbase": 3,
-    "scrapingbee": 5,
+    "playwright": 5,
+    "browserbase": 1,
+    "scrapingbee": 1,
     "brightdata": 1,
-    "archive": 5
+    "archive": 12
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:06:13.076Z",
+      "t": "2026-02-10T16:15:10.796Z",
       "event": "bb-session",
-      "session": "a70e4864",
-      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+      "session": "20c36c5c",
+      "url": "https://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als"
     },
     {
-      "t": "2026-02-10T16:06:15.388Z",
+      "t": "2026-02-10T16:15:15.966Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:06:58.349Z",
+      "t": "2026-02-10T16:15:42.938Z",
       "event": "bb-session",
-      "session": "f1a63114",
-      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+      "session": "7cd83478",
+      "url": "https://www.variety.com/review/VE1117942352.html?categoryId=33&cs=1"
     },
     {
-      "t": "2026-02-10T16:08:14.478Z",
+      "t": "2026-02-10T16:16:49.584Z",
       "event": "bb-session",
-      "session": "31952850",
-      "url": "https://theater.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-with-"
+      "session": "a4bc6df0",
+      "url": "https://www.hollywoodreporter.com/review/amelie-a-new-musical-theater-957477"
     },
     {
-      "t": "2026-02-10T16:09:02.404Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770739708967\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAZQHEekDhGCgALPhWIg==&cid=dT9zDbDYW6r8pCALqIpknjoocW~MDVYCHpM_mgRJHZyrh2ahLzo7lrEAvNO_3BKzm1SERuAocTaEIpCx4GbnL3~3cw~qvy1d~sI_b7mm2r_LDvCFVQ6feaTsGQ~1gDnX&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770739708967\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770739708967\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAZQHEekDhGCgALPhWIg==&cid=dT9zDbDYW6r8pCALqIpknjoocW~MDVYCHpM_mgRJHZyrh2ahLzo7lrEAvNO_3BKzm1SERuAocTaEIpCx4GbnL3~3cw~qvy1d~sI_b7mm2r_LDvCFVQ6feaTsGQ~1gDnX&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770739708967\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    16 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770739708967\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAZQHEekDhGCgALPhWIg==&cid=dT9zDbDYW6r8pCALqIpknjoocW~MDVYCHpM_mgRJHZyrh2ahLzo7lrEAvNO_3BKzm1SERuAocTaEIpCx4GbnL3~3cw~qvy1d~sI_b7mm2r_LDvCFVQ6feaTsGQ~1gDnX&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770739708967\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+      "t": "2026-02-10T16:17:21.460Z",
+      "event": "bb-session",
+      "session": "0727ea8a",
+      "url": "https://variety.com/2017/legit/reviews/amelie-a-new-musical-review-1202020405/"
     },
     {
-      "t": "2026-02-10T16:11:33.453Z",
+      "t": "2026-02-10T16:19:40.450Z",
       "event": "bb-session",
-      "session": "76029a18",
-      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-12360"
-    },
-    {
-      "t": "2026-02-10T16:13:05.075Z",
-      "event": "bb-session",
-      "session": "8056bc74",
-      "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-ny-broadway"
+      "session": "3d37ab6a",
+      "url": "https://variety.com/2023/legit/reviews/back-to-the-future-musical-broadway-revie"
     }
   ]
 }
