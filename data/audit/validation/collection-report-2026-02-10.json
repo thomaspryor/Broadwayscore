@@ -1,142 +1,88 @@
 {
-  "runDate": "2026-02-10T15:27:30.400Z",
+  "runDate": "2026-02-10T15:30:36.944Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "",
-    "aggressive": true,
+    "showFilter": "wicked-2003",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 29,
+    "processed": 1,
+    "failed": 19,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "5.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 11,
+    "tier1Success": 9,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 27,
-    "tier2Success": 8,
-    "tier3Attempts": 22,
-    "tier3Success": 9,
-    "tier4Attempts": 26,
-    "tier4Success": 9,
-    "totalFailed": 29,
-    "scrapingBeeCreditsUsed": 165,
+    "tier2Attempts": 9,
+    "tier2Success": 6,
+    "tier3Attempts": 5,
+    "tier3Success": 4,
+    "tier4Attempts": 8,
+    "tier4Success": 5,
+    "totalFailed": 19,
+    "scrapingBeeCreditsUsed": 136,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 15,
-    "urlDiscoverySuccess": 11,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "wicked-2003/ew--alice-king.json"
+  ],
   "failed": [
-    "mj-2022/deadline--pete-hammond.json",
-    "1776-2022/deadline--pete-hammond.json",
-    "almost-famous-2022/deadline--pete-hammond.json",
-    "macbeth-2022/deadline--pete-hammond.json",
-    "mean-girls-2018/deadline--pete-hammond.json",
-    "network-2018/deadline--pete-hammond.json",
-    "patriots-2024/deadline--greg-evans.json",
-    "patriots-2024/deadline--pete-hammond.json",
-    "suffs-2024/deadline--pete-hammond.json",
-    "summer-2018/deadline--pete-hammond.json",
-    "the-ferryman-2018/deadline--pete-hammond.json",
-    "the-hills-of-california-2024/deadline--pete-hammond.json",
-    "the-minutes-2022/deadline--pete-hammond.json",
-    "the-music-man-2022/deadline--pete-hammond.json",
-    "the-parisian-woman-2017/deadline--pete-hammond.json",
-    "this-is-our-youth-2014/deadline--jeremy-gerard.json",
-    "three-tall-women-2018/deadline--greg-evans.json",
-    "time-and-the-conways-2017/deadline--jeremy-gerard.json",
-    "time-and-the-conways-2017/deadline--pete-hammond.json",
-    "tina-2019/deadline--greg-evans.json",
-    "to-kill-a-mockingbird-2018/deadline--greg-evans.json",
-    "tootsie-2019/deadline--greg-evans.json",
-    "tootsie-2019/deadline--pete-hammond.json",
-    "travesties-2018/deadline--greg-evans.json",
-    "trouble-in-mind-2021/deadline--greg-evans.json",
-    "true-west-2019/deadline--greg-evans.json",
-    "tuck-everlasting-2016/deadline--jeremy-gerard.json",
-    "uncle-vanya-2024/deadline--greg-evans.json",
-    "war-paint-2017/deadline--jeremy-gerard.json"
+    "wicked-2003/hollywood-reporter--david-rooney.json",
+    "wicked-2003/newyorker--.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/variety--peter-debruge.json",
+    "wicked-2003/vulture--bilge-eberi.json",
+    "wicked-2003/bbc-caryn-james--caryn-james.json",
+    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
+    "wicked-2003/guardian--peter-bradshaw.json",
+    "wicked-2003/indiewire--kate-erbland.json",
+    "wicked-2003/newsweek--billie-melissa.json",
+    "wicked-2003/nexus-point-news-demet-koc--demet-koc.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/ajc--wendell-brock.json",
+    "wicked-2003/den-of-geek-david-crow--david-crow.json",
+    "wicked-2003/empire-john-nugent--john-nugent.json",
+    "wicked-2003/fresh-fiction-courtney-howard--courtney-howard.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "wicked-2003/ew--alice-king.json"
+    ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "mj-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/02/mj-the-musical-review-broadway-michael-jackson-1234937478/",
-      "newUrl": "https://deadline.com/2022/02/mj-broadway-review-michael-jackson-musical-1234922944/"
-    },
-    {
-      "reviewId": "1776-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/10/1776-broadway-review-roundabout-theatre-company-american-airlines-theatre-1235149772/",
-      "newUrl": "https://deadline.com/2022/10/1776-broadway-review-1235136437/"
-    },
-    {
-      "reviewId": "macbeth-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/04/macbeth-review-daniel-craig-ruth-negga-broadway-1235005582/",
-      "newUrl": "https://deadline.com/2022/04/macbeth-broadway-review-daniel-craig-ruth-negga-1235011369/"
-    },
-    {
-      "reviewId": "mean-girls-2018/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2018/04/mean-girls-broadway-review-tina-fey-musical-august-wilson-theatre-1202366025/",
-      "newUrl": "https://deadline.com/2018/04/mean-girls-broadway-review-tina-fey-musical-honor-roll-1202359804/"
-    },
-    {
-      "reviewId": "network-2018/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2018/12/network-review-bryan-cranston-broadway-1202509978/",
-      "newUrl": "https://deadline.com/2018/12/network-broadway-review-bryan-cranston-ivo-van-hove-mad-prophet-1202514424/"
-    },
-    {
-      "reviewId": "summer-2018/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2018/04/summer-broadway-review-donna-summer-musical-lashana-lynch-ariana-debose-storm-lever-1202366962/",
-      "newUrl": "https://deadline.com/2018/04/summer-the-donna-summer-musical-broadway-review-lachanze-disco-1202374030/"
-    },
-    {
-      "reviewId": "the-ferryman-2018/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2018/10/the-ferryman-review-broadway-jez-butterworth-1202487068/",
-      "newUrl": "https://deadline.com/2018/10/the-ferryman-broadway-review-jez-butterworth-sam-mendes-paddy-considine-1202486601/"
-    },
-    {
-      "reviewId": "the-music-man-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/02/the-music-man-broadway-review-hugh-jackman-sutton-foster-1234941016/",
-      "newUrl": "https://deadline.com/2022/02/music-man-broadway-review-hugh-jackman-sutton-foster-1234928014/"
-    },
-    {
-      "reviewId": "the-parisian-woman-2017/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2017/11/the-parisian-woman-broadway-review-uma-thurman-1202207344/",
-      "newUrl": "https://deadline.com/2017/11/broadway-review-uma-thurman-beau-willimon-the-parisian-woman-1202217774/"
-    },
-    {
-      "reviewId": "time-and-the-conways-2017/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2017/10/time-and-the-conways-review-elizabeth-mcgovern-anna-camp-broadway-1202186534/",
-      "newUrl": "https://deadline.com/2017/10/time-and-the-conways-elizabeth-mcgovern-measure-for-measure-review-1202185137/"
-    },
-    {
-      "reviewId": "tootsie-2019/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2019/04/tootsie-broadway-review-santino-fontana-1202598844/",
-      "newUrl": "https://deadline.com/2019/04/tootsie-broadway-review-santino-tontana-dorothy-michaels-1202600316/"
+  "failuresByOutlet": {
+    "The New Yorker": {
+      "count": 1,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
     }
-  ]
+  },
+  "urlDiscoveries": []
 }
