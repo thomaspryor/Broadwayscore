@@ -1,169 +1,77 @@
 {
-  "runDate": "2026-02-10T19:54:16.140Z",
+  "runDate": "2026-02-10T19:59:21.401Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-lion-king-1997,maybe-happy-ending-2024,oh-mary-2024,the-great-gatsby-2024,six-2021,just-in-time-2025,operation-mincemeat-2025,allegiance-2015,mean-girls-2018,come-from-away-2017,amazing-grace-2015,bright-star-2016,the-waverly-gallery-2018,the-parisian-woman-2017,six-degrees-of-separation-2017,cats-1982,life-of-pi-2023,head-over-heels-2018,she-loves-me-2016,beetlejuice-2022,dear-evan-hansen-2016,marvins-room-2017,sylvia-2015,straight-white-men-2018,a-bronx-tale-2007,fun-home-2015,frankie-and-johnny-in-the-clair-de-lune-2019,the-hills-of-california-2024,kinky-boots-2013,travesties-2018,latin-history-for-morons-2017,here-lies-love-2023,waitress-2021,sea-wall-a-life-2019,macbeth-2013,the-last-five-years-2025,into-the-woods-2022,slave-play-2021,living-on-love-2015,romeo-juliet-2024,plaza-suite-2022,women-on-the-verge-of-a-nervous-breakdown-2010,hairspray-2002,smash-2025,war-horse-2011,evita-2012,orphans-2013,sunday-in-the-park-with-george-2008,the-sign-in-sidney-brusteins-window-2023,catch-me-if-you-can-2011,job-2024,on-a-clear-day-you-can-see-forever-2011,the-other-place-2013,fela-2012,harmony-2023,rocky-2014,the-mountaintop-2011,the-wiz-2024,cat-on-a-hot-tin-roof-2013,god-of-carnage-2009,magicbird-2012,rain-2010,the-house-of-blue-leaves-2011,wolf-hall-parts-one-and-two-2015,after-midnight-2013,caroline-or-change-2021,follies-2011,next-fall-2010,prima-facie-2023,take-me-out-2022,tina-2019,all-my-sons-2019,big-fish-2013,farinelli-and-the-king-2017,leap-of-faith-2012,of-mice-and-men-2014,the-glass-menagerie-2017,true-west-2019,ann-2013,honeymoon-in-vegas-2015,la-bete-2010,othello-2025,sunday-in-the-park-with-george-2017,the-nance-2013,vanya-and-sonia-and-masha-and-spike-2013,amelie-a-new-musical-2017,birthday-candles-2022,doctor-zhivago-2015,ghetto-klown-2011,jekyll-and-hyde-2013,other-desert-cities-2011,soul-doctor-2013,the-lifespan-of-a-fact-2018,the-whos-tommy-2024,a-bronx-tale-the-musical-2016,blithe-spirit-2009,days-of-wine-and-roses-2024,looped-2010,purlie-victorious-2023,the-cripple-of-inishmaan-2014,a-moon-for-the-misbegotten-2007,chaplin-2012,equus-2008,hands-on-a-hardbody-2013,our-mothers-brief-affair-2016,summer-2018,the-velocity-of-autumn-2014,harvey-2012,the-columnist-2012,a-chorus-line-2006,breakfast-at-tiffanys-2013,grey-gardens-2006,reasons-to-be-pretty-2009,the-lightning-thief-2019,a-free-man-of-color-2010,macbeth-2008,the-merchant-of-venice-2010,memphis-2009,festen-2006,lady-day-at-emersons-bar-and-grill-2014,the-seafarer-2007,impressionism-2009,ragtime-2009,the-threepenny-opera-2006,curtains-2007,joe-turners-come-and-gone-2009,talk-radio-2007,three-days-of-rain-2006,boeingboeing-2008,dividing-the-estate-2008,irenas-vow-2009,martin-short-fame-becomes-me-2006,spring-awakening-2006,the-pajama-game-2006,wishful-drinking-2009",
+    "showFilter": "the-outsiders-2024",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
-    "failed": 91,
+    "processed": 1,
+    "failed": 17,
     "skipped": 0,
-    "successRate": "9.0%"
+    "successRate": "5.6%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 4
+    "brightdata": 0,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 40,
-    "tier1Success": 28,
+    "tier1Attempts": 10,
+    "tier1Success": 6,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 55,
-    "tier2Success": 10,
-    "tier3Attempts": 47,
-    "tier3Success": 29,
-    "tier4Attempts": 51,
-    "tier4Success": 16,
-    "totalFailed": 91,
-    "scrapingBeeCreditsUsed": 382,
+    "tier2Attempts": 10,
+    "tier2Success": 3,
+    "tier3Attempts": 8,
+    "tier3Success": 3,
+    "tier4Attempts": 12,
+    "tier4Success": 3,
+    "totalFailed": 17,
+    "scrapingBeeCreditsUsed": 33,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 12,
-    "urlDiscoverySuccess": 5,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-    "the-great-gatsby-2024/theater-pizzazz--ron-fassler.json",
-    "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-    "the-lion-king-1997/talkinbroadway--matthew-murray.json",
-    "a-free-man-of-color-2010/hollywood-reporter--david-rooney.json",
-    "all-my-sons-2019/nyt-theater--raven-snook.json"
+    "the-outsiders-2024/culturesauce--thom-geier.json"
   ],
   "failed": [
-    "maybe-happy-ending-2024/hollywood-reporter--angie-han.json",
-    "maybe-happy-ending-2024/nyt-theater--jonathan-mandell.json",
-    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
-    "maybe-happy-ending-2024/variety--charles-isherwood.json",
-    "oh-mary-2024/hollywood-reporter--david-rooney.json",
-    "oh-mary-2024/nyt-theater--jonathan-mandell.json",
-    "oh-mary-2024/variety--christian-lewis.json",
-    "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
-    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
-    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-    "oh-mary-2024/broadwaynews--brittani-samuel.json",
-    "oh-mary-2024/guardian--adrian-horton.json",
-    "oh-mary-2024/new-york-sun--elysa-gardner.json",
-    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
-    "just-in-time-2025/advertisement--chris-jones.json",
-    "just-in-time-2025/front-row-center--unknown.json",
-    "just-in-time-2025/theater-scene--joel-benjamin.json",
-    "maybe-happy-ending-2024/culturesauce--thom-geier.json",
-    "maybe-happy-ending-2024/pages-on-stages--mason-pilevsky.json",
-    "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
-    "maybe-happy-ending-2024/the-interested-bystander--cary-wong.json",
-    "maybe-happy-ending-2024/theater-scene--victor-gluck.json",
-    "oh-mary-2024/front-row-center--david-walters.json",
-    "oh-mary-2024/njcom--christopher-kelly.json",
-    "oh-mary-2024/nysr--david-finkle.json",
-    "oh-mary-2024/nysr--steven-suskin.json",
-    "oh-mary-2024/talkinbroadway--matthew-murray.json",
-    "operation-mincemeat-2025/theater-scene--victor-gluck.json",
-    "six-2021/amny--matt-windman.json",
-    "six-2021/boston-herald-jed-gottlieb--jed-gottlieb.json",
-    "six-2021/edge-media-network-robert-nesti--robert-nesti.json",
-    "six-2021/pages-on-stages--mason-pilevsky.json",
-    "six-2021/talkinbroadway--matthew-murray.json",
-    "six-2021/the-boston-globe-terry-byrne--terry-byrne.json",
-    "the-great-gatsby-2024/talkinbroadway--kimberly-ramirez.json",
-    "the-great-gatsby-2024/theater-life--samuel-l-leiter.json",
-    "the-great-gatsby-2024/theater-scene--deirdre-donovan.json",
-    "the-great-gatsby-2024/theater-scene--joseph-pisano.json",
-    "the-great-gatsby-2024/thestage--lane-williamson.json",
-    "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
-    "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "the-lion-king-1997/patch--nancy-sasso-janis.json",
-    "the-lion-king-1997/unknown--unknown.json",
-    "a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
-    "a-bronx-tale-2007/nyt-theater--jonathan-mandell.json",
-    "a-bronx-tale-2007/nytg--jeff-myhre.json",
-    "a-bronx-tale-the-musical-2016/hollywood-reporter--frank-scheck.json",
-    "a-chorus-line-2006/variety--charles-isherwood.json",
-    "a-free-man-of-color-2010/variety--charles-isherwood.json",
-    "after-midnight-2013/hollywood-reporter--david-rooney.json",
-    "after-midnight-2013/nyt-theater--david-nounou.json",
-    "all-my-sons-2019/hollywood-reporter--david-rooney.json",
-    "all-my-sons-2019/hollywood-reporter--frank-scheck.json",
-    "all-my-sons-2019/nytg--mark-shenton.json",
-    "allegiance-2015/hollywood-reporter--david-rooney.json",
-    "allegiance-2015/nytg--jane-dentinger.json",
-    "allegiance-2015/nytg--tulis-mccall.json",
-    "allegiance-2015/variety--bob-verini.json",
-    "allegiance-2015/variety--marilyn-stasio.json",
-    "amazing-grace-2015/nytg--steven-babyak.json",
-    "amazing-grace-2015/variety--steven-oxman.json",
-    "amelie-a-new-musical-2017/hollywood-reporter--jordan-riefe.json",
-    "amelie-a-new-musical-2017/variety--marilyn-stasio.json",
-    "ann-2013/hollywood-reporter--david-rooney.json",
-    "beetlejuice-2022/variety--frank-rizzo.json",
-    "big-fish-2013/hollywood-reporter--david-rooney.json",
-    "birthday-candles-2022/nyt-theater--jonathan-mandell.json",
-    "birthday-candles-2022/variety--ayanna-prescod.json",
-    "birthday-candles-2022/variety--marilyn-stasio.json",
-    "boeingboeing-2008/variety--charles-isherwood.json",
-    "breakfast-at-tiffanys-2013/variety--marilyn-stasio.json",
-    "bright-star-2016/hollywood-reporter--david-rooney.json",
-    "caroline-or-change-2021/hollywood-reporter--angie-han.json",
-    "caroline-or-change-2021/hollywood-reporter--david-rooney.json",
-    "caroline-or-change-2021/nyt-theater--jonathan-mandell.json",
-    "caroline-or-change-2021/variety--aramide-tinubu.json",
-    "caroline-or-change-2021/variety--ayanna-prescod.json",
-    "cat-on-a-hot-tin-roof-2013/hollywood-reporter--david-rooney.json",
-    "catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json",
-    "catch-me-if-you-can-2011/variety--marilyn-stasio.json",
-    "catch-me-if-you-can-2011/variety--steven-suskin.json",
-    "cats-1982/hollywood-reporter--jordan-riefe.json",
-    "chaplin-2012/hollywood-reporter--david-rooney.json",
-    "come-from-away-2017/hollywood-reporter--frank-scheck.json",
-    "curtains-2007/variety--david-rooney.json",
-    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
-    "dear-evan-hansen-2016/hollywood-reporter--david-rooney.json",
-    "doctor-zhivago-2015/hollywood-reporter--frank-scheck.json",
-    "doctor-zhivago-2015/variety--marilyn-stasio.json",
-    "equus-2008/variety--steven-suskin.json",
-    "evita-2012/variety--steven-suskin.json"
+    "the-outsiders-2024/hollywood-reporter--angie-han.json",
+    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
+    "the-outsiders-2024/newyorker--naomi-fry.json",
+    "the-outsiders-2024/variety--aramide-tinubu.json",
+    "the-outsiders-2024/variety--naveen-kumar.json",
+    "the-outsiders-2024/vulture--sara-holdren.json",
+    "the-outsiders-2024/deadline--greg-evans.json",
+    "the-outsiders-2024/theatermania--adam-feldman.json",
+    "the-outsiders-2024/timeout--adam-feldman.json",
+    "the-outsiders-2024/wsj--charles-isherwood.json",
+    "the-outsiders-2024/theatrely--juan-a-ramirez.json",
+    "the-outsiders-2024/digital-journal--markos-papadatos.json",
+    "the-outsiders-2024/pages-on-stages--mason-pilevsky.json",
+    "the-outsiders-2024/talkinbroadway--james-wilson.json",
+    "the-outsiders-2024/talkinbroadway--matthew-murray.json",
+    "the-outsiders-2024/the-interested-bystander--cary-wong.json",
+    "the-outsiders-2024/theater-scene--joseph-pisano.json"
   ],
   "tierDetails": {
     "playwright": [
-      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "the-great-gatsby-2024/theater-pizzazz--ron-fassler.json"
+      "the-outsiders-2024/culturesauce--thom-geier.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "the-lion-king-1997/talkinbroadway--matthew-murray.json",
-      "a-free-man-of-color-2010/hollywood-reporter--david-rooney.json"
-    ],
-    "archive": [
-      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-      "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-      "all-my-sons-2019/nyt-theater--raven-snook.json"
-    ]
+    "brightdata": [],
+    "archive": []
   },
   "failuresByOutlet": {
     "The Hollywood Reporter": {
@@ -173,88 +81,27 @@
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "New York Daily News": {
+    "The New Yorker": {
       "count": 1,
-      "domain": "nydailynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
     },
-    "New York Post": {
-      "count": 2,
-      "domain": "nypost.com",
+    "Theatrely": {
+      "count": 1,
+      "domain": "theatrely.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     },
     "Talkin' Broadway": {
-      "count": 3,
+      "count": 1,
       "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "amNewYork": {
-      "count": 1,
-      "domain": "amny.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "EDGE Media Network (Robert Nesti)": {
-      "count": 1,
-      "domain": "boston.edgemedianetwork.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "unknown": {
-      "count": 1,
-      "domain": "streetdirectory.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "New York Theatre Guide": {
-      "count": 1,
-      "domain": "newyorktheatreguide.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Variety": {
-      "count": 1,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "maybe-happy-ending-2024/variety--aramide-tinubu.json",
-      "oldUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-1236213847/",
-      "newUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/"
-    },
-    {
-      "reviewId": "maybe-happy-ending-2024/variety--charles-isherwood.json",
-      "oldUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-1236220876/",
-      "newUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/"
-    },
-    {
-      "reviewId": "a-free-man-of-color-2010/variety--charles-isherwood.json",
-      "oldUrl": "https://variety.com/2010/film/awards/contender-black-swan-1118027147/",
-      "newUrl": "https://variety.com/2010/legit/reviews/a-free-man-of-color-1117944074/"
-    },
-    {
-      "reviewId": "after-midnight-2013/nyt-theater--david-nounou.json",
-      "oldUrl": "https://newyorktheater.me/2013/11/14/after-midnight-review/",
-      "newUrl": "https://newyorktheater.me/2013/11/03/after-midnight-review-ellington-alive-on-broadway/"
-    },
-    {
-      "reviewId": "allegiance-2015/nytg--tulis-mccall.json",
-      "oldUrl": "https://www.newyorktheatreguide.com/reviews/allegiance15.htm",
-      "newUrl": "https://www.newyorktheatreguide.com/reviews/allegiance"
-    }
-  ]
+  "urlDiscoveries": []
 }
