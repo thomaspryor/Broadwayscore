@@ -1,85 +1,110 @@
 {
-  "runDate": "2026-02-10T18:11:43.816Z",
+  "runDate": "2026-02-10T18:20:02.999Z",
   "config": {
     "batchSize": 20,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "mj-2022",
+    "showFilter": "wicked-2003",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 18,
+    "processed": 2,
+    "failed": 48,
     "skipped": 0,
-    "successRate": "18.2%"
+    "successRate": "4.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
+    "brightdata": 1,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 15,
-    "tier1Success": 9,
+    "tier1Attempts": 39,
+    "tier1Success": 31,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 14,
-    "tier2Success": 4,
-    "tier3Attempts": 10,
-    "tier3Success": 3,
-    "tier4Attempts": 15,
-    "tier4Success": 2,
-    "totalFailed": 18,
-    "scrapingBeeCreditsUsed": 150,
+    "tier2Attempts": 21,
+    "tier2Success": 10,
+    "tier3Attempts": 11,
+    "tier3Success": 5,
+    "tier4Attempts": 13,
+    "tier4Success": 5,
+    "totalFailed": 48,
+    "scrapingBeeCreditsUsed": 282,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 5,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "mj-2022/hollywood-reporter--lovia-gayarkye.json",
-    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
-    "mj-2022/theatermania--jesse-green.json",
-    "mj-2022/theater-life--patrick-christiano.json"
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/ajc--wendell-brock.json"
   ],
   "failed": [
-    "mj-2022/hollywood-reporter--angie-han.json",
-    "mj-2022/newyorker--naomi-fry.json",
-    "mj-2022/vulture--jackson-mchenry.json",
-    "mj-2022/deadline--pete-hammond.json",
-    "mj-2022/thewrap--steve-pond.json",
-    "mj-2022/timeout--adam-feldman.json",
-    "mj-2022/wsj--charles-isherwood.json",
-    "mj-2022/ap--mark-kennedy.json",
-    "mj-2022/exeunt-magazine--juliet-hindell.json",
-    "mj-2022/front-row-center--brittany-crowell.json",
-    "mj-2022/slantmagazine--dan-rubins.json",
-    "mj-2022/talkinbroadway--howard-miller.json",
-    "mj-2022/talkinbroadway--matthew-murray.json",
-    "mj-2022/theater-life--samuel-l-leiter.json",
-    "mj-2022/theater-pizzazz--cooper-lawrence.json",
-    "mj-2022/theater-scene--joel-benjamin.json",
-    "mj-2022/usatoday--david-rooney.json",
-    "mj-2022/usatoday--elysa-gardner.json"
+    "wicked-2003/hollywood-reporter--david-rooney.json",
+    "wicked-2003/newyorker--.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/variety--peter-debruge.json",
+    "wicked-2003/vulture--bilge-eberi.json",
+    "wicked-2003/bbc-caryn-james--caryn-james.json",
+    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
+    "wicked-2003/cleveland-jewish-news--sheri-gross.json",
+    "wicked-2003/guardian--peter-bradshaw.json",
+    "wicked-2003/indiewire--kate-erbland.json",
+    "wicked-2003/newsweek--billie-melissa.json",
+    "wicked-2003/nexus-point-news-demet-koc--demet-koc.json",
+    "wicked-2003/theatermania--david-gordon.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/about-entertainment--chris-caggiano.json",
+    "wicked-2003/austincom--dani-dudek.json",
+    "wicked-2003/av-club-jesse-hassenger--jesse-hassenger.json",
+    "wicked-2003/awards-watch-sophia-ciminello--sophia-ciminello.json",
+    "wicked-2003/cbr-caralynn-matassa--caralynn-matassa.json",
+    "wicked-2003/collider-therese-lacson--therese-lacson.json",
+    "wicked-2003/consequence-liz-shannon-miller--liz-shannon-miller.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/den-of-geek-david-crow--david-crow.json",
+    "wicked-2003/empire-john-nugent--john-nugent.json",
+    "wicked-2003/financialtimes--danny-leigh.json",
+    "wicked-2003/fresh-fiction-courtney-howard--courtney-howard.json",
+    "wicked-2003/frontmezzjunkies--unknown.json",
+    "wicked-2003/huron-daily-jake-coyle--jake-coyle.json",
+    "wicked-2003/inverse-lyvie-scott--lyvie-scott.json",
+    "wicked-2003/joysauce-siddhant-adlakha--siddhant-adlakha.json",
+    "wicked-2003/latimes--amy-nicholson.json",
+    "wicked-2003/mamas-geeky-tessa-smith--tessa-smith.json",
+    "wicked-2003/mashable-kristy-puchko--kristy-puchko.json",
+    "wicked-2003/radio-times-james-mottram--james-mottram.json",
+    "wicked-2003/rollingstone--david-fear.json",
+    "wicked-2003/scmp-james-mottram--james-mottram.json",
+    "wicked-2003/screen-daily-tim-grierson--tim-grierson.json",
+    "wicked-2003/sfchronicle--lily-janiak.json",
+    "wicked-2003/showbiz-411-roger-friedman--roger-friedman.json",
+    "wicked-2003/solzy-at-the-movies-danielle-solzman--danielle-solzman.json",
+    "wicked-2003/the-chronicle--howard-gollop.json",
+    "wicked-2003/the-times--kevin-maher.json",
+    "wicked-2003/trib-live--alexis-papalia.json",
+    "wicked-2003/village-voice--michael-feingold.json",
+    "wicked-2003/we-are-green-bay--warren-gerds.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "mj-2022/theater-life--patrick-christiano.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "mj-2022/hollywood-reporter--lovia-gayarkye.json",
-      "mj-2022/theatermania--jesse-green.json"
+      "wicked-2003/ajc--wendell-brock.json"
     ],
     "archive": [
-      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+      "wicked-2003/ew--alice-king.json"
     ]
   },
   "failuresByOutlet": {
@@ -90,13 +115,6 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "TheWrap": {
-      "count": 1,
-      "domain": "thewrap.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
     "The Wall Street Journal": {
       "count": 1,
       "domain": "wsj.com",
@@ -104,9 +122,16 @@
       "isPaywalled": true,
       "isKnownBlocked": true
     },
-    "Talkin' Broadway": {
+    "CurtainUp": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "curtainup.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Huron Daily (Jake Coyle)": {
+      "count": 1,
+      "domain": "michigansthumb.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -114,14 +139,9 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "mj-2022/vulture--jackson-mchenry.json",
-      "oldUrl": "https://www.vulture.com/2022/02/mj-the-musical-broadway-review.html",
-      "newUrl": "https://www.vulture.com/2022/02/theater-review-mj-michael-jackson-bio-musical-broadway-nyc.html"
-    },
-    {
-      "reviewId": "mj-2022/usatoday--elysa-gardner.json",
-      "oldUrl": "https://www.usatoday.com/story/entertainment/theater/2022/02/02/mj-musical-broadway-review-michael-jackson/9309958002/",
-      "newUrl": "https://collegesportswire.usatoday.com/story/entertainment/arts/2022/02/02/mj-musical-review-michael-jackson-show-opens-broadway/9287724002/"
+      "reviewId": "wicked-2003/trib-live--alexis-papalia.json",
+      "oldUrl": "https://triblive.com/aande/theater-arts/review-latest-wicked-production-at-benedum-center-is-as-enchanting-as-ever/",
+      "newUrl": "https://community.triblive.com/c/downtown-pittsburgh-news/news/3959160"
     }
   ]
 }
