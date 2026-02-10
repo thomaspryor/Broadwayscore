@@ -9,7 +9,7 @@
       "skippedDuplicate": 44,
       "skippedDuplicateUrl": 294,
       "skippedCrossOutletDuplicateUrl": 40,
-      "skippedDuplicateText": 392,
+      "skippedDuplicateText": 393,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 774,
       "recoveredFromGarbage": 129,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 1,
         "human-review": 56,
         "originalScore-priority0": 1073,
-        "llmScore": 4639,
+        "llmScore": 4641,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 4325,
+        "llmScore-lowconf": 4323,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -89077,7 +89077,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 42,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Edward Rothstein",
@@ -89087,7 +89087,7 @@
       "pullQuote": "What Mac offers us instead is an exercise in self-indulgence, with a dollop of facile allusion and a dose of bad faith.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
@@ -94823,7 +94823,7 @@
       "outletId": "nypost",
       "outlet": "New York Post",
       "assignedScore": 55,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Elisabeth Vincentelli",
@@ -94833,7 +94833,7 @@
       "pullQuote": "We're left at the altar once again, wondering how things went wrong.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "guys-and-dolls-2009",
@@ -103440,7 +103440,7 @@
       "pullQuote": "They’re all back, looking better than ever – and that includes the play itself.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "how-i-learned-to-drive-2022",
@@ -169002,23 +169002,6 @@
     },
     {
       "showId": "the-winslow-boy-2013",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 79,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2013/10/18/theater/reviews/the-winslow-boy-is-revived-at-american-airlines-theater.html",
-      "publishDate": "October 17, 2013",
-      "originalRating": null,
-      "pullQuote": "I can firmly state that the audience's ultimately is [rewarded].",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-winslow-boy-2013",
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 80,
@@ -173608,6 +173591,23 @@
       "pullQuote": "...much of 'Water for Elephants' will delight on the basis of spectacle alone",
       "dtliThumb": "Up",
       "bwwThumb": "Meh",
+      "contentTier": "complete"
+    },
+    {
+      "showId": "well-2006",
+      "outletId": "hollywood-reporter",
+      "outlet": "The Hollywood Reporter",
+      "assignedScore": 42,
+      "scoreSource": "llmScore",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "David Rooney",
+      "url": "https://www.hollywoodreporter.com/review/free-man-color-theater-review-46713",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Whatever flashes of brilliance it contains, there's a certain willful intellectual arrogance evident in a work that batters the spectator with two hours of zigzagging exposition and opaque characters.",
+      "dtliThumb": null,
+      "bwwThumb": null,
       "contentTier": "complete"
     },
     {
