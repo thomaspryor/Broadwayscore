@@ -1,93 +1,93 @@
 {
-  "runDate": "2026-02-10T16:30:46.397Z",
+  "runDate": "2026-02-10T16:36:02.743Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hells-kitchen-2024",
+    "showFilter": "maybe-happy-ending-2024",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 26,
+    "processed": 3,
+    "failed": 16,
     "skipped": 0,
-    "successRate": "7.1%"
+    "successRate": "15.8%"
   },
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 1,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 0
+    "playwright": 1,
+    "browserbase": 3,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 20,
-    "tier1Success": 13,
-    "tier1_5Attempts": 7,
-    "tier1_5Success": 1,
-    "tier2Attempts": 14,
-    "tier2Success": 5,
-    "tier3Attempts": 12,
-    "tier3Success": 7,
-    "tier4Attempts": 17,
-    "tier4Success": 2,
-    "totalFailed": 26,
-    "scrapingBeeCreditsUsed": 78,
-    "browserbaseSessionsUsed": 7,
-    "browserbaseMinutesUsed": 2,
-    "urlDiscoveryAttempts": 8,
-    "urlDiscoverySuccess": 1,
+    "tier1Attempts": 9,
+    "tier1Success": 7,
+    "tier1_5Attempts": 9,
+    "tier1_5Success": 3,
+    "tier2Attempts": 9,
+    "tier2Success": 1,
+    "tier3Attempts": 9,
+    "tier3Success": 1,
+    "tier4Attempts": 15,
+    "tier4Success": 4,
+    "totalFailed": 16,
+    "scrapingBeeCreditsUsed": 26,
+    "browserbaseSessionsUsed": 9,
+    "browserbaseMinutesUsed": 4.6,
+    "urlDiscoveryAttempts": 6,
+    "urlDiscoverySuccess": 4,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hells-kitchen-2024/theatermania--david-gordon.json",
-    "hells-kitchen-2024/thewrap--steve-pond.json"
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/observer--rex-reed.json",
+    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "failed": [
-    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
-    "hells-kitchen-2024/newyorker--naomi-fry.json",
-    "hells-kitchen-2024/nytg--david-gordon.json",
-    "hells-kitchen-2024/vulture--sara-holdren.json",
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/ew--joey-nolfi.json",
-    "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/observer--david-cote.json",
-    "hells-kitchen-2024/observer--rex-reed.json",
-    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "hells-kitchen-2024/timeout--adam-feldman.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json",
-    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
-    "hells-kitchen-2024/showbiz411-roger-friedman--roger-friedman.json",
-    "hells-kitchen-2024/slantmagazine--dan-rubins.json",
-    "hells-kitchen-2024/talkinbroadway--howard-miller.json",
-    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
-    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
-    "hells-kitchen-2024/theater-life--david-sheward.json",
-    "hells-kitchen-2024/theater-life--samuel-l-leiter.json",
-    "hells-kitchen-2024/theater-scene--deirdre-donovan.json",
-    "hells-kitchen-2024/theater-scene--victor-gluck.json",
-    "hells-kitchen-2024/usatoday--david-oliver.json",
-    "hells-kitchen-2024/washpost--peter-marks.json"
+    "maybe-happy-ending-2024/hollywood-reporter--angie-han.json",
+    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
+    "maybe-happy-ending-2024/nyt-theater--jonathan-mandell.json",
+    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
+    "maybe-happy-ending-2024/variety--charles-isherwood.json",
+    "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
+    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/theatermania--jesse-green.json",
+    "maybe-happy-ending-2024/timeout--adam-feldman.json",
+    "maybe-happy-ending-2024/wsj--charles-isherwood.json",
+    "maybe-happy-ending-2024/culturesauce--thom-geier.json",
+    "maybe-happy-ending-2024/pages-on-stages--mason-pilevsky.json",
+    "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
+    "maybe-happy-ending-2024/the-interested-bystander--cary-wong.json",
+    "maybe-happy-ending-2024/theater-scene--victor-gluck.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json"
+    ],
     "browserbase": [
-      "data/review-texts/hells-kitchen-2024/observer--david-cote.json"
+      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "data/review-texts/maybe-happy-ending-2024/observer--rex-reed.json",
+      "maybe-happy-ending-2024/observer--rex-reed.json"
     ],
-    "scrapingbee": [
-      "hells-kitchen-2024/thewrap--steve-pond.json"
-    ],
-    "brightdata": [
-      "hells-kitchen-2024/theatermania--david-gordon.json"
-    ],
-    "archive": []
+    "scrapingbee": [],
+    "brightdata": [],
+    "archive": [
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json"
+    ]
   },
   "failuresByOutlet": {
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
     "The New Yorker": {
       "count": 1,
       "domain": "newyorker.com",
@@ -95,12 +95,12 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "Rolling Stone": {
+    "The Wall Street Journal": {
       "count": 1,
-      "domain": "rollingstone.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
     },
     "Talkin' Broadway": {
       "count": 1,
@@ -112,9 +112,24 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "hells-kitchen-2024/nytg--david-gordon.json",
-      "oldUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen",
-      "newUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen-broadway-review-alicia-keys"
+      "reviewId": "maybe-happy-ending-2024/variety--aramide-tinubu.json",
+      "oldUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-1236213847/",
+      "newUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/variety--charles-isherwood.json",
+      "oldUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-1236220876/",
+      "newUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "oldUrl": "https://nypost.com/2024/11/13/entertainment/maybe-happy-ending-review-charming-musical-about-robot-romance/",
+      "newUrl": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/theatermania--jesse-green.json",
+      "oldUrl": "https://www.theatermania.com/broadway/reviews/maybe-happy-ending_92847.html",
+      "newUrl": "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/"
     }
   ]
 }
