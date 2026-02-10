@@ -8,8 +8,8 @@
       "skippedNoScore": 9513,
       "skippedDuplicate": 44,
       "skippedDuplicateUrl": 286,
-      "skippedCrossOutletDuplicateUrl": 42,
-      "skippedDuplicateText": 358,
+      "skippedCrossOutletDuplicateUrl": 41,
+      "skippedDuplicateText": 359,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 759,
       "recoveredFromGarbage": 129,
@@ -19,10 +19,10 @@
         "explicit-slash": 8,
         "explicit-letterGrade": 1,
         "human-review": 56,
-        "originalScore-priority0": 1070,
-        "llmScore": 4537,
+        "originalScore-priority0": 1071,
+        "llmScore": 4538,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 4093,
+        "llmScore-lowconf": 4091,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -4117,7 +4117,7 @@
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 55,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Joe Dziemianowicz",
@@ -4127,7 +4127,7 @@
       "pullQuote": "The main takeaway of the new Broadway musical 'A Bronx Tale' is that talent is a terrible thing to waste.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-bronx-tale-the-musical-2016",
@@ -12219,7 +12219,7 @@
       "pullQuote": "Liev Schreiber brings a compelling mixture of strength and vulnerability to Eddie Carbone",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "a-view-from-the-bridge-2010",
@@ -12328,7 +12328,7 @@
       "outletId": "newyorkmagazine",
       "outlet": "Vulture",
       "assignedScore": 75,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Stephanie Zacharek",
@@ -12338,7 +12338,7 @@
       "pullQuote": "Schreiber recognizes it as a moment of Shakespearean grace, as Hecht's Beatrice does-her body folds around his, protectively, like the petals of a flower.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-view-from-the-bridge-2015",
@@ -15898,7 +15898,7 @@
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 21,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Joe Dziemianowicz",
@@ -15908,7 +15908,7 @@
       "pullQuote": "The only part of this long, meandering byway you'll want to use is the exit ramp.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "airline-highway-2015",
@@ -26474,7 +26474,7 @@
       "outletId": "newsday",
       "outlet": "Newsday",
       "assignedScore": 62,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Linda Winer",
@@ -26484,7 +26484,7 @@
       "pullQuote": "More power ballads have been added to the pretty but dispiritingly predictable story of Anastasia.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "anastasia-2017",
@@ -30685,7 +30685,7 @@
       "pullQuote": "In this respect, \"Art\" is a poor man's \"Glengarry Glenross.\"",
       "dtliThumb": "Down",
       "bwwThumb": "Meh",
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "art-2025",
@@ -31066,17 +31066,17 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 63,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-with-music-by-burt-bacharach-review.html",
+      "url": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-story-of-the-shirelles-review.html",
       "publishDate": "April 27, 2011",
       "originalRating": null,
       "pullQuote": "This jukebox musical about the Shirelles feels more like a tribute concert than a cohesive story, though the performances of the classic songs provide genuine pleasures.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "baby-its-you-2011",
@@ -38324,14 +38324,14 @@
       "showId": "betrayal-2019",
       "outletId": "theatre-news-online",
       "outlet": "Theatre News Online",
-      "assignedScore": 79,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
+      "assignedScore": 92,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Jeremy Gerard",
       "url": "https://www.theaternewsonline.com/NYTheaterReviews/WRECKAGEINREVERSE.cfm",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "4.6/5",
       "pullQuote": "To Lloyd's credit, and that of this spectacular cast, we never lose sight of the ways in which these three lives are ineradicably interwoven.",
       "dtliThumb": null,
       "bwwThumb": null,
@@ -41079,7 +41079,7 @@
       "outletId": "bloomberg-news",
       "outlet": "Bloomberg",
       "assignedScore": 79,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jeremy Gerard",
@@ -41089,7 +41089,7 @@
       "pullQuote": "Frank Wildhorn's 'Bonnie and Clyde' has catchy songs, a fleshed out story and plenty of heart thanks to the snazzy direction by Jeff Calhoun.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "bonnie-and-clyde-2011",
@@ -68336,7 +68336,7 @@
       "outletId": "nypost",
       "outlet": "New York Post",
       "assignedScore": 79,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Elisabeth Vincentelli",
@@ -68346,7 +68346,7 @@
       "pullQuote": "The siblings' holiday concert at the Marquis delivers everything you'd expect, and does it at breakneck speed.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "deuce-2007",
@@ -73737,7 +73737,7 @@
       "pullQuote": "Lucy Prebble's play about corporate greed and financial chicanery arrives on Broadway shorn of much of its original satirical bite, though it retains its spectacular staging.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "enron-2010",
@@ -87796,7 +87796,7 @@
       "pullQuote": "The production combines an exhilarating fast-talking swagger with both Odets' real and overwrought lyricism.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "golden-boy-2012",
@@ -88568,7 +88568,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 76,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
@@ -88578,7 +88578,7 @@
       "pullQuote": "Frances McDormand brings her trademark blend of intelligence, wit and emotional honesty to David Lindsay-Abaire's compassionate drama",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "good-people-2011",
@@ -89054,7 +89054,7 @@
       "pullQuote": "How anything can be so perky and yet so bland is yet another mystery for the ages. It appears that the rest of the company was cast to keep the youngsters from looking bad in comparison.",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "grease-2007",
@@ -167869,7 +167869,7 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 89,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Jesse Green",
@@ -167879,7 +167879,7 @@
       "pullQuote": "War Horse is a triumph of theatrical imagination, a show that makes you believe in the magic of live performance.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "war-paint-2017",
@@ -169269,7 +169269,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2014/04/22/theater/estelle-parsons-with-explosives-in-velocity-of-autumn.html?_r=0",
+      "url": "https://www.nytimes.com/2012/01/27/theater/reviews/cynthia-nixon-in-wit-at-manhattan-theater-club.html",
       "publishDate": "January 26, 2012",
       "originalRating": null,
       "pullQuote": "Ms. Nixon brings a brilliant specificity to her portrayal of Vivian Bearing",
