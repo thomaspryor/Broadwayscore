@@ -1,61 +1,56 @@
 {
-  "updatedAt": "2026-02-10T08:09:50.767Z",
-  "processed": 57,
-  "failed": 413,
-  "successRate": "12.1%",
+  "updatedAt": "2026-02-10T08:14:03.096Z",
+  "processed": 42,
+  "failed": 318,
+  "successRate": "11.7%",
   "tierBreakdown": {
-    "playwright": 10,
-    "browserbase": 2,
-    "scrapingbee": 14,
+    "playwright": 9,
+    "browserbase": 4,
+    "scrapingbee": 7,
     "brightdata": 8,
-    "archive": 28
+    "archive": 18
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T03:49:25.628Z",
+      "t": "2026-02-10T03:44:38.933Z",
       "event": "bb-session",
-      "session": "5497b2f7",
-      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+      "session": "a529ea9f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235"
     },
     {
-      "t": "2026-02-10T03:49:27.677Z",
+      "t": "2026-02-10T03:45:09.666Z",
+      "event": "bb-session",
+      "session": "a2100601",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-02-10T03:45:24.060Z",
+      "event": "bb-session",
+      "session": "dd8473ed",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-02-10T03:47:32.731Z",
+      "event": "bb-session",
+      "session": "5bd95bb8",
+      "url": "https://www.newyorker.com/magazine/2022/02/21/mj-sanitizes-michael-jackson"
+    },
+    {
+      "t": "2026-02-10T03:47:34.856Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T03:50:20.208Z",
+      "t": "2026-02-10T03:49:35.068Z",
       "event": "bb-session",
-      "session": "4047cad3",
-      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+      "session": "e1383c01",
+      "url": "https://www.vulture.com/2022/02/mj-the-musical-broadway-review.html"
     },
     {
-      "t": "2026-02-10T03:52:32.333Z",
-      "event": "bb-session",
-      "session": "64955982",
-      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
-    },
-    {
-      "t": "2026-02-10T03:52:34.790Z",
+      "t": "2026-02-10T03:49:37.142Z",
       "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-10T03:55:02.591Z",
-      "event": "bb-session",
-      "session": "c3dc5c6e",
-      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
-    },
-    {
-      "t": "2026-02-10T03:55:04.837Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-10T03:57:01.455Z",
-      "event": "bb-session",
-      "session": "9ffd6162",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
+      "domain": "vulture.com"
     }
   ]
 }
