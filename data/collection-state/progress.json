@@ -16,7 +16,8 @@
     "othello-2025/nytg--austin-fimmano.json",
     "outside-mullingar-2014/hollywood-reporter--david-rooney.json",
     "outside-mullingar-2014/nytimes--charles-isherwood.json",
-    "talk-radio-2007/nytimes--ben-brantley.json"
+    "talk-radio-2007/nytimes--ben-brantley.json",
+    "the-performers-2012/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "chess-2025/nyt-theater--jonathan-mandell.json",
@@ -241,25 +242,39 @@
     "sunset-boulevard-2017/hollywood-reporter--frank-scheck.json",
     "sunset-boulevard-2017/newyorker--hilton-als.json",
     "sunset-boulevard-2017/vulture--jesse-green.json",
-    "talk-radio-2007/variety--charles-isherwood.json"
+    "talk-radio-2007/variety--charles-isherwood.json",
+    "the-elephant-man-2014/hollywood-reporter--david-rooney.json",
+    "the-elephant-man-2014/newyorker--hilton-als.json",
+    "the-elephant-man-2014/nytimes--ben-brantley.json",
+    "the-elephant-man-2014/vulture--jesse-green.json",
+    "the-little-mermaid-2008/hollywood-reporter--robyn-bahr.json",
+    "the-little-mermaid-2008/variety--david-rooney.json",
+    "the-little-mermaid-2008/variety--peter-debruge.json",
+    "the-norman-conquests-2009/newyorker--john-lahr.json",
+    "the-norman-conquests-2009/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-outsiders-2024/culturesauce--thom-geier.json",
-      "an-american-in-paris-2015/nytg--kathleen-campion.json",
-      "betrayal-2013/nyt-theater--jonathan-mandell.json",
-      "kiss-me-kate-2019/vulture--jesse-green.json"
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+      "gypsy-2024/vulture--sara-holdren.json",
+      "othello-2025/nytg--austin-fimmano.json",
+      "outside-mullingar-2014/vulture--jesse-green.json"
     ],
     "browserbase": [
-      "data/review-texts/death-becomes-her-2024/variety--steven-oxman.json",
-      "data/review-texts/ragtime-2025/variety--frank-rizzo.json"
+      "data/review-texts/maybe-happy-ending-2024/variety--aramide-tinubu.json"
     ],
     "scrapingbee": [
-      "betrayal-2013/hollywood-reporter--david-rooney.json",
-      "home-2024/vulture--jackson-mchenry.json"
+      "harry-potter-2021/buy-tickets--unknown.json",
+      "is-this-a-room-2021/nytimes--jesse-green.json",
+      "is-this-a-room-2021/vulture--helen-shaw.json",
+      "outside-mullingar-2014/hollywood-reporter--david-rooney.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "beautiful-the-carole-king-musical-2014/hollywood-reporter--david-rooney.json"
+    ],
     "archive": [
       "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
@@ -269,46 +284,47 @@
       "all-my-sons-2008/nytimes--jesse-green.json",
       "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
       "outside-mullingar-2014/nytimes--charles-isherwood.json",
-      "talk-radio-2007/nytimes--ben-brantley.json"
+      "talk-radio-2007/nytimes--ben-brantley.json",
+      "the-performers-2012/hollywood-reporter--david-rooney.json"
     ]
   },
   "startTime": "2026-02-10T16:08:29.942Z",
-  "lastProcessed": "talk-radio-2007/variety--charles-isherwood.json",
+  "lastProcessed": "the-performers-2012/hollywood-reporter--david-rooney.json",
   "log": [
     {
-      "t": "2026-02-10T16:40:38.764Z",
+      "t": "2026-02-10T16:08:45.715Z",
       "event": "bb-session",
-      "session": "5737be59",
-      "url": "https://variety.com/2024/legit/reviews/death-becomes-her-review-musical-chicago-"
+      "session": "858c2be9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maybe-happy-ending-broadway-rev"
     },
     {
-      "t": "2026-02-10T16:41:04.193Z",
+      "t": "2026-02-10T16:10:58.638Z",
       "event": "bb-session",
-      "session": "c1dd9fe1",
-      "url": "https://variety.com/2025/legit/reviews/ragtime-review-broadway-lincoln-center-th"
+      "session": "f9357e64",
+      "url": "https://www.newyorker.com/magazine/2024/12/02/maybe-happy-ending-theatre-review"
     },
     {
-      "t": "2026-02-10T16:41:30.413Z",
-      "event": "bb-session",
-      "session": "70638866",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-02-10T16:42:19.374Z",
-      "event": "bb-session",
-      "session": "4bdeca05",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
-    },
-    {
-      "t": "2026-02-10T16:44:48.409Z",
-      "event": "bb-session",
-      "session": "b3c88da4",
-      "url": "https://www.newyorker.com/magazine/2024/05/13/the-outsiders-theatre-review"
-    },
-    {
-      "t": "2026-02-10T16:44:50.535Z",
+      "t": "2026-02-10T16:11:01.005Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:12:01.944Z",
+      "event": "bb-session",
+      "session": "f4b3686f",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123621"
+    },
+    {
+      "t": "2026-02-10T16:13:54.364Z",
+      "event": "bb-session",
+      "session": "0b355b91",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-02-10T16:14:22.762Z",
+      "event": "bb-session",
+      "session": "2f191161",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123622"
     }
   ]
 }
