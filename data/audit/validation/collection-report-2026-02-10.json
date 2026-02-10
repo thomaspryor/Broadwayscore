@@ -1,66 +1,87 @@
 {
-  "runDate": "2026-02-10T14:23:30.053Z",
+  "runDate": "2026-02-10T14:29:05.783Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-lion-king-1997",
+    "showFilter": "wicked-2003",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 10,
+    "processed": 2,
+    "failed": 20,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "9.1%"
   },
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 0,
+    "browserbase": 3,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 0,
-    "tier4Attempts": 12,
-    "tier4Success": 3,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 16,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 6,
-    "urlDiscoverySuccess": 1,
+    "tier1Attempts": 14,
+    "tier1Success": 10,
+    "tier1_5Attempts": 6,
+    "tier1_5Success": 3,
+    "tier2Attempts": 8,
+    "tier2Success": 4,
+    "tier3Attempts": 5,
+    "tier3Success": 3,
+    "tier4Attempts": 9,
+    "tier4Success": 6,
+    "totalFailed": 20,
+    "scrapingBeeCreditsUsed": 116,
+    "browserbaseSessionsUsed": 6,
+    "browserbaseMinutesUsed": 4.1,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/ajc--wendell-brock.json"
+  ],
   "failed": [
-    "the-lion-king-1997/newyorker--john-lahr.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "the-lion-king-1997/vulture--john-simon.json",
-    "the-lion-king-1997/new-york--john-simon.json",
-    "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
-    "the-lion-king-1997/columbus-dispatch--michael-grossberg.json",
-    "the-lion-king-1997/denver-post--sandra-brooks-dillard.json",
-    "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "the-lion-king-1997/milwaukee-journal-sentinel--damien-jaques.json"
+    "wicked-2003/hollywood-reporter--david-rooney.json",
+    "wicked-2003/newyorker--.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/variety--peter-debruge.json",
+    "wicked-2003/vulture--bilge-eberi.json",
+    "wicked-2003/bbc-caryn-james--caryn-james.json",
+    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
+    "wicked-2003/guardian--peter-bradshaw.json",
+    "wicked-2003/indiewire--kate-erbland.json",
+    "wicked-2003/newsweek--billie-melissa.json",
+    "wicked-2003/nexus-point-news-demet-koc--demet-koc.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/den-of-geek-david-crow--david-crow.json",
+    "wicked-2003/empire-john-nugent--john-nugent.json",
+    "wicked-2003/fresh-fiction-courtney-howard--courtney-howard.json",
+    "wicked-2003/frontmezzjunkies--unknown.json",
+    "wicked-2003/huron-daily-jake-coyle--jake-coyle.json"
   ],
   "tierDetails": {
     "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [],
+    "browserbase": [
+      "data/review-texts/wicked-2003/hollywood-reporter--david-rooney.json",
+      "data/review-texts/wicked-2003/nytimes--charles-isherwood.json",
+      "data/review-texts/wicked-2003/variety--peter-debruge.json"
+    ],
+    "scrapingbee": [
+      "wicked-2003/ajc--wendell-brock.json"
+    ],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "wicked-2003/ew--alice-king.json"
+    ]
   },
   "failuresByOutlet": {
     "The New Yorker": {
@@ -70,40 +91,13 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "Broadway Voice": {
+    "Huron Daily (Jake Coyle)": {
       "count": 1,
-      "domain": "bwayvoice.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Columbus Dispatch": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Denver Post": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Milwaukee Journal Sentinel": {
-      "count": 1,
-      "domain": "jasonraize.net",
+      "domain": "michigansthumb.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
-      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
-      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
-    }
-  ]
+  "urlDiscoveries": []
 }
