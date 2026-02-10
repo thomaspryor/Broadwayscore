@@ -1,0 +1,232 @@
+{
+  "runDate": "2026-02-10T00:02:59.396Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": true,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 4,
+    "failed": 96,
+    "skipped": 0,
+    "successRate": "4.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "browserbase": 0,
+    "scrapingbee": 2,
+    "brightdata": 0,
+    "archive": 2
+  },
+  "statistics": {
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 71,
+    "tier2Success": 12,
+    "tier3Attempts": 59,
+    "tier3Success": 6,
+    "tier4Attempts": 109,
+    "tier4Success": 19,
+    "totalFailed": 96,
+    "scrapingBeeCreditsUsed": 177,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 37,
+    "urlDiscoverySuccess": 9,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "mothers-and-sons-2014/chicagotribune--chris-jones.json",
+    "once-on-this-island-2017/chicagotribune--chris-jones.json",
+    "the-nap-2018/chicagotribune--chris-jones.json",
+    "therese-raquin-2015/chicagotribune--unknown.json"
+  ],
+  "failed": [
+    "and-juliet-2022/nydailynews--chris-jones.json",
+    "book-of-mormon-2011/chicagotribune--.json",
+    "book-of-mormon-2011/chicagotribune--chris-jones.json",
+    "chicago-1996/chicagotribune--chris-jones.json",
+    "death-becomes-her-2024/chicagotribune--chris-jones.json",
+    "stranger-things-2024/chicagotribune--chris-jones.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "gutenberg-2023/nydailynews--chris-jones.json",
+    "a-behanding-in-spokane-2010/chicagotribune--chris-jones.json",
+    "a-bronx-tale-the-musical-2016/chicagotribune--chris-jones.json",
+    "a-dolls-house-part-2-2017/chicagotribune--chris-jones.json",
+    "a-raisin-in-the-sun-2014/chicagotribune--chris-jones.json",
+    "a-streetcar-named-desire-2012/chicagotribune--chris-jones.json",
+    "act-one-2014/chicagotribune--chris-jones.json",
+    "after-midnight-2013/chicagotribune--chris-jones.json",
+    "allegiance-2015/chicagotribune--chris-jones.json",
+    "american-buffalo-2022/chicagotribune--chris-jones.json",
+    "american-psycho-2016/chicagotribune--chris-jones.json",
+    "an-american-in-paris-2015/chicagotribune--chris-jones.json",
+    "be-more-chill-2019/chicagotribune--chris-jones.json",
+    "birthday-candles-2022/chicagotribune--chris-jones.json",
+    "dead-accounts-2012/chicagotribune--chris-jones.json",
+    "dear-evan-hansen-2016/chicagotribune--chris-jones.json",
+    "disaster-2016/chicagotribune--chris-jones.json",
+    "finding-neverland-2015/chicagotribune--chris-jones.json",
+    "follies-2011/chicagotribune--chris-jones.json",
+    "frozen-2018/chicagotribune--chris-jones.json",
+    "fun-home-2015/chicagotribune--chris-jones.json",
+    "fun-home-2015/chicagotribune--unknown.json",
+    "ghost-the-musical-2012/chicagotribune--chris-jones.json",
+    "gigi-2015/chicagotribune--chris-jones.json",
+    "glengarry-glen-ross-2012/chicagotribune--chris-jones.json",
+    "groundhog-day-2017/chicagotribune--sam-marlowe.json",
+    "hand-to-god-2015/chicagotribune--chris-jones.json",
+    "head-over-heels-2018/chicagotribune--chris-jones.json",
+    "hello-dolly-2017/chicagotribune--chris-jones.json",
+    "ifthen-2014/chicagotribune--chris-jones.json",
+    "ill-eat-you-last-a-chat-with-sue-mengers-2013/chicagotribune--chris-jones.json",
+    "indecent-2017/chicagotribune--chris-jones.json",
+    "it-shoulda-been-you-2015/chicagotribune--chris-jones.json",
+    "its-only-a-play-2014/chicagotribune--chris-jones.json",
+    "junk-2017/chicagotribune--chris-jones.json",
+    "king-charles-iii-2015/chicagotribune--chris-jones.json",
+    "kinky-boots-2013/chicagotribune--chris-jones.json",
+    "la-bete-2010/chicagotribune--.json",
+    "la-bete-2010/chicagotribune--chris-jones.json",
+    "leap-of-faith-2012/chicagotribune--chris-jones.json",
+    "long-days-journey-into-night-2016/chicagotribune--unknown.json",
+    "lysistrata-jones-2011/chicagotribune--chris-jones.json",
+    "m-butterfly-2017/chicagotribune--chris-jones.json",
+    "macbeth-2022/chicagotribune--unknown.json",
+    "machinal-2014/chicagotribune--unknown.json",
+    "matilda-the-musical-2013/chicagotribune--chris-jones.json",
+    "mean-girls-2018/chicagotribune--chris-jones.json",
+    "meteor-shower-2017/chicagotribune--chris-jones.json",
+    "motown-the-musical-2016/chicagotribune--unknown.json",
+    "my-fair-lady-2018/chicagotribune--chris-jones.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/chicagotribune--chris-jones.json",
+    "nice-work-if-you-can-get-it-2012/chicagotribune--chris-jones.json",
+    "of-mice-and-men-2014/chicagotribune--chris-jones.json",
+    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
+    "on-the-twentieth-century-2015/chicagotribune--chris-jones.json",
+    "on-your-feet-2015/chicagotribune--chris-jones.json",
+    "on-your-feet-2015/chicagotribune--unknown.json",
+    "pippin-2013/chicagotribune--chris-jones.json",
+    "pretty-woman-the-musical-2018/chicagotribune--chris-jones.json",
+    "prince-of-broadway-2017/chicagotribune--chris-jones.json",
+    "promises-promises-2010/chicagotribune--chris-jones.json",
+    "reasons-to-be-pretty-2009/chicagotribune--unknown.json",
+    "rodgers-hammersteins-cinderella-2013/chicagotribune--chris-jones.json",
+    "spongebob-squarepants-2017/chicagotribune--chris-jones.json",
+    "summer-2018/chicagotribune--chris-jones.json",
+    "sunday-in-the-park-with-george-2017/chicagotribune--chris-jones.json",
+    "sweat-2017/chicagotribune--chris-jones.json",
+    "sweat-2017/chicagotribune--matt-windman.json",
+    "the-anarchist-2012/chicagotribune--chris-jones.json",
+    "the-boys-in-the-band-2018/chicagotribune--chris-jones.json",
+    "the-color-purple-2005/chicagotribune--unknown.json",
+    "the-columnist-2012/chicagotribune--chris-jones.json",
+    "the-crucible-2016/chicagotribune--chris-jones.json",
+    "the-crucible-2016/chicagotribune--unknown.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
+    "the-ferryman-2018/chicagotribune--chris-jones.json",
+    "the-gershwins-porgy-and-bess-2012/chicagotribune--chris-jones.json",
+    "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
+    "the-house-of-blue-leaves-2011/chicagotribune--chris-jones.json",
+    "the-humans-2016/chicagotribune--chris-jones.json",
+    "the-miracle-worker-2010/chicagotribune--chris-jones.json",
+    "the-mystery-of-edwin-drood-2012/chicagotribune--chris-jones.json",
+    "the-price-2017/chicagotribune--chris-jones.json",
+    "this-is-our-youth-2014/chicagotribune--chris-jones.json",
+    "three-tall-women-2018/chicagotribune--chris-jones.json",
+    "tuck-everlasting-2016/chicagotribune--chris-jones.json",
+    "violet-2014/chicagotribune--chris-jones.json",
+    "wit-2012/chicagotribune--chris-jones.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/chicagotribune--chris-jones.json"
+  ],
+  "tierDetails": {
+    "playwright": [],
+    "browserbase": [],
+    "scrapingbee": [
+      "mothers-and-sons-2014/chicagotribune--chris-jones.json",
+      "once-on-this-island-2017/chicagotribune--chris-jones.json"
+    ],
+    "brightdata": [],
+    "archive": [
+      "the-nap-2018/chicagotribune--chris-jones.json",
+      "therese-raquin-2015/chicagotribune--unknown.json"
+    ]
+  },
+  "failuresByOutlet": {
+    "Chicago Tribune": {
+      "count": 39,
+      "domain": "chicagotribune.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The  Chicago Tribune": {
+      "count": 1,
+      "domain": "chicagotribune.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Chicago Tribune": {
+      "count": 3,
+      "domain": "articles.chicagotribune.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "macbeth-2022/chicagotribune--unknown.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/sc-ent-1121-macbeth-broadway-review-20131121,0,3454739.column",
+      "newUrl": "https://www.chicagotribune.com/2022/04/29/review-on-broadway-daniel-craig-gets-trapped-in-a-macbeth-without-a-clear-plan/"
+    },
+    {
+      "reviewId": "machinal-2014/chicagotribune--unknown.json",
+      "oldUrl": "https://www.chicagotribune.com/sns-201401162200reedbusivarietyn1201060746-20140116,0,6157713.story",
+      "newUrl": "https://www.chicagotribune.com/2014/01/16/broadway-review-machinal-starring-rebecca-hall/"
+    },
+    {
+      "reviewId": "mothers-and-sons-2014/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/ct-mothers-sons-broadway-review,0,6140300.column",
+      "newUrl": "https://www.chicagotribune.com/2014/03/24/broadway-review-mothers-and-sons/"
+    },
+    {
+      "reviewId": "of-mice-and-men-2014/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/ct-mice-men-broadway-review,0,4292576.column",
+      "newUrl": "https://www.chicagotribune.com/2014/04/16/broadway-review-of-mice-and-men-starring-james-franco-chris-odowd/"
+    },
+    {
+      "reviewId": "on-the-twentieth-century-2015/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/broadway/sc-20th-century-broadway-review-20150325-column.html",
+      "newUrl": "https://www.chicagotribune.com/2024/05/17/review-on-the-twentieth-century-by-blank-theatre-is-a-rare-chance-to-hope-aboard-this-musical/"
+    },
+    {
+      "reviewId": "on-your-feet-2015/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/reviews/sc-on-your-feet-broadway-review-ent-1105-20151105-column.html",
+      "newUrl": "https://www.chicagotribune.com/2015/06/18/chicago-review-gloria-estefans-story-gets-you-on-your-feet/"
+    },
+    {
+      "reviewId": "once-on-this-island-2017/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-on-this-island-broadway-review-1204-story.html",
+      "newUrl": "https://www.chicagotribune.com/2020/01/23/review-once-on-this-island-appears-lost-on-the-road-at-cadillac-palace/"
+    },
+    {
+      "reviewId": "pippin-2013/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2013/04/26/pippin-broadway-review/",
+      "newUrl": "https://www.chicagotribune.com/2013/04/25/broadway-review-pippin-pulls-off-a-theatrical-high-wire-act-2/"
+    },
+    {
+      "reviewId": "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2014/10/06/the-curious-incident-of-the-dog-in-the-night-time-broadway-review/",
+      "newUrl": "https://www.chicagotribune.com/2014/10/06/review-the-curious-incident-of-the-dog-in-the-night-time/"
+    }
+  ]
+}
