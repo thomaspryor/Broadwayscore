@@ -1,15 +1,61 @@
 {
-  "updatedAt": "2026-02-10T20:46:29.998Z",
-  "processed": 0,
-  "failed": 3,
-  "successRate": "0%",
+  "updatedAt": "2026-02-10T20:50:54.301Z",
+  "processed": 50,
+  "failed": 360,
+  "successRate": "12.2%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "playwright": 6,
+    "browserbase": 2,
+    "scrapingbee": 20,
+    "brightdata": 11,
+    "archive": 15
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T16:11:34.657Z",
+      "event": "bb-session",
+      "session": "71b89026",
+      "url": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-b"
+    },
+    {
+      "t": "2026-02-10T16:14:53.705Z",
+      "event": "bb-session",
+      "session": "8cf0a2dc",
+      "url": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on"
+    },
+    {
+      "t": "2026-02-10T16:15:45.753Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:19:49.387Z",
+      "event": "bb-session",
+      "session": "0d3f2ddb",
+      "url": "https://www.wsj.com/articles/stranger-things-the-first-shadow-review-a-streaming"
+    },
+    {
+      "t": "2026-02-10T16:20:39.449Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:34:58.746Z",
+      "event": "bb-session",
+      "session": "fbcd6dab",
+      "url": "https://www.hollywoodreporter.com/review/1776-theater-review-879645"
+    },
+    {
+      "t": "2026-02-10T16:37:17.484Z",
+      "event": "bb-session",
+      "session": "c263887e",
+      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
+    },
+    {
+      "t": "2026-02-10T16:37:19.969Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    }
+  ]
 }
