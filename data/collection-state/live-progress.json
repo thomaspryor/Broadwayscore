@@ -1,61 +1,51 @@
 {
-  "updatedAt": "2026-02-10T21:19:52.828Z",
-  "processed": 59,
-  "failed": 401,
-  "successRate": "12.8%",
+  "updatedAt": "2026-02-10T21:24:44.729Z",
+  "processed": 56,
+  "failed": 394,
+  "successRate": "12.4%",
   "tierBreakdown": {
     "playwright": 4,
-    "browserbase": 1,
-    "scrapingbee": 32,
-    "brightdata": 5,
-    "archive": 22
+    "browserbase": 3,
+    "scrapingbee": 20,
+    "brightdata": 11,
+    "archive": 21
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T15:56:20.521Z",
+      "t": "2026-02-10T16:34:53.114Z",
       "event": "bb-session",
-      "session": "f88f9e39",
-      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
+      "session": "384a5177",
+      "url": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-b"
     },
     {
-      "t": "2026-02-10T15:56:22.473Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-10T15:58:57.823Z",
+      "t": "2026-02-10T16:35:12.212Z",
       "event": "bb-session",
-      "session": "5da89040",
-      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+      "session": "baa0924c",
+      "url": "https://observer.com/2022/11/review-the-excruciating-juliet-fails-on-every-level"
     },
     {
-      "t": "2026-02-10T15:59:00.266Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-10T16:02:06.899Z",
+      "t": "2026-02-10T16:35:26.412Z",
       "event": "bb-session",
-      "session": "071cbef5",
-      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+      "session": "6d871bab",
+      "url": "https://www.theatermania.com/broadway/news/review-and-juliet-musical-broadway_94"
     },
     {
-      "t": "2026-02-10T16:02:58.366Z",
+      "t": "2026-02-10T16:35:54.873Z",
+      "event": "bb-session",
+      "session": "cb221408",
+      "url": "https://www.theatermania.com/broadway/news/juliet-broadway-review_92586.html"
+    },
+    {
+      "t": "2026-02-10T16:37:29.512Z",
+      "event": "bb-session",
+      "session": "7f5222ad",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-10T16:38:15.726Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-10T16:06:13.601Z",
-      "event": "bb-session",
-      "session": "e3e5d82f",
-      "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
-    },
-    {
-      "t": "2026-02-10T16:06:39.994Z",
-      "event": "bb-session",
-      "session": "757c446b",
-      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
     }
   ]
 }
