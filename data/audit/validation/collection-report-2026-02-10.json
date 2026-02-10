@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-10T14:57:10.908Z",
+  "runDate": "2026-02-10T15:01:42.540Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hadestown-2019",
+    "showFilter": "the-lion-king-1997",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -17,53 +17,53 @@
     "successRate": "10.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 5,
+    "tier1Attempts": 4,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
-    "tier2Success": 2,
-    "tier3Attempts": 4,
-    "tier3Success": 1,
-    "tier4Attempts": 9,
-    "tier4Success": 4,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
+    "tier3Success": 0,
+    "tier4Attempts": 12,
+    "tier4Success": 3,
     "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 41,
+    "scrapingBeeCreditsUsed": 17,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 7,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-2019/medium--christian-lewis.json"
+    "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
   ],
   "failed": [
-    "hadestown-2019/newyorker--hilton-als.json",
-    "hadestown-2019/guardian--adrian-horton.json",
-    "hadestown-2019/broadway-and-me--janice-c-simpson.json",
-    "hadestown-2019/buy-tickets--unknown.json",
-    "hadestown-2019/caroleditosti--carole-di-tosti.json",
-    "hadestown-2019/curtainup--elyse-sommer.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/gotham-playgoer--elizabeth-wollman.json",
-    "hadestown-2019/njcom--christopher-kelly.json"
+    "the-lion-king-1997/newyorker--john-lahr.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "the-lion-king-1997/vulture--john-simon.json",
+    "the-lion-king-1997/new-york--john-simon.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "the-lion-king-1997/columbus-dispatch--michael-grossberg.json",
+    "the-lion-king-1997/denver-post--sandra-brooks-dillard.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-lion-king-1997/milwaukee-journal-sentinel--damien-jaques.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "hadestown-2019/medium--christian-lewis.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
+    ]
   },
   "failuresByOutlet": {
     "The New Yorker": {
@@ -73,20 +73,33 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "BUY TICKETS": {
+    "Columbus Dispatch": {
       "count": 1,
-      "domain": "us.atgtickets.com",
+      "domain": "jasonraize.net",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "CurtainUp": {
+    "Denver Post": {
       "count": 1,
-      "domain": "curtainup.com",
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Milwaukee Journal Sentinel": {
+      "count": 1,
+      "domain": "jasonraize.net",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
+      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
+    }
+  ]
 }
