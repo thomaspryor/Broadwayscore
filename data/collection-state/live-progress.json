@@ -1,56 +1,62 @@
 {
-  "updatedAt": "2026-02-10T18:04:34.038Z",
-  "processed": 9,
-  "failed": 131,
-  "successRate": "6.4%",
+  "updatedAt": "2026-02-10T18:07:48.456Z",
+  "processed": 19,
+  "failed": 181,
+  "successRate": "9.5%",
   "tierBreakdown": {
-    "playwright": 4,
-    "browserbase": 2,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 4
+    "playwright": 6,
+    "browserbase": 0,
+    "scrapingbee": 2,
+    "brightdata": 2,
+    "archive": 9
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:47:15.077Z",
+      "t": "2026-02-10T16:03:59.126Z",
       "event": "bb-session",
-      "session": "c98d9a57",
-      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+      "session": "71952df6",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
     },
     {
-      "t": "2026-02-10T16:47:16.919Z",
+      "t": "2026-02-10T16:04:40.947Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770739447850\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAVY22pHyJ_18ANCKmrw==&cid=ZGvVZCSbQuSS94o6U8wTqlYXBFYneqDxDG8M1nnbxsCh5abuyfKh0~4QEQALw9887SQBe1f3dKrWSzIBZK_n5ZARvZXywrYL1zMy~y3qOx4fbCLxrLtoYZU6F1pWcFn1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770739447850\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770739447850\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAVY22pHyJ_18ANCKmrw==&cid=ZGvVZCSbQuSS94o6U8wTqlYXBFYneqDxDG8M1nnbxsCh5abuyfKh0~4QEQALw9887SQBe1f3dKrWSzIBZK_n5ZARvZXywrYL1zMy~y3qOx4fbCLxrLtoYZU6F1pWcFn1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770739447850\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770739447850\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAVY22pHyJ_18ANCKmrw==&cid=ZGvVZCSbQuSS94o6U8wTqlYXBFYneqDxDG8M1nnbxsCh5abuyfKh0~4QEQALw9887SQBe1f3dKrWSzIBZK_n5ZARvZXywrYL1zMy~y3qOx4fbCLxrLtoYZU6F1pWcFn1&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770739447850\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-10T16:07:17.329Z",
+      "event": "bb-session",
+      "session": "e8f5d364",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
+    },
+    {
+      "t": "2026-02-10T16:07:19.427Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:48:12.106Z",
+      "t": "2026-02-10T16:08:18.644Z",
       "event": "bb-session",
-      "session": "d2958a72",
-      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+      "session": "2c1971c0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maybe-happy-ending-broadway-rev"
     },
     {
-      "t": "2026-02-10T16:49:21.085Z",
+      "t": "2026-02-10T16:10:57.596Z",
       "event": "bb-session",
-      "session": "14476b5e",
-      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-12360"
+      "session": "5d8fca75",
+      "url": "https://www.newyorker.com/magazine/2024/12/02/maybe-happy-ending-theatre-review"
     },
     {
-      "t": "2026-02-10T16:50:14.649Z",
-      "event": "bb-session",
-      "session": "7f975da2",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+      "t": "2026-02-10T16:10:59.885Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:50:57.876Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-10T16:53:16.233Z",
+      "t": "2026-02-10T16:12:09.897Z",
       "event": "bb-session",
-      "session": "7465df37",
-      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
+      "session": "13f35bf8",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123621"
     }
   ]
 }
