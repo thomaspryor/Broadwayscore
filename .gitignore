@@ -114,6 +114,12 @@ data/review-texts/uncle-vanya
 data/review-texts/water-for-elephants
 data/review-texts/wicked
 
+# Subscriber PII (generated fresh each workflow run via sync-followers.js)
+data/subscribers.json
+
+# Opening night broadcast dedup state (regenerated from Formspree sync + send receipts)
+data/opening-night-sent.json
+
 # SQLite database (ephemeral query layer, rebuilt from JSON)
 data/broadway.db
 data/broadway.db.tmp

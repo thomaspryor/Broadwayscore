@@ -1,0 +1,165 @@
+name: Opening Night Broadcast
+
+on:
+  schedule:
+    # 4 AM UTC = ~11 PM ET (prime time — most reviews published by now)
+    - cron: '0 4 * * *'
+    # 5 AM UTC = ~midnight ET (retry — catches late reviews)
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: 'How many days back to check for openings (default 2)'
+        required: false
+        type: number
+        default: 2
+
+permissions:
+  contents: write
+
+jobs:
+  broadcast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Find recently opened shows
+        id: find
+        run: |
+          LOOKBACK=${{ inputs.lookback_days || 2 }}
+          SHOWS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const now = new Date();
+            const cutoff = new Date(now);
+            cutoff.setDate(cutoff.getDate() - $LOOKBACK);
+            cutoff.setHours(0,0,0,0);
+
+            const opened = shows.filter(s => {
+              if (s.status !== 'open' || !s.openingDate) return false;
+              const d = new Date(s.openingDate);
+              d.setHours(0,0,0,0);
+              return d >= cutoff && d <= now;
+            });
+
+            if (opened.length > 0) {
+              console.log(opened.map(s => s.id).join(','));
+            }
+          ")
+
+          if [ -z "$SHOWS" ]; then
+            echo "No recently opened shows found"
+            echo "has_shows=false" >> $GITHUB_OUTPUT
+          else
+            echo "Recently opened shows: $SHOWS"
+            echo "has_shows=true" >> $GITHUB_OUTPUT
+            echo "shows=$SHOWS" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check already broadcast
+        if: steps.find.outputs.has_shows == 'true'
+        id: check
+        run: |
+          # Read opening-night-sent.json if it exists, filter out completed shows
+          SHOWS="${{ steps.find.outputs.shows }}"
+          PENDING=$(node -e "
+            const fs = require('fs');
+            const sentPath = 'data/opening-night-sent.json';
+            let sent = {};
+            try { sent = JSON.parse(fs.readFileSync(sentPath, 'utf8')).shows || {}; } catch {}
+
+            const shows = '$SHOWS'.split(',');
+            const pending = shows.filter(id => {
+              // Check both individual show key and combined key
+              if (sent[id] && sent[id].completed) return false;
+              return true;
+            });
+
+            if (pending.length > 0) console.log(pending.join(','));
+          ")
+
+          if [ -z "$PENDING" ]; then
+            echo "All shows already broadcast"
+            echo "pending_shows=" >> $GITHUB_OUTPUT
+          else
+            echo "Pending shows: $PENDING"
+            echo "pending_shows=$PENDING" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.pending_shows != ''
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        if: steps.check.outputs.pending_shows != ''
+        run: npm ci
+
+      - name: Sync subscribers
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          FORMSPREE_FOLLOW_API_KEY: ${{ secrets.FORMSPREE_FOLLOW_API_KEY }}
+          FORMSPREE_TOKEN: ${{ secrets.FORMSPREE_TOKEN }}
+          FORMSPREE_FOLLOW_FORM_ID: ${{ secrets.FORMSPREE_FOLLOW_FORM_ID }}
+          FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}
+        run: node scripts/sync-followers.js
+
+      - name: Discover reviews from outlets (SERP)
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
+          for SHOW in "${SHOWS[@]}"; do
+            echo "Discovering reviews for $SHOW..."
+            node scripts/discover-opening-night-reviews.js --show="$SHOW" --tiers=1,2 || true
+          done
+
+      - name: Gather reviews from aggregators
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          npx playwright install chromium 2>/dev/null || true
+          node scripts/gather-reviews.js --shows=${{ steps.check.outputs.pending_shows }}
+
+      - name: Rebuild reviews.json
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/rebuild-all-reviews.js
+
+      - name: Generate consensus
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
+          for SHOW in "${SHOWS[@]}"; do
+            node scripts/generate-critic-consensus.js --show="$SHOW" || true
+          done
+
+      - name: Send broadcast
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: node scripts/send-opening-night-broadcast.js
+
+      - name: Commit data
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/reviews.json data/review-texts/ data/critic-consensus.json data/opening-night-sent.json 2>/dev/null || true
+          for i in 1 2 3 4 5; do
+            git diff --staged --quiet && break
+            git commit -m "data: Opening night broadcast updates" && git push && break
+            git pull --rebase -X theirs origin main
+          done
