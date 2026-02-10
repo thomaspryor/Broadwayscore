@@ -1,80 +1,89 @@
 {
   "processed": [
-    "aladdin-2014/ew--thom-geier.json",
-    "aladdin-2014/theatermania--david-finkle.json",
-    "aladdin-2014/wsj--terry-teachout.json",
-    "and-juliet-2022/theatermania--hayley-levitt.json",
-    "and-juliet-2022/thewrap--robert-hofler.json"
+    "book-of-mormon-2011/newyorkmagazine--scott-brown.json",
+    "book-of-mormon-2011/vulture--scott-brown.json"
   ],
   "failed": [
-    "and-juliet-2022/variety--aramide-tinubu.json",
-    "buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
-    "maybe-happy-ending-2024/hollywood-reporter--angie-han.json",
-    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-    "maybe-happy-ending-2024/nyt-theater--jonathan-mandell.json",
-    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
-    "maybe-happy-ending-2024/variety--charles-isherwood.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "aladdin-2014/theatermania--charles-isherwood.json",
-    "aladdin-2014/timeout--adam-feldman.json",
-    "aladdin-2014/uinterview--danny-graugnard.json",
-    "and-juliet-2022/nydailynews--chris-jones.json",
-    "and-juliet-2022/observer--rex-reed.json",
-    "and-juliet-2022/theatermania--jesse-green.json",
-    "and-juliet-2022/timeout--adam-feldman.json"
+    "book-of-mormon-2011/hollywood-reporter--david-rooney.json",
+    "book-of-mormon-2011/newyorker--hilton-als.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "chicago-1996/hollywood-reporter--david-rooney.json",
+    "death-of-a-salesman-2026/nytimes--ben-brantley.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "hells-kitchen-2024/nytg--david-gordon.json",
+    "hells-kitchen-2024/nytimes--elizabeth-vincentelli.json",
+    "hells-kitchen-2024/vulture--sara-holdren.json",
+    "wicked-2003/hollywood-reporter--david-rooney.json",
+    "wicked-2003/newyorker--.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/variety--peter-debruge.json",
+    "wicked-2003/vulture--bilge-eberi.json",
+    "book-of-mormon-2011/timeout--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [
-      "and-juliet-2022/theatermania--hayley-levitt.json"
+    "browserbase": [
+      "data/review-texts/chicago-1996/hollywood-reporter--david-rooney.json",
+      "data/review-texts/wicked-2003/hollywood-reporter--david-rooney.json"
     ],
+    "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "aladdin-2014/ew--thom-geier.json",
-      "aladdin-2014/theatermania--david-finkle.json",
-      "aladdin-2014/wsj--terry-teachout.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "book-of-mormon-2011/newyorkmagazine--scott-brown.json",
+      "book-of-mormon-2011/vulture--scott-brown.json"
     ]
   },
-  "startTime": "2026-02-10T03:48:20.335Z",
-  "lastProcessed": "and-juliet-2022/timeout--adam-feldman.json",
+  "startTime": "2026-02-10T03:47:34.062Z",
+  "lastProcessed": "book-of-mormon-2011/vulture--scott-brown.json",
   "log": [
     {
-      "t": "2026-02-10T03:48:47.942Z",
+      "t": "2026-02-10T03:49:25.628Z",
       "event": "bb-session",
-      "session": "034c9d13",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maybe-happy-ending-broadway-rev"
+      "session": "5497b2f7",
+      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
     },
     {
-      "t": "2026-02-10T03:51:12.283Z",
-      "event": "bb-session",
-      "session": "46dc508d",
-      "url": "https://www.newyorker.com/magazine/2024/12/02/maybe-happy-ending-theatre-review"
-    },
-    {
-      "t": "2026-02-10T03:51:14.553Z",
+      "t": "2026-02-10T03:49:27.677Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T03:52:04.116Z",
+      "t": "2026-02-10T03:50:20.208Z",
       "event": "bb-session",
-      "session": "c05f22de",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123621"
+      "session": "4047cad3",
+      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
     },
     {
-      "t": "2026-02-10T03:52:56.537Z",
+      "t": "2026-02-10T03:52:32.333Z",
       "event": "bb-session",
-      "session": "d08c26a0",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123622"
+      "session": "64955982",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
     },
     {
-      "t": "2026-02-10T03:53:50.365Z",
+      "t": "2026-02-10T03:52:34.790Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T03:55:02.591Z",
       "event": "bb-session",
-      "session": "731f69d2",
-      "url": "https://www.theatermania.com/new-york-city-theater/news/aladdin_70661.html"
+      "session": "c3dc5c6e",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+    },
+    {
+      "t": "2026-02-10T03:55:04.837Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T03:57:01.455Z",
+      "event": "bb-session",
+      "session": "9ffd6162",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
     }
   ]
 }
