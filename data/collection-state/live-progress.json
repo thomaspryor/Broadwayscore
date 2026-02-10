@@ -1,51 +1,56 @@
 {
-  "updatedAt": "2026-02-10T14:25:55.640Z",
-  "processed": 2,
-  "failed": 19,
-  "successRate": "9.5%",
+  "updatedAt": "2026-02-10T14:28:51.272Z",
+  "processed": 9,
+  "failed": 231,
+  "successRate": "3.8%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 1,
-    "scrapingbee": 1,
+    "playwright": 3,
+    "browserbase": 2,
+    "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 0
+    "archive": 5
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T14:13:47.484Z",
+      "t": "2026-02-10T12:02:10.597Z",
       "event": "bb-session",
-      "session": "a318437e",
+      "session": "26a688c1",
       "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
     },
     {
-      "t": "2026-02-10T14:13:49.974Z",
+      "t": "2026-02-10T12:02:12.624Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T14:16:59.449Z",
+      "t": "2026-02-10T12:04:47.594Z",
       "event": "bb-session",
-      "session": "422705f5",
+      "session": "b44d9f77",
+      "url": "https://variety.com/2025/legit/reviews/ragtime-review-broadway-lincoln-center-th"
+    },
+    {
+      "t": "2026-02-10T12:09:03.816Z",
+      "event": "bb-session",
+      "session": "82bd4c07",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-02-10T12:09:47.474Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T12:11:44.873Z",
+      "event": "bb-session",
+      "session": "448c8275",
       "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
     },
     {
-      "t": "2026-02-10T14:17:28.628Z",
+      "t": "2026-02-10T12:12:12.898Z",
       "event": "bb-session",
-      "session": "94d43562",
+      "session": "845259f2",
       "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
-    },
-    {
-      "t": "2026-02-10T14:18:05.465Z",
-      "event": "bb-session",
-      "session": "38728ea6",
-      "url": "https://www.theatermania.com/broadway/reviews/hells-kitchen_96263"
-    },
-    {
-      "t": "2026-02-10T14:19:57.529Z",
-      "event": "bb-session",
-      "session": "e6188161",
-      "url": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/"
     }
   ]
 }
