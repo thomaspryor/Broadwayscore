@@ -1,65 +1,59 @@
 {
-  "updatedAt": "2026-02-10T21:35:38.308Z",
-  "processed": 46,
-  "failed": 534,
-  "successRate": "7.9%",
+  "updatedAt": "2026-02-10T21:44:33.005Z",
+  "processed": 74,
+  "failed": 426,
+  "successRate": "14.8%",
   "tierBreakdown": {
-    "playwright": 6,
-    "browserbase": 1,
-    "scrapingbee": 20,
-    "brightdata": 8,
-    "archive": 14
+    "playwright": 7,
+    "browserbase": 2,
+    "scrapingbee": 30,
+    "brightdata": 13,
+    "archive": 26
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:14:09.718Z",
+      "t": "2026-02-10T16:11:34.657Z",
       "event": "bb-session",
-      "session": "bddd114d",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+      "session": "71b89026",
+      "url": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-b"
     },
     {
-      "t": "2026-02-10T16:14:55.077Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740061689\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMATWsyT2FVtg4ALPe1oA==&cid=dgglU_I2MxuvUtO~ILysG3FL9_eXJoBiWaa4x9OJFGDCWoP9qvBo7VdpOO8P46q8HEHkKdMp_UC4NH6WjhBJMDQBrYCIe~15zg9w8i7yHmmZL_Dg7_yTGu7h05_rN9z0&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740061689\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740061689\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMATWsyT2FVtg4ALPe1oA==&cid=dgglU_I2MxuvUtO~ILysG3FL9_eXJoBiWaa4x9OJFGDCWoP9qvBo7VdpOO8P46q8HEHkKdMp_UC4NH6WjhBJMDQBrYCIe~15zg9w8i7yHmmZL_Dg7_yTGu7h05_rN9z0&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740061689\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    20 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740061689\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMATWsyT2FVtg4ALPe1oA==&cid=dgglU_I2MxuvUtO~ILysG3FL9_eXJoBiWaa4x9OJFGDCWoP9qvBo7VdpOO8P46q8HEHkKdMp_UC4NH6WjhBJMDQBrYCIe~15zg9w8i7yHmmZL_Dg7_yTGu7h05_rN9z0&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740061689\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n"
-    },
-    {
-      "t": "2026-02-10T16:17:21.983Z",
+      "t": "2026-02-10T16:14:53.705Z",
       "event": "bb-session",
-      "session": "edf18ba0",
-      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
+      "session": "8cf0a2dc",
+      "url": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on"
     },
     {
-      "t": "2026-02-10T16:17:23.986Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
+      "t": "2026-02-10T16:15:45.753Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-02-10T16:20:08.520Z",
+      "t": "2026-02-10T16:19:49.387Z",
       "event": "bb-session",
-      "session": "a8234425",
-      "url": "https://www.newyorker.com/magazine/2021/11/01/six-brings-pop-feminism-to-broadwa"
+      "session": "0d3f2ddb",
+      "url": "https://www.wsj.com/articles/stranger-things-the-first-shadow-review-a-streaming"
     },
     {
-      "t": "2026-02-10T16:20:10.866Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
+      "t": "2026-02-10T16:20:39.449Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-02-10T16:20:48.109Z",
+      "t": "2026-02-10T16:34:58.746Z",
       "event": "bb-session",
-      "session": "8b27e068",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
+      "session": "fbcd6dab",
+      "url": "https://www.hollywoodreporter.com/review/1776-theater-review-879645"
     },
     {
-      "t": "2026-02-10T16:23:09.758Z",
+      "t": "2026-02-10T16:37:17.484Z",
       "event": "bb-session",
-      "session": "36b1b13c",
-      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
+      "session": "c263887e",
+      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
     },
     {
-      "t": "2026-02-10T16:23:11.902Z",
+      "t": "2026-02-10T16:37:19.969Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     }
