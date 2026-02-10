@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-10",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 9987,
-      "skippedNoScore": 9515,
+      "totalReviews": 9983,
+      "skippedNoScore": 9513,
       "skippedDuplicate": 44,
-      "skippedDuplicateUrl": 288,
+      "skippedDuplicateUrl": 286,
       "skippedCrossOutletDuplicateUrl": 42,
-      "skippedDuplicateText": 352,
+      "skippedDuplicateText": 358,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 759,
       "recoveredFromGarbage": 129,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 1,
         "human-review": 56,
         "originalScore-priority0": 1070,
-        "llmScore": 4533,
+        "llmScore": 4537,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 4101,
+        "llmScore-lowconf": 4093,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -10339,7 +10339,7 @@
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Tim Balk",
@@ -10349,7 +10349,7 @@
       "pullQuote": "‘A Soldier’s Play’ finally lands on Broadway, ‘crackles with relevancy’ as it takes on racism",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-soldiers-play-2020",
@@ -10985,7 +10985,7 @@
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 64,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Chris Jones",
@@ -10995,7 +10995,7 @@
       "pullQuote": "It has many stunning sequences and charts a brave path but will not appeal to a broad swath of the theatergoing population.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-strange-loop-2022",
@@ -21609,40 +21609,6 @@
     },
     {
       "showId": "amazing-grace-2015",
-      "outletId": "thewrap",
-      "outlet": "TheWrap",
-      "assignedScore": 44,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Robert Hofler",
-      "url": "https://www.thewrap.com/amazing-grace-broadway-review-new-musical-offers-beloved-hymns-dull-backstory/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Under Gabriel Barre's direction, \"Amazing Grace\" feels like a long adult-ed lecture or a night at \"Parsifal\"",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "amazing-grace-2015",
-      "outletId": "thewrap",
-      "outlet": "TheWrap",
-      "assignedScore": 42,
-      "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Unknown",
-      "url": "http://www.thewrap.com/amazing-grace-broadway-review-new-musical-offers-beloved-hymns-dull-backstory/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Under Gabriel Barre's direction, 'Amazing Grace' feels like a long adult-ed lecture or a night at 'Parsifal'.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "amazing-grace-2015",
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 60,
@@ -23383,11 +23349,11 @@
       "scoreSource": "originalScore-priority0",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Jesse Green",
+      "criticName": "Jesse Oxfeld",
       "url": "https://www.theguardian.com/stage/2016/apr/21/american-psycho-review-patrick-bateman-sings-strips-and-slashes",
       "publishDate": "April 22, 2016",
       "originalRating": 40,
-      "pullQuote": "The problem isn't that American Psycho is offensive – it's that it's boring.",
+      "pullQuote": "The show is slick and stylish, with a strong lead performance from Benjamin Walker, but it never quite finds its footing between satire and sincerity.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -24757,7 +24723,7 @@
       "outletId": "a2view",
       "outlet": "A2view",
       "assignedScore": 86,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Ron AnnArbor",
@@ -24767,7 +24733,7 @@
       "pullQuote": "This is not your typical Broadway musical — this is ballet set upon a Broadway stage, and it is simply remarkable.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "an-american-in-paris-2015",
@@ -39345,7 +39311,7 @@
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Joe Dziemianowicz",
@@ -39355,7 +39321,7 @@
       "pullQuote": "Hall's script is vivid and smart and gets excellent support from the songs.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "billy-elliot-the-musical-2008",
@@ -59376,7 +59342,7 @@
       "outletId": "nypost",
       "outlet": "New York Post",
       "assignedScore": 64,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Elisabeth Vincentelli",
@@ -59386,7 +59352,7 @@
       "pullQuote": "So strong is the material that it doesn't need the few flourishes devised by Jerry Seinfeld...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "colin-quinn-long-story-short-2010",
@@ -86940,13 +86906,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Linda Winer",
-      "url": "http://www.newsday.com/entertainment/theater/glengarry-glen-ross-review-new-pacino-role-1.4305718",
+      "url": "https://www.newsday.com/entertainment/theater/glengarry-glen-ross-review-new-pacino-role-u45734",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "The play, directed with more emotional naturalism than stylized virtuosic flash by Daniel Sullivan, remains joyously mean-spirited.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "glengarry-glen-ross-2012",
@@ -165791,23 +165757,6 @@
     },
     {
       "showId": "translations-2007",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2007/05/25/theater/reviews/25tran.html",
-      "publishDate": "May 25, 2007",
-      "originalRating": null,
-      "pullQuote": "This production of Brian Friel's masterpiece about the clash between Irish and English cultures in 1833 is performed with a clarity and emotional precision that makes every word count.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "translations-2007",
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 62,
@@ -167214,23 +167163,6 @@
       "publishDate": "November 25, 2013",
       "originalRating": null,
       "pullQuote": "Patrick Stewart and Ian McKellen bring their considerable star power and decades of experience to Beckett's masterpiece, but the production feels more like a comfortable reunion than a revelatory theatrical experience.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "waiting-for-godot-2013",
-      "outletId": "hollywood-reporter",
-      "outlet": "The Hollywood Reporter",
-      "assignedScore": 77,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Rooney",
-      "url": "https://www.hollywoodreporter.com/news/general-news/waiting-godot-theater-review-354188/",
-      "publishDate": "November 24, 2013",
-      "originalRating": null,
-      "pullQuote": "Patrick Stewart and Ian McKellen bring their formidable theatrical gifts to Samuel Beckett's existential masterpiece",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -169520,17 +169452,17 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 44,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "David Rooney",
-      "url": "https://variety.com/2011/legit/reviews/wonderland-1117945116/",
+      "url": "https://variety.com/2011/legit/reviews/wonderland-2-1117945030/",
       "publishDate": "April 17, 2011",
       "originalRating": null,
       "pullQuote": "This musical adaptation has a few inspired moments, but mostly it's a busy, overstuffed production that never finds its footing.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "wonderland-2011",
