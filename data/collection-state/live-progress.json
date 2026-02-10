@@ -1,51 +1,61 @@
 {
-  "updatedAt": "2026-02-10T03:56:25.542Z",
-  "processed": 5,
-  "failed": 15,
-  "successRate": "25.0%",
+  "updatedAt": "2026-02-10T04:00:40.188Z",
+  "processed": 2,
+  "failed": 18,
+  "successRate": "10.0%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 1,
+    "browserbase": 2,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 4
+    "archive": 2
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T03:48:47.942Z",
+      "t": "2026-02-10T03:49:25.628Z",
       "event": "bb-session",
-      "session": "034c9d13",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maybe-happy-ending-broadway-rev"
+      "session": "5497b2f7",
+      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
     },
     {
-      "t": "2026-02-10T03:51:12.283Z",
-      "event": "bb-session",
-      "session": "46dc508d",
-      "url": "https://www.newyorker.com/magazine/2024/12/02/maybe-happy-ending-theatre-review"
-    },
-    {
-      "t": "2026-02-10T03:51:14.553Z",
+      "t": "2026-02-10T03:49:27.677Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T03:52:04.116Z",
+      "t": "2026-02-10T03:50:20.208Z",
       "event": "bb-session",
-      "session": "c05f22de",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123621"
+      "session": "4047cad3",
+      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
     },
     {
-      "t": "2026-02-10T03:52:56.537Z",
+      "t": "2026-02-10T03:52:32.333Z",
       "event": "bb-session",
-      "session": "d08c26a0",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123622"
+      "session": "64955982",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
     },
     {
-      "t": "2026-02-10T03:53:50.365Z",
+      "t": "2026-02-10T03:52:34.790Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T03:55:02.591Z",
       "event": "bb-session",
-      "session": "731f69d2",
-      "url": "https://www.theatermania.com/new-york-city-theater/news/aladdin_70661.html"
+      "session": "c3dc5c6e",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+    },
+    {
+      "t": "2026-02-10T03:55:04.837Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T03:57:01.455Z",
+      "event": "bb-session",
+      "session": "9ffd6162",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
     }
   ]
 }
