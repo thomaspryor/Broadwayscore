@@ -1,4 +1,47 @@
 {
+  "runDate": "2026-02-10T00:10:17.438Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": true,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 6,
+    "failed": 94,
+    "skipped": 0,
+    "successRate": "6.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "browserbase": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 6
+  },
+  "statistics": {
+    "tier1Attempts": 87,
+    "tier1Success": 87,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 72,
+    "tier2Success": 61,
+    "tier3Attempts": 72,
+    "tier3Success": 72,
+    "tier4Attempts": 103,
+    "tier4Success": 18,
+    "totalFailed": 94,
+    "scrapingBeeCreditsUsed": 626,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 18,
+    "urlDiscoverySuccess": 5,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "the-lion-king-1997/timeout--adam-feldman.json",
     "all-the-way-2014/timeout--david-cote.json",
@@ -103,8 +146,7 @@
     "eureka-day-2024/timeout--adam-feldman.json",
     "eureka-day-2024/timeout--andrzej-lukowski.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
@@ -118,7 +160,47 @@
       "disgraced-2014/timeout--david-cote.json"
     ]
   },
-  "startTime": "2026-02-09T22:32:19.575Z",
-  "lastProcessed": "eureka-day-2024/timeout--andrzej-lukowski.json",
-  "log": []
+  "failuresByOutlet": {
+    "Time Out New York": {
+      "count": 2,
+      "domain": "timeout.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Time Out NY": {
+      "count": 1,
+      "domain": "timeout.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/a-bronx-tale-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/a-bronx-tale-the-musical"
+    },
+    {
+      "reviewId": "aint-too-proud-2019/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/aint-too-proud-the-life-and-times-of-the-temptations",
+      "newUrl": "https://www.timeout.com/newyork/theater/aint-too-proudthe-life-and-times-of-the-temptations"
+    },
+    {
+      "reviewId": "all-my-sons-2019/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/all-my-sons-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/all-my-sons-review-broadway-revival"
+    },
+    {
+      "reviewId": "clydes-2021/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/clydes-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/clydes-broadway-review-lynn-nottage-uzo-aduba"
+    },
+    {
+      "reviewId": "cost-of-living-2022/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/cost-of-living-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/cost-of-living-broadway-review"
+    }
+  ]
 }
