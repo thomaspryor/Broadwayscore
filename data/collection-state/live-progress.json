@@ -1,62 +1,15 @@
 {
-  "updatedAt": "2026-02-10T16:33:30.404Z",
-  "processed": 2,
-  "failed": 38,
+  "updatedAt": "2026-02-10T16:36:11.761Z",
+  "processed": 4,
+  "failed": 76,
   "successRate": "5.0%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 1,
-    "scrapingbee": 0,
+    "playwright": 3,
+    "browserbase": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 1
+    "archive": 0
   },
-  "browserbaseSessions": 6,
-  "recentActivity": [
-    {
-      "t": "2026-02-10T16:11:57.505Z",
-      "event": "bb-session",
-      "session": "ec39d8c7",
-      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
-    },
-    {
-      "t": "2026-02-10T16:12:41.360Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-10T16:13:33.910Z",
-      "event": "bb-session",
-      "session": "f8fef17f",
-      "url": "https://www.nydailynews.com/2025/12/08/broadway-review-marjorie-prime-cynthia-ni"
-    },
-    {
-      "t": "2026-02-10T16:15:41.696Z",
-      "event": "bb-session",
-      "session": "ffc30147",
-      "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the"
-    },
-    {
-      "t": "2026-02-10T16:16:24.931Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-10T16:21:30.044Z",
-      "event": "bb-session",
-      "session": "173876c5",
-      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
-    },
-    {
-      "t": "2026-02-10T16:23:54.373Z",
-      "event": "bb-session",
-      "session": "e6377a6d",
-      "url": "https://www.nytimes.com/2016/12/01/theater/a-bronx-tale-review.html"
-    },
-    {
-      "t": "2026-02-10T16:24:37.699Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740644498\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAKFsqxcp2gBgALPhWIg==&cid=0Ws8~esu6FyVsBiTHp7os1Pjg1Fydegm1IXpqu9gH6~KrXGDwsRT8sEzlbkJinLWnVstgnxIrxAvtA9~IXaO0IPQTnQ8DK~jd1yGXrXBTdC6qiNroESyi9Y9MJdCEj3k&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740644498\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740644498\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAKFsqxcp2gBgALPhWIg==&cid=0Ws8~esu6FyVsBiTHp7os1Pjg1Fydegm1IXpqu9gH6~KrXGDwsRT8sEzlbkJinLWnVstgnxIrxAvtA9~IXaO0IPQTnQ8DK~jd1yGXrXBTdC6qiNroESyi9Y9MJdCEj3k&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740644498\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    27 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740644498\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAKFsqxcp2gBgALPhWIg==&cid=0Ws8~esu6FyVsBiTHp7os1Pjg1Fydegm1IXpqu9gH6~KrXGDwsRT8sEzlbkJinLWnVstgnxIrxAvtA9~IXaO0IPQTnQ8DK~jd1yGXrXBTdC6qiNroESyi9Y9MJdCEj3k&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740644498\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
