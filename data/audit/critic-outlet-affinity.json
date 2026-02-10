@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-02-09",
+    "lastUpdated": "2026-02-10",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 22394,
-    "skippedFiles": 1537,
-    "totalCritics": 1553,
-    "registryCritics": 463,
+    "totalFilesScanned": 22450,
+    "skippedFiles": 1535,
+    "totalCritics": 1544,
+    "registryCritics": 466,
     "flaggedReviews": 32
   },
   "flaggedReviews": [
@@ -30,7 +30,7 @@
       "outletShare": 1,
       "primaryOutlet": "newsday",
       "primaryShare": 99,
-      "totalReviews": 264
+      "totalReviews": 265
     },
     {
       "critic": "Linda Winer",
@@ -41,7 +41,7 @@
       "outletShare": 1,
       "primaryOutlet": "newsday",
       "primaryShare": 99,
-      "totalReviews": 264
+      "totalReviews": 265
     },
     {
       "critic": "Johnny Oleksinski",
@@ -85,7 +85,7 @@
       "outletShare": 1,
       "primaryOutlet": "variety",
       "primaryShare": 99,
-      "totalReviews": 72
+      "totalReviews": 73
     },
     {
       "critic": "Lisa Schwarzbaum",
@@ -107,7 +107,7 @@
       "outletShare": 1,
       "primaryOutlet": "vulture",
       "primaryShare": 99,
-      "totalReviews": 132
+      "totalReviews": 133
     },
     {
       "critic": "Max McGuinness",
@@ -250,7 +250,7 @@
       "outletShare": 4,
       "primaryOutlet": "latimes",
       "primaryShare": 96,
-      "totalReviews": 46
+      "totalReviews": 47
     },
     {
       "critic": "Charles McNulty",
@@ -261,7 +261,7 @@
       "outletShare": 4,
       "primaryOutlet": "latimes",
       "primaryShare": 96,
-      "totalReviews": 46
+      "totalReviews": 47
     },
     {
       "critic": "Howard Shapiro",
@@ -376,7 +376,7 @@
         "new-york-times",
         "guardian"
       ],
-      "totalReviews": 448
+      "totalReviews": 450
     },
     {
       "critic": "David Finkle",
@@ -461,9 +461,10 @@
         "ny-daily-news",
         "amny",
         "theater-news-online-joe-dziemianowicz",
-        "variety"
+        "variety",
+        "advertisement"
       ],
-      "totalReviews": 422
+      "totalReviews": 423
     },
     {
       "critic": "Elisabeth  Vincentelli",
@@ -490,7 +491,7 @@
         "reuters",
         "theatermania"
       ],
-      "totalReviews": 193
+      "totalReviews": 194
     },
     {
       "critic": "Charles Isherwood",
@@ -570,7 +571,7 @@
         "3views",
         "nytg"
       ],
-      "totalReviews": 89
+      "totalReviews": 92
     },
     {
       "critic": "Unknown",
@@ -779,16 +780,13 @@
         "bamorg",
         "exeunt-nyc",
         "british-theatre",
-        "corey-hawkins",
-        "kenny-leon",
-        "yahya-abdul-mateen-ii",
         "artsatl",
         "atlanta-intown",
         "culturesauce",
         "909wbur",
         "boston-arts-diary"
       ],
-      "totalReviews": 963
+      "totalReviews": 960
     },
     {
       "critic": "Brian Scott Lipton",
@@ -823,7 +821,7 @@
         "billboard",
         "variety"
       ],
-      "totalReviews": 209
+      "totalReviews": 210
     },
     {
       "critic": "Leah Greenblatt",
@@ -874,6 +872,7 @@
       "outlets": [
         "chicagotribune",
         "nydailynews",
+        "advertisement",
         "chicago-tribune",
         "dailybeast",
         "deadline",
@@ -885,7 +884,7 @@
         "thewrap",
         "timeout"
       ],
-      "totalReviews": 443
+      "totalReviews": 447
     },
     {
       "critic": "Michael Dale",
@@ -919,11 +918,12 @@
         "the-faster-times",
         "faster-times",
         "new-york-theatre",
+        "advertisement",
         "newyorktheater",
         "thestage",
         "the-stage-uk"
       ],
-      "totalReviews": 339
+      "totalReviews": 341
     },
     {
       "critic": "Jesse Green",
@@ -943,7 +943,7 @@
         "newyorkmagazine",
         "the-times-uk"
       ],
-      "totalReviews": 666
+      "totalReviews": 667
     },
     {
       "critic": "Howard Miller",
@@ -987,7 +987,7 @@
         "theatermania",
         "nyt-theater"
       ],
-      "totalReviews": 457
+      "totalReviews": 458
     },
     {
       "critic": "Peter Marks",
@@ -1139,12 +1139,13 @@
         "what-should-we-do",
         "guardian",
         "observer-david-cote",
+        "nbcny",
         "theater-new-online",
         "medium",
         "4columns-david-cote",
         "ny-1-time-out-magazine"
       ],
-      "totalReviews": 331
+      "totalReviews": 332
     },
     {
       "critic": "Wendell Brock",
@@ -1232,7 +1233,7 @@
         "culture-vulture",
         "theatermania"
       ],
-      "totalReviews": 68
+      "totalReviews": 70
     },
     {
       "critic": "Scott Brown",
@@ -1424,7 +1425,7 @@
         "theatrely",
         "nytg"
       ],
-      "totalReviews": 133
+      "totalReviews": 134
     },
     {
       "critic": "Juan A. Ramirez",
@@ -1833,6 +1834,15 @@
         "usatoday"
       ],
       "totalReviews": 4
+    },
+    {
+      "critic": "Ran Xia",
+      "slug": "ran-xia",
+      "outlets": [
+        "theatre-is-easy",
+        "did-they-like-it"
+      ],
+      "totalReviews": 3
     },
     {
       "critic": "Christian Holub",

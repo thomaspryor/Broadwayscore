@@ -1,56 +1,57 @@
 {
-  "updatedAt": "2026-02-10T04:08:34.772Z",
-  "processed": 5,
-  "failed": 25,
-  "successRate": "16.7%",
+  "updatedAt": "2026-02-10T06:26:27.562Z",
+  "processed": 3,
+  "failed": 38,
+  "successRate": "7.3%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 4,
-    "scrapingbee": 0,
+    "playwright": 0,
+    "browserbase": 2,
+    "scrapingbee": 1,
     "brightdata": 1,
     "archive": 1
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T03:44:38.933Z",
+      "t": "2026-02-10T06:03:59.499Z",
       "event": "bb-session",
-      "session": "a529ea9f",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235"
+      "session": "34053dd6",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
     },
     {
-      "t": "2026-02-10T03:45:09.666Z",
+      "t": "2026-02-10T06:06:22.938Z",
       "event": "bb-session",
-      "session": "a2100601",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+      "session": "3d28c9bb",
+      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
     },
     {
-      "t": "2026-02-10T03:45:24.060Z",
-      "event": "bb-session",
-      "session": "dd8473ed",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
-    },
-    {
-      "t": "2026-02-10T03:47:32.731Z",
-      "event": "bb-session",
-      "session": "5bd95bb8",
-      "url": "https://www.newyorker.com/magazine/2022/02/21/mj-sanitizes-michael-jackson"
-    },
-    {
-      "t": "2026-02-10T03:47:34.856Z",
+      "t": "2026-02-10T06:06:25.314Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T03:49:35.068Z",
+      "t": "2026-02-10T06:07:30.957Z",
       "event": "bb-session",
-      "session": "e1383c01",
-      "url": "https://www.vulture.com/2022/02/mj-the-musical-broadway-review.html"
+      "session": "e9f3a02b",
+      "url": "https://variety.com/2025/film/reviews/wicked-for-good-review-1236581742/"
     },
     {
-      "t": "2026-02-10T03:49:37.142Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
+      "t": "2026-02-10T06:08:52.997Z",
+      "event": "bb-session",
+      "session": "c549f53f",
+      "url": "https://www.indiewire.com/criticism/movies/wicked-for-good-review-part-2-1235160"
+    },
+    {
+      "t": "2026-02-10T06:13:41.576Z",
+      "event": "bb-session",
+      "session": "6e69607e",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-02-10T06:14:27.156Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770704036108\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAB7r9wqW85nkANA1qtA==&cid=clOwMXynR8Uf2lcqpbAK8jS5plXV6LCgpyRKXLr2HgEQtJc7Y3ZB4UPOWUAUq_wcm63mzvmHZJF7RSQV~6F9f9jqiOsm9tUbvvYYiXY4hjZp5sDmbFbrjfev~5pk67jI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770704036108\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770704036108\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAB7r9wqW85nkANA1qtA==&cid=clOwMXynR8Uf2lcqpbAK8jS5plXV6LCgpyRKXLr2HgEQtJc7Y3ZB4UPOWUAUq_wcm63mzvmHZJF7RSQV~6F9f9jqiOsm9tUbvvYYiXY4hjZp5sDmbFbrjfev~5pk67jI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770704036108\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770704036108\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAB7r9wqW85nkANA1qtA==&cid=clOwMXynR8Uf2lcqpbAK8jS5plXV6LCgpyRKXLr2HgEQtJc7Y3ZB4UPOWUAUq_wcm63mzvmHZJF7RSQV~6F9f9jqiOsm9tUbvvYYiXY4hjZp5sDmbFbrjfev~5pk67jI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770704036108\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
