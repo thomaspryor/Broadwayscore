@@ -1,84 +1,83 @@
 {
-  "runDate": "2026-02-10T09:29:52.898Z",
+  "runDate": "2026-02-10T09:34:57.944Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-lion-king-1997",
+    "showFilter": "hells-kitchen-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 21,
+    "processed": 2,
+    "failed": 20,
     "skipped": 0,
-    "successRate": "4.5%"
+    "successRate": "9.1%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "scrapingbee": 1,
+    "brightdata": 1,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 1,
+    "tier1Attempts": 13,
+    "tier1Success": 8,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
-    "tier2Success": 1,
-    "tier3Attempts": 4,
-    "tier3Success": 0,
-    "tier4Attempts": 29,
-    "tier4Success": 5,
-    "totalFailed": 21,
-    "scrapingBeeCreditsUsed": 27,
+    "tier2Attempts": 11,
+    "tier2Success": 6,
+    "tier3Attempts": 10,
+    "tier3Success": 7,
+    "tier4Attempts": 15,
+    "tier4Success": 4,
+    "totalFailed": 20,
+    "scrapingBeeCreditsUsed": 77,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 17,
+    "urlDiscoveryAttempts": 7,
     "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
+    "hells-kitchen-2024/theatermania--david-gordon.json",
+    "hells-kitchen-2024/thewrap--steve-pond.json"
   ],
   "failed": [
-    "the-lion-king-1997/newyorker--john-lahr.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "the-lion-king-1997/vulture--john-simon.json",
-    "the-lion-king-1997/new-york--john-simon.json",
-    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
-    "the-lion-king-1997/albuquerque-journal--adrian-gomez.json",
-    "the-lion-king-1997/ap--michael-kuchwara.json",
-    "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
-    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
-    "the-lion-king-1997/columbus-dispatch--michael-grossberg.json",
-    "the-lion-king-1997/denver-post--sandra-brooks-dillard.json",
-    "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "the-lion-king-1997/milwaukee-journal-sentinel--damien-jaques.json",
-    "the-lion-king-1997/njcom--michael-sommers.json",
-    "the-lion-king-1997/post-and-courier--dottie-ashley.json",
-    "the-lion-king-1997/sarasota-herald-tribune--jay-handelman.json",
-    "the-lion-king-1997/seattle-post-intelligencer--jeffrey-eric-jenkins.json",
-    "the-lion-king-1997/syracuse-herald-journal--joan-vadeboncoeur.json",
-    "the-lion-king-1997/talkinbroadway--matthew-murray.json",
-    "the-lion-king-1997/unknown--frank-scheck.json",
-    "the-lion-king-1997/washpost--lloyd-rose.json"
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "hells-kitchen-2024/nytg--david-gordon.json",
+    "hells-kitchen-2024/vulture--sara-holdren.json",
+    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/guardian--adrian-horton.json",
+    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+    "hells-kitchen-2024/observer--david-cote.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "hells-kitchen-2024/timeout--adam-feldman.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json",
+    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
+    "hells-kitchen-2024/showbiz411-roger-friedman--roger-friedman.json",
+    "hells-kitchen-2024/slantmagazine--dan-rubins.json",
+    "hells-kitchen-2024/talkinbroadway--howard-miller.json",
+    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
+    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
+    "hells-kitchen-2024/usatoday--david-oliver.json",
+    "hells-kitchen-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "a-night-with-janis-joplin-2013/ew--melissa-maerz.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
-    "archive": [
-      "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
-    ]
+    "scrapingbee": [
+      "hells-kitchen-2024/thewrap--steve-pond.json"
+    ],
+    "brightdata": [
+      "hells-kitchen-2024/theatermania--david-gordon.json"
+    ],
+    "archive": []
   },
   "failuresByOutlet": {
     "The New Yorker": {
@@ -88,79 +87,9 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "USA Today": {
+    "Rolling Stone": {
       "count": 1,
-      "domain": "usatoday.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Albuquerque Journal": {
-      "count": 1,
-      "domain": "abqjournal.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Associated Press": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Columbus Dispatch": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Denver Post": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Milwaukee Journal Sentinel": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NJ.com": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Post and Courier": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Sarasota Herald-Tribune": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Seattle Post-Intelligencer": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Syracuse Herald Journal": {
-      "count": 1,
-      "domain": "jasonraize.net",
+      "domain": "rollingstone.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -171,27 +100,13 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "unknown": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Washington Post": {
-      "count": 1,
-      "domain": "washingtonpost.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
-      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
-      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
+      "reviewId": "hells-kitchen-2024/nytg--david-gordon.json",
+      "oldUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen",
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen-broadway-review-alicia-keys"
     }
   ]
 }
