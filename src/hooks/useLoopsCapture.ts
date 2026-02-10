@@ -4,7 +4,8 @@ import { useState, useCallback, useEffect } from 'react';
 import { track } from '@vercel/analytics';
 
 const SUBSCRIBED_KEY = 'bsc_email_subscribed';
-const FORM_ID = process.env.NEXT_PUBLIC_LOOPS_FORM_ID || '';
+const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
+const FORMSPREE_FOLLOW_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID || '';
 
 export type LoopsStatus = 'idle' | 'submitting' | 'success' | 'error' | 'already_subscribed';
 
@@ -45,36 +46,36 @@ export function useLoopsCapture(options: LoopsCaptureOptions): LoopsCaptureResul
     setStatus('submitting');
     setErrorMessage('');
 
-    if (!FORM_ID) {
-      console.error('useLoopsCapture: NEXT_PUBLIC_LOOPS_FORM_ID is not configured. Email was NOT sent.');
+    // Subscribers → dedicated subscriber form; show follows → follow form
+    const isSubscriber = options.userGroup === 'main-site-subscriber';
+    const formId = isSubscriber ? FORMSPREE_SUBSCRIBER_FORM_ID : FORMSPREE_FOLLOW_FORM_ID;
+
+    if (!formId) {
+      console.error(`useLoopsCapture: Formspree ${isSubscriber ? 'subscriber' : 'follow'} form ID not configured.`);
       setStatus('error');
       setErrorMessage('Email subscription is not available right now.');
       return false;
     }
 
     try {
-      const body = new URLSearchParams();
-      body.append('email', email.toLowerCase().trim());
-      if (extra?.firstName) body.append('firstName', extra.firstName);
-      body.append('userGroup', options.userGroup);
-      // Custom properties
-      if (options.source) body.append('source', options.source);
-      if (options.showId) body.append('showId', options.showId);
-      if (options.showTitle) body.append('showTitle', options.showTitle);
+      const body: Record<string, string> = {
+        email: email.toLowerCase().trim(),
+        source: options.source,
+      };
+      if (extra?.firstName) body.firstName = extra.firstName;
+      if (!isSubscriber && options.showId) {
+        body.showId = options.showId;
+        if (options.showTitle) body.showTitle = options.showTitle;
+      }
 
-      const res = await fetch(`https://app.loops.so/api/newsletter-form/${FORM_ID}`, {
+      const res = await fetch(`https://formspree.io/f/${formId}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: body.toString(),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
       });
 
       if (res.ok) {
-        const data = await res.json();
-        if (data.message === 'Email already on list') {
-          setStatus('already_subscribed');
-        } else {
-          setStatus('success');
-        }
+        setStatus('success');
         try {
           localStorage.setItem(SUBSCRIBED_KEY, 'true');
           window.dispatchEvent(new Event('bsc_subscribed'));

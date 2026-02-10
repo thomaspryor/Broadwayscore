@@ -1,95 +1,113 @@
 {
-  "runDate": "2026-02-10T14:12:32.915Z",
+  "runDate": "2026-02-10T21:56:22.238Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-lion-king-1997",
-    "aggressive": false,
+    "showFilter": "harry-potter-2021",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 9,
+    "processed": 6,
+    "failed": 15,
     "skipped": 0,
-    "successRate": "10.0%"
+    "successRate": "28.6%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 1
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 0,
-    "tier1_5Attempts": 2,
+    "tier1Attempts": 9,
+    "tier1Success": 6,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 0,
+    "tier2Attempts": 9,
+    "tier2Success": 2,
+    "tier3Attempts": 8,
+    "tier3Success": 3,
     "tier4Attempts": 12,
-    "tier4Success": 3,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 7,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.9,
-    "urlDiscoveryAttempts": 7,
-    "urlDiscoverySuccess": 1,
+    "tier4Success": 5,
+    "totalFailed": 17,
+    "scrapingBeeCreditsUsed": 33,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 5,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "harry-potter-2021/buy-tickets--unknown.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/the-times--ann-treneman.json"
   ],
   "failed": [
-    "the-lion-king-1997/newyorker--john-lahr.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "the-lion-king-1997/vulture--john-simon.json",
-    "the-lion-king-1997/new-york--john-simon.json",
-    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
-    "the-lion-king-1997/columbus-dispatch--michael-grossberg.json",
-    "the-lion-king-1997/denver-post--sandra-brooks-dillard.json",
-    "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "the-lion-king-1997/milwaukee-journal-sentinel--damien-jaques.json"
+    "harry-potter-2021/ew--kristen-baldwin.json",
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "harry-potter-2021/national-review--kyle-smith.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/forward--matthew-murphy.json",
+    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/exeunt-magazine--kev-berry.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
+    "harry-potter-2021/sfist-jay-barmann--jay-barmann.json",
+    "harry-potter-2021/telegraph--diana-snyder.json",
+    "harry-potter-2021/the-san-francisco-chronicle-lily-janiak--lily-janiak.json",
+    "harry-potter-2021/the-telegraph-uk--diane-snyder.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+    ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "harry-potter-2021/buy-tickets--unknown.json"
+    ],
     "brightdata": [],
     "archive": [
-      "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json",
+      "harry-potter-2021/broadwayworld--michael-dale.json",
+      "harry-potter-2021/the-times--ann-treneman.json"
     ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
+    "IndieWire": {
       "count": 1,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
+      "domain": "indiewire.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
     },
-    "Columbus Dispatch": {
+    "Broadway Blog": {
       "count": 1,
-      "domain": "jasonraize.net",
+      "domain": "thebroadwayblog.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Denver Post": {
+    "CurtainUp": {
       "count": 1,
-      "domain": "jasonraize.net",
+      "domain": "curtainup.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Milwaukee Journal Sentinel": {
+    "Front Mezz Junkies": {
       "count": 1,
-      "domain": "jasonraize.net",
+      "domain": "frontmezzjunkies.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -97,9 +115,14 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
-      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
-      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
+      "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
+      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOoqu8xVSE2h6UTSYuE4yeJ2Z1Ps8Agzkvn-AurbNE1VDNnh3PHBu"
+    },
+    {
+      "reviewId": "harry-potter-2021/curtainup--elyse-sommer.json",
+      "oldUrl": "https://www.curtainup.com/harrypottercursedchild.html",
+      "newUrl": "http://www.curtainup.com/harrypotterbway18.html"
     }
   ]
 }

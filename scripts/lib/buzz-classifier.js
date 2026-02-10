@@ -103,13 +103,16 @@ For each comment, determine:
    - Sharing personal experience of watching the show
 
    ✗ NO - Mark NOT relevant if:
+   - The person has NOT actually seen the show — e.g., "I refuse to see it", "I won't go", "I've heard it's bad", "planning to see it"
+   - Boycott or protest sentiment about the show's creators, source material author, or associated artists — not a review of the production itself
+   - Opinions about source material (book, film, original artist) rather than the theatrical production — e.g., "the book was terrible" or "I don't support the author"
    - Comment is about a DIFFERENT show by name - e.g., "I saw Hamilton..." or "Book of Mormon was better"
    - Industry talk: injuries, cast contracts, working conditions, backstage drama, closing notices
    - Technical theater: stage rakes, set measurements, lighting rigs, costumes, props
    - Meta discussion: ticket prices, lottery, seating, scheduling
    - Just mentions "${showTitle}" in passing without an audience opinion
 
-   IMPORTANT: If comment discusses a different show BY NAME, mark not relevant. But if it says "I saw it" or "the show" without naming another show, assume it's about "${showTitle}".
+   IMPORTANT: The person MUST have actually attended/seen the show. "I refuse to see it" or "I'll never give them my money" is NOT an audience reaction. If comment discusses a different show BY NAME, mark not relevant. But if it says "I saw it" or "the show" without naming another show, assume it's about "${showTitle}".
 
 2. sentiment (only if is_relevant is true):
    - enthusiastic: Strong positive - superlatives like amazing, incredible, best, 10/10, life-changing, cried happy tears
