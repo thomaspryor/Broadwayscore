@@ -1,15 +1,56 @@
 {
-  "updatedAt": "2026-02-10T16:48:53.330Z",
-  "processed": 11,
-  "failed": 89,
-  "successRate": "11.0%",
+  "updatedAt": "2026-02-10T16:50:41.809Z",
+  "processed": 40,
+  "failed": 360,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 2,
-    "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 7
+    "playwright": 12,
+    "browserbase": 3,
+    "scrapingbee": 8,
+    "brightdata": 5,
+    "archive": 17
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T12:00:33.388Z",
+      "event": "bb-session",
+      "session": "05879339",
+      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+    },
+    {
+      "t": "2026-02-10T12:00:35.469Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T12:01:15.515Z",
+      "event": "bb-session",
+      "session": "c1c959f2",
+      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+    },
+    {
+      "t": "2026-02-10T12:01:29.590Z",
+      "event": "bb-session",
+      "session": "98bf64a3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235"
+    },
+    {
+      "t": "2026-02-10T12:01:59.028Z",
+      "event": "bb-session",
+      "session": "14f32229",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-02-10T12:04:23.797Z",
+      "event": "bb-session",
+      "session": "1b9cdb9d",
+      "url": "https://www.newyorker.com/magazine/2022/02/21/mj-sanitizes-michael-jackson"
+    },
+    {
+      "t": "2026-02-10T12:04:25.827Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    }
+  ]
 }
