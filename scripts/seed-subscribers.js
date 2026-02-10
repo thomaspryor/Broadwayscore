@@ -11,7 +11,7 @@
  *
  * Usage: node scripts/seed-subscribers.js path/to/loops-export.csv [--dry-run]
  *
- * Env: NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID (or pass as second arg)
+ * Env: NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID (or FORMSPREE_SUBSCRIBER_FORM_ID)
  */
 
 const fs = require('fs');
@@ -34,10 +34,10 @@ if (!fs.existsSync(csvPath)) {
   process.exit(1);
 }
 
-const FORMSPREE_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID || process.env.FORMSPREE_FOLLOW_FORM_ID;
+const FORMSPREE_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || process.env.FORMSPREE_SUBSCRIBER_FORM_ID;
 
 if (!FORMSPREE_FORM_ID) {
-  console.error('Missing NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID or FORMSPREE_FOLLOW_FORM_ID');
+  console.error('Missing NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID or FORMSPREE_SUBSCRIBER_FORM_ID');
   process.exit(1);
 }
 
