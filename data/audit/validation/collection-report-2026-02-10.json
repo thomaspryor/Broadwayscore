@@ -21,7 +21,7 @@
     "browserbase": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 7,
@@ -60,13 +60,17 @@
     "death-becomes-her-2024/theater-scene--joel-benjamin.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json"
+    ],
     "browserbase": [
       "data/review-texts/death-becomes-her-2024/variety--steven-oxman.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json"
+    ]
   },
   "failuresByOutlet": {
     "The Gold Knight": {
