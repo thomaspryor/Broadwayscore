@@ -2,7 +2,7 @@
   "runDate": "2026-02-10T10:40:12.437Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "hadestown-2019",
     "aggressive": false,
@@ -19,9 +19,9 @@
   "tierBreakdown": {
     "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 13,
@@ -68,9 +68,13 @@
       "hadestown-2019/medium--christian-lewis.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "wicked-2003/ajc--wendell-brock.json"
+    ],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "wicked-2003/ew--alice-king.json"
+    ]
   },
   "failuresByOutlet": {
     "The New Yorker": {
@@ -102,5 +106,46 @@
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/a-bronx-tale-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/a-bronx-tale-the-musical"
+    },
+    {
+      "reviewId": "aint-too-proud-2019/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/aint-too-proud-the-life-and-times-of-the-temptations",
+      "newUrl": "https://www.timeout.com/newyork/theater/aint-too-proudthe-life-and-times-of-the-temptations"
+    },
+    {
+      "reviewId": "all-my-sons-2019/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/all-my-sons-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/all-my-sons-review-broadway-revival"
+    },
+    {
+      "reviewId": "clydes-2021/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/clydes-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/clydes-broadway-review-lynn-nottage-uzo-aduba"
+    },
+    {
+      "reviewId": "cost-of-living-2022/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/cost-of-living-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/cost-of-living-broadway-review"
+    },
+    {
+      "reviewId": "evita-2012/timeout--david-cote.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/evita-2",
+      "newUrl": "https://www.timeout.com/chicago/theater/evita-at-oriental-theatre-theater-review"
+    },
+    {
+      "reviewId": "fat-ham-2023/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/fat-ham-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/fat-ham-broadway-review"
+    },
+    {
+      "reviewId": "frozen-2018/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/frozen-review",
+      "newUrl": "https://www.timeout.com/london/theatre/frozen-review-1"
+    }
+  ]
 }
