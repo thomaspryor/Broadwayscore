@@ -1,15 +1,51 @@
 {
-  "updatedAt": "2026-02-10T22:19:38.557Z",
-  "processed": 70,
-  "failed": 470,
-  "successRate": "13.0%",
+  "updatedAt": "2026-02-10T22:22:40.468Z",
+  "processed": 71,
+  "failed": 479,
+  "successRate": "12.9%",
   "tierBreakdown": {
     "playwright": 9,
     "browserbase": 1,
-    "scrapingbee": 28,
+    "scrapingbee": 29,
     "brightdata": 7,
     "archive": 27
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T16:57:17.255Z",
+      "event": "bb-session",
+      "session": "2aa4daf9",
+      "url": "https://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als"
+    },
+    {
+      "t": "2026-02-10T16:57:19.583Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:57:46.584Z",
+      "event": "bb-session",
+      "session": "72da2df5",
+      "url": "https://www.variety.com/review/VE1117942352.html?categoryId=33&cs=1"
+    },
+    {
+      "t": "2026-02-10T16:58:38.204Z",
+      "event": "bb-session",
+      "session": "93bc2987",
+      "url": "https://www.hollywoodreporter.com/review/amelie-a-new-musical-theater-957477"
+    },
+    {
+      "t": "2026-02-10T16:59:02.860Z",
+      "event": "bb-session",
+      "session": "33a99592",
+      "url": "https://variety.com/2017/legit/reviews/amelie-a-new-musical-review-1202020405/"
+    },
+    {
+      "t": "2026-02-10T17:00:02.137Z",
+      "event": "bb-session",
+      "session": "83598a2b",
+      "url": "https://variety.com/2023/legit/reviews/back-to-the-future-musical-broadway-revie"
+    }
+  ]
 }
