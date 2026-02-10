@@ -174,7 +174,7 @@ const CONFIG = {
     'nytimes.com': { emailVar: 'NYT_EMAIL', passVar: 'NYT_PASSWORD' },
     'vulture.com': { emailVar: 'VULTURE_EMAIL', passVar: 'VULTURE_PASSWORD' },
     'nymag.com': { emailVar: 'VULTURE_EMAIL', passVar: 'VULTURE_PASSWORD' },
-    'newyorker.com': { emailVar: 'VULTURE_EMAIL', passVar: 'VULTURE_PASSWORD' },
+    'newyorker.com': { emailVar: 'NEW_YORKER_EMAIL', passVar: 'NEW_YORKER_PASSWORD' },
     'washingtonpost.com': { emailVar: 'WAPO_EMAIL', passVar: 'WAPO_PASSWORD' },
     'wsj.com': { emailVar: 'WSJ_EMAIL', passVar: 'WSJ_PASSWORD' },
   },
@@ -680,7 +680,76 @@ async function loginToSite(domain, email, password) {
       return true;
     }
 
-    if (domain === 'vulture.com' || domain === 'nymag.com' || domain === 'newyorker.com') {
+    if (domain === 'newyorker.com') {
+      // The New Yorker uses Condé Nast centralized auth at id.condenast.com
+      // Separate subscription from Vulture/NYMag despite both being Condé Nast
+      // Two-step flow: 1) enter email + "Continue with e-mail", 2) enter password + "Sign in"
+      const loginUrl = 'https://www.newyorker.com/auth/initiate?redirectURL=https%3A%2F%2Fwww.newyorker.com%2F&source=HB';
+      try {
+        await page.goto(loginUrl, { timeout: CONFIG.loginTimeout });
+        await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+      } catch(e) {
+        console.log('    ✗ New Yorker login FAILED (could not load id.condenast.com)');
+        return false;
+      }
+
+      // Step 1: Enter email
+      const emailField = await page.$('input[type="email"], input[name="email"], [role="textbox"]');
+      if (!emailField) {
+        console.log('    ✗ New Yorker login FAILED (no email field found)');
+        return false;
+      }
+      await emailField.click();
+      await emailField.type(email, { delay: 30 });
+      await page.waitForTimeout(1000);
+
+      // Click "Continue with e-mail" button
+      const continueBtn = await page.$('button:has-text("Continue with e-mail"), button:has-text("Continue"), button[type="submit"]');
+      if (continueBtn) {
+        await continueBtn.click();
+      } else {
+        await page.keyboard.press('Enter');
+      }
+      await page.waitForTimeout(5000);
+
+      // Step 2: Enter password
+      const passwordField = await page.$('input[type="password"]');
+      if (!passwordField) {
+        console.log('    ✗ New Yorker login FAILED (no password field - may need different auth method)');
+        return false;
+      }
+      await passwordField.click();
+      await passwordField.type(password, { delay: 30 });
+      await page.waitForTimeout(500);
+
+      // Click "Sign in" button
+      const signInBtn = await page.$('button:has-text("Sign in"), button[type="submit"]');
+      if (signInBtn) {
+        await signInBtn.click();
+      } else {
+        await page.keyboard.press('Enter');
+      }
+      await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+      await page.waitForTimeout(5000);
+
+      // Verify: should have redirected to newyorker.com
+      const postLoginUrl = page.url();
+      if (postLoginUrl.includes('newyorker.com') && !postLoginUrl.includes('id.condenast.com')) {
+        console.log('    ✓ New Yorker login verified (redirected to newyorker.com)');
+        return true;
+      }
+      // Check for errors
+      const hasError = await page.$('[class*="error"], [class*="Error"], [role="alert"]').catch(() => null);
+      if (hasError) {
+        const errorText = await hasError.textContent().catch(() => '');
+        console.log(`    ✗ New Yorker login FAILED (error: ${errorText.substring(0, 80)})`);
+        return false;
+      }
+      console.log('    ⚠ New Yorker login uncertain - continuing anyway');
+      return true;
+    }
+
+    if (domain === 'vulture.com' || domain === 'nymag.com') {
       // NY Magazine / Vox Media centralized auth at subs.nymag.com
       // Two-step flow: 1) enter email + submit, 2) enter password + sign in
       const loginUrl = 'https://subs.nymag.com/account';
@@ -1101,6 +1170,51 @@ async function browserbaseLogin(bbPage, domain, email, password) {
 
     console.log(`    ✗ WSJ login failed (errors on SSO page)`);
     return false;
+  }
+
+  if (domain === 'newyorker.com') {
+    // The New Yorker uses Condé Nast centralized auth at id.condenast.com
+    console.log(`    → Browserbase: navigating to New Yorker login...`);
+    await bbPage.goto('https://www.newyorker.com/auth/initiate?redirectURL=https%3A%2F%2Fwww.newyorker.com%2F&source=HB', { timeout: CONFIG.loginTimeout });
+    await bbPage.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+    await bbPage.waitForTimeout(3000);
+
+    const emailInput = await bbPage.$('input[type="email"], input[name="email"], [role="textbox"]');
+    if (!emailInput) {
+      console.log(`    ✗ New Yorker login FAILED (no email field on id.condenast.com)`);
+      return false;
+    }
+    await emailInput.click();
+    await emailInput.type(email, { delay: 30 });
+    await bbPage.waitForTimeout(1000);
+
+    const continueBtn = await bbPage.$('button:has-text("Continue with e-mail"), button:has-text("Continue"), button[type="submit"]');
+    if (continueBtn) await continueBtn.click();
+    else await bbPage.keyboard.press('Enter');
+    await bbPage.waitForTimeout(5000);
+
+    const passInput = await bbPage.$('input[type="password"]');
+    if (!passInput) {
+      console.log(`    ✗ New Yorker login FAILED (no password field after email step)`);
+      return false;
+    }
+    await passInput.click();
+    await passInput.type(password, { delay: 30 });
+    await bbPage.waitForTimeout(500);
+
+    const signInBtn = await bbPage.$('button:has-text("Sign in"), button[type="submit"]');
+    if (signInBtn) await signInBtn.click();
+    else await bbPage.keyboard.press('Enter');
+    await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+    await bbPage.waitForTimeout(5000);
+
+    const postUrl = bbPage.url();
+    if (postUrl.includes('newyorker.com') && !postUrl.includes('id.condenast.com')) {
+      console.log(`    ✓ New Yorker login succeeded (via Browserbase)`);
+      return true;
+    }
+    console.log(`    ⚠ New Yorker login uncertain (URL: ${postUrl.substring(0, 80)}) - continuing`);
+    return true;
   }
 
   if (domain === 'nytimes.com') {
