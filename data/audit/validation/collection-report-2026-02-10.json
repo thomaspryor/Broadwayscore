@@ -1,378 +1,223 @@
 {
-  "runDate": "2026-02-10T16:09:36.332Z",
+  "runDate": "2026-02-10T16:12:47.698Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "harry-potter-2021,hells-kitchen-2024,chicago-1996,operation-mincemeat-2025,all-out-2025,chess-2025,the-music-man-2022,company-2021,matilda-the-musical-2013,tootsie-2019,parade-2023,angels-in-america-2018,funny-girl-2022,leopoldstadt-2022,paradise-square-2022,the-last-ship-2014,hand-to-god-2015,once-on-this-island-2017,summer-2018,yellow-face-2024,clydes-2021,frozen-2018,jitney-2017,orphans-2013,the-curious-incident-of-the-dog-in-the-nighttime-2014,waitress-2016,amazing-grace-2015,camelot-2023,indecent-2017,m-butterfly-2017,new-york-new-york-2023,prince-of-broadway-2017,the-elephant-man-2014,tuck-everlasting-2016,all-my-sons-2019,china-doll-2015,escape-to-margaritaville-2018,for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022,jerusalem-2011,living-on-love-2015,noises-off-2016,side-show-2014,the-anarchist-2012,the-humans-2016,the-play-that-goes-wrong-2017,war-horse-2011,a-raisin-in-the-sun-2014,between-riverside-and-crazy-2022,cabaret-2024,first-date-2013,golden-boy-2012,illinoise-2024,nice-work-if-you-can-get-it-2012,skeleton-crew-2022,the-cherry-orchard-2016,the-other-place-2013,time-stands-still-2010,wolf-hall-parts-one-and-two-2015,aint-no-mo-2022,be-more-chill-2019,cats-1982,dear-evan-hansen-2016,fiddler-on-the-roof-2015,grey-gardens-2006,magicbird-2012,mother-play-2024,private-lives-2011,the-bridges-of-madison-county-2014,the-nance-2013,west-side-story-2020,american-idiot-2010,children-of-a-lesser-god-2018,days-of-wine-and-roses-2024,grey-house-2023,ill-eat-you-last-a-chat-with-sue-mengers-2013,la-cage-aux-folles-2010,my-name-is-lucy-barton-2020,rock-of-ages-2009,spring-awakening-2015,the-mystery-of-edwin-drood-2012,the-scottsboro-boys-2010,tina-2019,a-chorus-line-2006,a-wonderful-world-the-louis-armstrong-musical-2024,baby-its-you-2011,bye-bye-birdie-2009,fela-2009,how-to-dance-in-ohio-2023,lysistrata-jones-2011,motown-the-musical-2016,peter-pan-goes-wrong-2023,rodgers-hammersteins-cinderella-2013,stephen-sondheims-old-friends-2025,the-cher-show-2018,the-history-boys-2006,the-philanthropist-2009,the-snow-geese-2013,water-for-elephants-2024,9-to-5-2009,a-time-to-kill-2013,born-yesterday-2011,colin-quinn-long-story-short-2010,floyd-collins-2025,guys-and-dolls-2009,impressionism-2009,john-proctor-is-the-villain-2025,lovemusik-2007,once-upon-a-mattress-2024,purpose-2025,shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016,summer-1976-2023,the-glass-menagerie-2013,the-lyons-2012,the-performers-2012,the-shark-is-broken-2023,translations-2007,wishful-drinking-2009,company-2006,dividing-the-estate-2008,festen-2006,hedda-gabler-2009,inherit-the-wind-2007,legally-blonde-2007,mauritius-2007,prelude-to-a-kiss-2007,radio-golf-2007,shrek-the-musical-2008,the-gershwins-porgy-and-bess-2012,the-ritz-2007,waiting-for-godot-2025,young-frankenstein-2007",
+    "showFilter": "",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 21,
-    "failed": 79,
+    "processed": 15,
+    "failed": 85,
     "skipped": 0,
-    "successRate": "21.0%"
+    "successRate": "15.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 6,
-    "brightdata": 2,
-    "archive": 9
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 15
   },
   "statistics": {
-    "tier1Attempts": 54,
-    "tier1Success": 9,
+    "tier1Attempts": 72,
+    "tier1Success": 72,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 69,
-    "tier2Success": 20,
-    "tier3Attempts": 51,
-    "tier3Success": 19,
-    "tier4Attempts": 135,
-    "tier4Success": 34,
-    "totalFailed": 79,
-    "scrapingBeeCreditsUsed": 418,
+    "tier2Attempts": 57,
+    "tier2Success": 57,
+    "tier3Attempts": 57,
+    "tier3Success": 56,
+    "tier4Attempts": 109,
+    "tier4Success": 61,
+    "totalFailed": 85,
+    "scrapingBeeCreditsUsed": 593,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 39,
-    "urlDiscoverySuccess": 26,
+    "urlDiscoveryAttempts": 23,
+    "urlDiscoverySuccess": 8,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "hells-kitchen-2024/theatermania--david-gordon.json",
-    "hells-kitchen-2024/thewrap--steve-pond.json",
-    "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "operation-mincemeat-2025/wsj--charles-isherwood.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "chicago-1996/time--.json",
-    "harry-potter-2021/buy-tickets--unknown.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/the-times--ann-treneman.json",
-    "all-my-sons-2019/nyt-theater--raven-snook.json",
-    "all-my-sons-2019/nytimes--ben-brantley.json",
-    "all-my-sons-2019/nytimes--jesse-green.json",
-    "bye-bye-birdie-2009/nytimes--ben-brantley.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "the-play-that-goes-wrong-2017/nytimes--ben-brantley.json",
-    "a-raisin-in-the-sun-2014/ew--lisa-schwarzbaum.json",
-    "a-wonderful-world-the-louis-armstrong-musical-2024/theatermania--david-gordon.json",
-    "amazing-grace-2015/thewrap--robert-hofler.json",
-    "amazing-grace-2015/thewrap--unknown.json",
-    "amazing-grace-2015/timeout--kris-vire.json"
+    "hamilton-2015/timeout--david-cote.json",
+    "a-catered-affair-2008/timeout--david-cote.json",
+    "airline-highway-2015/timeout--adam-feldman.json",
+    "amazing-grace-2015/timeout--kris-vire.json",
+    "an-american-in-paris-2015/timeout--adam-feldman.json",
+    "bring-it-on-the-musical-2012/timeout--adam-feldman.json",
+    "bullets-over-broadway-2014/timeout--adam-feldman.json",
+    "bullets-over-broadway-2014/timeout--david-cote.json",
+    "doctor-zhivago-2015/timeout--adam-feldman.json",
+    "dont-dress-for-dinner-2012/timeout--david-cote.json",
+    "fences-2010/timeout--david-cote.json",
+    "finding-neverland-2015/timeout--adam-feldman.json",
+    "follies-2011/timeout--adam-feldman.json",
+    "fun-home-2015/timeout--adam-feldman.json",
+    "glengarry-glen-ross-2012/timeout--david-cote.json"
   ],
   "failed": [
-    "harry-potter-2021/ew--kristen-baldwin.json",
-    "harry-potter-2021/indiewire--david-ehrlich.json",
-    "chicago-1996/oocities--richard-zoglin.json",
-    "chicago-1996/time--richard-zoglin.json",
-    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-    "aint-no-mo-2022/variety--peter-marks.json",
-    "be-more-chill-2019/nytimes--jesse-green.json",
-    "camelot-2023/nytimes--jesse-green.json",
-    "clydes-2021/vulture--jesse-green.json",
-    "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
-    "company-2006/nytimes--ben-brantley.json",
-    "company-2021/nyt-theater--jonathan-mandell.json",
-    "company-2021/nytimes--jesse-green.json",
-    "company-2021/variety--peter-marks.json",
-    "escape-to-margaritaville-2018/nytimes--jesse-green.json",
-    "first-date-2013/nytimes--ben-brantley.json",
-    "frozen-2018/nytimes--ben-brantley.json",
-    "frozen-2018/vulture--jesse-green.json",
-    "golden-boy-2012/nytimes--ben-brantley.json",
-    "hand-to-god-2015/vulture--jesse-green.json",
-    "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json",
-    "impressionism-2009/nytimes--ben-brantley.json",
-    "jerusalem-2011/nytimes--ben-brantley.json",
-    "jitney-2017/vulture--jesse-green.json",
-    "lovemusik-2007/nytimes--ben-brantley.json",
-    "lovemusik-2007/variety--charles-isherwood.json",
-    "lysistrata-jones-2011/nytimes--ben-brantley.json",
-    "m-butterfly-2017/nytimes--ben-brantley.json",
-    "m-butterfly-2017/variety--marilyn-stasio.json",
-    "magicbird-2012/hollywood-reporter--david-rooney.json",
-    "matilda-the-musical-2013/nytimes--ben-brantley.json",
-    "nice-work-if-you-can-get-it-2012/nytimes--ben-brantley.json",
-    "once-on-this-island-2017/variety--marilyn-stasio.json",
-    "once-on-this-island-2017/vulture--jesse-green.json",
-    "once-upon-a-mattress-2024/nytimes--jesse-green.json",
-    "parade-2023/variety--aramide-tinubu.json",
-    "paradise-square-2022/hollywood-reporter--angie-han.json",
-    "peter-pan-goes-wrong-2023/nyt-theater--david-nounou.json",
-    "prince-of-broadway-2017/hollywood-reporter--david-rooney.json",
-    "prince-of-broadway-2017/nytimes--ben-brantley.json",
-    "prince-of-broadway-2017/variety--marilyn-stasio.json",
-    "side-show-2014/variety--marilyn-stasio.json",
-    "summer-2018/hollywood-reporter--david-rooney.json",
-    "summer-2018/nytimes--jesse-green.json",
-    "summer-2018/vulture--jesse-green.json",
-    "the-anarchist-2012/hollywood-reporter--david-rooney.json",
-    "the-anarchist-2012/nytimes--ben-brantley.json",
-    "the-curious-incident-of-the-dog-in-the-nighttime-2014/hollywood-reporter--david-rooney.json",
-    "the-curious-incident-of-the-dog-in-the-nighttime-2014/variety--marilyn-stasio.json",
-    "the-lyons-2012/variety--marilyn-stasio.json",
-    "the-music-man-2022/variety--peter-debruge.json",
-    "the-philanthropist-2009/nytimes--ben-brantley.json",
-    "the-play-that-goes-wrong-2017/nytimes--jesse-green.json",
-    "the-ritz-2007/nytimes--ben-brantley.json",
-    "the-scottsboro-boys-2010/nytimes--ben-brantley.json",
-    "tina-2019/hollywood-reporter--david-rooney.json",
-    "tina-2019/nytimes--jesse-green.json",
-    "tina-2019/variety--marilyn-stasio.json",
-    "tootsie-2019/hollywood-reporter--david-rooney.json",
-    "tootsie-2019/nytimes--jesse-green.json",
-    "tootsie-2019/variety--marilyn-stasio.json",
-    "tuck-everlasting-2016/variety--marilyn-stasio.json",
-    "tuck-everlasting-2016/vulture--jesse-green.json",
-    "waitress-2016/vulture--jesse-green.json",
-    "war-horse-2011/nytimes--ben-brantley.json",
-    "war-horse-2011/variety--marilyn-stasio.json",
-    "west-side-story-2020/vulture--jesse-green.json",
-    "wishful-drinking-2009/nytimes--ben-brantley.json",
-    "wishful-drinking-2009/variety--charles-isherwood.json",
-    "wolf-hall-parts-one-and-two-2015/nytimes--ben-brantley.json",
-    "wolf-hall-parts-one-and-two-2015/variety--marilyn-stasio.json",
-    "yellow-face-2024/variety--aramide-tinubu.json",
-    "yellow-face-2024/vulture--jackson-mchenry.json",
-    "a-raisin-in-the-sun-2014/wsj--terry-teachout.json",
-    "aint-no-mo-2022/nypost--johnny-oleksinski.json",
+    "aladdin-2014/timeout--adam-feldman.json",
+    "and-juliet-2022/timeout--adam-feldman.json",
+    "book-of-mormon-2011/timeout--david-cote.json",
+    "chess-2025/timeout--adam-feldman.json",
+    "hamilton-2015/timeout--adam-feldman.json",
+    "just-in-time-2025/timeout--adam-feldman.json",
+    "marjorie-prime-2025/timeout--adam-feldman.json",
+    "maybe-happy-ending-2024/timeout--adam-feldman.json",
+    "mj-2022/timeout--adam-feldman.json",
+    "oedipus-2025/timeout--adam-feldman.json",
+    "oh-mary-2024/timeout--adam-feldman.json",
+    "operation-mincemeat-2025/timeout--adam-feldman.json",
+    "six-2021/timeout--adam-feldman.json",
+    "stranger-things-2024/timeout--adam-feldman.json",
+    "the-great-gatsby-2024/timeout--adam-feldman.json",
+    "the-outsiders-2024/timeout--adam-feldman.json",
+    "wicked-2003/timeout--david-cote.json",
+    "1776-2022/timeout--adam-feldman.json",
+    "1984-2017/timeout--adam-feldman.json",
+    "9-to-5-2009/timeout--unknown.json",
+    "a-behanding-in-spokane-2010/timeout--david-cote.json",
+    "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+    "a-christmas-story-the-musical-2012/timeout--david-cote.json",
+    "a-delicate-balance-2014/timeout--adam-feldman.json",
+    "a-delicate-balance-2014/timeout--david-cote.json",
+    "act-one-2014/timeout--adam-feldman.json",
+    "act-one-2014/timeout--david-cote.json",
+    "aint-too-proud-2019/timeout--adam-feldman.json",
+    "airline-highway-2015/timeout--kris-vire.json",
+    "all-in-comedy-about-love-2024/timeout--adam-feldman.json",
     "all-my-sons-2019/timeout--adam-feldman.json",
-    "all-my-sons-2019/wsj--charles-isherwood.json",
-    "amazing-grace-2015/nypost--elisabeth-vincentelli.json",
-    "amazing-grace-2015/wsj--terry-teachout.json"
+    "all-my-sons-2019/timeout--helen-shaw.json",
+    "all-the-way-2014/timeout--adam-feldman.json",
+    "amazing-grace-2015/timeout--david-cote.json",
+    "american-psycho-2016/timeout--adam-feldman.json",
+    "anything-goes-2011/timeout--adam-feldman.json",
+    "bloody-bloody-andrew-jackson-2010/timeout--david-cote.json",
+    "breakfast-at-tiffanys-2013/timeout--adam-feldman.json",
+    "brief-encounter-2010/timeout--david-cote.json",
+    "bronx-bombers-2014/timeout--david-cote.json",
+    "butley-2006/timeout--david-cote.json",
+    "cat-on-a-hot-tin-roof-2008/timeout--david-cote.json",
+    "clydes-2021/timeout--adam-feldman.json",
+    "come-back-little-sheba-2008/timeout--david-cote.json",
+    "constellations-2015/timeout--adam-feldman.json",
+    "cost-of-living-2022/timeout--adam-feldman.json",
+    "cyrano-de-bergerac-2012/timeout--raven-snook.json",
+    "dames-at-sea-2015/timeout--adam-feldman.json",
+    "dana-h-2021/timeout--adam-feldman.json",
+    "days-of-wine-and-roses-2024/timeout--adam-feldman.json",
+    "dead-outlaw-2025/timeout--adam-feldman.json",
+    "death-of-a-salesman-2012/timeout--david-cote.json",
+    "death-of-a-salesman-2022/timeout--adam-feldman.json",
+    "diana-the-musical-2021/timeout--adam-feldman.json",
+    "disaster-2016/timeout--unknown.json",
+    "disgraced-2014/timeout--adam-feldman.json",
+    "disgraced-2014/timeout--david-cote.json",
+    "disgraced-2014/timeout--unknown.json",
+    "doctor-zhivago-2015/timeout--david-cote.json",
+    "evita-2012/timeout--david-cote.json",
+    "fat-ham-2023/timeout--adam-feldman.json",
+    "fat-ham-2023/timeout--raven-snook.json",
+    "fela-2009/timeout--david-cote.json",
+    "fiddler-on-the-roof-2015/timeout--adam-feldman.json",
+    "fiddler-on-the-roof-2015/timeout--david-cote.json",
+    "finding-neverland-2015/timeout--david-cote.json",
+    "floyd-collins-2025/timeout--adam-feldman.json",
+    "flying-over-sunset-2021/timeout--adam-feldman.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/timeout--adam-feldman.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/timeout--melissa-rose-bernardo.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/timeout--adam-feldman.json",
+    "frozen-2018/timeout--adam-feldman.json",
+    "fully-committed-2016/timeout--adam-feldman.json",
+    "funny-girl-2022/timeout--adam-feldman.json",
+    "gary-a-sequel-to-titus-andronicus-2019/timeout--adam-feldman.json",
+    "ghost-the-musical-2012/timeout--david-cote.json",
+    "gigi-2015/timeout--adam-feldman.json",
+    "glengarry-glen-ross-2025/timeout--adam-feldman.json",
+    "god-of-carnage-2009/timeout--david-cote.json",
+    "godspell-2011/timeout--adam-feldman.json",
+    "golden-boy-2012/timeout--david-cote.json",
+    "good-night-and-good-luck-2025/timeout--adam-feldman.json",
+    "good-night-oscar-2023/timeout--adam-feldman.json",
+    "good-people-2011/timeout--david-cote.json",
+    "grand-horizons-2020/timeout--adam-feldman.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-      "harry-potter-2021/the-times--ann-treneman.json",
-      "all-my-sons-2019/nyt-theater--raven-snook.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "hells-kitchen-2024/thewrap--steve-pond.json",
-      "harry-potter-2021/buy-tickets--unknown.json",
-      "bye-bye-birdie-2009/nytimes--ben-brantley.json",
-      "grey-house-2023/newyorker--dan-stahl.json",
-      "amazing-grace-2015/thewrap--robert-hofler.json",
-      "amazing-grace-2015/thewrap--unknown.json"
-    ],
-    "brightdata": [
-      "hells-kitchen-2024/theatermania--david-gordon.json",
-      "a-wonderful-world-the-louis-armstrong-musical-2024/theatermania--david-gordon.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archive": [
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "operation-mincemeat-2025/wsj--charles-isherwood.json",
-      "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "chicago-1996/time--.json",
-      "all-my-sons-2019/nytimes--ben-brantley.json",
-      "all-my-sons-2019/nytimes--jesse-green.json",
-      "the-play-that-goes-wrong-2017/nytimes--ben-brantley.json",
-      "a-raisin-in-the-sun-2014/ew--lisa-schwarzbaum.json",
-      "amazing-grace-2015/timeout--kris-vire.json"
+      "hamilton-2015/timeout--david-cote.json",
+      "a-catered-affair-2008/timeout--david-cote.json",
+      "airline-highway-2015/timeout--adam-feldman.json",
+      "amazing-grace-2015/timeout--kris-vire.json",
+      "an-american-in-paris-2015/timeout--adam-feldman.json",
+      "bring-it-on-the-musical-2012/timeout--adam-feldman.json",
+      "bullets-over-broadway-2014/timeout--adam-feldman.json",
+      "bullets-over-broadway-2014/timeout--david-cote.json",
+      "doctor-zhivago-2015/timeout--adam-feldman.json",
+      "dont-dress-for-dinner-2012/timeout--david-cote.json",
+      "fences-2010/timeout--david-cote.json",
+      "finding-neverland-2015/timeout--adam-feldman.json",
+      "follies-2011/timeout--adam-feldman.json",
+      "fun-home-2015/timeout--adam-feldman.json",
+      "glengarry-glen-ross-2012/timeout--david-cote.json"
     ]
   },
   "failuresByOutlet": {
-    "IndieWire": {
-      "count": 1,
-      "domain": "indiewire.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "oocities": {
-      "count": 1,
-      "domain": "oocities.org",
+    "Time Out New York": {
+      "count": 4,
+      "domain": "timeout.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "Time": {
-      "count": 1,
-      "domain": "time.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The New York Times": {
-      "count": 7,
-      "domain": "nytimes.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Vulture": {
-      "count": 2,
-      "domain": "vulture.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "The Hollywood Reporter": {
-      "count": 1,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Variety": {
-      "count": 3,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "New York Post": {
-      "count": 1,
-      "domain": "nypost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
-      "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
-      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOopckVtQz91EagPiEZcQYZjvOZtAprItJ-dP2rV1xn3wzJonfl5T"
+      "reviewId": "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/a-bronx-tale-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/a-bronx-tale-the-musical"
     },
     {
-      "reviewId": "aint-no-mo-2022/variety--peter-marks.json",
-      "oldUrl": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-jordan-e-cooper-1235445436/",
-      "newUrl": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/"
-    },
-    {
-      "reviewId": "be-more-chill-2019/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2019/03/10/theater/be-more-chill-review.html",
-      "newUrl": "https://www.nytimes.com/2019/03/10/theater/review-be-more-chill-joe-iconis.html"
-    },
-    {
-      "reviewId": "clydes-2021/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2021/12/theater-review-clydes-broadway.html",
-      "newUrl": "https://www.vulture.com/2021/11/theater-review-clydes-on-broadway-in-the-southern-breeze.html"
-    },
-    {
-      "reviewId": "company-2021/nyt-theater--jonathan-mandell.json",
-      "oldUrl": "https://newyorktheater.me/2021/12/11/company-revival-review/",
-      "newUrl": "https://newyorktheater.me/2021/12/09/company-on-broadway-review-sondheim-helps-us-survive-being-alive/"
-    },
-    {
-      "reviewId": "company-2021/variety--peter-marks.json",
-      "oldUrl": "https://variety.com/2021/legit/reviews/company-review-broadway-revival-katrina-lenk-patti-lupone-1235132937/",
-      "newUrl": "https://variety.com/2021/legit/reviews/company-review-broadway-patti-lupone-1235129438/"
-    },
-    {
-      "reviewId": "escape-to-margaritaville-2018/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2018/03/15/theater/escape-to-margaritaville-review.html",
-      "newUrl": "https://www.nytimes.com/2018/03/15/theater/escape-to-margaritaville-review-jimmy-buffett-broadway.html"
-    },
-    {
-      "reviewId": "first-date-2013/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2013/08/09/theater/reviews/first-date-at-the-longacre-theater.html",
-      "newUrl": "https://www.nytimes.com/2013/08/09/theater/reviews/first-date-a-musical-opens-on-broadway.html"
-    },
-    {
-      "reviewId": "frozen-2018/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2018/03/theater-review-frozen-on-broadway.html",
-      "newUrl": "https://www.vulture.com/2018/03/theater-review-frozen-is-in-place-on-broadway-to-stay.html"
-    },
-    {
-      "reviewId": "golden-boy-2012/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2012/12/07/theater/reviews/golden-boy-at-the-belasco-theater.html",
-      "newUrl": "https://www.nytimes.com/2012/12/07/theater/reviews/golden-boy-directed-by-bartlett-sher.html"
-    },
-    {
-      "reviewId": "m-butterfly-2017/variety--marilyn-stasio.json",
-      "oldUrl": "https://variety.com/2017/legit/reviews/m-butterfly-review-clive-owen-1202593916/",
-      "newUrl": "https://variety.com/2017/legit/reviews/m-butterfly-review-julie-taymor-clive-owen-1202600155/"
-    },
-    {
-      "reviewId": "matilda-the-musical-2013/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-opens-on-broadway.html",
-      "newUrl": "https://www.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shubert-theater.html"
-    },
-    {
-      "reviewId": "once-upon-a-mattress-2024/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2024/08/13/theater/once-upon-a-mattress-review.html",
-      "newUrl": "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html"
-    },
-    {
-      "reviewId": "parade-2023/variety--aramide-tinubu.json",
-      "oldUrl": "https://variety.com/2023/legit/reviews/parade-review-broadway-revival-ben-platt-micaela-diamond-1235555983/",
-      "newUrl": "https://variety.com/2023/legit/reviews/parade-review-ben-platt-broadway-musical-1235555503/"
-    },
-    {
-      "reviewId": "peter-pan-goes-wrong-2023/nyt-theater--david-nounou.json",
-      "oldUrl": "https://newyorktheater.me/2023/04/10/peter-pan-goes-wrong-broadway-review/",
-      "newUrl": "https://newyorktheater.me/2023/04/21/peter-pan-goes-wrong-broadway-review/"
-    },
-    {
-      "reviewId": "summer-2018/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2018/04/23/theater/summer-review-donna-summer-musical.html",
-      "newUrl": "https://www.nytimes.com/2018/04/23/theater/review-summer-the-donna-summer-musical-broadway.html"
-    },
-    {
-      "reviewId": "the-anarchist-2012/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/anarchist-theater-review-393955/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/david-mamets-anarchist-theater-review-792763/"
-    },
-    {
-      "reviewId": "the-curious-incident-of-the-dog-in-the-nighttime-2014/variety--marilyn-stasio.json",
-      "oldUrl": "https://variety.com/2014/legit/reviews/broadway-review-the-curious-incident-of-the-dog-in-the-night-time-1201334006/",
-      "newUrl": "https://variety.com/2014/legit/reviews/broadway-review-curious-incident-dog-night-time-1201321871/"
-    },
-    {
-      "reviewId": "the-music-man-2022/variety--peter-debruge.json",
-      "oldUrl": "https://variety.com/2022/legit/reviews/the-music-man-review-hugh-jackman-sutton-foster-1235180982/",
-      "newUrl": "https://variety.com/2022/legit/reviews/music-man-review-hugh-jackman-broadway-1235177555/"
-    },
-    {
-      "reviewId": "the-play-that-goes-wrong-2017/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2017/04/03/theater/the-play-that-goes-wrong-review.html",
-      "newUrl": "https://www.nytimes.com/2017/04/02/theater/review-the-play-that-goes-wrong-review.html"
-    },
-    {
-      "reviewId": "the-ritz-2007/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2007/08/12/theater/reviews/12ritz.html",
-      "newUrl": "https://www.nytimes.com/2007/10/12/theater/reviews/12ritz.html"
-    },
-    {
-      "reviewId": "war-horse-2011/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2011/04/15/theater/reviews/war-horse-at-lincoln-center-review.html",
-      "newUrl": "https://www.nytimes.com/2011/04/15/theater/reviews/war-horse-from-national-theater-at-lincoln-center-review.html"
-    },
-    {
-      "reviewId": "west-side-story-2020/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2020/02/west-side-story-broadway-review.html",
-      "newUrl": "https://www.vulture.com/2020/02/theater-review-a-new-west-side-story-onscreen-all-the-way.html"
-    },
-    {
-      "reviewId": "wishful-drinking-2009/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2009/10/05/theater/reviews/05wishful.html",
-      "newUrl": "https://www.nytimes.com/2010/12/10/arts/television/10drinking.html"
-    },
-    {
-      "reviewId": "yellow-face-2024/vulture--jackson-mchenry.json",
-      "oldUrl": "https://www.vulture.com/article/yellow-face-broadway-review.html",
-      "newUrl": "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html"
+      "reviewId": "aint-too-proud-2019/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/aint-too-proud-the-life-and-times-of-the-temptations",
+      "newUrl": "https://www.timeout.com/newyork/theater/aint-too-proudthe-life-and-times-of-the-temptations"
     },
     {
       "reviewId": "all-my-sons-2019/timeout--adam-feldman.json",
       "oldUrl": "https://www.timeout.com/newyork/theater/all-my-sons-review",
       "newUrl": "https://www.timeout.com/newyork/theater/all-my-sons-review-broadway-revival"
+    },
+    {
+      "reviewId": "clydes-2021/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/clydes-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/clydes-broadway-review-lynn-nottage-uzo-aduba"
+    },
+    {
+      "reviewId": "cost-of-living-2022/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/cost-of-living-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/cost-of-living-broadway-review"
+    },
+    {
+      "reviewId": "evita-2012/timeout--david-cote.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/evita-2",
+      "newUrl": "https://www.timeout.com/chicago/theater/evita-at-oriental-theatre-theater-review"
+    },
+    {
+      "reviewId": "fat-ham-2023/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/fat-ham-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/fat-ham-broadway-review"
+    },
+    {
+      "reviewId": "frozen-2018/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/frozen-review",
+      "newUrl": "https://www.timeout.com/london/theatre/frozen-review-1"
     }
   ]
 }
