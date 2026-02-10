@@ -1,15 +1,15 @@
 {
   "_meta": {
     "description": "Critic reviews - raw input data",
-    "lastUpdated": "2026-02-09",
+    "lastUpdated": "2026-02-10",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 10033,
-      "skippedNoScore": 9531,
+      "skippedNoScore": 9529,
       "skippedDuplicate": 44,
       "skippedDuplicateUrl": 241,
       "skippedCrossOutletDuplicateUrl": 43,
-      "skippedDuplicateText": 337,
+      "skippedDuplicateText": 338,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 759,
       "recoveredFromGarbage": 129,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 1,
         "human-review": 56,
         "originalScore-priority0": 1071,
-        "llmScore": 4539,
+        "llmScore": 4540,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 4140,
+        "llmScore-lowconf": 4139,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -47493,7 +47493,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 62,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Pete Hempstead",
@@ -47503,7 +47503,7 @@
       "pullQuote": "The predictable storyline plays like a mildly entertaining movie of the week, with little depth",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "burn-this-2019",
