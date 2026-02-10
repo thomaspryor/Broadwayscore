@@ -1,57 +1,61 @@
 {
-  "updatedAt": "2026-02-10T07:53:48.306Z",
-  "processed": 35,
-  "failed": 305,
-  "successRate": "10.3%",
+  "updatedAt": "2026-02-10T07:58:50.275Z",
+  "processed": 52,
+  "failed": 358,
+  "successRate": "12.7%",
   "tierBreakdown": {
-    "playwright": 4,
-    "browserbase": 4,
-    "scrapingbee": 9,
-    "brightdata": 12,
-    "archive": 10
+    "playwright": 8,
+    "browserbase": 0,
+    "scrapingbee": 13,
+    "brightdata": 6,
+    "archive": 26
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T03:45:35.396Z",
+      "t": "2026-02-10T03:48:40.262Z",
       "event": "bb-session",
-      "session": "d1e523eb",
-      "url": "https://variety.com/2025/legit/reviews/ragtime-review-broadway-lincoln-center-th"
+      "session": "b078d66c",
+      "url": "https://www.newyorker.com/magazine/1997/12/08/the-visual-thing"
     },
     {
-      "t": "2026-02-10T03:45:57.432Z",
-      "event": "bb-session",
-      "session": "d74aa89e",
-      "url": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-b"
+      "t": "2026-02-10T03:48:42.481Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T03:46:38.950Z",
+      "t": "2026-02-10T03:50:02.154Z",
       "event": "bb-session",
-      "session": "212a3aae",
-      "url": "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is"
+      "session": "bfdb7d51",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
     },
     {
-      "t": "2026-02-10T03:51:32.783Z",
-      "event": "bb-session",
-      "session": "1966a2cb",
-      "url": "https://www.wsj.com/articles/stranger-things-the-first-shadow-review-a-streaming"
-    },
-    {
-      "t": "2026-02-10T03:52:14.184Z",
+      "t": "2026-02-10T03:50:47.659Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-02-10T04:10:05.879Z",
+      "t": "2026-02-10T03:52:30.456Z",
       "event": "bb-session",
-      "session": "ee28d067",
-      "url": "https://www.nytimes.com/2007/05/10/theater/reviews/10shade.html"
+      "session": "b4964ce5",
+      "url": "https://www.theatermania.com/news/hamhistory-review-8-years-of-hamilton-via-lin-"
     },
     {
-      "t": "2026-02-10T04:10:48.276Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770696615130\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAOPwowGyDe00ANCKmrw==&cid=KdgvlFFPa5dHc_q49zN~~6gkIvLj9Y__O8LB_spLrCvN1x981VUOZfP8kTPgF9lcGwcx7L0petryJ5MtCQVNSeK0Qv1PmoABT4ZsRp1ZNoviL7mUKcfT43yoJbkJtPGC&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770696615130\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770696615130\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAOPwowGyDe00ANCKmrw==&cid=KdgvlFFPa5dHc_q49zN~~6gkIvLj9Y__O8LB_spLrCvN1x981VUOZfP8kTPgF9lcGwcx7L0petryJ5MtCQVNSeK0Qv1PmoABT4ZsRp1ZNoviL7mUKcfT43yoJbkJtPGC&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770696615130\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770696615130\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAOPwowGyDe00ANCKmrw==&cid=KdgvlFFPa5dHc_q49zN~~6gkIvLj9Y__O8LB_spLrCvN1x981VUOZfP8kTPgF9lcGwcx7L0petryJ5MtCQVNSeK0Qv1PmoABT4ZsRp1ZNoviL7mUKcfT43yoJbkJtPGC&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770696615130\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+      "t": "2026-02-10T04:08:40.072Z",
+      "event": "bb-session",
+      "session": "d2844d0e",
+      "url": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadwa"
+    },
+    {
+      "t": "2026-02-10T04:16:14.431Z",
+      "event": "bb-session",
+      "session": "316ad7ef",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-02-10T04:16:16.312Z",
+      "event": "bb-login-uncertain",
+      "domain": "washingtonpost.com"
     }
   ]
 }
