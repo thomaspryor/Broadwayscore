@@ -1,22 +1,61 @@
 {
-  "updatedAt": "2026-02-10T21:13:37.177Z",
-  "processed": 53,
-  "failed": 357,
-  "successRate": "12.9%",
+  "updatedAt": "2026-02-10T21:19:52.828Z",
+  "processed": 59,
+  "failed": 401,
+  "successRate": "12.8%",
   "tierBreakdown": {
-    "playwright": 7,
-    "browserbase": 0,
-    "scrapingbee": 19,
-    "brightdata": 6,
-    "archive": 21
+    "playwright": 4,
+    "browserbase": 1,
+    "scrapingbee": 32,
+    "brightdata": 5,
+    "archive": 22
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T17:02:49.513Z",
+      "t": "2026-02-10T15:56:20.521Z",
       "event": "bb-session",
-      "session": "277db096",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maybe-happy-ending-broadway-rev"
+      "session": "f88f9e39",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
+    },
+    {
+      "t": "2026-02-10T15:56:22.473Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T15:58:57.823Z",
+      "event": "bb-session",
+      "session": "5da89040",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+    },
+    {
+      "t": "2026-02-10T15:59:00.266Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:02:06.899Z",
+      "event": "bb-session",
+      "session": "071cbef5",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-02-10T16:02:58.366Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:06:13.601Z",
+      "event": "bb-session",
+      "session": "e3e5d82f",
+      "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
+    },
+    {
+      "t": "2026-02-10T16:06:39.994Z",
+      "event": "bb-session",
+      "session": "757c446b",
+      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
     }
   ]
 }
