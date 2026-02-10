@@ -1,26 +1,80 @@
 {
-  "processed": [],
+  "processed": [
+    "hells-kitchen-2024/theatermania--david-gordon.json",
+    "hells-kitchen-2024/thewrap--steve-pond.json"
+  ],
   "failed": [
-    "the-lion-king-1997/newyorker--john-lahr.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "the-lion-king-1997/vulture--john-simon.json",
-    "the-lion-king-1997/new-york--john-simon.json",
-    "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
-    "the-lion-king-1997/columbus-dispatch--michael-grossberg.json",
-    "the-lion-king-1997/denver-post--sandra-brooks-dillard.json",
-    "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "the-lion-king-1997/milwaukee-journal-sentinel--damien-jaques.json"
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "hells-kitchen-2024/nytg--david-gordon.json",
+    "hells-kitchen-2024/vulture--sara-holdren.json",
+    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/guardian--adrian-horton.json",
+    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+    "hells-kitchen-2024/observer--david-cote.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json",
+    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
+    "hells-kitchen-2024/showbiz411-roger-friedman--roger-friedman.json",
+    "hells-kitchen-2024/slantmagazine--dan-rubins.json",
+    "hells-kitchen-2024/talkinbroadway--howard-miller.json",
+    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
+    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
+    "hells-kitchen-2024/usatoday--david-oliver.json",
+    "hells-kitchen-2024/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "browserbase": [
+      "data/review-texts/hells-kitchen-2024/observer--david-cote.json"
+    ],
+    "scrapingbee": [
+      "hells-kitchen-2024/thewrap--steve-pond.json"
+    ],
+    "brightdata": [
+      "hells-kitchen-2024/theatermania--david-gordon.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-02-10T14:18:07.119Z",
-  "lastProcessed": "the-lion-king-1997/milwaukee-journal-sentinel--damien-jaques.json",
-  "log": []
+  "startTime": "2026-02-10T14:11:46.565Z",
+  "lastProcessed": "hells-kitchen-2024/washpost--peter-marks.json",
+  "log": [
+    {
+      "t": "2026-02-10T14:13:47.484Z",
+      "event": "bb-session",
+      "session": "a318437e",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+    },
+    {
+      "t": "2026-02-10T14:13:49.974Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T14:16:59.449Z",
+      "event": "bb-session",
+      "session": "422705f5",
+      "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
+    },
+    {
+      "t": "2026-02-10T14:17:28.628Z",
+      "event": "bb-session",
+      "session": "94d43562",
+      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
+    },
+    {
+      "t": "2026-02-10T14:18:05.465Z",
+      "event": "bb-session",
+      "session": "38728ea6",
+      "url": "https://www.theatermania.com/broadway/reviews/hells-kitchen_96263"
+    },
+    {
+      "t": "2026-02-10T14:19:57.529Z",
+      "event": "bb-session",
+      "session": "e6188161",
+      "url": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/"
+    }
+  ]
 }
