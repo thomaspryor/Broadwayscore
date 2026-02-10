@@ -1,135 +1,85 @@
 {
-  "runDate": "2026-02-10T16:36:02.743Z",
+  "runDate": "2026-02-10T16:46:18.807Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "maybe-happy-ending-2024",
+    "showFilter": "oh-mary-2024",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 16,
+    "processed": 1,
+    "failed": 13,
     "skipped": 0,
-    "successRate": "15.8%"
+    "successRate": "7.1%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 3,
+    "playwright": 0,
+    "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "brightdata": 1,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 7,
-    "tier1_5Attempts": 9,
-    "tier1_5Success": 3,
-    "tier2Attempts": 9,
-    "tier2Success": 1,
-    "tier3Attempts": 9,
-    "tier3Success": 1,
-    "tier4Attempts": 15,
-    "tier4Success": 4,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 26,
-    "browserbaseSessionsUsed": 9,
-    "browserbaseMinutesUsed": 4.6,
-    "urlDiscoveryAttempts": 6,
-    "urlDiscoverySuccess": 4,
+    "tier1Attempts": 7,
+    "tier1Success": 6,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 2,
+    "tier2Attempts": 5,
+    "tier2Success": 3,
+    "tier3Attempts": 4,
+    "tier3Success": 3,
+    "tier4Attempts": 8,
+    "tier4Success": 2,
+    "totalFailed": 13,
+    "scrapingBeeCreditsUsed": 42,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 0.7,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-    "maybe-happy-ending-2024/observer--rex-reed.json",
-    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json"
+    "oh-mary-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "maybe-happy-ending-2024/hollywood-reporter--angie-han.json",
-    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-    "maybe-happy-ending-2024/nyt-theater--jonathan-mandell.json",
-    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
-    "maybe-happy-ending-2024/variety--charles-isherwood.json",
-    "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
-    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
-    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-    "maybe-happy-ending-2024/theatermania--jesse-green.json",
-    "maybe-happy-ending-2024/timeout--adam-feldman.json",
-    "maybe-happy-ending-2024/wsj--charles-isherwood.json",
-    "maybe-happy-ending-2024/culturesauce--thom-geier.json",
-    "maybe-happy-ending-2024/pages-on-stages--mason-pilevsky.json",
-    "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
-    "maybe-happy-ending-2024/the-interested-bystander--cary-wong.json",
-    "maybe-happy-ending-2024/theater-scene--victor-gluck.json"
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/nyt-theater--jonathan-mandell.json",
+    "oh-mary-2024/variety--christian-lewis.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "oh-mary-2024/guardian--adrian-horton.json",
+    "oh-mary-2024/new-york-sun--elysa-gardner.json",
+    "oh-mary-2024/observer--david-cote.json",
+    "oh-mary-2024/timeout--adam-feldman.json",
+    "oh-mary-2024/front-row-center--david-walters.json",
+    "oh-mary-2024/njcom--christopher-kelly.json",
+    "oh-mary-2024/nysr--david-finkle.json",
+    "oh-mary-2024/nysr--steven-suskin.json",
+    "oh-mary-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json"
-    ],
+    "playwright": [],
     "browserbase": [
-      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "data/review-texts/maybe-happy-ending-2024/observer--rex-reed.json",
-      "maybe-happy-ending-2024/observer--rex-reed.json"
+      "data/review-texts/oh-mary-2024/variety--christian-lewis.json",
+      "data/review-texts/oh-mary-2024/observer--david-cote.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
-    "archive": [
-      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json"
-    ]
+    "brightdata": [
+      "oh-mary-2024/theatermania--jesse-green.json"
+    ],
+    "archive": []
   },
   "failuresByOutlet": {
-    "The Hollywood Reporter": {
-      "count": 1,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The New Yorker": {
-      "count": 1,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
     "Talkin' Broadway": {
-      "count": 2,
+      "count": 1,
       "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "maybe-happy-ending-2024/variety--aramide-tinubu.json",
-      "oldUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-1236213847/",
-      "newUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/"
-    },
-    {
-      "reviewId": "maybe-happy-ending-2024/variety--charles-isherwood.json",
-      "oldUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-1236220876/",
-      "newUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/"
-    },
-    {
-      "reviewId": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "oldUrl": "https://nypost.com/2024/11/13/entertainment/maybe-happy-ending-review-charming-musical-about-robot-romance/",
-      "newUrl": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
-    },
-    {
-      "reviewId": "maybe-happy-ending-2024/theatermania--jesse-green.json",
-      "oldUrl": "https://www.theatermania.com/broadway/reviews/maybe-happy-ending_92847.html",
-      "newUrl": "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/"
-    }
-  ]
+  "urlDiscoveries": []
 }
