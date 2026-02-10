@@ -14,13 +14,13 @@
     "processed": 0,
     "failed": 3,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "9.5%"
   },
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "browserbase": 1,
+    "scrapingbee": 1,
+    "brightdata": 1,
     "archive": 0
   },
   "statistics": {
@@ -42,7 +42,10 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "hells-kitchen-2024/theatermania--david-gordon.json",
+    "hells-kitchen-2024/thewrap--steve-pond.json"
+  ],
   "failed": [
     "moulin-rouge-2019/vulture--sara-holdren.json",
     "moulin-rouge-2019/theater-news-online-jeremy-gerard--jeremy-gerard.json",
@@ -50,9 +53,15 @@
   ],
   "tierDetails": {
     "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "browserbase": [
+      "data/review-texts/hells-kitchen-2024/observer--david-cote.json"
+    ],
+    "scrapingbee": [
+      "hells-kitchen-2024/thewrap--steve-pond.json"
+    ],
+    "brightdata": [
+      "hells-kitchen-2024/theatermania--david-gordon.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
