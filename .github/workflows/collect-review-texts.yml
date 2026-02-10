@@ -334,9 +334,16 @@ jobs:
 
           TIER_FILTER="${{ inputs.content_tier }}"
 
+          SHOW_FILTER="${{ inputs.show_filter }}"
+          AGGRESSIVE="${{ inputs.aggressive }}"
+          STEALTH="${{ inputs.stealth_proxy }}"
+
           gh workflow run "Collect Review Texts" \
             -f max_reviews=${{ inputs.max_reviews }} \
             -f batch_size=${{ inputs.batch_size }} \
+            -f show_filter="$SHOW_FILTER" \
+            -f aggressive="$AGGRESSIVE" \
+            -f stealth_proxy="$STEALTH" \
             -f browserbase_enabled="$NEXT_BB_ENABLED" \
             -f browserbase_max_sessions="$NEXT_BB_SESSIONS" \
             -f retry_failed=${{ inputs.retry_failed }} \
