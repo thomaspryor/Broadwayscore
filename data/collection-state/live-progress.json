@@ -1,51 +1,67 @@
 {
-  "updatedAt": "2026-02-10T18:47:59.405Z",
+  "updatedAt": "2026-02-10T18:50:28.328Z",
   "processed": 16,
-  "failed": 204,
-  "successRate": "7.3%",
+  "failed": 284,
+  "successRate": "5.3%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 4,
     "browserbase": 1,
-    "scrapingbee": 4,
-    "brightdata": 1,
+    "scrapingbee": 1,
+    "brightdata": 4,
     "archive": 8
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:08:45.715Z",
+      "t": "2026-02-10T16:14:09.718Z",
       "event": "bb-session",
-      "session": "858c2be9",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maybe-happy-ending-broadway-rev"
+      "session": "bddd114d",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
     },
     {
-      "t": "2026-02-10T16:10:58.638Z",
-      "event": "bb-session",
-      "session": "f9357e64",
-      "url": "https://www.newyorker.com/magazine/2024/12/02/maybe-happy-ending-theatre-review"
+      "t": "2026-02-10T16:14:55.077Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740061689\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMATWsyT2FVtg4ALPe1oA==&cid=dgglU_I2MxuvUtO~ILysG3FL9_eXJoBiWaa4x9OJFGDCWoP9qvBo7VdpOO8P46q8HEHkKdMp_UC4NH6WjhBJMDQBrYCIe~15zg9w8i7yHmmZL_Dg7_yTGu7h05_rN9z0&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740061689\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740061689\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMATWsyT2FVtg4ALPe1oA==&cid=dgglU_I2MxuvUtO~ILysG3FL9_eXJoBiWaa4x9OJFGDCWoP9qvBo7VdpOO8P46q8HEHkKdMp_UC4NH6WjhBJMDQBrYCIe~15zg9w8i7yHmmZL_Dg7_yTGu7h05_rN9z0&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740061689\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    20 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740061689\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMATWsyT2FVtg4ALPe1oA==&cid=dgglU_I2MxuvUtO~ILysG3FL9_eXJoBiWaa4x9OJFGDCWoP9qvBo7VdpOO8P46q8HEHkKdMp_UC4NH6WjhBJMDQBrYCIe~15zg9w8i7yHmmZL_Dg7_yTGu7h05_rN9z0&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740061689\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n"
     },
     {
-      "t": "2026-02-10T16:11:01.005Z",
+      "t": "2026-02-10T16:17:21.983Z",
+      "event": "bb-session",
+      "session": "edf18ba0",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
+    },
+    {
+      "t": "2026-02-10T16:17:23.986Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:12:01.944Z",
+      "t": "2026-02-10T16:20:08.520Z",
       "event": "bb-session",
-      "session": "f4b3686f",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123621"
+      "session": "a8234425",
+      "url": "https://www.newyorker.com/magazine/2021/11/01/six-brings-pop-feminism-to-broadwa"
     },
     {
-      "t": "2026-02-10T16:13:54.364Z",
-      "event": "bb-session",
-      "session": "0b355b91",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+      "t": "2026-02-10T16:20:10.866Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:14:22.762Z",
+      "t": "2026-02-10T16:20:48.109Z",
       "event": "bb-session",
-      "session": "2f191161",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123622"
+      "session": "8b27e068",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
+    },
+    {
+      "t": "2026-02-10T16:23:09.758Z",
+      "event": "bb-session",
+      "session": "36b1b13c",
+      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
+    },
+    {
+      "t": "2026-02-10T16:23:11.902Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     }
   ]
 }
