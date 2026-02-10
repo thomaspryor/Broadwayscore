@@ -143,6 +143,7 @@ function calculateBuzzScore(classifications, totalPosts = 0, totalComments = 0) 
       positive: Math.round(sentimentCounts.positive / relevant.length * 100) / 100,
       mixed: Math.round(sentimentCounts.mixed / relevant.length * 100) / 100,
       negative: Math.round(sentimentCounts.negative / relevant.length * 100) / 100,
+      neutral: Math.round(sentimentCounts.neutral / relevant.length * 100) / 100,
     },
     positiveRate: (sentimentCounts.enthusiastic + sentimentCounts.positive) / relevant.length,
     lastUpdated: new Date().toISOString().split('T')[0]
